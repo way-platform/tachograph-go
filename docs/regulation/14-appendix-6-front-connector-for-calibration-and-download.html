@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html><head>
+
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+      <title>Consolidated TEXT: 32016R0799 — EN — 21.08.2023</title>
+      
+   
+</head>
+<body>
+<h1>Appendix 6: FRONT CONNECTOR FOR CALIBRATION AND DOWNLOAD</h1>
+
+<nav><h2>Table of Contents</h2><ol><li><a href="#hardware">HARDWARE</a></li><li><a href="#connector">Connector</a></li><li><a href="#contact-allocation">Contact allocation</a></li><li><a href="#block-diagram">Block diagram</a></li><li><a href="#downloading-interface">DOWNLOADING INTERFACE</a></li><li><a href="#calibration-interface">CALIBRATION INTERFACE</a></li></ol></nav>
+<p>1.   <strong>HARDWARE</strong>
+            </p>
+<p>1.1.   <strong>Connector</strong>
+            </p>
+<p>INT_001 The downloading/calibration connector shall be a 6 pin connector, accessible on the front panel without the need to disconnect any part of the tachograph, and shall comply with the following drawing (all dimensions in millimetres):</p>
+
+<p>The following diagram shows a typical 6 pin mating plug:</p>
+
+<p>1.2.   <strong>Contact allocation</strong>
+            </p>
+<p>INT_002 Contacts shall be allocated in accordance with the following table:</p>
+<p></p>
+<p></p><table>
+                  <tbody>
+                     <tr>
+                        <td>Pin</td>
+                        <td>Description</td>
+                        <td>Remark</td>
+                     </tr>
+                     <tr>
+                        <td>1</td>
+                        <td>Battery minus</td>
+                        <td>Connected to the battery minus of the vehicle</td>
+                     </tr>
+                     <tr>
+                        <td>2</td>
+                        <td>Data communication</td>
+                        <td>K-line (ISO 14230-1)</td>
+                     </tr>
+                     <tr>
+                        <td>3</td>
+                        <td>RxD — Downloading</td>
+                        <td>Data input to tachograph</td>
+                     </tr>
+                     <tr>
+                        <td>4</td>
+                        <td>Input/output signal</td>
+                        <td>Calibration</td>
+                     </tr>
+                     <tr>
+                        <td>5</td>
+                        <td>Permanent power output</td>
+                        <td>
+                           <p>The voltage range is specified to be that of the vehicle power minus 3V to allow for the voltage drop across the protective circuitry</p>
+                           <p>Output 40 mA</p>
+                        </td>
+                     </tr>
+                     <tr>
+                        <td>6</td>
+                        <td>TxD — Downloading</td>
+                        <td>Data output from tachograph</td>
+                     </tr>
+                  </tbody>
+               </table>
+<p>1.3.   <strong>Block diagram</strong>
+            </p>
+<p>INT_003 The block diagram shall comply with the following:</p>
+
+<p>2.   <strong>DOWNLOADING INTERFACE</strong>
+            </p>
+<p>INT_004 The downloading interface shall comply to RS232 specifications.</p>
+<p>INT_005 The downloading interface shall use one start bit, 8 data bits LSB first, one even parity bit and 1 stop bit.</p>
+
+<p>
+               <strong>Data byte organisation</strong>
+            </p>
+<table>
+               <tbody><tr>
+                  <td>Start bit</td>
+                  <td>:</td>
+                  <td>one bit with logic level 0;</td>
+               </tr>
+            </tbody></table>
+<table>
+               <tbody><tr>
+                  <td>Data bits</td>
+                  <td>:</td>
+                  <td>transmitted with LSB first;</td>
+               </tr>
+            </tbody></table>
+<table>
+               <tbody><tr>
+                  <td>Parity bit</td>
+                  <td>:</td>
+                  <td>even parity</td>
+               </tr>
+            </tbody></table>
+<table>
+               <tbody><tr>
+                  <td>Stop bit</td>
+                  <td>:</td>
+                  <td>one bit with logic level 1</td>
+               </tr>
+            </tbody></table>
+<p>When numerical data composed by more than one byte are transmitted, the most significant byte is transmitted first and the least significant byte last.</p>
+<p>INT_006 Transmission baud rates shall be adjustable from 9 600  bps to 115 200  bps. Transmission shall be achieved at the highest possible transmission speed, the initial baud rate after a start of communication being set at 9 600  bps.</p>
+<p>3.   <strong>CALIBRATION INTERFACE</strong>
+            </p>
+<p>INT_007 The data communication shall comply to ISO 14230-1 Road vehicles — Diagnostic systems — Keyword protocol 2000 — Part 1: Physical layer, First edition: 1999.</p>
+<p>INT_008 The input/output signal shall comply with the following electrical specification:</p>
+<p></p>
+<p></p><table>
+                  <tbody>
+                     <tr>
+                        <td>Parameter</td>
+                        <td>Minimum</td>
+                        <td>Typical</td>
+                        <td>Maximum</td>
+                        <td>Remark</td>
+                     </tr>
+                     <tr>
+                        <td>U low (in)</td>
+                        <td></td>
+                        <td></td>
+                        <td>1,0 V</td>
+                        <td>I = 750 μA</td>
+                     </tr>
+                     <tr>
+                        <td>U high (in)</td>
+                        <td>4 V</td>
+                        <td></td>
+                        <td></td>
+                        <td>I = 200 μA</td>
+                     </tr>
+                     <tr>
+                        <td>Frequency</td>
+                        <td></td>
+                        <td></td>
+                        <td>4 kHz</td>
+                        <td></td>
+                     </tr>
+                     <tr>
+                        <td>U low (out)</td>
+                        <td></td>
+                        <td></td>
+                        <td>1,0 V</td>
+                        <td>I = 1 mA</td>
+                     </tr>
+                     <tr>
+                        <td>U high (out)</td>
+                        <td>4 V</td>
+                        <td></td>
+                        <td></td>
+                        <td>I = 1 mA</td>
+                     </tr>
+                  </tbody>
+               </table>
+<p>INT_009 The input/output signal shall comply with the following timing diagrams:</p>
+
+
+</body></html>

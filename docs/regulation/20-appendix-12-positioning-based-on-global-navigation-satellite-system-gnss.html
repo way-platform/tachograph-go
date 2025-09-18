@@ -1,0 +1,1123 @@
+<!DOCTYPE html>
+<html><head>
+
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+      <title>Consolidated TEXT: 32016R0799 — EN — 21.08.2023</title>
+      
+   
+</head>
+<body>
+<h1>Appendix 12: POSITIONING BASED ON GLOBAL NAVIGATION SATELLITE SYSTEM (GNSS)</h1>
+
+<nav><h2>Table of Contents</h2><ol><li><a href="#introduction">INTRODUCTION</a></li><li><a href="#scope">Scope</a></li><li><a href="#references">References</a></li><li><a href="#acronyms-and-notations">Acronyms and notations</a></li><li><a href="#basic-characteristics-of-the-gnss-receiver">BASIC CHARACTERISTICS OF THE GNSS RECEIVER</a></li><li><a href="#sentences-provided-by-the-gnss-receiver">SENTENCES PROVIDED BY THE GNSS RECEIVER</a></li><li><a href="#vehicle-unit-with-an-external-gnss-facility">VEHICLE UNIT WITH AN EXTERNAL GNSS FACILITY</a></li><li><a href="#configuration">Configuration</a></li><li><a href="#main-components-and-interfaces">Main components and interfaces</a></li><li><a href="#external-gnss-facility-state-at-the-end-of-product">External GNSS facility state at the end of production</a></li><li><a href="#communication-between-the-external-gnss-facility-a">Communication between the external GNSS facility and the vehicle unit</a></li><li><a href="#communication-protocol">Communication Protocol</a></li><li><a href="#secure-transfer-of-gnss-data">Secure transfer of GNSS data</a></li><li><a href="#structure-of-the-read-record-command">Structure of the Read Record command</a></li><li><a href="#structure-of-the-writerecord-command">Structure of the WriteRecord command</a></li><li><a href="#other-commands">Other commands</a></li><li><a href="#coupling-mutual-authentication-and-session-key-agr">Coupling, mutual authentication and session key agreement of the external GNSS facility with vehicle unit</a></li><li><a href="#error-handling">Error Handling</a></li><li><a href="#communication-error-with-the-external-gnss-facilit">Communication error with the external GNSS facility</a></li><li><a href="#breach-of-the-physical-integrity-of-the-external-g">Breach of the physical integrity of the external GNSS facility</a></li><li><a href="#absence-of-position-information-from-gnss-receiver">Absence of position information from GNSS receiver</a></li><li><a href="#external-gnss-facility-certificate-expired">External GNSS facility certificate expired</a></li><li><a href="#vehicle-unit-without-an-external-gnss-facility">VEHICLE UNIT WITHOUT AN EXTERNAL GNSS FACILITY</a></li><li><a href="#configuration">Configuration</a></li><li><a href="#transfer-of-information-from-the-gnss-receiver-to">Transfer of information from the GNSS receiver to the VU</a></li><li><a href="#transfer-of-information-from-the-vu-to-the-gnss-re">Transfer of information from the VU to the GNSS receiver</a></li><li><a href="#error-handling">Error handling</a></li><li><a href="#absence-of-position-information-from-gnss-receiver">Absence of position information from GNSS receiver</a></li><li><a href="#position-data-processing-and-recording-by-the-vu">POSITION DATA PROCESSING AND RECORDING BY THE VU</a></li><li><a href="#gnss-time-conflict">GNSS TIME CONFLICT</a></li><li><a href="#vehicle-motion-conflict">VEHICLE MOTION CONFLICT</a></li></ol></nav>
+<p>▼M3</p>
+<p>1.   <strong>INTRODUCTION</strong>
+            </p>
+<p>This Appendix provides the technical requirements for the GNSS receiver and GNSS data used by the Vehicle Unit, including the protocols that must be implemented to assure the secure and correct data transfer of the positioning information.</p>
+<p>1.1.   <strong>Scope</strong>
+            </p>
+<table>
+               <tbody><tr>
+                  <td>GNS_1</td>
+                  <td>
+                     <p>The Vehicle Unit shall collect location data from at least one GNSS satellite network.</p>
+                     <p>The Vehicle Unit may be with or without an external GNSS facility as described in Figure 1:</p>
+                  </td>
+               </tr>
+            </tbody></table>
+<p>▼M3</p>
+<p>1.1.1   <strong>References</strong>
+            </p>
+<p>The following references are used in this part of this Appendix.</p>
+<table>
+               <tbody><tr>
+                  <td>NMEA</td>
+                  <td>NMEA (National Marine Electronics Association) 0183 Interface Standard, V4.11</td>
+               </tr>
+            </tbody></table>
+<p>▼B</p>
+<p>
+               <em>Figure 1</em>
+            </p>
+<p>
+               <strong>Different configurations for GNSS receiver</strong>
+            </p>
+<p>1.2.   <strong>Acronyms and notations</strong>
+            </p>
+<p>The following acronyms are used in this appendix:</p>
+<table>
+               <tbody><tr>
+                  <td>DOP</td>
+                  <td>Dilution of Precision</td>
+               </tr>
+            </tbody></table>
+<table>
+               <tbody><tr>
+                  <td>EGF</td>
+                  <td>Elementary file GNSS Facility</td>
+               </tr>
+            </tbody></table>
+<table>
+               <tbody><tr>
+                  <td>EGNOS</td>
+                  <td>European Geostationary Navigation Overlay Service</td>
+               </tr>
+            </tbody></table>
+<table>
+               <tbody><tr>
+                  <td>GNSS</td>
+                  <td>Global Navigation Satellite System</td>
+               </tr>
+            </tbody></table>
+<table>
+               <tbody><tr>
+                  <td>GSA</td>
+                  <td>GPS DOP and active satellites</td>
+               </tr>
+            </tbody></table>
+<table>
+               <tbody><tr>
+                  <td>HDOP</td>
+                  <td>Horizontal Dilution of Precision</td>
+               </tr>
+            </tbody></table>
+<table>
+               <tbody><tr>
+                  <td>ICD</td>
+                  <td>Interface Control Document</td>
+               </tr>
+            </tbody></table>
+<table>
+               <tbody><tr>
+                  <td>NMEA</td>
+                  <td>National Marine Electronics Association</td>
+               </tr>
+            </tbody></table>
+<p>▼M3</p>
+<table>
+               <tbody><tr>
+                  <td>OSNMA</td>
+                  <td>Galileo Open Service Navigation Messages Authentication</td>
+               </tr>
+            </tbody></table>
+<p>▼B</p>
+<table>
+               <tbody><tr>
+                  <td>PDOP</td>
+                  <td>Position Dilution of Precision</td>
+               </tr>
+            </tbody></table>
+<table>
+               <tbody><tr>
+                  <td>RMC</td>
+                  <td>Recommended Minimum Specific</td>
+               </tr>
+            </tbody></table>
+<p>▼M3</p>
+<table>
+               <tbody><tr>
+                  <td>RTC</td>
+                  <td>Real Time Clock</td>
+               </tr>
+            </tbody></table>
+<p>▼B</p>
+<table>
+               <tbody><tr>
+                  <td>SIS</td>
+                  <td>Signal in Space</td>
+               </tr>
+            </tbody></table>
+<table>
+               <tbody><tr>
+                  <td>VDOP</td>
+                  <td>Vertical Dilution of Precision</td>
+               </tr>
+            </tbody></table>
+<table>
+               <tbody><tr>
+                  <td>VU</td>
+                  <td>Vehicle Unit</td>
+               </tr>
+            </tbody></table>
+<p>▼M3</p>
+<p>2.   <strong>BASIC CHARACTERISTICS OF THE GNSS RECEIVER</strong>
+            </p>
+<p>▼B</p>
+<p>Regardless of the configuration of the Smart Tachograph with or without an external GNSS facility, the provision of accurate and reliable positioning information is an essential element of the effective operation of the Smart Tachograph. Therefore, it is appropriate to require its compatibility with the services provided by the Galileo and European Geostationary Navigation Overlay Service (EGNOS) programmes as set out in Regulation (EU) No 1285/2013 of the European Parliament and of the Council (<a href="#E0020" id="src.E0020">
+                  <sup>13</sup>
+               </a>). The system established under the Galileo programme is an independent global satellite navigation system and the one established under the EGNOS programme is a regional satellite navigation system improving the quality of the Global Positioning System signal.</p>
+<p>GNS_2 Manufacturers shall ensure that the GNSS receivers in the Smart Tachographs are compatible with the positioning services provided by the Galileo and the EGNOS systems. Manufacturers may also choose, in addition, compatibility with other satellite navigation systems.</p>
+<p>▼M3</p>
+<p>GNS_3 The GNSS receiver shall have the capability to support Navigation Messages Authentication on the Open Service of Galileo (OSNMA).</p>
+<p>▼M3</p>
+<p>GNS_3a The GNSS receiver shall perform a number of consistency checks in order to verify that the measurements computed by the GNSS receiver on the basis of the OSNMA data have resulted in the correct information about the position, velocity and data of the vehicle, and have therefore not been influenced by any external attack such as meaconing. These consistency checks shall consist, for instance, of:</p>
+<dl><dt>—</dt><dd>detection of abnormal power emissions by means of combined monitoring of the Automatic Gain Control (AGC) and Carrier-to-Noise density ratio (C/N0),</dd><dt>—</dt><dd>pseudorange measurement consistency and Doppler measurement consistency over time, including the detection of abrupt measurement jumps,</dd><dt>—</dt><dd>receiver autonomous integrity monitoring (RAIM) techniques, including the detection of inconsistent measurements with the estimated position,</dd><dt>—</dt><dd>position and velocity checks, including abnormal position and velocity solutions, sudden jumps and behaviour not consistent with the dynamics of the vehicle,</dd><dt>—</dt><dd>time and frequency consistency, including clock jumps and drifts that are not consistent with the receiver clock characteristics.</dd></dl>
+
+
+
+
+<p>GNS_3b The European Commission shall develop and approve the following documents:</p>
+<dl><dt>—</dt><dd>A Signal in Space Interface Control Document (SIS ICD), specifying in detail the OSNMA information transmitted in the Galileo signal.</dd><dt>—</dt><dd>OSNMA Receiver Guidelines, providing the requirements and processes in the receivers to guarantee a secure implementation of OSNMA, as well as recommendations to enhance OSNMA performance.</dd></dl>
+
+<p>GNSS receivers fitted in tachographs, either internal or external, shall be constructed in accordance with the SIS ICD and the OSNMA receiver guidelines.</p>
+<p>GNS_3c The GNSS receiver shall provide position messages, called authenticated position messages in this Annex and its Appendixes, which are elaborated using only satellites from which the authenticity of the navigation messages has been successfully verified.</p>
+<p>GNS_3d The GNSS receiver shall also provide standard position messages, elaborated using the satellites in view, regardless whether they are authenticated or not.</p>
+<p>GNS_3e The GNSS receiver shall use the VU Real Time Clock (RTC) as time reference for the time synchronisation necessary for OSNMA.</p>
+<p>GNS_3f The VU RTC time shall be provided to the GNSS receiver by the VU.</p>
+<p>GNS_3g The maximal time drift specified in requirement 41 of Annex IC, shall be provided to the GNSS receiver by the VU, along with the VU RTC time.</p>
+<p>▼M3</p>
+<p>3.   <strong>SENTENCES PROVIDED BY THE GNSS RECEIVER</strong>
+            </p>
+<p>This section describes the sentences used in the functioning of the Smart Tachograph, for transmitting standard and authenticated position messages. This section is valid both for the configuration of the Smart Tachograph with or without an external GNSS facility.</p>
+<table>
+               <tbody><tr>
+                  <td>GNS_4</td>
+                  <td>
+                     <p>The standard position data is based on the NMEA sentence Recommended Minimum Specific (RMC) GNSS Data, which contains the Position information (Latitude, Longitude), Time in UTC format (hhmmss.ss), and Speed Over Ground in Knots plus additional values.</p>
+                     <p>The format of the RMC sentence is the following (as from NMEA V4.11 standard):</p>
+                     <p>
+                         
+                        <em>Figure 2</em> 
+                         
+                        <strong>Structure of the RMC sentence</strong> 
+                     </p>
+                     <p>$--RMC,hhmmss.ss,A,llll.ll,a,yyyyy.yy,a,x.x,x.x,xxxx,x.x,a,a,a*hh</p>
+                     <p>(1) Time (UTC)</p>
+                     <p>(2) Status, A= Valid position, V= Warning</p>
+                     <p>(3) Latitude</p>
+                     <p>(4) N or S</p>
+                     <p>(5) Longitude</p>
+                     <p>(6) E or W</p>
+                     <p>(7) Speed over ground in knots</p>
+                     <p>(8) Track made good, degrees true</p>
+                     <p>(9) Date, ddmmyy</p>
+                     <p>(10) Magnetic Variation, degrees</p>
+                     <p>(11) E or W</p>
+                     <p>(12) FAA Mode Indicator</p>
+                     <p>(13) Navigational status</p>
+                     <p>(14) Checksum</p>
+                     <p>The Navigational status is optional and may not be present in the RMC sentence.</p>
+                     <p>The Status gives indication if the GNSS signal is available. Until the value of the Status is not set to ‘A’, the received data (e.g., on Time or Latitude/Longitude) cannot be used to record the position of the vehicle in the VU.</p>
+                     <p>The resolution of the position is based on the format of the RMC sentence described above. The first part of the fields 3) and 5) are used to represent the degrees. The rest are used to represent the minutes with three decimals. So the resolution is 1/1 000 of minute or 1/60 000 of degree (because one minute is 1/60 of a degree).</p>
+                  </td>
+               </tr>
+            </tbody></table>
+<table>
+               <tbody><tr>
+                  <td>GNS_4a</td>
+                  <td>
+                     <p>The authenticated position data is based on a NMEA-like sentence, Authenticated Minimum Specific (AMC) Data, which contains the Position information (Latitude, Longitude), Time in UTC format (hhmmss.ss), and Speed Over Ground in Knots plus additional values.</p>
+                     <p>The format of the AMC sentence is the following (as from NMEA V4.11 standard, except for value number 2):</p>
+                     <p>
+                         
+                        <em>Figure 3</em> 
+                         
+                        <strong>Structure of the AMC sentence</strong> 
+                     </p>
+                     <p>$--AMC,hhmmss.ss,A,llll.ll,a,yyyyy.yy,a,x.x,x.x,xxxx,x.x,a,a,a*hh</p>
+                     <p>(1) Time (UTC)</p>
+                     <p>(2) Status, A=Authenticated position (established using at least 4 satellites from which the authenticity of the navigation messages has been successfully verified), J=jamming or O=other GNSS attack in the absence of failed authentication of navigation messages (by implemented consistency checks according to GNS_3a), F=failed authentication of navigation messages (as detected by OSNMA verifications specified in the documents referred to in GNS_3b), V=Void (authenticated position is not available for any other reason)</p>
+                     <p>(3) Latitude</p>
+                     <p>(4) N or S</p>
+                     <p>(5) Longitude</p>
+                     <p>(6) E or W</p>
+                     <p>(7) Speed over ground in knots</p>
+                     <p>(8) Track made good, degrees true</p>
+                     <p>(9) Date, ddmmyy</p>
+                     <p>(10) Magnetic Variation, degrees</p>
+                     <p>(11) E or W</p>
+                     <p>(12) FAA Mode Indicator</p>
+                     <p>(13) Navigational status</p>
+                     <p>(14) Checksum</p>
+                     <p>The Navigational status is optional and may not be present in the AMC sentence.</p>
+                     <p>The Status gives indication if an authenticated GNSS position is available, if an attack on the GNSS signals has been detected, if authentication of navigation messages has failed, or if GNSS position is void. When the value of the Status is not set to ‘A’, the received data (e.g. Time or Latitude/Longitude) are considered to be not valid, and may not be used to record the position of the vehicle in the VU. When the value of the Status is set to ‘J’ (jamming), ‘O’ (other GNSS attack), or ‘F’ (failed authentication of navigation messages), a GNSS anomaly event shall be recorded in the VU, as defined in Annex IC and Appendix 1 (EventFaultCode).</p>
+                  </td>
+               </tr>
+            </tbody></table>
+<table>
+               <tbody><tr>
+                  <td>GNS_5</td>
+                  <td>
+                     <p>The Vehicle Unit shall store in the VU database the position information for latitude and longitude with a resolution of 1/10 of minute or 1/600 of a degree as described in Appendix 1 for type GeoCoordinates.</p>
+                     <p>The GPS DOP and active satellites (GSA) command, as from NMEA V4.11 standard, can be used by the VU to determine and record the signal availability and accuracy of standard positions. In particular the HDOP is used to provide an indication on the level of accuracy of the recorded location data (see 4.2.2). The VU will store the value of the Horizontal Dilution of Precision (HDOP) calculated as the minimum of the HDOP values collected on the available GNSS systems.</p>
+                     <p>The GNSS Id. indicates the corresponding NMEA Id. for every GNSS constellation and Satellite-Based Augmentation System (SBAS).</p>
+                     <p>
+                         
+                        <em>Figure 4</em> 
+                         
+                        <strong>Structure of the GSA sentence (standard positions)</strong> 
+                     </p>
+                     <p>$--GSA,a,a,x,x,x,x,x,x,x,x,x,x,x,x,x.x,x.x,x.x,a*hh</p>
+                     <p>(1) Selection mode</p>
+                     <p>(2) Mode</p>
+                     <p>(3) ID of 1<sup>st</sup> satellite used for fix</p>
+                     <p>(4) ID of 2<sup>nd</sup> satellite used for fix</p>
+                     <p>…</p>
+                     <p>(14) ID of 12th satellite used for fix</p>
+                     <p>(15) PDOP</p>
+                     <p>(16) HDOP</p>
+                     <p>(17) VDOP</p>
+                     <p>(18) System ID</p>
+                     <p>(19) Checksum</p>
+                     <p>The System ID is optional and may not be present in the GSA sentence.</p>
+                     <p>Similarly, the NMEA-like sentence authenticated active satellites (ASA) command can be used by the VU to determine and record the signal availability and accuracy of authenticated positions. Values 1 to 18 are defined in NMEA V4.11 standard.</p>
+                     <p>
+                         
+                        <em>Figure 5</em> 
+                         
+                        <strong>Structure of the ASA sentence (authenticated positions)</strong> 
+                     </p>
+                     <p>$--ASA,a,a,x,x,x,x,x,x,x,x,x,x,x,x,x.x,x.x,x.x,a*hh</p>
+                     <p>(1) Selection mode</p>
+                     <p>(2) Mode</p>
+                     <p>(3) ID of 1<sup>st</sup> satellite used for fix</p>
+                     <p>(4) ID of 2<sup>nd</sup> satellite used for fix</p>
+                     <p>…</p>
+                     <p>(14) ID of 12<sup>th</sup> satellite used for fix</p>
+                     <p>(15) PDOP</p>
+                     <p>(16) HDOP</p>
+                     <p>(17) VDOP</p>
+                     <p>(18) System ID</p>
+                     <p>(19) Checksum</p>
+                     <p>The System ID is optional and may not be present in the ASA sentence.</p>
+                  </td>
+               </tr>
+            </tbody></table>
+<table>
+               <tbody><tr>
+                  <td>GNS_6</td>
+                  <td>When an external GNSS facility is used, the GSA sentence shall be stored in the GNSS Secure Transceiver with record number ‘02’ to ‘06’, and the ASA sentence shall be stored with record number ‘12’ to ‘16’.</td>
+               </tr>
+            </tbody></table>
+<table>
+               <tbody><tr>
+                  <td>GNS_7</td>
+                  <td>The maximum size of the sentences (e.g., RMC, AMC, GSA, ASA or others), which can be used for the sizing of the read record command shall be 85 bytes (see Table 1).</td>
+               </tr>
+            </tbody></table>
+<p>▼B</p>
+<p>4.   <strong>VEHICLE UNIT WITH AN EXTERNAL GNSS FACILITY</strong>
+            </p>
+<p>4.1.   <strong>Configuration</strong>
+            </p>
+<p>4.1.1   <strong>Main components and interfaces</strong>
+            </p>
+<p>In this configuration, the GNSS receiver is a part of the external GNSS facility.</p>
+<p>GNS_8 The external GNSS facility must be powered with a specific vehicle interface.</p>
+<p>▼M3</p>
+<p>GNS_9 The external GNSS facility shall consist of the following components (see Figure 6):</p>
+<dl><dt>(a)</dt><dd>A commercial GNSS receiver to provide the position data through the GNSS data interface. For example, the GNSS data interface can be NMEA standard V4.11 where the GNSS receiver acts as a talker and transmits NMEA sentences to the GNSS Secure Transceiver with a frequency of 1Hz for the pre-defined set of NMEA and NMEA-like sentences, which must include at least the RMC, AMC, GSA and ASA sentences. The implementation of the GNSS data interface is a choice of the manufacturers of the external GNSS facility.</dd></dl>
+<p>▼B</p>
+<dl><dt>(b)</dt><dd>A transceiver unit (GNSS Secure Transceiver) with the capability to support standard ISO/IEC 7816-4:2013 (see 4.2.1) to communicate with the vehicle unit and support the GNSS data interface to the GNSS receiver. The unit is provided with a memory to store the identification data of the GNSS receiver and external GNSS facility.</dd></dl>
+<p>▼M3</p>
+<dl><dt>(c)</dt><dd>An enclosure system with tamper detection function, which encapsulates both the GNSS receiver and the GNSS Secure Transceiver. The tamper detection function shall implement the security protection measures as requested in the Protection Profile of the Smart Tachograph.</dd></dl>
+<p>▼B</p>
+<dl><dt>(d)</dt><dd>A GNSS antenna installed on the vehicle and connected to the GNSS receiver through the enclosure system.</dd></dl>
+<p>GNS_10 The external GNSS facility has at least the following external interfaces:</p>
+<dl><dt>(a)</dt><dd>the interface to the GNSS antenna installed on the vehicle truck, if an external antenna is used.</dd><dt>(b)</dt><dd>the interface to the Vehicle Unit.</dd></dl>
+
+<p>GNS_11 In the VU, the VU Secure Transceiver is the other end of the secure communication with the GNSS Secure Transceiver and it must support ISO/IEC 7816-4:2013 for the connection to the external GNSS facility.</p>
+<p>GNS_12 For the physical layer of the communication with the external GNSS facility, the vehicule unit shall support ISO/IEC 7816-12:2005 or another standard able to support ISO/IEC 7816-4:2013. (see 4.2.1).</p>
+<p>4.1.2   <strong>External GNSS facility state at the end of production</strong>
+            </p>
+<p>GNS_13 The external GNSS facility shall store the following values in the non-volatile memory of the GNSS Secure Transceiver when it leaves the factory:</p>
+<dl><dt>—</dt><dd>the EGF_MA key pair and corresponding certificate,</dd><dt>—</dt><dd>the MSCA_VU-EGF certificate containing the MSCA_VU-EGF.PK public key to be used for verification of the EGF_MA certificate,</dd><dt>—</dt><dd>the EUR certificate containing the EUR.PK public key to be used for verification of the MSCA_VU-EGF certificate,</dd><dt>—</dt><dd>the EUR certificate whose validity period directly precedes the validity period of the EUR certificate to be used to verify the MSCA_VU-EGF certificate, if existing,</dd><dt>—</dt><dd>the link certificate linking these two EUR certificates, if existing,</dd><dt>—</dt><dd>the extended serial-number of the external GNSS facility,</dd><dt>—</dt><dd>operating system identifier of the GNSS facility,</dd><dt>—</dt><dd>type approval number of the external GNSS facility;</dd><dt>—</dt><dd>Identifier of the security component of the external GNSS module.</dd></dl>
+
+
+
+
+
+
+
+
+<p>4.2.   <strong>Communication between the external GNSS facility and the vehicle unit</strong>
+            </p>
+<p>4.2.1   <strong>Communication Protocol</strong>
+            </p>
+<p>▼M3</p>
+<p>GNS_14 The communication protocol between the external GNSS facility and the vehicle unit shall support the following functions:</p>
+<dl><dt>1.</dt><dd>The collection and distribution of GNSS data (e.g., position, timing, speed),</dd><dt>2.</dt><dd>The collection of the configuration data of the external GNSS facility,</dd><dt>3.</dt><dd>The management protocol to support the coupling, mutual authentication and session key agreement between the external GNSS facility and the VU,</dd><dt>4.</dt><dd>The transmission to the external GNSS facility of the VU RTC time and of the maximal difference between true time and the VU RTC time.</dd></dl>
+
+
+
+<p>▼B</p>
+<p>GNS_15 The communication protocol shall be based on standard ISO/IEC 7816-4:2013 with the VU Secure Transceiver playing the master role and the GNSS Secure Transceiver playing the slave role. The physical connection between the external GNSS facility and the vehicule unit is based on ISO/IEC 7816-12:2005 or another standard able to support ISO/IEC 7816-4:2013</p>
+<p>▼M1</p>
+<p>GNS_16 In the communication protocol, extended length fields shall not be supported.</p>
+<p>▼B</p>
+<p>GNS_17 The communication protocol of ISO 7816 (both *-4:2013 and *-12:2005) between the external GNSS facility and the VU shall be set to T = 1.</p>
+<p>▼M1</p>
+<p>GNS_18 Regarding the functions 1) the collection and distribution of GNSS data and 2) the collection of the configuration data of the external GNSS facility and 3) management protocol, the GNSS Secure Transceiver shall simulate a smart card with a file system architecture composed by a Master File (MF), a Dedicated File (DF) with Application Identifier specified in Appendix 1 chapter 6.2 (‘FF 44 54 45 47 4D’) and with 3 EFs containing certificates and one single Elementary File (EF.EGF) with file identifier equal to ‘2F2F’ as described in Table 1.</p>
+<p>▼M3</p>
+<p>GNS_18a Regarding the function 4) the transmission to the external GNSS facility of the VU RTC time and of the maximal difference between true time and the VU RTC time, the GNSS Secure Transceiver shall use an EF (EF VU) in the same DF with file identifier equal to ‘2F30’ as described in Table 1.</p>
+<p>▼B</p>
+<p>GNS_19 The GNSS Secure Transceiver shall store the data coming from the GNSS receiver and the configuration in the EF.EGF. This is a linear, variable-length record file with an identifier equal to ‘2F2F’ in hexadecimal format.</p>
+<p>▼M3</p>
+<p>GNS_19a The GNSS Secure Transceiver shall store the data coming from the VU in the EF VU. This is a linear, fixed-length record file with an identifier equal to ‘2F30’ in hexadecimal format.</p>
+<p>▼M3</p>
+<p>GNS_20 The GNSS Secure Transceiver shall use a memory to store the data and be able to perform as many read/write cycles as needed during a lifetime of at least 15 years. Apart from this aspect, the internal design and implementation of the GNSS Secure Transceiver is left to the manufacturers.</p>
+<p>▼M1</p>
+<p>The mapping of record numbers and data is provided in Table 1. Note that there are five GSA sentences for the GNSS constellations and Satellite-Based Augmentation System (SBAS).</p>
+<p>▼B</p>
+<p>GNS_21 The file structure is provided in Table 1. For the access conditions (ALW, NEV, SM-MAC) see Appendix 2 chapter 3.5.</p>
+<p>▼M3</p>
+<p></p>
+<p></p><p>
+                  <em>Table 1</em>
+               </p><p>
+                  <strong>File Structure</strong>
+               </p><table>
+                  <tbody>
+                     <tr>
+                        <td></td>
+                        <td></td>
+                        <td>Access conditions</td>
+                     </tr>
+                     <tr>
+                        <td>File</td>
+                        <td>File ID</td>
+                        <td>Read</td>
+                        <td>Update</td>
+                        <td>Encrypted</td>
+                     </tr>
+                     <tr>
+                        <td>MF</td>
+                        <td>3F00</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                     </tr>
+                     <tr>
+                        <td>EF.ICC</td>
+                        <td>0002</td>
+                        <td>ALW</td>
+                        <td>
+                           <p>NEV</p>
+                           <p>(by VU)</p>
+                        </td>
+                        <td>No</td>
+                     </tr>
+                     <tr>
+                        <td>DF GNSS Facility</td>
+                        <td>0501</td>
+                        <td>ALW</td>
+                        <td>NEV</td>
+                        <td>No</td>
+                     </tr>
+                     <tr>
+                        <td>EF EGF_MACertificate</td>
+                        <td>C100</td>
+                        <td>ALW</td>
+                        <td>NEV</td>
+                        <td>No</td>
+                     </tr>
+                     <tr>
+                        <td>EF CA_Certificate</td>
+                        <td>C108</td>
+                        <td>ALW</td>
+                        <td>NEV</td>
+                        <td>No</td>
+                     </tr>
+                     <tr>
+                        <td>EF Link_Certificate</td>
+                        <td>C109</td>
+                        <td>ALW</td>
+                        <td>NEV</td>
+                        <td>No</td>
+                     </tr>
+                     <tr>
+                        <td>EF EGF</td>
+                        <td>2F2F</td>
+                        <td>SM-MAC</td>
+                        <td>
+                           <p>NEV</p>
+                           <p>(by VU)</p>
+                        </td>
+                        <td>No</td>
+                     </tr>
+                     <tr>
+                        <td>EF VU</td>
+                        <td>2F30</td>
+                        <td>SM-MAC</td>
+                        <td>SM-MAC</td>
+                        <td>No</td>
+                     </tr>
+                  </tbody>
+               </table>
+<p></p>
+<p></p><table>
+                  <tbody>
+                     <tr>
+                        <td>File / Data element</td>
+                        <td>Record no</td>
+                        <td>Size (bytes)</td>
+                        <td>Default values</td>
+                     </tr>
+                     <tr>
+                        <td></td>
+                        <td></td>
+                        <td>Min</td>
+                        <td>Max</td>
+                        <td></td>
+                     </tr>
+                     <tr>
+                        <td>MF</td>
+                        <td></td>
+                        <td>552</td>
+                        <td>1031</td>
+                        <td></td>
+                     </tr>
+                     <tr>
+                        <td>EF.ICC</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                     </tr>
+                     <tr>
+                        <td>sensorGNSSSerialNumber</td>
+                        <td></td>
+                        <td>8</td>
+                        <td>8</td>
+                        <td></td>
+                     </tr>
+                     <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                     </tr>
+                     <tr>
+                        <td>DF GNSS Facility</td>
+                        <td></td>
+                        <td>612</td>
+                        <td>1023</td>
+                        <td></td>
+                     </tr>
+                     <tr>
+                        <td>EF EGF_MACertificate</td>
+                        <td></td>
+                        <td>204</td>
+                        <td>341</td>
+                        <td></td>
+                     </tr>
+                     <tr>
+                        <td>EGFCertificate</td>
+                        <td></td>
+                        <td>204</td>
+                        <td>341</td>
+                        <td>{00..00}</td>
+                     </tr>
+                     <tr>
+                        <td>EF CA_Certificate</td>
+                        <td></td>
+                        <td>204</td>
+                        <td>341</td>
+                        <td></td>
+                     </tr>
+                     <tr>
+                        <td>MemberStateCertificate</td>
+                        <td></td>
+                        <td>204</td>
+                        <td>341</td>
+                        <td>{00..00}</td>
+                     </tr>
+                     <tr>
+                        <td>EF Link_Certificate</td>
+                        <td></td>
+                        <td>204</td>
+                        <td>341</td>
+                        <td></td>
+                     </tr>
+                     <tr>
+                        <td>LinkCertificate</td>
+                        <td></td>
+                        <td>204</td>
+                        <td>341</td>
+                        <td>{00..00}</td>
+                     </tr>
+                     <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                     </tr>
+                     <tr>
+                        <td>EF EGF</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                     </tr>
+                     <tr>
+                        <td>RMC NMEA Sentence</td>
+                        <td>&#39;01&#39;</td>
+                        <td>85</td>
+                        <td>85</td>
+                        <td></td>
+                     </tr>
+                     <tr>
+                        <td>1st GSA NMEA Sentence</td>
+                        <td>&#39;02&#39;</td>
+                        <td>85</td>
+                        <td>85</td>
+                        <td></td>
+                     </tr>
+                     <tr>
+                        <td>2nd GSA NMEA Sentence</td>
+                        <td>&#39;03&#39;</td>
+                        <td>85</td>
+                        <td>85</td>
+                        <td></td>
+                     </tr>
+                     <tr>
+                        <td>3rd GSA NMEA Sentence</td>
+                        <td>&#39;04&#39;</td>
+                        <td>85</td>
+                        <td>85</td>
+                        <td></td>
+                     </tr>
+                     <tr>
+                        <td>4th GSA NMEA Sentence</td>
+                        <td>&#39;05&#39;</td>
+                        <td>85</td>
+                        <td>85</td>
+                        <td></td>
+                     </tr>
+                     <tr>
+                        <td>5th GSA NMEA Sentence</td>
+                        <td>&#39;06&#39;</td>
+                        <td>85</td>
+                        <td>85</td>
+                        <td></td>
+                     </tr>
+                     <tr>
+                        <td>Extended serial-number of the external GNSS facility defined in Appendix 1 as SensorGNSSSerialNumber.</td>
+                        <td>&#39;07&#39;</td>
+                        <td>8</td>
+                        <td>8</td>
+                        <td></td>
+                     </tr>
+                     <tr>
+                        <td>Operating system identifier of the GNSS Secure Transceiver defined in Appendix 1 as SensorOSIdentifier.</td>
+                        <td>&#39;08&#39;</td>
+                        <td>2</td>
+                        <td>2</td>
+                        <td></td>
+                     </tr>
+                     <tr>
+                        <td>Type approval number of the external GNSS facility defined in Appendix 1 as SensorExternalGNSSApprovalNumber.</td>
+                        <td>&#39;09&#39;</td>
+                        <td>16</td>
+                        <td>16</td>
+                        <td></td>
+                     </tr>
+                     <tr>
+                        <td>Identifier of the security component of the external GNSS facility defined in Appendix 1 as SensorExternalGNSSSCIdentifier</td>
+                        <td>&#39;10&#39;</td>
+                        <td>8</td>
+                        <td>8</td>
+                        <td></td>
+                     </tr>
+                     <tr>
+                        <td>AMC Sentence</td>
+                        <td>&#39;11&#39;</td>
+                        <td>85</td>
+                        <td>85</td>
+                        <td></td>
+                     </tr>
+                     <tr>
+                        <td>1st ASA Sentence</td>
+                        <td>&#39;12&#39;</td>
+                        <td>85</td>
+                        <td>85</td>
+                        <td></td>
+                     </tr>
+                     <tr>
+                        <td>2nd ASA Sentence</td>
+                        <td>&#39;13&#39;</td>
+                        <td>85</td>
+                        <td>85</td>
+                        <td></td>
+                     </tr>
+                     <tr>
+                        <td>3rd ASA Sentence</td>
+                        <td>&#39;14&#39;</td>
+                        <td>85</td>
+                        <td>85</td>
+                        <td></td>
+                     </tr>
+                     <tr>
+                        <td>4th ASA Sentence</td>
+                        <td>&#39;15&#39;</td>
+                        <td>85</td>
+                        <td>85</td>
+                        <td></td>
+                     </tr>
+                     <tr>
+                        <td>5th ASA Sentence</td>
+                        <td>&#39;16&#39;</td>
+                        <td>85</td>
+                        <td>85</td>
+                        <td></td>
+                     </tr>
+                     <tr>
+                        <td>RFU – Reserved for Future Use</td>
+                        <td>From &#39;17&#39; to &#39;FD&#39;</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                     </tr>
+                     <tr>
+                        <td>EF VU</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                     </tr>
+                     <tr>
+                        <td>VuRtcTime (see Appendix 1)</td>
+                        <td>&#39;01&#39;</td>
+                        <td>4</td>
+                        <td>4</td>
+                        <td>{00..00}</td>
+                     </tr>
+                     <tr>
+                        <td>VuGnssMaximalTimeDifference (see Appendix 1)</td>
+                        <td>&#39;02&#39;</td>
+                        <td>2</td>
+                        <td>2</td>
+                        <td>{00..00}</td>
+                     </tr>
+                  </tbody>
+               </table>
+<p>▼B</p>
+<p>4.2.2   <strong>Secure transfer of GNSS data</strong>
+            </p>
+<p>▼M3</p>
+<p>GNS_22 The secure transfer of GNSS position data, VU RTC time and maximal time difference between true time and the VU RTC time shall be allowed only in the following conditions:</p>
+<p>▼B</p>
+<dl><dt>1.</dt><dd>The coupling process has been completed as described in Appendix 11. Common security mechanisms.</dd><dt>2.</dt><dd>The periodic mutual authentication and session key agreement between the VU and the external GNSS facility also described in Appendix 11. Common security mechanisms has been executed with the indicated frequency.</dd></dl>
+
+<p>▼M3</p>
+<p>GNS_23 Every T seconds, where T is a value lower or equal to 20, unless coupling or mutual authentication and session key agreement takes place, the VU requests from the external GNSS facility the position information on the basis of the following flow:</p>
+<dl><dt>1.</dt><dd>The VU requests position data from the External GNSS facility together with Dilution of Precision data (from the GSA and ASA sentences). The VU Secure Transceiver shall use the ISO/IEC 7816-4:2013 SELECT and READ RECORD(S) commands in secure messaging authentication-only mode as described in section 11.5 of Appendix 11 with the file identifier ‘2F2F’ and RECORD number equal to ‘01’ for RMC NMEA sentence, ‘02’,‘03’,‘04’,‘05’,‘06’ for GSA NMEA sentence, ‘11’ for AMC sentence, and ‘12’,‘13’,‘14’,‘15’,‘16’ for ASA sentence.</dd><dt>2.</dt><dd>The last position data received is stored in the EF with identifier ‘2F2F’ and the records described in Table 1 in the GNSS secure transceiver as the GNSS secure transceiver receives NMEA data with a frequency of at least 1 Hz from the GNSS receiver through the GNSS data interface.</dd><dt>3.</dt><dd>The GNSS Secure Transceiver sends the response to the VU Secure Transceiver by using the APDU response message in secure messaging authentication-only mode as described in section 11.5 of Appendix 11.</dd><dt>4.</dt><dd>The VU Secure Transceiver checks the authenticity and integrity of the received response. In case of positive outcome, the position data is transferred to the VU processor through the GNSS data interface.</dd><dt>5.</dt><dd>The VU processor checks the received data extracting the information (e.g., latitude, longitude, time) from the RMC NMEA sentence. The RMC NMEA sentence includes the information if the non-authenticated position is valid. If the non-authenticated position is valid, the VU processor also extracts the values of HDOP from GSA NMEA sentences and calculates the minimum value on the available satellite systems (i.e., when the fix is available).</dd><dt>6.</dt><dd>The VU processor also extracts the information (e.g., latitude, longitude, time) from the AMC sentence. The AMC sentence includes the information if the authenticated position is not valid or GNSS signal has been attacked. If the position is valid, the VU processor also extracts the values of HDOP from ASA sentences and calculates the minimum value on the available satellite systems (i.e., when the fix is available).</dd></dl>
+
+
+
+
+
+<p>GNS_23a The VU shall also write VU RTC time and maximal time difference between true time and the VU RTC time as needed, by using the ISO/IEC 7816-4:2013 SELECT and WRITE RECORD(S) commands in secure messaging authentication-only mode as described in section 11.5 of Appendix 11 with the file identifier ‘2F30’ and RECORD number equal to ‘01’ for VuRtcTime and ‘02’ for MaximalTimeDifference.</p>
+<p>▼B</p>
+<p>4.2.3   <strong>Structure of the Read Record command</strong>
+            </p>
+<p>This section describes in detail the structure of the Read Record command. Secure messaging (authentication-only mode) is added as described in Appendix 11 Common security mechanisms.</p>
+<p>GNS_24 The command shall support the Secure Messaging authentication-only-mode, see Appendix 11.</p>
+<p>GNS_25 Command Message</p>
+<p></p>
+<p></p><table>
+                  <tbody>
+                     <tr>
+                        <td>Byte</td>
+                        <td>Length</td>
+                        <td>Value</td>
+                        <td>Description</td>
+                     </tr>
+                     <tr>
+                        <td>CLA</td>
+                        <td>1</td>
+                        <td>‘0Ch’</td>
+                        <td>Secure messaging asked.</td>
+                     </tr>
+                     <tr>
+                        <td>INS</td>
+                        <td>1</td>
+                        <td>‘B2h’</td>
+                        <td>Read Record</td>
+                     </tr>
+                     <tr>
+                        <td>P1</td>
+                        <td>1</td>
+                        <td>‘XXh’</td>
+                        <td>Record number (‘00’ references the current record)</td>
+                     </tr>
+                     <tr>
+                        <td>P2</td>
+                        <td>1</td>
+                        <td>‘04h’</td>
+                        <td>Read the record with the record number indicated in P1</td>
+                     </tr>
+                     <tr>
+                        <td>Le</td>
+                        <td>1</td>
+                        <td>‘XXh’</td>
+                        <td>Length of data expected. Number of Bytes to be read.</td>
+                     </tr>
+                  </tbody>
+               </table>
+<p>GNS_26 The record referenced in P1 becomes the current record.</p>
+<p></p>
+<p></p><table>
+                  <tbody>
+                     <tr>
+                        <td>Byte</td>
+                        <td>Length</td>
+                        <td>Value</td>
+                        <td>Description</td>
+                     </tr>
+                     <tr>
+                        <td>#1-#X</td>
+                        <td>X</td>
+                        <td>‘XX..XXh’</td>
+                        <td>Data read</td>
+                     </tr>
+                     <tr>
+                        <td>SW</td>
+                        <td>2</td>
+                        <td>‘XXXXh’</td>
+                        <td>Status Words (SW1,SW2)</td>
+                     </tr>
+                  </tbody>
+               </table>
+<dl><dt>—</dt><dd>If the command is successful, the GNSS secure transceiver returns ‘ 9000 ’.</dd><dt>—</dt><dd>If the current file is not record oriented, the GNSS secure transceiver returns ‘6981’ .</dd><dt>—</dt><dd>If the command is used with P1 = ‘00’ but there is no current EF the GNSS secure transceiver returns ‘6986’ (command not allowed).</dd></dl>
+
+
+<p>▼M3</p>
+<dl><dt>—</dt><dd>If the record is not found, the GNSS secure transceiver returns ‘6A83’.</dd><dt>—</dt><dd>If the external GNSS facility has detected tampering, it shall return status words ‘6690’.</dd></dl>
+
+<p>▼M3 —————</p>
+<p>▼M3</p>
+<p>4.2.4   <strong>Structure of the WriteRecord command</strong>
+            </p>
+<p>This section describes in detail the structure of the Write Record command. Secure messaging (authentication-only mode) is added as described in Appendix 11 Common security mechanisms.</p>
+<table>
+               <tbody><tr>
+                  <td>GNS_26a</td>
+                  <td>The command shall support the Secure Messaging authentication-only-mode, see Appendix 11.</td>
+               </tr>
+            </tbody></table>
+<table>
+               <tbody><tr>
+                  <td>GNS_26b</td>
+                  <td>
+                     <p>Command Message</p>
+                     <p></p>
+                     <p></p><table>
+                           <tbody>
+                              <tr>
+                                 <td>Byte</td>
+                                 <td>Length</td>
+                                 <td>Value</td>
+                                 <td>Description</td>
+                              </tr>
+                              <tr>
+                                 <td>CLA</td>
+                                 <td>1</td>
+                                 <td>‘0Ch’</td>
+                                 <td>Secure messaging asked.</td>
+                              </tr>
+                              <tr>
+                                 <td>INS</td>
+                                 <td>1</td>
+                                 <td>‘D2h’</td>
+                                 <td>Write Record</td>
+                              </tr>
+                              <tr>
+                                 <td>P1</td>
+                                 <td>1</td>
+                                 <td>‘XXh’</td>
+                                 <td>Record number (&#39;00&#39; references the current record)</td>
+                              </tr>
+                              <tr>
+                                 <td>P2</td>
+                                 <td>1</td>
+                                 <td>‘04h’</td>
+                                 <td>Write the record with the record number indicated in P1</td>
+                              </tr>
+                              <tr>
+                                 <td>Data</td>
+                                 <td>X</td>
+                                 <td>‘XXh’</td>
+                                 <td>Data</td>
+                              </tr>
+                           </tbody>
+                        </table>
+                  </td>
+               </tr>
+            </tbody></table>
+<table>
+               <tbody><tr>
+                  <td>GNS_26c</td>
+                  <td>
+                     <p>The record referenced in P1 becomes the current record.</p>
+                     <p></p>
+                     <p></p><table>
+                           <tbody>
+                              <tr>
+                                 <td>Byte</td>
+                                 <td>Length</td>
+                                 <td>Value</td>
+                                 <td>Description</td>
+                              </tr>
+                              <tr>
+                                 <td>SW</td>
+                                 <td>2</td>
+                                 <td>‘XXXXh’</td>
+                                 <td>Status Words (SW1,SW2)</td>
+                              </tr>
+                           </tbody>
+                        </table>
+                     <dl><dt>—</dt><dd>If the command is successful, the GNSS secure transceiver returns ‘ 9000 ’.</dd><dt>—</dt><dd>If the current file is not record oriented, the GNSS secure transceiver returns &#39;6981&#39;.</dd><dt>—</dt><dd>If the command is used with P1 = &#39;00&#39; but there is no current EF the GNSS secure transceiver returns &#39;6986&#39; (command not allowed).</dd><dt>—</dt><dd>If the record is not found, the GNSS secure transceiver returns &#39;6A83&#39;.</dd><dt>—</dt><dd>If the external GNSS facility has detected tampering, it shall return status words ‘6690’ .</dd></dl>
+                     
+                     
+                     
+                     
+                  </td>
+               </tr>
+            </tbody></table>
+<p>4.2.5   <strong>Other commands</strong>
+            </p>
+<table>
+               <tbody><tr>
+                  <td>GNS_27</td>
+                  <td>
+                     <p>The GNSS Secure Transceiver shall support the following tachograph generation 2 commands specified in Appendix 2:</p>
+                     <p></p>
+                     <p></p><table>
+                           <tbody>
+                              <tr>
+                                 <td>Command</td>
+                                 <td>Reference</td>
+                              </tr>
+                              <tr>
+                                 <td>Select</td>
+                                 <td>Appendix 2 chapter 3.5.1</td>
+                              </tr>
+                              <tr>
+                                 <td>Read Binary</td>
+                                 <td>Appendix 2 chapter 3.5.2</td>
+                              </tr>
+                              <tr>
+                                 <td>Get Challenge</td>
+                                 <td>Appendix 2 chapter 3.5.4</td>
+                              </tr>
+                              <tr>
+                                 <td>PSO: Verify Certificate</td>
+                                 <td>Appendix 2 chapter 3.5.7</td>
+                              </tr>
+                              <tr>
+                                 <td>External Authenticate</td>
+                                 <td>Appendix 2 chapter 3.5.9</td>
+                              </tr>
+                              <tr>
+                                 <td>General Authenticate</td>
+                                 <td>Appendix 2 chapter 3.5.10</td>
+                              </tr>
+                              <tr>
+                                 <td>MSE:SET</td>
+                                 <td>Appendix 2 chapter 3.5.11</td>
+                              </tr>
+                           </tbody>
+                        </table>
+                  </td>
+               </tr>
+            </tbody></table>
+<p>▼B</p>
+<p>4.3.   <strong>Coupling, mutual authentication and session key agreement of the external GNSS facility with vehicle unit</strong>
+            </p>
+<p>The coupling, mutual authentication and session key agreement of the external GNSS facility with the vehicle unit is described in Appendix 11. Common security mechanisms, Chapter 11.</p>
+<p>4.4.   <strong>Error Handling</strong>
+            </p>
+<p>This section describes how potential error conditions by the external GNSS facility are addressed and recorded in the VU.</p>
+<p>4.4.1   <strong>Communication error with the external GNSS facility</strong>
+            </p>
+<p>▼M3</p>
+<p>GNS_28 A communication error with the external GNSS facility event shall be recorded in the VU, as defined in requirement 82 of Annex IC and Appendix 1 (EventFaultType). In this context, a communication error is triggered when the VU Secure Transceiver does not receive a response message after a request message as described in 4.2.</p>
+<p>▼B</p>
+<p>4.4.2   <strong>Breach of the physical integrity of the external GNSS facility</strong>
+            </p>
+<p>▼M3</p>
+<p>GNS_29 If the external GNSS facility has been breached, the GNSS Secure Transceiver shall ensure that cryptographic material is unavailable. As described in GNS_25 and GNS_26, the VU shall detect tampering if the Response has status ‘6690’. The VU shall then generate and record a security breach attempt event as defined in requirement 85 of Annex IC and Appendix 1 (EventFaultType for tamper detection of GNSS). Alternately, the external GNSS facility may respond to VU requests without secure messaging and with status ‘6A88’.</p>
+<p>▼B</p>
+<p>4.4.3   <strong>Absence of position information from GNSS receiver</strong>
+            </p>
+<p>▼M3</p>
+<p>GNS_30 If the GNSS Secure Transceiver does not receive data from the GNSS receiver, the GNSS Secure Transceiver shall generate a response message to the READ RECORD command with RECORD number equal to ‘01’ with a Data Field of 12 bytes all set to 0xFF. Upon reception of the Response message with this value of the data field, the VU shall generate and record an absence of position information from GNSS receiver event, as defined in requirement 81 of Annex IC and Appendix 1 (EventFaultType).</p>
+<p>▼B</p>
+<p>4.4.4   <strong>External GNSS facility certificate expired</strong>
+            </p>
+<p>▼M3</p>
+<p>GNS_31 If the VU detects that the EGF certificate used for mutual authentication is not valid any longer, the VU shall generate and record a security breach attempt event as defined in requirement 85 of Annex IC and Appendix 1 (EventFaultType for external GNSS facility certificate expired). The VU shall still use the received GNSS position data.</p>
+<p>
+               <em>Figure 6</em>
+            </p>
+<p>
+               <strong>Schema of the external GNSS facility</strong>
+            </p>
+<p>▼B</p>
+<p>5.   <strong>VEHICLE UNIT WITHOUT AN EXTERNAL GNSS FACILITY</strong>
+            </p>
+<p>5.1.   <strong>Configuration</strong>
+            </p>
+<p>In this configuration, the GNSS receiver is inside the Vehicle Unit as described in Figure 1.</p>
+<p>▼M3</p>
+<p>GNS_32 For transmitting position, DOP and satellites data, the GNSS receiver shall act as a talker and transmit NMEA or NMEA-like sentences to the VU processor, which shall act as a listener with a frequency of 1/10 Hz or faster for the pre-defined set of sentences, which shall include at least the RMC, GSA, AMC and ASA sentences. Alternatively, the VU processor and the internal GNSS receiver may use other data formats to exchange the data contained in the NMEA or NMEA-like sentences specified in GNS_4, GNS_4a and GNS_5.</p>
+<p>▼B</p>
+<p>GNS_33 An external GNSS antenna installed on the vehicle or an internal GNSS antenna shall be connected to the VU.</p>
+<p>▼M3</p>
+<p>5.2.   <strong>Transfer of information from the GNSS receiver to the VU</strong>
+            </p>
+<table>
+               <tbody><tr>
+                  <td>GNS_34</td>
+                  <td>The VU processor checks the received data extracting the information (e.g., latitude, longitude, time) from the RMC NMEA sentence and the AMC sentence.</td>
+               </tr>
+            </tbody></table>
+<table>
+               <tbody><tr>
+                  <td>GNS_35</td>
+                  <td>The RMC NMEA sentence includes the information if the non-authenticated position is valid. If the non-authenticated position is not valid, the position data is not available and it cannot be used to record the position of the vehicle. If the non-authenticated position is valid, the VU processor also extracts the values of HDOP from GSA NMEA.</td>
+               </tr>
+            </tbody></table>
+<table>
+               <tbody><tr>
+                  <td>GNS_36</td>
+                  <td>The VU processor also extracts the information (e.g. latitude, longitude, time) from the AMC sentence. The AMC sentence includes the information if the non-authenticated position is valid according to GNS_4a. If the non-authenticated position is valid, the VU processor also extracts the values of HDOP from ASA sentences.</td>
+               </tr>
+            </tbody></table>
+<p>5.3.   <strong>Transfer of information from the VU to the GNSS receiver</strong>
+            </p>
+<table>
+               <tbody><tr>
+                  <td>GNS_37</td>
+                  <td>The VU processor provides to the GNSS receiver the VU RTC time and the maximal difference between true time and the VU RTC time, in accordance with GNS_3f and GNS_3g.</td>
+               </tr>
+            </tbody></table>
+<p>5.4.   <strong>Error handling</strong>
+            </p>
+<dl><dt>5.4.1</dt><dd>
+                  <p>Absence of position information from GNSS receiver</p>
+                  <table>
+                     <tbody><tr>
+                        <td>GNS_38</td>
+                        <td>The VU shall generate and record an absence of position information from GNSS receiver event, as defined in requirement 81 of Annex IC and Appendix 1 (EventFaultType).</td>
+                     </tr>
+                  </tbody></table>
+               </dd></dl>
+<p>6.   <strong>POSITION DATA PROCESSING AND RECORDING BY THE VU</strong>
+            </p>
+<p>This section is valid both for the configuration of the Smart Tachograph with or without an external GNSS facility.</p>
+<table>
+               <tbody><tr>
+                  <td>GNS_39</td>
+                  <td>
+                     <p>Position data shall be stored in the VU, together with a flag indicating if the position has been authenticated. When position data need to be recorded in the VU, the following rules shall apply:</p>
+                     <dl><dt>(a)</dt><dd>If both authenticated and standard positions are valid and consistent, the standard position and its accuracy shall be recorded in the VU and the flag shall be set to ‘authenticated’.</dd><dt>(b)</dt><dd>If both authenticated and standard positions are valid but not consistent, the VU shall store the authenticated position and its accuracy, and the flag shall be set to ‘authenticated’.</dd><dt>(c)</dt><dd>If the authenticated position is valid and the standard position is not valid, the VU shall record the authenticated position and its accuracy, and the flag shall be set to ‘authenticated’.</dd><dt>(d)</dt><dd>If the standard position is valid and the authenticated position is not valid, the VU shall record the standard position and its accuracy, and the flag shall be set to ‘not authenticated’.</dd></dl>
+                     
+                     
+                     
+                     <p>Authenticated and standard positions are considered as consistent, as shown in Figure 7, when the horizontal authenticated position can be found in a circle centered at the horizontal standard position, which radius results of rounding up to the nearest upper whole number the value of R_H calculated according to the following formula:</p>
+                     <p></p>
+                     <p></p><table>
+                           <tbody>
+                              <tr>
+                                 <td>R_H = 1.74 • σUERE • HDOP</td>
+                              </tr>
+                           </tbody>
+                        </table>
+                     <p>where:</p>
+                     <dl><dt>—</dt><dd>R_H is the relative radius of a circle around the estimated horizontal position, in meters. It is an indicator that is used to check consistency between standard and authenticated positions.</dd><dt>—</dt><dd>σUERE is the standard deviation for the user equivalent range error (UERE), which models all measurement errors for the target application, including urban environments. A constant value of σUERE = 10 meters shall be used.</dd><dt>—</dt><dd>HDOP is the horizontal dilution of precision calculated by the GNSS receiver.</dd><dt>—</dt><dd>σUERE . HDOP is the estimation of the root mean squared error in the horizontal domain.</dd></dl>
+                     
+                     
+                     
+                     <p>
+                         
+                        <em>Figure 7</em> 
+                         
+                        <strong>Consistent Authenticated and Standard (non-authenticated) positions</strong> 
+                     </p>
+                  </td>
+               </tr>
+            </tbody></table>
+<table>
+               <tbody><tr>
+                  <td>GNS_40</td>
+                  <td>When the value of the Status in a received AMC sentence is set to ‘J’ or ‘O’ or ‘F’ in accordance with requirement GNS_4a, the VU shall generate and record a GNSS anomaly event, as defined in requirement 88a of Annex IC and Appendix 1 (EventFaultType). The vehicle unit may perform additional checks before storing a GNSS anomaly event following the reception of a ‘J’ or ‘O’ setting.</td>
+               </tr>
+            </tbody></table>
+<p>7.   <strong>GNSS TIME CONFLICT</strong>
+            </p>
+<table>
+               <tbody><tr>
+                  <td>GNS_41</td>
+                  <td>If the VU detects a discrepancy between the time of the vehicle unit’s time measurement function and the time originating from the GNSS signals, it shall generate and record a time conflict event, as defined in requirement 86 of Annex IC and Appendix 1 (EventFaultType).</td>
+               </tr>
+            </tbody></table>
+<p>▼M3</p>
+<p>8.   <strong>VEHICLE MOTION CONFLICT</strong>
+            </p>
+<table>
+               <tbody><tr>
+                  <td>GNS_42</td>
+                  <td>
+                     <p>The VU shall trigger and record a Vehicle Motion Conflict event in accordance with requirement 84 of Annex IC, in case motion information calculated from the motion sensor is contradicted by motion information calculated from the internal GNSS receiver, from the external GNSS facility, or by other independent motion source(s) as set out in requirement 26 of Annex IC.</p>
+                     <p>The vehicle motion conflict event shall be triggered upon occurrence of one of the following trigger conditions:</p>
+                     <div>
+                        <span>Trigger condition 1:</span>
+                     </div>
+                     <div>The trimmed mean value of the speed differences between these sources shall be used, when the position information from the GNSS receiver is available and when the ignition of the vehicle is switched on, as specified below:</div>
+                     <div>
+                        <dl><dt>—</dt><dd>every 10 seconds maximum, the absolute value of the difference between the vehicle speed estimated from the GNSS and the one estimated from the motion sensor shall be computed.</dd><dt>—</dt><dd>all the computed values in a time window containing the last 5 minutes of vehicle movement shall be used to compute the trimmed mean value.</dd><dt>—</dt><dd>the trimmed mean value shall be computed as the average of 80% of the remaining values, after having eliminated the highest ones in absolute values.</dd></dl>
+                        
+                        
+                     </div>
+                     <div>The Vehicle Motion Conflict event shall be triggered if the trimmed mean value is above 10 km/h for five uninterrupted minutes of vehicle movement. (Note: the use of the trimmed mean on the last 5 minutes is applied to mitigate the risk of measurement outliers and transient values).</div>
+                     <div>For the trimmed mean computation, the vehicle shall be considered as moving if at least one vehicle speed value estimated either from motion sensor or from GNSS receiver is not equal to zero.</div>
+                     <div>
+                        <span>Trigger condition 2:</span>
+                     </div>
+                     <div>The vehicle motion conflict event shall also be triggered if the following condition is true:</div>
+                     <div>
+                        <em>GnssDistance</em>&gt;[<em>OdometerDifference</em>×<em>OdometerToleranceFactor</em>+<em>Minimum</em>(<em>SlipDistanceUpperlimit</em>;(<em>OdometerDifference</em>×<em>SlipFactor</em>))+<em>GnssTolerance</em>+<em>FerryTrainDistance</em>]</div>
+                     <div>where:</div>
+                     <div>
+                        <dl><dt>—</dt><dd>GnssDistance is the distance between the current position of the vehicle and the previous one, both obtained from valid authenticated position messages, without considering the height,</dd><dt>—</dt><dd>OdometerDifference is the difference between the current odometer value and the odometer value corresponding to the previous valid authenticated position message,</dd><dt>—</dt><dd>OdometerToleranceFactor is equal to 1.1 (worst case tolerance factor for all measurement tolerances of the vehicle odometer),</dd><dt>—</dt><dd>GnssTolerance is equal to 1 km (worst case GNSS tolerance),</dd><dt>—  —  —</dt><dd>
+                              <div>Minimum (SlipDistanceUpperLimit; (OdometerDifference * SlipFactor)) is the minimum value between:</div>
+                              <div>
+                                 <div>
+                                    <div>—</div>
+                                    <div>
+                                       <div>SlipDistanceUpperLimit which is equal to 10 km (upper limit of the slip distance caused by slipping effects during braking),</div>
+                                    </div>
+                                 </div>
+                                 <div>
+                                    <div>—</div>
+                                    <div>
+                                       <div>and OdometerDifference * SlipFactor, in which SlipFactor is equal to 0.2 (maximal influence of slipping effects during breaking),</div>
+                                    </div>
+                                 </div>
+                              </div>
+                           </dd><dt>—</dt><dd>FerryTrainDistance is computed as: FerryTrainDistance =200km/h * tFerryTrain, where tFerryTrain is the sum of the durations in hours of the ferry/train crossings in the considered time interval. The duration of a ferry/train crossings is defined as the time difference between its end flag and its beginning flag.</dd></dl>
+                        
+                        
+                        
+                        
+                        
+                     </div>
+                     <div>The preceding verifications shall be performed every 15 minutes if the necessary position data are available, otherwise as soon as the position data are available.</div>
+                     <div>For this trigger condition:</div>
+                     <div>
+                        <dl><dt>—</dt><dd>date and time of beginning of event shall be equal to the date and time when the previous position message was received,</dd><dt>—</dt><dd>date and time of end of event shall be equal to the date and time when the checked condition becomes false again.</dd></dl>
+                        
+                     </div>
+                     <div>
+                        <span>Trigger condition 3:</span>
+                     </div>
+                     <div>The vehicle unit encounters a discrepancy consisting of the motion sensor not detecting any movement and the independent motion source detecting movement for a specific period. The conditions to record a discrepancy as well as the period of detection of the discrepancy shall be set out by the vehicle unit manufacturer, although the discrepancy shall be detected in no more than three hours.</div>
+                  </td>
+               </tr>
+            </tbody></table>
+
+</body></html>

@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html><head>
+
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+      <title>Consolidated TEXT: 32016R0799 — EN — 21.08.2023</title>
+      
+   
+</head>
+<body>
+<h1>3.   ITS INTERFACE WORKING PRINCIPLES: ITS INTERFACE WORKING PRINCIPLES</h1>
+<table>
+               <tbody><tr>
+                  <td>ITS_04</td>
+                  <td>The VU shall be responsible to keep updated and maintain tachograph data transmitted through the ITS interface, without any involvement of the ITS interface.</td>
+               </tr>
+            </tbody></table>
+<p>3.1.   <strong>Communication technology</strong>
+            </p>
+<table>
+               <tbody><tr>
+                  <td>ITS_05</td>
+                  <td>Communication through the ITS interface shall be performed via Bluetooth® interface and be compatible to Bluetooth® Low Energy according to Bluetooth version 5.0 or newer.</td>
+               </tr>
+            </tbody></table>
+<table>
+               <tbody><tr>
+                  <td>ITS_06</td>
+                  <td>The communication between the VU and the ITS unit shall be established after a Bluetooth® pairing process has been completed.</td>
+               </tr>
+            </tbody></table>
+<table>
+               <tbody><tr>
+                  <td>ITS_07</td>
+                  <td>A secure and encrypted communication shall be established between the VU and the ITS unit, in accordance with the Bluetooth® specification mechanisms. This Appendix does not specify encryption or other security mechanisms in addition to what Bluetooth® provides.</td>
+               </tr>
+            </tbody></table>
+<table>
+               <tbody><tr>
+                  <td>ITS_08</td>
+                  <td>Bluetooth® is using a server/client model to control the transmission of data between devices, in which the VU shall be the server and the ITS unit shall be the client.</td>
+               </tr>
+            </tbody></table>
+<p>3.2.   <strong>Available services</strong>
+            </p>
+<table>
+               <tbody><tr>
+                  <td>ITS_09</td>
+                  <td>The data to be transmitted through the ITS interface in accordance with point 4 shall be made available through the services specified in Appendix 7 and Appendix 8. In addition, the VU shall make available to the ITS unit the services that are necessary for manual data entry in accordance with requirement 61 of Annex IC, and optionally, for other data entries in real time.</td>
+               </tr>
+            </tbody></table>
+<p>
+                
+               <em>Figure 1</em> 
+                
+               <strong>partition of the communication through the ITS interface according to the OSI Model layers</strong> 
+            </p>
+<table>
+               <tbody><tr>
+                  <td>ITS_10</td>
+                  <td>When the download interface is used via the front connector, the VU shall not provide the download services specified in Appendix 7 via ITS Bluetooth® connection.</td>
+               </tr>
+            </tbody></table>
+<table>
+               <tbody><tr>
+                  <td>ITS_11</td>
+                  <td>When the calibration interface is used via the front connector, the VU shall not provide the calibration services specified in Appendix 8 via ITS Bluetooth® connection.</td>
+               </tr>
+            </tbody></table>
+<p>3.3.   <strong>Access through the ITS interface</strong>
+            </p>
+<table>
+               <tbody><tr>
+                  <td>ITS_12</td>
+                  <td>The ITS interface shall provide a wireless access to all services specified in Appendix 7 and Appendix 8, in replacement of a cable connection to the front connector for calibration and download specified in Appendix 6.</td>
+               </tr>
+            </tbody></table>
+<table>
+               <tbody><tr>
+                  <td>ITS_13</td>
+                  <td>The VU shall make the ITS interface available to the user according to the combination of valid tachograph cards inserted in the VU, as specified in Table 1.</td>
+               </tr>
+            </tbody></table>
+<p></p>
+<p></p><p>
+                  <em>Table 1</em>
+               </p><p>
+                  <strong>Availability of ITS interface depending on the type of card inserted in the tachograph</strong>
+               </p><table>
+                  <tbody>
+                     <tr>
+                        <td>Availability of the ITS interface</td>
+                        <td>Driver slot</td>
+                     </tr>
+                     <tr>
+                        <td></td>
+                        <td>No card</td>
+                        <td>Driver card</td>
+                        <td>Control card</td>
+                        <td>Workshop card</td>
+                        <td>Company card</td>
+                     </tr>
+                     <tr>
+                        <td>Co-driver slot</td>
+                        <td>No card</td>
+                        <td>Not available</td>
+                        <td>Available</td>
+                        <td>Available</td>
+                        <td>Available</td>
+                        <td>Available</td>
+                     </tr>
+                     <tr>
+                        <td>Driver card</td>
+                        <td>Available</td>
+                        <td>Available</td>
+                        <td>Available</td>
+                        <td>Available</td>
+                        <td>Available</td>
+                     </tr>
+                     <tr>
+                        <td>Control card</td>
+                        <td>Available</td>
+                        <td>Available</td>
+                        <td>Available</td>
+                        <td>Not available</td>
+                        <td>Not available</td>
+                     </tr>
+                     <tr>
+                        <td>Workshop card</td>
+                        <td>Available</td>
+                        <td>Available</td>
+                        <td>Not available</td>
+                        <td>Available</td>
+                        <td>Not available</td>
+                     </tr>
+                     <tr>
+                        <td>Company card</td>
+                        <td>Available</td>
+                        <td>Available</td>
+                        <td>Not available</td>
+                        <td>Not available</td>
+                        <td>Available</td>
+                     </tr>
+                  </tbody>
+               </table>
+<table>
+               <tbody><tr>
+                  <td>ITS_14</td>
+                  <td>After a successful ITS Bluetooth® pairing, the VU shall assign the ITS Bluetooth® connection to the specific inserted tachograph card according to Table 2:</td>
+               </tr>
+            </tbody></table>
+<p></p>
+<p></p><p>
+                  <em>Table 2</em>
+               </p><p>
+                  <strong>Assignment of the ITS connection depending on the type of card inserted in the tachograph</strong>
+               </p><table>
+                  <tbody>
+                     <tr>
+                        <td>Assignment of the ITS Bluetooth® connection</td>
+                        <td>Driver slot</td>
+                     </tr>
+                     <tr>
+                        <td></td>
+                        <td>No card</td>
+                        <td>Driver card</td>
+                        <td>Control card</td>
+                        <td>Workshop card</td>
+                        <td>Company card</td>
+                     </tr>
+                     <tr>
+                        <td>Co-driver slot</td>
+                        <td>No card</td>
+                        <td>Not available</td>
+                        <td>Driver card</td>
+                        <td>Control card</td>
+                        <td>Workshop card</td>
+                        <td>Company card</td>
+                     </tr>
+                     <tr>
+                        <td>Driver card</td>
+                        <td>Driver card</td>
+                        <td>Driver card (*2)</td>
+                        <td>Control card</td>
+                        <td>Workshop card</td>
+                        <td>Company card</td>
+                     </tr>
+                     <tr>
+                        <td>Control card</td>
+                        <td>Control card</td>
+                        <td>Control card</td>
+                        <td>Control card (*1)</td>
+                        <td>Not available</td>
+                        <td>Not available</td>
+                     </tr>
+                     <tr>
+                        <td>Workshop card</td>
+                        <td>Workshop card</td>
+                        <td>Workshop card</td>
+                        <td>Not available</td>
+                        <td>Workshop card (*1)</td>
+                        <td>Not available</td>
+                     </tr>
+                     <tr>
+                        <td>Company card</td>
+                        <td>Company card</td>
+                        <td>Company card</td>
+                        <td>Not available</td>
+                        <td>Not available</td>
+                        <td>Company card (*1)</td>
+                     </tr>
+                     <tr>
+                        <td>
+                           <div>
+                              <a id="E0021">(<sup>*1</sup>)   </a>
+                              <p>The ITS Bluetooth® connection shall be assigned to the tachograph card in the driver slot of the VU.</p>
+                           </div>
+                           <div>
+                              <a id="E0022">(<sup>*2</sup>)   </a>
+                              <p>The user shall select the card to which the ITS Bluetooth® connection shall be assigned (inserted in the driver or in the co-driver slot).</p>
+                           </div>
+                        </td>
+                     </tr>
+                  </tbody>
+               </table>
+<table>
+               <tbody><tr>
+                  <td>ITS_15</td>
+                  <td>If a tachograph card is withdrawn, then the VU shall terminate the ITS Bluetooth® connection which is assigned to this card.</td>
+               </tr>
+            </tbody></table>
+<table>
+               <tbody><tr>
+                  <td>ITS_16</td>
+                  <td>The VU shall support the ITS connection to at least one ITS unit and may support connections to multiple ITS units at the same time.</td>
+               </tr>
+            </tbody></table>
+<table>
+               <tbody><tr>
+                  <td>ITS_17</td>
+                  <td>The access rights to the data and services available via the ITS interface shall comply with requirements 12 and 13 of Annex IC, in addition to the driver consent specified in section 3.4 of this Appendix.</td>
+               </tr>
+            </tbody></table>
+<p>3.4.   <strong>Data available and need of driver consent</strong>
+            </p>
+<table>
+               <tbody><tr>
+                  <td>ITS_18</td>
+                  <td>All tachograph data available via the services referred to in point 3.3 shall be classified as either personal or not personal for the driver, co-driver or both.</td>
+               </tr>
+            </tbody></table>
+<table>
+               <tbody><tr>
+                  <td>ITS_19</td>
+                  <td>At least the list of data classified as mandatory in section 4 shall be made available through the ITS interface.</td>
+               </tr>
+            </tbody></table>
+<table>
+               <tbody><tr>
+                  <td>ITS_20</td>
+                  <td>The data in section 4 that are classified as ‘personal’ shall only be accessible upon driver consent, accepting therefore that the personal data can leave the vehicle network, except in the case set out in requirement ITS_25, for which the driver consent is not needed.</td>
+               </tr>
+            </tbody></table>
+<table>
+               <tbody><tr>
+                  <td>ITS_21</td>
+                  <td>Data additional to those gathered in point 4 and considered as mandatory may be made available through the ITS interface. Additional data which are not included in point 4 shall be classified as ‘personal’ or not ‘personal’ by the VU manufacturer, being the driver consent requested for those data that have been classified as personal, except in the case set out in requirement ITS_25, for which the driver consent is not needed.</td>
+               </tr>
+            </tbody></table>
+<table>
+               <tbody><tr>
+                  <td>ITS_22</td>
+                  <td>Upon insertion of a driver card which is unknown to the vehicle unit, the cardholder shall be prompted by the tachograph to enter the consent for transmission of personal data output through the ITS interface, in accordance with requirement 61 of Annex IC.</td>
+               </tr>
+            </tbody></table>
+<table>
+               <tbody><tr>
+                  <td>ITS_23</td>
+                  <td>The consent status (enabled/disabled) shall be recorded in the data memory of the vehicle unit.</td>
+               </tr>
+            </tbody></table>
+<table>
+               <tbody><tr>
+                  <td>ITS_24</td>
+                  <td>In case of multiple drivers, only the personal data related to the drivers who gave their consent shall be accessible through the ITS interface. For instance, in a crew situation, if only the driver has given his/her consent, personal data related to the co-driver shall not be accessible.</td>
+               </tr>
+            </tbody></table>
+<table>
+               <tbody><tr>
+                  <td>ITS_25</td>
+                  <td>When the VU is in control, company or calibration modes, the access rights through the ITS interface shall be managed according to requirements 12 and 13 of Annex IC, hence the driver consent not being needed.</td>
+               </tr>
+            </tbody></table>
+
+</body></html>

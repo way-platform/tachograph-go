@@ -1,0 +1,3554 @@
+<!DOCTYPE html>
+<html><head>
+
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+      <title>Consolidated TEXT: 32016R0799 — EN — 21.08.2023</title>
+      
+   
+</head>
+<body>
+<h1>Appendix 8: CALIBRATION PROTOCOL</h1>
+
+<nav><h2>Table of Contents</h2><ol><li><a href="#introduction">INTRODUCTION</a></li><li><a href="#terms-definitions-and-references">TERMS, DEFINITIONS AND REFERENCES</a></li><li><a href="#overview-of-services">OVERVIEW OF SERVICES</a></li><li><a href="#services-available">Services available</a></li><li><a href="#response-codes">Response codes</a></li><li><a href="#communication-services">COMMUNICATION SERVICES</a></li><li><a href="#startcommunication-service">StartCommunication Service</a></li><li><a href="#stopcommunication-service">StopCommunication Service</a></li><li><a href="#message-description">Message description</a></li><li><a href="#message-format">Message format</a></li><li><a href="#parameter-definition">Parameter Definition</a></li><li><a href="#testerpresent-service">TesterPresent Service</a></li><li><a href="#message-description">Message description</a></li><li><a href="#message-format">Message format</a></li><li><a href="#management-services">MANAGEMENT SERVICES</a></li><li><a href="#startdiagnosticsession-service">StartDiagnosticSession service</a></li><li><a href="#message-description">Message description</a></li><li><a href="#message-format">Message format</a></li><li><a href="#parameter-definition">Parameter definition</a></li><li><a href="#securityaccess-service">SecurityAccess service</a></li><li><a href="#message-description">Message Description</a></li><li><a href="#message-format-securityaccess-requestseed">Message format — SecurityAccess — requestSeed</a></li><li><a href="#message-format-securityaccess-sendkey">Message format — SecurityAccess — sendKey</a></li><li><a href="#data-transmission-services">DATA TRANSMISSION SERVICES</a></li><li><a href="#readdatabyidentifier-service">ReadDataByIdentifier service</a></li><li><a href="#message-description">Message description</a></li><li><a href="#message-format">Message format</a></li><li><a href="#parameter-definition">Parameter Definition</a></li><li><a href="#writedatabyidentifier-service">WriteDataByIdentifier service</a></li><li><a href="#message-description">Message description</a></li><li><a href="#message-format">Message format</a></li><li><a href="#parameter-definition">Parameter definition</a></li><li><a href="#control-of-test-pulses-inputoutput-control-functio">CONTROL OF TEST PULSES — INPUT/OUTPUT CONTROL FUNCTIONAL UNIT</a></li><li><a href="#inputoutputcontrolbyidentifier-service">InputOutputControlByIdentifier service</a></li><li><a href="#message-description">Message description</a></li><li><a href="#message-format">Message format</a></li><li><a href="#parameter-definition">Parameter definition</a></li><li><a href="#routinecontrol-service-time-adjustment">ROUTINECONTROL SERVICE (TIME ADJUSTMENT)</a></li><li><a href="#message-description">Message description</a></li><li><a href="#message-format">Message format</a></li><li><a href="#datarecords-formats">DATARECORDS FORMATS</a></li><li><a href="#transmitted-parameter-ranges">Transmitted parameter ranges</a></li><li><a href="#datarecords-formats">dataRecords formats</a></li></ol></nav>
+<p>1.   <strong>INTRODUCTION</strong>
+            </p>
+<p>This appendix describes how data is exchanged between a vehicle unit and a tester via the K-line which forms part of the calibration interface described in Appendix 6. It also describes control of the input/output signal line on the calibration connector.</p>
+<p>Establishing K-line communications is described in Section 4 ‘Communication Services’.</p>
+<p>This appendix uses the idea of diagnostic ‘sessions’ to determine the scope of K-line control under different conditions. The default session is the ‘StandardDiagnosticSession’ where all data can be read from a vehicle unit but no data can be written to a vehicle unit.</p>
+<p>Selection of the diagnostic session is described in Section 5 ‘Management Services’.</p>
+<p>This appendix has to be considered as relevant for both generations of VUs and of workshop cards, in compliance with the interoperability requirements laid down in this Regulation.</p>
+<p>CPR_001 The ‘ECUProgrammingSession’ allows data entry into the vehicle unit. In the case of entry of calibration data, the vehicle unit must, in addition be in the CALIBRATION mode of operation.</p>
+<p>Data transfer via K-line is described in Section 6 ‘Data Transmission Services’. Formats of data transferred are detailed in Section 8 ‘dataRecords formats’.</p>
+<p>CPR_002 The ‘ECUAdjustmentSession’ allows the selection of the I/O mode of the calibration I/O signal line via the K-line interface. Control of the calibration I/O signal line is described in section 7 ‘Control of Test Pulses — Input/Output Control functional unit’.</p>
+<p>CPR_003 Throughout this document the address of the tester is referred to as ‘tt’. Although there may be preferred addresses for testers, the VU shall respond correctly to any tester address. The physical address of the VU is 0xEE.</p>
+<p>2.   <strong>TERMS, DEFINITIONS AND REFERENCES</strong>
+            </p>
+<p>The protocols, messages and error codes are principally based on a draft of ISO 14229-1 (Road vehicles — Diagnostic systems — Part 1: Diagnostic services, version 6 of 22 February 2001).</p>
+<p>Byte encoding and hexadecimal values are used for the service identifiers, the service requests and responses, and the standard parameters.</p>
+<p>The term ‘tester’ refers to the equipment used to enter programming/calibration data into the VU.</p>
+<p>The terms ‘client’ and ‘server’ refer to the tester and the VU respectively.</p>
+<p>The term ECU means ‘Electronic Control Unit’ and refers to the VU.</p>
+<p>
+               <strong>References:</strong>
+            </p>
+<p>▼M1</p>
+<p>ISO 14230-2: Road Vehicles -Diagnostic Systems — Keyword Protocol 2000- Part 2: Data Link Layer.</p>
+<p>First edition: 1999.</p>
+<p>▼B</p>
+<p>3.   <strong>OVERVIEW OF SERVICES</strong>
+            </p>
+<p>3.1.   <strong>Services available</strong>
+            </p>
+<p>The following table provides an overview of the services that will be available in the tachograph and are defined in this document.</p>
+<p>CPR_004 The table indicates the services that are available in an enabled diagnostic session.</p>
+<dl><dt>—</dt><dd>The 1st column lists the services that are available.</dd><dt>—</dt><dd>The 2nd column includes the section number in this appendix where of service is further defined.</dd><dt>—</dt><dd>The 3rd column assigns the service identifier values for request messages.</dd><dt>—</dt><dd>The 4th column specifies the services of the ‘StandardDiagnosticSession’ (SD) which must be implemented in each VU.</dd><dt>—</dt><dd>The 5th column specifies the services of the ‘ECUAdjustmentSession’ (ECUAS) which must be implemented to allow control of the I/O signal line in the front panel calibration connector of the VU.</dd><dt>—</dt><dd>The 6th column specifies the services of the ‘ECUProgrammingSession’ (ECUPS) which must be implemented to allow for programming of parameters in the VU.</dd></dl>
+
+
+
+
+
+<p></p>
+<p></p><p>
+                  <em>Table 1</em>
+               </p><p>
+                  <strong>Service Identifier value summary table</strong>
+               </p><table>
+                  <tbody>
+                     <tr>
+                        <td></td>
+                        <td>Diagnostic Sessions</td>
+                     </tr>
+                     <tr>
+                        <td>Diagnostic Service Name</td>
+                        <td>Section No.</td>
+                        <td>SId Req.Value</td>
+                        <td>SD</td>
+                        <td>ECUAS</td>
+                        <td>ECUPS</td>
+                     </tr>
+                     <tr>
+                        <td>StartCommunication</td>
+                        <td>4.1</td>
+                        <td>81</td>
+                        <td>■</td>
+                        <td>■</td>
+                        <td>■</td>
+                     </tr>
+                     <tr>
+                        <td>StopCommunication</td>
+                        <td>4.2</td>
+                        <td>82</td>
+                        <td>■</td>
+                        <td></td>
+                        <td></td>
+                     </tr>
+                     <tr>
+                        <td>TesterPresent</td>
+                        <td>4.3</td>
+                        <td>3E</td>
+                        <td>■</td>
+                        <td>■</td>
+                        <td>■</td>
+                     </tr>
+                     <tr>
+                        <td>StartDiagnosticSession</td>
+                        <td>5.1</td>
+                        <td>10</td>
+                        <td>■</td>
+                        <td>■</td>
+                        <td>■</td>
+                     </tr>
+                     <tr>
+                        <td>SecurityAccess</td>
+                        <td>5.2</td>
+                        <td>27</td>
+                        <td>■</td>
+                        <td>■</td>
+                        <td>■</td>
+                     </tr>
+                     <tr>
+                        <td>ReadDataByIdentifier</td>
+                        <td>6.1</td>
+                        <td>22</td>
+                        <td>■</td>
+                        <td>■</td>
+                        <td>■</td>
+                     </tr>
+                     <tr>
+                        <td>WriteDataByIdentifier</td>
+                        <td>6.2</td>
+                        <td>2E</td>
+                        <td></td>
+                        <td></td>
+                        <td>■</td>
+                     </tr>
+                     <tr>
+                        <td>InputOutputControlByIdentifier</td>
+                        <td>7.1</td>
+                        <td>2F</td>
+                        <td></td>
+                        <td>■</td>
+                        <td></td>
+                     </tr>
+                     <tr>
+                        <td>▼M3</td>
+                     </tr>
+                     <tr>
+                        <td>RoutineControl</td>
+                        <td>8</td>
+                        <td>31</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                     </tr>
+                     <tr>
+                        <td>▼B</td>
+                     </tr>
+                     <tr>
+                        <td>■ <p>This symbol indicates that the service is mandatory in this diagnostic session.</p>
+                           <p>No symbol indicates that this service is not allowed in this diagnostic session.</p>
+                        </td>
+                     </tr>
+                  </tbody>
+               </table>
+<p>3.2.   <strong>Response codes</strong>
+            </p>
+<p>Response codes are defined for each service.</p>
+<p>4.   <strong>COMMUNICATION SERVICES</strong>
+            </p>
+<p>Some services are necessary to establish and maintain communication. They do not appear on the application layer. The services available are detailed in the following table:</p>
+<p></p>
+<p></p><p>
+                  <em>Table 2</em>
+               </p><p>
+                  <strong>Communication Services</strong>
+               </p><table>
+                  <tbody>
+                     <tr>
+                        <td>Service name</td>
+                        <td>Description</td>
+                     </tr>
+                     <tr>
+                        <td>StartCommunication</td>
+                        <td>The client requests to start a communication session with a server(s).</td>
+                     </tr>
+                     <tr>
+                        <td>StopCommunication</td>
+                        <td>The client requests to stop the current communication session.</td>
+                     </tr>
+                     <tr>
+                        <td>TesterPresent</td>
+                        <td>The client indicates to the server that it is still present.</td>
+                     </tr>
+                  </tbody>
+               </table>
+<p>CPR_005 The StartCommunication Service is used for starting a communication. In order to perform any service, communication must be initialised and the communication parameters need to be appropriate for the desired mode.</p>
+<p>4.1.   <strong>StartCommunication Service</strong>
+            </p>
+<p>CPR_006 Upon receiving a StartCommunication indication primitive, the VU shall check if the requested communication link can be initialised under the present conditions. Valid conditions for the initialisation of a communication link are described in document ISO 14230-2.</p>
+<p>CPR_007 Then the VU shall perform all actions necessary to initialise the communication link and send a StartCommunication response primitive with the Positive Response parameters selected.</p>
+<p>CPR_008 If a VU that is already initialised (and has entered any diagnostic session) receives a new StartCommunication Request (e.g. due to error recovery in the tester) the request shall be accepted and the VU shall be reinitialised.</p>
+<p>CPR_009 If the communication link cannot be initialised for any reason, the VU shall continue operating as it was immediately prior to the attempt to initialise the communication link..</p>
+<p>CPR_010 The StartCommunication Request message must be physically addressed.</p>
+<p>CPR_011 Initialising the VU for services is performed through a ‘fast initialisation’ method,</p>
+<dl><dt>—</dt><dd>There is a bus-idle time prior to any activity.</dd><dt>—</dt><dd>The tester then sends an initialisation pattern.</dd><dt>—</dt><dd>All information which is necessary to establish communication is contained in the response of the VU.</dd></dl>
+
+
+<p>CPR_012 After completion of the initialisation,</p>
+<dl><dt>—</dt><dd>All communication parameters are set to values defined in Table 4 according to the key bytes.</dd><dt>—</dt><dd>The VU is waiting for the first request of the tester.</dd><dt>—</dt><dd>The VU is in the default diagnostic mode, i.e. StandardDiagnosticSession.</dd><dt>—</dt><dd>The calibration I/O signal line is in the default state, i.e. disabled state.</dd></dl>
+
+
+
+<p>CPR_014 The data rate on the K-line shall be 10 400 Baud.</p>
+<p>CPR_016 The fast initialisation is started by the tester transmitting a Wake up pattern (Wup) on the K-line. The pattern begins after the idle time on K-line with a low time of Tinil. The tester transmits the first bit of the StartCommunication Service after a time of Twup following the first falling edge.</p>
+
+<p>CPR_017 The timing values for the fast initialisation and communications in general are detailed in the tables below. There are different possibilities for the idle time:</p>
+<dl><dt>—</dt><dd>First transmission after power on, Tidle = 300 ms.</dd><dt>—</dt><dd>After completion of a StopCommunication Service, Tidle = P3 min.</dd><dt>—</dt><dd>After stopping communication by time-out P3 max, Tidle = 0.</dd></dl>
+
+
+<p></p>
+<p></p><p>
+                  <em>Table 3</em>
+               </p><p>
+                  <strong>Timing values for fast initialisation</strong>
+               </p><table>
+                  <tbody>
+                     <tr>
+                        <td>Parameter</td>
+                        <td>min value</td>
+                        <td>max value</td>
+                     </tr>
+                     <tr>
+                        <td>Tinil</td>
+                        <td>25 ± 1 ms</td>
+                        <td>24 ms</td>
+                        <td>26 ms</td>
+                     </tr>
+                     <tr>
+                        <td>Twup</td>
+                        <td>50 ± 1 ms</td>
+                        <td>49 ms</td>
+                        <td>51 ms</td>
+                     </tr>
+                  </tbody>
+               </table>
+<p></p>
+<p></p><p>
+                  <em>Table 4</em>
+               </p><p>
+                  <strong>Communication timing values</strong>
+               </p><table>
+                  <tbody>
+                     <tr>
+                        <td>Timing Parameter</td>
+                        <td>Parameter Description</td>
+                        <td>lower limit values [ms]</td>
+                        <td>upper limit values [ms]</td>
+                     </tr>
+                     <tr>
+                        <td>min.</td>
+                        <td>max.</td>
+                     </tr>
+                     <tr>
+                        <td>P1</td>
+                        <td>Inter byte time for VU response</td>
+                        <td>0</td>
+                        <td>20</td>
+                     </tr>
+                     <tr>
+                        <td>P2</td>
+                        <td>Time between tester request and VU response or two VU responses</td>
+                        <td>25</td>
+                        <td>250</td>
+                     </tr>
+                     <tr>
+                        <td>P3</td>
+                        <td>Time between end of VU responses and start of new tester request</td>
+                        <td>55</td>
+                        <td>5 000</td>
+                     </tr>
+                     <tr>
+                        <td>P4</td>
+                        <td>Inter byte time for tester request</td>
+                        <td>5</td>
+                        <td>20</td>
+                     </tr>
+                  </tbody>
+               </table>
+<p>CPR_018 The message format for fast initialisation is detailed in the following tables. (NOTE: Hex means hexadecimal)</p>
+<p></p>
+<p></p><p>
+                  <em>Table 5</em>
+               </p><p>
+                  <strong>StartCommunication Request Message</strong>
+               </p><table>
+                  <tbody>
+                     <tr>
+                        <td>Byte #</td>
+                        <td>Parameter Name</td>
+                        <td>Hex Value</td>
+                        <td>Mnemonic</td>
+                     </tr>
+                     <tr>
+                        <td>#1</td>
+                        <td>Format byte — physical addressing</td>
+                        <td>81</td>
+                        <td>FMT</td>
+                     </tr>
+                     <tr>
+                        <td>#2</td>
+                        <td>Target address byte</td>
+                        <td>EE</td>
+                        <td>TGT</td>
+                     </tr>
+                     <tr>
+                        <td>#3</td>
+                        <td>Source address byte</td>
+                        <td>tt</td>
+                        <td>SRC</td>
+                     </tr>
+                     <tr>
+                        <td>#4</td>
+                        <td>StartCommunication Request Service Id</td>
+                        <td>81</td>
+                        <td>SCR</td>
+                     </tr>
+                     <tr>
+                        <td>#5</td>
+                        <td>Checksum</td>
+                        <td>00-FF</td>
+                        <td>CS</td>
+                     </tr>
+                  </tbody>
+               </table>
+<p></p>
+<p></p><p>
+                  <em>Table 6</em>
+               </p><p>
+                  <strong>StartCommunication Positive Response Message</strong>
+               </p><table>
+                  <tbody>
+                     <tr>
+                        <td>Byte #</td>
+                        <td>Parameter Name</td>
+                        <td>Hex Value</td>
+                        <td>Mnemonic</td>
+                     </tr>
+                     <tr>
+                        <td>#1</td>
+                        <td>Format byte — physical addressing</td>
+                        <td>80</td>
+                        <td>FMT</td>
+                     </tr>
+                     <tr>
+                        <td>#2</td>
+                        <td>Target address byte</td>
+                        <td>tt</td>
+                        <td>TGT</td>
+                     </tr>
+                     <tr>
+                        <td>#3</td>
+                        <td>Source address byte</td>
+                        <td>EE</td>
+                        <td>SRC</td>
+                     </tr>
+                     <tr>
+                        <td>#4</td>
+                        <td>Additional length byte</td>
+                        <td>03</td>
+                        <td>LEN</td>
+                     </tr>
+                     <tr>
+                        <td>#5</td>
+                        <td>StartCommunication Positive Response Service Id</td>
+                        <td>C1</td>
+                        <td>SCRPR</td>
+                     </tr>
+                     <tr>
+                        <td>#6</td>
+                        <td>Key byte 1</td>
+                        <td>EA</td>
+                        <td>KB1</td>
+                     </tr>
+                     <tr>
+                        <td>#7</td>
+                        <td>Key byte 2</td>
+                        <td>8F</td>
+                        <td>KB2</td>
+                     </tr>
+                     <tr>
+                        <td>#8</td>
+                        <td>Checksum</td>
+                        <td>00-FF</td>
+                        <td>CS</td>
+                     </tr>
+                  </tbody>
+               </table>
+<p>CPR_019 There is no negative response to the StartCommunication Request message, if there is no positive response message to be transmitted then the VU is not initialised, nothing is transmitted and it remains in its normal operation.</p>
+<p>4.2.   <strong>StopCommunication Service</strong>
+            </p>
+<p>4.2.1   <strong>Message description</strong>
+            </p>
+<p>The purpose of this communication layer service is to terminate a communication session.</p>
+<p>CPR_020 Upon receiving a StopCommunication indication primitive, the VU shall check if the current conditions allow to terminate this communication. In this case the VU shall perform all actions necessary to terminate this communication.</p>
+<p>CPR_021 If it is possible to terminate the communication, the VU shall issue a StopCommunication response primitive with the Positive Response parameters selected, before the communication is terminated.</p>
+<p>CPR_022 If the communication cannot be terminated by any reason, the VU shall issue a StopCommunication response primitive with the Negative Response parameter selected.</p>
+<p>CPR_023 If time-out of P3 max is detected by the VU, the communication shall be terminated without any response primitive being issued.</p>
+<p>4.2.2   <strong>Message format</strong>
+            </p>
+<p>CPR_024 The message formats for the StopCommunication primitives are detailed in the following tables.</p>
+<p></p>
+<p></p><p>
+                  <em>Table 7</em>
+               </p><p>
+                  <strong>StopCommunication Request Message</strong>
+               </p><table>
+                  <tbody>
+                     <tr>
+                        <td>Byte #</td>
+                        <td>Parameter Name</td>
+                        <td>Hex Value</td>
+                        <td>Mnemonic</td>
+                     </tr>
+                     <tr>
+                        <td>#1</td>
+                        <td>Format byte — physical addressing</td>
+                        <td>80</td>
+                        <td>FMT</td>
+                     </tr>
+                     <tr>
+                        <td>#2</td>
+                        <td>Target address byte</td>
+                        <td>EE</td>
+                        <td>TGT</td>
+                     </tr>
+                     <tr>
+                        <td>#3</td>
+                        <td>Source address byte</td>
+                        <td>tt</td>
+                        <td>SRC</td>
+                     </tr>
+                     <tr>
+                        <td>#4</td>
+                        <td>Additional length byte</td>
+                        <td>01</td>
+                        <td>LEN</td>
+                     </tr>
+                     <tr>
+                        <td>#5</td>
+                        <td>StopCommunication Request Service Id</td>
+                        <td>82</td>
+                        <td>SPR</td>
+                     </tr>
+                     <tr>
+                        <td>#6</td>
+                        <td>Checksum</td>
+                        <td>00-FF</td>
+                        <td>CS</td>
+                     </tr>
+                  </tbody>
+               </table>
+<p></p>
+<p></p><p>
+                  <em>Table 8</em>
+               </p><p>
+                  <strong>StopCommunication Positive Response Message</strong>
+               </p><table>
+                  <tbody>
+                     <tr>
+                        <td>Byte #</td>
+                        <td>Parameter Name</td>
+                        <td>Hex Value</td>
+                        <td>Mnemonic</td>
+                     </tr>
+                     <tr>
+                        <td>#1</td>
+                        <td>Format byte — physical addressing</td>
+                        <td>80</td>
+                        <td>FMT</td>
+                     </tr>
+                     <tr>
+                        <td>#2</td>
+                        <td>Target address byte</td>
+                        <td>tt</td>
+                        <td>TGT</td>
+                     </tr>
+                     <tr>
+                        <td>#3</td>
+                        <td>Source address byte</td>
+                        <td>EE</td>
+                        <td>SRC</td>
+                     </tr>
+                     <tr>
+                        <td>#4</td>
+                        <td>Additional length byte</td>
+                        <td>01</td>
+                        <td>LEN</td>
+                     </tr>
+                     <tr>
+                        <td>#5</td>
+                        <td>StopCommunication Positive Response Service Id</td>
+                        <td>C2</td>
+                        <td>SPRPR</td>
+                     </tr>
+                     <tr>
+                        <td>#6</td>
+                        <td>Checksum</td>
+                        <td>00-FF</td>
+                        <td>CS</td>
+                     </tr>
+                  </tbody>
+               </table>
+<p></p>
+<p></p><p>
+                  <em>Table 9</em>
+               </p><p>
+                  <strong>StopCommunication Negative Response Message</strong>
+               </p><table>
+                  <tbody>
+                     <tr>
+                        <td>Byte #</td>
+                        <td>Parameter Name</td>
+                        <td>Hex Value</td>
+                        <td>Mnemonic</td>
+                     </tr>
+                     <tr>
+                        <td>#1</td>
+                        <td>Format byte — physical addressing</td>
+                        <td>80</td>
+                        <td>FMT</td>
+                     </tr>
+                     <tr>
+                        <td>#2</td>
+                        <td>Target address byte</td>
+                        <td>tt</td>
+                        <td>TGT</td>
+                     </tr>
+                     <tr>
+                        <td>#3</td>
+                        <td>Source address byte</td>
+                        <td>EE</td>
+                        <td>SRC</td>
+                     </tr>
+                     <tr>
+                        <td>#4</td>
+                        <td>Additional length byte</td>
+                        <td>03</td>
+                        <td>LEN</td>
+                     </tr>
+                     <tr>
+                        <td>#5</td>
+                        <td>negative Response Service Id</td>
+                        <td>7F</td>
+                        <td>NR</td>
+                     </tr>
+                     <tr>
+                        <td>#6</td>
+                        <td>StopCommunication Request Service Identification</td>
+                        <td>82</td>
+                        <td>SPR</td>
+                     </tr>
+                     <tr>
+                        <td>#7</td>
+                        <td>responseCode = generalReject</td>
+                        <td>10</td>
+                        <td>RC_GR</td>
+                     </tr>
+                     <tr>
+                        <td>#8</td>
+                        <td>Checksum</td>
+                        <td>00-FF</td>
+                        <td>CS</td>
+                     </tr>
+                  </tbody>
+               </table>
+<p>4.2.3   <strong>Parameter Definition</strong>
+            </p>
+<p>This service does not require any parameter definition.</p>
+<p>4.3.   <strong>TesterPresent Service</strong>
+            </p>
+<p>4.3.1   <strong>Message description</strong>
+            </p>
+<p>The TesterPresent service is used by the tester to indicate to the server that it is still present, in order to prevent the server from automatically returning to normal operation and possibly stopping the communication. This service, sent periodically, keeps the diagnostic session/communication active by resetting the P3 timer each time a request for this service is received.</p>
+<p>4.3.2   <strong>Message format</strong>
+            </p>
+<p>CPR_079 The message formats for the TesterPresent primitives are detailed in the following tables.</p>
+<p></p>
+<p></p><p>
+                  <em>Table 10</em>
+               </p><p>
+                  <strong>TesterPresent Request Message</strong>
+               </p><table>
+                  <tbody>
+                     <tr>
+                        <td>Byte #</td>
+                        <td>Parameter Name</td>
+                        <td>Hex Value</td>
+                        <td>Mnemonic</td>
+                     </tr>
+                     <tr>
+                        <td>#1</td>
+                        <td>Format byte — physical addressing</td>
+                        <td>80</td>
+                        <td>FMT</td>
+                     </tr>
+                     <tr>
+                        <td>#2</td>
+                        <td>Target address byte</td>
+                        <td>EE</td>
+                        <td>TGT</td>
+                     </tr>
+                     <tr>
+                        <td>#3</td>
+                        <td>Source address byte</td>
+                        <td>tt</td>
+                        <td>SRC</td>
+                     </tr>
+                     <tr>
+                        <td>#4</td>
+                        <td>Additional length byte</td>
+                        <td>02</td>
+                        <td>LEN</td>
+                     </tr>
+                     <tr>
+                        <td>#5</td>
+                        <td>TesterPresent Request Service Id</td>
+                        <td>3E</td>
+                        <td>TP</td>
+                     </tr>
+                     <tr>
+                        <td>#6</td>
+                        <td>Sub Function = responseRequired =</td>
+                        <td>[ yes</td>
+                        <td>01</td>
+                        <td>RESPREQ_Y</td>
+                     </tr>
+                     <tr>
+                        <td>no ]</td>
+                        <td>02</td>
+                        <td>RESPREQ_NO</td>
+                     </tr>
+                     <tr>
+                        <td>#7</td>
+                        <td>Checksum</td>
+                        <td>00-FF</td>
+                        <td>CS</td>
+                     </tr>
+                  </tbody>
+               </table>
+<p>CPR_080 If the responseRequired parameter is set to ‘yes’, then the server shall respond with the following positive response message. If set to ‘no’, then no response is sent by the server.</p>
+<p></p>
+<p></p><p>
+                  <em>Table 11</em>
+               </p><p>
+                  <strong>TesterPresent Positive Response Message</strong>
+               </p><table>
+                  <tbody>
+                     <tr>
+                        <td>Byte #</td>
+                        <td>Parameter Name</td>
+                        <td>Hex Value</td>
+                        <td>Mnemonic</td>
+                     </tr>
+                     <tr>
+                        <td>#1</td>
+                        <td>Format byte — physical addressing</td>
+                        <td>80</td>
+                        <td>FMT</td>
+                     </tr>
+                     <tr>
+                        <td>#2</td>
+                        <td>Target address byte</td>
+                        <td>tt</td>
+                        <td>TGT</td>
+                     </tr>
+                     <tr>
+                        <td>#3</td>
+                        <td>Source address byte</td>
+                        <td>EE</td>
+                        <td>SRC</td>
+                     </tr>
+                     <tr>
+                        <td>#4</td>
+                        <td>Additional length byte</td>
+                        <td>01</td>
+                        <td>LEN</td>
+                     </tr>
+                     <tr>
+                        <td>#5</td>
+                        <td>TesterPresent Positive Response Service Id</td>
+                        <td>7E</td>
+                        <td>TPPR</td>
+                     </tr>
+                     <tr>
+                        <td>#6</td>
+                        <td>Checksum</td>
+                        <td>00-FF</td>
+                        <td>CS</td>
+                     </tr>
+                  </tbody>
+               </table>
+<p>CPR_081 The service shall support the following negative responses codes:</p>
+<p></p>
+<p></p><p>
+                  <em>Table 12</em>
+               </p><p>
+                  <strong>TesterPresent Negative Response Message</strong>
+               </p><table>
+                  <tbody>
+                     <tr>
+                        <td>Byte #</td>
+                        <td>Parameter Name</td>
+                        <td>Hex Value</td>
+                        <td>Mnemonic</td>
+                     </tr>
+                     <tr>
+                        <td>#1</td>
+                        <td>Format byte — physical addressing</td>
+                        <td>80</td>
+                        <td>FMT</td>
+                     </tr>
+                     <tr>
+                        <td>#2</td>
+                        <td>Target address byte</td>
+                        <td>tt</td>
+                        <td>TGT</td>
+                     </tr>
+                     <tr>
+                        <td>#3</td>
+                        <td>Source address byte</td>
+                        <td>EE</td>
+                        <td>SRC</td>
+                     </tr>
+                     <tr>
+                        <td>#4</td>
+                        <td>Additional length byte</td>
+                        <td>03</td>
+                        <td>LEN</td>
+                     </tr>
+                     <tr>
+                        <td>#5</td>
+                        <td>negative Response Service Id</td>
+                        <td>7F</td>
+                        <td>NR</td>
+                     </tr>
+                     <tr>
+                        <td>#6</td>
+                        <td>TesterPresent Request Service Identification</td>
+                        <td>3E</td>
+                        <td>TP</td>
+                     </tr>
+                     <tr>
+                        <td>#7</td>
+                        <td>responseCode =</td>
+                        <td>[SubFunctionNotSupported-InvalidFormat</td>
+                        <td>12</td>
+                        <td>RC_SFNS_IF</td>
+                     </tr>
+                     <tr>
+                        <td>incorrectMessageLength]</td>
+                        <td>13</td>
+                        <td>RC_IML</td>
+                     </tr>
+                     <tr>
+                        <td>#8</td>
+                        <td>Checksum</td>
+                        <td>00-FF</td>
+                        <td>CS</td>
+                     </tr>
+                  </tbody>
+               </table>
+<p>5.   <strong>MANAGEMENT SERVICES</strong>
+            </p>
+<p>The services available are detailed in the following table:</p>
+<p></p>
+<p></p><p>
+                  <em>Table 13</em>
+               </p><p>
+                  <strong>Management Services</strong>
+               </p><table>
+                  <tbody>
+                     <tr>
+                        <td>Service name</td>
+                        <td>Description</td>
+                     </tr>
+                     <tr>
+                        <td>StartDiagnosticSession</td>
+                        <td>The client requests to start a diagnostic session with a VU.</td>
+                     </tr>
+                     <tr>
+                        <td>SecurityAccess</td>
+                        <td>The client requests access to functions restricted to authorised users.</td>
+                     </tr>
+                  </tbody>
+               </table>
+<p>5.1.   <strong>StartDiagnosticSession service</strong>
+            </p>
+<p>5.1.1   <strong>Message description</strong>
+            </p>
+<p>CPR_025 The service StartDiagnosticSession is used to enable different diagnostic sessions in the server. A diagnostic session enables a specific set of services according to Table 17. A session can enable vehicle manufacturer specific services which are not part of this document. Implementation rules shall conform to the following requirements:</p>
+<dl><dt>—</dt><dd>There shall be always exactly one diagnostic session active in the VU,</dd><dt>—</dt><dd>The VU shall always start the StandardDiagnosticSession when powered up. If no other diagnostic session is started, then the StandardDiagnosticSession shall be running as long as the VU is powered,</dd><dt>—</dt><dd>If a diagnostic session which is already running has been requested by the tester, then the VU shall send a positive response message,</dd><dt>—</dt><dd>Whenever the tester requests a new diagnostic session, the VU shall first send a StartDiagnosticSession positive response message before the new session becomes active in the VU. If the VU is not able to start the requested new diagnostic session, then it shall respond with a StartDiagnosticSession negative response message, and the current session shall continue.</dd></dl>
+
+
+
+<p>CPR_026 A diagnostic session shall only be started if communication has been established between the client and the VU.</p>
+<p>CPR_027 The timing parameters defined in Table 4 shall be active after a successful StartDiagnosticSession with the diagnosticSession parameter set to ‘StandardDiagnosticSession’ in the request message if another diagnostic session was previously active.</p>
+<p>5.1.2   <strong>Message format</strong>
+            </p>
+<p>CPR_028 The message formats for the StartDiagnosticSession primitives are detailed in the following tables.</p>
+<p></p>
+<p></p><p>
+                  <em>Table 14</em>
+               </p><p>
+                  <strong>StartDiagnosticSession Request Message</strong>
+               </p><table>
+                  <tbody>
+                     <tr>
+                        <td>Byte #</td>
+                        <td>Parameter Name</td>
+                        <td>Hex Value</td>
+                        <td>Mnemonic</td>
+                     </tr>
+                     <tr>
+                        <td>#1</td>
+                        <td>Format byte — physical addressing</td>
+                        <td>80</td>
+                        <td>FMT</td>
+                     </tr>
+                     <tr>
+                        <td>#2</td>
+                        <td>Target address byte</td>
+                        <td>EE</td>
+                        <td>TGT</td>
+                     </tr>
+                     <tr>
+                        <td>#3</td>
+                        <td>Source address byte</td>
+                        <td>tt</td>
+                        <td>SRC</td>
+                     </tr>
+                     <tr>
+                        <td>#4</td>
+                        <td>Additional length byte</td>
+                        <td>02</td>
+                        <td>LEN</td>
+                     </tr>
+                     <tr>
+                        <td>#5</td>
+                        <td>StartDiagnosticSession Request Service Id</td>
+                        <td>10</td>
+                        <td>STDS</td>
+                     </tr>
+                     <tr>
+                        <td>#6</td>
+                        <td>diagnosticSession = [one value from Table 17]</td>
+                        <td>xx</td>
+                        <td>DS_…</td>
+                     </tr>
+                     <tr>
+                        <td>#7</td>
+                        <td>Checksum</td>
+                        <td>00-FF</td>
+                        <td>CS</td>
+                     </tr>
+                  </tbody>
+               </table>
+<p></p>
+<p></p><p>
+                  <em>Table 15</em>
+               </p><p>
+                  <strong>StartDiagnosticSession Positive Response Message</strong>
+               </p><table>
+                  <tbody>
+                     <tr>
+                        <td>Byte #</td>
+                        <td>Parameter Name</td>
+                        <td>Hex Value</td>
+                        <td>Mnemonic</td>
+                     </tr>
+                     <tr>
+                        <td>#1</td>
+                        <td>Format byte — physical addressing</td>
+                        <td>80</td>
+                        <td>FMT</td>
+                     </tr>
+                     <tr>
+                        <td>#2</td>
+                        <td>Target address byte</td>
+                        <td>tt</td>
+                        <td>TGT</td>
+                     </tr>
+                     <tr>
+                        <td>#3</td>
+                        <td>Source address byte</td>
+                        <td>EE</td>
+                        <td>SRC</td>
+                     </tr>
+                     <tr>
+                        <td>#4</td>
+                        <td>Additional length byte</td>
+                        <td>02</td>
+                        <td>LEN</td>
+                     </tr>
+                     <tr>
+                        <td>#5</td>
+                        <td>StartDiagnosticSession Positive Response Service Id</td>
+                        <td>50</td>
+                        <td>STDSPR</td>
+                     </tr>
+                     <tr>
+                        <td>#6</td>
+                        <td>diagnosticSession = [same value as in byte #6 Table 14]</td>
+                        <td>xx</td>
+                        <td>DS_…</td>
+                     </tr>
+                     <tr>
+                        <td>#7</td>
+                        <td>Checksum</td>
+                        <td>00-FF</td>
+                        <td>CS</td>
+                     </tr>
+                  </tbody>
+               </table>
+<p></p>
+<p></p><p>
+                  <em>Table 16</em>
+               </p><p>
+                  <strong>StartDiagnosticSession Negative Response Message</strong>
+               </p><table>
+                  <tbody>
+                     <tr>
+                        <td>Byte #</td>
+                        <td>Parameter Name</td>
+                        <td>Hex Value</td>
+                        <td>Mnemonic</td>
+                     </tr>
+                     <tr>
+                        <td>#1</td>
+                        <td>Format byte — physical addressing</td>
+                        <td>80</td>
+                        <td>FMT</td>
+                     </tr>
+                     <tr>
+                        <td>#2</td>
+                        <td>Target address byte</td>
+                        <td>tt</td>
+                        <td>TGT</td>
+                     </tr>
+                     <tr>
+                        <td>#3</td>
+                        <td>Source address byte</td>
+                        <td>EE</td>
+                        <td>SRC</td>
+                     </tr>
+                     <tr>
+                        <td>#4</td>
+                        <td>Additional length byte</td>
+                        <td>03</td>
+                        <td>LEN</td>
+                     </tr>
+                     <tr>
+                        <td>#5</td>
+                        <td>Negative Response Service Id</td>
+                        <td>7F</td>
+                        <td>NR</td>
+                     </tr>
+                     <tr>
+                        <td>#6</td>
+                        <td>StartDiagnosticSession Request Service Id</td>
+                        <td>10</td>
+                        <td>STDS</td>
+                     </tr>
+                     <tr>
+                        <td>#7</td>
+                        <td>ResponseCode =</td>
+                        <td>[subFunctionNotSupported ()</td>
+                        <td>12</td>
+                        <td>RC_SFNS</td>
+                     </tr>
+                     <tr>
+                        <td>incorrectMessageLength ()</td>
+                        <td>13</td>
+                        <td>RC_IML</td>
+                     </tr>
+                     <tr>
+                        <td>conditionsNotCorrect ()</td>
+                        <td>22</td>
+                        <td>RC_CNC</td>
+                     </tr>
+                     <tr>
+                        <td>#8</td>
+                        <td>Checksum</td>
+                        <td>00-FF</td>
+                        <td>CS</td>
+                     </tr>
+                     <tr>
+                        <td>
+                           <div>
+                              <a id="E0015">(<sup>1</sup>)   </a>
+                              <p>– the value inserted in byte #6 of the request message is not supported, i.e. not in Table 17,</p>
+                           </div>
+                           <div>
+                              <a id="E0016">(<sup>2</sup>)   </a>
+                              <p>– the length of the message is wrong,</p>
+                           </div>
+                           <div>
+                              <a id="E0017">(<sup>3</sup>)   </a>
+                              <p>– the criteria for the request StartDiagnosticSession are not met.</p>
+                           </div>
+                        </td>
+                     </tr>
+                  </tbody>
+               </table>
+<p>5.1.3   <strong>Parameter definition</strong>
+            </p>
+<p>CPR_029 The parameter <strong>diagnosticSession (DS_)</strong> is used by the StartDiagnosticSession service to select the specific behaviour of the server(s). The following diagnostic sessions are specified in this document:</p>
+<p></p>
+<p></p><p>
+                  <em>Table 17</em>
+               </p><p>
+                  <strong>Definition of diagnosticSession Values</strong>
+               </p><table>
+                  <tbody>
+                     <tr>
+                        <td>Hex</td>
+                        <td>Description</td>
+                        <td>Mnemonic</td>
+                     </tr>
+                     <tr>
+                        <td>81</td>
+                        <td>
+                           <p>
+                              <strong>StandardDiagnosticSession</strong>
+                           </p>
+                           <p>This diagnostic session enables all services specified in <strong>Table 1 column 4 ‘SD’</strong>. These services allow reading of data from a server (VU). This diagnostic Session is active after the initialisation has been successfully completed between client (tester) and server (VU). This diagnostic session may be overwritten by other diagnostic sessions specified in this section.</p>
+                        </td>
+                        <td>SD</td>
+                     </tr>
+                     <tr>
+                        <td>85</td>
+                        <td>
+                           <p>
+                              <strong>ECUProgrammingSession</strong>
+                           </p>
+                           <p>This diagnostic session enables all services specified in <strong>Table 1 column 6 ‘ECUPS’</strong>. These services support the memory programming of a server (VU) This diagnostic session may be overwritten by other diagnostic sessions specified in this section..</p>
+                        </td>
+                        <td>ECUPS</td>
+                     </tr>
+                     <tr>
+                        <td>87</td>
+                        <td>
+                           <p>
+                              <strong>ECUAdjustmentSession</strong>
+                           </p>
+                           <p>This diagnostic session enables all services specified in <strong>Table 1 column 5 ‘ECUAS’</strong>. These services support the input/output control of a server (VU). This diagnostic session may be overwritten by other diagnostic sessions specified in this section.</p>
+                        </td>
+                        <td>ECUAS</td>
+                     </tr>
+                  </tbody>
+               </table>
+<p>5.2.   <strong>SecurityAccess service</strong>
+            </p>
+<p>Writing of calibration data is not possible unless the VU is in CALIBRATION mode. In addition to insertion of a valid workshop card into the VU, it is necessary to enter the appropriate PIN into the VU before access to the CALIBRATION mode is granted.</p>
+<p>When the VU is in CALIBRATION or CONTROL mode, access to the calibration input/output line is also possible.</p>
+<p>The SecurityAccess service provides a means to enter the PIN and to indicate to the tester whether or not the VU is in CALIBRATION mode.</p>
+<p>It is acceptable that the PIN may be entered through alternative methods.</p>
+<p>5.2.1   <strong>Message Description</strong>
+            </p>
+<p>The SecurityAccess service consists of a SecurityAccess ‘requestSeed’ message, eventually followed by a SecurityAccess ‘sendKey’ message. The SecurityAccess service must be carried out after the StartDiagnosticSession service.</p>
+<p>CPR_033 The tester shall use the SecurityAccess ‘requestSeed’ message to check if the vehicle unit is ready to accept a PIN.</p>
+<p>CPR_034 If the vehicle unit is already in CALIBRATION mode, it shall answer the request by sending a ‘seed’ of 0x0000 using the service SecurityAccess Positive Response.</p>
+<p>CPR_035 If the vehicle unit is ready to accept a PIN for verification by a workshop card, it shall answer the request by sending a ‘seed’ greater than 0x0000 using the service SecurityAccess Positive Response.</p>
+<p>CPR_036 If the vehicle unit is not ready to accept a PIN from the tester, either because the workshop card inserted is not valid, or because no workshop card has been inserted, or because the vehicle unit expects the PIN from another method, it shall answer the request with a Negative Response with a response code set to conditionsNotCorrectOrRequestSequenceError.</p>
+<p>CPR_037 The tester shall then, eventually, use the SecurityAccess ‘sendKey’ message to forward a PIN to the Vehicle Unit. To allow time for the card authentication process to take place, the VU shall use the negative response code requestCorrectlyReceived-ResponsePending to extend the time to respond. However, the maximum time to respond shall not exceed 5 minutes. As soon as the requested service has been completed, the VU shall send a positive response message or negative response message with a response code different from this one. The negative response code requestCorrectlyReceived-ResponsePending may be repeated by the VU until the requested service is completed and the final response message is sent.</p>
+<p>CPR_038 The vehicle unit shall answer to this request using the service SecurityAccess Positive Response only when in CALIBRATION mode.</p>
+<p>CPR_039 In the following cases, the vehicle unit shall answer to this request with a Negative Response with a response code set to:</p>
+<dl><dt>—</dt><dd>subFunctionNot supported: Invalid format for the subfunction parameter (accessType),</dd><dt>—</dt><dd>conditionsNotCorrectOrRequestSequenceError: Vehicle unit not ready to accept a PIN entry,</dd><dt>—</dt><dd>invalidKey: PIN not valid and number of PIN checks attempts not exceeded,</dd><dt>—</dt><dd>exceededNumberOfAttempts: PIN not valid and number of PIN checks attempts exceeded,</dd><dt>—</dt><dd>generalReject: Correct PIN but mutual authentication with workshop card failed.</dd></dl>
+
+
+
+
+<p>5.2.2   <strong>Message format — SecurityAccess — requestSeed</strong>
+            </p>
+<p>CPR_040 The message formats for the SecurityAccess ‘requestSeed’ primitives are detailed in the following tables.</p>
+<p></p>
+<p></p><p>
+                  <em>Table 18</em>
+               </p><p>
+                  <strong>SecurityAccess Request- requestSeed Message</strong>
+               </p><table>
+                  <tbody>
+                     <tr>
+                        <td>Byte #</td>
+                        <td>Parameter Name</td>
+                        <td>Hex Value</td>
+                        <td>Mnemonic</td>
+                     </tr>
+                     <tr>
+                        <td>#1</td>
+                        <td>Format byte — physical addressing</td>
+                        <td>80</td>
+                        <td>FMT</td>
+                     </tr>
+                     <tr>
+                        <td>#2</td>
+                        <td>Target address byte</td>
+                        <td>EE</td>
+                        <td>TGT</td>
+                     </tr>
+                     <tr>
+                        <td>#3</td>
+                        <td>Source address byte</td>
+                        <td>tt</td>
+                        <td>SRC</td>
+                     </tr>
+                     <tr>
+                        <td>#4</td>
+                        <td>Additional length byte</td>
+                        <td>02</td>
+                        <td>LEN</td>
+                     </tr>
+                     <tr>
+                        <td>#5</td>
+                        <td>SecurityAccess Request Service Id</td>
+                        <td>27</td>
+                        <td>SA</td>
+                     </tr>
+                     <tr>
+                        <td>#6</td>
+                        <td>accessType — requestSeed</td>
+                        <td>7D</td>
+                        <td>AT_RSD</td>
+                     </tr>
+                     <tr>
+                        <td>#7</td>
+                        <td>Checksum</td>
+                        <td>00-FF</td>
+                        <td>CS</td>
+                     </tr>
+                  </tbody>
+               </table>
+<p></p>
+<p></p><p>
+                  <em>Table 19</em>
+               </p><p>
+                  <strong>SecurityAccess — requestSeed Positive Response Message</strong>
+               </p><table>
+                  <tbody>
+                     <tr>
+                        <td>Byte #</td>
+                        <td>Parameter Name</td>
+                        <td>Hex Value</td>
+                        <td>Mnemonic</td>
+                     </tr>
+                     <tr>
+                        <td>#1</td>
+                        <td>Format byte — physical addressing</td>
+                        <td>80</td>
+                        <td>FMT</td>
+                     </tr>
+                     <tr>
+                        <td>#2</td>
+                        <td>Target address byte</td>
+                        <td>tt</td>
+                        <td>TGT</td>
+                     </tr>
+                     <tr>
+                        <td>#3</td>
+                        <td>Source address byte</td>
+                        <td>EE</td>
+                        <td>SRC</td>
+                     </tr>
+                     <tr>
+                        <td>#4</td>
+                        <td>Additional length byte</td>
+                        <td>04</td>
+                        <td>LEN</td>
+                     </tr>
+                     <tr>
+                        <td>#5</td>
+                        <td>SecurityAccess Positive Response Service Id</td>
+                        <td>67</td>
+                        <td>SAPR</td>
+                     </tr>
+                     <tr>
+                        <td>#6</td>
+                        <td>accessType — requestSeed</td>
+                        <td>7D</td>
+                        <td>AT_RSD</td>
+                     </tr>
+                     <tr>
+                        <td>#7</td>
+                        <td>Seed High</td>
+                        <td>00-FF</td>
+                        <td>SEEDH</td>
+                     </tr>
+                     <tr>
+                        <td>#8</td>
+                        <td>Seed Low</td>
+                        <td>00-FF</td>
+                        <td>SEEDL</td>
+                     </tr>
+                     <tr>
+                        <td>#9</td>
+                        <td>Checksum</td>
+                        <td>00-FF</td>
+                        <td>CS</td>
+                     </tr>
+                  </tbody>
+               </table>
+<p></p>
+<p></p><p>
+                  <em>Table 20</em>
+               </p><p>
+                  <strong>SecurityAccess Negative Response Message</strong>
+               </p><table>
+                  <tbody>
+                     <tr>
+                        <td>Byte #</td>
+                        <td>Parameter Name</td>
+                        <td>Hex Value</td>
+                        <td>Mnemonic</td>
+                     </tr>
+                     <tr>
+                        <td>#1</td>
+                        <td>Format byte — physical addressing</td>
+                        <td>80</td>
+                        <td>FMT</td>
+                     </tr>
+                     <tr>
+                        <td>#2</td>
+                        <td>Target address byte</td>
+                        <td>tt</td>
+                        <td>TGT</td>
+                     </tr>
+                     <tr>
+                        <td>#3</td>
+                        <td>Source address byte</td>
+                        <td>EE</td>
+                        <td>SRC</td>
+                     </tr>
+                     <tr>
+                        <td>#4</td>
+                        <td>Additional length byte</td>
+                        <td>03</td>
+                        <td>LEN</td>
+                     </tr>
+                     <tr>
+                        <td>#5</td>
+                        <td>negativeResponse Service Id</td>
+                        <td>7F</td>
+                        <td>NR</td>
+                     </tr>
+                     <tr>
+                        <td>#6</td>
+                        <td>SecurityAccess Request Service Id</td>
+                        <td>27</td>
+                        <td>SA</td>
+                     </tr>
+                     <tr>
+                        <td>#7</td>
+                        <td>responseCode =</td>
+                        <td>[conditionsNotCorrectOrRequestSequenceError</td>
+                        <td>22</td>
+                        <td>RC_CNC</td>
+                     </tr>
+                     <tr>
+                        <td>incorrectMessageLength]</td>
+                        <td>13</td>
+                        <td>RC_IML</td>
+                     </tr>
+                     <tr>
+                        <td>#8</td>
+                        <td>Checksum</td>
+                        <td>00-FF</td>
+                        <td>CS</td>
+                     </tr>
+                  </tbody>
+               </table>
+<p>5.2.3   <strong>Message format — SecurityAccess — sendKey</strong>
+            </p>
+<p>CPR_041 The message formats for the SecurityAccess ‘sendKey’ primitives are detailed in the following tables.</p>
+<p></p>
+<p></p><p>
+                  <em>Table 21</em>
+               </p><p>
+                  <strong>SecurityAccess Request — sendKey Message</strong>
+               </p><table>
+                  <tbody>
+                     <tr>
+                        <td>Byte #</td>
+                        <td>Parameter Name</td>
+                        <td>Hex Value</td>
+                        <td>Mnemonic</td>
+                     </tr>
+                     <tr>
+                        <td>#1</td>
+                        <td>Format byte — physical addressing</td>
+                        <td>80</td>
+                        <td>FMT</td>
+                     </tr>
+                     <tr>
+                        <td>#2</td>
+                        <td>Target address byte</td>
+                        <td>EE</td>
+                        <td>TGT</td>
+                     </tr>
+                     <tr>
+                        <td>#3</td>
+                        <td>Source address byte</td>
+                        <td>tt</td>
+                        <td>SRC</td>
+                     </tr>
+                     <tr>
+                        <td>#4</td>
+                        <td>Additional length byte</td>
+                        <td>m+2</td>
+                        <td>LEN</td>
+                     </tr>
+                     <tr>
+                        <td>#5</td>
+                        <td>SecurityAccess Request Service Id</td>
+                        <td>27</td>
+                        <td>SA</td>
+                     </tr>
+                     <tr>
+                        <td>#6</td>
+                        <td>accessType — sendKey</td>
+                        <td>7E</td>
+                        <td>AT_SK</td>
+                     </tr>
+                     <tr>
+                        <td>#7 to #m + 6</td>
+                        <td>Key #1 (High)</td>
+                        <td>xx</td>
+                        <td>KEY</td>
+                     </tr>
+                     <tr>
+                        <td>…</td>
+                        <td>…</td>
+                        <td></td>
+                     </tr>
+                     <tr>
+                        <td>Key #m (low, m must be a minimum of 4, and a maximum of 8)</td>
+                        <td>xx</td>
+                        <td></td>
+                     </tr>
+                     <tr>
+                        <td>#m + 7</td>
+                        <td>Checksum</td>
+                        <td>00-FF</td>
+                        <td>CS</td>
+                     </tr>
+                  </tbody>
+               </table>
+<p></p>
+<p></p><p>
+                  <em>Table 22</em>
+               </p><p>
+                  <strong>SecurityAccess — sendKey Positive Response Message</strong>
+               </p><table>
+                  <tbody>
+                     <tr>
+                        <td>Byte #</td>
+                        <td>Parameter Name</td>
+                        <td>Hex Value</td>
+                        <td>Mnemonic</td>
+                     </tr>
+                     <tr>
+                        <td>#1</td>
+                        <td>Format byte — physical addressing</td>
+                        <td>80</td>
+                        <td>FMT</td>
+                     </tr>
+                     <tr>
+                        <td>#2</td>
+                        <td>Target address byte</td>
+                        <td>tt</td>
+                        <td>TGT</td>
+                     </tr>
+                     <tr>
+                        <td>#3</td>
+                        <td>Source address byte</td>
+                        <td>EE</td>
+                        <td>SRC</td>
+                     </tr>
+                     <tr>
+                        <td>#4</td>
+                        <td>Additional length byte</td>
+                        <td>02</td>
+                        <td>LEN</td>
+                     </tr>
+                     <tr>
+                        <td>#5</td>
+                        <td>SecurityAccess Positive Response Service Id</td>
+                        <td>67</td>
+                        <td>SAPR</td>
+                     </tr>
+                     <tr>
+                        <td>#6</td>
+                        <td>accessType — sendKey</td>
+                        <td>7E</td>
+                        <td>AT_SK</td>
+                     </tr>
+                     <tr>
+                        <td>#7</td>
+                        <td>Checksum</td>
+                        <td>00-FF</td>
+                        <td>CS</td>
+                     </tr>
+                  </tbody>
+               </table>
+<p></p>
+<p></p><p>
+                  <em>Table 23</em>
+               </p><p>
+                  <strong>SecurityAccess Negative Response Message</strong>
+               </p><table>
+                  <tbody>
+                     <tr>
+                        <td>Byte #</td>
+                        <td>Parameter Name</td>
+                        <td>Hex Value</td>
+                        <td>Mnemonic</td>
+                     </tr>
+                     <tr>
+                        <td>#1</td>
+                        <td>Format byte — physical addressing</td>
+                        <td>80</td>
+                        <td>FMT</td>
+                     </tr>
+                     <tr>
+                        <td>#2</td>
+                        <td>Target address byte</td>
+                        <td>tt</td>
+                        <td>TGT</td>
+                     </tr>
+                     <tr>
+                        <td>#3</td>
+                        <td>Source address byte</td>
+                        <td>EE</td>
+                        <td>SRC</td>
+                     </tr>
+                     <tr>
+                        <td>#4</td>
+                        <td>Additional length byte</td>
+                        <td>03</td>
+                        <td>LEN</td>
+                     </tr>
+                     <tr>
+                        <td>#5</td>
+                        <td>NegativeResponse Service Id</td>
+                        <td>7F</td>
+                        <td>NR</td>
+                     </tr>
+                     <tr>
+                        <td>#6</td>
+                        <td>SecurityAccess Request Service Id</td>
+                        <td>27</td>
+                        <td>SA</td>
+                     </tr>
+                     <tr>
+                        <td>#7</td>
+                        <td>ResponseCode =</td>
+                        <td>[generalReject</td>
+                        <td>10</td>
+                        <td>RC_GR</td>
+                     </tr>
+                     <tr>
+                        <td>subFunctionNotSupported</td>
+                        <td>12</td>
+                        <td>RC_SFNS</td>
+                     </tr>
+                     <tr>
+                        <td>incorrectMessageLength</td>
+                        <td>13</td>
+                        <td>RC_IML</td>
+                     </tr>
+                     <tr>
+                        <td>conditionsNotCorrectOrRequestSequenceError</td>
+                        <td>22</td>
+                        <td>RC_CNC</td>
+                     </tr>
+                     <tr>
+                        <td>invalidKey</td>
+                        <td>35</td>
+                        <td>RC_IK</td>
+                     </tr>
+                     <tr>
+                        <td>exceededNumberOfAttempts</td>
+                        <td>36</td>
+                        <td>RC_ENA</td>
+                     </tr>
+                     <tr>
+                        <td>requestCorrectlyReceived-ResponsePending]</td>
+                        <td>78</td>
+                        <td>RC_RCR_RP</td>
+                     </tr>
+                     <tr>
+                        <td>#8</td>
+                        <td>Checksum</td>
+                        <td>00-FF</td>
+                        <td>CS</td>
+                     </tr>
+                  </tbody>
+               </table>
+<p>6.   <strong>DATA TRANSMISSION SERVICES</strong>
+            </p>
+<p>The services available are detailed in the following table:</p>
+<p></p>
+<p></p><p>
+                  <em>Table 24</em>
+               </p><p>
+                  <strong>Data Transmission Services</strong>
+               </p><table>
+                  <tbody>
+                     <tr>
+                        <td>Service name</td>
+                        <td>Description</td>
+                     </tr>
+                     <tr>
+                        <td>ReadDataByIdentifier</td>
+                        <td>The client requests the transmission of the current value of a record with access by recordDataIdentifier.</td>
+                     </tr>
+                     <tr>
+                        <td>WriteDataByIdentifier</td>
+                        <td>The client requests to write a record accessed by recordDataIdentifier.</td>
+                     </tr>
+                  </tbody>
+               </table>
+<p>6.1.   <strong>ReadDataByIdentifier service</strong>
+            </p>
+<p>6.1.1   <strong>Message description</strong>
+            </p>
+<p>CPR_050 The ReadDataByIdentifier service is used by the client to request data record values from a server. The data are identified by a recordDataIdentifier. It is the VU manufacturer&#39;s responsibility that the server conditions are met when performing this service.</p>
+<p>6.1.2   <strong>Message format</strong>
+            </p>
+<p>CPR_051 The message formats for the ReadDataByIdentifier primitives are detailed in the following tables.</p>
+<p></p>
+<p></p><p>
+                  <em>Table 25</em>
+               </p><p>
+                  <strong>ReadDataByIdentifier Request Message</strong>
+               </p><table>
+                  <tbody>
+                     <tr>
+                        <td>Byte #</td>
+                        <td>Parameter Name</td>
+                        <td>Hex Value</td>
+                        <td>Mnemonic</td>
+                     </tr>
+                     <tr>
+                        <td>#1</td>
+                        <td>Format byte — physical addressing</td>
+                        <td>80</td>
+                        <td>FMT</td>
+                     </tr>
+                     <tr>
+                        <td>#2</td>
+                        <td>Target address byte</td>
+                        <td>EE</td>
+                        <td>TGT</td>
+                     </tr>
+                     <tr>
+                        <td>#3</td>
+                        <td>Source address byte</td>
+                        <td>tt</td>
+                        <td>SRC</td>
+                     </tr>
+                     <tr>
+                        <td>#4</td>
+                        <td>Additional length byte</td>
+                        <td>03</td>
+                        <td>LEN</td>
+                     </tr>
+                     <tr>
+                        <td>#5</td>
+                        <td>ReadDataByIdentifier Request Service Id</td>
+                        <td>22</td>
+                        <td>RDBI</td>
+                     </tr>
+                     <tr>
+                        <td>#6 to #7</td>
+                        <td>recordDataIdentifier = [a value fromTable 28]</td>
+                        <td>xxxx</td>
+                        <td>RDI_…</td>
+                     </tr>
+                     <tr>
+                        <td>#8</td>
+                        <td>Checksum</td>
+                        <td>00-FF</td>
+                        <td>CS</td>
+                     </tr>
+                  </tbody>
+               </table>
+<p></p>
+<p></p><p>
+                  <em>Table 26</em>
+               </p><p>
+                  <strong>ReadDataByIdentifier Positive Response Message</strong>
+               </p><table>
+                  <tbody>
+                     <tr>
+                        <td>Byte #</td>
+                        <td>Parameter Name</td>
+                        <td>Hex Value</td>
+                        <td>Mnemonic</td>
+                     </tr>
+                     <tr>
+                        <td>#1</td>
+                        <td>Format byte — physical addressing</td>
+                        <td>80</td>
+                        <td>FMT</td>
+                     </tr>
+                     <tr>
+                        <td>#2</td>
+                        <td>Target address byte</td>
+                        <td>tt</td>
+                        <td>TGT</td>
+                     </tr>
+                     <tr>
+                        <td>#3</td>
+                        <td>Source address byte</td>
+                        <td>EE</td>
+                        <td>SRC</td>
+                     </tr>
+                     <tr>
+                        <td>#4</td>
+                        <td>Additional length byte</td>
+                        <td>m+3</td>
+                        <td>LEN</td>
+                     </tr>
+                     <tr>
+                        <td>#5</td>
+                        <td>ReadDataByIdentifier Positive Response Service Id</td>
+                        <td>62</td>
+                        <td>RDBIPR</td>
+                     </tr>
+                     <tr>
+                        <td>#6 and #7</td>
+                        <td>recordDataIdentifier = [the same value as bytes #6 and #7 Table 25]</td>
+                        <td>xxxx</td>
+                        <td>RDI_...</td>
+                     </tr>
+                     <tr>
+                        <td>#8 to #m + 7</td>
+                        <td>dataRecord[] =</td>
+                        <td>[data#1</td>
+                        <td>xx</td>
+                        <td>DREC_DATA1</td>
+                     </tr>
+                     <tr>
+                        <td>:</td>
+                        <td>:</td>
+                        <td>:</td>
+                     </tr>
+                     <tr>
+                        <td>data#m]</td>
+                        <td>xx</td>
+                        <td>DREC_DATAm</td>
+                     </tr>
+                     <tr>
+                        <td>#m + 8</td>
+                        <td>Checksum</td>
+                        <td>00-FF</td>
+                        <td>CS</td>
+                     </tr>
+                  </tbody>
+               </table>
+<p></p>
+<p></p><p>
+                  <em>Table 27</em>
+               </p><p>
+                  <strong>ReadDataByIdentifier Negative Response Message</strong>
+               </p><table>
+                  <tbody>
+                     <tr>
+                        <td>Byte #</td>
+                        <td>Parameter Name</td>
+                        <td>Hex Value</td>
+                        <td>Mnemonic</td>
+                     </tr>
+                     <tr>
+                        <td>#1</td>
+                        <td>Format byte — physical addressing</td>
+                        <td>80</td>
+                        <td>FMT</td>
+                     </tr>
+                     <tr>
+                        <td>#2</td>
+                        <td>Target address byte</td>
+                        <td>tt</td>
+                        <td>TGT</td>
+                     </tr>
+                     <tr>
+                        <td>#3</td>
+                        <td>Source address byte</td>
+                        <td>EE</td>
+                        <td>SRC</td>
+                     </tr>
+                     <tr>
+                        <td>#4</td>
+                        <td>Additional length byte</td>
+                        <td>03</td>
+                        <td>LEN</td>
+                     </tr>
+                     <tr>
+                        <td>#5</td>
+                        <td>NegativeResponse Service Id</td>
+                        <td>7F</td>
+                        <td>NR</td>
+                     </tr>
+                     <tr>
+                        <td>#6</td>
+                        <td>ReadDataByIdentifier Request Service Id</td>
+                        <td>22</td>
+                        <td>RDBI</td>
+                     </tr>
+                     <tr>
+                        <td>#7</td>
+                        <td>ResponseCode=</td>
+                        <td>[requestOutOfRange</td>
+                        <td>31</td>
+                        <td>RC_ROOR</td>
+                     </tr>
+                     <tr>
+                        <td>incorrectMessageLength</td>
+                        <td>13</td>
+                        <td>RC_IML</td>
+                     </tr>
+                     <tr>
+                        <td>conditionsNotCorrect]</td>
+                        <td>22</td>
+                        <td>RC_CNC</td>
+                     </tr>
+                     <tr>
+                        <td>#8</td>
+                        <td>Checksum</td>
+                        <td>00-FF</td>
+                        <td>CS</td>
+                     </tr>
+                  </tbody>
+               </table>
+<p>6.1.3   <strong>Parameter Definition</strong>
+            </p>
+<p>CPR_052 The parameter <strong>recordDataIdentifier (RDI_)</strong> in the ReadDataByIdentifier request message identifies a data record.</p>
+<p>▼M3</p>
+<p>CPR_053 recordDataIdentifier values defined by this document are shown in the table below.</p>
+<p>The recordDataIdentifier table consists of five columns and multiple lines.</p>
+<dl><dt>—</dt><dd>The 1st column (Hex) includes the ‘Hex Value’ assigned to the recordDataIdentifier specified in the 3rd column.</dd><dt>—</dt><dd>The 2nd column (Data element) specifies the data element of Appendix 1 on which the recordDataIdentifier is based (transcoding is sometimes necessary).</dd><dt>—</dt><dd>The 3rd column (Description) specifies the corresponding recordDataIdentifier name.</dd><dt>—</dt><dd>The 4th column (Access rights) specifies the access rights to this recordDataIdentifier.</dd><dt>—</dt><dd>The 5th column (Mnemonic) specifies the mnemonic of this recordDataIdentifier.</dd></dl>
+
+
+
+
+<p></p>
+<p></p><p>
+                  <em>Table 28</em>
+               </p><p>
+                  <strong>Definition of recordDataIdentifier values</strong>
+               </p><table>
+                  <tbody>
+                     <tr>
+                        <td>Hex</td>
+                        <td>Data element</td>
+                        <td>
+                           <p>recordDataIdentifier Name</p>
+                           <p>(see format in Section 8.2)</p>
+                        </td>
+                        <td>
+                           <p>Access rights</p>
+                           <p>(Read/Write)</p>
+                        </td>
+                        <td>Mnemonic</td>
+                     </tr>
+                     <tr>
+                        <td>F90B</td>
+                        <td>CurrentDateTime</td>
+                        <td>TimeDate</td>
+                        <td>R/W</td>
+                        <td>RDI_TD</td>
+                     </tr>
+                     <tr>
+                        <td>F912</td>
+                        <td>HighResOdometer</td>
+                        <td>HighResolutionTotalVehicleDistance</td>
+                        <td>R/W</td>
+                        <td>RDI_HRTVD</td>
+                     </tr>
+                     <tr>
+                        <td>F918</td>
+                        <td>K-ConstantOfRecordingEquipment</td>
+                        <td>Kfactor</td>
+                        <td>R/W</td>
+                        <td>RDI_KF</td>
+                     </tr>
+                     <tr>
+                        <td>F91C</td>
+                        <td>L-TyreCircumference</td>
+                        <td>LfactorTyreCircumference</td>
+                        <td>R/W</td>
+                        <td>RDI_LF</td>
+                     </tr>
+                     <tr>
+                        <td>F91D</td>
+                        <td>W-VehicleCharacteristicConstant</td>
+                        <td>WvehicleCharacteristicFactor</td>
+                        <td>R/W</td>
+                        <td>RDI_WVCF</td>
+                     </tr>
+                     <tr>
+                        <td>F921</td>
+                        <td>TyreSize</td>
+                        <td>TyreSize</td>
+                        <td>R/W</td>
+                        <td>RDI_TS</td>
+                     </tr>
+                     <tr>
+                        <td>F922</td>
+                        <td>nextCalibrationDate</td>
+                        <td>NextCalibrationDate</td>
+                        <td>R/W</td>
+                        <td>RDI_NCD</td>
+                     </tr>
+                     <tr>
+                        <td>F92C</td>
+                        <td>SpeedAuthorised</td>
+                        <td>SpeedAuthorised</td>
+                        <td>R/W</td>
+                        <td>RDI_SA</td>
+                     </tr>
+                     <tr>
+                        <td>F97D</td>
+                        <td>vehicleRegistrationNation</td>
+                        <td>RegisteringMemberState</td>
+                        <td>R/W</td>
+                        <td>RDI_RMS</td>
+                     </tr>
+                     <tr>
+                        <td>F97E</td>
+                        <td>VehicleRegistrationNumber</td>
+                        <td>VehicleRegistrationNumber</td>
+                        <td>R/W</td>
+                        <td>RDI_ VRN</td>
+                     </tr>
+                     <tr>
+                        <td>F190</td>
+                        <td>VehicleIdentificationNumber</td>
+                        <td>VIN</td>
+                        <td>R/W</td>
+                        <td>RDI_ VIN</td>
+                     </tr>
+                     <tr>
+                        <td>F9D0</td>
+                        <td>SensorSerialNumber</td>
+                        <td>MotionSensorSerialNumber</td>
+                        <td>R</td>
+                        <td>RDI_SSN</td>
+                     </tr>
+                     <tr>
+                        <td>F9D1</td>
+                        <td>RemoteCommunicationModuleSerialNumber</td>
+                        <td>RemoteCommunicationFacilitySerialNumber</td>
+                        <td>R</td>
+                        <td>RDI_RCSN</td>
+                     </tr>
+                     <tr>
+                        <td>F9D2</td>
+                        <td>SensorGNSSSerialNumber</td>
+                        <td>ExternalGNSSFacilitySerialNumber</td>
+                        <td>R</td>
+                        <td>RDI_GSSN</td>
+                     </tr>
+                     <tr>
+                        <td>F9D3</td>
+                        <td>SealDataVu</td>
+                        <td>SmartTachographSealsSerialNumber</td>
+                        <td>R/W</td>
+                        <td>RDI_SDV</td>
+                     </tr>
+                     <tr>
+                        <td>F9D4</td>
+                        <td>VuSerialNumber</td>
+                        <td>VuSerialNumber</td>
+                        <td>R</td>
+                        <td>RDI_VSN</td>
+                     </tr>
+                     <tr>
+                        <td>F9D5</td>
+                        <td>ByDefaultLoadType</td>
+                        <td>ByDefaultLoadType</td>
+                        <td>R/W</td>
+                        <td>RDI_BDLT</td>
+                     </tr>
+                     <tr>
+                        <td>F9D6</td>
+                        <td>TachographCardsGen1Suppression</td>
+                        <td>TachographCardsGen1Suppression</td>
+                        <td>R/W</td>
+                        <td>RDI_TCG1S</td>
+                     </tr>
+                     <tr>
+                        <td>F9D7</td>
+                        <td>VehiclePosition</td>
+                        <td>VehiclePosition</td>
+                        <td>R</td>
+                        <td>RDI_VP</td>
+                     </tr>
+                     <tr>
+                        <td>F9D8</td>
+                        <td>LastCalibrationCountry</td>
+                        <td>CalibrationCountry</td>
+                        <td>R</td>
+                        <td>RDI_CC</td>
+                     </tr>
+                  </tbody>
+               </table>
+<p>▼B</p>
+<p>CPR_054 The parameter <strong>dataRecord (DREC_)</strong> is used by the ReadDataByIdentifier positive response message to provide the data record value identified by the recordDataIdentifier to the client (tester). Data formats are specified in section 8. Additional user optional dataRecords including VU specific input, internal and output data may be implemented, but are not defined in this document.</p>
+<p>6.2.   <strong>WriteDataByIdentifier service</strong>
+            </p>
+<p>6.2.1   <strong>Message description</strong>
+            </p>
+<p>CPR_056 The WriteDataByIdentifier service is used by the client to write data record values to a server. The data are identified by a recordDataIdentifier. It is the VU manufacturer&#39;s responsibility that the server conditions are met when performing this service. To update the parameters listed in Table 28 the VU must be in CALIBRATION mode.</p>
+<p>6.2.2   <strong>Message format</strong>
+            </p>
+<p>CPR_057 The message formats for the WriteDataByIdentifier primitives are detailed in the following tables.</p>
+<p></p>
+<p></p><p>
+                  <em>Table 29</em>
+               </p><p>
+                  <strong>WriteDataByIdentifier Request Message</strong>
+               </p><table>
+                  <tbody>
+                     <tr>
+                        <td>Byte #</td>
+                        <td>Parameter Name</td>
+                        <td>Hex Value</td>
+                        <td>Mnemonic</td>
+                     </tr>
+                     <tr>
+                        <td>#1</td>
+                        <td>Format byte — physical addressing</td>
+                        <td>80</td>
+                        <td>FMT</td>
+                     </tr>
+                     <tr>
+                        <td>#2</td>
+                        <td>Target address byte</td>
+                        <td>EE</td>
+                        <td>TGT</td>
+                     </tr>
+                     <tr>
+                        <td>#3</td>
+                        <td>Source address byte</td>
+                        <td>tt</td>
+                        <td>SRC</td>
+                     </tr>
+                     <tr>
+                        <td>#4</td>
+                        <td>Additional length byte</td>
+                        <td>m + 3</td>
+                        <td>LEN</td>
+                     </tr>
+                     <tr>
+                        <td>#5</td>
+                        <td>WriteDataByIdentifier Request Service Id</td>
+                        <td>2E</td>
+                        <td>WDBI</td>
+                     </tr>
+                     <tr>
+                        <td>#6 to #7</td>
+                        <td>recordDataIdentifier = [a value from Table 28]</td>
+                        <td>xxxx</td>
+                        <td>RDI_…</td>
+                     </tr>
+                     <tr>
+                        <td>#8 to m + 7</td>
+                        <td>dataRecord[] =</td>
+                        <td>[data#1</td>
+                        <td>xx</td>
+                        <td>DREC_DATA1</td>
+                     </tr>
+                     <tr>
+                        <td>:</td>
+                        <td>:</td>
+                        <td>:</td>
+                     </tr>
+                     <tr>
+                        <td>data#m]</td>
+                        <td>xx</td>
+                        <td>DREC_DATAm</td>
+                     </tr>
+                     <tr>
+                        <td>#m + 8</td>
+                        <td>Checksum</td>
+                        <td>00-FF</td>
+                        <td>CS</td>
+                     </tr>
+                  </tbody>
+               </table>
+<p></p>
+<p></p><p>
+                  <em>Table 30</em>
+               </p><p>
+                  <strong>WriteDataByIdentifier Positive Response Message</strong>
+               </p><table>
+                  <tbody>
+                     <tr>
+                        <td>Byte #</td>
+                        <td>Parameter Name</td>
+                        <td>Hex Value</td>
+                        <td>Mnemonic</td>
+                     </tr>
+                     <tr>
+                        <td>#1</td>
+                        <td>Format byte — physical addressing</td>
+                        <td>80</td>
+                        <td>FMT</td>
+                     </tr>
+                     <tr>
+                        <td>#2</td>
+                        <td>Target address byte</td>
+                        <td>tt</td>
+                        <td>TGT</td>
+                     </tr>
+                     <tr>
+                        <td>#3</td>
+                        <td>Source address byte</td>
+                        <td>EE</td>
+                        <td>SRC</td>
+                     </tr>
+                     <tr>
+                        <td>#4</td>
+                        <td>Additional length byte</td>
+                        <td>03</td>
+                        <td>LEN</td>
+                     </tr>
+                     <tr>
+                        <td>#5</td>
+                        <td>WriteDataByIdentifier Positive Response Service Id</td>
+                        <td>6E</td>
+                        <td>WDBIPR</td>
+                     </tr>
+                     <tr>
+                        <td>#6 to #7</td>
+                        <td>recordDataIdentifier = [the same value as bytes #6 and #7 Table 29]</td>
+                        <td>xxxx</td>
+                        <td>RDI_…</td>
+                     </tr>
+                     <tr>
+                        <td>#8</td>
+                        <td>Checksum</td>
+                        <td>00-FF</td>
+                        <td>CS</td>
+                     </tr>
+                  </tbody>
+               </table>
+<p></p>
+<p></p><p>
+                  <em>Table 31</em>
+               </p><p>
+                  <strong>WriteDataByIdentifier Negative Response Message</strong>
+               </p><table>
+                  <tbody>
+                     <tr>
+                        <td>Byte #</td>
+                        <td>Parameter Name</td>
+                        <td>Hex Value</td>
+                        <td>Mnemonic</td>
+                     </tr>
+                     <tr>
+                        <td>#1</td>
+                        <td>Format byte — physical addressing</td>
+                        <td>80</td>
+                        <td>FMT</td>
+                     </tr>
+                     <tr>
+                        <td>#2</td>
+                        <td>Target address byte</td>
+                        <td>tt</td>
+                        <td>TGT</td>
+                     </tr>
+                     <tr>
+                        <td>#3</td>
+                        <td>Source address byte</td>
+                        <td>EE</td>
+                        <td>SRC</td>
+                     </tr>
+                     <tr>
+                        <td>#4</td>
+                        <td>Additional length byte</td>
+                        <td>03</td>
+                        <td>LEN</td>
+                     </tr>
+                     <tr>
+                        <td>#5</td>
+                        <td>NegativeResponse Service Id</td>
+                        <td>7F</td>
+                        <td>NR</td>
+                     </tr>
+                     <tr>
+                        <td>#6</td>
+                        <td>WriteDataByIdentifier Request Service Id</td>
+                        <td>2E</td>
+                        <td>WDBI</td>
+                     </tr>
+                     <tr>
+                        <td>#7</td>
+                        <td>ResponseCode=</td>
+                        <td>[requestOutOfRange</td>
+                        <td>31</td>
+                        <td>RC_ROOR</td>
+                     </tr>
+                     <tr>
+                        <td>incorrectMessageLength</td>
+                        <td>13</td>
+                        <td>RC_IML</td>
+                     </tr>
+                     <tr>
+                        <td>conditionsNotCorrect]</td>
+                        <td>22</td>
+                        <td>RC_CNC</td>
+                     </tr>
+                     <tr>
+                        <td>#8</td>
+                        <td>Checksum</td>
+                        <td>00-FF</td>
+                        <td>CS</td>
+                     </tr>
+                  </tbody>
+               </table>
+<p>6.2.3   <strong>Parameter definition</strong>
+            </p>
+<p>The parameter <strong>recordDataIdentifier (RDI_)</strong> is defined in Table 28.</p>
+<p>The parameter <strong>dataRecord (DREC_)</strong> is used by the WriteDataByIdentifier request message to provide the data record values identified by the recordDataIdentifier to the server (VU). Data formats are specified in section 8.</p>
+<p>7.   <strong>CONTROL OF TEST PULSES — INPUT/OUTPUT CONTROL FUNCTIONAL UNIT</strong>
+            </p>
+<p>The services available are detailed in the following table:</p>
+<p></p>
+<p></p><p>
+                  <em>Table 32</em>
+               </p><p>
+                  <strong>Input/Output Control functional unit</strong>
+               </p><table>
+                  <tbody>
+                     <tr>
+                        <td>Service name</td>
+                        <td>Description</td>
+                     </tr>
+                     <tr>
+                        <td>InputOutputControlByIdentifier</td>
+                        <td>The client requests the control of an input/output specific to the server.</td>
+                     </tr>
+                  </tbody>
+               </table>
+<p>7.1.   <strong>InputOutputControlByIdentifier service</strong>
+            </p>
+<p>7.1.1   <strong>Message description</strong>
+            </p>
+<p>There is a connection via the front connector which allows test pulses to be controlled or monitored using a suitable tester.</p>
+<p>CPR_058 This calibration I/O signal line can be configured by K-line command using the InputOutputControlByIdentifier service to select the required input or output function for the line. The available states of the line are:</p>
+<dl><dt>—</dt><dd>disabled,</dd><dt>—</dt><dd>speedSignalInput, where the calibration I/O signal line is used to input a speed signal (test signal) replacing the motion sensor speed signal, this function is not available in CONTROL mode,</dd><dt>—</dt><dd>realTimeSpeedSignalOutputSensor, where the calibration I/O signal line is used to output the speed signal of the motion sensor,</dd><dt>—</dt><dd>RTCOutput, where the calibration I/O signal line is used to output the UTC clock signal, this function is not available in CONTROL mode.</dd></dl>
+
+
+
+<p>CPR_059 The vehicle unit must have entered an adjustment session and must be in CALIBRATION or CONTROL mode to configure the state of the line. When the VU is in CALIBRATION mode, the four states of the line can be selected (disabled, speedSignalInput, realTimeSpeedSignalOutputSensor, RTCOutput). When the VU is in CONTROL mode, only two states of the lines can be selected (disabled, realTimeSpeedOutputSensor). On exit of the adjustment session or of the CALIBRATION or CONTROL mode the vehicle unit must ensure the calibration I/O signal line is returned to the ‘disabled’ (default) state.</p>
+<p>CPR_060 If speed pulses are received at the real time speed signal input line of the VU while the calibration I/O signal line is set to input then the calibration I/O signal line shall be set to output or returned to the disabled state.</p>
+<p>CPR_061 The sequence shall be:</p>
+<dl><dt>—</dt><dd>Establish communications by StartCommunication Service</dd><dt>—</dt><dd>Enter an adjustment session by StartDiagnosticSession Service and be in CALIBRATION or CONTROL mode of operation (the order of these two operation is not important).</dd><dt>—</dt><dd>Change the state of the output by InputOutputControlByIdentifier Service.</dd></dl>
+
+
+<p>7.1.2   <strong>Message format</strong>
+            </p>
+<p>CPR_062 The message formats for the InputOutputControlByIdentifier primitives are detailed in the following tables.</p>
+<p></p>
+<p></p><p>
+                  <em>Table 33</em>
+               </p><p>
+                  <strong>InputOutputControlByIdentifier Request Message</strong>
+               </p><table>
+                  <tbody>
+                     <tr>
+                        <td>Byte #</td>
+                        <td>Parameter Name</td>
+                        <td>Hex Value</td>
+                        <td>Mnemonic</td>
+                     </tr>
+                     <tr>
+                        <td>#1</td>
+                        <td>Format byte — physical addressing</td>
+                        <td>80</td>
+                        <td>FMT</td>
+                     </tr>
+                     <tr>
+                        <td>#2</td>
+                        <td>Target address byte</td>
+                        <td>EE</td>
+                        <td>TGT</td>
+                     </tr>
+                     <tr>
+                        <td>#3</td>
+                        <td>Source address byte</td>
+                        <td>tt</td>
+                        <td>SRC</td>
+                     </tr>
+                     <tr>
+                        <td>#4</td>
+                        <td>Additional length byte</td>
+                        <td>xx</td>
+                        <td>LEN</td>
+                     </tr>
+                     <tr>
+                        <td>#5</td>
+                        <td>InputOutputControlByIdentifier Request Sid</td>
+                        <td>2F</td>
+                        <td>IOCBI</td>
+                     </tr>
+                     <tr>
+                        <td>#6 and #7</td>
+                        <td>InputOutputIdentifier = [CalibrationInputOutput]</td>
+                        <td>F960</td>
+                        <td>IOI_CIO</td>
+                     </tr>
+                     <tr>
+                        <td>
+                           <p>#8 or</p>
+                           <p>#8 to #9</p>
+                        </td>
+                        <td>ControlOptionRecord = [</td>
+                        <td></td>
+                        <td>COR_…</td>
+                     </tr>
+                     <tr>
+                        <td>inputOutputControlParameter — one value from Table 36</td>
+                        <td>xx</td>
+                        <td>IOCP_…</td>
+                     </tr>
+                     <tr>
+                        <td>controlState — one value from Table 37 (see note below)]</td>
+                        <td>xx</td>
+                        <td>CS_…</td>
+                     </tr>
+                     <tr>
+                        <td>#9 or #10</td>
+                        <td>Checksum</td>
+                        <td>00-FF</td>
+                        <td>CS</td>
+                     </tr>
+                  </tbody>
+               </table>
+<p>
+               <em>Note:</em> The controlState parameter is present only in some cases (see 7.1.3).</p>
+<p></p>
+<p></p><p>
+                  <em>Table 34</em>
+               </p><p>
+                  <strong>InputOutputControlByIdentifier Positive Response Message</strong>
+               </p><table>
+                  <tbody>
+                     <tr>
+                        <td>Byte #</td>
+                        <td>Parameter Name</td>
+                        <td>Hex Value</td>
+                        <td>Mnemonic</td>
+                     </tr>
+                     <tr>
+                        <td>#1</td>
+                        <td>Format byte — physical addressing</td>
+                        <td>80</td>
+                        <td>FMT</td>
+                     </tr>
+                     <tr>
+                        <td>#2</td>
+                        <td>Target address byte</td>
+                        <td>tt</td>
+                        <td>TGT</td>
+                     </tr>
+                     <tr>
+                        <td>#3</td>
+                        <td>Source address byte</td>
+                        <td>EE</td>
+                        <td>SRC</td>
+                     </tr>
+                     <tr>
+                        <td>#4</td>
+                        <td>Additional length byte</td>
+                        <td>xx</td>
+                        <td>LEN</td>
+                     </tr>
+                     <tr>
+                        <td>#5</td>
+                        <td>inputOutputControlByIdentifier Positive Response SId</td>
+                        <td>6F</td>
+                        <td>IOCBIPR</td>
+                     </tr>
+                     <tr>
+                        <td>#6 and #7</td>
+                        <td>inputOutputIdentifier = [CalibrationInputOutput]</td>
+                        <td>F960</td>
+                        <td>IOI_CIO</td>
+                     </tr>
+                     <tr>
+                        <td>
+                           <p>#8 or</p>
+                           <p>#8 to #9</p>
+                        </td>
+                        <td>controlStatusRecord = [</td>
+                        <td></td>
+                        <td>CSR_</td>
+                     </tr>
+                     <tr>
+                        <td>inputOutputControlParameter (same value as byte #8 Table 33)</td>
+                        <td>xx</td>
+                        <td>IOCP_…</td>
+                     </tr>
+                     <tr>
+                        <td>controlState (same value as byte #9 Table 33)] (if applicable)</td>
+                        <td>xx</td>
+                        <td>CS_…</td>
+                     </tr>
+                     <tr>
+                        <td>#9 or #10</td>
+                        <td>Checksum</td>
+                        <td>00-FF</td>
+                        <td>CS</td>
+                     </tr>
+                  </tbody>
+               </table>
+<p></p>
+<p></p><p>
+                  <em>Table 35</em>
+               </p><p>
+                  <strong>InputOutputControlByIdentifier Negative Response Message</strong>
+               </p><table>
+                  <tbody>
+                     <tr>
+                        <td>Byte #</td>
+                        <td>Parameter Name</td>
+                        <td>Hex Value</td>
+                        <td>Mnemonic</td>
+                     </tr>
+                     <tr>
+                        <td>#1</td>
+                        <td>Format byte — physical addressing</td>
+                        <td>80</td>
+                        <td>FMT</td>
+                     </tr>
+                     <tr>
+                        <td>#2</td>
+                        <td>Target address byte</td>
+                        <td>tt</td>
+                        <td>TGT</td>
+                     </tr>
+                     <tr>
+                        <td>#3</td>
+                        <td>Source address byte</td>
+                        <td>EE</td>
+                        <td>SRC</td>
+                     </tr>
+                     <tr>
+                        <td>#4</td>
+                        <td>Additional length byte</td>
+                        <td>03</td>
+                        <td>LEN</td>
+                     </tr>
+                     <tr>
+                        <td>#5</td>
+                        <td>negativeResponse Service Id</td>
+                        <td>7F</td>
+                        <td>NR</td>
+                     </tr>
+                     <tr>
+                        <td>#6</td>
+                        <td>inputOutputControlByIdentifier Request SId</td>
+                        <td>2F</td>
+                        <td>IOCBI</td>
+                     </tr>
+                     <tr>
+                        <td>#7</td>
+                        <td>responseCode=[</td>
+                        <td></td>
+                        <td></td>
+                     </tr>
+                     <tr>
+                        <td>incorrectMessageLength</td>
+                        <td>13</td>
+                        <td>RC_IML</td>
+                     </tr>
+                     <tr>
+                        <td>conditionsNotCorrect</td>
+                        <td>22</td>
+                        <td>RC_CNC</td>
+                     </tr>
+                     <tr>
+                        <td>requestOutOfRange</td>
+                        <td>31</td>
+                        <td>RC_ROOR</td>
+                     </tr>
+                     <tr>
+                        <td>deviceControlLimitsExceeded]</td>
+                        <td>7A</td>
+                        <td>RC_DCLE</td>
+                     </tr>
+                     <tr>
+                        <td>#8</td>
+                        <td>Checksum</td>
+                        <td>00-FF</td>
+                        <td>CS</td>
+                     </tr>
+                  </tbody>
+               </table>
+<p>7.1.3   <strong>Parameter definition</strong>
+            </p>
+<p>CPR_064 The parameter <strong>inputOutputControlParameter (IOCP_)</strong> is defined in the following table.</p>
+<p></p>
+<p></p><p>
+                  <em>Table 36</em>
+               </p><p>
+                  <strong>Definition of inputOutputControlParameter values</strong>
+               </p><table>
+                  <tbody>
+                     <tr>
+                        <td>Hex</td>
+                        <td>Description</td>
+                        <td>Mnemonic</td>
+                     </tr>
+                     <tr>
+                        <td>00</td>
+                        <td>
+                           <p>
+                              <strong>ReturnControlToECU</strong>
+                           </p>
+                           <p>This value shall indicate to the server (VU) that the tester does no longer have control about the calibration I/O signal line.</p>
+                        </td>
+                        <td>RCTECU</td>
+                     </tr>
+                     <tr>
+                        <td>01</td>
+                        <td>
+                           <p>
+                              <strong>ResetToDefault</strong>
+                           </p>
+                           <p>This value shall indicate to the server (VU) that it is requested to reset the calibration I/O signal line to its default state.</p>
+                        </td>
+                        <td>RTD</td>
+                     </tr>
+                     <tr>
+                        <td>03</td>
+                        <td>
+                           <p>
+                              <strong>ShortTermAdjustment</strong>
+                           </p>
+                           <p>This value shall indicate to the server (VU) that it is requested to adjust the calibration I/O signal line to the value included in the controlState parameter.</p>
+                        </td>
+                        <td>STA</td>
+                     </tr>
+                  </tbody>
+               </table>
+<p>CPR_065 The parameter <strong>controlState</strong> is present only when the inputOutputControlParameter is set to ShortTermAdjustment and is defined in the following table:</p>
+<p></p>
+<p></p><p>
+                  <em>Table 37</em>
+               </p><p>
+                  <strong>Definition of controlState values</strong>
+               </p><table>
+                  <tbody>
+                     <tr>
+                        <td>Mode</td>
+                        <td>Hex Value</td>
+                        <td>Description</td>
+                     </tr>
+                     <tr>
+                        <td>Disable</td>
+                        <td>00</td>
+                        <td>I/O line is disabled (default state)</td>
+                     </tr>
+                     <tr>
+                        <td>Enable</td>
+                        <td>01</td>
+                        <td>Enable calibration I/O line as speedSignalInput</td>
+                     </tr>
+                     <tr>
+                        <td>Enable</td>
+                        <td>02</td>
+                        <td>Enable calibration I/O line as realTimeSpeedSignalOutputSensor</td>
+                     </tr>
+                     <tr>
+                        <td>Enable</td>
+                        <td>03</td>
+                        <td>Enable calibration I/O line as RTCOutput</td>
+                     </tr>
+                  </tbody>
+               </table>
+<p>▼M3</p>
+<p>8.   <strong>ROUTINECONTROL SERVICE (TIME ADJUSTMENT)</strong>
+            </p>
+<dl><dt>8.1.</dt><dd>
+                  <p>
+                     <strong>Message description</strong>
+                  </p>
+                  <table>
+                     <tbody><tr>
+                        <td>CPR_065a</td>
+                        <td>
+                           <p>The service RoutineControl (TimeAdjustment) provides the ability to trigger an alignment of the VU clock to the time provided by the GNSS receiver.</p>
+                           <p>For the service RoutineControl (TimeAdjustment) execution the VU must be in CALIBRATION mode.</p>
+                           <p>
+                              <strong>Precondition</strong>: it is ensured that the VU is able to receive authenticated position messages from the GNSS receiver.</p>
+                           <p>As long the time adjustment is ongoing, the VU shall respond to the request RoutineControl, subfunction requestRoutineResults, with routineInfo = 0x78.</p>
+                           <p>Note: the time adjustment may take some time. The diagnostic tester shall request the time adjustment status by using the sub-function requestRoutineResults.</p>
+                        </td>
+                     </tr>
+                  </tbody></table>
+               </dd><dt>8.2.</dt><dd>
+                  <p>
+                     <strong>Message format</strong>
+                  </p>
+                  <table>
+                     <tbody><tr>
+                        <td>CPR_065b</td>
+                        <td>The message formats for the service RoutineControl (TimeAdjustment) and its primitives are detailed in the following tables.</td>
+                     </tr>
+                  </tbody></table>
+                  <p></p>
+                  <p></p><p>
+                        <em>Table 37a</em>
+                     </p><p>
+                        <strong>RoutineControl, routine (TimeAdjustment) Request Message, subfunction startRoutine</strong>
+                     </p><table>
+                        <tbody>
+                           <tr>
+                              <td>Byte #</td>
+                              <td>Parameter Name</td>
+                              <td>Hex Value</td>
+                              <td>Mnemonic</td>
+                           </tr>
+                           <tr>
+                              <td>#1</td>
+                              <td>Format byte - physical addressing</td>
+                              <td>80</td>
+                              <td>FMT</td>
+                           </tr>
+                           <tr>
+                              <td>#2</td>
+                              <td>Target address byte</td>
+                              <td>EE</td>
+                              <td>TGT</td>
+                           </tr>
+                           <tr>
+                              <td>#3</td>
+                              <td>Source address byte</td>
+                              <td>tt</td>
+                              <td>SRC</td>
+                           </tr>
+                           <tr>
+                              <td>#4</td>
+                              <td>Additional length byte</td>
+                              <td>xx</td>
+                              <td>LEN</td>
+                           </tr>
+                           <tr>
+                              <td>#5</td>
+                              <td>RoutineControl Request Sid</td>
+                              <td>31</td>
+                              <td>RC</td>
+                           </tr>
+                           <tr>
+                              <td>#6</td>
+                              <td>routineControlType = [startRoutine]</td>
+                              <td>01</td>
+                              <td>RCTP_STR</td>
+                           </tr>
+                           <tr>
+                              <td>#7 and #8</td>
+                              <td>routineIdentifier = [TimeAdjustment]</td>
+                              <td>0100</td>
+                              <td>RI_TA</td>
+                           </tr>
+                           <tr>
+                              <td>#9</td>
+                              <td>Checksum</td>
+                              <td>00-FF</td>
+                              <td>CS</td>
+                           </tr>
+                        </tbody>
+                     </table>
+                  <p></p>
+                  <p></p><p>
+                        <em>Table 37b</em>
+                     </p><p>
+                        <strong>RoutineControl, routine (TimeAdjustment), subfunction startRoutine, Positive Response Message</strong>
+                     </p><table>
+                        <tbody>
+                           <tr>
+                              <td>Byte #</td>
+                              <td>Parameter Name</td>
+                              <td>Hex Value</td>
+                              <td>Mnemonic</td>
+                           </tr>
+                           <tr>
+                              <td>#1</td>
+                              <td>Format byte – physical addressing</td>
+                              <td>80</td>
+                              <td>FMT</td>
+                           </tr>
+                           <tr>
+                              <td>#2</td>
+                              <td>Target address byte</td>
+                              <td>tt</td>
+                              <td>TGT</td>
+                           </tr>
+                           <tr>
+                              <td>#3</td>
+                              <td>Source address byte</td>
+                              <td>EE</td>
+                              <td>SRC</td>
+                           </tr>
+                           <tr>
+                              <td>#4</td>
+                              <td>Additional length byte</td>
+                              <td>xx</td>
+                              <td>LEN</td>
+                           </tr>
+                           <tr>
+                              <td>#5</td>
+                              <td>RoutineControl Positive Response Sid</td>
+                              <td>71</td>
+                              <td>RCPR</td>
+                           </tr>
+                           <tr>
+                              <td>#6</td>
+                              <td>routineControlType = [startRoutine]</td>
+                              <td>01</td>
+                              <td>RCTP_STR</td>
+                           </tr>
+                           <tr>
+                              <td>#7 and #8</td>
+                              <td>routineIdentifier= [TimeAdjustment]</td>
+                              <td>0100</td>
+                              <td>RI_TA</td>
+                           </tr>
+                           <tr>
+                              <td>#9</td>
+                              <td>Checksum</td>
+                              <td>00-FF</td>
+                              <td>CS</td>
+                           </tr>
+                        </tbody>
+                     </table>
+                  <p></p>
+                  <p></p><p>
+                        <em>Table 37c</em>
+                     </p><p>
+                        <strong>RoutineControl, routine (TimeAdjustment) Request Message, subfunction requestRoutineResults</strong>
+                     </p><table>
+                        <tbody>
+                           <tr>
+                              <td>Byte #</td>
+                              <td>Parameter Name</td>
+                              <td>Hex Value</td>
+                              <td>Mnemonic</td>
+                           </tr>
+                           <tr>
+                              <td>#1</td>
+                              <td>Format byte - physical addressing</td>
+                              <td>80</td>
+                              <td>FMT</td>
+                           </tr>
+                           <tr>
+                              <td>#2</td>
+                              <td>Target address byte</td>
+                              <td>EE</td>
+                              <td>TGT</td>
+                           </tr>
+                           <tr>
+                              <td>#3</td>
+                              <td>Source address byte</td>
+                              <td>tt</td>
+                              <td>SRC</td>
+                           </tr>
+                           <tr>
+                              <td>#4</td>
+                              <td>Additional length byte</td>
+                              <td>xx</td>
+                              <td>LEN</td>
+                           </tr>
+                           <tr>
+                              <td>#5</td>
+                              <td>RoutineControl Request Sid</td>
+                              <td>31</td>
+                              <td>RC</td>
+                           </tr>
+                           <tr>
+                              <td>#6</td>
+                              <td>routineControlType = [requestRoutineResults]</td>
+                              <td>03</td>
+                              <td>RCTP_RRR</td>
+                           </tr>
+                           <tr>
+                              <td>#7 and #8</td>
+                              <td>routineIdentifier= [TimeAdjustment]</td>
+                              <td>0100</td>
+                              <td>RI_TA</td>
+                           </tr>
+                           <tr>
+                              <td>#9</td>
+                              <td>Checksum</td>
+                              <td>00-FF</td>
+                              <td>CS</td>
+                           </tr>
+                        </tbody>
+                     </table>
+                  <p></p>
+                  <p></p><p>
+                        <em>Table 37d</em>
+                     </p><p>
+                        <strong>RoutineControl, routine (TimeAdjustment), subfunction requestRoutineResults, Positive Response Message</strong>
+                     </p><table>
+                        <tbody>
+                           <tr>
+                              <td>Byte #</td>
+                              <td>Parameter Name</td>
+                              <td>Hex Value</td>
+                              <td>Mnemonic</td>
+                           </tr>
+                           <tr>
+                              <td>#1</td>
+                              <td>Format byte – physical addressing</td>
+                              <td>80</td>
+                              <td>FMT</td>
+                           </tr>
+                           <tr>
+                              <td>#2</td>
+                              <td>Target address byte</td>
+                              <td>tt</td>
+                              <td>TGT</td>
+                           </tr>
+                           <tr>
+                              <td>#3</td>
+                              <td>Source address byte</td>
+                              <td>EE</td>
+                              <td>SRC</td>
+                           </tr>
+                           <tr>
+                              <td>#4</td>
+                              <td>Additional length byte</td>
+                              <td>xx</td>
+                              <td>LEN</td>
+                           </tr>
+                           <tr>
+                              <td>#5</td>
+                              <td>RoutineControl Positive Response Sid</td>
+                              <td>71</td>
+                              <td>RCPR</td>
+                           </tr>
+                           <tr>
+                              <td>#6</td>
+                              <td>routineControlType = [requestRoutineResults]</td>
+                              <td>03</td>
+                              <td>RCTP_RRR</td>
+                           </tr>
+                           <tr>
+                              <td>#7 and #8</td>
+                              <td>routineIdentifier= [TimeAdjustment]</td>
+                              <td>0100</td>
+                              <td>RI_TA</td>
+                           </tr>
+                           <tr>
+                              <td>#9</td>
+                              <td>routineInfo (see Table 37f)</td>
+                              <td>XX</td>
+                              <td>RINF_TA</td>
+                           </tr>
+                           <tr>
+                              <td>#10</td>
+                              <td>routineStatusRecord[] = routineStatus#1 (see Table 37g)</td>
+                              <td>XX</td>
+                              <td>RS_TA</td>
+                           </tr>
+                           <tr>
+                              <td>#11</td>
+                              <td>Checksum</td>
+                              <td>00-FF</td>
+                              <td>CS</td>
+                           </tr>
+                        </tbody>
+                     </table>
+                  <p></p>
+                  <p></p><p>
+                        <em>Table 37e</em>
+                     </p><p>
+                        <strong>RoutineControl, routine (TimeAdjustment) Negative Response Message</strong>
+                     </p><table>
+                        <tbody>
+                           <tr>
+                              <td>Byte #</td>
+                              <td>Parameter Name</td>
+                              <td>Hex Value</td>
+                              <td>Mnemonic</td>
+                           </tr>
+                           <tr>
+                              <td>#1</td>
+                              <td>Format byte – physical addressing</td>
+                              <td>80</td>
+                              <td>FMT</td>
+                           </tr>
+                           <tr>
+                              <td>#2</td>
+                              <td>Target address byte</td>
+                              <td>tt</td>
+                              <td>TGT</td>
+                           </tr>
+                           <tr>
+                              <td>#3</td>
+                              <td>Source address byte</td>
+                              <td>EE</td>
+                              <td>SRC</td>
+                           </tr>
+                           <tr>
+                              <td>#4</td>
+                              <td>Additional length byte</td>
+                              <td>03</td>
+                              <td>LEN</td>
+                           </tr>
+                           <tr>
+                              <td>#5</td>
+                              <td>negativeResponse Service Id</td>
+                              <td>7F</td>
+                              <td>NR</td>
+                           </tr>
+                           <tr>
+                              <td>#6</td>
+                              <td>inputOutputControlByIdentifier Request SId</td>
+                              <td>31</td>
+                              <td>RC</td>
+                           </tr>
+                           <tr>
+                              <td>#7</td>
+                              <td>
+                                 <p>responseCode=[</p>
+                                 <p>sub-functionNotSupported</p>
+                                 <p>incorrectMessageLengthOrInvalidFormat</p>
+                                 <p>conditionsNotCorrect</p>
+                                 <p>requestOutOfRange</p>
+                                 <p>]</p>
+                              </td>
+                              <td>
+                                 <p>12</p>
+                                 <p>13</p>
+                                 <p>22</p>
+                                 <p>31</p>
+                              </td>
+                              <td>
+                                 <p>SFNS</p>
+                                 <p>IMLOIF</p>
+                                 <p>CNC</p>
+                                 <p>ROOR</p>
+                              </td>
+                           </tr>
+                           <tr>
+                              <td>#8</td>
+                              <td>Checksum</td>
+                              <td>00-FF</td>
+                              <td>CS</td>
+                           </tr>
+                        </tbody>
+                     </table>
+                  <p></p>
+                  <p></p><p>
+                        <em>Table 37f</em>
+                     </p><p>
+                        <strong>RoutineControl, routine (TimeAdjustment), routineInfo</strong>
+                     </p><table>
+                        <tbody>
+                           <tr>
+                              <td>routineInfo</td>
+                              <td>Hex Value</td>
+                              <td>Description</td>
+                           </tr>
+                           <tr>
+                              <td>NormalExitWithResultAvailable</td>
+                              <td>61</td>
+                              <td>The routine was executed completely; additional routine results available.</td>
+                           </tr>
+                           <tr>
+                              <td>RoutineExecutionOngoing</td>
+                              <td>78</td>
+                              <td>The requested routine is still executed.</td>
+                           </tr>
+                        </tbody>
+                     </table>
+                  <p></p>
+                  <p></p><p>
+                        <em>Table 37g</em>
+                     </p><p>
+                        <strong>RoutineControl, routine (TimeAdjustment), routineStatus</strong>
+                     </p><table>
+                        <tbody>
+                           <tr>
+                              <td>Hex Value</td>
+                              <td>Test result</td>
+                              <td>Description</td>
+                           </tr>
+                           <tr>
+                              <td>01</td>
+                              <td>positive</td>
+                              <td>The time adjustment successfully finished.</td>
+                           </tr>
+                           <tr>
+                              <td>02..0F</td>
+                              <td></td>
+                              <td>RFU</td>
+                           </tr>
+                           <tr>
+                              <td>10</td>
+                              <td>negative</td>
+                              <td>No GNSS signal reception.</td>
+                           </tr>
+                           <tr>
+                              <td>11..7F</td>
+                              <td></td>
+                              <td>RFU</td>
+                           </tr>
+                           <tr>
+                              <td>80..FF</td>
+                              <td></td>
+                              <td>Manufacturer specific</td>
+                           </tr>
+                        </tbody>
+                     </table>
+               </dd></dl>
+
+<p>▼M3</p>
+<p>9.   <strong>DATARECORDS FORMATS</strong>
+            </p>
+<p>This section details:</p>
+<dl><dt>—</dt><dd>general rules that shall be applied to ranges of parameters transmitted by the vehicle unit to the tester,</dd><dt>—</dt><dd>formats that shall be used for data transferred via the Data Transmission Services described in section 6.</dd></dl>
+
+<table>
+               <tbody><tr>
+                  <td>CPR_067</td>
+                  <td>All parameters identified shall be supported by the VU.</td>
+               </tr>
+            </tbody></table>
+<table>
+               <tbody><tr>
+                  <td>CPR_068</td>
+                  <td>Data transmitted by the VU to the tester in response to a request message shall be of the measured type (i.e. current value of the requested parameter as measured or observed by the VU).</td>
+               </tr>
+            </tbody></table>
+<dl><dt>9.1.</dt><dd>
+                  <p>
+                     <strong>Transmitted parameter ranges</strong>
+                  </p>
+                  <table>
+                     <tbody><tr>
+                        <td>CPR_069</td>
+                        <td>Table 38 defines the ranges used to determine the validity of a transmitted parameter.</td>
+                     </tr>
+                  </tbody></table>
+                  <table>
+                     <tbody><tr>
+                        <td>CPR_070</td>
+                        <td>The values in the range ‘error indicator’ provide a means for the vehicle unit to immediately indicate that valid parametric data is not currently available due to some type of error in the tachograph.</td>
+                     </tr>
+                  </tbody></table>
+                  <table>
+                     <tbody><tr>
+                        <td>CPR_071</td>
+                        <td>The values in the range ‘not available’ provide a means for the vehicle unit to transmit a message which contains a parameter that is not available or not supported in that module. The values in the range ‘not requested’ provide a means for a device to transmit a command message and identify those parameters where no response is expected from the receiving device.</td>
+                     </tr>
+                  </tbody></table>
+                  <table>
+                     <tbody><tr>
+                        <td>CPR_072</td>
+                        <td>
+                           <p>If a component failure prevents the transmission of valid data for a parameter, the error indicator as described in Table 38 should be used in place of that parameter’s data. However, if the measured or calculated data has yielded a value that is valid yet exceeds the defined parameter range, the error indicator should not be used. The data should be transmitted using the appropriate minimum or maximum parameter value.</p>
+                           <p></p>
+                           <p></p><p>
+                                 <em>Table 38</em>
+                              </p><p>
+                                 <strong>dataRecords ranges</strong>
+                              </p><table>
+                                 <tbody>
+                                    <tr>
+                                       <td>Range Name</td>
+                                       <td>
+                                          <p>1 byte</p>
+                                          <p>(Hex value)</p>
+                                       </td>
+                                       <td>
+                                          <p>2 bytes</p>
+                                          <p>(Hex value)</p>
+                                       </td>
+                                       <td>
+                                          <p>4 bytes</p>
+                                          <p>(Hex Value)</p>
+                                       </td>
+                                       <td>ASCII</td>
+                                    </tr>
+                                    <tr>
+                                       <td>Valid signal</td>
+                                       <td>00 to FA</td>
+                                       <td>0000 to FAFF</td>
+                                       <td>00000000 to FAFFFFFF</td>
+                                       <td>1 to 254</td>
+                                    </tr>
+                                    <tr>
+                                       <td>Parameter specific indicator</td>
+                                       <td>FB</td>
+                                       <td>FB00 to FBFF</td>
+                                       <td>FB000000 to FBFFFFFF</td>
+                                       <td>none</td>
+                                    </tr>
+                                    <tr>
+                                       <td>Reserved range for future indicator bits</td>
+                                       <td>FC to FD</td>
+                                       <td>FC00 to FDFF</td>
+                                       <td>FC000000 to FDFFFFFF</td>
+                                       <td>none</td>
+                                    </tr>
+                                    <tr>
+                                       <td>Error indicator</td>
+                                       <td>FE</td>
+                                       <td>FE00 to FEFF</td>
+                                       <td>FE000000 to FEFFFFFF</td>
+                                       <td>0</td>
+                                    </tr>
+                                    <tr>
+                                       <td>Not available or not requested</td>
+                                       <td>FF</td>
+                                       <td>FF00 to FFFF</td>
+                                       <td>FF000000 to FFFFFFFF</td>
+                                       <td>FF</td>
+                                    </tr>
+                                 </tbody>
+                              </table>
+                        </td>
+                     </tr>
+                  </tbody></table>
+                  <table>
+                     <tbody><tr>
+                        <td>CPR_073</td>
+                        <td>For parameters coded in ASCII, the ASCII character ‘*’ is reserved as a delimiter.</td>
+                     </tr>
+                  </tbody></table>
+               </dd><dt>9.2.  1)  2)</dt><dd>
+                  <p>
+                     <strong>dataRecords formats</strong>
+                  </p>
+                  <p>Table 39 to Table 42 below detail the formats that shall be used via the ReadDataByIdentifier and WriteDataByIdentifier Services.</p>
+                  <table>
+                     <tbody><tr>
+                        <td>CPR_074</td>
+                        <td>
+                           <p>Table 39 provides the length, resolution and operating range for each parameter identified by its recordDataIdentifier:</p>
+                           <p></p>
+                           <p></p><p>
+                                 <em>Table 39</em>
+                              </p><p>
+                                 <strong>Format of dataRecords</strong>
+                              </p><table>
+                                 <tbody>
+                                    <tr>
+                                       <td>Parameter Name</td>
+                                       <td>Data length (bytes)</td>
+                                       <td>Resolution</td>
+                                       <td>Operating range</td>
+                                    </tr>
+                                    <tr>
+                                       <td>TimeDate</td>
+                                       <td>8</td>
+                                       <td>See details in Table 40</td>
+                                    </tr>
+                                    <tr>
+                                       <td>HighResolutionTotalVehicleDistance</td>
+                                       <td>4</td>
+                                       <td>5 m/bit gain, 0 m offset</td>
+                                       <td>0 to +21 055 406 km</td>
+                                    </tr>
+                                    <tr>
+                                       <td>Kfactor</td>
+                                       <td>2</td>
+                                       <td>0.001 pulse/m /bit gain, 0 offset</td>
+                                       <td>0 to 64.255 pulse/m</td>
+                                    </tr>
+                                    <tr>
+                                       <td>LfactorTyreCircumference</td>
+                                       <td>2</td>
+                                       <td>0.125 10-3 m /bit gain, 0 offset</td>
+                                       <td>0 to 8.031 m</td>
+                                    </tr>
+                                    <tr>
+                                       <td>WvehicleCharacteristicFactor</td>
+                                       <td>2</td>
+                                       <td>0.001 pulse/m /bit gain, 0 offset</td>
+                                       <td>0 to 64.255 pulse/m</td>
+                                    </tr>
+                                    <tr>
+                                       <td>TyreSize</td>
+                                       <td>15</td>
+                                       <td>ASCII</td>
+                                       <td>ASCII</td>
+                                    </tr>
+                                    <tr>
+                                       <td>NextCalibrationDate</td>
+                                       <td>3</td>
+                                       <td>See details in Table 41</td>
+                                    </tr>
+                                    <tr>
+                                       <td>SpeedAuthorised</td>
+                                       <td>2</td>
+                                       <td>1/256 km/h/bit gain, 0 offset</td>
+                                       <td>0 to 250.996 km/h</td>
+                                    </tr>
+                                    <tr>
+                                       <td>RegisteringMemberState</td>
+                                       <td>3</td>
+                                       <td>ASCII</td>
+                                       <td>ASCII</td>
+                                    </tr>
+                                    <tr>
+                                       <td>VehicleRegistrationNumber</td>
+                                       <td>14</td>
+                                       <td>See details in Table 42</td>
+                                    </tr>
+                                    <tr>
+                                       <td>VIN</td>
+                                       <td>17</td>
+                                       <td>ASCII</td>
+                                       <td>ASCII</td>
+                                    </tr>
+                                    <tr>
+                                       <td>SealDataVu</td>
+                                       <td>55</td>
+                                       <td>See details in Table 43</td>
+                                    </tr>
+                                    <tr>
+                                       <td>ByDefaultLoadType</td>
+                                       <td>1</td>
+                                       <td>See details in Table 44</td>
+                                    </tr>
+                                    <tr>
+                                       <td>VuSerialNumber</td>
+                                       <td>8</td>
+                                       <td>See details in Table 45</td>
+                                    </tr>
+                                    <tr>
+                                       <td>SensorSerialNumber</td>
+                                       <td>8</td>
+                                       <td>See details in Table 45</td>
+                                    </tr>
+                                    <tr>
+                                       <td>SensorGNSSSerialNumber</td>
+                                       <td>8</td>
+                                       <td>See details in Table 45</td>
+                                    </tr>
+                                    <tr>
+                                       <td>RemoteCommunicationModuleSerialNumber</td>
+                                       <td>8</td>
+                                       <td>See details in Table 45</td>
+                                    </tr>
+                                    <tr>
+                                       <td>TachographCardsGen1Suppression</td>
+                                       <td>2</td>
+                                       <td>See details in Table 46</td>
+                                    </tr>
+                                    <tr>
+                                       <td>VehiclePosition</td>
+                                       <td>14</td>
+                                       <td>See details in Table 47</td>
+                                    </tr>
+                                    <tr>
+                                       <td>CalibrationCountry</td>
+                                       <td>3</td>
+                                       <td>ASCII</td>
+                                       <td>NationAlpha as defined in Appendix 1</td>
+                                    </tr>
+                                 </tbody>
+                              </table>
+                        </td>
+                     </tr>
+                  </tbody></table>
+                  <table>
+                     <tbody><tr>
+                        <td>CPR_075</td>
+                        <td>
+                           <p>Table 40 details the formats of the different bytes of the TimeDate parameter:</p>
+                           <p></p>
+                           <p></p><p>
+                                 <em>Table 40</em>
+                              </p><p>
+                                 <strong>Detailed format of TimeDate (recordDataIdentifier value # F90B)</strong>
+                              </p><table>
+                                 <tbody>
+                                    <tr>
+                                       <td>Byte</td>
+                                       <td>Parameter definition</td>
+                                       <td>Resolution</td>
+                                       <td>Operating range</td>
+                                    </tr>
+                                    <tr>
+                                       <td>1</td>
+                                       <td>Seconds</td>
+                                       <td>0.25 s/bit gain, 0 s offset</td>
+                                       <td>0 to 59.75s</td>
+                                    </tr>
+                                    <tr>
+                                       <td>2</td>
+                                       <td>Minutes</td>
+                                       <td>1 min/bit gain, 0 min offset</td>
+                                       <td>0 to 59 min</td>
+                                    </tr>
+                                    <tr>
+                                       <td>3</td>
+                                       <td>Hours</td>
+                                       <td>1 h/bit gain, 0 h offset</td>
+                                       <td>0 to 23 h</td>
+                                    </tr>
+                                    <tr>
+                                       <td>4</td>
+                                       <td>Month</td>
+                                       <td>1 month/bit gain, 0 month offset</td>
+                                       <td>1 to 12 month</td>
+                                    </tr>
+                                    <tr>
+                                       <td>5</td>
+                                       <td>Day</td>
+                                       <td>0.25 day/bit gain, 0 day offset (see NOTE below Table 41)</td>
+                                       <td>0.25 to 31.75 day</td>
+                                    </tr>
+                                    <tr>
+                                       <td>6</td>
+                                       <td>Year</td>
+                                       <td>
+                                          <p>1 year/bit gain, +1985 year offset</p>
+                                          <p>(see NOTE below Table 41)</p>
+                                       </td>
+                                       <td>1985 to 2235 year</td>
+                                    </tr>
+                                    <tr>
+                                       <td>7</td>
+                                       <td>Local Minute Offset</td>
+                                       <td>1 min/bit gain, -125 min offset</td>
+                                       <td>-59 to +59 min</td>
+                                    </tr>
+                                    <tr>
+                                       <td>8</td>
+                                       <td>Local Hour Offset</td>
+                                       <td>1 h/bit gain, -125 h offset</td>
+                                       <td>- 23 to +23 h</td>
+                                    </tr>
+                                 </tbody>
+                              </table>
+                        </td>
+                     </tr>
+                  </tbody></table>
+                  <table>
+                     <tbody><tr>
+                        <td>CPR_076</td>
+                        <td>
+                           <p>Table 41 details the formats of the different bytes of the NextCalibrationDate parameter:</p>
+                           <p></p>
+                           <p></p><p>
+                                 <em>Table 41</em>
+                              </p><p>
+                                 <strong>Detailed format of NextCalibrationDate (recordDataIdentifier value # F922)</strong>
+                              </p><table>
+                                 <tbody>
+                                    <tr>
+                                       <td>Byte</td>
+                                       <td>Parameter definition</td>
+                                       <td>Resolution</td>
+                                       <td>Operating range</td>
+                                    </tr>
+                                    <tr>
+                                       <td>1</td>
+                                       <td>Month</td>
+                                       <td>1 month/bit gain, 0 month offset</td>
+                                       <td>1 to 12 month</td>
+                                    </tr>
+                                    <tr>
+                                       <td>2</td>
+                                       <td>Day</td>
+                                       <td>0.25 day/bit gain, 0 day offset (see NOTE below)</td>
+                                       <td>0.25 to 31.75 day</td>
+                                    </tr>
+                                    <tr>
+                                       <td>3</td>
+                                       <td>Year</td>
+                                       <td>
+                                          <p>1 year/bit gain, +1985 year offset</p>
+                                          <p>(see NOTE below)</p>
+                                       </td>
+                                       <td>1985 to 2235 year</td>
+                                    </tr>
+                                 </tbody>
+                              </table>
+                           <p>
+                              <em>NOTE</em> concerning the use of the ‘Day’ parameter:</p>
+                           <div>
+                              <div>1)</div>
+                              <p>A value of 0 for the date is null. The values 1, 2, 3, and 4 are used to identify the first day of the month; 5, 6, 7, and 8 identify the second day of the month; etc.</p>
+                           </div>
+                           <div>
+                              <div>2)</div>
+                              <p>This parameter does not influence or change the hours parameter above.</p>
+                           </div>
+                           <p>
+                              <em>NOTE</em> concerning the use of the ‘Year’ parameter:</p>
+                           <p>A value of 0 for the year identifies the year 1985; a value of 1 identifies 1986; etc.</p>
+                        </td>
+                     </tr>
+                  </tbody></table>
+                  <table>
+                     <tbody><tr>
+                        <td>CPR_078</td>
+                        <td>
+                           <p>Table 42 details the formats of the different bytes of the VehicleRegistrationNumber parameter:</p>
+                           <p></p>
+                           <p></p><p>
+                                 <em>Table 42</em>
+                              </p><p>
+                                 <strong>Detailed format of VehicleRegistrationNumber (recordDataIdentifier value # F97E)</strong>
+                              </p><table>
+                                 <tbody>
+                                    <tr>
+                                       <td>Byte</td>
+                                       <td>Parameter definition</td>
+                                       <td>Resolution</td>
+                                       <td>Operating range</td>
+                                    </tr>
+                                    <tr>
+                                       <td>1</td>
+                                       <td>Code Page (as defined in Appendix 1)</td>
+                                       <td>not applicable</td>
+                                       <td>VehicleRegistrationNumber</td>
+                                    </tr>
+                                    <tr>
+                                       <td>2 – 14</td>
+                                       <td>Vehicle Registration Number (as defined in Appendix 1)</td>
+                                       <td>not applicable</td>
+                                       <td>VehicleRegistrationNumber</td>
+                                    </tr>
+                                 </tbody>
+                              </table>
+                        </td>
+                     </tr>
+                  </tbody></table>
+                  <table>
+                     <tbody><tr>
+                        <td>CPR_090</td>
+                        <td>
+                           <p>Table 43 details the formats of the different bytes of the SealDataVu parameter:</p>
+                           <p></p>
+                           <p></p><p>
+                                 <em>Table 43</em>
+                              </p><p>
+                                 <strong>Detailed format of SealDataVu (recordDataIdentifier value # F9D3)</strong>
+                              </p><table>
+                                 <tbody>
+                                    <tr>
+                                       <td>Byte</td>
+                                       <td>Parameter definition</td>
+                                       <td>Resolution</td>
+                                       <td>Operating range</td>
+                                    </tr>
+                                    <tr>
+                                       <td>1 – 11</td>
+                                       <td>sealRecord1. Format SealRecord as defined in Appendix 1.</td>
+                                       <td>not applicable</td>
+                                       <td>SealRecord</td>
+                                    </tr>
+                                    <tr>
+                                       <td>12 - 22</td>
+                                       <td>sealRecord2. Format SealRecord as defined in Appendix 1.</td>
+                                       <td>not applicable</td>
+                                       <td>SealRecord</td>
+                                    </tr>
+                                    <tr>
+                                       <td>23 – 33</td>
+                                       <td>sealRecord3. Format SealRecord as defined in Appendix 1.</td>
+                                       <td>not applicable</td>
+                                       <td>SealRecord</td>
+                                    </tr>
+                                    <tr>
+                                       <td>34 – 44</td>
+                                       <td>sealRecord4. Format SealRecord as defined in Appendix 1.</td>
+                                       <td>not applicable</td>
+                                       <td>SealRecord</td>
+                                    </tr>
+                                    <tr>
+                                       <td>45 – 55</td>
+                                       <td>sealRecord5. Format SealRecord as defined in Appendix 1.</td>
+                                       <td>not applicable</td>
+                                       <td>SealRecord</td>
+                                    </tr>
+                                 </tbody>
+                              </table>
+                           <p>
+                              <em>NOTE:</em> If there are less than 5 seals available the value of the EquipmentType in all unused sealRecords shall be set to 15, i.e. unused.</p>
+                        </td>
+                     </tr>
+                  </tbody></table>
+                  <table>
+                     <tbody><tr>
+                        <td>CPR_091</td>
+                        <td>
+                           <p>Table 44 details the formats of the different bytes of the ByDefaultLoadType parameter:</p>
+                           <p></p>
+                           <p></p><p>
+                                 <em>Table 44</em>
+                              </p><p>
+                                 <strong>Detailed format of ByDefaultLoadType (recordDataIdentifier value # F9D5)</strong>
+                              </p><table>
+                                 <tbody>
+                                    <tr>
+                                       <td>Byte</td>
+                                       <td>Parameter definition</td>
+                                       <td>Resolution</td>
+                                       <td>Operating range</td>
+                                    </tr>
+                                    <tr>
+                                       <td>1</td>
+                                       <td>
+                                          <p>loadType</p>
+                                          <p>&#39;00&#39;H: Undefined load type</p>
+                                          <p>&#39;01&#39;H: Goods</p>
+                                          <p>&#39;02&#39;H: Passengers</p>
+                                       </td>
+                                       <td>not applicable</td>
+                                       <td>&#39;00&#39;H to &#39;02&#39;H</td>
+                                    </tr>
+                                 </tbody>
+                              </table>
+                        </td>
+                     </tr>
+                  </tbody></table>
+                  <table>
+                     <tbody><tr>
+                        <td>CPR_092</td>
+                        <td>
+                           <p>Table 45 details the formats of the different bytes of the VuSerialNumber, SensorSerialNumber, SensorGNSSSerialNumber and RemoteCommunicationModuleSerialNumber parameters:</p>
+                           <p></p>
+                           <p></p><p>
+                                 <em>Table 45</em>
+                              </p><p>
+                                 <strong>Detailed format of VuSerialNumber, SensorSerialNumber, SensorGNSSSerialNumber and RemoteCommunicationModuleSerialNumber (recordDataIdentifier values # F9D4, F9D0, F9D2, F9D1)</strong>
+                              </p><table>
+                                 <tbody>
+                                    <tr>
+                                       <td>Byte</td>
+                                       <td>Parameter definition</td>
+                                       <td>Resolution</td>
+                                       <td>Operating range</td>
+                                    </tr>
+                                    <tr>
+                                       <td>1</td>
+                                       <td>
+                                          <p>VuSerialNumber, SensorSerialNumber, SensorGNSSSerialNumber and RemoteCommunicationModuleSerialNumber:</p>
+                                          <p>format ExtendedSerialNumber as defined in Appendix 1.</p>
+                                       </td>
+                                       <td>not applicable</td>
+                                       <td>ExtendedSerialNumber</td>
+                                    </tr>
+                                 </tbody>
+                              </table>
+                        </td>
+                     </tr>
+                  </tbody></table>
+                  <table>
+                     <tbody><tr>
+                        <td>CPR_093</td>
+                        <td>
+                           <p>Table 46 details the formats of the different bytes of the TachographCardsGen1Suppression parameter:</p>
+                           <p></p>
+                           <p></p><p>
+                                 <em>Table 46</em>
+                              </p><p>
+                                 <strong>Detailed format of TachographCardsGen1Suppression (recordDataIdentifier value # F9D6)</strong>
+                              </p><table>
+                                 <tbody>
+                                    <tr>
+                                       <td>Byte</td>
+                                       <td>Parameter definition</td>
+                                       <td>Resolution</td>
+                                       <td>Operating range</td>
+                                    </tr>
+                                    <tr>
+                                       <td>1-2</td>
+                                       <td>TachographCardsGen1Suppression. Format TachographCardsGen1Suppression as defined in Appendix 1.</td>
+                                       <td>not applicable</td>
+                                       <td>&#39;0000&#39;H, &#39;A5E3&#39;H</td>
+                                    </tr>
+                                 </tbody>
+                              </table>
+                        </td>
+                     </tr>
+                  </tbody></table>
+                  <table>
+                     <tbody><tr>
+                        <td>CPR_094</td>
+                        <td>
+                           <p>Table 47 details the formats of the different bytes of the VehiclePosition parameter.</p>
+                           <p></p>
+                           <p></p><p>
+                                 <em>Table 47</em>
+                              </p><p>
+                                 <strong>Detailed format of VehiclePosition (recordDataIdentifier value # F9D7)</strong>
+                              </p><table>
+                                 <tbody>
+                                    <tr>
+                                       <td>Byte</td>
+                                       <td>Parameter definition</td>
+                                       <td>Resolution</td>
+                                       <td>Operating range</td>
+                                    </tr>
+                                    <tr>
+                                       <td>1 - 4</td>
+                                       <td>Time stamp of the vehicle position was determined.</td>
+                                       <td>Not applicable</td>
+                                       <td>TimeReal</td>
+                                    </tr>
+                                    <tr>
+                                       <td>5</td>
+                                       <td>GNSS accuracy</td>
+                                       <td>Not applicable</td>
+                                       <td>GNSSAccuracy</td>
+                                    </tr>
+                                    <tr>
+                                       <td>6 - 11</td>
+                                       <td>Vehicle position</td>
+                                       <td>Not applicable</td>
+                                       <td>GeoCoordinates</td>
+                                    </tr>
+                                    <tr>
+                                       <td>12</td>
+                                       <td>Authentication status</td>
+                                       <td>Not applicable</td>
+                                       <td>PositionAuthenticationStatus</td>
+                                    </tr>
+                                    <tr>
+                                       <td>13</td>
+                                       <td>Current country</td>
+                                       <td>Not applicable</td>
+                                       <td>NationNumeric</td>
+                                    </tr>
+                                    <tr>
+                                       <td>14</td>
+                                       <td>Current region</td>
+                                       <td>Not applicable</td>
+                                       <td>RegionNumeric</td>
+                                    </tr>
+                                 </tbody>
+                              </table>
+                           <p>
+                              <strong>Note:</strong> after vehicle position update, the update of current country and region may be delayed.</p>
+                        </td>
+                     </tr>
+                  </tbody></table>
+               </dd></dl>
+
+<p>▼B</p>
+
+</body></html>

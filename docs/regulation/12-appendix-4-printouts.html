@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html><head>
+
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+      <title>Consolidated TEXT: 32016R0799 — EN — 21.08.2023</title>
+      
+   
+</head>
+<body>
+<h1 id="appendix-4-printouts">Appendix 4: PRINTOUTS</h1>
+
+<nav><h2>Table of Contents</h2><ol><li><a href="#generalities">GENERALITIES</a></li><li><a href="#data-blocks-specification">DATA BLOCKS SPECIFICATION</a></li><li><a href="#printout-specifications">PRINTOUT SPECIFICATIONS</a></li><li><a href="#driver-activities-from-card-daily-printout">Driver Activities from Card Daily Printout</a></li><li><a href="#driver-activities-from-vu-daily-printout">Driver Activities from VU Daily Printout</a></li><li><a href="#events-and-faults-from-card-printout">Events and Faults from Card Printout</a></li><li><a href="#events-and-faults-from-vu-printout">Events and Faults from VU Printout</a></li><li><a href="#technical-data-printout">Technical data Printout</a></li><li><a href="#over-speeding-printout">Over speeding Printout</a></li><li><a href="#history-of-inserted-cards">History of inserted cards</a></li></ol></nav>
+<p>1.   <strong>GENERALITIES</strong>
+            </p>
+<p>Each printout is built up by chaining various data blocks, possibly identified with a block identifier.</p>
+<p>A data block contains one or more records, possibly identified with a record identifier.</p>
+<table>
+               <tbody><tr>
+                  <td>PRT_001</td>
+                  <td>When a block identifier immediately precedes a record identifier, the record identifier is not printed.</td>
+               </tr>
+            </tbody></table>
+<table>
+               <tbody><tr>
+                  <td>PRT_002</td>
+                  <td>In the case where a data item is unknown, or must not be printed for data access rights reasons, spaces are printed instead.</td>
+               </tr>
+            </tbody></table>
+<table>
+               <tbody><tr>
+                  <td>PRT_003</td>
+                  <td>If the content of a complete line is unknown, or need not to be printed, then the complete line is omitted.</td>
+               </tr>
+            </tbody></table>
+<table>
+               <tbody><tr>
+                  <td>PRT_004</td>
+                  <td>Numerical data fields are printed right aligned, with a space separator for thousands and millions, and without leading zeros.</td>
+               </tr>
+            </tbody></table>
+<p>▼M3</p>
+<table>
+               <tbody><tr>
+                  <td>PRT_005</td>
+                  <td>String data fields are printed left aligned and filled up with spaces to data item length, or truncated to data item length when needed. Names and addresses may be printed in two lines.</td>
+               </tr>
+            </tbody></table>
+<p>▼B</p>
+<table>
+               <tbody><tr>
+                  <td>PRT_006</td>
+                  <td>In case of a line-break due to a long text a special character (dot at middle line-height, ‘•’) should be printed as first character in the new line.</td>
+               </tr>
+            </tbody></table>
+<p>2.   <strong>DATA BLOCKS SPECIFICATION</strong>
+            </p>
+<p>In this chapter the following format notation conventions have been used:</p>
+<dl><dt>—</dt><dd>Characters printed in bold denote plain text to be printed (printing remains in normal characters),</dd><dt>—</dt><dd>Normal characters denote variables (pictograms or data) to be replaced by their values for printing,</dd><dt>—</dt><dd>Variable names have been padded with underscores to show the data item length available for the variable,</dd><dt>—</dt><dd>Dates are specified with a ‘dd/mm/yyyy’ (day, month, year) format. A ‘dd.mm.yyyy’ format may also be used,</dd><dt>—</dt><dd>
+                  <div>The term ‘card identification’ denotes the composition of: the type of card through a card pictograms combination, the card issuing Member State code, a forward slash character and the card number with the replacement index and the renewal index separated with a space:</div>
+                  <div>
+                     <p></p>
+                     <p></p><table>
+                           <tbody>
+                              <tr>
+                                 <td>P</td>
+                                 <td></td>
+                                 <td>x</td>
+                                 <td>x</td>
+                                 <td>x</td>
+                                 <td>/</td>
+                                 <td>x</td>
+                                 <td>x</td>
+                                 <td>x</td>
+                                 <td>x</td>
+                                 <td>x</td>
+                                 <td>x</td>
+                                 <td>x</td>
+                                 <td>x</td>
+                                 <td>x</td>
+                                 <td>x</td>
+                                 <td>x</td>
+                                 <td>x</td>
+                                 <td>x</td>
+                                 <td>x</td>
+                                 <td></td>
+                                 <td>x</td>
+                                 <td></td>
+                                 <td>x</td>
+                              </tr>
+                              <tr>
+                                 <td>Card Pictogram combination</td>
+                                 <td>Issuing Member State code</td>
+                                 <td></td>
+                                 <td>
+                                    <p>First 14 characters of card number</p>
+                                    <p>(possibly including a consecutive index)</p>
+                                 </td>
+                                 <td></td>
+                                 <td>Replacement index</td>
+                                 <td></td>
+                                 <td>Renewal index</td>
+                              </tr>
+                           </tbody>
+                        </table>
+                  </div>
+               </dd></dl>
+
+
+
+
+<p>▼M3</p>
+<dl><dt>—</dt><dd>In a data block, the text after ‘pi=’ refers to the corresponding pictogram or pictogram combination defined in Appendix 3,</dd><dt>—</dt><dd>When printed after the longitude and the latitude of a recorded position, or after the timestamp when the position was determined, the pictogram indicates that this position has been computed from authenticated navigation messages,</dd><dt>—</dt><dd>* data only available in GEN2 tachographs (all versions),</dd><dt>—</dt><dd>** data only available in GEN2 version 2.</dd></dl>
+
+
+
+<p>▼B</p>
+<p>PRT_007 Printouts shall use the following data blocks and/or data records, in accordance with the following meanings and formats:</p>
+<p>►(1)(2)(3)(4)(5) M3   ►(1)(2)(3) M3   ►(1)(2) M1   ►(3)(4) M3   ►(1)(2)(3)(4) M3   ►(1) M3</p>
+<p>3.   <strong>PRINTOUT SPECIFICATIONS</strong>
+            </p>
+<p>In this chapter the following notation conventions have been used:</p>
+<p></p>
+<p></p><table>
+                  <tbody>
+                     <tr>
+                        <td>N</td>
+                        <td>Print block or record number N</td>
+                     </tr>
+                     <tr>
+                        <td></td>
+                     </tr>
+                     <tr>
+                        <td>N</td>
+                        <td>Print block or record number N repeated as many times as necessary</td>
+                     </tr>
+                     <tr>
+                        <td></td>
+                     </tr>
+                     <tr>
+                        <td>X/Y</td>
+                        <td>Print blocks or records X and/or Y as needed, and repeating as many times as necessary.</td>
+                     </tr>
+                  </tbody>
+               </table>
+<p>3.1.   <strong>Driver Activities from Card Daily Printout</strong>
+            </p>
+<p>▼M3</p>
+<p>PRT_008 The driver activities from card daily printout shall be in accordance with the following format:</p>
+
+<p>▼B</p>
+<p>3.2.   <strong>Driver Activities from VU Daily Printout</strong>
+            </p>
+<p>▼M3</p>
+<p>PRT_009 The driver activities from VU daily printout shall be in accordance with the following format:</p>
+
+<p>▼B</p>
+<p>3.3.   <strong>Events and Faults from Card Printout</strong>
+            </p>
+<p>PRT_010 The events and faults from card printout shall be in accordance with the following format:</p>
+<p></p>
+<p></p><table>
+                  <tbody>
+                     <tr>
+                        <td>1</td>
+                        <td>Date and time at which the document is printed</td>
+                     </tr>
+                     <tr>
+                        <td>2</td>
+                        <td>Type of printout</td>
+                     </tr>
+                     <tr>
+                        <td>3</td>
+                        <td>Controller identification (if a control card is inserted in the VU + GEN)</td>
+                     </tr>
+                     <tr>
+                        <td>3</td>
+                        <td>Driver identification (from card subject of the printout)</td>
+                     </tr>
+                     <tr>
+                        <td>4</td>
+                        <td>Vehicle identification (vehicle from which printout is taken)</td>
+                     </tr>
+                     <tr>
+                        <td>12.2</td>
+                        <td>Events delimiter</td>
+                     </tr>
+                     <tr>
+                        <td>12.4</td>
+                        <td>Event records (all events stored on the card)</td>
+                     </tr>
+                     <tr>
+                        <td>12.3</td>
+                        <td>Faults delimiter</td>
+                     </tr>
+                     <tr>
+                        <td>12.4</td>
+                        <td>Fault records (all faults stored on the card)</td>
+                     </tr>
+                     <tr>
+                        <td>22.1</td>
+                        <td>Control place</td>
+                     </tr>
+                     <tr>
+                        <td>22.2</td>
+                        <td>Controller&#39;s signature</td>
+                     </tr>
+                     <tr>
+                        <td>22.5</td>
+                        <td>Driver&#39;s signature</td>
+                     </tr>
+                  </tbody>
+               </table>
+<p>3.4.   <strong>Events and Faults from VU Printout</strong>
+            </p>
+<p>PRT_011 The events and faults from VU printout shall be in accordance with the following format:</p>
+<p></p>
+<p></p><table>
+                  <tbody>
+                     <tr>
+                        <td>1</td>
+                        <td>Date and time at which the document is printed</td>
+                     </tr>
+                     <tr>
+                        <td>2</td>
+                        <td>Type of printout</td>
+                     </tr>
+                     <tr>
+                        <td>3</td>
+                        <td>Card holder identification (for all cards inserted in VU + GEN)</td>
+                     </tr>
+                     <tr>
+                        <td>4</td>
+                        <td>Vehicle identification (vehicle from which printout is taken)</td>
+                     </tr>
+                     <tr>
+                        <td>13.2</td>
+                        <td>Events delimiter</td>
+                     </tr>
+                     <tr>
+                        <td>13.4</td>
+                        <td>Event records (All Events stored or on-going in the VU)</td>
+                     </tr>
+                     <tr>
+                        <td>13.3</td>
+                        <td>Faults delimiter</td>
+                     </tr>
+                     <tr>
+                        <td>13.4</td>
+                        <td>Fault records (All Faults stored or on-going in the VU)</td>
+                     </tr>
+                     <tr>
+                        <td>22.1</td>
+                        <td>Control place</td>
+                     </tr>
+                     <tr>
+                        <td>22.2</td>
+                        <td>Controller&#39;s signature</td>
+                     </tr>
+                     <tr>
+                        <td>22.5</td>
+                        <td>Driver&#39;s signature</td>
+                     </tr>
+                  </tbody>
+               </table>
+<p>3.5.   <strong>Technical data Printout</strong>
+            </p>
+<p>▼M3</p>
+<p>PRT_012 The technical data printout shall be in accordance with the following format:</p>
+
+<p>▼B</p>
+<p>3.6.   <strong>Over speeding Printout</strong>
+            </p>
+<p>PRT_013 The over speeding printout shall be in accordance with the following format:</p>
+<p></p>
+<p></p><table>
+                  <tbody>
+                     <tr>
+                        <td>1</td>
+                        <td>Date and time at which the document is printed</td>
+                     </tr>
+                     <tr>
+                        <td>2</td>
+                        <td>Type of printout</td>
+                     </tr>
+                     <tr>
+                        <td>3</td>
+                        <td>Card holder identification (for all cards inserted in VU + GEN)</td>
+                     </tr>
+                     <tr>
+                        <td>4</td>
+                        <td>Vehicle identification (vehicle from which printout is taken)</td>
+                     </tr>
+                     <tr>
+                        <td>20</td>
+                        <td>Over speeding control information</td>
+                     </tr>
+                     <tr>
+                        <td>21.1</td>
+                        <td>Over speeding data identifier</td>
+                     </tr>
+                     <tr>
+                        <td>21.4/21.5</td>
+                        <td>First over speeding after the last calibration</td>
+                     </tr>
+                     <tr>
+                        <td>21.2</td>
+                        <td>Over speeding data identifier</td>
+                     </tr>
+                     <tr>
+                        <td>21.4/21.5</td>
+                        <td>The 5 most serious over speeding events over the last 365 days</td>
+                     </tr>
+                     <tr>
+                        <td>21.3</td>
+                        <td>Over speeding data identifier</td>
+                     </tr>
+                     <tr>
+                        <td>21.4/21.5</td>
+                        <td>The most serious over speeding for each of the last 10 days of occurrence</td>
+                     </tr>
+                     <tr>
+                        <td>22.1</td>
+                        <td>Control place</td>
+                     </tr>
+                     <tr>
+                        <td>22.2</td>
+                        <td>Controller&#39;s signature</td>
+                     </tr>
+                     <tr>
+                        <td>22.5</td>
+                        <td>Driver&#39;s signature</td>
+                     </tr>
+                  </tbody>
+               </table>
+<p>3.7.   <strong>Historic of inserted cards</strong>
+            </p>
+<p>▼M3</p>
+<p>PRT_014 The historic of inserted cards printout shall be in accordance with the following format:</p>
+
+<p>▼B</p>
+
+</body></html>
