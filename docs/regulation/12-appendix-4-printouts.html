@@ -1,342 +1,943 @@
 <!DOCTYPE html>
-<html><head>
+<html>
+<head>
 
       <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
       <title>Consolidated TEXT: 32016R0799 — EN — 21.08.2023</title>
-      
+      <link type="text/css" rel="stylesheet" href="http://publications.europa.eu/resource/presentation-style-sheet/clg/clg.css"/>
    
 </head>
 <body>
-<h1 id="appendix-4-printouts">Appendix 4: PRINTOUTS</h1>
-
-<nav><h2>Table of Contents</h2><ol><li><a href="#generalities">GENERALITIES</a></li><li><a href="#data-blocks-specification">DATA BLOCKS SPECIFICATION</a></li><li><a href="#printout-specifications">PRINTOUT SPECIFICATIONS</a></li><li><a href="#driver-activities-from-card-daily-printout">Driver Activities from Card Daily Printout</a></li><li><a href="#driver-activities-from-vu-daily-printout">Driver Activities from VU Daily Printout</a></li><li><a href="#events-and-faults-from-card-printout">Events and Faults from Card Printout</a></li><li><a href="#events-and-faults-from-vu-printout">Events and Faults from VU Printout</a></li><li><a href="#technical-data-printout">Technical data Printout</a></li><li><a href="#over-speeding-printout">Over speeding Printout</a></li><li><a href="#history-of-inserted-cards">History of inserted cards</a></li></ol></nav>
-<p>1.   <strong>GENERALITIES</strong>
+<p class="title-annex-1" id="id-305d8ada-956e-4f8a-b550-36618decc8a7">Appendix 4</p>
+<p class="title-gr-seq-level-1" id="id-b8d8f0bf-3a43-463c-81fc-e20087ccd6bf">
+               <span class="boldface">PRINTOUTS</span>
             </p>
-<p>Each printout is built up by chaining various data blocks, possibly identified with a block identifier.</p>
-<p>A data block contains one or more records, possibly identified with a record identifier.</p>
-<table>
-               <tbody><tr>
-                  <td>PRT_001</td>
-                  <td>When a block identifier immediately precedes a record identifier, the record identifier is not printed.</td>
+<table width="100%" border="0" cellspacing="0" cellpadding="3">
+               <colgroup><col width="15%"/>
+               <col width="85%"/>
+               </colgroup><tbody><tr>
+                  <td colspan="2">
+                     <p class="title-toc" id="id-95b6c70e-3e8c-4db7-93fb-e49dd194dae4">TABLE OF CONTENT</p>
+                  </td>
+               </tr>
+               <tr>
+                  <td valign="top">
+                     <p class="toc-item">1.</p>
+                  </td>
+                  <td valign="top">
+                     <p class="toc-item">GENERALITIES</p>
+                  </td>
+               </tr>
+               <tr>
+                  <td valign="top">
+                     <p class="toc-item">2.</p>
+                  </td>
+                  <td valign="top">
+                     <p class="toc-item">DATA BLOCKS SPECIFICATION</p>
+                  </td>
+               </tr>
+               <tr>
+                  <td valign="top">
+                     <p class="toc-item">3.</p>
+                  </td>
+                  <td valign="top">
+                     <p class="toc-item">PRINTOUT SPECIFICATIONS</p>
+                  </td>
+               </tr>
+               <tr>
+                  <td valign="top">
+                     <p class="toc-item">3.1.</p>
+                  </td>
+                  <td valign="top">
+                     <p class="toc-item">Driver Activities from Card Daily Printout</p>
+                  </td>
+               </tr>
+               <tr>
+                  <td valign="top">
+                     <p class="toc-item">3.2.</p>
+                  </td>
+                  <td valign="top">
+                     <p class="toc-item">Driver Activities from VU Daily Printout</p>
+                  </td>
+               </tr>
+               <tr>
+                  <td valign="top">
+                     <p class="toc-item">3.3.</p>
+                  </td>
+                  <td valign="top">
+                     <p class="toc-item">Events and Faults from Card Printout</p>
+                  </td>
+               </tr>
+               <tr>
+                  <td valign="top">
+                     <p class="toc-item">3.4.</p>
+                  </td>
+                  <td valign="top">
+                     <p class="toc-item">Events and Faults from VU Printout</p>
+                  </td>
+               </tr>
+               <tr>
+                  <td valign="top">
+                     <p class="toc-item">3.5.</p>
+                  </td>
+                  <td valign="top">
+                     <p class="toc-item">Technical data Printout</p>
+                  </td>
+               </tr>
+               <tr>
+                  <td valign="top">
+                     <p class="toc-item">3.6.</p>
+                  </td>
+                  <td valign="top">
+                     <p class="toc-item">Over speeding Printout</p>
+                  </td>
+               </tr>
+               <tr>
+                  <td valign="top">
+                     <p class="toc-item">3.7</p>
+                  </td>
+                  <td valign="top">
+                     <p class="toc-item">History of inserted cards</p>
+                  </td>
                </tr>
             </tbody></table>
-<table>
-               <tbody><tr>
-                  <td>PRT_002</td>
-                  <td>In the case where a data item is unknown, or must not be printed for data access rights reasons, spaces are printed instead.</td>
-               </tr>
-            </tbody></table>
-<table>
-               <tbody><tr>
-                  <td>PRT_003</td>
-                  <td>If the content of a complete line is unknown, or need not to be printed, then the complete line is omitted.</td>
-               </tr>
-            </tbody></table>
-<table>
-               <tbody><tr>
-                  <td>PRT_004</td>
-                  <td>Numerical data fields are printed right aligned, with a space separator for thousands and millions, and without leading zeros.</td>
-               </tr>
-            </tbody></table>
-<p>▼M3</p>
-<table>
-               <tbody><tr>
-                  <td>PRT_005</td>
-                  <td>String data fields are printed left aligned and filled up with spaces to data item length, or truncated to data item length when needed. Names and addresses may be printed in two lines.</td>
-               </tr>
-            </tbody></table>
-<p>▼B</p>
-<table>
-               <tbody><tr>
-                  <td>PRT_006</td>
-                  <td>In case of a line-break due to a long text a special character (dot at middle line-height, ‘•’) should be printed as first character in the new line.</td>
-               </tr>
-            </tbody></table>
-<p>2.   <strong>DATA BLOCKS SPECIFICATION</strong>
+<p class="title-gr-seq-level-2" id="id-e97e6cce-47aa-4ae7-81df-86e029f9a08c">1.   <span class="boldface">GENERALITIES</span>
             </p>
-<p>In this chapter the following format notation conventions have been used:</p>
-<dl><dt>—</dt><dd>Characters printed in bold denote plain text to be printed (printing remains in normal characters),</dd><dt>—</dt><dd>Normal characters denote variables (pictograms or data) to be replaced by their values for printing,</dd><dt>—</dt><dd>Variable names have been padded with underscores to show the data item length available for the variable,</dd><dt>—</dt><dd>Dates are specified with a ‘dd/mm/yyyy’ (day, month, year) format. A ‘dd.mm.yyyy’ format may also be used,</dd><dt>—</dt><dd>
-                  <div>The term ‘card identification’ denotes the composition of: the type of card through a card pictograms combination, the card issuing Member State code, a forward slash character and the card number with the replacement index and the renewal index separated with a space:</div>
-                  <div>
-                     <p></p>
-                     <p></p><table>
-                           <tbody>
+<p class="norm">Each printout is built up by chaining various data blocks, possibly identified with a block identifier.</p>
+<p class="norm">A data block contains one or more records, possibly identified with a record identifier.</p>
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+               <colgroup><col width="10%"/>
+               <col width="90%"/>
+               </colgroup><tbody><tr>
+                  <td valign="top">
+                     <p class="dlist-term">PRT_001</p>
+                  </td>
+                  <td valign="top">
+                     <p class="dlist-definition">When a block identifier immediately precedes a record identifier, the record identifier is not printed.</p>
+                  </td>
+               </tr>
+            </tbody></table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+               <colgroup><col width="10%"/>
+               <col width="90%"/>
+               </colgroup><tbody><tr>
+                  <td valign="top">
+                     <p class="dlist-term">PRT_002</p>
+                  </td>
+                  <td valign="top">
+                     <p class="dlist-definition">In the case where a data item is unknown, or must not be printed for data access rights reasons, spaces are printed instead.</p>
+                  </td>
+               </tr>
+            </tbody></table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+               <colgroup><col width="10%"/>
+               <col width="90%"/>
+               </colgroup><tbody><tr>
+                  <td valign="top">
+                     <p class="dlist-term">PRT_003</p>
+                  </td>
+                  <td valign="top">
+                     <p class="dlist-definition">If the content of a complete line is unknown, or need not to be printed, then the complete line is omitted.</p>
+                  </td>
+               </tr>
+            </tbody></table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+               <colgroup><col width="10%"/>
+               <col width="90%"/>
+               </colgroup><tbody><tr>
+                  <td valign="top">
+                     <p class="dlist-term">PRT_004</p>
+                  </td>
+                  <td valign="top">
+                     <p class="dlist-definition">Numerical data fields are printed right aligned, with a space separator for thousands and millions, and without leading zeros.</p>
+                  </td>
+               </tr>
+            </tbody></table>
+<p class="modref">
+               <a href="http://publications.europa.eu/resource/celex/32021R1228" onclick="window.open(this.href,&#39;_blank&#39;); return false;" title="32021R1228: REPLACED">▼M3</a>
+            </p>
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+               <colgroup><col width="10%"/>
+               <col width="90%"/>
+               </colgroup><tbody><tr>
+                  <td valign="top">
+                     <p class="dlist-term">PRT_005</p>
+                  </td>
+                  <td valign="top">
+                     <p class="dlist-definition">String data fields are printed left aligned and filled up with spaces to data item length, or truncated to data item length when needed. Names and addresses may be printed in two lines.</p>
+                  </td>
+               </tr>
+            </tbody></table>
+<p class="modref">
+               <a href="http://publications.europa.eu/resource/celex/32016R0799" onclick="window.open(this.href,&#39;_blank&#39;); return false;" title="32016R0799">▼B</a>
+            </p>
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+               <colgroup><col width="10%"/>
+               <col width="90%"/>
+               </colgroup><tbody><tr>
+                  <td valign="top">
+                     <p class="dlist-term">PRT_006</p>
+                  </td>
+                  <td valign="top">
+                     <p class="dlist-definition">In case of a line-break due to a long text a special character (dot at middle line-height, ‘•’) should be printed as first character in the new line.</p>
+                  </td>
+               </tr>
+            </tbody></table>
+<p class="title-gr-seq-level-2" id="id-09cfb67a-7201-4e7e-8047-73a27b3e2deb">2.   <span class="boldface">DATA BLOCKS SPECIFICATION</span>
+            </p>
+<p class="norm">In this chapter the following format notation conventions have been used:</p>
+<div class="grid-container grid-list">
+               <div class="list grid-list-column-1">
+                  <span>— </span>
+               </div>
+               <div class="grid-list-column-2">
+                  <div class="list">Characters printed in <span class="boldface">bold</span> denote plain text to be printed (printing remains in normal characters),</div>
+               </div>
+            </div>
+<div class="grid-container grid-list">
+               <div class="list grid-list-column-1">
+                  <span>— </span>
+               </div>
+               <div class="grid-list-column-2">
+                  <div class="list">Normal characters denote variables (pictograms or data) to be replaced by their values for printing,</div>
+               </div>
+            </div>
+<div class="grid-container grid-list">
+               <div class="list grid-list-column-1">
+                  <span>— </span>
+               </div>
+               <div class="grid-list-column-2">
+                  <div class="list">Variable names have been padded with underscores to show the data item length available for the variable,</div>
+               </div>
+            </div>
+<div class="grid-container grid-list">
+               <div class="list grid-list-column-1">
+                  <span>— </span>
+               </div>
+               <div class="grid-list-column-2">
+                  <div class="list">Dates are specified with a ‘dd/mm/yyyy’ (day, month, year) format. A ‘dd.mm.yyyy’ format may also be used,</div>
+               </div>
+            </div>
+<div class="grid-container grid-list">
+               <div class="list grid-list-column-1">
+                  <span>— </span>
+               </div>
+               <div class="grid-list-column-2">
+                  <div class="list">The term ‘card identification’ denotes the composition of: the type of card through a card pictograms combination, the card issuing Member State code, a forward slash character and the card number with the replacement index and the renewal index separated with a space:</div>
+                  <div class="list">
+                     <p>
+                        <br/>
+                     </p>
+                     <div class="centered">
+                        <p>
+                           <br/>
+                        </p>
+                        <table width="240" border="1" cellpadding="2" cellspacing="0">
+                           <colgroup><col width="2%"/>
+                           <col width="17%"/>
+                           <col width="2%"/>
+                           <col width="2%"/>
+                           <col width="2%"/>
+                           <col width="3%"/>
+                           <col width="2%"/>
+                           <col width="2%"/>
+                           <col width="2%"/>
+                           <col width="2%"/>
+                           <col width="2%"/>
+                           <col width="2%"/>
+                           <col width="2%"/>
+                           <col width="2%"/>
+                           <col width="2%"/>
+                           <col width="2%"/>
+                           <col width="2%"/>
+                           <col width="2%"/>
+                           <col width="2%"/>
+                           <col width="2%"/>
+                           <col width="3%"/>
+                           <col width="26%"/>
+                           <col width="3%"/>
+                           <col width="20%"/>
+                           </colgroup><tbody>
                               <tr>
-                                 <td>P</td>
-                                 <td></td>
-                                 <td>x</td>
-                                 <td>x</td>
-                                 <td>x</td>
-                                 <td>/</td>
-                                 <td>x</td>
-                                 <td>x</td>
-                                 <td>x</td>
-                                 <td>x</td>
-                                 <td>x</td>
-                                 <td>x</td>
-                                 <td>x</td>
-                                 <td>x</td>
-                                 <td>x</td>
-                                 <td>x</td>
-                                 <td>x</td>
-                                 <td>x</td>
-                                 <td>x</td>
-                                 <td>x</td>
-                                 <td></td>
-                                 <td>x</td>
-                                 <td></td>
-                                 <td>x</td>
+                                 <td valign="top">
+                                    <p class="tbl-norm">P</p>
+                                 </td>
+                                 <td valign="top">
+                                    <p class="tbl-centered">
+                                       
+                                    </p>
+                                 </td>
+                                 <td valign="top">
+                                    <p class="tbl-norm">x</p>
+                                 </td>
+                                 <td valign="top">
+                                    <p class="tbl-norm">x</p>
+                                 </td>
+                                 <td valign="top">
+                                    <p class="tbl-norm">x</p>
+                                 </td>
+                                 <td valign="top">
+                                    <p class="tbl-norm">/</p>
+                                 </td>
+                                 <td valign="top">
+                                    <p class="tbl-norm">x</p>
+                                 </td>
+                                 <td valign="top">
+                                    <p class="tbl-norm">x</p>
+                                 </td>
+                                 <td valign="top">
+                                    <p class="tbl-norm">x</p>
+                                 </td>
+                                 <td valign="top">
+                                    <p class="tbl-norm">x</p>
+                                 </td>
+                                 <td valign="top">
+                                    <p class="tbl-norm">x</p>
+                                 </td>
+                                 <td valign="top">
+                                    <p class="tbl-norm">x</p>
+                                 </td>
+                                 <td valign="top">
+                                    <p class="tbl-norm">x</p>
+                                 </td>
+                                 <td valign="top">
+                                    <p class="tbl-norm">x</p>
+                                 </td>
+                                 <td valign="top">
+                                    <p class="tbl-norm">x</p>
+                                 </td>
+                                 <td valign="top">
+                                    <p class="tbl-norm">x</p>
+                                 </td>
+                                 <td valign="top">
+                                    <p class="tbl-norm">x</p>
+                                 </td>
+                                 <td valign="top">
+                                    <p class="tbl-norm">x</p>
+                                 </td>
+                                 <td valign="top">
+                                    <p class="tbl-norm">x</p>
+                                 </td>
+                                 <td valign="top">
+                                    <p class="tbl-norm">x</p>
+                                 </td>
+                                 <td valign="top">
+                                    <p class="normal"> </p>
+                                    <div>
+                                 </div></td>
+                                 <td valign="top">
+                                    <p class="tbl-norm">x</p>
+                                 </td>
+                                 <td valign="top">
+                                    <p class="normal"> </p>
+                                    <div>
+                                 </div></td>
+                                 <td valign="top">
+                                    <p class="tbl-norm">x</p>
+                                 </td>
                               </tr>
                               <tr>
-                                 <td>Card Pictogram combination</td>
-                                 <td>Issuing Member State code</td>
-                                 <td></td>
-                                 <td>
-                                    <p>First 14 characters of card number</p>
-                                    <p>(possibly including a consecutive index)</p>
+                                 <td colspan="2" valign="top">
+                                    <p class="tbl-norm">Card Pictogram combination</p>
                                  </td>
-                                 <td></td>
-                                 <td>Replacement index</td>
-                                 <td></td>
-                                 <td>Renewal index</td>
+                                 <td colspan="3" valign="top">
+                                    <p class="tbl-norm">Issuing Member State code</p>
+                                 </td>
+                                 <td valign="top">
+                                    <p class="normal"> </p>
+                                    <div>
+                                 </div></td>
+                                 <td colspan="14" valign="top">
+                                    <p class="tbl-norm">First 14 characters of card number</p>
+                                    <p class="tbl-norm">(possibly including a consecutive index)</p>
+                                 </td>
+                                 <td valign="top">
+                                    <p class="normal"> </p>
+                                    <div>
+                                 </div></td>
+                                 <td valign="top">
+                                    <p class="tbl-norm">Replacement index</p>
+                                 </td>
+                                 <td valign="top">
+                                    <p class="normal"> </p>
+                                    <div>
+                                 </div></td>
+                                 <td valign="top">
+                                    <p class="tbl-norm">Renewal index</p>
+                                 </td>
                               </tr>
                            </tbody>
                         </table>
+                     </div>
                   </div>
-               </dd></dl>
-
-
-
-
-<p>▼M3</p>
-<dl><dt>—</dt><dd>In a data block, the text after ‘pi=’ refers to the corresponding pictogram or pictogram combination defined in Appendix 3,</dd><dt>—</dt><dd>When printed after the longitude and the latitude of a recorded position, or after the timestamp when the position was determined, the pictogram indicates that this position has been computed from authenticated navigation messages,</dd><dt>—</dt><dd>* data only available in GEN2 tachographs (all versions),</dd><dt>—</dt><dd>** data only available in GEN2 version 2.</dd></dl>
-
-
-
-<p>▼B</p>
-<p>PRT_007 Printouts shall use the following data blocks and/or data records, in accordance with the following meanings and formats:</p>
-<p>►(1)(2)(3)(4)(5) M3   ►(1)(2)(3) M3   ►(1)(2) M1   ►(3)(4) M3   ►(1)(2)(3)(4) M3   ►(1) M3</p>
-<p>3.   <strong>PRINTOUT SPECIFICATIONS</strong>
+               </div>
+            </div>
+<p class="modref">
+               <a href="http://publications.europa.eu/resource/celex/32021R1228" onclick="window.open(this.href,&#39;_blank&#39;); return false;" title="32021R1228: INSERTED">▼M3</a>
             </p>
-<p>In this chapter the following notation conventions have been used:</p>
-<p></p>
-<p></p><table>
-                  <tbody>
+<div class="grid-container grid-list">
+               <div class="list grid-list-column-1">
+                  <span>— </span>
+               </div>
+               <div class="grid-list-column-2">
+                  <div class="list">In a data block, the text after ‘pi=’ refers to the corresponding pictogram or pictogram combination defined in Appendix 3,</div>
+               </div>
+            </div>
+<div class="grid-container grid-list">
+               <div class="list grid-list-column-1">
+                  <span>— </span>
+               </div>
+               <div class="grid-list-column-2">
+                  <div class="list">When printed after the longitude and the latitude of a recorded position, or after the timestamp when the position was determined, the  pictogram indicates that this position has been computed from authenticated navigation messages,</div>
+               </div>
+            </div>
+<div class="grid-container grid-list">
+               <div class="list grid-list-column-1">
+                  <span>— </span>
+               </div>
+               <div class="grid-list-column-2">
+                  <div class="list">* data only available in GEN2 tachographs (all versions),</div>
+               </div>
+            </div>
+<div class="grid-container grid-list">
+               <div class="list grid-list-column-1">
+                  <span>— </span>
+               </div>
+               <div class="grid-list-column-2">
+                  <div class="list">** data only available in GEN2 version 2.</div>
+               </div>
+            </div>
+<p class="modref">
+               <a href="http://publications.europa.eu/resource/celex/32016R0799" onclick="window.open(this.href,&#39;_blank&#39;); return false;" title="32016R0799">▼B</a>
+            </p>
+<div style="margin-left: 54pt; text-indent: -54pt">
+               <p class="norm">PRT_007<span style="word-spacing: NaNpt"> </span>Printouts shall use the following data blocks and/or data records, in accordance with the following meanings and formats:</p>
+            </div>
+<p class="list">
+                
+               <span>
+                  <a href="http://publications.europa.eu/resource/celex/32021R1228" onclick="window.open(this.href,&#39;_blank&#39;); return false;" title="32021R1228: REPLACED">
+                     <span class="boldface">►(<span class="superscript">1</span>)(<span class="superscript">2</span>)(<span class="superscript">3</span>)(<span class="superscript">4</span>)(<span class="superscript">5</span>) M3</span>
+                  </a>
+               </span> 
+                                    
+                                  
+               <br/> 
+               <span>
+                  <a href="http://publications.europa.eu/resource/celex/32021R1228" onclick="window.open(this.href,&#39;_blank&#39;); return false;" title="32021R1228: INSERTED">
+                     <span class="boldface">►(<span class="superscript">1</span>)(<span class="superscript">2</span>)(<span class="superscript">3</span>) M3</span>
+                  </a>
+               </span> 
+                                    
+                                  
+               <br/> 
+               <span>
+                  <a href="http://publications.europa.eu/resource/celex/32018R0502" onclick="window.open(this.href,&#39;_blank&#39;); return false;" title="32018R0502: REPLACED">
+                     <span class="boldface">►(<span class="superscript">1</span>)(<span class="superscript">2</span>) M1</span>
+                  </a>
+               </span> 
+                                    
+                                  <br/> 
+               <span>
+                  <a href="http://publications.europa.eu/resource/celex/32021R1228" onclick="window.open(this.href,&#39;_blank&#39;); return false;" title="32021R1228: DELETED">
+                     <span class="boldface">►(<span class="superscript">3</span>)(<span class="superscript">4</span>) M3</span>
+                  </a>
+               </span> 
+                                    
+                                  
+               
+               <br/> 
+               <span>
+                  <a href="http://publications.europa.eu/resource/celex/32021R1228" onclick="window.open(this.href,&#39;_blank&#39;); return false;" title="32021R1228: REPLACED">
+                     <span class="boldface">►(<span class="superscript">1</span>)(<span class="superscript">2</span>)(<span class="superscript">3</span>)(<span class="superscript">4</span>) M3</span>
+                  </a>
+               </span> 
+                                    
+                                  
+               
+               <br/> 
+               <span>
+                  <a href="http://publications.europa.eu/resource/celex/32021R1228" onclick="window.open(this.href,&#39;_blank&#39;); return false;" title="32021R1228: REPLACED">
+                     <span class="boldface">►(<span class="superscript">1</span>) M3</span>
+                  </a>
+               </span> 
+                                    
+                                  </p>
+<p class="title-gr-seq-level-2" id="id-85b33457-cba8-4439-9482-a87126c710c7">3.   <span class="boldface">PRINTOUT SPECIFICATIONS</span>
+            </p>
+<p class="norm">In this chapter the following notation conventions have been used:</p>
+<p>
+               <br/>
+            </p>
+<div class="centered">
+               <p>
+                  <br/>
+               </p>
+               <table width="240" border="1" cellpadding="2" cellspacing="0">
+                  <colgroup><col width="3%"/>
+                  <col width="97%"/>
+                  </colgroup><tbody>
                      <tr>
-                        <td>N</td>
-                        <td>Print block or record number N</td>
+                        <td valign="top">
+                           <p class="tbl-norm">N</p>
+                        </td>
+                        <td valign="top">
+                           <p class="tbl-norm">Print block or record number N</p>
+                        </td>
                      </tr>
                      <tr>
-                        <td></td>
+                        <td colspan="2" valign="top">
+                           <p class="normal"> </p>
+                           <div>
+                        </div></td>
                      </tr>
                      <tr>
-                        <td>N</td>
-                        <td>Print block or record number N repeated as many times as necessary</td>
+                        <td valign="top">
+                           <p class="tbl-norm">N</p>
+                        </td>
+                        <td valign="top">
+                           <p class="tbl-norm">Print block or record number N repeated as many times as necessary</p>
+                        </td>
                      </tr>
                      <tr>
-                        <td></td>
+                        <td colspan="2" valign="top">
+                           <p class="normal"> </p>
+                           <div>
+                        </div></td>
                      </tr>
                      <tr>
-                        <td>X/Y</td>
-                        <td>Print blocks or records X and/or Y as needed, and repeating as many times as necessary.</td>
+                        <td valign="top">
+                           <p class="tbl-norm">X/Y</p>
+                        </td>
+                        <td valign="top">
+                           <p class="tbl-norm">Print blocks or records X and/or Y as needed, and repeating as many times as necessary.</p>
+                        </td>
                      </tr>
                   </tbody>
                </table>
-<p>3.1.   <strong>Driver Activities from Card Daily Printout</strong>
+            </div>
+<p class="title-gr-seq-level-3" id="id-db3a4952-d9ee-4a24-bcd9-ee919ed6a23d">3.1.   <span class="boldface">
+                  <span class="boldface">Driver Activities from Card Daily Printout</span>
+               </span>
             </p>
-<p>▼M3</p>
-<p>PRT_008 The driver activities from card daily printout shall be in accordance with the following format:</p>
-
-<p>▼B</p>
-<p>3.2.   <strong>Driver Activities from VU Daily Printout</strong>
+<p class="modref">
+               <a href="http://publications.europa.eu/resource/celex/32021R1228" onclick="window.open(this.href,&#39;_blank&#39;); return false;" title="32021R1228: REPLACED">▼M3</a>
             </p>
-<p>▼M3</p>
-<p>PRT_009 The driver activities from VU daily printout shall be in accordance with the following format:</p>
-
-<p>▼B</p>
-<p>3.3.   <strong>Events and Faults from Card Printout</strong>
+<div style="margin-left: 54pt; text-indent: -54pt">
+               <p class="norm">PRT_008<span style="word-spacing: NaNpt"> </span>The driver activities from card daily printout shall be in accordance with the following format:</p>
+            </div>
+<p class="list">
+               
             </p>
-<p>PRT_010 The events and faults from card printout shall be in accordance with the following format:</p>
-<p></p>
-<p></p><table>
-                  <tbody>
+<p class="modref">
+               <a href="http://publications.europa.eu/resource/celex/32016R0799" onclick="window.open(this.href,&#39;_blank&#39;); return false;" title="32016R0799">▼B</a>
+            </p>
+<p class="title-gr-seq-level-3" id="id-5cdf018e-086c-40bb-a473-18a8ea58d75d">3.2.   <span class="boldface">
+                  <span class="boldface">Driver Activities from VU Daily Printout</span>
+               </span>
+            </p>
+<p class="modref">
+               <a href="http://publications.europa.eu/resource/celex/32021R1228" onclick="window.open(this.href,&#39;_blank&#39;); return false;" title="32021R1228: REPLACED">▼M3</a>
+            </p>
+<div style="margin-left: 54pt; text-indent: -54pt">
+               <p class="norm">PRT_009<span style="word-spacing: NaNpt"> </span>The driver activities from VU daily printout shall be in accordance with the following format:</p>
+            </div>
+<p class="list">
+               
+            </p>
+<p class="modref">
+               <a href="http://publications.europa.eu/resource/celex/32016R0799" onclick="window.open(this.href,&#39;_blank&#39;); return false;" title="32016R0799">▼B</a>
+            </p>
+<p class="title-gr-seq-level-3" id="id-f9be1cd8-c66e-4316-9fa1-4f5e27365e07">3.3.   <span class="boldface">
+                  <span class="boldface">Events and Faults from Card Printout</span>
+               </span>
+            </p>
+<div style="margin-left: 54pt; text-indent: -54pt">
+               <p class="norm">PRT_010<span style="word-spacing: NaNpt"> </span>The events and faults from card printout shall be in accordance with the following format:</p>
+            </div>
+<p>
+               <br/>
+            </p>
+<div class="centered">
+               <p>
+                  <br/>
+               </p>
+               <table width="240" border="1" cellpadding="2" cellspacing="0">
+                  <colgroup><col width="15%"/>
+                  <col width="85%"/>
+                  </colgroup><tbody>
                      <tr>
-                        <td>1</td>
-                        <td>Date and time at which the document is printed</td>
+                        <td valign="top">
+                           <p class="tbl-norm">1</p>
+                        </td>
+                        <td valign="top">
+                           <p class="tbl-norm">Date and time at which the document is printed</p>
+                        </td>
                      </tr>
                      <tr>
-                        <td>2</td>
-                        <td>Type of printout</td>
+                        <td valign="top">
+                           <p class="tbl-norm">2</p>
+                        </td>
+                        <td valign="top">
+                           <p class="tbl-norm">Type of printout</p>
+                        </td>
                      </tr>
                      <tr>
-                        <td>3</td>
-                        <td>Controller identification (if a control card is inserted in the VU + GEN)</td>
+                        <td valign="top">
+                           <p class="tbl-norm">3</p>
+                        </td>
+                        <td valign="top">
+                           <p class="tbl-norm">Controller identification (if a control card is inserted in the VU + GEN)</p>
+                        </td>
                      </tr>
                      <tr>
-                        <td>3</td>
-                        <td>Driver identification (from card subject of the printout)</td>
+                        <td valign="top">
+                           <p class="tbl-norm">3</p>
+                        </td>
+                        <td valign="top">
+                           <p class="tbl-norm">Driver identification (from card subject of the printout)</p>
+                        </td>
                      </tr>
                      <tr>
-                        <td>4</td>
-                        <td>Vehicle identification (vehicle from which printout is taken)</td>
+                        <td valign="top">
+                           <p class="tbl-norm">4</p>
+                        </td>
+                        <td valign="top">
+                           <p class="tbl-norm">Vehicle identification (vehicle from which printout is taken)</p>
+                        </td>
                      </tr>
                      <tr>
-                        <td>12.2</td>
-                        <td>Events delimiter</td>
+                        <td valign="top">
+                           <p class="tbl-norm">12.2</p>
+                        </td>
+                        <td valign="top">
+                           <p class="tbl-norm">Events delimiter</p>
+                        </td>
                      </tr>
                      <tr>
-                        <td>12.4</td>
-                        <td>Event records (all events stored on the card)</td>
+                        <td valign="top">
+                           <p class="tbl-norm">12.4</p>
+                        </td>
+                        <td valign="top">
+                           <p class="tbl-norm">Event records (all events stored on the card)</p>
+                        </td>
                      </tr>
                      <tr>
-                        <td>12.3</td>
-                        <td>Faults delimiter</td>
+                        <td valign="top">
+                           <p class="tbl-norm">12.3</p>
+                        </td>
+                        <td valign="top">
+                           <p class="tbl-norm">Faults delimiter</p>
+                        </td>
                      </tr>
                      <tr>
-                        <td>12.4</td>
-                        <td>Fault records (all faults stored on the card)</td>
+                        <td valign="top">
+                           <p class="tbl-norm">12.4</p>
+                        </td>
+                        <td valign="top">
+                           <p class="tbl-norm">Fault records (all faults stored on the card)</p>
+                        </td>
                      </tr>
                      <tr>
-                        <td>22.1</td>
-                        <td>Control place</td>
+                        <td valign="top">
+                           <p class="tbl-norm">22.1</p>
+                        </td>
+                        <td valign="top">
+                           <p class="tbl-norm">Control place</p>
+                        </td>
                      </tr>
                      <tr>
-                        <td>22.2</td>
-                        <td>Controller&#39;s signature</td>
+                        <td valign="top">
+                           <p class="tbl-norm">22.2</p>
+                        </td>
+                        <td valign="top">
+                           <p class="tbl-norm">Controller&#39;s signature</p>
+                        </td>
                      </tr>
                      <tr>
-                        <td>22.5</td>
-                        <td>Driver&#39;s signature</td>
+                        <td valign="top">
+                           <p class="tbl-norm">22.5</p>
+                        </td>
+                        <td valign="top">
+                           <p class="tbl-norm">Driver&#39;s signature</p>
+                        </td>
                      </tr>
                   </tbody>
                </table>
-<p>3.4.   <strong>Events and Faults from VU Printout</strong>
+            </div>
+<p class="title-gr-seq-level-3" id="id-78237da9-b1a1-4dd0-abbd-cae4da9fd2fd">3.4.   <span class="boldface">
+                  <span class="boldface">Events and Faults from VU Printout</span>
+               </span>
             </p>
-<p>PRT_011 The events and faults from VU printout shall be in accordance with the following format:</p>
-<p></p>
-<p></p><table>
-                  <tbody>
+<div style="margin-left: 54pt; text-indent: -54pt">
+               <p class="norm">PRT_011<span style="word-spacing: NaNpt"> </span>The events and faults from VU printout shall be in accordance with the following format:</p>
+            </div>
+<p>
+               <br/>
+            </p>
+<div class="centered">
+               <p>
+                  <br/>
+               </p>
+               <table width="240" border="1" cellpadding="2" cellspacing="0">
+                  <colgroup><col width="15%"/>
+                  <col width="85%"/>
+                  </colgroup><tbody>
                      <tr>
-                        <td>1</td>
-                        <td>Date and time at which the document is printed</td>
+                        <td valign="top">
+                           <p class="tbl-norm">1</p>
+                        </td>
+                        <td valign="top">
+                           <p class="tbl-norm">Date and time at which the document is printed</p>
+                        </td>
                      </tr>
                      <tr>
-                        <td>2</td>
-                        <td>Type of printout</td>
+                        <td valign="top">
+                           <p class="tbl-norm">2</p>
+                        </td>
+                        <td valign="top">
+                           <p class="tbl-norm">Type of printout</p>
+                        </td>
                      </tr>
                      <tr>
-                        <td>3</td>
-                        <td>Card holder identification (for all cards inserted in VU + GEN)</td>
+                        <td valign="top">
+                           <p class="tbl-norm">3</p>
+                        </td>
+                        <td valign="top">
+                           <p class="tbl-norm">Card holder identification (for all cards inserted in VU + GEN)</p>
+                        </td>
                      </tr>
                      <tr>
-                        <td>4</td>
-                        <td>Vehicle identification (vehicle from which printout is taken)</td>
+                        <td valign="top">
+                           <p class="tbl-norm">4</p>
+                        </td>
+                        <td valign="top">
+                           <p class="tbl-norm">Vehicle identification (vehicle from which printout is taken)</p>
+                        </td>
                      </tr>
                      <tr>
-                        <td>13.2</td>
-                        <td>Events delimiter</td>
+                        <td valign="top">
+                           <p class="tbl-norm">13.2</p>
+                        </td>
+                        <td valign="top">
+                           <p class="tbl-norm">Events delimiter</p>
+                        </td>
                      </tr>
                      <tr>
-                        <td>13.4</td>
-                        <td>Event records (All Events stored or on-going in the VU)</td>
+                        <td valign="top">
+                           <p class="tbl-norm">13.4</p>
+                        </td>
+                        <td valign="top">
+                           <p class="tbl-norm">Event records (All Events stored or on-going in the VU)</p>
+                        </td>
                      </tr>
                      <tr>
-                        <td>13.3</td>
-                        <td>Faults delimiter</td>
+                        <td valign="top">
+                           <p class="tbl-norm">13.3</p>
+                        </td>
+                        <td valign="top">
+                           <p class="tbl-norm">Faults delimiter</p>
+                        </td>
                      </tr>
                      <tr>
-                        <td>13.4</td>
-                        <td>Fault records (All Faults stored or on-going in the VU)</td>
+                        <td valign="top">
+                           <p class="tbl-norm">13.4</p>
+                        </td>
+                        <td valign="top">
+                           <p class="tbl-norm">Fault records (All Faults stored or on-going in the VU)</p>
+                        </td>
                      </tr>
                      <tr>
-                        <td>22.1</td>
-                        <td>Control place</td>
+                        <td valign="top">
+                           <p class="tbl-norm">22.1</p>
+                        </td>
+                        <td valign="top">
+                           <p class="tbl-norm">Control place</p>
+                        </td>
                      </tr>
                      <tr>
-                        <td>22.2</td>
-                        <td>Controller&#39;s signature</td>
+                        <td valign="top">
+                           <p class="tbl-norm">22.2</p>
+                        </td>
+                        <td valign="top">
+                           <p class="tbl-norm">Controller&#39;s signature</p>
+                        </td>
                      </tr>
                      <tr>
-                        <td>22.5</td>
-                        <td>Driver&#39;s signature</td>
+                        <td valign="top">
+                           <p class="tbl-norm">22.5</p>
+                        </td>
+                        <td valign="top">
+                           <p class="tbl-norm">Driver&#39;s signature</p>
+                        </td>
                      </tr>
                   </tbody>
                </table>
-<p>3.5.   <strong>Technical data Printout</strong>
+            </div>
+<p class="title-gr-seq-level-3" id="id-d06b23af-5ce9-4628-81a6-0ca5b914f0f3">3.5.   <span class="boldface">
+                  <span class="boldface">Technical data Printout</span>
+               </span>
             </p>
-<p>▼M3</p>
-<p>PRT_012 The technical data printout shall be in accordance with the following format:</p>
-
-<p>▼B</p>
-<p>3.6.   <strong>Over speeding Printout</strong>
+<p class="modref">
+               <a href="http://publications.europa.eu/resource/celex/32021R1228" onclick="window.open(this.href,&#39;_blank&#39;); return false;" title="32021R1228: REPLACED">▼M3</a>
             </p>
-<p>PRT_013 The over speeding printout shall be in accordance with the following format:</p>
-<p></p>
-<p></p><table>
-                  <tbody>
+<div style="margin-left: 54pt; text-indent: -54pt">
+               <p class="norm">PRT_012<span style="word-spacing: NaNpt"> </span>The technical data printout shall be in accordance with the following format:</p>
+            </div>
+<p class="list">
+               
+            </p>
+<p class="modref">
+               <a href="http://publications.europa.eu/resource/celex/32016R0799" onclick="window.open(this.href,&#39;_blank&#39;); return false;" title="32016R0799">▼B</a>
+            </p>
+<p class="title-gr-seq-level-3" id="id-38623d9f-a0c7-442e-8b1f-399e17850830">3.6.   <span class="boldface">
+                  <span class="boldface">Over speeding Printout</span>
+               </span>
+            </p>
+<div style="margin-left: 54pt; text-indent: -54pt">
+               <p class="norm">PRT_013<span style="word-spacing: NaNpt"> </span>The over speeding printout shall be in accordance with the following format:</p>
+            </div>
+<p>
+               <br/>
+            </p>
+<div class="centered">
+               <p>
+                  <br/>
+               </p>
+               <table width="240" border="1" cellpadding="2" cellspacing="0">
+                  <colgroup><col width="29%"/>
+                  <col width="71%"/>
+                  </colgroup><tbody>
                      <tr>
-                        <td>1</td>
-                        <td>Date and time at which the document is printed</td>
+                        <td valign="top">
+                           <p class="tbl-norm">1</p>
+                        </td>
+                        <td valign="top">
+                           <p class="tbl-norm">Date and time at which the document is printed</p>
+                        </td>
                      </tr>
                      <tr>
-                        <td>2</td>
-                        <td>Type of printout</td>
+                        <td valign="top">
+                           <p class="tbl-norm">2</p>
+                        </td>
+                        <td valign="top">
+                           <p class="tbl-norm">Type of printout</p>
+                        </td>
                      </tr>
                      <tr>
-                        <td>3</td>
-                        <td>Card holder identification (for all cards inserted in VU + GEN)</td>
+                        <td valign="top">
+                           <p class="tbl-norm">3</p>
+                        </td>
+                        <td valign="top">
+                           <p class="tbl-norm">Card holder identification (for all cards inserted in VU + GEN)</p>
+                        </td>
                      </tr>
                      <tr>
-                        <td>4</td>
-                        <td>Vehicle identification (vehicle from which printout is taken)</td>
+                        <td valign="top">
+                           <p class="tbl-norm">4</p>
+                        </td>
+                        <td valign="top">
+                           <p class="tbl-norm">Vehicle identification (vehicle from which printout is taken)</p>
+                        </td>
                      </tr>
                      <tr>
-                        <td>20</td>
-                        <td>Over speeding control information</td>
+                        <td valign="top">
+                           <p class="tbl-norm">20</p>
+                        </td>
+                        <td valign="top">
+                           <p class="tbl-norm">Over speeding control information</p>
+                        </td>
                      </tr>
                      <tr>
-                        <td>21.1</td>
-                        <td>Over speeding data identifier</td>
+                        <td valign="top">
+                           <p class="tbl-norm">21.1</p>
+                        </td>
+                        <td valign="top">
+                           <p class="tbl-norm">Over speeding data identifier</p>
+                        </td>
                      </tr>
                      <tr>
-                        <td>21.4/21.5</td>
-                        <td>First over speeding after the last calibration</td>
+                        <td valign="top">
+                           <p class="tbl-norm">21.4/21.5</p>
+                        </td>
+                        <td valign="top">
+                           <p class="tbl-norm">First over speeding after the last calibration</p>
+                        </td>
                      </tr>
                      <tr>
-                        <td>21.2</td>
-                        <td>Over speeding data identifier</td>
+                        <td valign="top">
+                           <p class="tbl-norm">21.2</p>
+                        </td>
+                        <td valign="top">
+                           <p class="tbl-norm">Over speeding data identifier</p>
+                        </td>
                      </tr>
                      <tr>
-                        <td>21.4/21.5</td>
-                        <td>The 5 most serious over speeding events over the last 365 days</td>
+                        <td valign="top">
+                           <p class="tbl-norm">21.4/21.5</p>
+                        </td>
+                        <td valign="top">
+                           <p class="tbl-norm">The 5 most serious over speeding events over the last 365 days</p>
+                        </td>
                      </tr>
                      <tr>
-                        <td>21.3</td>
-                        <td>Over speeding data identifier</td>
+                        <td valign="top">
+                           <p class="tbl-norm">21.3</p>
+                        </td>
+                        <td valign="top">
+                           <p class="tbl-norm">Over speeding data identifier</p>
+                        </td>
                      </tr>
                      <tr>
-                        <td>21.4/21.5</td>
-                        <td>The most serious over speeding for each of the last 10 days of occurrence</td>
+                        <td valign="top">
+                           <p class="tbl-norm">21.4/21.5</p>
+                        </td>
+                        <td valign="top">
+                           <p class="tbl-norm">The most serious over speeding for each of the last 10 days of occurrence</p>
+                        </td>
                      </tr>
                      <tr>
-                        <td>22.1</td>
-                        <td>Control place</td>
+                        <td valign="top">
+                           <p class="tbl-norm">22.1</p>
+                        </td>
+                        <td valign="top">
+                           <p class="tbl-norm">Control place</p>
+                        </td>
                      </tr>
                      <tr>
-                        <td>22.2</td>
-                        <td>Controller&#39;s signature</td>
+                        <td valign="top">
+                           <p class="tbl-norm">22.2</p>
+                        </td>
+                        <td valign="top">
+                           <p class="tbl-norm">Controller&#39;s signature</p>
+                        </td>
                      </tr>
                      <tr>
-                        <td>22.5</td>
-                        <td>Driver&#39;s signature</td>
+                        <td valign="top">
+                           <p class="tbl-norm">22.5</p>
+                        </td>
+                        <td valign="top">
+                           <p class="tbl-norm">Driver&#39;s signature</p>
+                        </td>
                      </tr>
                   </tbody>
                </table>
-<p>3.7.   <strong>Historic of inserted cards</strong>
+            </div>
+<p class="title-gr-seq-level-3" id="id-3c79b30c-3ba4-4b6b-b82b-38f49273a9a1">3.7.   <span class="boldface">
+                  <span class="boldface">Historic of inserted cards</span>
+               </span>
             </p>
-<p>▼M3</p>
-<p>PRT_014 The historic of inserted cards printout shall be in accordance with the following format:</p>
-
-<p>▼B</p>
-
-</body></html>
+<p class="modref">
+               <a href="http://publications.europa.eu/resource/celex/32021R1228" onclick="window.open(this.href,&#39;_blank&#39;); return false;" title="32021R1228: REPLACED">▼M3</a>
+            </p>
+<div style="margin-left: 54pt; text-indent: -54pt">
+               <p class="norm">PRT_014<span style="word-spacing: NaNpt"> </span>The historic of inserted cards printout shall be in accordance with the following format:</p>
+            </div>
+<p class="list">
+               
+            </p>
+<p class="modref">
+               <a href="http://publications.europa.eu/resource/celex/32016R0799" onclick="window.open(this.href,&#39;_blank&#39;); return false;" title="32016R0799">▼B</a>
+            </p>
+</body>
+</html>

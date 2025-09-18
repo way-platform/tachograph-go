@@ -220,25 +220,25 @@ func createSectionFile(sectionStart *goquery.Selection, allSections []struct {
 	sectionHTML += "</body>\n</html>"
 
 	// Apply cleanup if enabled
-	if enableCleanup {
-		// Parse the section HTML and apply cleanup
-		sectionDoc, err := goquery.NewDocumentFromReader(strings.NewReader(sectionHTML))
-		if err == nil {
-			fmt.Printf("  Applying cleanup to %s...\n", fileName)
-			cleanupHTML(sectionDoc)
+	// if enableCleanup {
+	// 	// Parse the section HTML and apply cleanup
+	// 	sectionDoc, err := goquery.NewDocumentFromReader(strings.NewReader(sectionHTML))
+	// 	if err == nil {
+	// 		fmt.Printf("  Applying cleanup to %s...\n", fileName)
+	// 		cleanupHTML(sectionDoc)
 
-			// Get the cleaned HTML without DOCTYPE (goquery.Html() returns just the <html> element)
-			cleanedHTML, err := sectionDoc.Html()
-			if err == nil {
-				// Remove any duplicate DOCTYPE that might be in the content
-				cleanedHTML = regexp.MustCompile(`<!DOCTYPE[^>]*>\s*`).ReplaceAllString(cleanedHTML, "")
-				// Remove HTML comments
-				cleanedHTML = regexp.MustCompile(`<!--.*?-->`).ReplaceAllString(cleanedHTML, "")
-				// Ensure single DOCTYPE and clean HTML structure
-				sectionHTML = "<!DOCTYPE html>\n" + cleanedHTML
-			}
-		}
-	}
+	// 		// Get the cleaned HTML without DOCTYPE (goquery.Html() returns just the <html> element)
+	// 		cleanedHTML, err := sectionDoc.Html()
+	// 		if err == nil {
+	// 			// Remove any duplicate DOCTYPE that might be in the content
+	// 			cleanedHTML = regexp.MustCompile(`<!DOCTYPE[^>]*>\s*`).ReplaceAllString(cleanedHTML, "")
+	// 			// Remove HTML comments
+	// 			cleanedHTML = regexp.MustCompile(`<!--.*?-->`).ReplaceAllString(cleanedHTML, "")
+	// 			// Ensure single DOCTYPE and clean HTML structure
+	// 			sectionHTML = "<!DOCTYPE html>\n" + cleanedHTML
+	// 		}
+	// 	}
+	// }
 
 	// Format the HTML using gohtml for better readability
 	formattedHTML := sectionHTML
@@ -458,12 +458,6 @@ func cleanupHTML(doc *goquery.Document) {
 	// 2. Fix duplicate DOCTYPE and HTML structure issues
 	fixHTMLStructure(doc)
 
-	// 3. Convert to native semantic HTML structures
-	convertToNativeSemantics(doc)
-
-	// 4. Simplify tables to bare minimum
-	simplifyTables(doc)
-
 	// 5. Remove redundant wrappers and empty elements
 	removeRedundantElements(doc)
 
@@ -472,9 +466,6 @@ func cleanupHTML(doc *goquery.Document) {
 
 	// 7. Remove redundant containers
 	removeRedundantContainers(doc)
-
-	// 8. Strip all styling attributes and classes (moved after span cleanup)
-	stripStylingAttributes(doc)
 
 	// 9. Consolidate and optimize content
 	consolidateContent(doc)

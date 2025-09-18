@@ -1,0 +1,216 @@
+{
+  "downloadTypes": [
+    {
+      "name": "TRTP_DownloadInterfaceVersion",
+      "id": 0,
+      "description": "Download interface version",
+      "source": "Appendix 7"
+    },
+    {
+      "name": "TRTP_Overview",
+      "id": 1,
+      "description": "Overview",
+      "source": "Appendix 7"
+    },
+    {
+      "name": "TRTP_ActivitiesOfASpecifiedDate",
+      "id": 2,
+      "description": "Activities of a specified date",
+      "source": "Appendix 7"
+    },
+    {
+      "name": "TRTP_EventsAndFaults",
+      "id": 3,
+      "description": "Events and faults",
+      "source": "Appendix 7"
+    },
+    {
+      "name": "TRTP_DetailedSpeed",
+      "id": 4,
+      "description": "Detailed speed",
+      "source": "Appendix 7"
+    },
+    {
+      "name": "TRTP_TechnicalData",
+      "id": 5,
+      "description": "Technical data",
+      "source": "Appendix 7"
+    },
+    {
+      "name": "TRTP_Overview_0x15",
+      "id": 21,
+      "description": "Overview",
+      "source": "Appendix 7"
+    },
+    {
+      "name": "TRTP_ActivitiesOfASpecifiedDate_0x16",
+      "id": 22,
+      "description": "Activities of a specified date",
+      "source": "Appendix 7"
+    },
+    {
+      "name": "TRTP_EventsAndFaults_0x17",
+      "id": 23,
+      "description": "Events and faults",
+      "source": "Appendix 7"
+    },
+    {
+      "name": "TRTP_DetailedSpeed_0x18",
+      "id": 24,
+      "description": "Detailed speed",
+      "source": "Appendix 7"
+    },
+    {
+      "name": "TRTP_TechnicalData_0x19",
+      "id": 25,
+      "description": "Technical data",
+      "source": "Appendix 7"
+    },
+    {
+      "name": "TRTP_Overview_0x1F",
+      "id": 31,
+      "description": "Overview",
+      "source": "Appendix 7"
+    },
+    {
+      "name": "TRTP_ActivitiesOfASpecifiedDate_0x20",
+      "id": 32,
+      "description": "Activities of a specified date",
+      "source": "Appendix 7"
+    },
+    {
+      "name": "TRTP_EventsAndFaults_0x21",
+      "id": 33,
+      "description": "Events and faults",
+      "source": "Appendix 7"
+    },
+    {
+      "name": "TRTP_TechnicalData_0x23",
+      "id": 35,
+      "description": "Technical data",
+      "source": "Appendix 7"
+    }
+  ],
+  "dataIdentifiers": [
+    {
+      "name": "RDI_Vin",
+      "id": 61840,
+      "description": "VIN",
+      "source": "Appendix 8"
+    },
+    {
+      "name": "RDI_Timedate",
+      "id": 63755,
+      "description": "TimeDate",
+      "source": "Appendix 8"
+    },
+    {
+      "name": "RDI_Highresolutiontotalvehicledistance",
+      "id": 63762,
+      "description": "HighResolutionTotalVehicleDistance",
+      "source": "Appendix 8"
+    },
+    {
+      "name": "RDI_Kfactor",
+      "id": 63768,
+      "description": "Kfactor",
+      "source": "Appendix 8"
+    },
+    {
+      "name": "RDI_Lfactortyrecircumference",
+      "id": 63772,
+      "description": "LfactorTyreCircumference",
+      "source": "Appendix 8"
+    },
+    {
+      "name": "RDI_Wvehiclecharacteristicfactor",
+      "id": 63773,
+      "description": "WvehicleCharacteristicFactor",
+      "source": "Appendix 8"
+    },
+    {
+      "name": "RDI_Tyresize",
+      "id": 63777,
+      "description": "TyreSize",
+      "source": "Appendix 8"
+    },
+    {
+      "name": "RDI_Nextcalibrationdate",
+      "id": 63778,
+      "description": "NextCalibrationDate",
+      "source": "Appendix 8"
+    },
+    {
+      "name": "RDI_Speedauthorised",
+      "id": 63788,
+      "description": "SpeedAuthorised",
+      "source": "Appendix 8"
+    },
+    {
+      "name": "RDI_Registeringmemberstate",
+      "id": 63869,
+      "description": "RegisteringMemberState",
+      "source": "Appendix 8"
+    },
+    {
+      "name": "RDI_Vehicleregistrationnumber",
+      "id": 63870,
+      "description": "VehicleRegistrationNumber",
+      "source": "Appendix 8"
+    },
+    {
+      "name": "RDI_Motionsensorserialnumber",
+      "id": 63952,
+      "description": "MotionSensorSerialNumber",
+      "source": "Appendix 8"
+    },
+    {
+      "name": "RDI_Remotecommunicationfacilityserialnumber",
+      "id": 63953,
+      "description": "RemoteCommunicationFacilitySerialNumber",
+      "source": "Appendix 8"
+    },
+    {
+      "name": "RDI_Externalgnssfacilityserialnumber",
+      "id": 63954,
+      "description": "ExternalGNSSFacilitySerialNumber",
+      "source": "Appendix 8"
+    },
+    {
+      "name": "RDI_Smarttachographsealsserialnumber",
+      "id": 63955,
+      "description": "SmartTachographSealsSerialNumber",
+      "source": "Appendix 8"
+    },
+    {
+      "name": "RDI_Vuserialnumber",
+      "id": 63956,
+      "description": "VuSerialNumber",
+      "source": "Appendix 8"
+    },
+    {
+      "name": "RDI_Bydefaultloadtype",
+      "id": 63957,
+      "description": "ByDefaultLoadType",
+      "source": "Appendix 8"
+    },
+    {
+      "name": "RDI_Tachographcardsgen1suppression",
+      "id": 63958,
+      "description": "TachographCardsGen1Suppression",
+      "source": "Appendix 8"
+    },
+    {
+      "name": "RDI_Vehicleposition",
+      "id": 63959,
+      "description": "VehiclePosition",
+      "source": "Appendix 8"
+    },
+    {
+      "name": "RDI_Calibrationcountry",
+      "id": 63960,
+      "description": "CalibrationCountry",
+      "source": "Appendix 8"
+    }
+  ]
+}

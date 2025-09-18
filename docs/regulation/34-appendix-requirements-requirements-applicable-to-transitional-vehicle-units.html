@@ -1,213 +1,466 @@
 <!DOCTYPE html>
-<html><head>
+<html>
+<head>
 
       <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
       <title>Consolidated TEXT: 32016R0799 — EN — 21.08.2023</title>
-      
+      <link type="text/css" rel="stylesheet" href="http://publications.europa.eu/resource/presentation-style-sheet/clg/clg.css"/>
    
 </head>
 <body>
-<h1>4.   REQUIREMENTS APPLICABLE TO TRANSITIONAL VEHICLE UNITS: REQUIREMENTS APPLICABLE TO TRANSITIONAL VEHICLE UNITS</h1>
-<p>Transitional vehicle units may process the OSNMA signal available during its public test phase, but are not able to report the Navigation Messages Authentication Status from the SIS available during OSNMA operational phase, until an appropriate software update is applied. They therefore assume that the standard positions provided by the GNSS receiver are always authenticated.</p>
-<p>The requirements of Annex IC and its Appendixes 1 to 16 apply, with the following interpretations.</p>
-<p>
-                  <strong>TRA_004</strong>
-                   Annex IC, 3.9.15 ‘Time conflict’ event, requirement 86, shall be understood as:</p>
-<p>
-               <em>This event shall be triggered, while not in calibration mode, when the VU detects a discrepancy between the time of the vehicle unit’s time measurement function and the time originating from the standard positions transmitted by the GNSS receiver or the external GNSS facility. A ‘ time discrepancy’ is detected if the time difference exceeds ± 3 seconds corresponding to the time accuracy set out in requirement 41a, the latter increased by the maximal time drift per day. This event shall be recorded together with the internal clock value of the recording equipment. The VU shall perform the check for triggering the ‘time conflict’ event right before the VU automatically re-adjusts the VU internal clock, in accordance with requirement 211.</em>
+<p class="title-gr-seq-level-1" id="id-1986a545-5c30-4cfe-8072-955716de9414">4.   <span class="boldface">REQUIREMENTS APPLICABLE TO TRANSITIONAL VEHICLE UNITS</span>
             </p>
-<p>
-                  <strong>TRA_005</strong>
-                   Annex IC, 3.9.18 ‘GNSS anomaly’ event, requirement 88a, shall be understood as:</p>
-<p>
-               <em>This event shall be triggered, while not in calibration mode,</em>
-               <span>
-                  <em>when the GNSS receiver detects an attack</em>
-               </span>
-               <em>, as specified in Appendix 12. After a GNSS anomaly event has been triggered, the VU shall not generate other GNSS anomaly events for the next 10 minutes.</em>
-            </p>
-<p>
-                  <strong>TRA_006</strong>
-                   Annex IC, 3.12.5 Recording and storing in the data memory, Places and positions where daily work periods begin, end, and/or where 3 hours accumulated driving time is reached, requirement 110, shall be understood as:</p>
-<p>
-               <em>Together with each place or position, the recording equipment shall record and store in its data memory:</em>
-            </p>
-<dl><dt>—</dt><dd>the driver and/or co-driver card number and card issuing Member State,</dd><dt>—</dt><dd>the card generation,</dd><dt>—</dt><dd>the date and time of the entry,</dd><dt>—</dt><dd>the type of entry (begin, end or 3 hours accumulated driving time),</dd><dt>—</dt><dd>the related GNSS accuracy, date and time if applicable,</dd><dt>—</dt><dd>the vehicle odometer value,</dd><dt>—</dt><dd>a flag indicating that the position has been assumed as authenticated.</dd></dl>
-
-
-
-
-
-
-<p>
-                  <strong>TRA_007</strong>
-                   Annex IC, 3.12.17 Recording and storing in the data memory, Border crossings, requirement 133b, shall be understood as:</p>
-<p>
-               <em>Together with countries and position, the recording equipment shall record and store in its data memory:</em>
-            </p>
-<dl><dt>—</dt><dd>the driver and/or co-driver card number and card issuing Member State,</dd><dt>—</dt><dd>the card generation,</dd><dt>—</dt><dd>the related GNSS accuracy, date and time,</dd><dt>—</dt><dd>a flag indicating that the position has been assumed as authenticated,</dd><dt>—</dt><dd>the vehicle odometer value at the time of border crossing detection.</dd></dl>
-
-
-
-
-<p>
-                  <strong>TRA_008</strong>
-                   Annex IC, 3.12.18 Recording and storing in the data memory, Load/unload operations, requirement 133g, shall be understood as:</p>
-<p>
-               <em>Together with the type of operation and position, the recording equipment shall record and store in its data memory:</em>
-            </p>
-<dl><dt>—</dt><dd>the driver and/or co-driver card number and card issuing Member State,</dd><dt>—</dt><dd>the card generation,</dd><dt>—</dt><dd>the date and time of the load/unload operation,</dd><dt>—</dt><dd>the related GNSS accuracy, date and time if applicable,</dd><dt>—</dt><dd>a flag indicating that the position has been assumed as authenticated,</dd><dt>—</dt><dd>the vehicle odometer value.</dd></dl>
-
-
-
-
-
-<p>
-                  <strong>TRA_009</strong>
-                   Annex IC, 3.23 Time adjustment, requirement 211, shall be understood as:</p>
-<p>
-               <em>The time setting of the VU internal clock shall be automatically re-adjusted, at variable time intervals. The next automatic time re-adjustment shall be triggered between 72h and 168h after the previous one, and after the VU can access to GNSS time through a valid</em>
-               <span>
-                  <em>standard</em>
-               </span>
-               <em>position message in accordance with Appendix 12. Nevertheless, the time adjustment shall never be bigger than the accumulated maximal time drift per day, as calculated by the VU manufacturer in accordance with requirement 41b. If the difference between internal VU clock time and GNSS receiver time is bigger than the accumulated maximum time drift per day, then the time adjustment shall bring the VU internal clock as close as possible to the GNSS receiver time. The time setting may only be done if the time provided by the GNSS receiver is obtained using</em>
-               <span>
-                  <em>standard</em>
-               </span>
-               <em>position messages as set out in Appendix 12. The time reference for the automatic time setting of the VU internal clock shall be the time provided in the standard position message.</em>
-            </p>
-<p>
-                  <strong>TRA_010</strong>
-                   Annex IC, 3.23 Time adjustment, requirement 212, shall be understood as:</p>
-<p>
-               <em>The time adjustment function shall also allow for triggered adjustment of the current time, in calibration mode.</em>
-            </p>
-<p>
-               <em>Workshops may adjust time:</em>
-            </p>
-<dl><dt>—</dt><dd>either by writing a time value in the VU, using the WriteDataByIdentifier service in accordance with section 6.2 of Appendix 8,</dd><dt>—</dt><dd>or by requesting an alignment of the VU clock to the time provided by the GNSS receiver. This may only be done if the time provided by the GNSS receiver is obtained using standard position messages. In this latter case, the RoutineControl service shall be used in accordance with section 8 of Appendix 8.</dd></dl>
-
-<p>
-                  <strong>TRA_011</strong>
-                   Appendix 4, 2. Data blocks specification, first paragraph, seventh indent, shall be understood as:</p>
-<p>
-               <em>When printed after the longitude and the latitude of a recorded position, or after the timestamp when the position was determined, the pictogram indicates that this position has been assumed as authentic.</em>
-            </p>
-<p>
-                  <strong>TRA_012</strong>
-                   Appendix 8, 8.1 RoutineControl service (Time adjustment), Message description, requirement CPR_065a, shall be understood as:</p>
-<p>
-               <em>The service RoutineControl (TimeAdjustment) provides the ability to trigger an alignment of the VU clock to the time provided by the GNSS receiver.</em>
-            </p>
-<p>
-               <em>For the service RoutineControl (TimeAdjustment) execution the VU must be in CALIBRATION mode.</em>
-            </p>
-<p>
-               <em>Precondition: it is ensured that the VU is able to receive</em>
-               <span>
-                  <em>standard</em>
-               </span>
-               <em>position messages from the GNSS receiver.</em>
-            </p>
-<p>
-               <em>As long the time adjustment is ongoing, the VU shall respond to the request RoutineControl, subfunction requestRoutineResults, with routineInfo = 0x78.</em>
-            </p>
-<p>
-               <em>Note: the time adjustment may take some time. The diagnostic tester shall request the time adjustment status by using the sub-function requestRoutineResults.</em>
-            </p>
-<p>
-                  <strong>TRA_013</strong>
-                   In Appendix 12, 3 Sentences provided by the GNSS receiver, requirement GNS_4a:</p>
-<p>
-               <em>Data contained in the AMC sentences provided by the GNSS receiver, if any,</em>
-               <span>
-                  <em>shall not be used</em>
-               </span>
-               <em>by the vehicle unit, except for the following values of the Status:</em>
-            </p>
-<div>
-               <em>J = jamming or O = other GNSS attack (by implemented consistency checks according to GNS_3a),</em>
+<p class="norm">Transitional vehicle units may process the OSNMA signal available during its public test phase, but are not able to report the Navigation Messages Authentication Status from the SIS available during OSNMA operational phase, until an appropriate software update is applied. They therefore assume that the standard positions provided by the GNSS receiver are always authenticated.</p>
+<p class="norm">The requirements of Annex IC and its Appendixes 1 to 16 apply, with the following interpretations.</p>
+<div style="margin-left: 54pt; text-indent: -54pt">
+               <p class="norm">
+                  <span class="boldface">TRA_004</span>
+                  <span style="word-spacing: NaNpt"> </span>Annex IC, 3.9.15 ‘Time conflict’ event, requirement 86, shall be understood as:</p>
             </div>
-<div>
-               <em>V = Void (authenticated position is not available for any other reason).</em>
+<p class="list">
+               <span class="italics">This event shall be triggered, <span class="boldface">while not in calibration mode</span>, when the VU detects a discrepancy between the time of the vehicle unit’s time measurement function and the time originating from the standard positions transmitted by the GNSS receiver or the external GNSS facility. A ‘ time discrepancy’ is detected if the time difference exceeds ± 3 seconds corresponding to the time accuracy set out in requirement 41a, the latter increased by the maximal time drift per day. This event shall be recorded together with the internal clock value of the recording equipment. The VU shall perform the check for triggering the ‘time conflict’ event right before the VU automatically re-adjusts the VU internal clock, in accordance with requirement 211.</span>
+            </p>
+<div style="margin-left: 54pt; text-indent: -54pt">
+               <p class="norm">
+                  <span class="boldface">TRA_005</span>
+                  <span style="word-spacing: NaNpt"> </span>Annex IC, 3.9.18 ‘GNSS anomaly’ event, requirement 88a, shall be understood as:</p>
             </div>
-<p>
-                  <strong>TRA_014</strong>
-                   In Appendix 12, 3 Sentences provided by the GNSS receiver, requirement GNS_5:</p>
-<p>
-               <em>Data contained in the ASA sentences provided by the GNSS receiver, if any,</em>
-               <span>
-                  <em>shall not be used</em>
+<p class="list">
+               <span class="italics">This event shall be triggered, while not in calibration mode,</span>
+               <span class="underline">
+                  <span class="italics">when the GNSS receiver detects an attack</span>
                </span>
-               <em>by the vehicle unit.</em>
+               <span class="italics">, as specified in Appendix 12. After a GNSS anomaly event has been triggered, the VU shall not generate other GNSS anomaly events for the next 10 minutes.</span>
             </p>
-<p>
-                  <strong>TRA_015</strong>
-                   In Appendix 12, 5.2 Vehicle Unit without an external GNSS facility, Transfer of information from the GNSS receiver to the VU, requirements GNS_34 and 36:</p>
-<p>
-               <em>The VU processor</em>
-               <span>
-                  <em>shall not</em>
-               </span>
-               <em>use information extracted from the AMC sentence, except for the following values of the Status:</em>
-            </p>
-<div>
-               <em>J = jamming or O = other GNSS attack (by implemented consistency checks according to GNS_3a),</em>
+<div style="margin-left: 54pt; text-indent: -54pt">
+               <p class="norm">
+                  <span class="boldface">TRA_006</span>
+                  <span style="word-spacing: NaNpt"> </span>Annex IC, 3.12.5 Recording and storing in the data memory, Places and positions where daily work periods begin, end, and/or where 3 hours accumulated driving time is reached, requirement 110, shall be understood as:</p>
             </div>
-<div>
-               <em>V = Void (authenticated position is not available for any other reason).</em>
+<p class="list">
+               <span class="italics">Together with each place or position, the recording equipment shall record and store in its data memory:</span>
+            </p>
+<div class="grid-container grid-list">
+               <div class="list grid-list-column-1">
+                  <span>— </span>
+               </div>
+               <div class="grid-list-column-2">
+                  <div class="list">
+                     <span class="italics">the driver and/or co-driver card number and card issuing Member State,</span>
+                  </div>
+               </div>
             </div>
-<p>
-               <em>The VU processor</em>
-               <span>
-                  <em>shall not</em>
+<div class="grid-container grid-list">
+               <div class="list grid-list-column-1">
+                  <span>— </span>
+               </div>
+               <div class="grid-list-column-2">
+                  <div class="list">
+                     <span class="italics">the card generation,</span>
+                  </div>
+               </div>
+            </div>
+<div class="grid-container grid-list">
+               <div class="list grid-list-column-1">
+                  <span>— </span>
+               </div>
+               <div class="grid-list-column-2">
+                  <div class="list">
+                     <span class="italics">the date and time of the entry,</span>
+                  </div>
+               </div>
+            </div>
+<div class="grid-container grid-list">
+               <div class="list grid-list-column-1">
+                  <span>— </span>
+               </div>
+               <div class="grid-list-column-2">
+                  <div class="list">
+                     <span class="italics">the type of entry (begin, end or 3 hours accumulated driving time),</span>
+                  </div>
+               </div>
+            </div>
+<div class="grid-container grid-list">
+               <div class="list grid-list-column-1">
+                  <span>— </span>
+               </div>
+               <div class="grid-list-column-2">
+                  <div class="list">
+                     <span class="italics">the related GNSS accuracy, date and time if applicable,</span>
+                  </div>
+               </div>
+            </div>
+<div class="grid-container grid-list">
+               <div class="list grid-list-column-1">
+                  <span>— </span>
+               </div>
+               <div class="grid-list-column-2">
+                  <div class="list">
+                     <span class="italics">the vehicle odometer value,</span>
+                  </div>
+               </div>
+            </div>
+<div class="grid-container grid-list">
+               <div class="list grid-list-column-1">
+                  <span>— </span>
+               </div>
+               <div class="grid-list-column-2">
+                  <div class="list">
+                     <span class="italics">a flag indicating that the position has been assumed as authenticated.</span>
+                  </div>
+               </div>
+            </div>
+<div style="margin-left: 54pt; text-indent: -54pt">
+               <p class="norm">
+                  <span class="boldface">TRA_007</span>
+                  <span style="word-spacing: NaNpt"> </span>Annex IC, 3.12.17 Recording and storing in the data memory, Border crossings, requirement 133b, shall be understood as:</p>
+            </div>
+<p class="list">
+               <span class="italics">Together with countries and position, the recording equipment shall record and store in its data memory:</span>
+            </p>
+<div class="grid-container grid-list">
+               <div class="list grid-list-column-1">
+                  <span>— </span>
+               </div>
+               <div class="grid-list-column-2">
+                  <div class="list">
+                     <span class="italics">the driver and/or co-driver card number and card issuing Member State,</span>
+                  </div>
+               </div>
+            </div>
+<div class="grid-container grid-list">
+               <div class="list grid-list-column-1">
+                  <span>— </span>
+               </div>
+               <div class="grid-list-column-2">
+                  <div class="list">
+                     <span class="italics">the card generation,</span>
+                  </div>
+               </div>
+            </div>
+<div class="grid-container grid-list">
+               <div class="list grid-list-column-1">
+                  <span>— </span>
+               </div>
+               <div class="grid-list-column-2">
+                  <div class="list">
+                     <span class="italics">the related GNSS accuracy, date and time,</span>
+                  </div>
+               </div>
+            </div>
+<div class="grid-container grid-list">
+               <div class="list grid-list-column-1">
+                  <span>— </span>
+               </div>
+               <div class="grid-list-column-2">
+                  <div class="list">
+                     <span class="italics">a flag indicating that the position has been assumed as authenticated,</span>
+                  </div>
+               </div>
+            </div>
+<div class="grid-container grid-list">
+               <div class="list grid-list-column-1">
+                  <span>— </span>
+               </div>
+               <div class="grid-list-column-2">
+                  <div class="list">
+                     <span class="italics">the vehicle odometer value at the time of border crossing detection.</span>
+                  </div>
+               </div>
+            </div>
+<div style="margin-left: 54pt; text-indent: -54pt">
+               <p class="norm">
+                  <span class="boldface">TRA_008</span>
+                  <span style="word-spacing: NaNpt"> </span>Annex IC, 3.12.18 Recording and storing in the data memory, Load/unload operations, requirement 133g, shall be understood as:</p>
+            </div>
+<p class="list">
+               <span class="italics">Together with the type of operation and position, the recording equipment shall record and store in its data memory:</span>
+            </p>
+<div class="grid-container grid-list">
+               <div class="list grid-list-column-1">
+                  <span>— </span>
+               </div>
+               <div class="grid-list-column-2">
+                  <div class="list">
+                     <span class="italics">the driver and/or co-driver card number and card issuing Member State,</span>
+                  </div>
+               </div>
+            </div>
+<div class="grid-container grid-list">
+               <div class="list grid-list-column-1">
+                  <span>— </span>
+               </div>
+               <div class="grid-list-column-2">
+                  <div class="list">
+                     <span class="italics">the card generation,</span>
+                  </div>
+               </div>
+            </div>
+<div class="grid-container grid-list">
+               <div class="list grid-list-column-1">
+                  <span>— </span>
+               </div>
+               <div class="grid-list-column-2">
+                  <div class="list">
+                     <span class="italics">the date and time of the load/unload operation,</span>
+                  </div>
+               </div>
+            </div>
+<div class="grid-container grid-list">
+               <div class="list grid-list-column-1">
+                  <span>— </span>
+               </div>
+               <div class="grid-list-column-2">
+                  <div class="list">
+                     <span class="italics">the related GNSS accuracy, date and time if applicable,</span>
+                  </div>
+               </div>
+            </div>
+<div class="grid-container grid-list">
+               <div class="list grid-list-column-1">
+                  <span>— </span>
+               </div>
+               <div class="grid-list-column-2">
+                  <div class="list">
+                     <span class="italics">a flag indicating that the position has been assumed as authenticated,</span>
+                  </div>
+               </div>
+            </div>
+<div class="grid-container grid-list">
+               <div class="list grid-list-column-1">
+                  <span>— </span>
+               </div>
+               <div class="grid-list-column-2">
+                  <div class="list">
+                     <span class="italics">the vehicle odometer value.</span>
+                  </div>
+               </div>
+            </div>
+<div style="margin-left: 54pt; text-indent: -54pt">
+               <p class="norm">
+                  <span class="boldface">TRA_009</span>
+                  <span style="word-spacing: NaNpt"> </span>Annex IC, 3.23 Time adjustment, requirement 211, shall be understood as:</p>
+            </div>
+<p class="list">
+               <span class="italics">The time setting of the VU internal clock shall be automatically re-adjusted, at variable time intervals. The next automatic time re-adjustment shall be triggered between 72h and 168h after the previous one, and after the VU can access to GNSS time through a valid</span>
+               <span class="underline">
+                  <span class="italics">standard</span>
                </span>
-               <em>use information extracted from the ASA sentence.</em>
-            </p>
-<p>
-                  <strong>TRA_016</strong>
-                   Appendix 12, 6 Position data processing and recording by the VU, requirement GNS_39, shall be understood as:</p>
-<p>
-               <em>Position data shall be stored in the VU, together with a flag indicating if the position has been assumed as authenticated. When position data need to be recorded in the VU, the following rule shall apply:</em>
-            </p>
-<dl><dt>(a)</dt><dd>If the standard position is valid, the standard position and its accuracy shall be recorded in the VU and the flag shall be set to ‘authenticated’.</dd></dl>
-<p>
-                  <strong>TRA_017</strong>
-                   Appendix 12, 6 Position data processing and recording by the VU, requirement GNS_40, shall be understood as:</p>
-<p>
-               <em>When the value of the Status in a received AMC sentence is set to</em>
-               <span>
-                  <em>‘J’ or ‘O’</em>
+               <span class="italics">position message in accordance with Appendix 12. Nevertheless, the time adjustment shall never be bigger than the accumulated maximal time drift per day, as calculated by the VU manufacturer in accordance with requirement 41b. If the difference between internal VU clock time and GNSS receiver time is bigger than the accumulated maximum time drift per day, then the time adjustment shall bring the VU internal clock as close as possible to the GNSS receiver time. The time setting may only be done if the time provided by the GNSS receiver is obtained using</span>
+               <span class="underline">
+                  <span class="italics">standard</span>
                </span>
-               <em>in accordance with requirement GNS_4a, the VU shall generate and record a GNSS anomaly event, as defined in requirement 88a of Annex IC and Appendix 1 (EventFaultType), The vehicle unit may perform additional checks before storing a GNSS anomaly event following the reception of a ‘J’ or ‘O’ setting.</em>
+               <span class="italics">position messages as set out in Appendix 12. The time reference for the automatic time setting of the VU internal clock shall be the time provided in the standard position message.</span>
             </p>
-<p>
-                  <strong>TRA_018</strong>
-                   Appendix 12, 8 Vehicle motion conflict, requirement GNS_42, Trigger condition 2, the first and second indents after the formula shall be understood as:</p>
-<dl><dt>—</dt><dd>GnssDistance is the distance between the current position of the vehicle and the previous one, both obtained from valid standard position messages, without considering the height,</dd><dt>—</dt><dd>OdometerDifference is the difference between the current odometer value and the odometer value corresponding to the previous valid standard position message.</dd></dl>
-
-<p>
-                  <strong>TRA_019</strong>
-                   Appendix 14, 5.4.5 DSRC Protocol requirements for RTMElements of RtmData, actions performed and definitions, requirement DSC_41, Table 14.3, second cell in the RTM20 row, shall be understood as:</p>
-<p>
-               <em>The VU shall generate an integer value (timeReal from Appendix 1) for data element RTM20.</em>
+<div style="margin-left: 54pt; text-indent: -54pt">
+               <p class="norm">
+                  <span class="boldface">TRA_010</span>
+                  <span style="word-spacing: NaNpt"> </span>Annex IC, 3.23 Time adjustment, requirement 212, shall be understood as:</p>
+            </div>
+<p class="list">
+               <span class="italics">The time adjustment function shall also allow for triggered adjustment of the current time, in calibration mode.</span>
             </p>
-<p>
-               <em>The VU shall set the value of RTM20 to the time at which the latest</em>
-               <span>
-                  <em>standard</em>
+<p class="list">
+               <span class="italics">Workshops may adjust time:</span>
+            </p>
+<div class="grid-container grid-list">
+               <div class="list grid-list-column-1">
+                  <span>— </span>
+               </div>
+               <div class="grid-list-column-2">
+                  <div class="list">
+                     <span class="italics">either by writing a time value in the VU, using the WriteDataByIdentifier service in accordance with section 6.2 of Appendix 8,</span>
+                  </div>
+               </div>
+            </div>
+<div class="grid-container grid-list">
+               <div class="list grid-list-column-1">
+                  <span>— </span>
+               </div>
+               <div class="grid-list-column-2">
+                  <div class="list">
+                     <span class="italics">or by requesting an alignment of the VU clock to the time provided by the GNSS receiver. This may only be done if the time provided by the GNSS receiver is obtained using standard position messages. In this latter case, the RoutineControl service shall be used in accordance with section 8 of Appendix 8.</span>
+                  </div>
+               </div>
+            </div>
+<div style="margin-left: 54pt; text-indent: -54pt">
+               <p class="norm">
+                  <span class="boldface">TRA_011</span>
+                  <span style="word-spacing: NaNpt"> </span>Appendix 4, 2. Data blocks specification, first paragraph, seventh indent, shall be understood as:</p>
+            </div>
+<p class="list">
+               <span class="italics">When printed after the longitude and the latitude of a recorded position, or after the timestamp when the position was determined, the  pictogram indicates that this position has been assumed as authentic.</span>
+            </p>
+<div style="margin-left: 54pt; text-indent: -54pt">
+               <p class="norm">
+                  <span class="boldface">TRA_012</span>
+                  <span style="word-spacing: NaNpt"> </span>Appendix 8, 8.1 RoutineControl service (Time adjustment), Message description, requirement CPR_065a, shall be understood as:</p>
+            </div>
+<p class="list">
+               <span class="italics">The service RoutineControl (TimeAdjustment) provides the ability to trigger an alignment of the VU clock to the time provided by the GNSS receiver.</span>
+            </p>
+<p class="list">
+               <span class="italics">For the service RoutineControl (TimeAdjustment) execution the VU must be in CALIBRATION mode.</span>
+            </p>
+<p class="list">
+               <span class="italics">Precondition: it is ensured that the VU is able to receive</span>
+               <span class="underline">
+                  <span class="italics">standard</span>
                </span>
-               <em>vehicle position was available from the GNSS receiver.</em>
+               <span class="italics">position messages from the GNSS receiver.</span>
             </p>
-<p>
-               <em>If no</em>
-               <span>
-                  <em>standard</em>
+<p class="list">
+               <span class="italics">As long the time adjustment is ongoing, the VU shall respond to the request RoutineControl, subfunction requestRoutineResults, with routineInfo = 0x78.</span>
+            </p>
+<p class="list">
+               <span class="italics">Note: the time adjustment may take some time. The diagnostic tester shall request the time adjustment status by using the sub-function requestRoutineResults.</span>
+            </p>
+<div style="margin-left: 54pt; text-indent: -54pt">
+               <p class="norm">
+                  <span class="boldface">TRA_013</span>
+                  <span style="word-spacing: NaNpt"> </span>In Appendix 12, 3 Sentences provided by the GNSS receiver, requirement GNS_4a:</p>
+            </div>
+<p class="list">
+               <span class="italics">Data contained in the AMC sentences provided by the GNSS receiver, if any,</span>
+               <span class="underline">
+                  <span class="italics">shall not be used</span>
                </span>
-               <em>vehicle position was available ever from the GNSS receiver the VU shall set the value of RTM20 to 0.</em>
+               <span class="italics">by the vehicle unit, except for the following values of the Status:</span>
             </p>
-<p>
-                  <strong>TRA_020</strong>
-                   The manufacturer of a type approved transitional vehicle unit shall inform the Commission of its software versions. The Commission shall publish these software versions on a publicly available website.</p>
-
-</body></html>
+<div class="list">
+               <span class="italics">J = jamming or O = other GNSS attack (by implemented consistency checks according to GNS_3a),</span>
+            </div>
+<div class="list">
+               <span class="italics">V = Void (authenticated position is not available for any other reason).</span>
+            </div>
+<div style="margin-left: 54pt; text-indent: -54pt">
+               <p class="norm">
+                  <span class="boldface">TRA_014</span>
+                  <span style="word-spacing: NaNpt"> </span>In Appendix 12, 3 Sentences provided by the GNSS receiver, requirement GNS_5:</p>
+            </div>
+<p class="list">
+               <span class="italics">Data contained in the ASA sentences provided by the GNSS receiver, if any,</span>
+               <span class="underline">
+                  <span class="italics">shall not be used</span>
+               </span>
+               <span class="italics">by the vehicle unit.</span>
+            </p>
+<div style="margin-left: 54pt; text-indent: -54pt">
+               <p class="norm">
+                  <span class="boldface">TRA_015</span>
+                  <span style="word-spacing: NaNpt"> </span>In Appendix 12, 5.2 Vehicle Unit without an external GNSS facility, Transfer of information from the GNSS receiver to the VU, requirements GNS_34 and 36:</p>
+            </div>
+<p class="list">
+               <span class="italics">The VU processor</span>
+               <span class="underline">
+                  <span class="italics">shall not</span>
+               </span>
+               <span class="italics">use information extracted from the AMC sentence, except for the following values of the Status:</span>
+            </p>
+<div class="list">
+               <span class="italics">J = jamming or O = other GNSS attack (by implemented consistency checks according to GNS_3a),</span>
+            </div>
+<div class="list">
+               <span class="italics">V = Void (authenticated position is not available for any other reason).</span>
+            </div>
+<p class="list">
+               <span class="italics">The VU processor</span>
+               <span class="underline">
+                  <span class="italics">shall not</span>
+               </span>
+               <span class="italics">use information extracted from the ASA sentence.</span>
+            </p>
+<div style="margin-left: 54pt; text-indent: -54pt">
+               <p class="norm">
+                  <span class="boldface">TRA_016</span>
+                  <span style="word-spacing: NaNpt"> </span>Appendix 12, 6 Position data processing and recording by the VU, requirement GNS_39, shall be understood as:</p>
+            </div>
+<p class="list">
+               <span class="italics">Position data shall be stored in the VU, together with a flag indicating if the position has been assumed as authenticated. When position data need to be recorded in the VU, the following rule shall apply:</span>
+            </p>
+<div class="grid-container grid-list">
+               <div class="list grid-list-column-1">
+                  <span>(a) </span>
+               </div>
+               <div class="grid-list-column-2">
+                  <p class="norm">
+                     <span class="italics">If the standard position is valid, the standard position and its accuracy shall be recorded in the VU and the flag shall be set to ‘authenticated’.</span>
+                  </p>
+               </div>
+            </div>
+<div style="margin-left: 54pt; text-indent: -54pt">
+               <p class="norm">
+                  <span class="boldface">TRA_017</span>
+                  <span style="word-spacing: NaNpt"> </span>Appendix 12, 6 Position data processing and recording by the VU, requirement GNS_40, shall be understood as:</p>
+            </div>
+<p class="list">
+               <span class="italics">When the value of the Status in a received AMC sentence is set to</span>
+               <span class="underline">
+                  <span class="italics">
+                              ‘J’ or ‘O’
+                           </span>
+               </span>
+               <span class="italics">in accordance with requirement GNS_4a, the VU shall generate and record a GNSS anomaly event, as defined in requirement 88a of Annex IC and Appendix 1 (EventFaultType), The vehicle unit may perform additional checks before storing a GNSS anomaly event following the reception of a ‘J’ or ‘O’ setting.</span>
+            </p>
+<div style="margin-left: 54pt; text-indent: -54pt">
+               <p class="norm">
+                  <span class="boldface">TRA_018</span>
+                  <span style="word-spacing: NaNpt"> </span>Appendix 12, 8 Vehicle motion conflict, requirement GNS_42, Trigger condition 2, the first and second indents after the formula shall be understood as:</p>
+            </div>
+<div class="grid-container grid-list">
+               <div class="list grid-list-column-1">
+                  <span>— </span>
+               </div>
+               <div class="grid-list-column-2">
+                  <div class="list">
+                     <span class="italics">GnssDistance is the distance between the current position of the vehicle and the previous one, both obtained from valid</span>
+                     <span class="underline">
+                        <span class="italics">standard</span>
+                     </span>
+                     <span class="italics">position messages, without considering the height,</span>
+                  </div>
+               </div>
+            </div>
+<div class="grid-container grid-list">
+               <div class="list grid-list-column-1">
+                  <span>— </span>
+               </div>
+               <div class="grid-list-column-2">
+                  <div class="list">
+                     <span class="italics">OdometerDifference is the difference between the current odometer value and the odometer value corresponding to the previous valid</span>
+                     <span class="underline">
+                        <span class="italics">standard</span>
+                     </span>
+                     <span class="italics">position message.</span>
+                  </div>
+               </div>
+            </div>
+<div style="margin-left: 54pt; text-indent: -54pt">
+               <p class="norm">
+                  <span class="boldface">TRA_019</span>
+                  <span style="word-spacing: NaNpt"> </span>Appendix 14, 5.4.5 DSRC Protocol requirements for RTMElements of RtmData, actions performed and definitions, requirement DSC_41, Table 14.3, second cell in the RTM20 row, shall be understood as:</p>
+            </div>
+<p class="list">
+               <span class="italics">The VU shall generate an integer value (timeReal from Appendix 1) for data element RTM20.</span>
+            </p>
+<p class="list">
+               <span class="italics">The VU shall set the value of RTM20 to the time at which the latest</span>
+               <span class="underline">
+                  <span class="italics">standard</span>
+               </span>
+               <span class="italics">vehicle position was available from the GNSS receiver.</span>
+            </p>
+<p class="list">
+               <span class="italics">If no</span>
+               <span class="underline">
+                  <span class="italics">standard</span>
+               </span>
+               <span class="italics">vehicle position was available ever from the GNSS receiver the VU shall set the value of RTM20 to 0.</span>
+            </p>
+<div style="margin-left: 54pt; text-indent: -54pt">
+               <p class="norm">
+                  <span class="boldface">TRA_020</span>
+                  <span style="word-spacing: NaNpt"> </span>The manufacturer of a type approved transitional vehicle unit shall inform the Commission of its software versions. The Commission shall publish these software versions on a publicly available website.</p>
+            </div>
+</body>
+</html>

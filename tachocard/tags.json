@@ -1,0 +1,100 @@
+{
+  "files": [
+    {
+      "name": "EF_ICC",
+      "id": 2,
+      "description": "IC Card",
+      "source": "Appendix 2"
+    },
+    {
+      "name": "EF_IC",
+      "id": 5,
+      "description": "Integrated Circuit Card",
+      "source": "Appendix 2"
+    },
+    {
+      "name": "EF_Application_Identification",
+      "id": 1281,
+      "description": "Application Identification",
+      "source": "Appendix 2"
+    },
+    {
+      "name": "EF_Card_Certificate",
+      "id": 1282,
+      "description": "Card Certificate",
+      "source": "Appendix 2"
+    },
+    {
+      "name": "EF_CA_Certificate",
+      "id": 1283,
+      "description": "CA Certificate",
+      "source": "Appendix 2"
+    },
+    {
+      "name": "EF_Identification",
+      "id": 1284,
+      "description": "Identification",
+      "source": "Appendix 2"
+    },
+    {
+      "name": "EF_Card_Download",
+      "id": 1285,
+      "description": "Card Download",
+      "source": "Appendix 2"
+    },
+    {
+      "name": "EF_Driving_License_Info",
+      "id": 1286,
+      "description": "Driving License Info",
+      "source": "Appendix 2"
+    },
+    {
+      "name": "EF_Events_Data",
+      "id": 1287,
+      "description": "Events Data",
+      "source": "Appendix 2"
+    },
+    {
+      "name": "EF_Faults_Data",
+      "id": 1288,
+      "description": "Faults Data",
+      "source": "Appendix 2"
+    },
+    {
+      "name": "EF_Driver_Activity_Data",
+      "id": 1289,
+      "description": "Driver Activity Data",
+      "source": "Appendix 2"
+    },
+    {
+      "name": "EF_Vehicles_Used",
+      "id": 1290,
+      "description": "Vehicles Used",
+      "source": "Appendix 2"
+    },
+    {
+      "name": "EF_Places",
+      "id": 1291,
+      "description": "Places",
+      "source": "Appendix 2"
+    },
+    {
+      "name": "EF_Current_Usage",
+      "id": 1292,
+      "description": "Current Usage",
+      "source": "Appendix 2"
+    },
+    {
+      "name": "EF_Control_Activity_Data",
+      "id": 1293,
+      "description": "Control Activity Data",
+      "source": "Appendix 2"
+    },
+    {
+      "name": "EF_Specific_Conditions",
+      "id": 1294,
+      "description": "Specific Conditions",
+      "source": "Appendix 2"
+    }
+  ]
+}
