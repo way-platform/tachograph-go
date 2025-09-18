@@ -3,7 +3,9 @@
 package main
 
 import (
+	"io"
 	"io/fs"
+	"net/http"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -74,6 +76,37 @@ func CLI() error {
 func VHS() error {
 	mg.Deps(CLI)
 	return tool(root("docs"), "vhs", "cli.tape").Run()
+}
+
+// RegulationOriginal fetches the EU regulation document.
+func RegulationOriginal() error {
+	const url = "https://publications.europa.eu/resource/cellar/50ef99c6-7896-11ec-9136-01aa75ed71a1.0006.02/DOC_2"
+	outputPath := root("docs", "regulation.html")
+	if err := os.MkdirAll(filepath.Dir(outputPath), 0o600); err != nil {
+		return err
+	}
+	resp, err := http.Get(url)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+	out, err := os.Create(outputPath)
+	if err != nil {
+		return err
+	}
+	defer out.Close()
+	_, err = io.Copy(out, resp.Body)
+	return err
+}
+
+// Regulation runs the regulation-parser on the original document to produce split files.
+func Regulation() error {
+	return cmd(
+		root("tools"),
+		"go", "run", "./cmd/regulation-parser",
+		"-i", root("docs/regulation.html"),
+		"-d", root("docs/regulation"),
+	).Run()
 }
 
 func forEachGoMod(f func(dir string) error) error {
