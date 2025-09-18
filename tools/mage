@@ -1,0 +1,4 @@
+#!/bin/sh
+
+root=$(git rev-parse --show-toplevel)
+go tool -modfile "${root}/tools/go.mod" mage -d "${root}/tools" -w "$root" $@
