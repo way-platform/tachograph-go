@@ -18,10 +18,12 @@ func main() {
 	var inputFile string
 	var outputDir string
 	var enableCleanup bool
+	var chunkLevel int
 
 	flag.StringVar(&inputFile, "i", "", "Input HTML file to parse")
 	flag.StringVar(&outputDir, "d", "", "Output directory for parsed files")
 	flag.BoolVar(&enableCleanup, "cleanup", true, "Enable HTML cleanup for improved information density")
+	flag.IntVar(&chunkLevel, "chunk-level", 1, "Chunking level: 1=main sections only, 2=include level-2 sections, 3=include level-3 sections")
 	flag.Parse()
 
 	if inputFile == "" {
@@ -30,6 +32,9 @@ func main() {
 	if outputDir == "" {
 		log.Fatal("Output directory (-d) is required")
 	}
+	if chunkLevel < 1 || chunkLevel > 3 {
+		log.Fatal("Chunk level must be 1, 2, or 3")
+	}
 
 	// Ensure output directory exists
 	if err := os.MkdirAll(outputDir, 0o755); err != nil {
@@ -37,14 +42,14 @@ func main() {
 	}
 
 	// Process the HTML file
-	if err := processHTML(inputFile, outputDir, enableCleanup); err != nil {
+	if err := processHTML(inputFile, outputDir, enableCleanup, chunkLevel); err != nil {
 		log.Fatalf("Failed to process HTML file: %v", err)
 	}
 
 	fmt.Printf("Successfully processed %s and created section files in %s/\n", inputFile, outputDir)
 }
 
-func processHTML(inputFile, outputDir string, enableCleanup bool) error {
+func processHTML(inputFile, outputDir string, enableCleanup bool, chunkLevel int) error {
 	// Open input file
 	file, err := os.Open(inputFile)
 	if err != nil {
@@ -87,20 +92,36 @@ func processHTML(inputFile, outputDir string, enableCleanup bool) error {
 	})
 
 	// Always split the document first, then apply cleanup to individual sections
-	return splitDocument(doc, outputDir, enableCleanup)
+	return splitDocument(doc, outputDir, enableCleanup, chunkLevel)
 }
 
-func splitDocument(doc *goquery.Document, outputDir string, enableCleanup bool) error {
-	fmt.Println("Splitting document into sections...")
+func splitDocument(doc *goquery.Document, outputDir string, enableCleanup bool, chunkLevel int) error {
+	fmt.Printf("Splitting document into sections (chunk level %d)...\n", chunkLevel)
+
+	// Build selector based on chunk level
+	selectors := []string{"p.title-article-norm", "p.title-annex-1", "p.title-gr-seq-level-1"}
+
+	if chunkLevel >= 2 {
+		selectors = append(selectors, "p.title-gr-seq-level-2")
+	}
+	if chunkLevel >= 3 {
+		selectors = append(selectors, "p.title-gr-seq-level-3")
+	}
+
+	selectorString := strings.Join(selectors, ", ")
+	fmt.Printf("Using selector: %s\n", selectorString)
 
 	// Find all section boundaries
 	sections := []struct {
 		Title     string
 		FileName  string
 		Selection *goquery.Selection
+		Level     int
 	}{}
 
-	doc.Find("p.title-article-norm, p.title-annex-1, p.title-gr-seq-level-1").Each(func(i int, s *goquery.Selection) {
+	doc.Find(selectorString).Each(func(i int, s *goquery.Selection) {
+		// Determine the level of this section
+		level := getSectionLevel(s)
 		// Skip title-gr-seq-level-1 elements that immediately follow title-annex-1 elements
 		// (those are subtitles, not separate sections)
 		if s.HasClass("title-gr-seq-level-1") {
@@ -116,7 +137,7 @@ func splitDocument(doc *goquery.Document, outputDir string, enableCleanup bool) 
 		// Extract the descriptive subtitle
 		subtitle := extractSectionSubtitle(s)
 
-		fileName := generateFileName(len(sections)+2, title, subtitle) // Start at 02 for sections (01 is index)
+		fileName := generateFileName(len(sections)+2, title, subtitle, level) // Start at 02 for sections (01 is index)
 		displayTitle := title
 		if subtitle != "" {
 			displayTitle = title + " - " + subtitle
@@ -126,10 +147,12 @@ func splitDocument(doc *goquery.Document, outputDir string, enableCleanup bool) 
 			Title     string
 			FileName  string
 			Selection *goquery.Selection
+			Level     int
 		}{
 			Title:     displayTitle,
 			FileName:  fileName,
 			Selection: s,
+			Level:     level,
 		})
 	})
 
@@ -147,7 +170,7 @@ func splitDocument(doc *goquery.Document, outputDir string, enableCleanup bool) 
 
 	// Create each section file
 	for i, section := range sections {
-		fmt.Printf("Creating section %d: %s -> %s\n", i+1, section.Title, section.FileName)
+		fmt.Printf("Creating section %d: %s -> %s (level %d)\n", i+1, section.Title, section.FileName, section.Level)
 
 		if err := createSectionFile(section.Selection, sections, i, headHTML, outputDir, section.FileName, section.Title, enableCleanup); err != nil {
 			return fmt.Errorf("failed to create section %s: %w", section.Title, err)
@@ -163,10 +186,24 @@ func splitDocument(doc *goquery.Document, outputDir string, enableCleanup bool) 
 	return nil
 }
 
+func getSectionLevel(s *goquery.Selection) int {
+	if s.HasClass("title-article-norm") || s.HasClass("title-annex-1") || s.HasClass("title-gr-seq-level-1") {
+		return 1
+	}
+	if s.HasClass("title-gr-seq-level-2") {
+		return 2
+	}
+	if s.HasClass("title-gr-seq-level-3") {
+		return 3
+	}
+	return 1 // default
+}
+
 func createSectionFile(sectionStart *goquery.Selection, allSections []struct {
 	Title     string
 	FileName  string
 	Selection *goquery.Selection
+	Level     int
 }, sectionIndex int, headHTML, outputDir, fileName, title string, enableCleanup bool,
 ) error {
 	// Create a temporary document for this section
@@ -198,7 +235,7 @@ func createSectionFile(sectionStart *goquery.Selection, allSections []struct {
 		}
 
 		// Check if this element contains a section boundary marker
-		if current.Find("p.title-article-norm, p.title-annex-1, p.title-gr-seq-level-1").Length() > 0 {
+		if current.Find("p.title-article-norm, p.title-annex-1, p.title-gr-seq-level-1, p.title-gr-seq-level-2, p.title-gr-seq-level-3").Length() > 0 {
 			// This element contains a section marker, check if it's the next section
 			if nextSectionStart != nil {
 				nextID := nextSectionStart.AttrOr("id", "")
@@ -262,6 +299,7 @@ func createSectionsIndex(sections []struct {
 	Title     string
 	FileName  string
 	Selection *goquery.Selection
+	Level     int
 }, outputDir string,
 ) error {
 	indexFile := filepath.Join(outputDir, "01-sections-index.html")
@@ -283,7 +321,11 @@ func createSectionsIndex(sections []struct {
     <style>
         body { font-family: Arial, sans-serif; margin: 40px; }
         .section { margin: 20px 0; padding: 10px; border-left: 4px solid #007acc; }
+        .section.level-2 { margin-left: 20px; border-left-color: #4CAF50; }
+        .section.level-3 { margin-left: 40px; border-left-color: #FF9800; }
         .section-title { font-weight: bold; color: #007acc; }
+        .section.level-2 .section-title { color: #4CAF50; }
+        .section.level-3 .section-title { color: #FF9800; }
         .section-info { color: #666; font-size: 0.9em; }
         a { text-decoration: none; color: inherit; }
         a:hover .section { background-color: #f0f8ff; }
@@ -295,13 +337,17 @@ func createSectionsIndex(sections []struct {
 
 	// Write section links
 	for _, section := range sections {
+		levelClass := ""
+		if section.Level > 1 {
+			levelClass = fmt.Sprintf(" level-%d", section.Level)
+		}
 		writer.WriteString(fmt.Sprintf(`    <a href="%s">
-        <div class="section">
+        <div class="section%s">
             <div class="section-title">%s</div>
-            <div class="section-info">File: %s</div>
+            <div class="section-info">File: %s (Level %d)</div>
         </div>
     </a>
-`, section.FileName, section.Title, section.FileName))
+`, section.FileName, levelClass, section.Title, section.FileName, section.Level))
 	}
 
 	writer.WriteString(`</body>
@@ -357,18 +403,27 @@ func extractSectionSubtitle(sectionHeader *goquery.Selection) string {
 		return strings.TrimSpace(sectionHeader.Text())
 	}
 
+	// For level-2 and level-3 sections, extract boldface content
+	if sectionHeader.HasClass("title-gr-seq-level-2") || sectionHeader.HasClass("title-gr-seq-level-3") {
+		boldText := sectionHeader.Find("span.boldface").Text()
+		if boldText != "" {
+			return strings.TrimSpace(boldText)
+		}
+		return strings.TrimSpace(sectionHeader.Text())
+	}
+
 	return ""
 }
 
-func generateFileName(index int, title string, subtitle string) string {
+func generateFileName(index int, title string, subtitle string, level int) string {
 	// Clean the main title
 	cleanTitle := strings.TrimSpace(title)
 
 	// Handle special cases for better readability
 	cleanTitle = strings.ReplaceAll(cleanTitle, "ANNEX I C", "annex-1c")
 	cleanTitle = strings.ReplaceAll(cleanTitle, "ANNEX II", "annex-2")
-	cleanTitle = strings.ReplaceAll(cleanTitle, "Article ", "article-")
-	cleanTitle = strings.ReplaceAll(cleanTitle, "Appendix ", "appendix-")
+	cleanTitle = strings.ReplaceAll(cleanTitle, "Article ", "")
+	cleanTitle = strings.ReplaceAll(cleanTitle, "Appendix ", "")
 	cleanTitle = strings.ReplaceAll(cleanTitle, "Addendum", "addendum")
 
 	// Handle appendix titles from title-gr-seq-level-1 elements
@@ -446,8 +501,60 @@ func generateFileName(index int, title string, subtitle string) string {
 		fullName = fmt.Sprintf("%s-%s", cleanTitle, cleanSubtitle)
 	}
 
+	// No level prefixes needed - directory structure provides organization
+	levelPrefix := ""
+
+	// Truncate if too long to avoid filesystem limits (255 chars total, minus prefix and extension)
+	maxNameLength := 240 - len(levelPrefix) - len(".html") - 3 // 3 for index digits
+	if len(fullName) > maxNameLength {
+		fullName = fullName[:maxNameLength]
+		// Try to end at a word boundary
+		if lastDash := strings.LastIndex(fullName, "-"); lastDash > maxNameLength-20 {
+			fullName = fullName[:lastDash]
+		}
+	}
+
+	// Clean up redundant repetitions and unnecessary words
+	fullName = cleanupRedundantWords(fullName)
+
 	// Generate filename with zero-padded index and descriptive title
-	return fmt.Sprintf("%02d-%s.html", index, fullName)
+	return fmt.Sprintf("%02d-%s%s.html", index, levelPrefix, fullName)
+}
+
+// cleanupRedundantWords removes redundant word repetitions and unnecessary prefixes
+func cleanupRedundantWords(name string) string {
+	// Remove common redundant prefixes
+	name = strings.TrimPrefix(name, "appendix-")
+
+	// Split into parts and remove duplicates
+	parts := strings.Split(name, "-")
+	seen := make(map[string]bool)
+	var cleaned []string
+
+	for _, part := range parts {
+		part = strings.TrimSpace(part)
+		if part != "" && !seen[part] {
+			// Skip very short parts that are likely noise
+			if len(part) > 1 {
+				cleaned = append(cleaned, part)
+				seen[part] = true
+			}
+		}
+	}
+
+	result := strings.Join(cleaned, "-")
+
+	// Handle specific patterns
+	result = strings.ReplaceAll(result, "data-data", "data")
+	result = strings.ReplaceAll(result, "introduction-introduction", "introduction")
+	result = strings.ReplaceAll(result, "definitions-definitions", "definitions")
+	result = strings.ReplaceAll(result, "appendix-appendix", "appendix")
+
+	// Clean up any remaining double hyphens
+	result = strings.ReplaceAll(result, "--", "-")
+	result = strings.Trim(result, "-")
+
+	return result
 }
 
 // cleanupHTML applies ultra-minimal HTML cleanup for maximum information density

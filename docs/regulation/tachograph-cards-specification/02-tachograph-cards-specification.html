@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+      <title>Consolidated TEXT: 32016R0799 — EN — 21.08.2023</title>
+      <link type="text/css" rel="stylesheet" href="http://publications.europa.eu/resource/presentation-style-sheet/clg/clg.css"/>
+   
+
+</head>
+<body>
+<p class="title-annex-1" id="id-54e32d3b-40a9-496c-86ea-c9dbe4c457fa">Appendix 2</p>
+<p class="title-gr-seq-level-1" id="id-7d4fc687-730d-4649-9310-4569c108104f">
+               <span class="boldface">TACHOGRAPH CARDS SPECIFICATION</span>
+            </p>
+<table width="100%" border="0" cellspacing="0" cellpadding="3">
+               <colgroup><col width="15%"/>
+               <col width="85%"/>
+               </colgroup><tbody><tr>
+                  <td colspan="2">
+                     <p class="title-toc" id="id-e2b029f5-e62a-479d-87d1-25282d6eb916">TABLE OF CONTENT</p>
+                  </td>
+               </tr>
+               <tr>
+                  <td valign="top">
+                     <p class="toc-item">1.</p>
+                  </td>
+                  <td valign="top">
+                     <p class="toc-item">INTRODUCTION</p>
+                  </td>
+               </tr>
+               <tr>
+                  <td valign="top">
+                     <p class="toc-item">1.1.</p>
+                  </td>
+                  <td valign="top">
+                     <p class="toc-item">Abbreviations</p>
+                  </td>
+               </tr>
+               <tr>
+                  <td valign="top">
+                     <p class="toc-item">1.2.</p>
+                  </td>
+                  <td valign="top">
+                     <p class="toc-item">References</p>
+                  </td>
+               </tr>
+               <tr>
+                  <td valign="top">
+                     <p class="toc-item">2.</p>
+                  </td>
+                  <td valign="top">
+                     <p class="toc-item">ELECTRICAL AND PHYSICAL CHARACTERISTICS</p>
+                  </td>
+               </tr>
+               <tr>
+                  <td valign="top">
+                     <p class="toc-item">2.1.</p>
+                  </td>
+                  <td valign="top">
+                     <p class="toc-item">Supply Voltage and Current Consumption</p>
+                  </td>
+               </tr>
+               <tr>
+                  <td valign="top">
+                     <p class="toc-item">2.2.</p>
+                  </td>
+                  <td valign="top">
+                     <p class="toc-item">Programming Voltage V<span class="subscript">pp</span>
+                     </p>
+                  </td>
+               </tr>
+               <tr>
+                  <td valign="top">
+                     <p class="toc-item">2.3.</p>
+                  </td>
+                  <td valign="top">
+                     <p class="toc-item">Clock generation and Frequency</p>
+                  </td>
+               </tr>
+               <tr>
+                  <td valign="top">
+                     <p class="toc-item">2.4.</p>
+                  </td>
+                  <td valign="top">
+                     <p class="toc-item">I/O Contact</p>
+                  </td>
+               </tr>
+               <tr>
+                  <td valign="top">
+                     <p class="toc-item">2.5.</p>
+                  </td>
+                  <td valign="top">
+                     <p class="toc-item">States of the Card</p>
+                  </td>
+               </tr>
+               <tr>
+                  <td valign="top">
+                     <p class="toc-item">3.</p>
+                  </td>
+                  <td valign="top">
+                     <p class="toc-item">HARDWARE AND COMMUNICATION</p>
+                  </td>
+               </tr>
+               <tr>
+                  <td valign="top">
+                     <p class="toc-item">3.1.</p>
+                  </td>
+                  <td valign="top">
+                     <p class="toc-item">Introduction</p>
+                  </td>
+               </tr>
+               <tr>
+                  <td valign="top">
+                     <p class="toc-item">3.2.</p>
+                  </td>
+                  <td valign="top">
+                     <p class="toc-item">Transmission Protocol</p>
+                  </td>
+               </tr>
+               <tr>
+                  <td valign="top">
+                     <p class="toc-item">3.2.1</p>
+                  </td>
+                  <td valign="top">
+                     <p class="toc-item">Protocols</p>
+                  </td>
+               </tr>
+               <tr>
+                  <td valign="top">
+                     <p class="toc-item">3.2.2</p>
+                  </td>
+                  <td valign="top">
+                     <p class="toc-item">ATR</p>
+                  </td>
+               </tr>
+               <tr>
+                  <td valign="top">
+                     <p class="toc-item">3.2.3</p>
+                  </td>
+                  <td valign="top">
+                     <p class="toc-item">PTS</p>
+                  </td>
+               </tr>
+               <tr>
+                  <td valign="top">
+                     <p class="toc-item">3.3.</p>
+                  </td>
+                  <td valign="top">
+                     <p class="toc-item">Access Rules</p>
+                  </td>
+               </tr>
+               <tr>
+                  <td valign="top">
+                     <p class="toc-item">3.4.</p>
+                  </td>
+                  <td valign="top">
+                     <p class="toc-item">Commands and error codes overview</p>
+                  </td>
+               </tr>
+               <tr>
+                  <td valign="top">
+                     <p class="toc-item">3.5.</p>
+                  </td>
+                  <td valign="top">
+                     <p class="toc-item">Command descriptions</p>
+                  </td>
+               </tr>
+               <tr>
+                  <td valign="top">
+                     <p class="toc-item">3.5.1</p>
+                  </td>
+                  <td valign="top">
+                     <p class="toc-item">SELECT</p>
+                  </td>
+               </tr>
+               <tr>
+                  <td valign="top">
+                     <p class="toc-item">3.5.2</p>
+                  </td>
+                  <td valign="top">
+                     <p class="toc-item">READ BINARY</p>
+                  </td>
+               </tr>
+               <tr>
+                  <td valign="top">
+                     <p class="toc-item">3.5.3</p>
+                  </td>
+                  <td valign="top">
+                     <p class="toc-item">UPDATE BINARY</p>
+                  </td>
+               </tr>
+               <tr>
+                  <td valign="top">
+                     <p class="toc-item">3.5.4</p>
+                  </td>
+                  <td valign="top">
+                     <p class="toc-item">GET CHALLENGE</p>
+                  </td>
+               </tr>
+               <tr>
+                  <td valign="top">
+                     <p class="toc-item">3.5.5</p>
+                  </td>
+                  <td valign="top">
+                     <p class="toc-item">VERIFY</p>
+                  </td>
+               </tr>
+               <tr>
+                  <td valign="top">
+                     <p class="toc-item">3.5.6</p>
+                  </td>
+                  <td valign="top">
+                     <p class="toc-item">GET RESPONSE</p>
+                  </td>
+               </tr>
+               <tr>
+                  <td valign="top">
+                     <p class="toc-item">3.5.7</p>
+                  </td>
+                  <td valign="top">
+                     <p class="toc-item">PSO: VERIFY CERTIFICATE</p>
+                  </td>
+               </tr>
+               <tr>
+                  <td valign="top">
+                     <p class="toc-item">3.5.8</p>
+                  </td>
+                  <td valign="top">
+                     <p class="toc-item">INTERNAL AUTHENTICATE</p>
+                  </td>
+               </tr>
+               <tr>
+                  <td valign="top">
+                     <p class="toc-item">3.5.9</p>
+                  </td>
+                  <td valign="top">
+                     <p class="toc-item">EXTERNAL AUTHENTICATE</p>
+                  </td>
+               </tr>
+               <tr>
+                  <td valign="top">
+                     <p class="toc-item">3.5.10</p>
+                  </td>
+                  <td valign="top">
+                     <p class="toc-item">GENERAL AUTHENTICATE</p>
+                  </td>
+               </tr>
+               <tr>
+                  <td valign="top">
+                     <p class="toc-item">3.5.11</p>
+                  </td>
+                  <td valign="top">
+                     <p class="toc-item">MANAGE SECURITY ENVIRONMENT</p>
+                  </td>
+               </tr>
+               <tr>
+                  <td valign="top">
+                     <p class="toc-item">3.5.12</p>
+                  </td>
+                  <td valign="top">
+                     <p class="toc-item">PSO: HASH</p>
+                  </td>
+               </tr>
+               <tr>
+                  <td valign="top">
+                     <p class="toc-item">3.5.13</p>
+                  </td>
+                  <td valign="top">
+                     <p class="toc-item">PERFORM HASH OF FILE</p>
+                  </td>
+               </tr>
+               <tr>
+                  <td valign="top">
+                     <p class="toc-item">3.5.14</p>
+                  </td>
+                  <td valign="top">
+                     <p class="toc-item">PSO: COMPUTE DIGITAL SIGNATURE</p>
+                  </td>
+               </tr>
+               <tr>
+                  <td valign="top">
+                     <p class="toc-item">3.5.15</p>
+                  </td>
+                  <td valign="top">
+                     <p class="toc-item">PSO: VERIFY DIGITAL SIGNATURE</p>
+                  </td>
+               </tr>
+               <tr>
+                  <td valign="top">
+                     <p class="toc-item">3.5.16</p>
+                  </td>
+                  <td valign="top">
+                     <p class="toc-item">PROCESS DSRC MESSAGE</p>
+                  </td>
+               </tr>
+               <tr>
+                  <td valign="top">
+                     <p class="toc-item">4.</p>
+                  </td>
+                  <td valign="top">
+                     <p class="toc-item">TACHOGRAPH CARDS STRUCTURE</p>
+                  </td>
+               </tr>
+               <tr>
+                  <td valign="top">
+                     <p class="toc-item">4.1.</p>
+                  </td>
+                  <td valign="top">
+                     <p class="toc-item">Master File MF</p>
+                  </td>
+               </tr>
+               <tr>
+                  <td valign="top">
+                     <p class="toc-item">4.2.</p>
+                  </td>
+                  <td valign="top">
+                     <p class="toc-item">Driver card applications</p>
+                  </td>
+               </tr>
+               <tr>
+                  <td valign="top">
+                     <p class="toc-item">4.2.1</p>
+                  </td>
+                  <td valign="top">
+                     <p class="toc-item">Driver card application generation 1</p>
+                  </td>
+               </tr>
+               <tr>
+                  <td valign="top">
+                     <p class="toc-item">4.2.2</p>
+                  </td>
+                  <td valign="top">
+                     <p class="toc-item">Driver card application generation 2</p>
+                  </td>
+               </tr>
+               <tr>
+                  <td valign="top">
+                     <p class="toc-item">4.3.</p>
+                  </td>
+                  <td valign="top">
+                     <p class="toc-item">Workshop card applications</p>
+                  </td>
+               </tr>
+               <tr>
+                  <td valign="top">
+                     <p class="toc-item">4.3.1</p>
+                  </td>
+                  <td valign="top">
+                     <p class="toc-item">Workshop card application generation 1</p>
+                  </td>
+               </tr>
+               <tr>
+                  <td valign="top">
+                     <p class="toc-item">4.3.2</p>
+                  </td>
+                  <td valign="top">
+                     <p class="toc-item">Workshop card application generation 2</p>
+                  </td>
+               </tr>
+               <tr>
+                  <td valign="top">
+                     <p class="toc-item">4.4.</p>
+                  </td>
+                  <td valign="top">
+                     <p class="toc-item">Control card applications</p>
+                  </td>
+               </tr>
+               <tr>
+                  <td valign="top">
+                     <p class="toc-item">4.4.1</p>
+                  </td>
+                  <td valign="top">
+                     <p class="toc-item">Control Card application generation 1</p>
+                  </td>
+               </tr>
+               <tr>
+                  <td valign="top">
+                     <p class="toc-item">4.4.2</p>
+                  </td>
+                  <td valign="top">
+                     <p class="toc-item">Control card application generation 2</p>
+                  </td>
+               </tr>
+               <tr>
+                  <td valign="top">
+                     <p class="toc-item">4.5.</p>
+                  </td>
+                  <td valign="top">
+                     <p class="toc-item">Company card applications</p>
+                  </td>
+               </tr>
+               <tr>
+                  <td valign="top">
+                     <p class="toc-item">4.5.1</p>
+                  </td>
+                  <td valign="top">
+                     <p class="toc-item">Company card application generation 1</p>
+                  </td>
+               </tr>
+               <tr>
+                  <td valign="top">
+                     <p class="toc-item">4.5.2</p>
+                  </td>
+                  <td valign="top">
+                     <p class="toc-item">Company card application generation 2</p>
+                  </td>
+               </tr>
+            </tbody></table>
+</body>
+</html>

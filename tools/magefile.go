@@ -109,6 +109,61 @@ func Regulation() error {
 	).Run()
 }
 
+// RegulationDataDictionary runs the regulation-preprocessor on the data dictionary file with level 2 chunking.
+func RegulationDataDictionary() error {
+	return cmd(
+		root("tools"),
+		"go", "run", "./cmd/regulation-preprocessor",
+		"-i", root("docs/regulation/09-appendix-1-data-dictionary.html"),
+		"-d", root("docs/regulation/data-dictionary"),
+		"-chunk-level", "2",
+	).Run()
+}
+
+// RegulationAnnex1C runs the regulation-preprocessor on the annex 1c file with level 2 chunking.
+func RegulationAnnex1C() error {
+	return cmd(
+		root("tools"),
+		"go", "run", "./cmd/regulation-preprocessor",
+		"-i", root("docs/regulation/08-annex-1c-requirements-for-construction-testing-installation-and-inspection.html"),
+		"-d", root("docs/regulation/annex-1c"),
+		"-chunk-level", "2",
+	).Run()
+}
+
+// RegulationTachographCards runs the regulation-preprocessor on the tachograph cards file with level 2 chunking.
+func RegulationTachographCards() error {
+	return cmd(
+		root("tools"),
+		"go", "run", "./cmd/regulation-preprocessor",
+		"-i", root("docs/regulation/10-appendix-2-tachograph-cards-specification.html"),
+		"-d", root("docs/regulation/tachograph-cards-specification"),
+		"-chunk-level", "2",
+	).Run()
+}
+
+// RegulationDataTypeDefinitions runs the regulation-preprocessor on the data type definitions file with level 3 chunking.
+func RegulationDataTypeDefinitions() error {
+	return cmd(
+		root("tools"),
+		"go", "run", "./cmd/regulation-preprocessor",
+		"-i", root("docs/regulation/data-dictionary/04-data-type-definitions.html"),
+		"-d", root("docs/regulation/data-dictionary/data-type-definitions"),
+		"-chunk-level", "3",
+	).Run()
+}
+
+// RegulationChunked runs all regulation chunking tasks for the large files.
+func RegulationChunked() error {
+	mg.SerialDeps(
+		RegulationDataDictionary,
+		RegulationDataTypeDefinitions,
+		RegulationAnnex1C,
+		RegulationTachographCards,
+	)
+	return nil
+}
+
 func forEachGoMod(f func(dir string) error) error {
 	return filepath.WalkDir(root(), func(path string, d fs.DirEntry, err error) error {
 		if err != nil {
