@@ -1,0 +1,94 @@
+{
+  "tags": [
+    {
+      "name": "VU_DownloadInterfaceVersion",
+      "id": 30208,
+      "description": "VU Download Interface Version (SID 0x76, TREP 0x00)",
+      "source": "Appendix 7, DDP_028a"
+    },
+    {
+      "name": "VU_OverviewFirstGen",
+      "id": 30209,
+      "description": "VU Overview First Generation (SID 0x76, TREP 0x01)",
+      "source": "Appendix 7, DDP_029"
+    },
+    {
+      "name": "VU_ActivitiesFirstGen",
+      "id": 30210,
+      "description": "VU Activities First Generation (SID 0x76, TREP 0x02)",
+      "source": "Appendix 7, DDP_030"
+    },
+    {
+      "name": "VU_EventsAndFaultsFirstGen",
+      "id": 30211,
+      "description": "VU Events and Faults First Generation (SID 0x76, TREP 0x03)",
+      "source": "Appendix 7, DDP_031"
+    },
+    {
+      "name": "VU_DetailedSpeedFirstGen",
+      "id": 30212,
+      "description": "VU Detailed Speed First Generation (SID 0x76, TREP 0x04)",
+      "source": "Appendix 7, DDP_032"
+    },
+    {
+      "name": "VU_TechnicalDataFirstGen",
+      "id": 30213,
+      "description": "VU Technical Data First Generation (SID 0x76, TREP 0x05)",
+      "source": "Appendix 7, DDP_033"
+    },
+    {
+      "name": "VU_OverviewSecondGen",
+      "id": 30241,
+      "description": "VU Overview Second Generation (SID 0x76, TREP 0x21)",
+      "source": "Appendix 7, DDP_029"
+    },
+    {
+      "name": "VU_ActivitiesSecondGen",
+      "id": 30242,
+      "description": "VU Activities Second Generation (SID 0x76, TREP 0x22)",
+      "source": "Appendix 7, DDP_030"
+    },
+    {
+      "name": "VU_EventsAndFaultsSecondGen",
+      "id": 30243,
+      "description": "VU Events and Faults Second Generation (SID 0x76, TREP 0x23)",
+      "source": "Appendix 7, DDP_031"
+    },
+    {
+      "name": "VU_DetailedSpeedSecondGen",
+      "id": 30244,
+      "description": "VU Detailed Speed Second Generation (SID 0x76, TREP 0x24)",
+      "source": "Appendix 7, DDP_032"
+    },
+    {
+      "name": "VU_TechnicalDataSecondGen",
+      "id": 30245,
+      "description": "VU Technical Data Second Generation (SID 0x76, TREP 0x25)",
+      "source": "Appendix 7, DDP_033"
+    },
+    {
+      "name": "VU_OverviewSecondGenV2",
+      "id": 30257,
+      "description": "VU Overview Second Generation V2 (SID 0x76, TREP 0x31)",
+      "source": "Appendix 7, DDP_029"
+    },
+    {
+      "name": "VU_ActivitiesSecondGenV2",
+      "id": 30258,
+      "description": "VU Activities Second Generation V2 (SID 0x76, TREP 0x32)",
+      "source": "Appendix 7, DDP_030"
+    },
+    {
+      "name": "VU_EventsAndFaultsSecondGenV2",
+      "id": 30259,
+      "description": "VU Events and Faults Second Generation V2 (SID 0x76, TREP 0x33)",
+      "source": "Appendix 7, DDP_031"
+    },
+    {
+      "name": "VU_TechnicalDataSecondGenV2",
+      "id": 30261,
+      "description": "VU Technical Data Second Generation V2 (SID 0x76, TREP 0x35)",
+      "source": "Appendix 7, DDP_033"
+    }
+  ]
+}

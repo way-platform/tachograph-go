@@ -1,3 +1,4 @@
 docs/regulation.html
 tools/regulation-parser
-vendor
+testdata/*/proprietary-*
+cmd/tacho/tacho

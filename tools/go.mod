@@ -14,7 +14,10 @@ require (
 	github.com/PuerkitoBio/goquery v1.10.3
 	github.com/magefile/mage v1.15.0
 	golang.org/x/net v0.41.0
+	github.com/way-platform/tacho-go/tools/codegen v0.0.0
 )
+
+replace github.com/way-platform/tacho-go/tools/codegen => ./codegen
 
 require (
 	4d63.com/gocheckcompilerdirectives v1.3.0 // indirect
