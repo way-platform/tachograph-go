@@ -5,10 +5,12 @@ package main
 import (
 	"io"
 	"io/fs"
+	"log/slog"
 	"net/http"
 	"os"
 	"os/exec"
 	"path/filepath"
+	"strings"
 
 	"github.com/magefile/mage/mg"
 	"github.com/magefile/mage/sh"
@@ -69,7 +71,7 @@ func Generate() error {
 
 // CLI builds the CLI.
 func CLI() error {
-	return cmd(root("cmd/tacho"), "go", "install", ".").Run()
+	return cmd(root("cmd/tachograph"), "go", "install", ".").Run()
 }
 
 // VHS records the CLI GIF using VHS.
@@ -78,11 +80,14 @@ func VHS() error {
 	return tool(root("docs"), "vhs", "cli.tape").Run()
 }
 
-// RegulationOriginal fetches the EU regulation document.
-func RegulationOriginal() error {
-	const url = "https://publications.europa.eu/resource/cellar/50ef99c6-7896-11ec-9136-01aa75ed71a1.0006.02/DOC_2"
-	outputPath := root("docs", "regulation.html")
-	if err := os.MkdirAll(filepath.Dir(outputPath), 0o600); err != nil {
+// RegulationPDF fetches the EU regulation document.
+func RegulationPDF() error {
+	targetFile := root("docs", "regulation", "regulation.pdf")
+	const url = "https://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=CELEX:02016R0799-20230821"
+	if _, err := os.Stat(targetFile); err == nil {
+		return nil
+	}
+	if err := os.MkdirAll(filepath.Dir(targetFile), 0o600); err != nil {
 		return err
 	}
 	resp, err := http.Get(url)
@@ -90,7 +95,7 @@ func RegulationOriginal() error {
 		return err
 	}
 	defer resp.Body.Close()
-	out, err := os.Create(outputPath)
+	out, err := os.Create(targetFile)
 	if err != nil {
 		return err
 	}
@@ -99,69 +104,132 @@ func RegulationOriginal() error {
 	return err
 }
 
-// Regulation runs the regulation-parser on the original document to produce split files.
-func Regulation() error {
-	return cmd(
-		root("tools"),
-		"go", "run", "./cmd/regulation-parser",
-		"-i", root("docs/regulation.html"),
-		"-d", root("docs/regulation"),
-	).Run()
-}
-
-// RegulationDataDictionary runs the regulation-preprocessor on the data dictionary file with level 2 chunking.
-func RegulationDataDictionary() error {
-	return cmd(
-		root("tools"),
-		"go", "run", "./cmd/regulation-preprocessor",
-		"-i", root("docs/regulation/09-appendix-1-data-dictionary.html"),
-		"-d", root("docs/regulation/data-dictionary"),
-		"-chunk-level", "2",
-	).Run()
-}
-
-// RegulationAnnex1C runs the regulation-preprocessor on the annex 1c file with level 2 chunking.
-func RegulationAnnex1C() error {
-	return cmd(
-		root("tools"),
-		"go", "run", "./cmd/regulation-preprocessor",
-		"-i", root("docs/regulation/08-annex-1c-requirements-for-construction-testing-installation-and-inspection.html"),
-		"-d", root("docs/regulation/annex-1c"),
-		"-chunk-level", "2",
-	).Run()
-}
-
-// RegulationTachographCards runs the regulation-preprocessor on the tachograph cards file with level 2 chunking.
-func RegulationTachographCards() error {
-	return cmd(
-		root("tools"),
-		"go", "run", "./cmd/regulation-preprocessor",
-		"-i", root("docs/regulation/10-appendix-2-tachograph-cards-specification.html"),
-		"-d", root("docs/regulation/tachograph-cards-specification"),
-		"-chunk-level", "2",
-	).Run()
-}
-
-// RegulationDataTypeDefinitions runs the regulation-preprocessor on the data type definitions file with level 3 chunking.
-func RegulationDataTypeDefinitions() error {
-	return cmd(
-		root("tools"),
-		"go", "run", "./cmd/regulation-preprocessor",
-		"-i", root("docs/regulation/data-dictionary/04-data-type-definitions.html"),
-		"-d", root("docs/regulation/data-dictionary/data-type-definitions"),
-		"-chunk-level", "3",
-	).Run()
-}
-
-// RegulationChunked runs all regulation chunking tasks for the large files.
-func RegulationChunked() error {
-	mg.SerialDeps(
-		RegulationDataDictionary,
-		RegulationDataTypeDefinitions,
-		RegulationAnnex1C,
-		RegulationTachographCards,
-	)
+// RegulationChapters splits the regulation PDF into chapters.
+func RegulationChapters() error {
+	if err := os.RemoveAll(root("docs", "regulation", "chapters")); err != nil {
+		return err
+	}
+	if err := os.MkdirAll(root("docs", "regulation", "chapters"), 0o700); err != nil {
+		return err
+	}
+	if err := tool(
+		root("docs/regulation"),
+		"pdfcpu",
+		"split",
+		"-m", "page",
+		"regulation.pdf",
+		"chapters",
+		"7",
+		"111",
+		"230",
+		"278",
+		"303",
+		"307",
+		"321",
+		"322",
+		"326",
+		"341",
+		"350",
+		"356",
+		"391",
+		"423",
+		"424",
+		"502",
+		"524",
+		"534",
+		"587",
+		"593",
+		"598",
+		"605",
+		"612",
+	).Run(); err != nil {
+		return err
+	}
+	for _, op := range []struct {
+		from string
+		to   string
+	}{
+		{from: "regulation_1-6.pdf", to: "01-articles.pdf"},
+		{from: "regulation_7-110.pdf", to: "02-requirements.pdf"},
+		{from: "regulation_111-229.pdf", to: "03-data-dictionary.pdf"},
+		{from: "regulation_230-277.pdf", to: "04-tachograph-cards-specification.pdf"},
+		{from: "regulation_278-302.pdf", to: "05-tachograph-cards-file-structure.pdf"},
+		{from: "regulation_303-306.pdf", to: "06-pictograms.pdf"},
+		{from: "regulation_307-320.pdf", to: "07-printouts.pdf"},
+		{from: "regulation_321.pdf", to: "08-display.pdf"},
+		{from: "regulation_322-325.pdf", to: "09-front-connector.pdf"},
+		{from: "regulation_326-340.pdf", to: "10-data-downloading-protocols.pdf"},
+		{from: "regulation_341-349.pdf", to: "11-response-message-content.pdf"},
+		{from: "regulation_350-355.pdf", to: "12-card-downloading.pdf"},
+		{from: "regulation_356-390.pdf", to: "13-calibration-protocol.pdf"},
+		{from: "regulation_391-422.pdf", to: "14-type-approval.pdf"},
+		{from: "regulation_423.pdf", to: "15-security-requirements.pdf"},
+		{from: "regulation_424-501.pdf", to: "16-common-security-mechanisms.pdf"},
+		{from: "regulation_502-523.pdf", to: "17-gnss-positioning.pdf"},
+		{from: "regulation_524-533.pdf", to: "18-its-interface.pdf"},
+		{from: "regulation_534-586.pdf", to: "19-remote-communication.pdf"},
+		{from: "regulation_587-592.pdf", to: "20-computation-of-driving-time.pdf"},
+		{from: "regulation_593-597.pdf", to: "21-migration.pdf"},
+		{from: "regulation_598-604.pdf", to: "22-adaptor.pdf"},
+		{from: "regulation_605-611.pdf", to: "23-osnma-galileo.pdf"},
+		{from: "regulation_612-616.pdf", to: "24-approval-mark-and-certificate.pdf"},
+	} {
+		slog.Info("renaming", "from", op.from, "to", op.to)
+		if err := os.Rename(
+			root("docs", "regulation", "chapters", op.from),
+			root("docs", "regulation", "chapters", op.to),
+		); err != nil {
+			return err
+		}
+	}
 	return nil
+}
+
+// RegulationOCR runs OCR on the regulation PDF chapter files.
+func RegulationOCR() error {
+	for _, target := range []string{
+		"02-requirements.pdf",
+		"03-data-dictionary.pdf",
+		"04-tachograph-cards-specification.pdf",
+		"05-tachograph-cards-file-structure.pdf",
+		"10-data-downloading-protocols.pdf",
+		"11-response-message-content.pdf",
+		"12-card-downloading.pdf",
+		"15-security-requirements.pdf",
+		"16-common-security-mechanisms.pdf",
+		"17-gnss-positioning.pdf",
+		"18-its-interface.pdf",
+		"20-computation-of-driving-time.pdf",
+	} {
+		targetDir := root("docs", "regulation", "chapters", strings.TrimSuffix(target, ".pdf"))
+		if _, err := os.Stat(targetDir); err == nil {
+			slog.Info("skipping OCR", "target", target, "reason", "target dir exists")
+			continue
+		}
+		slog.Info("running OCR", "target", target)
+		if err := cmd(
+			root("docs", "regulation", "chapters"),
+			"uvx",
+			"--from", "marker-pdf",
+			"marker_single",
+			target,
+			"--output_dir", ".",
+			"--output_format=markdown",
+			"--page_separator=''",
+			"--use_llm",
+			"--llm_service=marker.services.vertex.GoogleVertexService",
+			"--vertex_project_id=way-local-dev",
+		).Run(); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func init() {
+	slog.SetDefault(slog.New(slog.NewTextHandler(os.Stdout, &slog.HandlerOptions{
+		Level: slog.LevelDebug,
+	})))
 }
 
 func forEachGoMod(f func(dir string) error) error {

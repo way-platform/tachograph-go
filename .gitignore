@@ -1,4 +1,3 @@
-docs/regulation.html
-tools/regulation-parser
 testdata/*/proprietary-*
-cmd/tacho/tacho
+cmd/tachograph/tachograph
+docs/regulation/**/*.pdf

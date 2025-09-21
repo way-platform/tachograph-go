@@ -1,0 +1,234 @@
+edition = "2023";
+
+package wayplatform.connect.tachograph.card.v1;
+
+import "google/protobuf/descriptor.proto";
+import "wayplatform/connect/tachograph/card/v1/file_descriptor.proto";
+
+extend google.protobuf.EnumValueOptions {
+  FileDescriptor file_structure = 50003;
+}
+
+// CardType represents the type of a tachograph card, which determines its specific
+// file layout and data access rights as defined in the EU regulations.
+enum CardType {
+  // Unspecified card type.
+  CARD_TYPE_UNSPECIFIED = 0;
+  // A driver card.
+  DRIVER_CARD = 1 [
+    file_structure = {
+      type: MF
+      files: { type: EF, ef: EF_ICC, read: ALW, update: NEV }
+      files: { type: EF, ef: EF_IC, read: ALW, update: NEV }
+      files: { type: EF, ef: EF_DIR, sfid: 30, read: ALW, update: NEV }
+      files: { type: EF, ef: EF_ATR_INFO, sfid: 29, conditional: true, read: ALW, update: NEV }
+      files: { type: EF, ef: EF_EXTENDED_LENGTH, sfid: 28, conditional: true, read: ALW, update: NEV }
+      files: {
+        type: DF
+        df: DF_TACHOGRAPH
+        read: SC2
+        update: NEV
+        files: { type: EF, ef: EF_APPLICATION_IDENTIFICATION, read: SC2, update: NEV }
+        files: { type: EF, ef: EF_CARD_CERTIFICATE, read: SC2, update: NEV }
+        files: { type: EF, ef: EF_CA_CERTIFICATE, read: SC2, update: NEV }
+        files: { type: EF, ef: EF_IDENTIFICATION, read: SC2, update: NEV }
+        files: { type: EF, ef: EF_CARD_DOWNLOAD_DRIVER, read: SC2, update: SC1 }
+        files: { type: EF, ef: EF_DRIVING_LICENCE_INFO, read: SC2, update: NEV }
+        files: { type: EF, ef: EF_EVENTS_DATA, read: SC2, update: SC3 }
+        files: { type: EF, ef: EF_FAULTS_DATA, read: SC2, update: SC3 }
+        files: { type: EF, ef: EF_DRIVER_ACTIVITY_DATA, read: SC2, update: SC3 }
+        files: { type: EF, ef: EF_VEHICLES_USED, read: SC2, update: SC3 }
+        files: { type: EF, ef: EF_PLACES, read: SC2, update: SC3 }
+        files: { type: EF, ef: EF_CURRENT_USAGE, read: SC2, update: SC3 }
+        files: { type: EF, ef: EF_CONTROL_ACTIVITY_DATA, read: SC2, update: SC3 }
+        files: { type: EF, ef: EF_SPECIFIC_CONDITIONS, read: SC2, update: SC3 }
+      }
+      files: {
+        type: DF
+        df: DF_TACHOGRAPH_G2
+        read: SC1
+        update: NEV
+        files: { type: EF, ef: EF_APPLICATION_IDENTIFICATION, sfid: 1, read: SC1, update: NEV }
+        files: { type: EF, ef: EF_CARD_CERTIFICATE, sfid: 2, read: SC1, update: NEV }
+        files: { type: EF, ef: EF_CARD_SIGN_CERTIFICATE, sfid: 3, read: SC1, update: NEV }
+        files: { type: EF, ef: EF_CA_CERTIFICATE, sfid: 4, read: SC1, update: NEV }
+        files: { type: EF, ef: EF_LINK_CERTIFICATE, sfid: 5, read: SC1, update: NEV }
+        files: { type: EF, ef: EF_IDENTIFICATION, sfid: 6, read: SC1, update: NEV }
+        files: { type: EF, ef: EF_CARD_DOWNLOAD_DRIVER, sfid: 7, read: SC1, update: SC1 }
+        files: { type: EF, ef: EF_DRIVING_LICENCE_INFO, sfid: 10, read: SC1, update: NEV }
+        files: { type: EF, ef: EF_EVENTS_DATA, sfid: 12, read: SC1, update: SM_MAC_G2 }
+        files: { type: EF, ef: EF_FAULTS_DATA, sfid: 13, read: SC1, update: SM_MAC_G2 }
+        files: { type: EF, ef: EF_DRIVER_ACTIVITY_DATA, sfid: 14, read: SC1, update: SM_MAC_G2 }
+        files: { type: EF, ef: EF_VEHICLES_USED, sfid: 15, read: SC1, update: SM_MAC_G2 }
+        files: { type: EF, ef: EF_PLACES, sfid: 16, read: SC1, update: SM_MAC_G2 }
+        files: { type: EF, ef: EF_CURRENT_USAGE, sfid: 17, read: SC1, update: SM_MAC_G2 }
+        files: { type: EF, ef: EF_CONTROL_ACTIVITY_DATA, sfid: 18, read: SC1, update: SM_MAC_G2 }
+        files: { type: EF, ef: EF_SPECIFIC_CONDITIONS, sfid: 19, read: SC1, update: SM_MAC_G2 }
+        files: { type: EF, ef: EF_VEHICLE_UNITS_USED, sfid: 20, read: SC1, update: SM_MAC_G2 }
+        files: { type: EF, ef: EF_GNSS_PLACES, sfid: 21, read: SC1, update: SM_MAC_G2 }
+        files: { type: EF, ef: EF_APPLICATION_IDENTIFICATION_V2, sfid: 22, conditional: true, read: SC1, update: NEV }
+        files: { type: EF, ef: EF_PLACES_AUTHENTICATION, sfid: 23, conditional: true, read: SC1, update: SM_MAC_G2 }
+        files: { type: EF, ef: EF_GNSS_PLACES_AUTHENTICATION, sfid: 24, conditional: true, read: SC1, update: SM_MAC_G2 }
+        files: { type: EF, ef: EF_BORDER_CROSSINGS, sfid: 25, conditional: true, read: SC1, update: SM_MAC_G2 }
+        files: { type: EF, ef: EF_LOAD_UNLOAD_OPERATIONS, sfid: 26, conditional: true, read: SC1, update: SM_MAC_G2 }
+        files: { type: EF, ef: EF_LOAD_TYPE_ENTRIES, sfid: 27, conditional: true, read: SC1, update: SM_MAC_G2 }
+        files: { type: EF, ef: EF_VU_CONFIGURATION, sfid: 30, conditional: true, read: SC5, update: SM_MAC_G2 }
+      }
+    }
+  ];
+  // A workshop card.
+  WORKSHOP_CARD = 2 [
+    file_structure = {
+      type: MF
+      files: { type: EF, ef: EF_ICC, read: ALW, update: NEV }
+      files: { type: EF, ef: EF_IC, read: ALW, update: NEV }
+      files: { type: EF, ef: EF_DIR, sfid: 30, read: ALW, update: NEV }
+      files: { type: EF, ef: EF_ATR_INFO, sfid: 29, conditional: true, read: ALW, update: NEV }
+      files: { type: EF, ef: EF_EXTENDED_LENGTH, sfid: 28, conditional: true, read: ALW, update: NEV }
+      files: {
+        type: DF
+        df: DF_TACHOGRAPH
+        read: SC2
+        update: NEV
+        files: { type: EF, ef: EF_APPLICATION_IDENTIFICATION, read: SC2, update: NEV }
+        files: { type: EF, ef: EF_CARD_CERTIFICATE, read: SC2, update: NEV }
+        files: { type: EF, ef: EF_CA_CERTIFICATE, read: SC2, update: NEV }
+        files: { type: EF, ef: EF_IDENTIFICATION, read: SC2, update: NEV }
+        files: { type: EF, ef: EF_CARD_DOWNLOAD_WORKSHOP, read: SC2, update: SC1 }
+        files: { type: EF, ef: EF_CALIBRATION, read: SC2, update: SC3 }
+        files: { type: EF, ef: EF_SENSOR_INSTALLATION_DATA, read: SC4, update: NEV }
+        files: { type: EF, ef: EF_EVENTS_DATA, read: SC2, update: SC3 }
+        files: { type: EF, ef: EF_FAULTS_DATA, read: SC2, update: SC3 }
+        files: { type: EF, ef: EF_DRIVER_ACTIVITY_DATA, read: SC2, update: SC3 }
+        files: { type: EF, ef: EF_VEHICLES_USED, read: SC2, update: SC3 }
+        files: { type: EF, ef: EF_PLACES, read: SC2, update: SC3 }
+        files: { type: EF, ef: EF_CURRENT_USAGE, read: SC2, update: SC3 }
+        files: { type: EF, ef: EF_CONTROL_ACTIVITY_DATA, read: SC2, update: SC3 }
+        files: { type: EF, ef: EF_SPECIFIC_CONDITIONS, read: SC2, update: SC3 }
+      }
+      files: {
+        type: DF
+        df: DF_TACHOGRAPH_G2
+        read: SC1
+        update: NEV
+        files: { type: EF, ef: EF_APPLICATION_IDENTIFICATION, sfid: 1, read: SC1, update: NEV }
+        files: { type: EF, ef: EF_CARD_CERTIFICATE, sfid: 2, read: SC1, update: NEV }
+        files: { type: EF, ef: EF_CARD_SIGN_CERTIFICATE, sfid: 3, read: SC1, update: NEV }
+        files: { type: EF, ef: EF_CA_CERTIFICATE, sfid: 4, read: SC1, update: NEV }
+        files: { type: EF, ef: EF_LINK_CERTIFICATE, sfid: 5, read: SC1, update: NEV }
+        files: { type: EF, ef: EF_IDENTIFICATION, sfid: 6, read: SC1, update: NEV }
+        files: { type: EF, ef: EF_CARD_DOWNLOAD_WORKSHOP, sfid: 7, read: SC1, update: SC1 }
+        files: { type: EF, ef: EF_CALIBRATION, sfid: 10, read: SC1, update: SM_MAC_G2 }
+        files: { type: EF, ef: EF_SENSOR_INSTALLATION_DATA, sfid: 11, read: SC5, update: NEV }
+        files: { type: EF, ef: EF_EVENTS_DATA, sfid: 12, read: SC1, update: SM_MAC_G2 }
+        files: { type: EF, ef: EF_FAULTS_DATA, sfid: 13, read: SC1, update: SM_MAC_G2 }
+        files: { type: EF, ef: EF_DRIVER_ACTIVITY_DATA, sfid: 14, read: SC1, update: SM_MAC_G2 }
+        files: { type: EF, ef: EF_VEHICLES_USED, sfid: 15, read: SC1, update: SM_MAC_G2 }
+        files: { type: EF, ef: EF_PLACES, sfid: 16, read: SC1, update: SM_MAC_G2 }
+        files: { type: EF, ef: EF_CURRENT_USAGE, sfid: 17, read: SC1, update: SM_MAC_G2 }
+        files: { type: EF, ef: EF_CONTROL_ACTIVITY_DATA, sfid: 18, read: SC1, update: SM_MAC_G2 }
+        files: { type: EF, ef: EF_SPECIFIC_CONDITIONS, sfid: 19, read: SC1, update: SM_MAC_G2 }
+        files: { type: EF, ef: EF_VEHICLE_UNITS_USED, sfid: 20, read: SC1, update: SM_MAC_G2 }
+        files: { type: EF, ef: EF_GNSS_PLACES, sfid: 21, read: SC1, update: SM_MAC_G2 }
+        files: { type: EF, ef: EF_APPLICATION_IDENTIFICATION_V2, sfid: 22, conditional: true, read: SC1, update: NEV }
+        files: { type: EF, ef: EF_PLACES_AUTHENTICATION, sfid: 23, conditional: true, read: SC1, update: SM_MAC_G2 }
+        files: { type: EF, ef: EF_GNSS_PLACES_AUTHENTICATION, sfid: 24, conditional: true, read: SC1, update: SM_MAC_G2 }
+        files: { type: EF, ef: EF_BORDER_CROSSINGS, sfid: 25, conditional: true, read: SC1, update: SM_MAC_G2 }
+        files: { type: EF, ef: EF_LOAD_UNLOAD_OPERATIONS, sfid: 26, conditional: true, read: SC1, update: SM_MAC_G2 }
+        files: { type: EF, ef: EF_LOAD_TYPE_ENTRIES, sfid: 27, conditional: true, read: SC1, update: SM_MAC_G2 }
+        files: { type: EF, ef: EF_CALIBRATION_ADD_DATA, sfid: 28, conditional: true, read: SC1, update: SM_MAC_G2 }
+        files: { type: EF, ef: EF_VU_CONFIGURATION, sfid: 30, conditional: true, read: SC5, update: SM_MAC_G2 }
+      }
+    }
+  ];
+  // A control card.
+  CONTROL_CARD = 3 [
+    file_structure = {
+      type: MF
+      files: { type: EF, ef: EF_ICC, read: ALW, update: NEV }
+      files: { type: EF, ef: EF_IC, read: ALW, update: NEV }
+      files: { type: EF, ef: EF_DIR, sfid: 30, read: ALW, update: NEV }
+      files: { type: EF, ef: EF_ATR_INFO, sfid: 29, conditional: true, read: ALW, update: NEV }
+      files: { type: EF, ef: EF_EXTENDED_LENGTH, sfid: 28, conditional: true, read: ALW, update: NEV }
+      files: {
+        type: DF
+        df: DF_TACHOGRAPH
+        read: SC2
+        update: NEV
+        files: { type: EF, ef: EF_APPLICATION_IDENTIFICATION, read: SC2, update: NEV }
+        files: { type: EF, ef: EF_CARD_CERTIFICATE, read: SC2, update: NEV }
+        files: { type: EF, ef: EF_CA_CERTIFICATE, read: SC2, update: NEV }
+        files: { type: EF, ef: EF_IDENTIFICATION, read: SC6, update: NEV }
+        files: { type: EF, ef: EF_CONTROLLER_ACTIVITY_DATA, read: SC2, update: SC3 }
+      }
+      files: {
+        type: DF
+        df: DF_TACHOGRAPH_G2
+        read: SC1
+        update: NEV
+        files: { type: EF, ef: EF_APPLICATION_IDENTIFICATION, sfid: 1, read: SC1, update: NEV }
+        files: { type: EF, ef: EF_CARD_CERTIFICATE, sfid: 2, read: SC1, update: NEV }
+        files: { type: EF, ef: EF_CA_CERTIFICATE, sfid: 4, read: SC1, update: NEV }
+        files: { type: EF, ef: EF_LINK_CERTIFICATE, sfid: 5, read: SC1, update: NEV }
+        files: { type: EF, ef: EF_IDENTIFICATION, sfid: 6, read: SC1, update: NEV }
+        files: { type: EF, ef: EF_CONTROLLER_ACTIVITY_DATA, sfid: 14, read: SC1, update: SM_MAC_G2 }
+        files: { type: EF, ef: EF_APPLICATION_IDENTIFICATION_V2, sfid: 22, conditional: true, read: SC1, update: NEV }
+        files: { type: EF, ef: EF_VU_CONFIGURATION, sfid: 30, conditional: true, read: SC5, update: SM_MAC_G2 }
+      }
+    }
+  ];
+  // A company card.
+  COMPANY_CARD = 4 [
+    file_structure = {
+      type: MF
+      files: { type: EF, ef: EF_ICC, read: ALW, update: NEV }
+      files: { type: EF, ef: EF_IC, read: ALW, update: NEV }
+      files: { type: EF, ef: EF_DIR, sfid: 30, read: ALW, update: NEV }
+      files: { type: EF, ef: EF_ATR_INFO, sfid: 29, conditional: true, read: ALW, update: NEV }
+      files: { type: EF, ef: EF_EXTENDED_LENGTH, sfid: 28, conditional: true, read: ALW, update: NEV }
+      files: {
+        type: DF
+        df: DF_TACHOGRAPH
+        read: SC2
+        update: NEV
+        files: { type: EF, ef: EF_APPLICATION_IDENTIFICATION, read: SC2, update: NEV }
+        files: { type: EF, ef: EF_CARD_CERTIFICATE, read: SC2, update: NEV }
+        files: { type: EF, ef: EF_CA_CERTIFICATE, read: SC2, update: NEV }
+        files: { type: EF, ef: EF_IDENTIFICATION, read: SC6, update: NEV }
+        files: { type: EF, ef: EF_COMPANY_ACTIVITY_DATA, read: SC2, update: SC3 }
+      }
+      files: {
+        type: DF
+        df: DF_TACHOGRAPH_G2
+        read: SC1
+        update: NEV
+        files: { type: EF, ef: EF_APPLICATION_IDENTIFICATION, sfid: 1, read: SC1, update: NEV }
+        files: { type: EF, ef: EF_CARD_CERTIFICATE, sfid: 2, read: SC1, update: NEV }
+        files: { type: EF, ef: EF_CA_CERTIFICATE, sfid: 4, read: SC1, update: NEV }
+        files: { type: EF, ef: EF_LINK_CERTIFICATE, sfid: 5, read: SC1, update: NEV }
+        files: { type: EF, ef: EF_IDENTIFICATION, sfid: 6, read: SC1, update: NEV }
+        files: { type: EF, ef: EF_COMPANY_ACTIVITY_DATA, sfid: 14, read: SC1, update: SM_MAC_G2 }
+        files: { type: EF, ef: EF_APPLICATION_IDENTIFICATION_V2, sfid: 22, conditional: true, read: SC1, update: NEV }
+        files: { type: EF, ef: EF_VU_CONFIGURATION, sfid: 30, conditional: true, read: SC5, update: SM_MAC_G2 }
+      }
+    }
+  ];
+  // The file layout for an external GNSS facility, which simulates a smart card interface.
+  GNSS_SIMULATED_CARD = 5 [
+    file_structure = {
+      type: MF
+      files: { type: EF, ef: EF_ICC, read: ALW, update: NEV }
+      files: {
+        type: DF
+        df: DF_GNSS_FACILITY
+        read: ALW
+        update: NEV
+        files: { type: EF, ef: EF_CARD_CERTIFICATE, read: ALW, update: NEV }
+        files: { type: EF, ef: EF_CA_CERTIFICATE, read: ALW, update: NEV }
+        files: { type: EF, ef: EF_LINK_CERTIFICATE, read: ALW, update: NEV }
+        files: { type: EF, ef: EF_EGF, read: SM_MAC_G2, update: NEV }
+        files: { type: EF, ef: EF_VU, read: SM_MAC_G2, update: SM_MAC_G2 }
+      }
+    }
+  ];
+}

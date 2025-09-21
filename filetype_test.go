@@ -1,4 +1,4 @@
-package tacho
+package tachograph
 
 import "testing"
 

@@ -1,0 +1,17 @@
+edition = "2023";
+
+package wayplatform.connect.tachograph.card.v1;
+
+import "google/protobuf/descriptor.proto";
+
+// DedicatedFileType represents the types of dedicated files that can be found on a tachograph card.
+enum DedicatedFileType {
+  // Default value. This value is unused.
+  DEDICATED_FILE_TYPE_UNSPECIFIED = 0;
+  // Tachograph application for Generation 1 cards.
+  DF_TACHOGRAPH = 1;
+  // Tachograph application for Generation 2 cards.
+  DF_TACHOGRAPH_G2 = 2;
+  // Dedicated file for an external GNSS facility.
+  DF_GNSS_FACILITY = 3;
+}

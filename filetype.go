@@ -1,10 +1,10 @@
-package tacho
+package tachograph
 
 import (
 	"encoding/binary"
 
-	"github.com/way-platform/tacho-go/tachocard"
-	"github.com/way-platform/tacho-go/tachounit"
+	"github.com/way-platform/tachograph-go/tachocard"
+	"github.com/way-platform/tachograph-go/tachounit"
 )
 
 // FileType represents the type of a tachograph file.

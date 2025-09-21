@@ -1,0 +1,586 @@
+{
+  "table_of_contents": [
+    {
+      "title": "3.3. Card Downloading",
+      "heading_level": null,
+      "page_id": 0,
+      "polygon": [
+        [
+          98.52148902416229,
+          92.76147696375847
+        ],
+        [
+          215.24699652194977,
+          92.76147696375847
+        ],
+        [
+          214.08293402194977,
+          102.15721929073334
+        ],
+        [
+          97.35742652416229,
+          102.15721929073334
+        ]
+      ]
+    },
+    {
+      "title": "\u25bcB",
+      "heading_level": null,
+      "page_id": 0,
+      "polygon": [
+        [
+          73.62723731994629,
+          76.0821533203125
+        ],
+        [
+          89.64219093322754,
+          76.0821533203125
+        ],
+        [
+          89.56208801269531,
+          88.66662275791168
+        ],
+        [
+          72.46317481994629,
+          90.31115400791168
+        ]
+      ]
+    },
+    {
+      "title": "3.3.1 Initialisation sequence",
+      "heading_level": null,
+      "page_id": 1,
+      "polygon": [
+        [
+          107.20599365234375,
+          676.5757904052734
+        ],
+        [
+          219.12249755859375,
+          675.0568414926529
+        ],
+        [
+          219.12249755859375,
+          685.0207977294922
+        ],
+        [
+          107.20599365234375,
+          685.7028325796127
+        ]
+      ]
+    },
+    {
+      "title": "\u25bcM3",
+      "heading_level": null,
+      "page_id": 1,
+      "polygon": [
+        [
+          73.69960021972656,
+          76.0821533203125
+        ],
+        [
+          97.58890330791473,
+          76.0821533203125
+        ],
+        [
+          96.94405364990234,
+          85.90553493797779
+        ],
+        [
+          73.68432053923607,
+          87.55006618797779
+        ]
+      ]
+    },
+    {
+      "title": "3.3.2 Sequence for un-signed data files",
+      "heading_level": null,
+      "page_id": 2,
+      "polygon": [
+        [
+          107.20599365234375,
+          93.60284423828125
+        ],
+        [
+          259.56323742866516,
+          93.60284423828125
+        ],
+        [
+          259.56323742866516,
+          103.08493430912495
+        ],
+        [
+          107.20599365234375,
+          103.08493430912495
+        ]
+      ]
+    },
+    {
+      "title": "3.3.3 Sequence for Signed data files",
+      "heading_level": null,
+      "page_id": 2,
+      "polygon": [
+        [
+          106.48216247558594,
+          514.94482421875
+        ],
+        [
+          252.275164604187,
+          514.94482421875
+        ],
+        [
+          251.111102104187,
+          523.9817935228348
+        ],
+        [
+          105.31809997558594,
+          523.9817935228348
+        ]
+      ]
+    },
+    {
+      "title": "\u25bcB",
+      "heading_level": null,
+      "page_id": 2,
+      "polygon": [
+        [
+          73.69979858398438,
+          76.0821533203125
+        ],
+        [
+          91.71056175231934,
+          75.6539580821991
+        ],
+        [
+          91.71056175231934,
+          86.67462104558945
+        ],
+        [
+          73.69979858398438,
+          88.31915229558945
+        ]
+      ]
+    },
+    {
+      "title": "3.3.4 Sequence for resetting the calibration counter.",
+      "heading_level": null,
+      "page_id": 3,
+      "polygon": [
+        [
+          106.04965329170227,
+          447.70265460014343
+        ],
+        [
+          307.4272081851959,
+          447.70265460014343
+        ],
+        [
+          306.2631456851959,
+          456.26427459716797
+        ],
+        [
+          104.88559079170227,
+          456.26427459716797
+        ]
+      ]
+    },
+    {
+      "title": "\u25bcM1",
+      "heading_level": null,
+      "page_id": 3,
+      "polygon": [
+        [
+          73.70050048828125,
+          76.0821533203125
+        ],
+        [
+          97.9840674996376,
+          75.37459780275822
+        ],
+        [
+          96.94405364990234,
+          85.58575439453125
+        ],
+        [
+          73.70050048828125,
+          87.14332474768162
+        ]
+      ]
+    },
+    {
+      "title": "3.4. Data storage format",
+      "heading_level": null,
+      "page_id": 4,
+      "polygon": [
+        [
+          100.16896712779999,
+          93.23648542165756
+        ],
+        [
+          219.54409515857697,
+          93.23648542165756
+        ],
+        [
+          218.38003265857697,
+          102.18986600637436
+        ],
+        [
+          99.00490462779999,
+          102.18986600637436
+        ]
+      ]
+    },
+    {
+      "title": "3.4.2 File format",
+      "heading_level": null,
+      "page_id": 4,
+      "polygon": [
+        [
+          105.26998221874237,
+          297.52685546875
+        ],
+        [
+          182.53217947483063,
+          297.52685546875
+        ],
+        [
+          182.53217947483063,
+          307.03330183029175
+        ],
+        [
+          105.26998221874237,
+          307.03330183029175
+        ]
+      ]
+    },
+    {
+      "title": "\u25bcM1",
+      "heading_level": null,
+      "page_id": 4,
+      "polygon": [
+        [
+          73.69969940185547,
+          558.315185546875
+        ],
+        [
+          97.71316754817963,
+          558.315185546875
+        ],
+        [
+          96.94405364990234,
+          569.034662604332
+        ],
+        [
+          73.69969940185547,
+          569.034662604332
+        ]
+      ]
+    },
+    {
+      "title": "\u25bcB",
+      "heading_level": null,
+      "page_id": 4,
+      "polygon": [
+        [
+          73.27433824539185,
+          76.0821533203125
+        ],
+        [
+          89.58254551887512,
+          75.11530609428883
+        ],
+        [
+          89.58254551887512,
+          85.58575439453125
+        ],
+        [
+          73.27433824539185,
+          86.86038236320019
+        ]
+      ]
+    }
+  ],
+  "page_stats": [
+    {
+      "page_id": 0,
+      "text_extraction_method": "pdftext",
+      "block_counts": [
+        [
+          "Span",
+          88
+        ],
+        [
+          "Line",
+          43
+        ],
+        [
+          "ListItem",
+          11
+        ],
+        [
+          "Text",
+          9
+        ],
+        [
+          "ListGroup",
+          3
+        ],
+        [
+          "SectionHeader",
+          2
+        ],
+        [
+          "PageHeader",
+          1
+        ],
+        [
+          "TextInlineMath",
+          1
+        ]
+      ],
+      "block_metadata": {
+        "llm_request_count": 1,
+        "llm_error_count": 0,
+        "llm_tokens_used": 3279,
+        "previous_text": "",
+        "previous_type": "",
+        "previous_order": 0
+      }
+    },
+    {
+      "page_id": 1,
+      "text_extraction_method": "pdftext",
+      "block_counts": [
+        [
+          "Span",
+          96
+        ],
+        [
+          "Line",
+          47
+        ],
+        [
+          "TableCell",
+          24
+        ],
+        [
+          "Text",
+          16
+        ],
+        [
+          "ListItem",
+          6
+        ],
+        [
+          "SectionHeader",
+          2
+        ],
+        [
+          "ListGroup",
+          2
+        ],
+        [
+          "PageHeader",
+          1
+        ],
+        [
+          "Table",
+          1
+        ],
+        [
+          "TextInlineMath",
+          1
+        ]
+      ],
+      "block_metadata": {
+        "llm_request_count": 1,
+        "llm_error_count": 0,
+        "llm_tokens_used": 2706,
+        "previous_text": "",
+        "previous_type": "",
+        "previous_order": 0
+      }
+    },
+    {
+      "page_id": 2,
+      "text_extraction_method": "pdftext",
+      "block_counts": [
+        [
+          "Span",
+          105
+        ],
+        [
+          "TableCell",
+          84
+        ],
+        [
+          "Line",
+          44
+        ],
+        [
+          "Text",
+          5
+        ],
+        [
+          "SectionHeader",
+          3
+        ],
+        [
+          "Table",
+          2
+        ],
+        [
+          "PageHeader",
+          1
+        ]
+      ],
+      "block_metadata": {
+        "llm_request_count": 2,
+        "llm_error_count": 0,
+        "llm_tokens_used": 6401,
+        "previous_text": "",
+        "previous_type": "",
+        "previous_order": 0
+      }
+    },
+    {
+      "page_id": 3,
+      "text_extraction_method": "pdftext",
+      "block_counts": [
+        [
+          "Span",
+          113
+        ],
+        [
+          "TableCell",
+          104
+        ],
+        [
+          "Line",
+          49
+        ],
+        [
+          "Text",
+          4
+        ],
+        [
+          "Table",
+          2
+        ],
+        [
+          "SectionHeader",
+          2
+        ],
+        [
+          "PageHeader",
+          1
+        ]
+      ],
+      "block_metadata": {
+        "llm_request_count": 2,
+        "llm_error_count": 0,
+        "llm_tokens_used": 6005,
+        "previous_text": "",
+        "previous_type": "",
+        "previous_order": 0
+      }
+    },
+    {
+      "page_id": 4,
+      "text_extraction_method": "pdftext",
+      "block_counts": [
+        [
+          "Span",
+          88
+        ],
+        [
+          "Line",
+          42
+        ],
+        [
+          "TableCell",
+          36
+        ],
+        [
+          "ListItem",
+          9
+        ],
+        [
+          "SectionHeader",
+          4
+        ],
+        [
+          "Text",
+          2
+        ],
+        [
+          "ListGroup",
+          2
+        ],
+        [
+          "PageHeader",
+          1
+        ],
+        [
+          "Table",
+          1
+        ]
+      ],
+      "block_metadata": {
+        "llm_request_count": 1,
+        "llm_error_count": 0,
+        "llm_tokens_used": 2981,
+        "previous_text": "",
+        "previous_type": "",
+        "previous_order": 0
+      }
+    },
+    {
+      "page_id": 5,
+      "text_extraction_method": "pdftext",
+      "block_counts": [
+        [
+          "Span",
+          87
+        ],
+        [
+          "TableCell",
+          48
+        ],
+        [
+          "Line",
+          43
+        ],
+        [
+          "Text",
+          7
+        ],
+        [
+          "ListItem",
+          6
+        ],
+        [
+          "ListGroup",
+          2
+        ],
+        [
+          "PageHeader",
+          1
+        ],
+        [
+          "Table",
+          1
+        ]
+      ],
+      "block_metadata": {
+        "llm_request_count": 1,
+        "llm_error_count": 0,
+        "llm_tokens_used": 2978,
+        "previous_text": "",
+        "previous_type": "",
+        "previous_order": 0
+      }
+    }
+  ],
+  "debug_data_path": "debug_data/12-card-downloading"
+}
