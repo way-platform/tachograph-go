@@ -9,11 +9,15 @@ import "wayplatform/connect/tachograph/card/v1/file_type.proto";
 
 // Describes a file (MF, DF, or EF) in the card's file system hierarchy.
 message FileDescriptor {
+  // The type of the file.
   FileType type = 1;
+  // The type of the elementary file.
   ElementaryFileType ef = 2;
+  // The type of the dedicated file.
   DedicatedFileType df = 3;
+  // The files contained in the file.
   repeated FileDescriptor files = 4;
-  // Indicates if the file is conditional, as specified in the regulations.
+  // Indicates if the file is conditionally present.
   bool conditional = 5;
   // Short File Identifier (if applicable).
   int32 sfid = 6;

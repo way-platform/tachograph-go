@@ -23,4 +23,18 @@ enum AccessCondition {
   SC5 = 7;
   // SC6 (Security Condition 6): Requires Gen1 external authentication or Gen1/Gen2 secure messaging.
   SC6 = 8;
+  // SM_MAC_G1: Secure Messaging with MAC (Generation 1)
+  SM_MAC_G1 = 9;
+  // SM_MAC_G2: Secure Messaging with MAC (Generation 2)
+  SM_MAC_G2 = 10;
+  // SM_C_MAC_G1: Secure Messaging Command MAC (Generation 1)
+  SM_C_MAC_G1 = 11;
+  // SM_C_MAC_G2: Secure Messaging Command MAC (Generation 2)
+  SM_C_MAC_G2 = 12;
+  // SM_R_ENC_MAC_G1: Secure Messaging Response Encryption MAC (Generation 1)
+  SM_R_ENC_MAC_G1 = 13;
+  // SM_R_ENC_MAC_G2: Secure Messaging Response Encryption MAC (Generation 2)
+  SM_R_ENC_MAC_G2 = 14;
+  // EXT_AUT_G1: External Authentication (Generation 1)
+  EXT_AUT_G1 = 15;
 }

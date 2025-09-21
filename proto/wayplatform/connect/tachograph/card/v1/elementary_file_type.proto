@@ -2,91 +2,125 @@ edition = "2023";
 
 package wayplatform.connect.tachograph.card.v1;
 
-import "google/protobuf/descriptor.proto";
-
-extend google.protobuf.EnumValueOptions {
-  int32 file_id = 50001;
-}
+import "wayplatform/connect/tachograph/card/v1/file_id.proto";
 
 // ElementaryFileType represents the types of elementary files that can be found on a tachograph card.
 // Each file is identified by a unique file ID as specified in the EU regulations.
 enum ElementaryFileType {
   // Unspecified elementary file type.
   ELEMENTARY_FILE_UNSPECIFIED = 0;
+
   // Integrated circuit card identification data.
   EF_ICC = 1 [(file_id) = 0x0002];
+
   // Integrated circuit chip identification data.
   EF_IC = 2 [(file_id) = 0x0005];
+
   // Answer To Reset/INFO, for extended length information.
   EF_ATR_INFO = 4 [(file_id) = 0x2F01];
+
   // Indicates support for extended length APDUs.
   EF_EXTENDED_LENGTH = 5 [(file_id) = 0x0006];
+
   // Card application identification data.
   EF_APPLICATION_IDENTIFICATION = 6 [(file_id) = 0x0501];
+
   // Events data.
   EF_EVENTS_DATA = 7 [(file_id) = 0x0502];
+
   // Faults data.
   EF_FAULTS_DATA = 8 [(file_id) = 0x0503];
+
   // Driver activity data.
   EF_DRIVER_ACTIVITY_DATA = 9 [(file_id) = 0x0504];
+
   // Vehicles used data.
   EF_VEHICLES_USED = 10 [(file_id) = 0x0505];
+
   // Places where daily work periods begin and/or end.
   EF_PLACES = 11 [(file_id) = 0x0506];
+
   // Current usage data.
   EF_CURRENT_USAGE = 12 [(file_id) = 0x0507];
+
   // Control activity data.
   EF_CONTROL_ACTIVITY_DATA = 13 [(file_id) = 0x0508];
+
   // Number of calibrations since last download (workshop card).
   EF_CARD_DOWNLOAD_WORKSHOP = 14 [(file_id) = 0x0509];
+
   // Calibration data (workshop card).
   EF_CALIBRATION = 15 [(file_id) = 0x050A];
+
   // Sensor installation data.
   EF_SENSOR_INSTALLATION_DATA = 16 [(file_id) = 0x050B];
+
   // Controller activity data (control card).
   EF_CONTROLLER_ACTIVITY_DATA = 17 [(file_id) = 0x050C];
+
   // Company activity data (company card).
   EF_COMPANY_ACTIVITY_DATA = 18 [(file_id) = 0x050D];
+
   // Date of last card download (driver card).
   EF_CARD_DOWNLOAD_DRIVER = 19 [(file_id) = 0x050E];
+
   // Card and card holder identification data.
   EF_IDENTIFICATION = 20 [(file_id) = 0x0520];
+
   // Driving licence information.
   EF_DRIVING_LICENCE_INFO = 21 [(file_id) = 0x0521];
+
   // Specific conditions data.
   EF_SPECIFIC_CONDITIONS = 22 [(file_id) = 0x0522];
+
   // Vehicle units used data.
   EF_VEHICLE_UNITS_USED = 23 [(file_id) = 0x0523];
+
   // GNSS places for accumulated driving.
   EF_GNSS_PLACES = 24 [(file_id) = 0x0524];
+
   // Card application identification data (G2V2).
   EF_APPLICATION_IDENTIFICATION_V2 = 25 [(file_id) = 0x0525];
+
   // Authentication status for places.
   EF_PLACES_AUTHENTICATION = 26 [(file_id) = 0x0526];
+
   // Authentication status for GNSS places.
   EF_GNSS_PLACES_AUTHENTICATION = 27 [(file_id) = 0x0527];
+
   // Border crossings data.
   EF_BORDER_CROSSINGS = 28 [(file_id) = 0x0528];
+
   // Load/unload operations data.
   EF_LOAD_UNLOAD_OPERATIONS = 29 [(file_id) = 0x0529];
+
   // Load type entries data.
   EF_LOAD_TYPE_ENTRIES = 30 [(file_id) = 0x0530];
+
   // Additional calibration data (workshop card).
   EF_CALIBRATION_ADD_DATA = 31 [(file_id) = 0x0531];
+
   // Vehicle unit configuration data.
   EF_VU_CONFIGURATION = 32 [(file_id) = 0x0540];
+
   // Directory of applications on the card.
   EF_DIR = 33 [(file_id) = 0x2f00];
+
   // Card public key certificate for authentication.
   EF_CARD_CERTIFICATE = 34 [(file_id) = 0xC100];
+
   // Card public key certificate for digital signatures.
   EF_CARD_SIGN_CERTIFICATE = 35 [(file_id) = 0xC101];
+
   // Certification Authority certificate.
   EF_CA_CERTIFICATE = 36 [(file_id) = 0xC108];
+
   // Link certificate for chaining root CAs.
   EF_LINK_CERTIFICATE = 37 [(file_id) = 0xC109];
+
   // Elementary file for the external GNSS facility.
   EF_EGF = 38 [(file_id) = 0x2F2F];
+
   // Elementary file for the vehicle unit data on the GNSS facility.
   EF_VU = 39 [(file_id) = 0x2F30];
 }

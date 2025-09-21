@@ -4,12 +4,12 @@ package wayplatform.connect.tachograph.card.v1;
 
 // FileType represents the type of a tachograph file.
 enum FileType {
-    // Default value. This value is unused.
-    FILE_TYPE_UNSPECIFIED = 0;
-    // Master file.
-    MF = 1;
-    // Dedicated file.
-    DF = 2;
-    // Elementary file.
-    EF = 3;
+  // Default value. This value is unused.
+  FILE_TYPE_UNSPECIFIED = 0;
+  // Master file.
+  MF = 1;
+  // Dedicated file.
+  DF = 2;
+  // Elementary file.
+  EF = 3;
 }
