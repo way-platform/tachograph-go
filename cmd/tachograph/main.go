@@ -14,8 +14,11 @@ import (
 	"github.com/charmbracelet/lipgloss/v2"
 	"github.com/spf13/cobra"
 	"github.com/way-platform/tachograph-go"
+	cardv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1"
 	"github.com/way-platform/tachograph-go/tachocard"
 	"github.com/way-platform/tachograph-go/tachounit"
+	"google.golang.org/protobuf/encoding/protojson"
+	"google.golang.org/protobuf/proto"
 )
 
 func main() {
@@ -48,7 +51,7 @@ func main() {
 
 func newRootCommand() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "tacho",
+		Use:   "tachograph",
 		Short: "Tachograph CLI",
 	}
 	cmd.AddGroup(&cobra.Group{ID: "ddd", Title: ".DDD Files"})
@@ -81,18 +84,18 @@ func newStatCommand() *cobra.Command {
 				continue
 			}
 
-			fileType := tacho.InferFileType(data)
+			fileType := tachograph.InferFileType(data)
 			fmt.Printf("Type: %s\n", fileType)
 
 			// Show outline based on file type
-			if fileType == tacho.CardFileType {
+			if fileType == tachograph.CardFileType {
 				fmt.Println("\nTLV Record Outline:")
 				fmt.Println("-------------------")
 				if err := printCardOutline(data); err != nil {
 					fmt.Printf("Failed to parse card outline: %v\n", err)
 					continue
 				}
-			} else if fileType == tacho.UnitFileType {
+			} else if fileType == tachograph.UnitFileType {
 				fmt.Println("\nTV Record Outline:")
 				fmt.Println("------------------")
 				if err := printUnitOutline(data); err != nil {
@@ -115,154 +118,103 @@ type TLVRecord struct {
 	Offset int    // Byte offset in the file where this record starts
 }
 
-// printCardOutline parses a card file and prints an outline of all TLV records.
+// printCardOutline parses a card file and prints an outline of all TLV records using protojson.
 func printCardOutline(data []byte) error {
-	records, err := parseTLVRecords(data)
+	rawCardFile, err := parseToRawCardFile(data)
 	if err != nil {
 		return err
 	}
-
-	for _, record := range records {
-		tagName := getTagName(record.Tag)
-		fmt.Printf("Offset: 0x%06X | Tag: 0x%06X (%s) | Length: %d bytes\n",
-			record.Offset, record.Tag, tagName, record.Length)
+	// Use protojson to format the output
+	marshaler := protojson.MarshalOptions{
+		Indent:        "  ",
+		UseProtoNames: true,
 	}
-
-	fmt.Printf("\nTotal records: %d\n", len(records))
+	jsonData, err := marshaler.Marshal(rawCardFile)
+	if err != nil {
+		return fmt.Errorf("failed to marshal to JSON: %w", err)
+	}
+	fmt.Println(string(jsonData))
 	return nil
 }
 
-// parseTLVRecords parses a card file and returns all TLV records with their byte offsets.
-func parseTLVRecords(data []byte) ([]TLVRecord, error) {
-	var records []TLVRecord
+// parseToRawCardFile parses a card file and returns a RawCardFile protobuf message.
+func parseToRawCardFile(data []byte) (*cardv1.RawCardFile, error) {
+	var rawCardFile cardv1.RawCardFile
 	scanner := bufio.NewScanner(bytes.NewReader(data))
 	scanner.Split(tachocard.SplitFunc)
-
-	offset := 0
 	for scanner.Scan() {
 		token := scanner.Bytes()
-
 		// Extract tag (3 bytes) and length (2 bytes)
 		if len(token) < 5 {
-			return nil, fmt.Errorf("invalid TLV record at offset %d: too short", offset)
+			return nil, fmt.Errorf("invalid TLV record: too short")
 		}
-
 		// Read tag as 3 bytes (big endian), treating it as the upper 3 bytes of a uint32
 		tag := uint32(token[0])<<16 | uint32(token[1])<<8 | uint32(token[2])
 		length := binary.BigEndian.Uint16(token[3:5])
-
 		// Extract value
 		value := make([]byte, length)
 		if len(token) >= 5+int(length) {
 			copy(value, token[5:5+int(length)])
 		}
-
-		records = append(records, TLVRecord{
-			Tag:    tag,
-			Length: length,
-			Value:  value,
-			Offset: offset,
-		})
-
-		offset += len(token)
+		var record cardv1.RawCardFile_Record
+		record.SetTag(int32(tag))
+		record.SetLength(int32(length))
+		record.SetValue(value)
+		if fileType, ok := mapTagToElementaryFileType(tag); ok {
+			record.SetFile(fileType)
+		}
+		record.SetGeneration(mapTagToApplicationGeneration(tag))
+		record.SetContentType(mapTagToContentType(tag))
+		rawCardFile.SetRecords(append(rawCardFile.GetRecords(), &record))
 	}
-
 	if err := scanner.Err(); err != nil {
 		return nil, fmt.Errorf("error scanning TLV records: %w", err)
 	}
-
-	return records, nil
+	return &rawCardFile, nil
 }
 
-// getTagName returns a human-readable name for a tag, or a hex representation if unknown.
-func getTagName(tag uint32) string {
-	// Extract FID (first 2 bytes) and generation (last byte)
-	fid := tachocard.Tag(tag >> 8)
-	generation := uint8(tag & 0xFF)
-
-	var fidName string
-	switch fid {
-	case tachocard.EF_ICC:
-		fidName = "EF_ICC"
-	case tachocard.EF_IC:
-		fidName = "EF_IC"
-	case tachocard.EF_Application_Identification:
-		fidName = "EF_Application_Identification"
-	case tachocard.EF_Card_Certificate:
-		fidName = "EF_Card_Certificate"
-	case tachocard.EF_CA_Certificate:
-		fidName = "EF_CA_Certificate"
-	case tachocard.EF_Identification:
-		fidName = "EF_Identification"
-	case tachocard.EF_Card_Download:
-		fidName = "EF_Card_Download"
-	case tachocard.EF_Driving_License_Info:
-		fidName = "EF_Driving_License_Info"
-	case tachocard.EF_Events_Data:
-		fidName = "EF_Events_Data"
-	case tachocard.EF_Faults_Data:
-		fidName = "EF_Faults_Data"
-	case tachocard.EF_Driver_Activity_Data:
-		fidName = "EF_Driver_Activity_Data"
-	case tachocard.EF_Vehicles_Used:
-		fidName = "EF_Vehicles_Used"
-	case tachocard.EF_Places:
-		fidName = "EF_Places"
-	case tachocard.EF_Current_Usage:
-		fidName = "EF_Current_Usage"
-	case tachocard.EF_Control_Activity_Data:
-		fidName = "EF_Control_Activity_Data"
-	case tachocard.EF_Specific_Conditions:
-		fidName = "EF_Specific_Conditions"
-	// Extended FIDs found in real tachograph cards
-	case 0x0520:
-		fidName = "EF_Card_Identification_And_Driver_Card_Holder_Identification"
-	case 0x0521:
-		fidName = "EF_Card_Driving_Licence_Information"
-	case 0x0522:
-		fidName = "EF_Specific_Conditions_Extended"
-	case 0x0523:
-		fidName = "EF_Card_Vehicle_Units_Used"
-	case 0x0524:
-		fidName = "EF_GNSS_Accumulated_Driving"
-	case 0x0525:
-		fidName = "EF_Driver_Card_Application_Identification_V2"
-	case 0x0526:
-		fidName = "EF_Card_Place_Auth_Daily_Work_Period"
-	case 0x0527:
-		fidName = "EF_GNSS_Auth_Accumulated_Driving"
-	case 0x0528:
-		fidName = "EF_Card_Border_Crossings"
-	case 0x0529:
-		fidName = "EF_Card_Load_Unload_Operations"
-	// GNSS-related FIDs from Appendix 12
-	case 0xC100:
-		fidName = "EF_EGF_MACertificate" // GNSS MA Certificate
-	case 0xC101:
-		fidName = "EF_EGF_MACertificate_Extended"
-	case 0xC108:
-		fidName = "EF_CA_Certificate_GNSS" // GNSS CA Certificate
-	case 0xC109:
-		fidName = "EF_Link_Certificate_GNSS" // GNSS Link Certificate
-	default:
-		fidName = fmt.Sprintf("Unknown_FID_0x%04X", fid)
+// mapTagToElementaryFileType maps a 3-byte tag to an ElementaryFileType using the file_id annotations.
+func mapTagToElementaryFileType(tag uint32) (cardv1.ElementaryFileType, bool) {
+	// Extract the File ID (first 2 bytes of the tag)
+	fid := uint16(tag >> 8)
+	// Iterate through all ElementaryFileType values to find matching file_id
+	enum := cardv1.ElementaryFileType(0)
+	enumDesc := enum.Descriptor()
+	values := enumDesc.Values()
+	for i := 0; i < values.Len(); i++ {
+		value := values.Get(i)
+		opts := value.Options()
+		// Get the file_id extension
+		if proto.HasExtension(opts, cardv1.E_FileId) {
+			fileId := proto.GetExtension(opts, cardv1.E_FileId).(int32)
+			if uint16(fileId) == fid {
+				return cardv1.ElementaryFileType(value.Number()), true
+			}
+		}
 	}
+	return 0, false
+}
 
-	var genName string
-	switch generation {
-	case 0x00:
-		genName = "Data"
-	case 0x01:
-		genName = "Signature"
-	case 0x02:
-		genName = "Gen2Data"
-	case 0x03:
-		genName = "Gen2Signature"
-	default:
-		genName = fmt.Sprintf("Gen_0x%02X", generation)
+// mapTagToApplicationGeneration maps a 3-byte tag to ApplicationGeneration using bit masking.
+func mapTagToApplicationGeneration(tag uint32) cardv1.ApplicationGeneration {
+	// Extract the appendix byte (last byte of the tag)
+	appendixByte := uint8(tag & 0xFF)
+	// Check bit 1 for generation (bit 1 = 0 for Gen1, bit 1 = 1 for Gen2)
+	if (appendixByte & 0x02) == 0 {
+		return cardv1.ApplicationGeneration_GENERATION_1
 	}
+	return cardv1.ApplicationGeneration_GENERATION_2
+}
 
-	return fmt.Sprintf("%s_%s", fidName, genName)
+// mapTagToContentType maps a 3-byte tag to ContentType using bit masking.
+func mapTagToContentType(tag uint32) cardv1.ContentType {
+	// Extract the appendix byte (last byte of the tag)
+	appendixByte := uint8(tag & 0xFF)
+	// Check bit 0 for content type (bit 0 = 0 for DATA, bit 0 = 1 for SIGNATURE)
+	if (appendixByte & 0x01) == 0 {
+		return cardv1.ContentType_DATA
+	}
+	return cardv1.ContentType_SIGNATURE
 }
 
 // TVRecord represents a single TV record from a tachograph unit file.
@@ -280,13 +232,11 @@ func printUnitOutline(data []byte) error {
 	if err != nil {
 		return err
 	}
-
 	for _, record := range records {
 		tagName := getVuTagName(record.Tag)
 		fmt.Printf("Offset: 0x%06X | Tag: 0x%04X (%s) | Size: %d bytes | %s\n",
 			record.Offset, record.Tag, tagName, record.DataSize+2, record.Generation)
 	}
-
 	fmt.Printf("\nTotal TV records: %d\n", len(records))
 	return nil
 }
@@ -295,33 +245,26 @@ func printUnitOutline(data []byte) error {
 func parseTVRecords(data []byte) ([]TVRecord, error) {
 	var records []TVRecord
 	offset := 0
-
 	for offset < len(data) {
 		if len(data)-offset < 2 {
 			break
 		}
-
 		tag := binary.BigEndian.Uint16(data[offset : offset+2])
 		vuTag := tachounit.VuTag(tag)
-
 		if !vuTag.IsValid() {
 			return nil, fmt.Errorf("unknown VU tag at offset 0x%06X: 0x%04X", offset, tag)
 		}
-
 		generation := getVuGeneration(tag)
-
 		// Determine data size based on generation and tag
 		dataSize, err := determineVuDataSize(data, offset+2, tag, generation)
 		if err != nil {
 			return nil, fmt.Errorf("failed to determine data size for tag 0x%04X at offset 0x%06X: %w", tag, offset, err)
 		}
-
 		// Extract value
 		value := make([]byte, dataSize)
 		if len(data) >= offset+2+dataSize {
 			copy(value, data[offset+2:offset+2+dataSize])
 		}
-
 		records = append(records, TVRecord{
 			Tag:        tag,
 			Value:      value,
@@ -329,10 +272,8 @@ func parseTVRecords(data []byte) ([]TVRecord, error) {
 			DataSize:   dataSize,
 			Generation: generation,
 		})
-
 		offset += 2 + dataSize
 	}
-
 	return records, nil
 }
 

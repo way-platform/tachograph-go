@@ -1,0 +1,14 @@
+edition = "2023";
+
+package wayplatform.connect.tachograph.card.v1;
+
+// ApplicationGeneration specifies the generation of the tachograph card application
+// from which the file originates.
+// This corresponds to bit 1 of the tag appendix byte.
+enum ApplicationGeneration {
+  APPLICATION_GENERATION_UNSPECIFIED = 0;
+  // Generation 1 application (bit 1 = 0).
+  GENERATION_1 = 1;
+  // Generation 2 application (bit 1 = 1).
+  GENERATION_2 = 2;
+}

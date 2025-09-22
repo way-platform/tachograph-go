@@ -1,0 +1,7 @@
+edition = "2023";
+
+package wayplatform.connect.tachograph.card.v1;
+
+message DriverCardFile {
+    // TODO: add fields.
+}

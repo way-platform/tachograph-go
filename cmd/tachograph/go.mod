@@ -6,7 +6,8 @@ require (
 	github.com/charmbracelet/fang v0.3.0
 	github.com/charmbracelet/lipgloss/v2 v2.0.0-beta.2
 	github.com/spf13/cobra v1.9.1
-	github.com/way-platform/tacho-go v0.0.0-00010101000000-000000000000
+	github.com/way-platform/tachograph-go v0.0.0-00010101000000-000000000000
+	google.golang.org/protobuf v1.36.9
 )
 
 require (
@@ -15,6 +16,7 @@ require (
 	github.com/charmbracelet/x/cellbuf v0.0.13 // indirect
 	github.com/charmbracelet/x/exp/charmtone v0.0.0-20250603201427-c31516f43444 // indirect
 	github.com/charmbracelet/x/term v0.2.1 // indirect
+	github.com/google/go-cmp v0.6.0 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
 	github.com/lucasb-eyer/go-colorful v1.2.0 // indirect
 	github.com/mattn/go-runewidth v0.0.16 // indirect
@@ -33,4 +35,4 @@ require (
 )
 
 // TODO: Remove this once the SDK is stable.
-replace github.com/way-platform/tacho-go => ../..
+replace github.com/way-platform/tachograph-go => ../..
