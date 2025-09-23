@@ -5,7 +5,6 @@ import (
 	"encoding/binary"
 	"errors"
 	"reflect"
-	"unsafe"
 
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/reflect/protoreflect"
@@ -15,6 +14,15 @@ import (
 	vuv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/vu/v1"
 )
 
+// compositeMessage is a helper for composite EFs like EF_IDENTIFICATION
+type compositeMessage struct {
+	data []byte
+}
+
+func (c *compositeMessage) ProtoReflect() protoreflect.Message { return nil }
+func (c *compositeMessage) Reset()                             {}
+func (c *compositeMessage) String() string                     { return "" }
+
 // Marshal serializes a protobuf File message into the binary DDD file format.
 func Marshal(file *tachographv1.File) ([]byte, error) {
 	// Start with a reasonably sized buffer to avoid reallocations.
@@ -22,10 +30,21 @@ func Marshal(file *tachographv1.File) ([]byte, error) {
 	var err error
 
 	switch file.GetType() {
-	case tachographv1.File_DRIVER_CARD, tachographv1.File_WORKSHOP_CARD, tachographv1.File_CONTROL_CARD, tachographv1.File_COMPANY_CARD:
+	case tachographv1.File_DRIVER_CARD:
+		// Strategy: DriverCardFile → RawCardFile → Binary
+		rawFile, err := DriverCardFileToRaw(file.GetDriverCard())
+		if err != nil {
+			return nil, err
+		}
+		return MarshalRawCardFile(rawFile)
+
+	case tachographv1.File_WORKSHOP_CARD, tachographv1.File_CONTROL_CARD, tachographv1.File_COMPANY_CARD:
+		// For now, keep the old marshalling until we implement Raw versions for these
 		buf, err = appendCard(buf, file)
+
 	case tachographv1.File_VEHICLE_UNIT:
 		buf, err = appendVU(buf, file)
+
 	default:
 		err = errors.New("unsupported file type for marshaling")
 	}
@@ -52,20 +71,29 @@ func appendCard(dst []byte, file *tachographv1.File) ([]byte, error) {
 }
 
 // appendDriverCard orchestrates the writing of a driver card file.
+// The order follows the actual file structure observed in real DDD files.
 func appendDriverCard(dst []byte, card *cardv1.DriverCardFile) ([]byte, error) {
 	var err error
 
-	dst, err = appendTlv(dst, cardv1.ElementaryFileType_EF_ICC, card.GetIcc(), AppendIcc)
+	// 1. EF_ICC (0x0002) - no signature
+	dst, err = appendTlvUnsigned(dst, cardv1.ElementaryFileType_EF_ICC, card.GetIcc(), AppendIcc)
 	if err != nil {
 		return nil, err
 	}
 
-	dst, err = appendTlv(dst, cardv1.ElementaryFileType_EF_IC, card.GetIc(), AppendCardIc)
+	// 2. EF_IC (0x0005) - no signature
+	dst, err = appendTlvUnsigned(dst, cardv1.ElementaryFileType_EF_IC, card.GetIc(), AppendCardIc)
 	if err != nil {
 		return nil, err
 	}
 
-	// EF_Identification is a composite file, so we handle it specially.
+	// 3. EF_APPLICATION_IDENTIFICATION (0x0501)
+	dst, err = appendTlv(dst, cardv1.ElementaryFileType_EF_APPLICATION_IDENTIFICATION, card.GetApplicationIdentification(), AppendCardApplicationIdentification)
+	if err != nil {
+		return nil, err
+	}
+
+	// 4. EF_IDENTIFICATION (0x0520) - composite file
 	valBuf := make([]byte, 0, 143)
 	valBuf, err = AppendCardIdentification(valBuf, card.GetIdentification())
 	if err != nil {
@@ -75,19 +103,16 @@ func appendDriverCard(dst []byte, card *cardv1.DriverCardFile) ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
-
-	opts := cardv1.ElementaryFileType_EF_IDENTIFICATION.Descriptor().Values().ByNumber(protoreflect.EnumNumber(cardv1.ElementaryFileType_EF_IDENTIFICATION)).Options()
-	tag := proto.GetExtension(opts, cardv1.E_FileId).(int32)
-	dst = binary.BigEndian.AppendUint16(dst, uint16(tag))
-	dst = binary.BigEndian.AppendUint16(dst, uint16(len(valBuf)))
-	dst = append(dst, valBuf...)
-
-	dst, err = appendTlv(dst, cardv1.ElementaryFileType_EF_DRIVING_LICENCE_INFO, card.GetDrivingLicenceInfo(), AppendDrivingLicenceInfo)
+	dst, err = appendTlv(dst, cardv1.ElementaryFileType_EF_IDENTIFICATION, &compositeMessage{data: valBuf}, func(dst []byte, msg *compositeMessage) ([]byte, error) {
+		return append(dst, msg.data...), nil
+	})
 	if err != nil {
 		return nil, err
 	}
 
-	// --- Special handling for EF_Events_Data ---
+	// 4. EF_IDENTIFICATION (0x0520) - already handled above
+
+	// 5. EF_EVENTS_DATA (0x0502) - special handling
 	eventsValBuf := make([]byte, 0, 1728) // Max size for Gen1
 	eventsPerType := int(card.GetApplicationIdentification().GetEventsPerTypeCount())
 	allEvents := card.GetEventsData().GetRecords()
@@ -192,10 +217,7 @@ func appendDriverCard(dst []byte, card *cardv1.DriverCardFile) ([]byte, error) {
 		return nil, err
 	}
 
-	dst, err = appendTlv(dst, cardv1.ElementaryFileType_EF_APPLICATION_IDENTIFICATION, card.GetApplicationIdentification(), AppendCardApplicationIdentification)
-	if err != nil {
-		return nil, err
-	}
+	// Remove duplicate EF_APPLICATION_IDENTIFICATION - already added above
 
 	dst, err = appendTlv(dst, cardv1.ElementaryFileType_EF_VEHICLE_UNITS_USED, card.GetVehicleUnitsUsed(), AppendCardVehicleUnitsUsed)
 	if err != nil {
@@ -212,14 +234,40 @@ func appendDriverCard(dst []byte, card *cardv1.DriverCardFile) ([]byte, error) {
 		return nil, err
 	}
 
-	// Append proprietary EFs if any exist for this card
-	cardPtr := uintptr(unsafe.Pointer(card))
-	if proprietaryEFs := GetProprietaryEFs(cardPtr); proprietaryEFs != nil {
-		dst = proprietaryEFs.AppendProprietaryEFs(dst)
-		// Clean up after marshalling
-		ClearProprietaryEFs(cardPtr)
+	// Append certificate EFs
+	if certificates := card.GetCertificates(); certificates != nil {
+		dst, err = appendCertificateEF(dst, cardv1.ElementaryFileType_EF_CARD_CERTIFICATE, certificates.GetCardCertificate())
+		if err != nil {
+			return nil, err
+		}
+
+		dst, err = appendCertificateEF(dst, cardv1.ElementaryFileType_EF_CA_CERTIFICATE, certificates.GetCaCertificate())
+		if err != nil {
+			return nil, err
+		}
 	}
 
+	// Note: Any remaining proprietary EFs would be handled here if needed
+
+	return dst, nil
+}
+
+// appendCertificateEF appends a certificate EF (which are not signed)
+func appendCertificateEF(dst []byte, fileType cardv1.ElementaryFileType, certData []byte) ([]byte, error) {
+	if len(certData) == 0 {
+		return dst, nil // Skip empty certificates
+	}
+
+	opts := fileType.Descriptor().Values().ByNumber(protoreflect.EnumNumber(fileType)).Options()
+	tag := proto.GetExtension(opts, cardv1.E_FileId).(int32)
+
+	// Write data tag (FID + appendix 0x00) - certificates are NOT signed
+	dst = binary.BigEndian.AppendUint16(dst, uint16(tag))
+	dst = append(dst, 0x00) // appendix for data
+	dst = binary.BigEndian.AppendUint16(dst, uint16(len(certData)))
+	dst = append(dst, certData...)
+
+	// Note: Certificates do NOT have signature blocks
 	return dst, nil
 }
 
@@ -239,8 +287,14 @@ func appendTlv[T proto.Message](
 	opts := fileType.Descriptor().Values().ByNumber(protoreflect.EnumNumber(fileType)).Options()
 	tag := proto.GetExtension(opts, cardv1.E_FileId).(int32)
 
+	// Write data tag (FID + appendix 0x00) first
+	dst = binary.BigEndian.AppendUint16(dst, uint16(tag))
+	dst = append(dst, 0x00) // appendix for data
+
+	// Placeholder for length
 	lenPos := len(dst)
-	dst = append(dst, 0, 0, 0, 0, 0) // Placeholder for Tag (3 bytes) and Length (2 bytes)
+	dst = binary.BigEndian.AppendUint16(dst, 0) // Will be updated later
+
 	valPos := len(dst)
 
 	var err error
@@ -251,10 +305,8 @@ func appendTlv[T proto.Message](
 
 	valLen := len(dst) - valPos
 
-	// Write data tag (FID + appendix 0x00)
-	binary.BigEndian.PutUint16(dst[lenPos:], uint16(tag))
-	dst[lenPos+2] = 0x00 // appendix for data
-	binary.BigEndian.PutUint16(dst[lenPos+3:], uint16(valLen))
+	// Update the length field
+	binary.BigEndian.PutUint16(dst[lenPos:], uint16(valLen))
 
 	// Add signature block (FID + appendix 0x01, 128 bytes of zeros for now)
 	dst = binary.BigEndian.AppendUint16(dst, uint16(tag))
@@ -264,6 +316,47 @@ func appendTlv[T proto.Message](
 	signature := make([]byte, 128)
 	dst = append(dst, signature...)
 
+	return dst, nil
+}
+
+// appendTlvUnsigned is like appendTlv but doesn't add a signature block
+func appendTlvUnsigned[T proto.Message](
+	dst []byte,
+	fileType cardv1.ElementaryFileType,
+	msg T,
+	appenderFunc func([]byte, T) ([]byte, error),
+) ([]byte, error) {
+	// Use reflection to check if the message is nil
+	msgValue := reflect.ValueOf(msg)
+	if !msgValue.IsValid() || (msgValue.Kind() == reflect.Ptr && msgValue.IsNil()) {
+		return dst, nil // Don't write anything if the message is nil
+	}
+
+	opts := fileType.Descriptor().Values().ByNumber(protoreflect.EnumNumber(fileType)).Options()
+	tag := proto.GetExtension(opts, cardv1.E_FileId).(int32)
+
+	// Write data tag (FID + appendix 0x00) first
+	dst = binary.BigEndian.AppendUint16(dst, uint16(tag))
+	dst = append(dst, 0x00) // appendix for data
+
+	// Placeholder for length
+	lenPos := len(dst)
+	dst = binary.BigEndian.AppendUint16(dst, 0) // Will be updated later
+
+	valPos := len(dst)
+
+	var err error
+	dst, err = appenderFunc(dst, msg)
+	if err != nil {
+		return nil, err
+	}
+
+	valLen := len(dst) - valPos
+
+	// Update the length field
+	binary.BigEndian.PutUint16(dst[lenPos:], uint16(valLen))
+
+	// No signature block for unsigned EFs
 	return dst, nil
 }
 

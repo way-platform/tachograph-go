@@ -9,7 +9,7 @@ func AppendCardIdentification(dst []byte, id *cardv1.CardIdentification) ([]byte
 	if id == nil {
 		return dst, nil
 	}
-	dst = appendString(dst, id.GetCardIssuingMemberState(), 1) // NationNumeric is BCD, but proto is string. Assuming direct mapping for now.
+	dst = appendBCDNation(dst, id.GetCardIssuingMemberState()) // NationNumeric is BCD-encoded
 	dst = appendString(dst, id.GetCardNumber(), 16)
 	dst = appendString(dst, id.GetCardIssuingAuthorityName(), 36)
 	dst = appendTimeReal(dst, id.GetCardIssueDate())

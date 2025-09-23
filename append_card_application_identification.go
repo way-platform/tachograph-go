@@ -14,7 +14,8 @@ func AppendCardApplicationIdentification(data []byte, appId *cardv1.DriverCardAp
 
 	// Type of tachograph card ID (1 byte)
 	if appId.HasTypeOfTachographCardId() {
-		data = append(data, byte(appId.GetTypeOfTachographCardId()))
+		protocolValue := GetEquipmentTypeProtocolValue(appId.GetTypeOfTachographCardId(), appId.GetUnrecognizedTypeOfTachographCardId())
+		data = append(data, byte(protocolValue))
 	} else {
 		data = append(data, 0x00)
 	}

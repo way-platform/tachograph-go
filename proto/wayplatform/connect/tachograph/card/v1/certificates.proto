@@ -1,0 +1,24 @@
+edition = "2023";
+
+package wayplatform.connect.tachograph.card.v1;
+
+// Certificates holds the raw data of all certificate Elementary Files
+// downloaded from a tachograph card.
+message Certificates {
+  // Raw data of the card's public key certificate.
+  // Gen1: EF_Card_Certificate (FID 0xC100)
+  // Gen2: EF_CardMA_Certificate (FID 0xC100)
+  bytes card_certificate = 1;
+
+  // Raw data of the Certification Authority's public key certificate.
+  // EF_CA_Certificate (FID 0xC108)
+  bytes ca_certificate = 2;
+
+  // Raw data of the card's public key certificate for digital signatures (Gen2+).
+  // EF_CardSignCertificate (FID 0xC101)
+  bytes card_sign_certificate = 3;
+
+  // Raw data of the link certificate for chaining root CAs (Gen2+).
+  // EF_Link_Certificate (FID 0xC109)
+  bytes link_certificate = 4;
+}

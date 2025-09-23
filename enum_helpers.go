@@ -133,6 +133,54 @@ func SetEventFaultRecordPurpose(rawValue int32, setEnum func(datadictionaryv1.Ev
 
 // Marshalling helper functions
 
+// GetEquipmentTypeProtocolValue returns the protocol value for marshalling
+func GetEquipmentTypeProtocolValue(enumValue datadictionaryv1.EquipmentType, unrecognizedValue int32) int32 {
+	// Check if this is the UNRECOGNIZED value
+	if enumValue == datadictionaryv1.EquipmentType_EQUIPMENT_TYPE_UNRECOGNIZED {
+		return unrecognizedValue
+	}
+
+	enumDesc := enumValue.Descriptor()
+	if protocolValue, ok := getProtocolValueFromEnumNumber(enumDesc, protoreflect.EnumNumber(enumValue)); ok {
+		return protocolValue
+	}
+
+	// Fallback - this shouldn't happen in well-formed data
+	return int32(enumValue)
+}
+
+// GetNationNumericProtocolValue returns the protocol value for marshalling
+func GetNationNumericProtocolValue(enumValue datadictionaryv1.NationNumeric, unrecognizedValue int32) int32 {
+	// Check if this is the UNRECOGNIZED value
+	if enumValue == datadictionaryv1.NationNumeric_NATION_NUMERIC_UNRECOGNIZED {
+		return unrecognizedValue
+	}
+
+	enumDesc := enumValue.Descriptor()
+	if protocolValue, ok := getProtocolValueFromEnumNumber(enumDesc, protoreflect.EnumNumber(enumValue)); ok {
+		return protocolValue
+	}
+
+	// Fallback - this shouldn't happen in well-formed data
+	return int32(enumValue)
+}
+
+// GetEntryTypeDailyWorkPeriodProtocolValue returns the protocol value for marshalling
+func GetEntryTypeDailyWorkPeriodProtocolValue(enumValue datadictionaryv1.EntryTypeDailyWorkPeriod, unrecognizedValue int32) int32 {
+	// Check if this is the UNRECOGNIZED value
+	if enumValue == datadictionaryv1.EntryTypeDailyWorkPeriod_ENTRY_TYPE_DAILY_WORK_PERIOD_UNRECOGNIZED {
+		return unrecognizedValue
+	}
+
+	enumDesc := enumValue.Descriptor()
+	if protocolValue, ok := getProtocolValueFromEnumNumber(enumDesc, protoreflect.EnumNumber(enumValue)); ok {
+		return protocolValue
+	}
+
+	// Fallback - this shouldn't happen in well-formed data
+	return int32(enumValue)
+}
+
 // GetEventFaultTypeProtocolValue returns the protocol value for marshalling
 func GetEventFaultTypeProtocolValue(enumValue datadictionaryv1.EventFaultType, unrecognizedValue int32) int32 {
 	// Check if this is the UNRECOGNIZED value

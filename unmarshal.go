@@ -4,8 +4,6 @@ import (
 	"bytes"
 	"encoding/binary"
 	"errors"
-	"fmt"
-	"unsafe"
 
 	"google.golang.org/protobuf/proto"
 
@@ -31,8 +29,7 @@ func unmarshalCard(data []byte) (*tachographv1.File, error) {
 	file.SetType(tachographv1.File_DRIVER_CARD) // Assume Driver card for now
 	file.SetDriverCard(&cardv1.DriverCardFile{})
 
-	// Track proprietary EFs for this card
-	var proprietaryEFs ProprietaryEFs
+	// Track any truly proprietary EFs (none expected for standard cards)
 
 	r := bytes.NewReader(data)
 
@@ -66,17 +63,13 @@ func unmarshalCard(data []byte) (*tachographv1.File, error) {
 		fileType := findFileTypeByTag(int32(fid))
 
 		// Debug: log all FIDs being processed
-		if fid >= 0xC000 {
-			fmt.Printf("DEBUG: Processing FID 0x%04X, fileType=%v, appendix=0x%02X\n", fid, fileType, appendix)
-		}
+		// if fid >= 0xC000 {
+		//	fmt.Printf("DEBUG: Processing FID 0x%04X, fileType=%v, appendix=0x%02X\n", fid, fileType, appendix)
+		// }
 
 		if fileType == cardv1.ElementaryFileType_ELEMENTARY_FILE_UNSPECIFIED {
-			// Handle proprietary EFs (0xC000-0xFFFF range)
-			if fid >= 0xC000 {
-				UnmarshalProprietaryEF(fid, value, &proprietaryEFs)
-				fmt.Printf("DEBUG: Added proprietary EF 0x%04X with %d bytes\n", fid, len(value))
-			}
-			continue // Skip unknown tags
+			// Skip unknown EF types (true proprietary EFs would be handled here)
+			continue
 		}
 
 		driverCard := file.GetDriverCard()
@@ -186,21 +179,21 @@ func unmarshalCard(data []byte) (*tachographv1.File, error) {
 			}
 			driverCard.SetApplicationIdentificationV2(appIdV2)
 		case cardv1.ElementaryFileType_EF_CARD_CERTIFICATE:
-			// Store as proprietary EF for marshalling since not in protobuf yet
-			UnmarshalProprietaryEF(fid, value, &proprietaryEFs)
-			fmt.Printf("DEBUG: Added certificate EF 0x%04X with %d bytes\n", fid, len(value))
+			// Initialize certificates if needed
+			if driverCard.GetCertificates() == nil {
+				driverCard.SetCertificates(&cardv1.Certificates{})
+			}
+			driverCard.GetCertificates().SetCardCertificate(value)
 		case cardv1.ElementaryFileType_EF_CA_CERTIFICATE:
-			// Store as proprietary EF for marshalling since not in protobuf yet
-			UnmarshalProprietaryEF(fid, value, &proprietaryEFs)
-			fmt.Printf("DEBUG: Added certificate EF 0x%04X with %d bytes\n", fid, len(value))
+			// Initialize certificates if needed
+			if driverCard.GetCertificates() == nil {
+				driverCard.SetCertificates(&cardv1.Certificates{})
+			}
+			driverCard.GetCertificates().SetCaCertificate(value)
 		}
 	}
 
-	// Store proprietary EFs for later use during marshalling
-	if len(proprietaryEFs.EFs) > 0 {
-		cardPtr := uintptr(unsafe.Pointer(file.GetDriverCard()))
-		StoreProprietaryEFs(cardPtr, &proprietaryEFs)
-	}
+	// Note: Any proprietary EFs would be stored here if needed
 
 	return file, nil
 }

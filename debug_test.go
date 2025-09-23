@@ -79,6 +79,16 @@ func TestDebugUnmarshal(t *testing.T) {
 		if driverCard.GetApplicationIdentificationV2() != nil {
 			t.Logf("  - Application Identification V2: present")
 		}
+		if driverCard.GetCertificates() != nil {
+			certs := driverCard.GetCertificates()
+			t.Logf("  - Certificates: present")
+			if len(certs.GetCardCertificate()) > 0 {
+				t.Logf("    - Card Certificate: %d bytes", len(certs.GetCardCertificate()))
+			}
+			if len(certs.GetCaCertificate()) > 0 {
+				t.Logf("    - CA Certificate: %d bytes", len(certs.GetCaCertificate()))
+			}
+		}
 	}
 
 	marshalledData, err := Marshal(file)
