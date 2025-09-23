@@ -2,6 +2,7 @@ package tachograph
 
 import (
 	"encoding/binary"
+	"fmt"
 
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
@@ -72,6 +73,19 @@ func isHexString(s string) bool {
 	// Only treat as hex if it contains actual hex characters (A-F, a-f)
 	// Pure numeric strings like "1069650899000001" should be treated as ASCII
 	return hasHexChars
+}
+
+// parseHexByte parses a 2-character hex string into a single byte
+func parseHexByte(hexStr string) (byte, error) {
+	if len(hexStr) < 2 {
+		return 0, fmt.Errorf("hex string too short: %s", hexStr)
+	}
+	// Take first 2 characters and parse as hex
+	bytes := hexStringToBytes(hexStr[:2])
+	if len(bytes) == 0 {
+		return 0, fmt.Errorf("failed to parse hex string: %s", hexStr[:2])
+	}
+	return bytes[0], nil
 }
 
 // hexStringToBytes converts a hex string to bytes

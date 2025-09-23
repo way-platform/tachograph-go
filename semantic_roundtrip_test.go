@@ -54,7 +54,8 @@ func TestSemanticRoundtrip(t *testing.T) {
 			}
 
 			// Step 3: DriverCardFile → RawCardFile (semantic marshalling - this is what we're testing)
-			marshalledRawFile, err := DriverCardFileToRaw(driverCard)
+			// Pass the original RawCardFile to preserve signatures
+			marshalledRawFile, err := DriverCardFileToRawWithSignatures(driverCard, originalRawFile)
 			if err != nil {
 				t.Fatalf("Failed to convert DriverCardFile to RawCardFile: %v", err)
 			}

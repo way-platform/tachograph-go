@@ -14,10 +14,10 @@ func UnmarshalEventsData(data []byte, ed *cardv1.EventData) error {
 		recordData := make([]byte, recordSize)
 		r.Read(recordData)
 
-		// Check if the record is empty (padded)
+		// Check if the record is empty (padded with nulls or spaces)
 		isEmpty := true
 		for _, b := range recordData {
-			if b != 0 {
+			if b != 0 && b != 0x20 { // Allow both null and space padding
 				isEmpty = false
 				break
 			}

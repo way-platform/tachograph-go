@@ -32,7 +32,14 @@ func AppendVehicleRecord(dst []byte, rec *cardv1.VehiclesUsed_Record) ([]byte, e
 	dst = appendOdometer(dst, rec.GetVehicleOdometerEndKm())
 	dst = appendTimeReal(dst, rec.GetVehicleFirstUse())
 	dst = appendTimeReal(dst, rec.GetVehicleLastUse())
-	dst = append(dst, byte(0)) // Placeholder for vehicleRegistrationNation
+	// Convert hex string nation back to byte
+	nationByte := byte(0) // Default fallback
+	if nationStr := rec.GetVehicleRegistrationNation(); len(nationStr) >= 2 {
+		if parsedNation, err := parseHexByte(nationStr); err == nil {
+			nationByte = parsedNation
+		}
+	}
+	dst = append(dst, nationByte)
 	dst = appendString(dst, rec.GetVehicleRegistrationNumber(), 14)
 	dst = binary.BigEndian.AppendUint16(dst, uint16(rec.GetVuDataBlockCounter()))
 	return dst, nil

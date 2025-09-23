@@ -46,6 +46,7 @@ func MarshalWithOriginal(file *tachographv1.File, originalData []byte) ([]byte, 
 			}
 		}
 
+		// Build new RawCardFile with marshalled data but preserve original signatures
 		rawFile, err := DriverCardFileToRawWithSignatures(file.GetDriverCard(), originalRawFile)
 		if err != nil {
 			return nil, err

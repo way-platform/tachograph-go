@@ -77,51 +77,78 @@ This approach is robust and self-contained but lacks runtime flexibility.
 
 ### 3.2. Chain of Trust Validation Logic
 
-The core validation logic in `tachoparser` correctly implements the certificate "unwrapping" process defined in the regulations.
+The core validation logic involves "unwrapping" a certificate to verify its authenticity and extract the public key of the holder. This process is critically dependent on finding the **Certificate Authority Reference (CAR)** within the certificate data, which acts as a pointer to the issuer's certificate. The method for finding the CAR differs significantly between Gen1 and Gen2.
 
-*Code Example (Simplified from `benchmark/tachoparser/pkg/decoder/definitions.go` - `CertificateFirstGen.Decode()`):*
+#### 3.2.1. Locating the Certificate Authority Reference (CAR)
+
+**Gen1 (RSA) Certificates:**
+
+Gen1 certificates have a fixed 194-byte structure. The CAR is not part of the signed data but is appended at the end of the certificate block for easy lookup.
+
+-   **Structure**: `[128-byte Signature]` + `[58-byte Content]` + `[8-byte CAR]`
+-   **Location**: The CAR is always located at bytes **186-193** of the 194-byte certificate block.
+
+*Code Example (from `benchmark/tachoparser/pkg/decoder/definitions.go`):*
 ```go
 // Simplified logic for Gen1 certificate validation
 func (c *CertificateFirstGen) Decode() error {
-	cert := new(DecodedCertificateFirstGen)
+	// ...
 	data := c.Certificate // The raw 194-byte certificate
 
-	// 1. Get the Certificate Authority Reference (CAR) from the certificate data
+	// 1. Get the CAR from the fixed offset at the end of the certificate
 	var CARPrime uint64
-	buf := bytes.NewBuffer(data[186:194])
+	buf := bytes.NewBuffer(data[186:194]) // Read the last 8 bytes
 	binary.Read(buf, binary.BigEndian, &CARPrime)
 
-	// 2. Look up the CA's public key from the global store of known keys
+	// 2. Look up the CA's public key from the global store using the CAR
 	ca, ok := PKsFirstGen[CARPrime]
 	if !ok {
 		return errors.New("could not find CA public key")
 	}
 
-	// 3. Use the CA's public key to decrypt the signature part of the certificate
-	// This is the "unwrapping" step.
-	SrPrime := ca.Perform(data[0:128]) // Perform does the RSA operation
+	// 3. Use the CA's public key to verify the signature and unwrap the content
+    // ... (rest of the verification logic)
+}
+```
 
-	// 4. Check for correct padding bytes
-	if SrPrime[0] != 0x6a || SrPrime[127] != 0xbc {
-		return errors.New("invalid signature padding")
-	}
+**Gen2 (ECC) Certificates:**
 
-	// 5. Reconstruct the original certificate content and its hash
-	CrPrime := SrPrime[1 : 1+106]
-	HPrime := SrPrime[1+106 : 1+106+20]
-	CnPrime := data[128:186]
-	CPrime := append(CrPrime, CnPrime...) // This is the full certificate body
-	hash := sha1.Sum(CPrime)              // Hash the reconstructed body
+Gen2 certificates use a flexible ASN.1 DER (Tag-Length-Value) format. There are no fixed offsets; the certificate must be parsed field by field.
 
-	// 6. Compare the computed hash with the hash from the unwrapped signature
-	if !reflect.DeepEqual(HPrime, hash[:]) {
-		return errors.New("certificate content hash mismatch")
-	}
+-   **Structure**: A nested series of TLV-encoded data objects.
+-   **Location**: The CAR is the value of the data object with the **Tag `'42'`**.
 
-	// 7. If hashes match, the certificate is genuine. Parse its content.
-	// ... logic to parse CAR, CHR, public key, etc., from CPrime ...
-	c.DecodedCertificate = cert
-	return nil
+The parser must iterate through the ASN.1 structure of the certificate body, identify the correct tag, and then read its 8-byte value.
+
+*Code Example (Simplified from `benchmark/tachoparser/pkg/decoder/definitions.go`):*
+```go
+// Simplified logic for Gen2 certificate validation
+func (c *CertificateSecondGen) Decode() error {
+    // ...
+    // asn1Body.Bytes contains the raw bytes of the certificate body
+
+    // 1. Parse the CPI (first field) to get the remaining bytes
+    var asn1CPI asn1.RawValue
+    restCPI, err := asn1.Unmarshal(asn1Body.Bytes, &asn1CPI)
+    // ...
+
+    // 2. Parse the CAR (second field) from the remaining bytes
+    var asn1CAR asn1.RawValue
+    _, err = asn1.Unmarshal(restCPI, &asn1CAR)
+    if err != nil || asn1CAR.Tag != 0x42 { // Tag '42' identifies the CAR
+        return errors.New("could not parse CAR or tag mismatch")
+    }
+
+    // 3. Convert the 8-byte value to a uint64
+    var car uint64
+    buf := bytes.NewBuffer(asn1CAR.Bytes)
+    binary.Read(buf, binary.BigEndian, &car)
+
+    // 4. Look up the CA's public key from the global store using the CAR
+    if caPK, ok := PKsSecondGen[car]; ok {
+        // ... proceed with verification
+    }
+    // ...
 }
 ```
 
