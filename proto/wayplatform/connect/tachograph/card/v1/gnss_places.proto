@@ -1,0 +1,53 @@
+edition = "2023";
+
+package wayplatform.connect.tachograph.card.v1;
+
+import "google/protobuf/timestamp.proto";
+
+// Represents data from EF_GNSS_Places, containing GNSS position records for
+// accumulated driving periods.
+//
+// Corresponds to the `GNSSAccumulatedDriving` data type.
+// See Data Dictionary, Section 2.78.
+message GnssPlaces {
+  // Represents a single record of accumulated driving and GNSS position.
+  //
+  // Corresponds to the `GNSSAccumulatedDrivingRecord` data type.
+  // See Data Dictionary, Section 2.79.
+  message Record {
+    // Represents the nested GNSS position record.
+    //
+    // Corresponds to the `GNSSPlaceRecord` data type.
+    // See Data Dictionary, Section 2.80.
+    message GnssPlace {
+      // Timestamp from the inner `GNSSPlaceRecord` structure.
+      // See Data Dictionary, Section 2.80.
+      google.protobuf.Timestamp timestamp = 1;
+
+      // Accuracy of the GNSS fix. See DD Section 2.77.
+      int32 gnss_accuracy = 2;
+
+      // Longitude in millionths of a degree. See DD Section 2.76.
+      sint32 longitude = 3;
+
+      // Latitude in millionths of a degree. See DD Section 2.76.
+      sint32 latitude = 4;
+    }
+
+    // Timestamp from the outer `GNSSAccumulatedDrivingRecord` structure.
+    // See Data Dictionary, Section 2.79.
+    google.protobuf.Timestamp timestamp = 1;
+
+    // The nested GNSS place record.
+    GnssPlace gnss_place = 2;
+
+    // Odometer at the time of the record. See DD Section 2.113.
+    int32 vehicle_odometer_km = 3;
+  }
+
+  // Index of the last updated record.
+  int32 newest_record_index = 1;
+
+  // The set of GNSS accumulated driving records.
+  repeated Record records = 2;
+}

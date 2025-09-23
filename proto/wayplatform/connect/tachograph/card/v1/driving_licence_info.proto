@@ -1,0 +1,18 @@
+edition = "2023";
+
+package wayplatform.connect.tachograph.card.v1;
+
+// Represents the card holder's driving licence information.
+//
+// Corresponds to the `CardDrivingLicenceInformation` data type from EF_Driving_Licence_Info.
+// See Data Dictionary, Section 2.18.
+message DrivingLicenceInfo {
+  // Authority that issued the driving licence.
+  string driving_licence_issuing_authority = 1;
+
+  // Nation of the issuing authority. See DD Section 2.101 for `NationNumeric`.
+  int32 driving_licence_issuing_nation = 2;
+
+  // The driving licence number.
+  string driving_licence_number = 3;
+}

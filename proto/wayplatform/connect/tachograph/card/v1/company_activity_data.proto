@@ -1,0 +1,42 @@
+edition = "2023";
+
+package wayplatform.connect.tachograph.card.v1;
+
+import "google/protobuf/timestamp.proto";
+
+// Represents company activity data from EF_Company_Activity_Data.
+//
+// Corresponds to the `CompanyActivityData` data type.
+// See Data Dictionary, Section 2.46.
+message CompanyActivityData {
+  // Represents a single company activity record.
+  // See Data Dictionary, Section 2.46.
+  message Record {
+    // See Data Dictionary, Section 2.47 for `CompanyActivityType`.
+    int32 company_activity_type = 1;
+
+    // Timestamp of the activity. See DD Section 2.162 for `TimeReal`.
+    google.protobuf.Timestamp company_activity_time = 2;
+
+    // Card number of the card that was downloaded (if applicable).
+    string downloaded_card_number = 3;
+
+    // Nation of the vehicle's registration.
+    string vehicle_registration_nation = 4;
+
+    // Vehicle's registration number.
+    string vehicle_registration_number = 5;
+
+    // Start of the downloaded period from a VU (if applicable).
+    google.protobuf.Timestamp download_period_begin = 6;
+
+    // End of the downloaded period from a VU (if applicable).
+    google.protobuf.Timestamp download_period_end = 7;
+  }
+
+  // Index of the last updated record.
+  int32 newest_record_index = 1;
+
+  // The set of company activity records.
+  repeated Record records = 2;
+}

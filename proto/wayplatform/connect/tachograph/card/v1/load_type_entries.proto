@@ -1,0 +1,29 @@
+edition = "2023";
+
+package wayplatform.connect.tachograph.card.v1;
+
+import "google/protobuf/timestamp.proto";
+
+// Represents load type entries from EF_Load_Type_Entries.
+//
+// Corresponds to the `CardLoadTypeEntries` data type.
+// See Data Dictionary, Section 2.24a.
+message LoadTypeEntries {
+  // Represents a single load type entry record.
+  //
+  // Corresponds to the `CardLoadTypeEntryRecord` data type.
+  // See Data Dictionary, Section 2.24b.
+  message Record {
+    // Timestamp of the entry. See DD Section 2.162 for `TimeReal`.
+    google.protobuf.Timestamp timestamp = 1;
+
+    // The load type entered. See DD Section 2.90a for `LoadType`.
+    int32 load_type_entered = 2;
+  }
+
+  // Index of the last updated record in the ring buffer.
+  int32 newest_record_index = 1;
+
+  // The set of load type entry records.
+  repeated Record records = 2;
+}

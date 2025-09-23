@@ -1,0 +1,21 @@
+edition = "2023";
+
+package wayplatform.connect.tachograph.card.v1;
+
+// Represents data from EF_Application_Identification_V2 for a workshop card.
+//
+// Corresponds to the `WorkshopCardApplicationIdentificationV2` data type.
+// See Data Dictionary, Section 2.234a.
+message WorkshopApplicationIdentificationV2 {
+  // See Data Dictionary, Section 2.234a, `noOfBorderCrossingRecords`.
+  int32 border_crossing_records_count = 1;
+
+  // See Data Dictionary, Section 2.234a, `noOfLoadUnloadRecords`.
+  int32 load_unload_records_count = 2;
+
+  // See Data Dictionary, Section 2.234a, `noOfLoadTypeEntryRecords`.
+  int32 load_type_entry_records_count = 3;
+
+  // See Data Dictionary, Section 2.234a, `vuConfigurationLengthRange`.
+  int32 vu_configuration_length_range = 4;
+}

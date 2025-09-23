@@ -1,0 +1,48 @@
+edition = "2023";
+
+package wayplatform.connect.tachograph.card.v1;
+
+import "google/protobuf/timestamp.proto";
+import "wayplatform/connect/tachograph/vu/v1/versioning.proto";
+
+// Represents data from EF_Vehicles_Used.
+//
+// Corresponds to the `CardVehiclesUsed` data type in the specification.
+// See Data Dictionary, Section 2.38.
+message VehiclesUsed {
+  // Represents a record for a single period of use of a vehicle.
+  //
+  // Corresponds to the `CardVehicleRecord` data type.
+  // See Data Dictionary, Section 2.37.
+  message Record {
+    // Odometer value at the beginning of the period. See DD Section 2.113.
+    int32 vehicle_odometer_begin_km = 1;
+
+    // Odometer value at the end of the period. See DD Section 2.113.
+    int32 vehicle_odometer_end_km = 2;
+
+    // Timestamp for the beginning of the period. See DD Section 2.162.
+    google.protobuf.Timestamp vehicle_first_use = 3;
+
+    // Timestamp for the end of the period. See DD Section 2.162.
+    google.protobuf.Timestamp vehicle_last_use = 4;
+
+    // Nation of the vehicle's registration. See DD Section 2.166.
+    string vehicle_registration_nation = 5;
+
+    // Vehicle's registration number. See DD Section 2.166.
+    string vehicle_registration_number = 6;
+
+    // VU data block counter at last extraction. See DD Section 2.189.
+    int32 vu_data_block_counter = 7;
+
+    // Gen2+ field: Vehicle Identification Number. See DD Section 2.164.
+    string vehicle_identification_number = 8;
+  }
+
+  // Index of the last updated vehicle record.
+  int32 newest_record_index = 1;
+
+  // The set of records for vehicles used.
+  repeated Record records = 2;
+}

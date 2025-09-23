@@ -7,7 +7,6 @@
 package vuv1
 
 import (
-	_ "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -21,8 +20,11 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// VehicleUnitFile completely encapsulates the content of a .DDD file downloaded from a Vehicle Unit.
-// It preserves the order of data transfers to allow for perfect round-trip parsing.
+// VehicleUnitFile completely encapsulates the content of a file downloaded from a Vehicle Unit (VU).
+// These files typically have a .DDD, .V1B, or .C1B extension.
+//
+// The structure preserves the exact sequence of data blocks (transfers) as they appear in the
+// original file, which is essential for ensuring perfect round-trip parsing and writing.
 type VehicleUnitFile struct {
 	state                protoimpl.MessageState       `protogen:"opaque.v1"`
 	xxx_hidden_Transfers *[]*VehicleUnitFile_Transfer `protobuf:"bytes,1,rep,name=transfers"`
@@ -71,7 +73,8 @@ func (x *VehicleUnitFile) SetTransfers(v []*VehicleUnitFile_Transfer) {
 type VehicleUnitFile_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
-	// A sequence of data transfers as they appear in the downloaded file.
+	// A VehicleUnitFile consists of a sequence of transfers, preserving the
+	// order from the original downloaded file.
 	Transfers []*VehicleUnitFile_Transfer
 }
 
@@ -83,26 +86,19 @@ func (b0 VehicleUnitFile_builder) Build() *VehicleUnitFile {
 	return m0
 }
 
-// Transfer represents a single data block within the downloaded file.
-// It acts as a tagged union, where the 'type' field indicates which of the
-// subsequent payload fields is populated.
+// A Transfer represents a single data block within the downloaded file.
+// It acts as a manually tagged union, where the `type` field is the tag.
+// The structure of a transfer is defined in Appendix 7 of the regulation.
 type VehicleUnitFile_Transfer struct {
 	state                               protoimpl.MessageState    `protogen:"opaque.v1"`
 	xxx_hidden_Type                     TransferType              `protobuf:"varint,1,opt,name=type,enum=wayplatform.connect.tachograph.vu.v1.TransferType"`
 	xxx_hidden_DownloadInterfaceVersion *DownloadInterfaceVersion `protobuf:"bytes,2,opt,name=download_interface_version,json=downloadInterfaceVersion"`
-	xxx_hidden_OverviewGen1             *OverviewGen1             `protobuf:"bytes,3,opt,name=overview_gen1,json=overviewGen1"`
-	xxx_hidden_ActivitiesGen1           *ActivitiesGen1           `protobuf:"bytes,4,opt,name=activities_gen1,json=activitiesGen1"`
-	xxx_hidden_EventsAndFaultsGen1      *EventsAndFaultsGen1      `protobuf:"bytes,5,opt,name=events_and_faults_gen1,json=eventsAndFaultsGen1"`
-	xxx_hidden_DetailedSpeedGen1        *DetailedSpeedGen1        `protobuf:"bytes,6,opt,name=detailed_speed_gen1,json=detailedSpeedGen1"`
-	xxx_hidden_TechnicalDataGen1        *TechnicalDataGen1        `protobuf:"bytes,7,opt,name=technical_data_gen1,json=technicalDataGen1"`
-	xxx_hidden_CardDownload             []byte                    `protobuf:"bytes,8,opt,name=card_download,json=cardDownload"`
-	xxx_hidden_OverviewGen2V1           *OverviewGen2V1           `protobuf:"bytes,9,opt,name=overview_gen2_v1,json=overviewGen2V1"`
-	xxx_hidden_ActivitiesGen2V1         *ActivitiesGen2V1         `protobuf:"bytes,10,opt,name=activities_gen2_v1,json=activitiesGen2V1"`
-	xxx_hidden_EventsAndFaultsGen2      *EventsAndFaultsGen2      `protobuf:"bytes,11,opt,name=events_and_faults_gen2,json=eventsAndFaultsGen2"`
-	xxx_hidden_DetailedSpeedGen2        *DetailedSpeedGen2        `protobuf:"bytes,12,opt,name=detailed_speed_gen2,json=detailedSpeedGen2"`
-	xxx_hidden_TechnicalDataGen2        *TechnicalDataGen2        `protobuf:"bytes,13,opt,name=technical_data_gen2,json=technicalDataGen2"`
-	xxx_hidden_OverviewGen2V2           *OverviewGen2V2           `protobuf:"bytes,14,opt,name=overview_gen2_v2,json=overviewGen2V2"`
-	xxx_hidden_ActivitiesGen2V2         *ActivitiesGen2V2         `protobuf:"bytes,15,opt,name=activities_gen2_v2,json=activitiesGen2V2"`
+	xxx_hidden_Overview                 *Overview                 `protobuf:"bytes,3,opt,name=overview"`
+	xxx_hidden_Activities               *Activities               `protobuf:"bytes,4,opt,name=activities"`
+	xxx_hidden_EventsAndFaults          *EventsAndFaults          `protobuf:"bytes,5,opt,name=events_and_faults,json=eventsAndFaults"`
+	xxx_hidden_DetailedSpeed            *DetailedSpeed            `protobuf:"bytes,6,opt,name=detailed_speed,json=detailedSpeed"`
+	xxx_hidden_TechnicalData            *TechnicalData            `protobuf:"bytes,7,opt,name=technical_data,json=technicalData"`
+	xxx_hidden_CardDownload             *CardDownload             `protobuf:"bytes,8,opt,name=card_download,json=cardDownload"`
 	XXX_raceDetectHookData              protoimpl.RaceDetectHookData
 	XXX_presence                        [1]uint32
 	unknownFields                       protoimpl.UnknownFields
@@ -150,160 +146,79 @@ func (x *VehicleUnitFile_Transfer) GetDownloadInterfaceVersion() *DownloadInterf
 	return nil
 }
 
-func (x *VehicleUnitFile_Transfer) GetOverviewGen1() *OverviewGen1 {
+func (x *VehicleUnitFile_Transfer) GetOverview() *Overview {
 	if x != nil {
-		return x.xxx_hidden_OverviewGen1
+		return x.xxx_hidden_Overview
 	}
 	return nil
 }
 
-func (x *VehicleUnitFile_Transfer) GetActivitiesGen1() *ActivitiesGen1 {
+func (x *VehicleUnitFile_Transfer) GetActivities() *Activities {
 	if x != nil {
-		return x.xxx_hidden_ActivitiesGen1
+		return x.xxx_hidden_Activities
 	}
 	return nil
 }
 
-func (x *VehicleUnitFile_Transfer) GetEventsAndFaultsGen1() *EventsAndFaultsGen1 {
+func (x *VehicleUnitFile_Transfer) GetEventsAndFaults() *EventsAndFaults {
 	if x != nil {
-		return x.xxx_hidden_EventsAndFaultsGen1
+		return x.xxx_hidden_EventsAndFaults
 	}
 	return nil
 }
 
-func (x *VehicleUnitFile_Transfer) GetDetailedSpeedGen1() *DetailedSpeedGen1 {
+func (x *VehicleUnitFile_Transfer) GetDetailedSpeed() *DetailedSpeed {
 	if x != nil {
-		return x.xxx_hidden_DetailedSpeedGen1
+		return x.xxx_hidden_DetailedSpeed
 	}
 	return nil
 }
 
-func (x *VehicleUnitFile_Transfer) GetTechnicalDataGen1() *TechnicalDataGen1 {
+func (x *VehicleUnitFile_Transfer) GetTechnicalData() *TechnicalData {
 	if x != nil {
-		return x.xxx_hidden_TechnicalDataGen1
+		return x.xxx_hidden_TechnicalData
 	}
 	return nil
 }
 
-func (x *VehicleUnitFile_Transfer) GetCardDownload() []byte {
+func (x *VehicleUnitFile_Transfer) GetCardDownload() *CardDownload {
 	if x != nil {
 		return x.xxx_hidden_CardDownload
 	}
 	return nil
 }
 
-func (x *VehicleUnitFile_Transfer) GetOverviewGen2V1() *OverviewGen2V1 {
-	if x != nil {
-		return x.xxx_hidden_OverviewGen2V1
-	}
-	return nil
-}
-
-func (x *VehicleUnitFile_Transfer) GetActivitiesGen2V1() *ActivitiesGen2V1 {
-	if x != nil {
-		return x.xxx_hidden_ActivitiesGen2V1
-	}
-	return nil
-}
-
-func (x *VehicleUnitFile_Transfer) GetEventsAndFaultsGen2() *EventsAndFaultsGen2 {
-	if x != nil {
-		return x.xxx_hidden_EventsAndFaultsGen2
-	}
-	return nil
-}
-
-func (x *VehicleUnitFile_Transfer) GetDetailedSpeedGen2() *DetailedSpeedGen2 {
-	if x != nil {
-		return x.xxx_hidden_DetailedSpeedGen2
-	}
-	return nil
-}
-
-func (x *VehicleUnitFile_Transfer) GetTechnicalDataGen2() *TechnicalDataGen2 {
-	if x != nil {
-		return x.xxx_hidden_TechnicalDataGen2
-	}
-	return nil
-}
-
-func (x *VehicleUnitFile_Transfer) GetOverviewGen2V2() *OverviewGen2V2 {
-	if x != nil {
-		return x.xxx_hidden_OverviewGen2V2
-	}
-	return nil
-}
-
-func (x *VehicleUnitFile_Transfer) GetActivitiesGen2V2() *ActivitiesGen2V2 {
-	if x != nil {
-		return x.xxx_hidden_ActivitiesGen2V2
-	}
-	return nil
-}
-
 func (x *VehicleUnitFile_Transfer) SetType(v TransferType) {
 	x.xxx_hidden_Type = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 15)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 8)
 }
 
 func (x *VehicleUnitFile_Transfer) SetDownloadInterfaceVersion(v *DownloadInterfaceVersion) {
 	x.xxx_hidden_DownloadInterfaceVersion = v
 }
 
-func (x *VehicleUnitFile_Transfer) SetOverviewGen1(v *OverviewGen1) {
-	x.xxx_hidden_OverviewGen1 = v
+func (x *VehicleUnitFile_Transfer) SetOverview(v *Overview) {
+	x.xxx_hidden_Overview = v
 }
 
-func (x *VehicleUnitFile_Transfer) SetActivitiesGen1(v *ActivitiesGen1) {
-	x.xxx_hidden_ActivitiesGen1 = v
+func (x *VehicleUnitFile_Transfer) SetActivities(v *Activities) {
+	x.xxx_hidden_Activities = v
 }
 
-func (x *VehicleUnitFile_Transfer) SetEventsAndFaultsGen1(v *EventsAndFaultsGen1) {
-	x.xxx_hidden_EventsAndFaultsGen1 = v
+func (x *VehicleUnitFile_Transfer) SetEventsAndFaults(v *EventsAndFaults) {
+	x.xxx_hidden_EventsAndFaults = v
 }
 
-func (x *VehicleUnitFile_Transfer) SetDetailedSpeedGen1(v *DetailedSpeedGen1) {
-	x.xxx_hidden_DetailedSpeedGen1 = v
+func (x *VehicleUnitFile_Transfer) SetDetailedSpeed(v *DetailedSpeed) {
+	x.xxx_hidden_DetailedSpeed = v
 }
 
-func (x *VehicleUnitFile_Transfer) SetTechnicalDataGen1(v *TechnicalDataGen1) {
-	x.xxx_hidden_TechnicalDataGen1 = v
+func (x *VehicleUnitFile_Transfer) SetTechnicalData(v *TechnicalData) {
+	x.xxx_hidden_TechnicalData = v
 }
 
-func (x *VehicleUnitFile_Transfer) SetCardDownload(v []byte) {
-	if v == nil {
-		v = []byte{}
-	}
+func (x *VehicleUnitFile_Transfer) SetCardDownload(v *CardDownload) {
 	x.xxx_hidden_CardDownload = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 7, 15)
-}
-
-func (x *VehicleUnitFile_Transfer) SetOverviewGen2V1(v *OverviewGen2V1) {
-	x.xxx_hidden_OverviewGen2V1 = v
-}
-
-func (x *VehicleUnitFile_Transfer) SetActivitiesGen2V1(v *ActivitiesGen2V1) {
-	x.xxx_hidden_ActivitiesGen2V1 = v
-}
-
-func (x *VehicleUnitFile_Transfer) SetEventsAndFaultsGen2(v *EventsAndFaultsGen2) {
-	x.xxx_hidden_EventsAndFaultsGen2 = v
-}
-
-func (x *VehicleUnitFile_Transfer) SetDetailedSpeedGen2(v *DetailedSpeedGen2) {
-	x.xxx_hidden_DetailedSpeedGen2 = v
-}
-
-func (x *VehicleUnitFile_Transfer) SetTechnicalDataGen2(v *TechnicalDataGen2) {
-	x.xxx_hidden_TechnicalDataGen2 = v
-}
-
-func (x *VehicleUnitFile_Transfer) SetOverviewGen2V2(v *OverviewGen2V2) {
-	x.xxx_hidden_OverviewGen2V2 = v
-}
-
-func (x *VehicleUnitFile_Transfer) SetActivitiesGen2V2(v *ActivitiesGen2V2) {
-	x.xxx_hidden_ActivitiesGen2V2 = v
 }
 
 func (x *VehicleUnitFile_Transfer) HasType() bool {
@@ -320,95 +235,46 @@ func (x *VehicleUnitFile_Transfer) HasDownloadInterfaceVersion() bool {
 	return x.xxx_hidden_DownloadInterfaceVersion != nil
 }
 
-func (x *VehicleUnitFile_Transfer) HasOverviewGen1() bool {
+func (x *VehicleUnitFile_Transfer) HasOverview() bool {
 	if x == nil {
 		return false
 	}
-	return x.xxx_hidden_OverviewGen1 != nil
+	return x.xxx_hidden_Overview != nil
 }
 
-func (x *VehicleUnitFile_Transfer) HasActivitiesGen1() bool {
+func (x *VehicleUnitFile_Transfer) HasActivities() bool {
 	if x == nil {
 		return false
 	}
-	return x.xxx_hidden_ActivitiesGen1 != nil
+	return x.xxx_hidden_Activities != nil
 }
 
-func (x *VehicleUnitFile_Transfer) HasEventsAndFaultsGen1() bool {
+func (x *VehicleUnitFile_Transfer) HasEventsAndFaults() bool {
 	if x == nil {
 		return false
 	}
-	return x.xxx_hidden_EventsAndFaultsGen1 != nil
+	return x.xxx_hidden_EventsAndFaults != nil
 }
 
-func (x *VehicleUnitFile_Transfer) HasDetailedSpeedGen1() bool {
+func (x *VehicleUnitFile_Transfer) HasDetailedSpeed() bool {
 	if x == nil {
 		return false
 	}
-	return x.xxx_hidden_DetailedSpeedGen1 != nil
+	return x.xxx_hidden_DetailedSpeed != nil
 }
 
-func (x *VehicleUnitFile_Transfer) HasTechnicalDataGen1() bool {
+func (x *VehicleUnitFile_Transfer) HasTechnicalData() bool {
 	if x == nil {
 		return false
 	}
-	return x.xxx_hidden_TechnicalDataGen1 != nil
+	return x.xxx_hidden_TechnicalData != nil
 }
 
 func (x *VehicleUnitFile_Transfer) HasCardDownload() bool {
 	if x == nil {
 		return false
 	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 7)
-}
-
-func (x *VehicleUnitFile_Transfer) HasOverviewGen2V1() bool {
-	if x == nil {
-		return false
-	}
-	return x.xxx_hidden_OverviewGen2V1 != nil
-}
-
-func (x *VehicleUnitFile_Transfer) HasActivitiesGen2V1() bool {
-	if x == nil {
-		return false
-	}
-	return x.xxx_hidden_ActivitiesGen2V1 != nil
-}
-
-func (x *VehicleUnitFile_Transfer) HasEventsAndFaultsGen2() bool {
-	if x == nil {
-		return false
-	}
-	return x.xxx_hidden_EventsAndFaultsGen2 != nil
-}
-
-func (x *VehicleUnitFile_Transfer) HasDetailedSpeedGen2() bool {
-	if x == nil {
-		return false
-	}
-	return x.xxx_hidden_DetailedSpeedGen2 != nil
-}
-
-func (x *VehicleUnitFile_Transfer) HasTechnicalDataGen2() bool {
-	if x == nil {
-		return false
-	}
-	return x.xxx_hidden_TechnicalDataGen2 != nil
-}
-
-func (x *VehicleUnitFile_Transfer) HasOverviewGen2V2() bool {
-	if x == nil {
-		return false
-	}
-	return x.xxx_hidden_OverviewGen2V2 != nil
-}
-
-func (x *VehicleUnitFile_Transfer) HasActivitiesGen2V2() bool {
-	if x == nil {
-		return false
-	}
-	return x.xxx_hidden_ActivitiesGen2V2 != nil
+	return x.xxx_hidden_CardDownload != nil
 }
 
 func (x *VehicleUnitFile_Transfer) ClearType() {
@@ -420,81 +286,50 @@ func (x *VehicleUnitFile_Transfer) ClearDownloadInterfaceVersion() {
 	x.xxx_hidden_DownloadInterfaceVersion = nil
 }
 
-func (x *VehicleUnitFile_Transfer) ClearOverviewGen1() {
-	x.xxx_hidden_OverviewGen1 = nil
+func (x *VehicleUnitFile_Transfer) ClearOverview() {
+	x.xxx_hidden_Overview = nil
 }
 
-func (x *VehicleUnitFile_Transfer) ClearActivitiesGen1() {
-	x.xxx_hidden_ActivitiesGen1 = nil
+func (x *VehicleUnitFile_Transfer) ClearActivities() {
+	x.xxx_hidden_Activities = nil
 }
 
-func (x *VehicleUnitFile_Transfer) ClearEventsAndFaultsGen1() {
-	x.xxx_hidden_EventsAndFaultsGen1 = nil
+func (x *VehicleUnitFile_Transfer) ClearEventsAndFaults() {
+	x.xxx_hidden_EventsAndFaults = nil
 }
 
-func (x *VehicleUnitFile_Transfer) ClearDetailedSpeedGen1() {
-	x.xxx_hidden_DetailedSpeedGen1 = nil
+func (x *VehicleUnitFile_Transfer) ClearDetailedSpeed() {
+	x.xxx_hidden_DetailedSpeed = nil
 }
 
-func (x *VehicleUnitFile_Transfer) ClearTechnicalDataGen1() {
-	x.xxx_hidden_TechnicalDataGen1 = nil
+func (x *VehicleUnitFile_Transfer) ClearTechnicalData() {
+	x.xxx_hidden_TechnicalData = nil
 }
 
 func (x *VehicleUnitFile_Transfer) ClearCardDownload() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 7)
 	x.xxx_hidden_CardDownload = nil
-}
-
-func (x *VehicleUnitFile_Transfer) ClearOverviewGen2V1() {
-	x.xxx_hidden_OverviewGen2V1 = nil
-}
-
-func (x *VehicleUnitFile_Transfer) ClearActivitiesGen2V1() {
-	x.xxx_hidden_ActivitiesGen2V1 = nil
-}
-
-func (x *VehicleUnitFile_Transfer) ClearEventsAndFaultsGen2() {
-	x.xxx_hidden_EventsAndFaultsGen2 = nil
-}
-
-func (x *VehicleUnitFile_Transfer) ClearDetailedSpeedGen2() {
-	x.xxx_hidden_DetailedSpeedGen2 = nil
-}
-
-func (x *VehicleUnitFile_Transfer) ClearTechnicalDataGen2() {
-	x.xxx_hidden_TechnicalDataGen2 = nil
-}
-
-func (x *VehicleUnitFile_Transfer) ClearOverviewGen2V2() {
-	x.xxx_hidden_OverviewGen2V2 = nil
-}
-
-func (x *VehicleUnitFile_Transfer) ClearActivitiesGen2V2() {
-	x.xxx_hidden_ActivitiesGen2V2 = nil
 }
 
 type VehicleUnitFile_Transfer_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
-	// The type of this transfer, corresponding to the TREP value found in the file.
+	// The semantic type of the data in this transfer, corresponding
+	// directly to the TREP value from the raw file. This serves as the
+	// discriminator for the payload fields below.
+	//
+	// The application should use this `type` to determine which of the payload
+	// fields is valid for this transfer. For example, if the type is
+	// OVERVIEW_GEN1, OVERVIEW_GEN2_V1, or OVERVIEW_GEN2_V2, the `overview` field
+	// will be populated.
 	Type *TransferType
-	// The specific data payload for the transfer.
-	// Only the field corresponding to the 'type' will be set.
+	// The payload fields. Only one of these will be populated for any given Transfer.
 	DownloadInterfaceVersion *DownloadInterfaceVersion
-	OverviewGen1             *OverviewGen1
-	ActivitiesGen1           *ActivitiesGen1
-	EventsAndFaultsGen1      *EventsAndFaultsGen1
-	DetailedSpeedGen1        *DetailedSpeedGen1
-	TechnicalDataGen1        *TechnicalDataGen1
-	// The raw binary payload of a card download, which is a complete card file.
-	CardDownload        []byte
-	OverviewGen2V1      *OverviewGen2V1
-	ActivitiesGen2V1    *ActivitiesGen2V1
-	EventsAndFaultsGen2 *EventsAndFaultsGen2
-	DetailedSpeedGen2   *DetailedSpeedGen2
-	TechnicalDataGen2   *TechnicalDataGen2
-	OverviewGen2V2      *OverviewGen2V2
-	ActivitiesGen2V2    *ActivitiesGen2V2
+	Overview                 *Overview
+	Activities               *Activities
+	EventsAndFaults          *EventsAndFaults
+	DetailedSpeed            *DetailedSpeed
+	TechnicalData            *TechnicalData
+	CardDownload             *CardDownload
 }
 
 func (b0 VehicleUnitFile_Transfer_builder) Build() *VehicleUnitFile_Transfer {
@@ -502,26 +337,16 @@ func (b0 VehicleUnitFile_Transfer_builder) Build() *VehicleUnitFile_Transfer {
 	b, x := &b0, m0
 	_, _ = b, x
 	if b.Type != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 15)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 8)
 		x.xxx_hidden_Type = *b.Type
 	}
 	x.xxx_hidden_DownloadInterfaceVersion = b.DownloadInterfaceVersion
-	x.xxx_hidden_OverviewGen1 = b.OverviewGen1
-	x.xxx_hidden_ActivitiesGen1 = b.ActivitiesGen1
-	x.xxx_hidden_EventsAndFaultsGen1 = b.EventsAndFaultsGen1
-	x.xxx_hidden_DetailedSpeedGen1 = b.DetailedSpeedGen1
-	x.xxx_hidden_TechnicalDataGen1 = b.TechnicalDataGen1
-	if b.CardDownload != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 7, 15)
-		x.xxx_hidden_CardDownload = b.CardDownload
-	}
-	x.xxx_hidden_OverviewGen2V1 = b.OverviewGen2V1
-	x.xxx_hidden_ActivitiesGen2V1 = b.ActivitiesGen2V1
-	x.xxx_hidden_EventsAndFaultsGen2 = b.EventsAndFaultsGen2
-	x.xxx_hidden_DetailedSpeedGen2 = b.DetailedSpeedGen2
-	x.xxx_hidden_TechnicalDataGen2 = b.TechnicalDataGen2
-	x.xxx_hidden_OverviewGen2V2 = b.OverviewGen2V2
-	x.xxx_hidden_ActivitiesGen2V2 = b.ActivitiesGen2V2
+	x.xxx_hidden_Overview = b.Overview
+	x.xxx_hidden_Activities = b.Activities
+	x.xxx_hidden_EventsAndFaults = b.EventsAndFaults
+	x.xxx_hidden_DetailedSpeed = b.DetailedSpeed
+	x.xxx_hidden_TechnicalData = b.TechnicalData
+	x.xxx_hidden_CardDownload = b.CardDownload
 	return m0
 }
 
@@ -529,26 +354,20 @@ var File_wayplatform_connect_tachograph_vu_v1_vehicle_unit_file_proto protorefle
 
 const file_wayplatform_connect_tachograph_vu_v1_vehicle_unit_file_proto_rawDesc = "" +
 	"\n" +
-	"<wayplatform/connect/tachograph/vu/v1/vehicle_unit_file.proto\x12$wayplatform.connect.tachograph.vu.v1\x1a:wayplatform/connect/tachograph/card/v1/raw_card_file.proto\x1a:wayplatform/connect/tachograph/vu/v1/activities_gen1.proto\x1a<wayplatform/connect/tachograph/vu/v1/activities_gen2v1.proto\x1a<wayplatform/connect/tachograph/vu/v1/activities_gen2v2.proto\x1a>wayplatform/connect/tachograph/vu/v1/detailed_speed_gen1.proto\x1a>wayplatform/connect/tachograph/vu/v1/detailed_speed_gen2.proto\x1aEwayplatform/connect/tachograph/vu/v1/download_interface_version.proto\x1aAwayplatform/connect/tachograph/vu/v1/events_and_faults_gen1.proto\x1aAwayplatform/connect/tachograph/vu/v1/events_and_faults_gen2.proto\x1a8wayplatform/connect/tachograph/vu/v1/overview_gen1.proto\x1a:wayplatform/connect/tachograph/vu/v1/overview_gen2v1.proto\x1a:wayplatform/connect/tachograph/vu/v1/overview_gen2v2.proto\x1a>wayplatform/connect/tachograph/vu/v1/technical_data_gen1.proto\x1a>wayplatform/connect/tachograph/vu/v1/technical_data_gen2.proto\x1a8wayplatform/connect/tachograph/vu/v1/transfer_type.proto\x1a8wayplatform/connect/tachograph/vu/v1/card_download.proto\"\xaf\f\n" +
+	"<wayplatform/connect/tachograph/vu/v1/vehicle_unit_file.proto\x12$wayplatform.connect.tachograph.vu.v1\x1a5wayplatform/connect/tachograph/vu/v1/activities.proto\x1a8wayplatform/connect/tachograph/vu/v1/card_download.proto\x1a9wayplatform/connect/tachograph/vu/v1/detailed_speed.proto\x1aEwayplatform/connect/tachograph/vu/v1/download_interface_version.proto\x1a<wayplatform/connect/tachograph/vu/v1/events_and_faults.proto\x1a3wayplatform/connect/tachograph/vu/v1/overview.proto\x1a9wayplatform/connect/tachograph/vu/v1/technical_data.proto\x1a8wayplatform/connect/tachograph/vu/v1/transfer_type.proto\"\xd4\x06\n" +
 	"\x0fVehicleUnitFile\x12\\\n" +
-	"\ttransfers\x18\x01 \x03(\v2>.wayplatform.connect.tachograph.vu.v1.VehicleUnitFile.TransferR\ttransfers\x1a\xbd\v\n" +
+	"\ttransfers\x18\x01 \x03(\v2>.wayplatform.connect.tachograph.vu.v1.VehicleUnitFile.TransferR\ttransfers\x1a\xe2\x05\n" +
 	"\bTransfer\x12F\n" +
 	"\x04type\x18\x01 \x01(\x0e22.wayplatform.connect.tachograph.vu.v1.TransferTypeR\x04type\x12|\n" +
-	"\x1adownload_interface_version\x18\x02 \x01(\v2>.wayplatform.connect.tachograph.vu.v1.DownloadInterfaceVersionR\x18downloadInterfaceVersion\x12W\n" +
-	"\roverview_gen1\x18\x03 \x01(\v22.wayplatform.connect.tachograph.vu.v1.OverviewGen1R\foverviewGen1\x12]\n" +
-	"\x0factivities_gen1\x18\x04 \x01(\v24.wayplatform.connect.tachograph.vu.v1.ActivitiesGen1R\x0eactivitiesGen1\x12n\n" +
-	"\x16events_and_faults_gen1\x18\x05 \x01(\v29.wayplatform.connect.tachograph.vu.v1.EventsAndFaultsGen1R\x13eventsAndFaultsGen1\x12g\n" +
-	"\x13detailed_speed_gen1\x18\x06 \x01(\v27.wayplatform.connect.tachograph.vu.v1.DetailedSpeedGen1R\x11detailedSpeedGen1\x12g\n" +
-	"\x13technical_data_gen1\x18\a \x01(\v27.wayplatform.connect.tachograph.vu.v1.TechnicalDataGen1R\x11technicalDataGen1\x12#\n" +
-	"\rcard_download\x18\b \x01(\fR\fcardDownload\x12^\n" +
-	"\x10overview_gen2_v1\x18\t \x01(\v24.wayplatform.connect.tachograph.vu.v1.OverviewGen2v1R\x0eoverviewGen2V1\x12d\n" +
-	"\x12activities_gen2_v1\x18\n" +
-	" \x01(\v26.wayplatform.connect.tachograph.vu.v1.ActivitiesGen2v1R\x10activitiesGen2V1\x12n\n" +
-	"\x16events_and_faults_gen2\x18\v \x01(\v29.wayplatform.connect.tachograph.vu.v1.EventsAndFaultsGen2R\x13eventsAndFaultsGen2\x12g\n" +
-	"\x13detailed_speed_gen2\x18\f \x01(\v27.wayplatform.connect.tachograph.vu.v1.DetailedSpeedGen2R\x11detailedSpeedGen2\x12g\n" +
-	"\x13technical_data_gen2\x18\r \x01(\v27.wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2R\x11technicalDataGen2\x12^\n" +
-	"\x10overview_gen2_v2\x18\x0e \x01(\v24.wayplatform.connect.tachograph.vu.v1.OverviewGen2v2R\x0eoverviewGen2V2\x12d\n" +
-	"\x12activities_gen2_v2\x18\x0f \x01(\v26.wayplatform.connect.tachograph.vu.v1.ActivitiesGen2v2R\x10activitiesGen2V2B\xd3\x02\n" +
+	"\x1adownload_interface_version\x18\x02 \x01(\v2>.wayplatform.connect.tachograph.vu.v1.DownloadInterfaceVersionR\x18downloadInterfaceVersion\x12J\n" +
+	"\boverview\x18\x03 \x01(\v2..wayplatform.connect.tachograph.vu.v1.OverviewR\boverview\x12P\n" +
+	"\n" +
+	"activities\x18\x04 \x01(\v20.wayplatform.connect.tachograph.vu.v1.ActivitiesR\n" +
+	"activities\x12a\n" +
+	"\x11events_and_faults\x18\x05 \x01(\v25.wayplatform.connect.tachograph.vu.v1.EventsAndFaultsR\x0feventsAndFaults\x12Z\n" +
+	"\x0edetailed_speed\x18\x06 \x01(\v23.wayplatform.connect.tachograph.vu.v1.DetailedSpeedR\rdetailedSpeed\x12Z\n" +
+	"\x0etechnical_data\x18\a \x01(\v23.wayplatform.connect.tachograph.vu.v1.TechnicalDataR\rtechnicalData\x12W\n" +
+	"\rcard_download\x18\b \x01(\v22.wayplatform.connect.tachograph.vu.v1.CardDownloadR\fcardDownloadB\xd3\x02\n" +
 	"(com.wayplatform.connect.tachograph.vu.v1B\x14VehicleUnitFileProtoP\x01Z\\github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/vu/v1;vuv1\xa2\x02\x04WCTV\xaa\x02$Wayplatform.Connect.Tachograph.Vu.V1\xca\x02$Wayplatform\\Connect\\Tachograph\\Vu\\V1\xe2\x020Wayplatform\\Connect\\Tachograph\\Vu\\V1\\GPBMetadata\xea\x02(Wayplatform::Connect::Tachograph::Vu::V1b\beditionsp\xe8\a"
 
 var file_wayplatform_connect_tachograph_vu_v1_vehicle_unit_file_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
@@ -557,40 +376,28 @@ var file_wayplatform_connect_tachograph_vu_v1_vehicle_unit_file_proto_goTypes = 
 	(*VehicleUnitFile_Transfer)(nil), // 1: wayplatform.connect.tachograph.vu.v1.VehicleUnitFile.Transfer
 	(TransferType)(0),                // 2: wayplatform.connect.tachograph.vu.v1.TransferType
 	(*DownloadInterfaceVersion)(nil), // 3: wayplatform.connect.tachograph.vu.v1.DownloadInterfaceVersion
-	(*OverviewGen1)(nil),             // 4: wayplatform.connect.tachograph.vu.v1.OverviewGen1
-	(*ActivitiesGen1)(nil),           // 5: wayplatform.connect.tachograph.vu.v1.ActivitiesGen1
-	(*EventsAndFaultsGen1)(nil),      // 6: wayplatform.connect.tachograph.vu.v1.EventsAndFaultsGen1
-	(*DetailedSpeedGen1)(nil),        // 7: wayplatform.connect.tachograph.vu.v1.DetailedSpeedGen1
-	(*TechnicalDataGen1)(nil),        // 8: wayplatform.connect.tachograph.vu.v1.TechnicalDataGen1
-	(*OverviewGen2V1)(nil),           // 9: wayplatform.connect.tachograph.vu.v1.OverviewGen2v1
-	(*ActivitiesGen2V1)(nil),         // 10: wayplatform.connect.tachograph.vu.v1.ActivitiesGen2v1
-	(*EventsAndFaultsGen2)(nil),      // 11: wayplatform.connect.tachograph.vu.v1.EventsAndFaultsGen2
-	(*DetailedSpeedGen2)(nil),        // 12: wayplatform.connect.tachograph.vu.v1.DetailedSpeedGen2
-	(*TechnicalDataGen2)(nil),        // 13: wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2
-	(*OverviewGen2V2)(nil),           // 14: wayplatform.connect.tachograph.vu.v1.OverviewGen2v2
-	(*ActivitiesGen2V2)(nil),         // 15: wayplatform.connect.tachograph.vu.v1.ActivitiesGen2v2
+	(*Overview)(nil),                 // 4: wayplatform.connect.tachograph.vu.v1.Overview
+	(*Activities)(nil),               // 5: wayplatform.connect.tachograph.vu.v1.Activities
+	(*EventsAndFaults)(nil),          // 6: wayplatform.connect.tachograph.vu.v1.EventsAndFaults
+	(*DetailedSpeed)(nil),            // 7: wayplatform.connect.tachograph.vu.v1.DetailedSpeed
+	(*TechnicalData)(nil),            // 8: wayplatform.connect.tachograph.vu.v1.TechnicalData
+	(*CardDownload)(nil),             // 9: wayplatform.connect.tachograph.vu.v1.CardDownload
 }
 var file_wayplatform_connect_tachograph_vu_v1_vehicle_unit_file_proto_depIdxs = []int32{
-	1,  // 0: wayplatform.connect.tachograph.vu.v1.VehicleUnitFile.transfers:type_name -> wayplatform.connect.tachograph.vu.v1.VehicleUnitFile.Transfer
-	2,  // 1: wayplatform.connect.tachograph.vu.v1.VehicleUnitFile.Transfer.type:type_name -> wayplatform.connect.tachograph.vu.v1.TransferType
-	3,  // 2: wayplatform.connect.tachograph.vu.v1.VehicleUnitFile.Transfer.download_interface_version:type_name -> wayplatform.connect.tachograph.vu.v1.DownloadInterfaceVersion
-	4,  // 3: wayplatform.connect.tachograph.vu.v1.VehicleUnitFile.Transfer.overview_gen1:type_name -> wayplatform.connect.tachograph.vu.v1.OverviewGen1
-	5,  // 4: wayplatform.connect.tachograph.vu.v1.VehicleUnitFile.Transfer.activities_gen1:type_name -> wayplatform.connect.tachograph.vu.v1.ActivitiesGen1
-	6,  // 5: wayplatform.connect.tachograph.vu.v1.VehicleUnitFile.Transfer.events_and_faults_gen1:type_name -> wayplatform.connect.tachograph.vu.v1.EventsAndFaultsGen1
-	7,  // 6: wayplatform.connect.tachograph.vu.v1.VehicleUnitFile.Transfer.detailed_speed_gen1:type_name -> wayplatform.connect.tachograph.vu.v1.DetailedSpeedGen1
-	8,  // 7: wayplatform.connect.tachograph.vu.v1.VehicleUnitFile.Transfer.technical_data_gen1:type_name -> wayplatform.connect.tachograph.vu.v1.TechnicalDataGen1
-	9,  // 8: wayplatform.connect.tachograph.vu.v1.VehicleUnitFile.Transfer.overview_gen2_v1:type_name -> wayplatform.connect.tachograph.vu.v1.OverviewGen2v1
-	10, // 9: wayplatform.connect.tachograph.vu.v1.VehicleUnitFile.Transfer.activities_gen2_v1:type_name -> wayplatform.connect.tachograph.vu.v1.ActivitiesGen2v1
-	11, // 10: wayplatform.connect.tachograph.vu.v1.VehicleUnitFile.Transfer.events_and_faults_gen2:type_name -> wayplatform.connect.tachograph.vu.v1.EventsAndFaultsGen2
-	12, // 11: wayplatform.connect.tachograph.vu.v1.VehicleUnitFile.Transfer.detailed_speed_gen2:type_name -> wayplatform.connect.tachograph.vu.v1.DetailedSpeedGen2
-	13, // 12: wayplatform.connect.tachograph.vu.v1.VehicleUnitFile.Transfer.technical_data_gen2:type_name -> wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2
-	14, // 13: wayplatform.connect.tachograph.vu.v1.VehicleUnitFile.Transfer.overview_gen2_v2:type_name -> wayplatform.connect.tachograph.vu.v1.OverviewGen2v2
-	15, // 14: wayplatform.connect.tachograph.vu.v1.VehicleUnitFile.Transfer.activities_gen2_v2:type_name -> wayplatform.connect.tachograph.vu.v1.ActivitiesGen2v2
-	15, // [15:15] is the sub-list for method output_type
-	15, // [15:15] is the sub-list for method input_type
-	15, // [15:15] is the sub-list for extension type_name
-	15, // [15:15] is the sub-list for extension extendee
-	0,  // [0:15] is the sub-list for field type_name
+	1, // 0: wayplatform.connect.tachograph.vu.v1.VehicleUnitFile.transfers:type_name -> wayplatform.connect.tachograph.vu.v1.VehicleUnitFile.Transfer
+	2, // 1: wayplatform.connect.tachograph.vu.v1.VehicleUnitFile.Transfer.type:type_name -> wayplatform.connect.tachograph.vu.v1.TransferType
+	3, // 2: wayplatform.connect.tachograph.vu.v1.VehicleUnitFile.Transfer.download_interface_version:type_name -> wayplatform.connect.tachograph.vu.v1.DownloadInterfaceVersion
+	4, // 3: wayplatform.connect.tachograph.vu.v1.VehicleUnitFile.Transfer.overview:type_name -> wayplatform.connect.tachograph.vu.v1.Overview
+	5, // 4: wayplatform.connect.tachograph.vu.v1.VehicleUnitFile.Transfer.activities:type_name -> wayplatform.connect.tachograph.vu.v1.Activities
+	6, // 5: wayplatform.connect.tachograph.vu.v1.VehicleUnitFile.Transfer.events_and_faults:type_name -> wayplatform.connect.tachograph.vu.v1.EventsAndFaults
+	7, // 6: wayplatform.connect.tachograph.vu.v1.VehicleUnitFile.Transfer.detailed_speed:type_name -> wayplatform.connect.tachograph.vu.v1.DetailedSpeed
+	8, // 7: wayplatform.connect.tachograph.vu.v1.VehicleUnitFile.Transfer.technical_data:type_name -> wayplatform.connect.tachograph.vu.v1.TechnicalData
+	9, // 8: wayplatform.connect.tachograph.vu.v1.VehicleUnitFile.Transfer.card_download:type_name -> wayplatform.connect.tachograph.vu.v1.CardDownload
+	9, // [9:9] is the sub-list for method output_type
+	9, // [9:9] is the sub-list for method input_type
+	9, // [9:9] is the sub-list for extension type_name
+	9, // [9:9] is the sub-list for extension extendee
+	0, // [0:9] is the sub-list for field type_name
 }
 
 func init() { file_wayplatform_connect_tachograph_vu_v1_vehicle_unit_file_proto_init() }
@@ -598,21 +405,14 @@ func file_wayplatform_connect_tachograph_vu_v1_vehicle_unit_file_proto_init() {
 	if File_wayplatform_connect_tachograph_vu_v1_vehicle_unit_file_proto != nil {
 		return
 	}
-	file_wayplatform_connect_tachograph_vu_v1_activities_gen1_proto_init()
-	file_wayplatform_connect_tachograph_vu_v1_activities_gen2v1_proto_init()
-	file_wayplatform_connect_tachograph_vu_v1_activities_gen2v2_proto_init()
-	file_wayplatform_connect_tachograph_vu_v1_detailed_speed_gen1_proto_init()
-	file_wayplatform_connect_tachograph_vu_v1_detailed_speed_gen2_proto_init()
-	file_wayplatform_connect_tachograph_vu_v1_download_interface_version_proto_init()
-	file_wayplatform_connect_tachograph_vu_v1_events_and_faults_gen1_proto_init()
-	file_wayplatform_connect_tachograph_vu_v1_events_and_faults_gen2_proto_init()
-	file_wayplatform_connect_tachograph_vu_v1_overview_gen1_proto_init()
-	file_wayplatform_connect_tachograph_vu_v1_overview_gen2v1_proto_init()
-	file_wayplatform_connect_tachograph_vu_v1_overview_gen2v2_proto_init()
-	file_wayplatform_connect_tachograph_vu_v1_technical_data_gen1_proto_init()
-	file_wayplatform_connect_tachograph_vu_v1_technical_data_gen2_proto_init()
-	file_wayplatform_connect_tachograph_vu_v1_transfer_type_proto_init()
+	file_wayplatform_connect_tachograph_vu_v1_activities_proto_init()
 	file_wayplatform_connect_tachograph_vu_v1_card_download_proto_init()
+	file_wayplatform_connect_tachograph_vu_v1_detailed_speed_proto_init()
+	file_wayplatform_connect_tachograph_vu_v1_download_interface_version_proto_init()
+	file_wayplatform_connect_tachograph_vu_v1_events_and_faults_proto_init()
+	file_wayplatform_connect_tachograph_vu_v1_overview_proto_init()
+	file_wayplatform_connect_tachograph_vu_v1_technical_data_proto_init()
+	file_wayplatform_connect_tachograph_vu_v1_transfer_type_proto_init()
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

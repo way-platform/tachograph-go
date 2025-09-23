@@ -1,0 +1,43 @@
+edition = "2023";
+
+package wayplatform.connect.tachograph.card.v1;
+
+import "wayplatform/connect/tachograph/card/v1/card_icc_identification.proto";
+import "wayplatform/connect/tachograph/card/v1/card_identification.proto";
+import "wayplatform/connect/tachograph/card/v1/chip_identification.proto";
+import "wayplatform/connect/tachograph/card/v1/company_activity_data.proto";
+import "wayplatform/connect/tachograph/card/v1/company_application_identification.proto";
+import "wayplatform/connect/tachograph/card/v1/company_application_identification_v2.proto";
+import "wayplatform/connect/tachograph/card/v1/company_card_holder_identification.proto";
+import "wayplatform/connect/tachograph/card/v1/vu_configuration.proto";
+
+// Represents the fully parsed content of a company card file.
+//
+// See regulation document Appendix 2, Section 4.5.
+message CompanyCardFile {
+  // Data from EF_ICC (Integrated Circuit Card Identification).
+  IccIdentification icc = 1;
+
+  // Data from EF_IC (Integrated Circuit Identification).
+  ChipIdentification ic = 2;
+
+  // Data from EF_Application_Identification.
+  CompanyApplicationIdentification application_identification = 3;
+
+  // Data from EF_Identification (Card Identification part).
+  CardIdentification identification = 4;
+
+  // Data from EF_Identification (Holder Identification part).
+  CompanyCardHolderIdentification holder_identification = 5;
+
+  // Data from EF_Company_Activity_Data.
+  CompanyActivityData company_activity_data = 6;
+
+  // --- Gen2 Specific Fields ---
+
+  // Data from EF_Application_Identification_V2 (conditional on Gen2v2 cards).
+  CompanyApplicationIdentificationV2 application_identification_v2 = 7;
+
+  // Data from EF_VU_Configuration (conditional on Gen2v2 cards).
+  VuConfiguration vu_configuration = 8;
+}

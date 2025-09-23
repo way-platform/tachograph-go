@@ -1,0 +1,13 @@
+edition = "2023";
+
+package wayplatform.connect.tachograph.card.v1;
+
+import "google/protobuf/timestamp.proto";
+
+// Represents the timestamp of the last card download from EF_Card_Download.
+//
+// Corresponds to the `LastCardDownload` data type.
+// See Data Dictionary, Section 2.89.
+message LastCardDownload {
+  google.protobuf.Timestamp timestamp = 1;
+}

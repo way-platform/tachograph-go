@@ -1,0 +1,38 @@
+edition = "2023";
+
+package wayplatform.connect.tachograph.card.v1;
+
+import "google/protobuf/timestamp.proto";
+
+// Represents data from EF_Places, where daily work periods begin and/or end.
+//
+// Corresponds to the `CardPlaceDailyWorkPeriod` data type.
+// See Data Dictionary, Section 2.27.
+message Places {
+  // Represents a single place record.
+  //
+  // Corresponds to the `PlaceRecord` data type.
+  // See Data Dictionary, Section 2.117.
+  message Record {
+    // Time of the entry. See DD Section 2.162 for `TimeReal`.
+    google.protobuf.Timestamp entry_time = 1;
+
+    // Type of entry (begin or end). See DD Section 2.66 for `EntryTypeDailyWorkPeriod`.
+    int32 entry_type = 2;
+
+    // Country code. See DD Section 2.101 for `NationNumeric`.
+    int32 daily_work_period_country = 3;
+
+    // Region code. See DD Section 2.122 for `RegionNumeric`.
+    int32 daily_work_period_region = 4;
+
+    // Odometer at the time of entry. See DD Section 2.113 for `OdometerShort`.
+    int32 vehicle_odometer_km = 5;
+  }
+
+  // Index of the last updated place record.
+  int32 newest_record_index = 1;
+
+  // The set of place records.
+  repeated Record records = 2;
+}

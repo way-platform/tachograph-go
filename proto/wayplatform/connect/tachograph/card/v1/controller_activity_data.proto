@@ -1,0 +1,42 @@
+edition = "2023";
+
+package wayplatform.connect.tachograph.card.v1;
+
+import "google/protobuf/timestamp.proto";
+
+// Represents control activity data from EF_Controller_Activity_Data.
+//
+// Corresponds to the `ControlCardControlActivityData` data type.
+// See Data Dictionary, Section 2.51.
+message ControllerActivityData {
+  // Represents a single control activity record.
+  // See Data Dictionary, Section 2.51.
+  message Record {
+    // See Data Dictionary, Section 2.53 for `ControlType`.
+    bytes control_type = 1;
+
+    // Timestamp of the control activity. See DD Section 2.162 for `TimeReal`.
+    google.protobuf.Timestamp control_time = 2;
+
+    // Card number of the card that was controlled (if applicable).
+    string controlled_card_number = 3;
+
+    // Nation of the vehicle's registration.
+    string controlled_vehicle_registration_nation = 4;
+
+    // Vehicle's registration number.
+    string controlled_vehicle_registration_number = 5;
+
+    // Start of the downloaded period from a VU (if applicable).
+    google.protobuf.Timestamp control_download_period_begin = 6;
+
+    // End of the downloaded period from a VU (if applicable).
+    google.protobuf.Timestamp control_download_period_end = 7;
+  }
+
+  // Index of the last updated record in the ring buffer.
+  int32 newest_record_index = 1;
+
+  // The set of control activity records.
+  repeated Record records = 2;
+}

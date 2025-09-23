@@ -1,0 +1,193 @@
+edition = "2023";
+
+package wayplatform.connect.tachograph.vu.v1;
+
+import "google/protobuf/timestamp.proto";
+import "wayplatform/connect/tachograph/vu/v1/versioning.proto";
+
+// Represents the consolidated data structure for an Events and Faults transfer.
+//
+// This message corresponds to the data defined in the regulation document:
+// Appendix 7, Section 2.2.6.4: "Positive Response Transfer Data Events and Faults".
+message EventsAndFaults {
+  // Discriminator field indicating the generation of the data.
+  Generation generation = 1;
+
+  // Represents a vehicle unit fault record.
+  //
+  // Corresponds to the `VuFaultRecord` data type.
+  // See Data Dictionary, Section 2.201.
+  message FaultRecord {
+    // Type of the fault.
+    // See Data Dictionary, Section 2.70 for `EventFaultType`.
+    int32 fault_type = 1;
+
+    // Purpose for which the fault has been recorded.
+    // See Data Dictionary, Section 2.69 for `EventFaultRecordPurpose`.
+    int32 record_purpose = 2;
+
+    // Date and time of the beginning of the fault.
+    // See Data Dictionary, Section 2.162 for `TimeReal`.
+    google.protobuf.Timestamp begin_time = 3;
+
+    // Date and time of the end of the fault.
+    // See Data Dictionary, Section 2.162 for `TimeReal`.
+    google.protobuf.Timestamp end_time = 4;
+
+    // Card number of the driver/workshop associated with the event.
+    // Part of `FullCardNumberAndGeneration` (See Data Dictionary, Section 2.74).
+    string card_number = 5;
+
+    // Generation of the card associated with the event.
+    // Part of `FullCardNumberAndGeneration` (See Data Dictionary, Section 2.74).
+    Generation card_generation = 6;
+  }
+
+  // Represents a vehicle unit event record.
+  //
+  // Corresponds to the `VuEventRecord` data type.
+  // See Data Dictionary, Section 2.198.
+  message EventRecord {
+    // Type of the event.
+    // See Data Dictionary, Section 2.70 for `EventFaultType`.
+    int32 event_type = 1;
+
+    // Purpose for which the event has been recorded.
+    // See Data Dictionary, Section 2.69 for `EventFaultRecordPurpose`.
+    int32 record_purpose = 2;
+
+    // Date and time of the beginning of the event.
+    // See Data Dictionary, Section 2.162 for `TimeReal`.
+    google.protobuf.Timestamp begin_time = 3;
+
+    // Date and time of the end of the event.
+    // See Data Dictionary, Section 2.162 for `TimeReal`.
+    google.protobuf.Timestamp end_time = 4;
+
+    // Card number of the driver/workshop associated with the event.
+    // Part of `FullCardNumberAndGeneration` (See Data Dictionary, Section 2.74).
+    string card_number = 5;
+
+    // Generation of the card associated with the event.
+    // Part of `FullCardNumberAndGeneration` (See Data Dictionary, Section 2.74).
+    Generation card_generation = 6;
+
+    // Number of similar events on the same day.
+    // See Data Dictionary, Section 2.151 for `SimilarEventsNumber`.
+    int32 similar_events_number = 7;
+  }
+
+  // Represents overspeeding control data.
+  //
+  // Corresponds to the `VuOverSpeedingControlData` data type.
+  // See Data Dictionary, Section 2.212.
+  message OverSpeedingControlData {
+    // Date and time of the last overspeeding control.
+    // See Data Dictionary, Section 2.162 for `TimeReal`.
+    google.protobuf.Timestamp last_control_time = 1;
+
+    // Date and time of the first overspeeding since the last control.
+    // See Data Dictionary, Section 2.162 for `TimeReal`.
+    google.protobuf.Timestamp first_overspeed_since_last_control = 2;
+
+    // Number of overspeeding events since the last control.
+    // See Data Dictionary, Section 2.116 for `OverspeedNumber`.
+    int32 number_of_overspeed_since_last_control = 3;
+  }
+
+  // Represents an overspeeding event record.
+  //
+  // Corresponds to the `VuOverSpeedingEventRecord` data type.
+  // See Data Dictionary, Section 2.215.
+  message OverSpeedingEventRecord {
+    // Type of the event (always 'Over speeding').
+    // See Data Dictionary, Section 2.70 for `EventFaultType`.
+    int32 event_type = 1;
+
+    // Purpose for which the event has been recorded.
+    // See Data Dictionary, Section 2.69 for `EventFaultRecordPurpose`.
+    int32 record_purpose = 2;
+
+    // Date and time of the beginning of the event.
+    // See Data Dictionary, Section 2.162 for `TimeReal`.
+    google.protobuf.Timestamp begin_time = 3;
+
+    // Date and time of the end of the event.
+    // See Data Dictionary, Section 2.162 for `TimeReal`.
+    google.protobuf.Timestamp end_time = 4;
+
+    // Maximum speed measured during the event.
+    // See Data Dictionary, Section 2.158 for `SpeedMax`.
+    int32 max_speed_kmh = 5;
+
+    // Average speed measured during the event.
+    // See Data Dictionary, Section 2.157 for `SpeedAverage`.
+    int32 average_speed_kmh = 6;
+
+    // Card number of the driver who caused the event.
+    // Part of `FullCardNumberAndGeneration` (See Data Dictionary, Section 2.74).
+    string card_number = 7;
+
+    // Generation of the driver's card.
+    // Part of `FullCardNumberAndGeneration` (See Data Dictionary, Section 2.74).
+    Generation card_generation = 8;
+  }
+
+  // Represents a time adjustment record.
+  //
+  // Corresponds to the `VuTimeAdjustmentRecord` data type.
+  // See Data Dictionary, Section 2.232.
+  message TimeAdjustmentRecord {
+    // Time value before adjustment.
+    // See Data Dictionary, Section 2.162 for `TimeReal`.
+    google.protobuf.Timestamp old_time = 1;
+
+    // Time value after adjustment.
+    // See Data Dictionary, Section 2.162 for `TimeReal`.
+    google.protobuf.Timestamp new_time = 2;
+
+    // Name of the workshop that performed the adjustment.
+    // See Data Dictionary, Section 2.99 for `Name`.
+    string workshop_name = 3;
+
+    // Address of the workshop.
+    // See Data Dictionary, Section 2.2 for `Address`.
+    string workshop_address = 4;
+
+    // Card number of the workshop.
+    // Part of `FullCardNumberAndGeneration` (See Data Dictionary, Section 2.74).
+    string workshop_card_number = 5;
+
+    // Generation of the workshop card.
+    // Part of `FullCardNumberAndGeneration` (See Data Dictionary, Section 2.74).
+    Generation workshop_card_generation = 6;
+  }
+
+  // All faults stored or on-going in the VU.
+  // Corresponds to `VuFaultData` (Gen1) or `VuFaultRecordArray` (Gen2).
+  repeated FaultRecord faults = 2;
+
+  // All events (except over speeding) stored or on-going in the VU.
+  // Corresponds to `VuEventData` (Gen1) or `VuEventRecordArray` (Gen2).
+  repeated EventRecord events = 3;
+
+  // Data related to the last overspeeding control.
+  // Corresponds to `VuOverSpeedingControlData` (Gen1) or `VuOverSpeedingControlDataRecordArray` (Gen2).
+  OverSpeedingControlData overspeeding_control = 4;
+
+  // All overspeeding events stored in the VU.
+  // Corresponds to `VuOverSpeedingEventData` (Gen1) or `VuOverSpeedingEventRecordArray` (Gen2).
+  repeated OverSpeedingEventRecord overspeeding_events = 5;
+
+  // All time adjustment events stored in the VU (outside a full calibration).
+  // Corresponds to `VuTimeAdjustmentData` (Gen1) or `VuTimeAdjustmentRecordArray` (Gen2).
+  repeated TimeAdjustmentRecord time_adjustments = 6;
+
+  // Signature for Gen1 data (RSA, 128 bytes).
+  // See Data Dictionary, Section 2.149.
+  bytes signature_gen1 = 7;
+
+  // Signature for Gen2 data (ECC).
+  // See Data Dictionary, Section 2.149.
+  bytes signature_gen2 = 8;
+}

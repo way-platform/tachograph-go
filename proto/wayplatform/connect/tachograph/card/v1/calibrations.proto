@@ -1,0 +1,75 @@
+edition = "2023";
+
+package wayplatform.connect.tachograph.card.v1;
+
+import "google/protobuf/timestamp.proto";
+
+// Represents calibration data from EF_Calibration.
+//
+// Corresponds to the `WorkshopCardCalibrationData` data type.
+// See Data Dictionary, Section 2.235.
+message Calibrations {
+  // Represents a single calibration record.
+  //
+  // Corresponds to the `WorkshopCardCalibrationRecord` data type.
+  // See Data Dictionary, Section 2.236.
+  message Record {
+    // See Data Dictionary, Section 2.8 for `CalibrationPurpose`.
+    int32 calibration_purpose = 1;
+
+    // See Data Dictionary, Section 2.164 for `VehicleIdentificationNumber`.
+    string vehicle_identification_number = 2;
+
+    // See Data Dictionary, Section 2.166.
+    string vehicle_registration_nation = 3;
+    string vehicle_registration_number = 4;
+
+    // See Data Dictionary, Section 2.239 for `W-VehicleCharacteristicConstant`.
+    int32 w_vehicle_characteristic_constant = 5;
+
+    // See Data Dictionary, Section 2.85 for `K-ConstantOfRecordingEquipment`.
+    int32 k_constant_of_recording_equipment = 6;
+
+    // See Data Dictionary, Section 2.91 for `L-TyreCircumference`.
+    int32 l_tyre_circumference_mm = 7;
+
+    // See Data Dictionary, Section 2.163 for `TyreSize`.
+    string tyre_size = 8;
+
+    // See Data Dictionary, Section 2.156 for `SpeedAuthorised`.
+    int32 authorised_speed_kmh = 9;
+
+    // Odometer value before calibration. See DD Section 2.113.
+    int32 old_odometer_km = 10;
+
+    // Odometer value after calibration. See DD Section 2.113.
+    int32 new_odometer_km = 11;
+
+    // Time before calibration. See DD Section 2.162.
+    google.protobuf.Timestamp old_time = 12;
+
+    // Time after calibration. See DD Section 2.162.
+    google.protobuf.Timestamp new_time = 13;
+
+    // Date of next calibration. See DD Section 2.57.
+    google.protobuf.Timestamp next_calibration_date = 14;
+
+    // See Data Dictionary, Section 2.217 for `VuPartNumber`.
+    string vu_part_number = 15;
+
+    // See Data Dictionary, Section 2.72 for `ExtendedSerialNumber`.
+    string vu_serial_number = 16;
+
+    // See Data Dictionary, Section 2.148 for `SensorSerialNumber`.
+    string sensor_serial_number = 17;
+  }
+
+  // Total number of calibrations performed with the card.
+  int32 calibration_total_count = 1;
+
+  // Index of the last updated record.
+  int32 newest_record_index = 2;
+
+  // The set of calibration records.
+  repeated Record records = 3;
+}

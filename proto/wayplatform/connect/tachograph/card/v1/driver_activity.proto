@@ -1,0 +1,65 @@
+edition = "2023";
+
+package wayplatform.connect.tachograph.card.v1;
+
+import "google/protobuf/timestamp.proto";
+
+// Represents driver activity data from a tachograph card.
+//
+// Corresponds to the `CardDriverActivity` data type.
+// See Data Dictionary, Section 2.17.
+message DriverActivity {
+  // Represents a record of driver activity for a single day.
+  //
+  // Corresponds to the `CardActivityDailyRecord` data type.
+  // See Data Dictionary, Section 2.9.
+  message DailyRecord {
+    // Represents a change in driver activity, driving status, or card status.
+    //
+    // Corresponds to the `ActivityChangeInfo` data type.
+    // See Data Dictionary, Section 2.1.
+    message ActivityChange {
+      // Slot of the driver/co-driver.
+      int32 slot = 1;
+
+      // Driving status (single or crew).
+      int32 driving_status = 2;
+
+      // Card status (inserted or not inserted).
+      int32 card_status = 3;
+
+      // Driver's activity (break/rest, availability, work, driving).
+      int32 activity = 4;
+
+      // Time of the change in minutes since 00:00.
+      int32 time_of_change_minutes = 5;
+    }
+
+    // See Data Dictionary, Section 2.9, `activityPreviousRecordLength`.
+    int32 activity_previous_record_length = 1;
+
+    // See Data Dictionary, Section 2.9, `activityRecordLength`.
+    int32 activity_record_length = 2;
+
+    // See Data Dictionary, Section 2.9, `activityRecordDate`.
+    google.protobuf.Timestamp activity_record_date = 3;
+
+    // See Data Dictionary, Section 2.9, `activityDailyPresenceCounter`.
+    int32 activity_daily_presence_counter = 4;
+
+    // See Data Dictionary, Section 2.9, `activityDayDistance`.
+    int32 activity_day_distance = 5;
+
+    // See Data Dictionary, Section 2.9, `activityChangeInfo`.
+    repeated ActivityChange activity_change_info = 6;
+  }
+
+  // See Data Dictionary, Section 2.17, `activityPointerOldestDayRecord`.
+  int32 oldest_day_record_index = 1;
+
+  // See Data Dictionary, Section 2.17, `activityPointerNewestRecord`.
+  int32 newest_day_record_index = 2;
+
+  // See Data Dictionary, Section 2.17, `activityDailyRecords`.
+  repeated DailyRecord daily_records = 3;
+}

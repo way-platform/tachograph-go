@@ -1,0 +1,12 @@
+edition = "2023";
+
+package wayplatform.connect.tachograph.card.v1;
+
+// Represents data from EF_Sensor_Installation_Data.
+//
+// Corresponds to the `SensorInstallationSecData` data type.
+// See Data Dictionary, Section 2.142.
+message SensorInstallationData {
+  // The raw security data related to sensor installation.
+  bytes data = 1;
+}

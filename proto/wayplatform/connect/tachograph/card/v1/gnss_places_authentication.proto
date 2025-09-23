@@ -1,0 +1,29 @@
+edition = "2023";
+
+package wayplatform.connect.tachograph.card.v1;
+
+import "google/protobuf/timestamp.proto";
+
+// Represents authentication status for GNSS accumulated driving places.
+//
+// Corresponds to the `GNSSAuthAccumulatedDriving` data type from EF_GNSS_Places_Authentication.
+// See Data Dictionary, Section 2.79a.
+message GnssPlacesAuthentication {
+  // Represents the authentication status for a single GNSS record.
+  //
+  // Corresponds to the `GNSSAuthStatusADRecord` data type.
+  // See Data Dictionary, Section 2.79b.
+  message Record {
+    // Timestamp of the position fix. See DD Section 2.162 for `TimeReal`.
+    google.protobuf.Timestamp timestamp = 1;
+
+    // Authentication status of the position. See DD Section 2.117a.
+    int32 authentication_status = 2;
+  }
+
+  // Index of the last updated record.
+  int32 newest_record_index = 1;
+
+  // The set of GNSS place authentication status records.
+  repeated Record records = 2;
+}

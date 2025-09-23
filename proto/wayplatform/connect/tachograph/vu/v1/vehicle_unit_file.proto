@@ -2,52 +2,46 @@ edition = "2023";
 
 package wayplatform.connect.tachograph.vu.v1;
 
-import "wayplatform/connect/tachograph/card/v1/raw_card_file.proto";
-import "wayplatform/connect/tachograph/vu/v1/activities_gen1.proto";
-import "wayplatform/connect/tachograph/vu/v1/activities_gen2v1.proto";
-import "wayplatform/connect/tachograph/vu/v1/activities_gen2v2.proto";
-import "wayplatform/connect/tachograph/vu/v1/detailed_speed_gen1.proto";
-import "wayplatform/connect/tachograph/vu/v1/detailed_speed_gen2.proto";
-import "wayplatform/connect/tachograph/vu/v1/download_interface_version.proto";
-import "wayplatform/connect/tachograph/vu/v1/events_and_faults_gen1.proto";
-import "wayplatform/connect/tachograph/vu/v1/events_and_faults_gen2.proto";
-import "wayplatform/connect/tachograph/vu/v1/overview_gen1.proto";
-import "wayplatform/connect/tachograph/vu/v1/overview_gen2v1.proto";
-import "wayplatform/connect/tachograph/vu/v1/overview_gen2v2.proto";
-import "wayplatform/connect/tachograph/vu/v1/technical_data_gen1.proto";
-import "wayplatform/connect/tachograph/vu/v1/technical_data_gen2.proto";
-import "wayplatform/connect/tachograph/vu/v1/transfer_type.proto";
+import "wayplatform/connect/tachograph/vu/v1/activities.proto";
 import "wayplatform/connect/tachograph/vu/v1/card_download.proto";
+import "wayplatform/connect/tachograph/vu/v1/detailed_speed.proto";
+import "wayplatform/connect/tachograph/vu/v1/download_interface_version.proto";
+import "wayplatform/connect/tachograph/vu/v1/events_and_faults.proto";
+import "wayplatform/connect/tachograph/vu/v1/overview.proto";
+import "wayplatform/connect/tachograph/vu/v1/technical_data.proto";
+import "wayplatform/connect/tachograph/vu/v1/transfer_type.proto";
 
-// VehicleUnitFile completely encapsulates the content of a .DDD file downloaded from a Vehicle Unit.
-// It preserves the order of data transfers to allow for perfect round-trip parsing.
+// VehicleUnitFile completely encapsulates the content of a file downloaded from a Vehicle Unit (VU).
+// These files typically have a .DDD, .V1B, or .C1B extension.
+//
+// The structure preserves the exact sequence of data blocks (transfers) as they appear in the
+// original file, which is essential for ensuring perfect round-trip parsing and writing.
 message VehicleUnitFile {
-  // Transfer represents a single data block within the downloaded file.
-  // It acts as a tagged union, where the 'type' field indicates which of the
-  // subsequent payload fields is populated.
+  // A Transfer represents a single data block within the downloaded file.
+  // It acts as a manually tagged union, where the `type` field is the tag.
+  // The structure of a transfer is defined in Appendix 7 of the regulation.
   message Transfer {
-    // The type of this transfer, corresponding to the TREP value found in the file.
+    // The semantic type of the data in this transfer, corresponding
+    // directly to the TREP value from the raw file. This serves as the
+    // discriminator for the payload fields below.
+    //
+    // The application should use this `type` to determine which of the payload
+    // fields is valid for this transfer. For example, if the type is
+    // OVERVIEW_GEN1, OVERVIEW_GEN2_V1, or OVERVIEW_GEN2_V2, the `overview` field
+    // will be populated.
     TransferType type = 1;
 
-    // The specific data payload for the transfer.
-    // Only the field corresponding to the 'type' will be set.
+    // The payload fields. Only one of these will be populated for any given Transfer.
     DownloadInterfaceVersion download_interface_version = 2;
-    OverviewGen1 overview_gen1 = 3;
-    ActivitiesGen1 activities_gen1 = 4;
-    EventsAndFaultsGen1 events_and_faults_gen1 = 5;
-    DetailedSpeedGen1 detailed_speed_gen1 = 6;
-    TechnicalDataGen1 technical_data_gen1 = 7;
-        // The raw binary payload of a card download, which is a complete card file.
-    bytes card_download = 8;
-    OverviewGen2v1 overview_gen2_v1 = 9;
-    ActivitiesGen2v1 activities_gen2_v1 = 10;
-    EventsAndFaultsGen2 events_and_faults_gen2 = 11;
-    DetailedSpeedGen2 detailed_speed_gen2 = 12;
-    TechnicalDataGen2 technical_data_gen2 = 13;
-    OverviewGen2v2 overview_gen2_v2 = 14;
-    ActivitiesGen2v2 activities_gen2_v2 = 15;
+    Overview overview = 3;
+    Activities activities = 4;
+    EventsAndFaults events_and_faults = 5;
+    DetailedSpeed detailed_speed = 6;
+    TechnicalData technical_data = 7;
+    CardDownload card_download = 8;
   }
 
-  // A sequence of data transfers as they appear in the downloaded file.
+  // A VehicleUnitFile consists of a sequence of transfers, preserving the
+  // order from the original downloaded file.
   repeated Transfer transfers = 1;
 }

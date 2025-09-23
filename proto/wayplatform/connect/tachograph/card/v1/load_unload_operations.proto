@@ -1,0 +1,44 @@
+edition = "2023";
+
+package wayplatform.connect.tachograph.card.v1;
+
+import "google/protobuf/timestamp.proto";
+import "wayplatform/connect/tachograph/card/v1/gnss_place_auth_record.proto";
+
+// Represents load and unload operations data from EF_Load_Unload_Operations.
+//
+// Corresponds to the `CardLoadUnloadOperations` data type.
+// See Data Dictionary, Section 2.24c.
+message LoadUnloadOperations {
+  // Represents a single load/unload operation record.
+  //
+  // Corresponds to the `CardLoadUnloadRecord` data type.
+  // See Data Dictionary, Section 2.24d.
+  message Record {
+    // See Data Dictionary, Section 2.114a for `OperationType`.
+    enum OperationType {
+      OPERATION_TYPE_UNSPECIFIED = 0;
+      LOAD = 1;
+      UNLOAD = 2;
+      SIMULTANEOUS = 3;
+    }
+
+    // Timestamp of the operation. See DD Section 2.162 for `TimeReal`.
+    google.protobuf.Timestamp timestamp = 1;
+
+    // Type of operation.
+    OperationType operation_type = 2;
+
+    // Authenticated position of the vehicle at the time of the operation.
+    GnssPlaceAuthRecord gnss_place_auth_record = 3;
+
+    // Odometer at the time of the operation. See DD Section 2.113 for `OdometerShort`.
+    int32 vehicle_odometer_km = 4;
+  }
+
+  // Index of the last updated record in the ring buffer.
+  int32 newest_record_index = 1;
+
+  // The set of load/unload records.
+  repeated Record records = 2;
+}

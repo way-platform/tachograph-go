@@ -1,0 +1,138 @@
+edition = "2023";
+
+package wayplatform.connect.tachograph.vu.v1;
+
+import "google/protobuf/timestamp.proto";
+import "wayplatform/connect/tachograph/vu/v1/versioning.proto";
+
+// Represents the consolidated data structure for an Overview transfer.
+//
+// This message corresponds to the data defined in the regulation document:
+// Appendix 7, Section 2.2.6.2: "Positive Response Transfer Data Overview".
+message Overview {
+  // Discriminator fields indicating the generation and version of the data.
+  Generation generation = 1;
+  Version version = 2;
+
+  // Represents a vehicle registration, including the nation of registration.
+  //
+  // Corresponds to the `VehicleRegistrationIdentification` data type.
+  // See Data Dictionary, Section 2.166.
+  message VehicleRegistration {
+    // See Data Dictionary, Section 2.101 for `NationNumeric`.
+    int32 nation = 1;
+    // See Data Dictionary, Section 2.167 for `VehicleRegistrationNumber`.
+    string number = 2;
+  }
+
+  // Represents the downloadable period for the VU data.
+  //
+  // Corresponds to the `VuDownloadablePeriod` data type.
+  // See Data Dictionary, Section 2.193.
+  message DownloadablePeriod {
+    // Earliest downloadable date. See DD Section 2.162 for `TimeReal`.
+    google.protobuf.Timestamp min_time = 1;
+    // Latest downloadable date. See DD Section 2.162 for `TimeReal`.
+    google.protobuf.Timestamp max_time = 2;
+  }
+
+  // Defines the type of card that can be in a slot.
+  //
+  // See Data Dictionary, Section 2.34 for `CardSlotsStatus`.
+  enum SlotCardType {
+    SLOT_CARD_TYPE_UNSPECIFIED = 0;
+    NO_CARD = 1;
+    DRIVER_CARD = 2;
+    WORKSHOP_CARD = 3;
+    CONTROL_CARD = 4;
+    COMPANY_CARD = 5;
+  }
+
+  // Represents a company lock record.
+  //
+  // Corresponds to the `VuCompanyLocksRecord` data type.
+  // See Data Dictionary, Section 2.184.
+  message CompanyLock {
+    // See Data Dictionary, Section 2.162 for `TimeReal`.
+    google.protobuf.Timestamp lock_in_time = 1;
+    // See Data Dictionary, Section 2.162 for `TimeReal`.
+    google.protobuf.Timestamp lock_out_time = 2;
+    // See Data Dictionary, Section 2.99 for `Name`.
+    string company_name = 3;
+    // See Data Dictionary, Section 2.2 for `Address`.
+    string company_address = 4;
+    // See Data Dictionary, Section 2.73 for `FullCardNumber`.
+    string company_card_number = 5;
+  }
+
+  // Represents a control activity record.
+  //
+  // Corresponds to the `VuControlActivityRecord` data type.
+  // See Data Dictionary, Section 2.187.
+  message ControlActivity {
+    // See Data Dictionary, Section 2.53 for `ControlType`.
+    bytes control_type = 1;
+    // See Data Dictionary, Section 2.162 for `TimeReal`.
+    google.protobuf.Timestamp control_time = 2;
+    // See Data Dictionary, Section 2.73 for `FullCardNumber`.
+    string control_card_number = 3;
+    // See Data Dictionary, Section 2.162 for `TimeReal`.
+    google.protobuf.Timestamp download_period_begin_time = 4;
+    // See Data Dictionary, Section 2.162 for `TimeReal`.
+    google.protobuf.Timestamp download_period_end_time = 5;
+  }
+
+  // VU Security certificate from the Member State.
+  // See Data Dictionary, Section 2.96 for `MemberStateCertificate`.
+  bytes member_state_certificate = 3;
+
+  // The VU's own security certificate.
+  // See Data Dictionary, Section 2.181 for `VuCertificate`.
+  bytes vu_certificate = 4;
+
+  // See Data Dictionary, Section 2.164 for `VehicleIdentificationNumber`.
+  string vehicle_identification_number = 5;
+
+  // Current date and time of the VU.
+  // See Data Dictionary, Section 2.54 for `CurrentDateTime`.
+  google.protobuf.Timestamp current_date_time = 6;
+
+  // The range of dates for which data can be downloaded.
+  DownloadablePeriod downloadable_period = 7;
+
+  // Type of card in the driver slot.
+  // See Data Dictionary, Section 2.34 for `CardSlotsStatus`.
+  SlotCardType driver_slot_card = 8;
+
+  // Type of card in the co-driver slot.
+  // See Data Dictionary, Section 2.34 for `CardSlotsStatus`.
+  SlotCardType co_driver_slot_card = 9;
+
+  // Time of the last VU download.
+  // Part of `VuDownloadActivityData`. See Data Dictionary, Section 2.195.
+  google.protobuf.Timestamp last_download_time = 10;
+
+  // All company locks stored in the VU.
+  // Corresponds to `VuCompanyLocksData`. See Data Dictionary, Section 2.183.
+  repeated CompanyLock company_locks = 11;
+
+  // All control records stored in the VU.
+  // Corresponds to `VuControlActivityData`. See Data Dictionary, Section 2.186.
+  repeated ControlActivity control_activities = 12;
+
+  // Populated for Gen1 and Gen2v1.
+  // Corresponds to `VehicleRegistrationIdentification` (DD 2.166).
+  VehicleRegistration vehicle_registration_with_nation = 13;
+
+  // Populated for Gen2v2.
+  // Corresponds to `VehicleRegistrationNumberRecordArray` (DD 2.168).
+  string vehicle_registration_number_only = 14;
+
+  // Signature for Gen1 data (RSA, 128 bytes).
+  // See Data Dictionary, Section 2.149.
+  bytes signature_gen1 = 15;
+
+  // Signature for Gen2 data (ECC).
+  // See Data Dictionary, Section 2.149.
+  bytes signature_gen2 = 16;
+}

@@ -1,0 +1,42 @@
+edition = "2023";
+
+package wayplatform.connect.tachograph.vu.v1;
+
+import "google/protobuf/timestamp.proto";
+import "wayplatform/connect/tachograph/vu/v1/versioning.proto";
+
+// Represents the consolidated data structure for a Detailed Speed transfer.
+//
+// This message corresponds to the data defined in the regulation document:
+// Appendix 7, Section 2.2.6.5: "Positive Response Transfer Data Detailed Speed".
+message DetailedSpeed {
+  // Discriminator field indicating the generation of the data.
+  Generation generation = 1;
+
+  // Represents speed data for a single minute.
+  //
+  // Corresponds to the `VuDetailedSpeedBlock` data type.
+  // See Data Dictionary, Section 2.190.
+  message DetailedSpeedBlock {
+    // Timestamp for the beginning of the minute.
+    // See Data Dictionary, Section 2.162 for `TimeReal`.
+    google.protobuf.Timestamp begin_date = 1;
+
+    // 60 speed values (in km/h), one for each second of the minute.
+    // See Data Dictionary, Section 2.155 for `Speed`.
+    repeated int32 speeds_kmh = 2;
+  }
+
+  // All detailed speed stored in the VU.
+  // Corresponds to `VuDetailedSpeedData` (Gen1) or `VuDetailedSpeedBlockRecordArray` (Gen2).
+  // See Data Dictionary, Sections 2.192 and 2.191.
+  repeated DetailedSpeedBlock speed_blocks = 2;
+
+  // Signature for Gen1 data (RSA, 128 bytes).
+  // See Data Dictionary, Section 2.149.
+  bytes signature_gen1 = 3;
+
+  // Signature for Gen2 data (ECC).
+  // See Data Dictionary, Section 2.149.
+  bytes signature_gen2 = 4;
+}

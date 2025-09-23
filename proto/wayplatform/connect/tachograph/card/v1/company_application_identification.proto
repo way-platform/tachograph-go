@@ -1,0 +1,18 @@
+edition = "2023";
+
+package wayplatform.connect.tachograph.card.v1;
+
+// Represents the application identification data for a company card.
+//
+// Corresponds to the `CompanyCardApplicationIdentification` data type.
+// See Data Dictionary, Section 2.48.
+message CompanyApplicationIdentification {
+  // See Data Dictionary, Section 2.48, `typeOfTachographCardId`.
+  int32 type_of_tachograph_card_id = 1;
+
+  // See Data Dictionary, Section 2.48, `cardStructureVersion`.
+  bytes card_structure_version = 2;
+
+  // See Data Dictionary, Section 2.48, `noOfCompanyActivityRecords`.
+  int32 company_activity_records_count = 3;
+}

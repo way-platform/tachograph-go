@@ -1,0 +1,37 @@
+edition = "2023";
+
+package wayplatform.connect.tachograph.card.v1;
+
+import "google/protobuf/timestamp.proto";
+import "wayplatform/connect/tachograph/card/v1/gnss_place_auth_record.proto";
+
+// Represents border crossing data from EF_Border_Crossings.
+//
+// Corresponds to the `CardBorderCrossings` data type.
+// See Data Dictionary, Section 2.11a.
+message BorderCrossings {
+  // Represents a single border crossing record.
+  //
+  // Corresponds to the `CardBorderCrossingRecord` data type.
+  // See Data Dictionary, Section 2.11b.
+  message Record {
+
+    // Country the vehicle is leaving. See DD Section 2.101 for `NationNumeric`.
+    int32 country_left = 1;
+
+    // Country the vehicle is entering. See DD Section 2.101 for `NationNumeric`.
+    int32 country_entered = 2;
+
+    // Authenticated position of the vehicle at the time of crossing.
+    GnssPlaceAuthRecord gnss_place_auth_record = 3;
+
+    // Odometer at the time of crossing. See DD Section 2.113 for `OdometerShort`.
+    int32 vehicle_odometer_km = 4;
+  }
+
+  // Index of the last updated record.
+  int32 newest_record_index = 1;
+
+  // The set of border crossing records.
+  repeated Record records = 2;
+}

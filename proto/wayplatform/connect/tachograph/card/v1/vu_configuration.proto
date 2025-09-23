@@ -1,0 +1,11 @@
+edition = "2023";
+
+package wayplatform.connect.tachograph.card.v1;
+
+// Represents data from EF_VU_Configuration.
+//
+// This file contains configuration data stored on the card by a Vehicle Unit.
+message VuConfiguration {
+  // The raw configuration data.
+  bytes data = 1;
+}

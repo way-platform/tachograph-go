@@ -1,0 +1,18 @@
+edition = "2023";
+
+package wayplatform.connect.tachograph.card.v1;
+
+// Represents the identification of the company card holder.
+//
+// Corresponds to the `CompanyCardHolderIdentification` data type.
+// See Data Dictionary, Section 2.49.
+message CompanyCardHolderIdentification {
+  // See Data Dictionary, Section 2.49, `companyName`.
+  string company_name = 1;
+
+  // See Data Dictionary, Section 2.49, `companyAddress`.
+  string company_address = 2;
+
+  // See Data Dictionary, Section 2.49, `cardHolderPreferredLanguage`.
+  string card_holder_preferred_language = 3;
+}

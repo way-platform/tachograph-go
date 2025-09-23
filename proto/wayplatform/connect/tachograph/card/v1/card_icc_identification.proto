@@ -1,0 +1,27 @@
+edition = "2023";
+
+package wayplatform.connect.tachograph.card.v1;
+
+// Represents Integrated Circuit Card identification data.
+//
+// Corresponds to the `CardIccIdentification` data type from EF_ICC.
+// See Data Dictionary, Section 2.23.
+message IccIdentification {
+  // See Data Dictionary, Section 2.23, `clockStop`.
+  int32 clock_stop = 1;
+
+  // See Data Dictionary, Section 2.23, `cardExtendedSerialNumber`.
+  string card_extended_serial_number = 2;
+
+  // See Data Dictionary, Section 2.23, `cardApprovalNumber`.
+  string card_approval_number = 3;
+
+  // See Data Dictionary, Section 2.23, `cardPersonaliserID`.
+  int32 card_personaliser_id = 4;
+
+  // See Data Dictionary, Section 2.23, `embedderIcAssemblerId`.
+  bytes embedder_ic_assembler_id = 5;
+
+  // See Data Dictionary, Section 2.23, `icIdentifier`.
+  bytes ic_identifier = 6;
+}
