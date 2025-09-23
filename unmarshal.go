@@ -12,8 +12,8 @@ import (
 	vuv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/vu/v1"
 )
 
-// Unmarshal parses a .DDD file's byte data into a protobuf File message.
-func Unmarshal(data []byte) (*tachographv1.File, error) {
+// UnmarshalFile parses a .DDD file's byte data into a protobuf File message.
+func UnmarshalFile(data []byte) (*tachographv1.File, error) {
 	fileType := InferFileType(data)
 	switch fileType {
 	case CardFileType:
@@ -97,6 +97,30 @@ func unmarshalCard(data []byte) (*tachographv1.File, error) {
 				return nil, err
 			}
 			driverCard.SetFaultsData(faultsData)
+		case cardv1.ElementaryFileType_EF_DRIVER_ACTIVITY_DATA:
+			activityData := &cardv1.DriverActivity{}
+			if err := UnmarshalCardActivityData(value, activityData); err != nil {
+				return nil, err
+			}
+			driverCard.SetDriverActivityData(activityData)
+		case cardv1.ElementaryFileType_EF_VEHICLES_USED:
+			vehiclesUsed := &cardv1.VehiclesUsed{}
+			if err := UnmarshalCardVehiclesUsed(value, vehiclesUsed); err != nil {
+				return nil, err
+			}
+			driverCard.SetVehiclesUsed(vehiclesUsed)
+		case cardv1.ElementaryFileType_EF_PLACES:
+			places := &cardv1.Places{}
+			if err := UnmarshalCardPlaces(value, places); err != nil {
+				return nil, err
+			}
+			driverCard.SetPlaces(places)
+		case cardv1.ElementaryFileType_EF_CURRENT_USAGE:
+			currentUsage := &cardv1.CurrentUsage{}
+			if err := UnmarshalCardCurrentUsage(value, currentUsage); err != nil {
+				return nil, err
+			}
+			driverCard.SetCurrentUsage(currentUsage)
 			// ... other cases to be added
 		}
 	}
@@ -159,6 +183,21 @@ func unmarshalVU(data []byte) (*tachographv1.File, error) {
 			}
 			transfer.SetOverview(overview)
 			// Reader position is already advanced by the unmarshal function
+		case vuv1.TransferType_ACTIVITIES_GEN1:
+			activities := &vuv1.Activities{}
+			_, err := UnmarshalVuActivities(r, activities, 1)
+			if err != nil {
+				return nil, err
+			}
+			transfer.SetActivities(activities)
+		case vuv1.TransferType_ACTIVITIES_GEN2_V1, vuv1.TransferType_ACTIVITIES_GEN2_V2:
+			activities := &vuv1.Activities{}
+			generation := 2
+			_, err := UnmarshalVuActivities(r, activities, generation)
+			if err != nil {
+				return nil, err
+			}
+			transfer.SetActivities(activities)
 		// Add more cases as we implement them
 		default:
 			// For now, skip unknown transfer types

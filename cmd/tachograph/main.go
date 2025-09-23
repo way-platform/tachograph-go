@@ -69,20 +69,15 @@ func newStatCommand() *cobra.Command {
 			if i > 0 {
 				fmt.Println("\n" + strings.Repeat("=", 80))
 			}
-
 			fmt.Printf("File: %s\n", filename)
-
 			data, err := os.ReadFile(filename)
 			if err != nil {
 				fmt.Printf("Error reading file: %v\n", err)
 				continue
 			}
-
 			fileType := tachograph.InferFileType(data)
 			fmt.Printf("Type: %s\n", fileType)
-
 			fmt.Printf("Size: %d bytes\n", len(data))
-			
 			// TODO: Re-implement outline parsing using the new structure
 			if fileType == tachograph.CardFileType {
 				fmt.Println("\nCard file detected. Use 'parse' command for detailed parsing.")
@@ -90,7 +85,6 @@ func newStatCommand() *cobra.Command {
 				fmt.Println("\nUnit file detected. Unit parsing not yet implemented.")
 			}
 		}
-
 		return nil
 	}
 	return cmd
@@ -99,48 +93,23 @@ func newStatCommand() *cobra.Command {
 func newParseCommand() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "parse <file1> [file2] [...]",
-		Short:   "Parse .DDD files and output as protojson",
+		Short:   "Parse .DDD files",
 		GroupID: "ddd",
 		Args:    cobra.MinimumNArgs(1),
 	}
 	cmd.RunE = func(cmd *cobra.Command, args []string) error {
-		for i, filename := range args {
-			// Add separator between files if processing multiple files
-			if i > 0 {
-				fmt.Println()
-			}
-
+		for _, filename := range args {
 			data, err := os.ReadFile(filename)
 			if err != nil {
 				return fmt.Errorf("error reading file %s: %w", filename, err)
 			}
-
-			// Parse the file using our new unmarshal functionality
-			file, err := tachograph.Unmarshal(data)
+			file, err := tachograph.UnmarshalFile(data)
 			if err != nil {
 				return fmt.Errorf("error parsing file %s: %w", filename, err)
 			}
-
-			// Format as protojson
-			marshaler := protojson.MarshalOptions{
-				Indent:          "  ",
-				UseProtoNames:   true,
-				EmitUnpopulated: false,
-			}
-			jsonData, err := marshaler.Marshal(file)
-			if err != nil {
-				return fmt.Errorf("error marshaling to JSON for file %s: %w", filename, err)
-			}
-
-			// Print filename as comment if processing multiple files
-			if len(args) > 1 {
-				fmt.Printf("// File: %s\n", filename)
-			}
-			fmt.Println(string(jsonData))
+			fmt.Println(protojson.Format(file))
 		}
-
 		return nil
 	}
 	return cmd
 }
-
