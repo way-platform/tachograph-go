@@ -671,7 +671,7 @@ var File_wayplatform_connect_tachograph_card_v1_driver_card_file_proto protorefl
 
 const file_wayplatform_connect_tachograph_card_v1_driver_card_file_proto_rawDesc = "" +
 	"\n" +
-	"=wayplatform/connect/tachograph/card/v1/driver_card_file.proto\x12&wayplatform.connect.tachograph.card.v1\x1a@wayplatform/connect/tachograph/card/v1/chip_identification.proto\x1aDwayplatform/connect/tachograph/card/v1/card_icc_identification.proto\x1a@wayplatform/connect/tachograph/card/v1/card_identification.proto\x1aBwayplatform/connect/tachograph/card/v1/control_activity_data.proto\x1a:wayplatform/connect/tachograph/card/v1/current_usage.proto\x1a<wayplatform/connect/tachograph/card/v1/driver_activity.proto\x1aSwayplatform/connect/tachograph/card/v1/driver_card_application_identification.proto\x1aNwayplatform/connect/tachograph/card/v1/driver_card_holder_identification.proto\x1aAwayplatform/connect/tachograph/card/v1/driving_licence_info.proto\x1a7wayplatform/connect/tachograph/card/v1/event_data.proto\x1a7wayplatform/connect/tachograph/card/v1/fault_data.proto\x1a?wayplatform/connect/tachograph/card/v1/last_card_download.proto\x1a3wayplatform/connect/tachograph/card/v1/places.proto\x1a@wayplatform/connect/tachograph/card/v1/specific_conditions.proto\x1a:wayplatform/connect/tachograph/card/v1/vehicles_used.proto\x1aJwayplatform/connect/tachograph/card/v1/application_identification_v2.proto\x1a=wayplatform/connect/tachograph/card/v1/border_crossings.proto\x1a8wayplatform/connect/tachograph/card/v1/gnss_places.proto\x1aGwayplatform/connect/tachograph/card/v1/gnss_places_authentication.proto\x1a>wayplatform/connect/tachograph/card/v1/load_type_entries.proto\x1aCwayplatform/connect/tachograph/card/v1/load_unload_operations.proto\x1aBwayplatform/connect/tachograph/card/v1/places_authentication.proto\x1a?wayplatform/connect/tachograph/card/v1/vehicle_units_used.proto\"\xd2\x12\n" +
+	"=wayplatform/connect/tachograph/card/v1/driver_card_file.proto\x12&wayplatform.connect.tachograph.card.v1\x1aJwayplatform/connect/tachograph/card/v1/application_identification_v2.proto\x1a=wayplatform/connect/tachograph/card/v1/border_crossings.proto\x1aDwayplatform/connect/tachograph/card/v1/card_icc_identification.proto\x1a@wayplatform/connect/tachograph/card/v1/card_identification.proto\x1a@wayplatform/connect/tachograph/card/v1/chip_identification.proto\x1aBwayplatform/connect/tachograph/card/v1/control_activity_data.proto\x1a:wayplatform/connect/tachograph/card/v1/current_usage.proto\x1a<wayplatform/connect/tachograph/card/v1/driver_activity.proto\x1aSwayplatform/connect/tachograph/card/v1/driver_card_application_identification.proto\x1aNwayplatform/connect/tachograph/card/v1/driver_card_holder_identification.proto\x1aAwayplatform/connect/tachograph/card/v1/driving_licence_info.proto\x1a7wayplatform/connect/tachograph/card/v1/event_data.proto\x1a7wayplatform/connect/tachograph/card/v1/fault_data.proto\x1a8wayplatform/connect/tachograph/card/v1/gnss_places.proto\x1aGwayplatform/connect/tachograph/card/v1/gnss_places_authentication.proto\x1a?wayplatform/connect/tachograph/card/v1/last_card_download.proto\x1a>wayplatform/connect/tachograph/card/v1/load_type_entries.proto\x1aCwayplatform/connect/tachograph/card/v1/load_unload_operations.proto\x1a3wayplatform/connect/tachograph/card/v1/places.proto\x1aBwayplatform/connect/tachograph/card/v1/places_authentication.proto\x1a@wayplatform/connect/tachograph/card/v1/specific_conditions.proto\x1a?wayplatform/connect/tachograph/card/v1/vehicle_units_used.proto\x1a:wayplatform/connect/tachograph/card/v1/vehicles_used.proto\"\xd2\x12\n" +
 	"\x0eDriverCardFile\x12K\n" +
 	"\x03icc\x18\x01 \x01(\v29.wayplatform.connect.tachograph.card.v1.IccIdentificationR\x03icc\x12J\n" +
 	"\x02ic\x18\x02 \x01(\v2:.wayplatform.connect.tachograph.card.v1.ChipIdentificationR\x02ic\x12\x8a\x01\n" +
@@ -765,9 +765,11 @@ func file_wayplatform_connect_tachograph_card_v1_driver_card_file_proto_init() {
 	if File_wayplatform_connect_tachograph_card_v1_driver_card_file_proto != nil {
 		return
 	}
-	file_wayplatform_connect_tachograph_card_v1_chip_identification_proto_init()
+	file_wayplatform_connect_tachograph_card_v1_application_identification_v2_proto_init()
+	file_wayplatform_connect_tachograph_card_v1_border_crossings_proto_init()
 	file_wayplatform_connect_tachograph_card_v1_card_icc_identification_proto_init()
 	file_wayplatform_connect_tachograph_card_v1_card_identification_proto_init()
+	file_wayplatform_connect_tachograph_card_v1_chip_identification_proto_init()
 	file_wayplatform_connect_tachograph_card_v1_control_activity_data_proto_init()
 	file_wayplatform_connect_tachograph_card_v1_current_usage_proto_init()
 	file_wayplatform_connect_tachograph_card_v1_driver_activity_proto_init()
@@ -776,18 +778,16 @@ func file_wayplatform_connect_tachograph_card_v1_driver_card_file_proto_init() {
 	file_wayplatform_connect_tachograph_card_v1_driving_licence_info_proto_init()
 	file_wayplatform_connect_tachograph_card_v1_event_data_proto_init()
 	file_wayplatform_connect_tachograph_card_v1_fault_data_proto_init()
-	file_wayplatform_connect_tachograph_card_v1_last_card_download_proto_init()
-	file_wayplatform_connect_tachograph_card_v1_places_proto_init()
-	file_wayplatform_connect_tachograph_card_v1_specific_conditions_proto_init()
-	file_wayplatform_connect_tachograph_card_v1_vehicles_used_proto_init()
-	file_wayplatform_connect_tachograph_card_v1_application_identification_v2_proto_init()
-	file_wayplatform_connect_tachograph_card_v1_border_crossings_proto_init()
 	file_wayplatform_connect_tachograph_card_v1_gnss_places_proto_init()
 	file_wayplatform_connect_tachograph_card_v1_gnss_places_authentication_proto_init()
+	file_wayplatform_connect_tachograph_card_v1_last_card_download_proto_init()
 	file_wayplatform_connect_tachograph_card_v1_load_type_entries_proto_init()
 	file_wayplatform_connect_tachograph_card_v1_load_unload_operations_proto_init()
+	file_wayplatform_connect_tachograph_card_v1_places_proto_init()
 	file_wayplatform_connect_tachograph_card_v1_places_authentication_proto_init()
+	file_wayplatform_connect_tachograph_card_v1_specific_conditions_proto_init()
 	file_wayplatform_connect_tachograph_card_v1_vehicle_units_used_proto_init()
+	file_wayplatform_connect_tachograph_card_v1_vehicles_used_proto_init()
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

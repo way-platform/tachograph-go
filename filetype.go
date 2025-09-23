@@ -3,8 +3,8 @@ package tachograph
 import (
 	"encoding/binary"
 
-	"github.com/way-platform/tachograph-go/tachocard"
-	"github.com/way-platform/tachograph-go/tachounit"
+	"google.golang.org/protobuf/proto"
+	cardpb "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1"
 )
 
 // FileType represents the type of a tachograph file.
@@ -31,25 +31,15 @@ func InferFileType(data []byte) FileType {
 	// Each EF is preceded by a 2-byte tag and a 2-byte length.
 	// Section 3.3.2 mandates that the first file downloaded is always EF_ICC,
 	// which has the File Identifier (tag) 0x0002.
+	opts := cardpb.ElementaryFileType_EF_ICC.Descriptor().Values().ByNumber(1).Options()
+	efIccTag := proto.GetExtension(opts, cardpb.E_FileId).(int32)
+
 	firstTag := binary.BigEndian.Uint16(data[0:2])
-	if firstTag == uint16(tachocard.EF_ICC) {
+	if firstTag == uint16(efIccTag) {
 		return CardFileType
 	}
 
-	// Check for vehicle unit file marker.
-	// Vehicle unit files use Tag-Value (TV) encoding where each record starts
-	// with a 2-byte tag. According to Appendix 7, sections 2.2.6.1-2.2.6.6,
-	// VU tags are formed by combining SID 76 Hex + TREP values.
-	if tachounit.VuTag(firstTag).IsValid() {
-		return UnitFileType
-	}
-
-	// Fallback: check for TRTP-based format (less common in practice)
-	// According to Appendix 7, Section 2.3, some VU files may start with
-	// a TRTP (Transfer Request Parameter) byte.
-	if tachounit.DownloadType(data[0]).IsValid() {
-		return UnitFileType
-	}
+	// TODO: Add check for vehicle unit file marker using protobuf enums
 
 	return UnknownFileType
 }

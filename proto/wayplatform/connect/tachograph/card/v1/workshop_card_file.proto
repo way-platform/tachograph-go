@@ -72,4 +72,3 @@ message WorkshopCardFile {
   CalibrationsAddData calibrations_add_data = 25;
   VuConfiguration vu_configuration = 26;
 }
-}

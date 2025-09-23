@@ -278,7 +278,7 @@ var File_wayplatform_connect_tachograph_card_v1_company_card_file_proto protoref
 
 const file_wayplatform_connect_tachograph_card_v1_company_card_file_proto_rawDesc = "" +
 	"\n" +
-	">wayplatform/connect/tachograph/card/v1/company_card_file.proto\x12&wayplatform.connect.tachograph.card.v1\x1aDwayplatform/connect/tachograph/card/v1/card_icc_identification.proto\x1a@wayplatform/connect/tachograph/card/v1/card_identification.proto\x1a@wayplatform/connect/tachograph/card/v1/chip_identification.proto\x1aOwayplatform/connect/tachograph/card/v1/company_application_identification.proto\x1aRwayplatform/connect/tachograph/card/v1/company_application_identification_v2.proto\x1aOwayplatform/connect/tachograph/card/v1/company_card_holder_identification.proto\x1aBwayplatform/connect/tachograph/card/v1/company_activity_data.proto\x1a=wayplatform/connect/tachograph/card/v1/vu_configuration.proto\"\xfc\x06\n" +
+	">wayplatform/connect/tachograph/card/v1/company_card_file.proto\x12&wayplatform.connect.tachograph.card.v1\x1aDwayplatform/connect/tachograph/card/v1/card_icc_identification.proto\x1a@wayplatform/connect/tachograph/card/v1/card_identification.proto\x1a@wayplatform/connect/tachograph/card/v1/chip_identification.proto\x1aBwayplatform/connect/tachograph/card/v1/company_activity_data.proto\x1aOwayplatform/connect/tachograph/card/v1/company_application_identification.proto\x1aRwayplatform/connect/tachograph/card/v1/company_application_identification_v2.proto\x1aOwayplatform/connect/tachograph/card/v1/company_card_holder_identification.proto\x1a=wayplatform/connect/tachograph/card/v1/vu_configuration.proto\"\xfc\x06\n" +
 	"\x0fCompanyCardFile\x12K\n" +
 	"\x03icc\x18\x01 \x01(\v29.wayplatform.connect.tachograph.card.v1.IccIdentificationR\x03icc\x12J\n" +
 	"\x02ic\x18\x02 \x01(\v2:.wayplatform.connect.tachograph.card.v1.ChipIdentificationR\x02ic\x12\x87\x01\n" +
@@ -326,10 +326,10 @@ func file_wayplatform_connect_tachograph_card_v1_company_card_file_proto_init() 
 	file_wayplatform_connect_tachograph_card_v1_card_icc_identification_proto_init()
 	file_wayplatform_connect_tachograph_card_v1_card_identification_proto_init()
 	file_wayplatform_connect_tachograph_card_v1_chip_identification_proto_init()
+	file_wayplatform_connect_tachograph_card_v1_company_activity_data_proto_init()
 	file_wayplatform_connect_tachograph_card_v1_company_application_identification_proto_init()
 	file_wayplatform_connect_tachograph_card_v1_company_application_identification_v2_proto_init()
 	file_wayplatform_connect_tachograph_card_v1_company_card_holder_identification_proto_init()
-	file_wayplatform_connect_tachograph_card_v1_company_activity_data_proto_init()
 	file_wayplatform_connect_tachograph_card_v1_vu_configuration_proto_init()
 	type x struct{}
 	out := protoimpl.TypeBuilder{

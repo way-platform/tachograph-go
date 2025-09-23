@@ -41,4 +41,3 @@ message ControlCardFile {
   // Data from EF_VU_Configuration (conditional on Gen2v2 cards).
   VuConfiguration vu_configuration = 8;
 }
-}

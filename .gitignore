@@ -1,4 +1,3 @@
 testdata/*/proprietary-*
 cmd/tachograph/tachograph
 docs/regulation/**/*.pdf
-benchmark/
