@@ -1,0 +1,69 @@
+edition = "2023";
+
+package wayplatform.connect.tachograph.vu.v1;
+
+// Represents the data structure for an OverviewGen2v2 transfer.
+// See Appendix 7, Section 2.2.6.2.
+message OverviewGen2v2 {
+
+  // Note: Most nested messages are identical to OverviewGen2v1.
+  // They are redefined here to keep files self-contained for now.
+
+  message DownloadablePeriod {
+    uint32 min_time_seconds = 1;
+    uint32 max_time_seconds = 2;
+  }
+
+  enum SlotCardType {
+    SLOT_CARD_TYPE_UNSPECIFIED = 0;
+    NO_CARD = 1;
+    DRIVER_CARD = 2;
+    WORKSHOP_CARD = 3;
+    CONTROL_CARD = 4;
+    COMPANY_CARD = 5;
+  }
+
+  message CompanyLock {
+    uint32 lock_in_time_seconds = 1;
+    uint32 lock_out_time_seconds = 2;
+    string company_name = 3;
+    string company_address = 4;
+    string company_card_number = 5;
+  }
+
+  message ControlActivity {
+    bytes control_type = 1;
+    uint32 control_time_seconds = 2;
+    string control_card_number = 3;
+    uint32 download_period_begin_time_seconds = 4;
+    uint32 download_period_end_time_seconds = 5;
+  }
+
+  // Gen2 certificate (ECC).
+  bytes member_state_certificate = 1;
+
+  // Gen2 certificate (ECC).
+  bytes vu_certificate = 2;
+
+  string vehicle_identification_number = 3;
+
+  // In Gen2v2, this is a simple string, not a structure with the nation.
+  // See Appendix 1, 2.168 VehicleRegistrationNumberRecordArray.
+  string vehicle_registration_number = 4;
+
+  uint32 current_date_time_seconds = 5;
+
+  DownloadablePeriod downloadable_period = 6;
+
+  SlotCardType driver_slot_card = 7;
+  SlotCardType co_driver_slot_card = 8;
+
+  uint32 last_download_time_seconds = 9;
+
+  repeated CompanyLock company_locks = 10;
+
+  repeated ControlActivity control_activities = 11;
+
+  // Gen2 signature (ECC).
+  bytes signature = 12;
+}

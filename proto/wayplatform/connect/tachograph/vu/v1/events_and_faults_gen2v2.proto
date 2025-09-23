@@ -1,0 +1,9 @@
+edition = "2023";
+
+package wayplatform.connect.tachograph.vu.v1;
+
+// Represents the data structure for an EventsAndFaultsGen2v2 transfer.
+// See Appendix 7, Section 2.2.6.4.
+message EventsAndFaultsGen2v2 {
+  // Fields will be defined in a subsequent step.
+}

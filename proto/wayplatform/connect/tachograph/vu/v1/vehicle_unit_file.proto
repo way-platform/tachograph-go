@@ -1,0 +1,53 @@
+edition = "2023";
+
+package wayplatform.connect.tachograph.vu.v1;
+
+import "wayplatform/connect/tachograph/card/v1/raw_card_file.proto";
+import "wayplatform/connect/tachograph/vu/v1/activities_gen1.proto";
+import "wayplatform/connect/tachograph/vu/v1/activities_gen2v1.proto";
+import "wayplatform/connect/tachograph/vu/v1/activities_gen2v2.proto";
+import "wayplatform/connect/tachograph/vu/v1/detailed_speed_gen1.proto";
+import "wayplatform/connect/tachograph/vu/v1/detailed_speed_gen2.proto";
+import "wayplatform/connect/tachograph/vu/v1/download_interface_version.proto";
+import "wayplatform/connect/tachograph/vu/v1/events_and_faults_gen1.proto";
+import "wayplatform/connect/tachograph/vu/v1/events_and_faults_gen2.proto";
+import "wayplatform/connect/tachograph/vu/v1/overview_gen1.proto";
+import "wayplatform/connect/tachograph/vu/v1/overview_gen2v1.proto";
+import "wayplatform/connect/tachograph/vu/v1/overview_gen2v2.proto";
+import "wayplatform/connect/tachograph/vu/v1/technical_data_gen1.proto";
+import "wayplatform/connect/tachograph/vu/v1/technical_data_gen2.proto";
+import "wayplatform/connect/tachograph/vu/v1/transfer_type.proto";
+import "wayplatform/connect/tachograph/vu/v1/card_download.proto";
+
+// VehicleUnitFile completely encapsulates the content of a .DDD file downloaded from a Vehicle Unit.
+// It preserves the order of data transfers to allow for perfect round-trip parsing.
+message VehicleUnitFile {
+  // Transfer represents a single data block within the downloaded file.
+  // It acts as a tagged union, where the 'type' field indicates which of the
+  // subsequent payload fields is populated.
+  message Transfer {
+    // The type of this transfer, corresponding to the TREP value found in the file.
+    TransferType type = 1;
+
+    // The specific data payload for the transfer.
+    // Only the field corresponding to the 'type' will be set.
+    DownloadInterfaceVersion download_interface_version = 2;
+    OverviewGen1 overview_gen1 = 3;
+    ActivitiesGen1 activities_gen1 = 4;
+    EventsAndFaultsGen1 events_and_faults_gen1 = 5;
+    DetailedSpeedGen1 detailed_speed_gen1 = 6;
+    TechnicalDataGen1 technical_data_gen1 = 7;
+        // The raw binary payload of a card download, which is a complete card file.
+    bytes card_download = 8;
+    OverviewGen2v1 overview_gen2_v1 = 9;
+    ActivitiesGen2v1 activities_gen2_v1 = 10;
+    EventsAndFaultsGen2 events_and_faults_gen2 = 11;
+    DetailedSpeedGen2 detailed_speed_gen2 = 12;
+    TechnicalDataGen2 technical_data_gen2 = 13;
+    OverviewGen2v2 overview_gen2_v2 = 14;
+    ActivitiesGen2v2 activities_gen2_v2 = 15;
+  }
+
+  // A sequence of data transfers as they appear in the downloaded file.
+  repeated Transfer transfers = 1;
+}

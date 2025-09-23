@@ -1,0 +1,11 @@
+edition = "2023";
+
+package wayplatform.connect.tachograph.vu.v1;
+
+import "google/protobuf/descriptor.proto";
+
+// Defines a custom option to store the TREP (Transfer Response Parameter) value
+// for a TransferType enum value.
+extend google.protobuf.EnumValueOptions {
+  int32 trep_value = 50303;
+}

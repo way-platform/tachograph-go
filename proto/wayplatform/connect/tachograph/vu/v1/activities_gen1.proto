@@ -1,0 +1,64 @@
+edition = "2023";
+
+package wayplatform.connect.tachograph.vu.v1;
+
+// Represents the data structure for an ActivitiesGen1 transfer.
+// See Appendix 7, Section 2.2.6.3.
+message ActivitiesGen1 {
+
+  message CardIWRecord {
+    // See Appendix 1, 2.177
+    string card_holder_name = 1;
+    string full_card_number = 2;
+    uint32 card_expiry_date = 3; // Datef format
+    uint32 card_insertion_time = 4; // TimeReal
+    uint32 odometer_at_insertion = 5; // OdometerShort
+    uint32 card_slot_number = 6; // CardSlotNumber enum
+    uint32 card_withdrawal_time = 7; // TimeReal
+    uint32 odometer_at_withdrawal = 8; // OdometerShort
+    string previous_vrn = 9; // From PreviousVehicleInfo
+    uint32 previous_card_withdrawal_time = 10; // From PreviousVehicleInfo
+    uint32 manual_input_flag = 11; // See Appendix 1, 2.93
+  }
+
+  message ActivityChange {
+    // See Appendix 1, 2.1. A 2-byte bitfield.
+    uint32 slot = 1;
+    uint32 driving_status = 2;
+    uint32 card_status = 3;
+    uint32 activity = 4;
+    uint32 time_of_change = 5; // In minutes from 00:00
+  }
+
+  message PlaceRecord {
+    // See Appendix 1, 2.117
+    uint32 entry_time = 1; // TimeReal
+    uint32 entry_type = 2; // EntryTypeDailyWorkPeriod enum
+    uint32 country = 3; // NationNumeric
+    uint32 region = 4; // RegionNumeric
+    uint32 odometer = 5; // OdometerShort
+  }
+
+  message SpecificConditionRecord {
+    // See Appendix 1, 2.152
+    uint32 entry_time = 1; // TimeReal
+    uint32 specific_condition_type = 2; // SpecificConditionType enum
+  }
+
+  // Date of day downloaded. See Appendix 1, 2.162 TimeReal.
+  uint32 date_of_day = 1;
+
+  // Odometer at end of day. See Appendix 1, 2.114 & 2.113.
+  uint32 odometer_midnight = 2;
+
+  repeated CardIWRecord card_iw_data = 3;
+
+  repeated ActivityChange activity_changes = 4;
+
+  repeated PlaceRecord places = 5;
+
+  repeated SpecificConditionRecord specific_conditions = 6;
+
+  // See Appendix 1, 2.149. 128 bytes.
+  bytes signature = 7;
+}

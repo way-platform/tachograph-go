@@ -1,0 +1,23 @@
+edition = "2023";
+
+package wayplatform.connect.tachograph.vu.v1;
+
+// Represents the data structure for a DetailedSpeedGen1 transfer.
+// See Appendix 7, Section 2.2.6.5.
+message DetailedSpeedGen1 {
+
+  message DetailedSpeedBlock {
+    // See Appendix 1, 2.190
+    // Timestamp for the beginning of the minute in seconds since the Unix epoch (TimeReal).
+    uint32 begin_date_seconds = 1;
+
+    // 60 speed values for each second of the minute.
+    // See Appendix 1, 2.155 Speed.
+    repeated uint32 speeds_kmph = 2;
+  }
+
+  repeated DetailedSpeedBlock speed_blocks = 1;
+
+  // See Appendix 1, 2.149. 128 bytes.
+  bytes signature = 2;
+}

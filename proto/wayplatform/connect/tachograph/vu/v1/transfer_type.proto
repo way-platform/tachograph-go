@@ -1,0 +1,132 @@
+edition = "2023";
+
+package wayplatform.connect.tachograph.vu.v1;
+
+import "wayplatform/connect/tachograph/vu/v1/trep.proto";
+import "wayplatform/connect/tachograph/vu/v1/versioning.proto";
+
+// TransferType represents the type of data file that can be downloaded from a Vehicle Unit (VU).
+// The actual wire protocol value is stored in the `trep_value` custom option, corresponding to the
+// Transfer Response Parameter (TREP) in the KWP 2000 download protocol (Appendix 7).
+enum TransferType {
+  // Unspecified transfer type.
+  TRANSFER_TYPE_UNSPECIFIED = 0;
+
+  // Download interface version.
+  // See Appendix 7, Section 2.2.6.1.
+  DOWNLOAD_INTERFACE_VERSION = 1 [
+    (trep_value) = 0x00,
+    (generation) = GENERATION_2,
+    (version) = VERSION_2
+  ];
+
+  // Generation 1: Overview data.
+  // See Appendix 7, Section 2.2.6.2.
+  OVERVIEW_GEN1 = 2 [
+    (trep_value) = 0x01,
+    (generation) = GENERATION_1
+  ];
+
+  // Generation 1: Driver activities for a specified date.
+  // See Appendix 7, Section 2.2.6.3.
+  ACTIVITIES_GEN1 = 3 [
+    (trep_value) = 0x02,
+    (generation) = GENERATION_1
+  ];
+
+  // Generation 1: Events and faults data.
+  // See Appendix 7, Section 2.2.6.4.
+  EVENTS_AND_FAULTS_GEN1 = 4 [
+    (trep_value) = 0x03,
+    (generation) = GENERATION_1
+  ];
+
+  // Generation 1: Detailed speed data.
+  // See Appendix 7, Section 2.2.6.5.
+  DETAILED_SPEED_GEN1 = 5 [
+    (trep_value) = 0x04,
+    (generation) = GENERATION_1
+  ];
+
+  // Generation 1: Technical data.
+  // See Appendix 7, Section 2.2.6.6.
+  TECHNICAL_DATA_GEN1 = 6 [
+    (trep_value) = 0x05,
+    (generation) = GENERATION_1
+  ];
+
+  // Download data from an inserted tachograph card via the VU.
+  // See Appendix 7, Section 2.2.2.9.
+  CARD_DOWNLOAD = 7 [(trep_value) = 0x06];
+
+  // Generation 2, Version 1: Overview data.
+  // See Appendix 7, Section 2.2.6.2.
+  OVERVIEW_GEN2_V1 = 8 [
+    (trep_value) = 0x21,
+    (generation) = GENERATION_2,
+    (version) = VERSION_1
+  ];
+
+  // Generation 2, Version 1: Driver activities for a specified date.
+  // See Appendix 7, Section 2.2.6.3.
+  ACTIVITIES_GEN2_V1 = 9 [
+    (trep_value) = 0x22,
+    (generation) = GENERATION_2,
+    (version) = VERSION_1
+  ];
+
+  // Generation 2, Version 1: Events and faults data.
+  // See Appendix 7, Section 2.2.6.4.
+  EVENTS_AND_FAULTS_GEN2_V1 = 10 [
+    (trep_value) = 0x23,
+    (generation) = GENERATION_2,
+    (version) = VERSION_1
+  ];
+
+  // Generation 2 (v1 and v2): Detailed speed data.
+  // See Appendix 7, Section 2.2.6.5.
+  DETAILED_SPEED_GEN2 = 11 [
+    (trep_value) = 0x24,
+    (generation) = GENERATION_2
+  ];
+
+  // Generation 2, Version 1: Technical data.
+  // See Appendix 7, Section 2.2.6.6.
+  TECHNICAL_DATA_GEN2_V1 = 12 [
+    (trep_value) = 0x25,
+    (generation) = GENERATION_2,
+    (version) = VERSION_1
+  ];
+
+  // Generation 2, Version 2: Overview data.
+  // See Appendix 7, Section 2.2.6.2.
+  OVERVIEW_GEN2_V2 = 13 [
+    (trep_value) = 0x31,
+    (generation) = GENERATION_2,
+    (version) = VERSION_2
+  ];
+
+  // Generation 2, Version 2: Driver activities for a specified date.
+  // See Appendix 7, Section 2.2.6.3.
+  ACTIVITIES_GEN2_V2 = 14 [
+    (trep_value) = 0x32,
+    (generation) = GENERATION_2,
+    (version) = VERSION_2
+  ];
+
+  // Generation 2, Version 2: Events and faults data.
+  // See Appendix 7, Section 2.2.6.4.
+  EVENTS_AND_FAULTS_GEN2_V2 = 15 [
+    (trep_value) = 0x33,
+    (generation) = GENERATION_2,
+    (version) = VERSION_2
+  ];
+
+  // Generation 2, Version 2: Technical data.
+  // See Appendix 7, Section 2.2.6.6.
+  TECHNICAL_DATA_GEN2_V2 = 16 [
+    (trep_value) = 0x35,
+    (generation) = GENERATION_2,
+    (version) = VERSION_2
+  ];
+}
