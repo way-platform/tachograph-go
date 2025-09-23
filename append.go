@@ -1,6 +1,7 @@
 package tachograph
 
 import (
+	"bytes"
 	"encoding/binary"
 	"errors"
 	"reflect"
@@ -10,6 +11,7 @@ import (
 
 	cardv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1"
 	tachographv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/v1"
+	vuv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/vu/v1"
 )
 
 // Marshal serializes a protobuf File message into the binary DDD file format.
@@ -22,7 +24,7 @@ func Marshal(file *tachographv1.File) ([]byte, error) {
 	case tachographv1.File_DRIVER_CARD, tachographv1.File_WORKSHOP_CARD, tachographv1.File_CONTROL_CARD, tachographv1.File_COMPANY_CARD:
 		buf, err = appendCard(buf, file)
 	case tachographv1.File_VEHICLE_UNIT:
-		err = errors.New("vehicle unit marshaling not yet implemented")
+		buf, err = appendVU(buf, file)
 	default:
 		err = errors.New("unsupported file type for marshaling")
 	}
@@ -219,4 +221,55 @@ func appendTlv[T proto.Message](
 
 	// TODO: Handle signature appendage (tag appendix 0x01)
 	return dst, nil
+}
+
+// appendVU orchestrates writing a VU file in TV format
+func appendVU(dst []byte, file *tachographv1.File) ([]byte, error) {
+	vuFile := file.GetVehicleUnit()
+	if vuFile == nil {
+		return dst, nil
+	}
+
+	buf := bytes.NewBuffer(dst)
+
+	// Process each transfer in the VU file
+	for _, transfer := range vuFile.GetTransfers() {
+		// Get the tag for this transfer type
+		tag := getTrepValueForTransferType(transfer.GetType())
+		if tag == 0 {
+			continue // Skip unknown transfer types
+		}
+
+		// Append the 2-byte tag (0x76XX format)
+		vuTag := uint16(0x7600 | (uint16(tag) & 0xFF))
+		appendVuTag(buf, vuTag)
+
+		// Append the transfer data based on type
+		switch transfer.GetType() {
+		case vuv1.TransferType_DOWNLOAD_INTERFACE_VERSION:
+			AppendDownloadInterfaceVersion(buf, transfer.GetDownloadInterfaceVersion())
+		case vuv1.TransferType_OVERVIEW_GEN1, vuv1.TransferType_OVERVIEW_GEN2_V1, vuv1.TransferType_OVERVIEW_GEN2_V2:
+			AppendOverview(buf, transfer.GetOverview())
+		// Add more cases as we implement them
+		default:
+			// Skip unknown transfer types
+		}
+	}
+
+	return buf.Bytes(), nil
+}
+
+// getTrepValueForTransferType returns the TREP value for a given transfer type
+func getTrepValueForTransferType(transferType vuv1.TransferType) uint8 {
+	values := vuv1.TransferType_TRANSFER_TYPE_UNSPECIFIED.Descriptor().Values()
+	for i := 0; i < values.Len(); i++ {
+		valueDesc := values.Get(i)
+		if vuv1.TransferType(valueDesc.Number()) == transferType {
+			opts := valueDesc.Options()
+			if proto.HasExtension(opts, vuv1.E_TrepValue) {
+				return uint8(proto.GetExtension(opts, vuv1.E_TrepValue).(int32))
+			}
+		}
+	}
+	return 0
 }
