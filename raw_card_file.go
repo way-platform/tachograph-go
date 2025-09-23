@@ -81,6 +81,12 @@ func MarshalRawCardFile(rawFile *cardv1.RawCardFile) ([]byte, error) {
 
 // DriverCardFileToRaw converts a DriverCardFile to RawCardFile
 func DriverCardFileToRaw(card *cardv1.DriverCardFile) (*cardv1.RawCardFile, error) {
+	return DriverCardFileToRawWithSignatures(card, nil)
+}
+
+// DriverCardFileToRawWithSignatures converts a DriverCardFile to RawCardFile,
+// preserving original signatures from originalRawFile if provided
+func DriverCardFileToRawWithSignatures(card *cardv1.DriverCardFile, originalRawFile *cardv1.RawCardFile) (*cardv1.RawCardFile, error) {
 	rawFile := &cardv1.RawCardFile{}
 	var records []*cardv1.RawCardFile_Record
 
@@ -115,8 +121,12 @@ func DriverCardFileToRaw(card *cardv1.DriverCardFile) (*cardv1.RawCardFile, erro
 		// Data record
 		record := createRawRecord(0x050100, cardv1.ElementaryFileType_EF_APPLICATION_IDENTIFICATION, cardv1.ContentType_DATA, data)
 		records = append(records, record)
-		// Signature record (128 bytes of zeros for now)
-		sigRecord := createRawRecord(0x050101, cardv1.ElementaryFileType_EF_APPLICATION_IDENTIFICATION, cardv1.ContentType_SIGNATURE, make([]byte, 128))
+		// Signature record (preserve original signature if available)
+		originalSig := findOriginalSignature(originalRawFile, 0x050100)
+		if originalSig == nil {
+			originalSig = make([]byte, 128) // Fallback to zeros if no original
+		}
+		sigRecord := createRawRecord(0x050101, cardv1.ElementaryFileType_EF_APPLICATION_IDENTIFICATION, cardv1.ContentType_SIGNATURE, originalSig)
 		records = append(records, sigRecord)
 	}
 
@@ -142,8 +152,12 @@ func DriverCardFileToRaw(card *cardv1.DriverCardFile) (*cardv1.RawCardFile, erro
 		// Data record
 		record := createRawRecord(0x052000, cardv1.ElementaryFileType_EF_IDENTIFICATION, cardv1.ContentType_DATA, data)
 		records = append(records, record)
-		// Signature record
-		sigRecord := createRawRecord(0x052001, cardv1.ElementaryFileType_EF_IDENTIFICATION, cardv1.ContentType_SIGNATURE, make([]byte, 128))
+		// Signature record (preserve original signature if available)
+		originalSig := findOriginalSignature(originalRawFile, 0x052000)
+		if originalSig == nil {
+			originalSig = make([]byte, 128) // Fallback to zeros if no original
+		}
+		sigRecord := createRawRecord(0x052001, cardv1.ElementaryFileType_EF_IDENTIFICATION, cardv1.ContentType_SIGNATURE, originalSig)
 		records = append(records, sigRecord)
 	}
 
@@ -156,8 +170,12 @@ func DriverCardFileToRaw(card *cardv1.DriverCardFile) (*cardv1.RawCardFile, erro
 		// Data record
 		record := createRawRecord(0x050200, cardv1.ElementaryFileType_EF_EVENTS_DATA, cardv1.ContentType_DATA, data)
 		records = append(records, record)
-		// Signature record
-		sigRecord := createRawRecord(0x050201, cardv1.ElementaryFileType_EF_EVENTS_DATA, cardv1.ContentType_SIGNATURE, make([]byte, 128))
+		// Signature record (preserve original signature if available)
+		originalSig := findOriginalSignature(originalRawFile, 0x050200)
+		if originalSig == nil {
+			originalSig = make([]byte, 128) // Fallback to zeros if no original
+		}
+		sigRecord := createRawRecord(0x050201, cardv1.ElementaryFileType_EF_EVENTS_DATA, cardv1.ContentType_SIGNATURE, originalSig)
 		records = append(records, sigRecord)
 	}
 
@@ -170,8 +188,12 @@ func DriverCardFileToRaw(card *cardv1.DriverCardFile) (*cardv1.RawCardFile, erro
 		// Data record
 		record := createRawRecord(0x050300, cardv1.ElementaryFileType_EF_FAULTS_DATA, cardv1.ContentType_DATA, data)
 		records = append(records, record)
-		// Signature record
-		sigRecord := createRawRecord(0x050301, cardv1.ElementaryFileType_EF_FAULTS_DATA, cardv1.ContentType_SIGNATURE, make([]byte, 128))
+		// Signature record (preserve original signature if available)
+		originalSig := findOriginalSignature(originalRawFile, 0x050300)
+		if originalSig == nil {
+			originalSig = make([]byte, 128) // Fallback to zeros if no original
+		}
+		sigRecord := createRawRecord(0x050301, cardv1.ElementaryFileType_EF_FAULTS_DATA, cardv1.ContentType_SIGNATURE, originalSig)
 		records = append(records, sigRecord)
 	}
 
@@ -184,8 +206,12 @@ func DriverCardFileToRaw(card *cardv1.DriverCardFile) (*cardv1.RawCardFile, erro
 		// Data record
 		record := createRawRecord(0x050400, cardv1.ElementaryFileType_EF_DRIVER_ACTIVITY_DATA, cardv1.ContentType_DATA, data)
 		records = append(records, record)
-		// Signature record
-		sigRecord := createRawRecord(0x050401, cardv1.ElementaryFileType_EF_DRIVER_ACTIVITY_DATA, cardv1.ContentType_SIGNATURE, make([]byte, 128))
+		// Signature record (preserve original signature if available)
+		originalSig := findOriginalSignature(originalRawFile, 0x050400)
+		if originalSig == nil {
+			originalSig = make([]byte, 128) // Fallback to zeros if no original
+		}
+		sigRecord := createRawRecord(0x050401, cardv1.ElementaryFileType_EF_DRIVER_ACTIVITY_DATA, cardv1.ContentType_SIGNATURE, originalSig)
 		records = append(records, sigRecord)
 	}
 
@@ -198,8 +224,12 @@ func DriverCardFileToRaw(card *cardv1.DriverCardFile) (*cardv1.RawCardFile, erro
 		// Data record
 		record := createRawRecord(0x050500, cardv1.ElementaryFileType_EF_VEHICLES_USED, cardv1.ContentType_DATA, data)
 		records = append(records, record)
-		// Signature record
-		sigRecord := createRawRecord(0x050501, cardv1.ElementaryFileType_EF_VEHICLES_USED, cardv1.ContentType_SIGNATURE, make([]byte, 128))
+		// Signature record (preserve original signature if available)
+		originalSig := findOriginalSignature(originalRawFile, 0x050500)
+		if originalSig == nil {
+			originalSig = make([]byte, 128) // Fallback to zeros if no original
+		}
+		sigRecord := createRawRecord(0x050501, cardv1.ElementaryFileType_EF_VEHICLES_USED, cardv1.ContentType_SIGNATURE, originalSig)
 		records = append(records, sigRecord)
 	}
 
@@ -212,8 +242,12 @@ func DriverCardFileToRaw(card *cardv1.DriverCardFile) (*cardv1.RawCardFile, erro
 		// Data record
 		record := createRawRecord(0x050600, cardv1.ElementaryFileType_EF_PLACES, cardv1.ContentType_DATA, data)
 		records = append(records, record)
-		// Signature record
-		sigRecord := createRawRecord(0x050601, cardv1.ElementaryFileType_EF_PLACES, cardv1.ContentType_SIGNATURE, make([]byte, 128))
+		// Signature record (preserve original signature if available)
+		originalSig := findOriginalSignature(originalRawFile, 0x050600)
+		if originalSig == nil {
+			originalSig = make([]byte, 128) // Fallback to zeros if no original
+		}
+		sigRecord := createRawRecord(0x050601, cardv1.ElementaryFileType_EF_PLACES, cardv1.ContentType_SIGNATURE, originalSig)
 		records = append(records, sigRecord)
 	}
 
@@ -226,8 +260,12 @@ func DriverCardFileToRaw(card *cardv1.DriverCardFile) (*cardv1.RawCardFile, erro
 		// Data record - using 0x0508 as observed in actual file, not 0x0507 from spec
 		record := createRawRecord(0x050800, cardv1.ElementaryFileType_EF_CURRENT_USAGE, cardv1.ContentType_DATA, data)
 		records = append(records, record)
-		// Signature record
-		sigRecord := createRawRecord(0x050801, cardv1.ElementaryFileType_EF_CURRENT_USAGE, cardv1.ContentType_SIGNATURE, make([]byte, 128))
+		// Signature record (preserve original signature if available)
+		originalSig := findOriginalSignature(originalRawFile, 0x050800)
+		if originalSig == nil {
+			originalSig = make([]byte, 128) // Fallback to zeros if no original
+		}
+		sigRecord := createRawRecord(0x050801, cardv1.ElementaryFileType_EF_CURRENT_USAGE, cardv1.ContentType_SIGNATURE, originalSig)
 		records = append(records, sigRecord)
 	}
 
@@ -240,8 +278,12 @@ func DriverCardFileToRaw(card *cardv1.DriverCardFile) (*cardv1.RawCardFile, erro
 		// Data record
 		record := createRawRecord(0x052200, cardv1.ElementaryFileType_EF_SPECIFIC_CONDITIONS, cardv1.ContentType_DATA, data)
 		records = append(records, record)
-		// Signature record
-		sigRecord := createRawRecord(0x052201, cardv1.ElementaryFileType_EF_SPECIFIC_CONDITIONS, cardv1.ContentType_SIGNATURE, make([]byte, 128))
+		// Signature record (preserve original signature if available)
+		originalSig := findOriginalSignature(originalRawFile, 0x052200)
+		if originalSig == nil {
+			originalSig = make([]byte, 128) // Fallback to zeros if no original
+		}
+		sigRecord := createRawRecord(0x052201, cardv1.ElementaryFileType_EF_SPECIFIC_CONDITIONS, cardv1.ContentType_SIGNATURE, originalSig)
 		records = append(records, sigRecord)
 	}
 
@@ -261,6 +303,24 @@ func DriverCardFileToRaw(card *cardv1.DriverCardFile) (*cardv1.RawCardFile, erro
 
 	rawFile.SetRecords(records)
 	return rawFile, nil
+}
+
+// findOriginalSignature finds the signature for a given data tag in the original RawCardFile
+func findOriginalSignature(originalRawFile *cardv1.RawCardFile, dataTag int32) []byte {
+	if originalRawFile == nil {
+		return nil
+	}
+
+	// Signature tag is data tag with appendix 0x01 instead of 0x00
+	signatureTag := dataTag + 1 // 0xXXXX00 -> 0xXXXX01
+
+	for _, record := range originalRawFile.GetRecords() {
+		if record.GetTag() == signatureTag && record.GetContentType() == cardv1.ContentType_SIGNATURE {
+			return record.GetValue()
+		}
+	}
+
+	return nil
 }
 
 // createRawRecord creates a RawCardFile_Record with the given parameters

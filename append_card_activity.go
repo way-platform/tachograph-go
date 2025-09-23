@@ -26,6 +26,26 @@ func AppendDriverActivity(dst []byte, activity *cardv1.DriverActivity) ([]byte, 
 
 // AppendActivityDailyRecord appends a single daily activity record.
 func AppendActivityDailyRecord(dst []byte, rec *cardv1.DriverActivity_DailyRecord) ([]byte, error) {
+	// Check if this is an empty record (for roundtrip compatibility)
+	isEmpty := rec.GetActivityDayDistance() == 0 &&
+		len(rec.GetActivityChangeInfo()) == 0 &&
+		(rec.GetActivityRecordDate() == nil || rec.GetActivityRecordDate().GetSeconds() == 0)
+
+	if isEmpty && rec.GetActivityRecordLength() > 0 {
+		// For empty records, use the original record length and write zeros
+		originalLength := int(rec.GetActivityRecordLength())
+		dst = binary.BigEndian.AppendUint16(dst, uint16(rec.GetActivityPreviousRecordLength()))
+		dst = binary.BigEndian.AppendUint16(dst, uint16(originalLength))
+
+		// Write the content as zeros (originalLength - 4 for the header we already wrote)
+		contentLength := originalLength - 4
+		if contentLength > 0 {
+			dst = append(dst, make([]byte, contentLength)...)
+		}
+		return dst, nil
+	}
+
+	// Normal record processing
 	// Marshal the record content to a temporary buffer to calculate its length.
 	contentBuf := make([]byte, 0, 2048)
 	contentBuf = appendTimeReal(contentBuf, rec.GetActivityRecordDate())

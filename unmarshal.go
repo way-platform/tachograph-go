@@ -1,6 +1,7 @@
 package tachograph
 
 import (
+	"bufio"
 	"bytes"
 	"encoding/binary"
 	"errors"
@@ -11,6 +12,102 @@ import (
 	tachographv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/v1"
 	vuv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/vu/v1"
 )
+
+// TLVRecord represents a parsed TLV record with optional signature
+type TLVRecord struct {
+	FID       uint16
+	Appendix  uint8
+	Value     []byte
+	Signature []byte // Optional signature if this is a signed EF
+}
+
+// ScanTLV is a split function for bufio.Scanner that splits TLV records
+func ScanTLV(data []byte, atEOF bool) (advance int, token []byte, err error) {
+	if atEOF && len(data) == 0 {
+		return 0, nil, nil
+	}
+
+	// Need at least 5 bytes for TLV header (3 bytes tag + 2 bytes length)
+	if len(data) < 5 {
+		if atEOF {
+			return 0, nil, errors.New("incomplete TLV header")
+		}
+		return 0, nil, nil // Need more data
+	}
+
+	// Parse TLV header
+	length := binary.BigEndian.Uint16(data[3:5])
+	totalLength := 5 + int(length) // 5 bytes header + value length
+
+	if len(data) < totalLength {
+		if atEOF {
+			return 0, nil, errors.New("incomplete TLV record")
+		}
+		return 0, nil, nil // Need more data
+	}
+
+	// Return the complete TLV record
+	return totalLength, data[:totalLength], nil
+}
+
+// ParseTLVRecords parses binary data into TLV records, automatically pairing data records with their signatures
+func ParseTLVRecords(data []byte) ([]*TLVRecord, error) {
+	scanner := bufio.NewScanner(bytes.NewReader(data))
+	scanner.Split(ScanTLV)
+
+	var records []*TLVRecord
+	var pendingDataRecord *TLVRecord
+
+	for scanner.Scan() {
+		tlvData := scanner.Bytes()
+		if len(tlvData) < 5 {
+			continue
+		}
+
+		// Parse TLV header
+		fid := binary.BigEndian.Uint16(tlvData[0:2])
+		appendix := tlvData[2]
+		length := binary.BigEndian.Uint16(tlvData[3:5])
+		value := tlvData[5 : 5+length]
+
+		record := &TLVRecord{
+			FID:      fid,
+			Appendix: appendix,
+			Value:    make([]byte, len(value)),
+		}
+		copy(record.Value, value)
+
+		// Handle signature pairing
+		if appendix == 0x01 || appendix == 0x03 {
+			// This is a signature record
+			if pendingDataRecord != nil && pendingDataRecord.FID == fid {
+				// Pair with the pending data record
+				pendingDataRecord.Signature = record.Value
+				records = append(records, pendingDataRecord)
+				pendingDataRecord = nil
+			}
+			// If no matching data record, skip this signature
+		} else {
+			// This is a data record (appendix 0x00 or 0x02)
+			if pendingDataRecord != nil {
+				// Add the previous unpaired data record without signature
+				records = append(records, pendingDataRecord)
+			}
+			pendingDataRecord = record
+		}
+	}
+
+	// Add any remaining unpaired data record
+	if pendingDataRecord != nil {
+		records = append(records, pendingDataRecord)
+	}
+
+	if err := scanner.Err(); err != nil {
+		return nil, err
+	}
+
+	return records, nil
+}
 
 // UnmarshalFile parses a .DDD file's byte data into a protobuf File message.
 func UnmarshalFile(data []byte) (*tachographv1.File, error) {
@@ -29,42 +126,21 @@ func unmarshalCard(data []byte) (*tachographv1.File, error) {
 	file.SetType(tachographv1.File_DRIVER_CARD) // Assume Driver card for now
 	file.SetDriverCard(&cardv1.DriverCardFile{})
 
-	// Track any truly proprietary EFs (none expected for standard cards)
+	// Parse TLV records with automatic signature pairing
+	tlvRecords, err := ParseTLVRecords(data)
+	if err != nil {
+		return nil, err
+	}
 
-	r := bytes.NewReader(data)
-
-	for r.Len() > 0 {
-		// Read Tag - 3 bytes (FID + appendix) according to DDD format spec
-		tagBytes := make([]byte, 3)
-		if _, err := r.Read(tagBytes); err != nil {
-			return nil, err
-		}
-		// Extract FID (first 2 bytes) and appendix (last byte)
-		fid := binary.BigEndian.Uint16(tagBytes[0:2])
-		appendix := tagBytes[2]
-
-		// Read Length - 2 bytes
-		var length uint16
-		if err := binary.Read(r, binary.BigEndian, &length); err != nil {
-			return nil, err
-		}
-
-		value := make([]byte, length)
-		if _, err := r.Read(value); err != nil {
-			return nil, err
-		}
-
-		// Skip signatures (appendix '01' and '03') - we only process data (appendix '00' and '02')
-		if appendix == 0x01 || appendix == 0x03 {
-			continue // Skip signature TLV objects
-		}
-
+	// Process each TLV record
+	for _, record := range tlvRecords {
 		// Find file type from FID and dispatch
-		fileType := findFileTypeByTag(int32(fid))
+		fileType := findFileTypeByTag(int32(record.FID))
 
 		// Debug: log all FIDs being processed
-		// if fid >= 0xC000 {
-		//	fmt.Printf("DEBUG: Processing FID 0x%04X, fileType=%v, appendix=0x%02X\n", fid, fileType, appendix)
+		// if record.FID >= 0xC000 {
+		//	fmt.Printf("DEBUG: Processing FID 0x%04X, fileType=%v, appendix=0x%02X, hasSignature=%v\n",
+		//		record.FID, fileType, record.Appendix, len(record.Signature) > 0)
 		// }
 
 		if fileType == cardv1.ElementaryFileType_ELEMENTARY_FILE_UNSPECIFIED {
@@ -76,105 +152,105 @@ func unmarshalCard(data []byte) (*tachographv1.File, error) {
 		switch fileType {
 		case cardv1.ElementaryFileType_EF_ICC:
 			icc := &cardv1.IccIdentification{}
-			if err := UnmarshalIcc(value, icc); err != nil {
+			if err := UnmarshalIcc(record.Value, icc); err != nil {
 				return nil, err
 			}
 			driverCard.SetIcc(icc)
 		case cardv1.ElementaryFileType_EF_IC:
 			ic := &cardv1.ChipIdentification{}
-			if err := UnmarshalCardIc(value, ic); err != nil {
+			if err := UnmarshalCardIc(record.Value, ic); err != nil {
 				return nil, err
 			}
 			driverCard.SetIc(ic)
 		case cardv1.ElementaryFileType_EF_IDENTIFICATION:
 			identification := &cardv1.CardIdentification{}
 			holderIdentification := &cardv1.DriverCardHolderIdentification{}
-			if err := UnmarshalIdentification(value, identification, holderIdentification); err != nil {
+			if err := UnmarshalIdentification(record.Value, identification, holderIdentification); err != nil {
 				return nil, err
 			}
 			driverCard.SetIdentification(identification)
 			driverCard.SetHolderIdentification(holderIdentification)
 		case cardv1.ElementaryFileType_EF_DRIVING_LICENCE_INFO:
 			drivingLicenceInfo := &cardv1.DrivingLicenceInfo{}
-			if err := UnmarshalDrivingLicenceInfo(value, drivingLicenceInfo); err != nil {
+			if err := UnmarshalDrivingLicenceInfo(record.Value, drivingLicenceInfo); err != nil {
 				return nil, err
 			}
 			driverCard.SetDrivingLicenceInfo(drivingLicenceInfo)
 		case cardv1.ElementaryFileType_EF_EVENTS_DATA:
 			eventsData := &cardv1.EventData{}
-			if err := UnmarshalEventsData(value, eventsData); err != nil {
+			if err := UnmarshalEventsData(record.Value, eventsData); err != nil {
 				return nil, err
 			}
 			driverCard.SetEventsData(eventsData)
 		case cardv1.ElementaryFileType_EF_FAULTS_DATA:
 			faultsData := &cardv1.FaultData{}
-			if err := UnmarshalFaultsData(value, faultsData); err != nil {
+			if err := UnmarshalFaultsData(record.Value, faultsData); err != nil {
 				return nil, err
 			}
 			driverCard.SetFaultsData(faultsData)
 		case cardv1.ElementaryFileType_EF_DRIVER_ACTIVITY_DATA:
 			activityData := &cardv1.DriverActivity{}
-			if err := UnmarshalCardActivityData(value, activityData); err != nil {
+			if err := UnmarshalCardActivityData(record.Value, activityData); err != nil {
 				return nil, err
 			}
 			driverCard.SetDriverActivityData(activityData)
 		case cardv1.ElementaryFileType_EF_VEHICLES_USED:
 			vehiclesUsed := &cardv1.VehiclesUsed{}
-			if err := UnmarshalCardVehiclesUsed(value, vehiclesUsed); err != nil {
+			if err := UnmarshalCardVehiclesUsed(record.Value, vehiclesUsed); err != nil {
 				return nil, err
 			}
 			driverCard.SetVehiclesUsed(vehiclesUsed)
 		case cardv1.ElementaryFileType_EF_PLACES:
 			places := &cardv1.Places{}
-			if err := UnmarshalCardPlaces(value, places); err != nil {
+			if err := UnmarshalCardPlaces(record.Value, places); err != nil {
 				return nil, err
 			}
 			driverCard.SetPlaces(places)
 		case cardv1.ElementaryFileType_EF_CURRENT_USAGE:
 			currentUsage := &cardv1.CurrentUsage{}
-			if err := UnmarshalCardCurrentUsage(value, currentUsage); err != nil {
+			if err := UnmarshalCardCurrentUsage(record.Value, currentUsage); err != nil {
 				return nil, err
 			}
 			driverCard.SetCurrentUsage(currentUsage)
 		case cardv1.ElementaryFileType_EF_APPLICATION_IDENTIFICATION:
 			appId := &cardv1.DriverCardApplicationIdentification{}
-			if err := UnmarshalCardApplicationIdentification(value, appId); err != nil {
+			if err := UnmarshalCardApplicationIdentification(record.Value, appId); err != nil {
 				return nil, err
 			}
 			driverCard.SetApplicationIdentification(appId)
 		case cardv1.ElementaryFileType_EF_CONTROL_ACTIVITY_DATA:
 			controlActivity := &cardv1.ControlActivityData{}
-			if err := UnmarshalCardControlActivityData(value, controlActivity); err != nil {
+			if err := UnmarshalCardControlActivityData(record.Value, controlActivity); err != nil {
 				return nil, err
 			}
 			driverCard.SetControlActivityData(controlActivity)
 		case cardv1.ElementaryFileType_EF_SPECIFIC_CONDITIONS:
 			specificConditions := &cardv1.SpecificConditions{}
-			if err := UnmarshalCardSpecificConditions(value, specificConditions); err != nil {
+			if err := UnmarshalCardSpecificConditions(record.Value, specificConditions); err != nil {
 				return nil, err
 			}
 			driverCard.SetSpecificConditions(specificConditions)
 		case cardv1.ElementaryFileType_EF_CARD_DOWNLOAD_DRIVER:
 			lastDownload := &cardv1.LastCardDownload{}
-			if err := UnmarshalCardLastDownload(value, lastDownload); err != nil {
+			if err := UnmarshalCardLastDownload(record.Value, lastDownload); err != nil {
 				return nil, err
 			}
 			driverCard.SetLastCardDownload(lastDownload)
 		case cardv1.ElementaryFileType_EF_VEHICLE_UNITS_USED:
 			vehicleUnits := &cardv1.VehicleUnitsUsed{}
-			if err := UnmarshalCardVehicleUnitsUsed(value, vehicleUnits); err != nil {
+			if err := UnmarshalCardVehicleUnitsUsed(record.Value, vehicleUnits); err != nil {
 				return nil, err
 			}
 			driverCard.SetVehicleUnitsUsed(vehicleUnits)
 		case cardv1.ElementaryFileType_EF_GNSS_PLACES:
 			gnssPlaces := &cardv1.GnssPlaces{}
-			if err := UnmarshalCardGnssPlaces(value, gnssPlaces); err != nil {
+			if err := UnmarshalCardGnssPlaces(record.Value, gnssPlaces); err != nil {
 				return nil, err
 			}
 			driverCard.SetGnssPlaces(gnssPlaces)
 		case cardv1.ElementaryFileType_EF_APPLICATION_IDENTIFICATION_V2:
 			appIdV2 := &cardv1.ApplicationIdentificationV2{}
-			if err := UnmarshalCardApplicationIdentificationV2(value, appIdV2); err != nil {
+			if err := UnmarshalCardApplicationIdentificationV2(record.Value, appIdV2); err != nil {
 				return nil, err
 			}
 			driverCard.SetApplicationIdentificationV2(appIdV2)
@@ -183,13 +259,13 @@ func unmarshalCard(data []byte) (*tachographv1.File, error) {
 			if driverCard.GetCertificates() == nil {
 				driverCard.SetCertificates(&cardv1.Certificates{})
 			}
-			driverCard.GetCertificates().SetCardCertificate(value)
+			driverCard.GetCertificates().SetCardCertificate(record.Value)
 		case cardv1.ElementaryFileType_EF_CA_CERTIFICATE:
 			// Initialize certificates if needed
 			if driverCard.GetCertificates() == nil {
 				driverCard.SetCertificates(&cardv1.Certificates{})
 			}
-			driverCard.GetCertificates().SetCaCertificate(value)
+			driverCard.GetCertificates().SetCaCertificate(record.Value)
 		}
 	}
 

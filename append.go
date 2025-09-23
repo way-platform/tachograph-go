@@ -25,14 +25,28 @@ func (c *compositeMessage) String() string                     { return "" }
 
 // Marshal serializes a protobuf File message into the binary DDD file format.
 func Marshal(file *tachographv1.File) ([]byte, error) {
+	return MarshalWithOriginal(file, nil)
+}
+
+// MarshalWithOriginal serializes a protobuf File message into the binary DDD file format,
+// preserving original signatures from the originalData if provided.
+func MarshalWithOriginal(file *tachographv1.File, originalData []byte) ([]byte, error) {
 	// Start with a reasonably sized buffer to avoid reallocations.
 	buf := make([]byte, 0, 8192)
 	var err error
 
 	switch file.GetType() {
 	case tachographv1.File_DRIVER_CARD:
-		// Strategy: DriverCardFile → RawCardFile → Binary
-		rawFile, err := DriverCardFileToRaw(file.GetDriverCard())
+		// Strategy: DriverCardFile → RawCardFile → Binary with signature preservation
+		var originalRawFile *cardv1.RawCardFile
+		if originalData != nil {
+			originalRawFile, err = UnmarshalRawCardFile(originalData)
+			if err != nil {
+				return nil, err
+			}
+		}
+
+		rawFile, err := DriverCardFileToRawWithSignatures(file.GetDriverCard(), originalRawFile)
 		if err != nil {
 			return nil, err
 		}

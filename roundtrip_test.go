@@ -61,8 +61,8 @@ func testRoundtripFile(t *testing.T, filePath string) {
 
 	t.Logf("Successfully unmarshalled file type: %v", file.GetType())
 
-	// Step 3: Marshal the data back
-	marshalledData, err := Marshal(file)
+	// Step 3: Marshal the data back with original signatures preserved
+	marshalledData, err := MarshalWithOriginal(file, originalData)
 	if err != nil {
 		t.Fatalf("Failed to marshal file %s: %v", filePath, err)
 	}

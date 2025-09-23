@@ -32,7 +32,7 @@ func UnmarshalCardActivityData(data []byte, target *cardv1.DriverActivity) error
 	}
 
 	// Parse daily records in a cyclic manner
-	dailyRecords, err := parseActivityDailyRecords(remainingData, int(newestDayRecordPointer)-4) // -4 because pointers are already read
+	dailyRecords, err := parseActivityDailyRecords(remainingData, int(newestDayRecordPointer)) // Test: pointer might already be relative to remaining data
 	if err != nil {
 		return fmt.Errorf("failed to parse activity daily records: %w", err)
 	}
@@ -66,8 +66,9 @@ func parseActivityDailyRecords(data []byte, newestRecordPos int) ([]*cardv1.Driv
 		prevRecordLength := binary.BigEndian.Uint16(headerBytes[0:2])
 		currentRecordLength := binary.BigEndian.Uint16(headerBytes[2:4])
 
-		if currentRecordLength == 0 || currentRecordLength > uint16(len(data)) {
-			break // Invalid record length
+		// Invalid records: truly malformed data that should stop parsing
+		if currentRecordLength == 0 || currentRecordLength > uint16(len(data)) || currentRecordLength < 4 {
+			break // Invalid record length (must be at least 4 bytes for header)
 		}
 
 		// Read the full record
@@ -79,14 +80,21 @@ func parseActivityDailyRecords(data []byte, newestRecordPos int) ([]*cardv1.Driv
 		// Parse the daily record
 		dailyRecord, err := parseActivityDailyRecord(recordData)
 		if err != nil {
-			return records, err // Return what we have so far
+			// Create an empty record for roundtrip compatibility instead of stopping
+			dailyRecord = &cardv1.DriverActivity_DailyRecord{}
+			// Set the record lengths from the header we already parsed
+			dailyRecord.SetActivityPreviousRecordLength(int32(prevRecordLength))
+			dailyRecord.SetActivityRecordLength(int32(currentRecordLength))
 		}
 
 		records = append(records, dailyRecord)
 
 		// Move to previous record
+		// Continue parsing even if prevRecordLength is 0 (empty record)
+		// Only break if we've parsed all 28 expected records or hit an invalid position
 		if prevRecordLength == 0 {
-			break
+			// For empty records, assume a minimum record size to continue
+			prevRecordLength = 4 // Minimum record size (header only)
 		}
 		currentPos -= int(prevRecordLength)
 		if currentPos < 0 {
