@@ -5,6 +5,7 @@ import (
 	"encoding/binary"
 	"errors"
 	"reflect"
+	"unsafe"
 
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/reflect/protoreflect"
@@ -59,6 +60,11 @@ func appendDriverCard(dst []byte, card *cardv1.DriverCardFile) ([]byte, error) {
 		return nil, err
 	}
 
+	dst, err = appendTlv(dst, cardv1.ElementaryFileType_EF_IC, card.GetIc(), AppendCardIc)
+	if err != nil {
+		return nil, err
+	}
+
 	// EF_Identification is a composite file, so we handle it specially.
 	valBuf := make([]byte, 0, 143)
 	valBuf, err = AppendCardIdentification(valBuf, card.GetIdentification())
@@ -88,7 +94,8 @@ func appendDriverCard(dst []byte, card *cardv1.DriverCardFile) ([]byte, error) {
 
 	eventsByType := make(map[int32][]*cardv1.EventData_Record)
 	for _, e := range allEvents {
-		eventsByType[e.GetEventType()] = append(eventsByType[e.GetEventType()], e)
+		protocolValue := GetEventFaultTypeProtocolValue(e.GetEventType(), e.GetUnrecognizedEventType())
+		eventsByType[protocolValue] = append(eventsByType[protocolValue], e)
 	}
 
 	// The 6 event groups in a Gen1 card file structure, ordered by type code.
@@ -170,19 +177,47 @@ func appendDriverCard(dst []byte, card *cardv1.DriverCardFile) ([]byte, error) {
 		return nil, err
 	}
 
-	dst, err = appendTlv(dst, cardv1.ElementaryFileType_EF_CONTROL_ACTIVITY_DATA, card.GetControlActivityData(), AppendControlActivityData)
+	dst, err = appendTlv(dst, cardv1.ElementaryFileType_EF_CONTROL_ACTIVITY_DATA, card.GetControlActivityData(), AppendCardControlActivityData)
 	if err != nil {
 		return nil, err
 	}
 
-	dst, err = appendTlv(dst, cardv1.ElementaryFileType_EF_SPECIFIC_CONDITIONS, card.GetSpecificConditions(), AppendSpecificConditions)
+	dst, err = appendTlv(dst, cardv1.ElementaryFileType_EF_SPECIFIC_CONDITIONS, card.GetSpecificConditions(), AppendCardSpecificConditions)
 	if err != nil {
 		return nil, err
 	}
 
-	dst, err = appendTlv(dst, cardv1.ElementaryFileType_EF_CARD_DOWNLOAD_DRIVER, card.GetLastCardDownload(), AppendLastCardDownload)
+	dst, err = appendTlv(dst, cardv1.ElementaryFileType_EF_CARD_DOWNLOAD_DRIVER, card.GetLastCardDownload(), AppendCardLastDownload)
 	if err != nil {
 		return nil, err
+	}
+
+	dst, err = appendTlv(dst, cardv1.ElementaryFileType_EF_APPLICATION_IDENTIFICATION, card.GetApplicationIdentification(), AppendCardApplicationIdentification)
+	if err != nil {
+		return nil, err
+	}
+
+	dst, err = appendTlv(dst, cardv1.ElementaryFileType_EF_VEHICLE_UNITS_USED, card.GetVehicleUnitsUsed(), AppendCardVehicleUnitsUsed)
+	if err != nil {
+		return nil, err
+	}
+
+	dst, err = appendTlv(dst, cardv1.ElementaryFileType_EF_GNSS_PLACES, card.GetGnssPlaces(), AppendCardGnssPlaces)
+	if err != nil {
+		return nil, err
+	}
+
+	dst, err = appendTlv(dst, cardv1.ElementaryFileType_EF_APPLICATION_IDENTIFICATION_V2, card.GetApplicationIdentificationV2(), AppendCardApplicationIdentificationV2)
+	if err != nil {
+		return nil, err
+	}
+
+	// Append proprietary EFs if any exist for this card
+	cardPtr := uintptr(unsafe.Pointer(card))
+	if proprietaryEFs := GetProprietaryEFs(cardPtr); proprietaryEFs != nil {
+		dst = proprietaryEFs.AppendProprietaryEFs(dst)
+		// Clean up after marshalling
+		ClearProprietaryEFs(cardPtr)
 	}
 
 	return dst, nil
@@ -205,7 +240,7 @@ func appendTlv[T proto.Message](
 	tag := proto.GetExtension(opts, cardv1.E_FileId).(int32)
 
 	lenPos := len(dst)
-	dst = append(dst, 0, 0, 0, 0) // Placeholder for Tag and Length
+	dst = append(dst, 0, 0, 0, 0, 0) // Placeholder for Tag (3 bytes) and Length (2 bytes)
 	valPos := len(dst)
 
 	var err error
@@ -216,10 +251,19 @@ func appendTlv[T proto.Message](
 
 	valLen := len(dst) - valPos
 
+	// Write data tag (FID + appendix 0x00)
 	binary.BigEndian.PutUint16(dst[lenPos:], uint16(tag))
-	binary.BigEndian.PutUint16(dst[lenPos+2:], uint16(valLen))
+	dst[lenPos+2] = 0x00 // appendix for data
+	binary.BigEndian.PutUint16(dst[lenPos+3:], uint16(valLen))
 
-	// TODO: Handle signature appendage (tag appendix 0x01)
+	// Add signature block (FID + appendix 0x01, 128 bytes of zeros for now)
+	dst = binary.BigEndian.AppendUint16(dst, uint16(tag))
+	dst = append(dst, 0x01)                       // appendix for signature
+	dst = binary.BigEndian.AppendUint16(dst, 128) // Signature length
+	// Add 128 bytes of signature data (zeros for now)
+	signature := make([]byte, 128)
+	dst = append(dst, signature...)
+
 	return dst, nil
 }
 
@@ -250,7 +294,14 @@ func appendVU(dst []byte, file *tachographv1.File) ([]byte, error) {
 			AppendDownloadInterfaceVersion(buf, transfer.GetDownloadInterfaceVersion())
 		case vuv1.TransferType_OVERVIEW_GEN1, vuv1.TransferType_OVERVIEW_GEN2_V1, vuv1.TransferType_OVERVIEW_GEN2_V2:
 			AppendOverview(buf, transfer.GetOverview())
-		// Add more cases as we implement them
+		case vuv1.TransferType_ACTIVITIES_GEN1, vuv1.TransferType_ACTIVITIES_GEN2_V1, vuv1.TransferType_ACTIVITIES_GEN2_V2:
+			AppendVuActivities(buf, transfer.GetActivities())
+		case vuv1.TransferType_EVENTS_AND_FAULTS_GEN1, vuv1.TransferType_EVENTS_AND_FAULTS_GEN2_V1:
+			AppendVuEventsAndFaults(buf, transfer.GetEventsAndFaults())
+		case vuv1.TransferType_DETAILED_SPEED_GEN1, vuv1.TransferType_DETAILED_SPEED_GEN2:
+			AppendVuDetailedSpeed(buf, transfer.GetDetailedSpeed())
+		case vuv1.TransferType_TECHNICAL_DATA_GEN1, vuv1.TransferType_TECHNICAL_DATA_GEN2_V1:
+			AppendVuTechnicalData(buf, transfer.GetTechnicalData())
 		default:
 			// Skip unknown transfer types
 		}

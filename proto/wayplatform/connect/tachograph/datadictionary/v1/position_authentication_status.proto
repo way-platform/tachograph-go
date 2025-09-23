@@ -1,0 +1,16 @@
+edition = "2023";
+
+package wayplatform.connect.tachograph.datadictionary.v1;
+
+import "wayplatform/connect/tachograph/datadictionary/v1/annotations.proto";
+
+// PositionAuthenticationStatus indicates the authentication status of a GNSS fix.
+// See Data Dictionary, Section 2.117a.
+enum PositionAuthenticationStatus {
+  POSITION_AUTHENTICATION_STATUS_UNSPECIFIED = 0;
+  POSITION_AUTHENTICATION_STATUS_UNRECOGNIZED = 1;
+  NOT_AVAILABLE = 2 [(protocol_enum_value) = 0];
+  AUTHENTICATED = 3 [(protocol_enum_value) = 1];
+  NOT_AUTHENTICATED = 4 [(protocol_enum_value) = 2];
+  AUTHENTICATION_CORRUPTED = 5 [(protocol_enum_value) = 3];
+}

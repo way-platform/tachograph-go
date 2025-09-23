@@ -1,0 +1,65 @@
+edition = "2023";
+
+package wayplatform.connect.tachograph.datadictionary.v1;
+
+import "wayplatform/connect/tachograph/datadictionary/v1/annotations.proto";
+
+// NationNumeric represents a country.
+// See Data Dictionary, Section 2.101 and ISO 3166. This is a partial list.
+enum NationNumeric {
+  NATION_NUMERIC_UNSPECIFIED = 0;
+  NATION_NUMERIC_UNRECOGNIZED = 1;
+  NO_INFORMATION_AVAILABLE = 2 [(protocol_enum_value) = 0];
+  AUSTRIA = 3 [(protocol_enum_value) = 1];
+  ALBANIA = 4 [(protocol_enum_value) = 2];
+  ANDORRA = 5 [(protocol_enum_value) = 3];
+  ARMENIA = 6 [(protocol_enum_value) = 4];
+  AZERBAIJAN = 7 [(protocol_enum_value) = 5];
+  BELGIUM = 8 [(protocol_enum_value) = 6];
+  BULGARIA = 9 [(protocol_enum_value) = 7];
+  BOSNIA_HERZEGOVINA = 10 [(protocol_enum_value) = 8];
+  BELARUS = 11; // 9
+  SWITZERLAND = 12; // 10
+  CYPRUS = 13; // 11
+  CZECH_REPUBLIC = 14; // 12
+  GERMANY = 15; // 13
+  DENMARK = 16; // 14
+  SPAIN = 17; // 15
+  ESTONIA = 18; // 16
+  FRANCE = 19; // 17
+  FINLAND = 20; // 18
+  LIECHTENSTEIN = 21; // 19
+  FAROE_ISLANDS = 22; // 20
+  UNITED_KINGDOM = 23; // 21
+  GEORGIA = 24; // 22
+  GREECE = 25; // 23
+  HUNGARY = 26; // 24
+  CROATIA = 27; // 25
+  ITALY = 28; // 26
+  IRELAND = 29; // 27
+  ICELAND = 30; // 28
+  KAZAKHSTAN = 31; // 29
+  LUXEMBOURG = 32; // 30
+  LITHUANIA = 33; // 31
+  LATVIA = 34; // 32
+  MALTA = 35; // 33
+  MONACO = 36; // 34
+  REPUBLIC_OF_MOLDOVA = 37; // 35
+  NORTH_MACEDONIA = 38; // 36
+  NORWAY = 39; // 37
+  NETHERLANDS = 40; // 38
+  PORTUGAL = 41; // 39
+  POLAND = 42; // 40
+  ROMANIA = 43; // 41
+  RUSSIAN_FEDERATION = 44; // 42
+  SAN_MARINO = 45; // 43
+  SWEDEN = 46; // 44
+  SLOVAKIA = 47; // 45
+  SLOVENIA = 48; // 46
+  TURKMENISTAN = 49; // 47
+  TURKEY = 50; // 48
+  UKRAINE = 51; // 49
+  VATICAN_CITY = 52; // 50
+  REST_OF_EUROPE = 53; // 250
+  REST_OF_THE_WORLD = 54; // 251
+}

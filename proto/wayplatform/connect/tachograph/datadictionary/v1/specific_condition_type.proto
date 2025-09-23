@@ -1,0 +1,16 @@
+edition = "2023";
+
+package wayplatform.connect.tachograph.datadictionary.v1;
+
+import "wayplatform/connect/tachograph/datadictionary/v1/annotations.proto";
+
+// SpecificConditionType indicates special circumstances like ferry crossings.
+// See Data Dictionary, Section 2.154.
+enum SpecificConditionType {
+  SPECIFIC_CONDITION_TYPE_UNSPECIFIED = 0;
+  SPECIFIC_CONDITION_TYPE_UNRECOGNIZED = 1;
+  RFU = 2 [(protocol_enum_value) = 0];
+  OUT_OF_SCOPE_BEGIN = 3 [(protocol_enum_value) = 1];
+  OUT_OF_SCOPE_END = 4 [(protocol_enum_value) = 2];
+  FERRY_TRAIN_CROSSING = 5 [(protocol_enum_value) = 3];
+}

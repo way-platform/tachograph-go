@@ -1,0 +1,15 @@
+edition = "2023";
+
+package wayplatform.connect.tachograph.datadictionary.v1;
+
+import "wayplatform/connect/tachograph/datadictionary/v1/annotations.proto";
+
+// LoadType indicates the type of load being transported.
+// See Data Dictionary, Section 2.90a.
+enum LoadType {
+  LOAD_TYPE_UNSPECIFIED = 0;
+  LOAD_TYPE_UNRECOGNIZED = 1;
+  NOT_DEFINED = 2 [(protocol_enum_value) = 0];
+  PASSENGERS = 3 [(protocol_enum_value) = 1];
+  GOODS = 4 [(protocol_enum_value) = 2];
+}

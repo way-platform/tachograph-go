@@ -1,0 +1,14 @@
+edition = "2023";
+
+package wayplatform.connect.tachograph.datadictionary.v1;
+
+import "wayplatform/connect/tachograph/datadictionary/v1/annotations.proto";
+
+// DrivingStatus indicates single driver or crew.
+// See Data Dictionary, Section 2.1.
+enum DrivingStatus {
+  DRIVING_STATUS_UNSPECIFIED = 0;
+  DRIVING_STATUS_UNRECOGNIZED = 1;
+  SINGLE = 2 [(protocol_enum_value) = 0];
+  CREW = 3 [(protocol_enum_value) = 1];
+}

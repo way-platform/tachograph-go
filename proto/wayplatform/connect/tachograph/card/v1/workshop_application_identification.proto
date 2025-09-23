@@ -2,32 +2,35 @@ edition = "2023";
 
 package wayplatform.connect.tachograph.card.v1;
 
+import "wayplatform/connect/tachograph/datadictionary/v1/equipment_type.proto";
+
 // Represents the application identification data for a workshop card.
 //
 // Corresponds to the `WorkshopCardApplicationIdentification` data type.
 // See Data Dictionary, Section 2.234.
-message WorkshopApplicationIdentification {
+message WorkshopCardApplicationIdentification {
   // See Data Dictionary, Section 2.234, `typeOfTachographCardId`.
-  int32 type_of_tachograph_card_id = 1;
+  datadictionary.v1.EquipmentType type_of_tachograph_card_id = 1;
+  int32 unrecognized_type_of_tachograph_card_id = 2;
 
   // See Data Dictionary, Section 2.234, `cardStructureVersion`.
-  bytes card_structure_version = 2;
+  bytes card_structure_version = 3;
 
   // See Data Dictionary, Section 2.234, `noOfEventsPerType`.
-  int32 events_per_type_count = 3;
+  int32 events_per_type_count = 4;
 
   // See Data Dictionary, Section 2.234, `noOfFaultsPerType`.
-  int32 faults_per_type_count = 4;
+  int32 faults_per_type_count = 5;
 
   // See Data Dictionary, Section 2.234, `activityStructureLength`.
-  int32 activity_structure_length = 5;
+  int32 activity_structure_length = 6;
 
   // See Data Dictionary, Section 2.234, `noOfCardVehicleRecords`.
-  int32 card_vehicle_records_count = 6;
+  int32 card_vehicle_records_count = 7;
 
   // See Data Dictionary, Section 2.234, `noOfCardPlaceRecords`.
-  int32 card_place_records_count = 7;
+  int32 card_place_records_count = 8;
 
   // See Data Dictionary, Section 2.234, `noOfCalibrationRecords`.
-  int32 calibration_records_count = 8;
+  int32 calibration_records_count = 9;
 }

@@ -40,7 +40,10 @@ func UnmarshalFaultsData(data []byte, fd *cardv1.FaultData) error {
 func UnmarshalFaultRecord(data []byte, rec *cardv1.FaultData_Record) error {
 	r := bytes.NewReader(data)
 	faultType, _ := r.ReadByte()
-	rec.SetFaultType(int32(faultType))
+
+	// Convert raw fault type to enum using protocol annotations
+	SetEventFaultType(int32(faultType), rec.SetFaultType, rec.SetUnrecognizedFaultType)
+
 	rec.SetFaultBeginTime(readTimeReal(r))
 	rec.SetFaultEndTime(readTimeReal(r))
 	// TODO: Read BCD nation code

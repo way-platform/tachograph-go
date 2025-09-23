@@ -7,6 +7,7 @@
 package cardv1
 
 import (
+	v1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/datadictionary/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -24,36 +25,37 @@ const (
 //
 // Corresponds to the `WorkshopCardApplicationIdentification` data type.
 // See Data Dictionary, Section 2.234.
-type WorkshopApplicationIdentification struct {
-	state                              protoimpl.MessageState `protogen:"opaque.v1"`
-	xxx_hidden_TypeOfTachographCardId  int32                  `protobuf:"varint,1,opt,name=type_of_tachograph_card_id,json=typeOfTachographCardId"`
-	xxx_hidden_CardStructureVersion    []byte                 `protobuf:"bytes,2,opt,name=card_structure_version,json=cardStructureVersion"`
-	xxx_hidden_EventsPerTypeCount      int32                  `protobuf:"varint,3,opt,name=events_per_type_count,json=eventsPerTypeCount"`
-	xxx_hidden_FaultsPerTypeCount      int32                  `protobuf:"varint,4,opt,name=faults_per_type_count,json=faultsPerTypeCount"`
-	xxx_hidden_ActivityStructureLength int32                  `protobuf:"varint,5,opt,name=activity_structure_length,json=activityStructureLength"`
-	xxx_hidden_CardVehicleRecordsCount int32                  `protobuf:"varint,6,opt,name=card_vehicle_records_count,json=cardVehicleRecordsCount"`
-	xxx_hidden_CardPlaceRecordsCount   int32                  `protobuf:"varint,7,opt,name=card_place_records_count,json=cardPlaceRecordsCount"`
-	xxx_hidden_CalibrationRecordsCount int32                  `protobuf:"varint,8,opt,name=calibration_records_count,json=calibrationRecordsCount"`
-	XXX_raceDetectHookData             protoimpl.RaceDetectHookData
-	XXX_presence                       [1]uint32
-	unknownFields                      protoimpl.UnknownFields
-	sizeCache                          protoimpl.SizeCache
+type WorkshopCardApplicationIdentification struct {
+	state                                         protoimpl.MessageState `protogen:"opaque.v1"`
+	xxx_hidden_TypeOfTachographCardId             v1.EquipmentType       `protobuf:"varint,1,opt,name=type_of_tachograph_card_id,json=typeOfTachographCardId,enum=wayplatform.connect.tachograph.datadictionary.v1.EquipmentType"`
+	xxx_hidden_UnrecognizedTypeOfTachographCardId int32                  `protobuf:"varint,2,opt,name=unrecognized_type_of_tachograph_card_id,json=unrecognizedTypeOfTachographCardId"`
+	xxx_hidden_CardStructureVersion               []byte                 `protobuf:"bytes,3,opt,name=card_structure_version,json=cardStructureVersion"`
+	xxx_hidden_EventsPerTypeCount                 int32                  `protobuf:"varint,4,opt,name=events_per_type_count,json=eventsPerTypeCount"`
+	xxx_hidden_FaultsPerTypeCount                 int32                  `protobuf:"varint,5,opt,name=faults_per_type_count,json=faultsPerTypeCount"`
+	xxx_hidden_ActivityStructureLength            int32                  `protobuf:"varint,6,opt,name=activity_structure_length,json=activityStructureLength"`
+	xxx_hidden_CardVehicleRecordsCount            int32                  `protobuf:"varint,7,opt,name=card_vehicle_records_count,json=cardVehicleRecordsCount"`
+	xxx_hidden_CardPlaceRecordsCount              int32                  `protobuf:"varint,8,opt,name=card_place_records_count,json=cardPlaceRecordsCount"`
+	xxx_hidden_CalibrationRecordsCount            int32                  `protobuf:"varint,9,opt,name=calibration_records_count,json=calibrationRecordsCount"`
+	XXX_raceDetectHookData                        protoimpl.RaceDetectHookData
+	XXX_presence                                  [1]uint32
+	unknownFields                                 protoimpl.UnknownFields
+	sizeCache                                     protoimpl.SizeCache
 }
 
-func (x *WorkshopApplicationIdentification) Reset() {
-	*x = WorkshopApplicationIdentification{}
+func (x *WorkshopCardApplicationIdentification) Reset() {
+	*x = WorkshopCardApplicationIdentification{}
 	mi := &file_wayplatform_connect_tachograph_card_v1_workshop_application_identification_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *WorkshopApplicationIdentification) String() string {
+func (x *WorkshopCardApplicationIdentification) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*WorkshopApplicationIdentification) ProtoMessage() {}
+func (*WorkshopCardApplicationIdentification) ProtoMessage() {}
 
-func (x *WorkshopApplicationIdentification) ProtoReflect() protoreflect.Message {
+func (x *WorkshopCardApplicationIdentification) ProtoReflect() protoreflect.Message {
 	mi := &file_wayplatform_connect_tachograph_card_v1_workshop_application_identification_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -65,206 +67,233 @@ func (x *WorkshopApplicationIdentification) ProtoReflect() protoreflect.Message 
 	return mi.MessageOf(x)
 }
 
-func (x *WorkshopApplicationIdentification) GetTypeOfTachographCardId() int32 {
+func (x *WorkshopCardApplicationIdentification) GetTypeOfTachographCardId() v1.EquipmentType {
 	if x != nil {
-		return x.xxx_hidden_TypeOfTachographCardId
+		if protoimpl.X.Present(&(x.XXX_presence[0]), 0) {
+			return x.xxx_hidden_TypeOfTachographCardId
+		}
+	}
+	return v1.EquipmentType(0)
+}
+
+func (x *WorkshopCardApplicationIdentification) GetUnrecognizedTypeOfTachographCardId() int32 {
+	if x != nil {
+		return x.xxx_hidden_UnrecognizedTypeOfTachographCardId
 	}
 	return 0
 }
 
-func (x *WorkshopApplicationIdentification) GetCardStructureVersion() []byte {
+func (x *WorkshopCardApplicationIdentification) GetCardStructureVersion() []byte {
 	if x != nil {
 		return x.xxx_hidden_CardStructureVersion
 	}
 	return nil
 }
 
-func (x *WorkshopApplicationIdentification) GetEventsPerTypeCount() int32 {
+func (x *WorkshopCardApplicationIdentification) GetEventsPerTypeCount() int32 {
 	if x != nil {
 		return x.xxx_hidden_EventsPerTypeCount
 	}
 	return 0
 }
 
-func (x *WorkshopApplicationIdentification) GetFaultsPerTypeCount() int32 {
+func (x *WorkshopCardApplicationIdentification) GetFaultsPerTypeCount() int32 {
 	if x != nil {
 		return x.xxx_hidden_FaultsPerTypeCount
 	}
 	return 0
 }
 
-func (x *WorkshopApplicationIdentification) GetActivityStructureLength() int32 {
+func (x *WorkshopCardApplicationIdentification) GetActivityStructureLength() int32 {
 	if x != nil {
 		return x.xxx_hidden_ActivityStructureLength
 	}
 	return 0
 }
 
-func (x *WorkshopApplicationIdentification) GetCardVehicleRecordsCount() int32 {
+func (x *WorkshopCardApplicationIdentification) GetCardVehicleRecordsCount() int32 {
 	if x != nil {
 		return x.xxx_hidden_CardVehicleRecordsCount
 	}
 	return 0
 }
 
-func (x *WorkshopApplicationIdentification) GetCardPlaceRecordsCount() int32 {
+func (x *WorkshopCardApplicationIdentification) GetCardPlaceRecordsCount() int32 {
 	if x != nil {
 		return x.xxx_hidden_CardPlaceRecordsCount
 	}
 	return 0
 }
 
-func (x *WorkshopApplicationIdentification) GetCalibrationRecordsCount() int32 {
+func (x *WorkshopCardApplicationIdentification) GetCalibrationRecordsCount() int32 {
 	if x != nil {
 		return x.xxx_hidden_CalibrationRecordsCount
 	}
 	return 0
 }
 
-func (x *WorkshopApplicationIdentification) SetTypeOfTachographCardId(v int32) {
+func (x *WorkshopCardApplicationIdentification) SetTypeOfTachographCardId(v v1.EquipmentType) {
 	x.xxx_hidden_TypeOfTachographCardId = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 8)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 9)
 }
 
-func (x *WorkshopApplicationIdentification) SetCardStructureVersion(v []byte) {
+func (x *WorkshopCardApplicationIdentification) SetUnrecognizedTypeOfTachographCardId(v int32) {
+	x.xxx_hidden_UnrecognizedTypeOfTachographCardId = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 9)
+}
+
+func (x *WorkshopCardApplicationIdentification) SetCardStructureVersion(v []byte) {
 	if v == nil {
 		v = []byte{}
 	}
 	x.xxx_hidden_CardStructureVersion = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 8)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 9)
 }
 
-func (x *WorkshopApplicationIdentification) SetEventsPerTypeCount(v int32) {
+func (x *WorkshopCardApplicationIdentification) SetEventsPerTypeCount(v int32) {
 	x.xxx_hidden_EventsPerTypeCount = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 8)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 3, 9)
 }
 
-func (x *WorkshopApplicationIdentification) SetFaultsPerTypeCount(v int32) {
+func (x *WorkshopCardApplicationIdentification) SetFaultsPerTypeCount(v int32) {
 	x.xxx_hidden_FaultsPerTypeCount = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 3, 8)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 4, 9)
 }
 
-func (x *WorkshopApplicationIdentification) SetActivityStructureLength(v int32) {
+func (x *WorkshopCardApplicationIdentification) SetActivityStructureLength(v int32) {
 	x.xxx_hidden_ActivityStructureLength = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 4, 8)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 5, 9)
 }
 
-func (x *WorkshopApplicationIdentification) SetCardVehicleRecordsCount(v int32) {
+func (x *WorkshopCardApplicationIdentification) SetCardVehicleRecordsCount(v int32) {
 	x.xxx_hidden_CardVehicleRecordsCount = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 5, 8)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 6, 9)
 }
 
-func (x *WorkshopApplicationIdentification) SetCardPlaceRecordsCount(v int32) {
+func (x *WorkshopCardApplicationIdentification) SetCardPlaceRecordsCount(v int32) {
 	x.xxx_hidden_CardPlaceRecordsCount = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 6, 8)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 7, 9)
 }
 
-func (x *WorkshopApplicationIdentification) SetCalibrationRecordsCount(v int32) {
+func (x *WorkshopCardApplicationIdentification) SetCalibrationRecordsCount(v int32) {
 	x.xxx_hidden_CalibrationRecordsCount = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 7, 8)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 8, 9)
 }
 
-func (x *WorkshopApplicationIdentification) HasTypeOfTachographCardId() bool {
+func (x *WorkshopCardApplicationIdentification) HasTypeOfTachographCardId() bool {
 	if x == nil {
 		return false
 	}
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 0)
 }
 
-func (x *WorkshopApplicationIdentification) HasCardStructureVersion() bool {
+func (x *WorkshopCardApplicationIdentification) HasUnrecognizedTypeOfTachographCardId() bool {
 	if x == nil {
 		return false
 	}
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 1)
 }
 
-func (x *WorkshopApplicationIdentification) HasEventsPerTypeCount() bool {
+func (x *WorkshopCardApplicationIdentification) HasCardStructureVersion() bool {
 	if x == nil {
 		return false
 	}
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 2)
 }
 
-func (x *WorkshopApplicationIdentification) HasFaultsPerTypeCount() bool {
+func (x *WorkshopCardApplicationIdentification) HasEventsPerTypeCount() bool {
 	if x == nil {
 		return false
 	}
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 3)
 }
 
-func (x *WorkshopApplicationIdentification) HasActivityStructureLength() bool {
+func (x *WorkshopCardApplicationIdentification) HasFaultsPerTypeCount() bool {
 	if x == nil {
 		return false
 	}
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 4)
 }
 
-func (x *WorkshopApplicationIdentification) HasCardVehicleRecordsCount() bool {
+func (x *WorkshopCardApplicationIdentification) HasActivityStructureLength() bool {
 	if x == nil {
 		return false
 	}
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 5)
 }
 
-func (x *WorkshopApplicationIdentification) HasCardPlaceRecordsCount() bool {
+func (x *WorkshopCardApplicationIdentification) HasCardVehicleRecordsCount() bool {
 	if x == nil {
 		return false
 	}
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 6)
 }
 
-func (x *WorkshopApplicationIdentification) HasCalibrationRecordsCount() bool {
+func (x *WorkshopCardApplicationIdentification) HasCardPlaceRecordsCount() bool {
 	if x == nil {
 		return false
 	}
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 7)
 }
 
-func (x *WorkshopApplicationIdentification) ClearTypeOfTachographCardId() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 0)
-	x.xxx_hidden_TypeOfTachographCardId = 0
+func (x *WorkshopCardApplicationIdentification) HasCalibrationRecordsCount() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 8)
 }
 
-func (x *WorkshopApplicationIdentification) ClearCardStructureVersion() {
+func (x *WorkshopCardApplicationIdentification) ClearTypeOfTachographCardId() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 0)
+	x.xxx_hidden_TypeOfTachographCardId = v1.EquipmentType_EQUIPMENT_TYPE_UNSPECIFIED
+}
+
+func (x *WorkshopCardApplicationIdentification) ClearUnrecognizedTypeOfTachographCardId() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 1)
+	x.xxx_hidden_UnrecognizedTypeOfTachographCardId = 0
+}
+
+func (x *WorkshopCardApplicationIdentification) ClearCardStructureVersion() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 2)
 	x.xxx_hidden_CardStructureVersion = nil
 }
 
-func (x *WorkshopApplicationIdentification) ClearEventsPerTypeCount() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 2)
+func (x *WorkshopCardApplicationIdentification) ClearEventsPerTypeCount() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 3)
 	x.xxx_hidden_EventsPerTypeCount = 0
 }
 
-func (x *WorkshopApplicationIdentification) ClearFaultsPerTypeCount() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 3)
+func (x *WorkshopCardApplicationIdentification) ClearFaultsPerTypeCount() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 4)
 	x.xxx_hidden_FaultsPerTypeCount = 0
 }
 
-func (x *WorkshopApplicationIdentification) ClearActivityStructureLength() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 4)
+func (x *WorkshopCardApplicationIdentification) ClearActivityStructureLength() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 5)
 	x.xxx_hidden_ActivityStructureLength = 0
 }
 
-func (x *WorkshopApplicationIdentification) ClearCardVehicleRecordsCount() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 5)
+func (x *WorkshopCardApplicationIdentification) ClearCardVehicleRecordsCount() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 6)
 	x.xxx_hidden_CardVehicleRecordsCount = 0
 }
 
-func (x *WorkshopApplicationIdentification) ClearCardPlaceRecordsCount() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 6)
+func (x *WorkshopCardApplicationIdentification) ClearCardPlaceRecordsCount() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 7)
 	x.xxx_hidden_CardPlaceRecordsCount = 0
 }
 
-func (x *WorkshopApplicationIdentification) ClearCalibrationRecordsCount() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 7)
+func (x *WorkshopCardApplicationIdentification) ClearCalibrationRecordsCount() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 8)
 	x.xxx_hidden_CalibrationRecordsCount = 0
 }
 
-type WorkshopApplicationIdentification_builder struct {
+type WorkshopCardApplicationIdentification_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
 	// See Data Dictionary, Section 2.234, `typeOfTachographCardId`.
-	TypeOfTachographCardId *int32
+	TypeOfTachographCardId             *v1.EquipmentType
+	UnrecognizedTypeOfTachographCardId *int32
 	// See Data Dictionary, Section 2.234, `cardStructureVersion`.
 	CardStructureVersion []byte
 	// See Data Dictionary, Section 2.234, `noOfEventsPerType`.
@@ -281,40 +310,44 @@ type WorkshopApplicationIdentification_builder struct {
 	CalibrationRecordsCount *int32
 }
 
-func (b0 WorkshopApplicationIdentification_builder) Build() *WorkshopApplicationIdentification {
-	m0 := &WorkshopApplicationIdentification{}
+func (b0 WorkshopCardApplicationIdentification_builder) Build() *WorkshopCardApplicationIdentification {
+	m0 := &WorkshopCardApplicationIdentification{}
 	b, x := &b0, m0
 	_, _ = b, x
 	if b.TypeOfTachographCardId != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 8)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 9)
 		x.xxx_hidden_TypeOfTachographCardId = *b.TypeOfTachographCardId
 	}
+	if b.UnrecognizedTypeOfTachographCardId != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 9)
+		x.xxx_hidden_UnrecognizedTypeOfTachographCardId = *b.UnrecognizedTypeOfTachographCardId
+	}
 	if b.CardStructureVersion != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 8)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 9)
 		x.xxx_hidden_CardStructureVersion = b.CardStructureVersion
 	}
 	if b.EventsPerTypeCount != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 8)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 3, 9)
 		x.xxx_hidden_EventsPerTypeCount = *b.EventsPerTypeCount
 	}
 	if b.FaultsPerTypeCount != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 3, 8)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 4, 9)
 		x.xxx_hidden_FaultsPerTypeCount = *b.FaultsPerTypeCount
 	}
 	if b.ActivityStructureLength != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 4, 8)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 5, 9)
 		x.xxx_hidden_ActivityStructureLength = *b.ActivityStructureLength
 	}
 	if b.CardVehicleRecordsCount != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 5, 8)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 6, 9)
 		x.xxx_hidden_CardVehicleRecordsCount = *b.CardVehicleRecordsCount
 	}
 	if b.CardPlaceRecordsCount != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 6, 8)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 7, 9)
 		x.xxx_hidden_CardPlaceRecordsCount = *b.CardPlaceRecordsCount
 	}
 	if b.CalibrationRecordsCount != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 7, 8)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 8, 9)
 		x.xxx_hidden_CalibrationRecordsCount = *b.CalibrationRecordsCount
 	}
 	return m0
@@ -324,28 +357,31 @@ var File_wayplatform_connect_tachograph_card_v1_workshop_application_identificat
 
 const file_wayplatform_connect_tachograph_card_v1_workshop_application_identification_proto_rawDesc = "" +
 	"\n" +
-	"Pwayplatform/connect/tachograph/card/v1/workshop_application_identification.proto\x12&wayplatform.connect.tachograph.card.v1\"\xe9\x03\n" +
-	"!WorkshopApplicationIdentification\x12:\n" +
-	"\x1atype_of_tachograph_card_id\x18\x01 \x01(\x05R\x16typeOfTachographCardId\x124\n" +
-	"\x16card_structure_version\x18\x02 \x01(\fR\x14cardStructureVersion\x121\n" +
-	"\x15events_per_type_count\x18\x03 \x01(\x05R\x12eventsPerTypeCount\x121\n" +
-	"\x15faults_per_type_count\x18\x04 \x01(\x05R\x12faultsPerTypeCount\x12:\n" +
-	"\x19activity_structure_length\x18\x05 \x01(\x05R\x17activityStructureLength\x12;\n" +
-	"\x1acard_vehicle_records_count\x18\x06 \x01(\x05R\x17cardVehicleRecordsCount\x127\n" +
-	"\x18card_place_records_count\x18\a \x01(\x05R\x15cardPlaceRecordsCount\x12:\n" +
-	"\x19calibration_records_count\x18\b \x01(\x05R\x17calibrationRecordsCountB\xf3\x02\n" +
+	"Pwayplatform/connect/tachograph/card/v1/workshop_application_identification.proto\x12&wayplatform.connect.tachograph.card.v1\x1aEwayplatform/connect/tachograph/datadictionary/v1/equipment_type.proto\"\x83\x05\n" +
+	"%WorkshopCardApplicationIdentification\x12{\n" +
+	"\x1atype_of_tachograph_card_id\x18\x01 \x01(\x0e2?.wayplatform.connect.tachograph.datadictionary.v1.EquipmentTypeR\x16typeOfTachographCardId\x12S\n" +
+	"'unrecognized_type_of_tachograph_card_id\x18\x02 \x01(\x05R\"unrecognizedTypeOfTachographCardId\x124\n" +
+	"\x16card_structure_version\x18\x03 \x01(\fR\x14cardStructureVersion\x121\n" +
+	"\x15events_per_type_count\x18\x04 \x01(\x05R\x12eventsPerTypeCount\x121\n" +
+	"\x15faults_per_type_count\x18\x05 \x01(\x05R\x12faultsPerTypeCount\x12:\n" +
+	"\x19activity_structure_length\x18\x06 \x01(\x05R\x17activityStructureLength\x12;\n" +
+	"\x1acard_vehicle_records_count\x18\a \x01(\x05R\x17cardVehicleRecordsCount\x127\n" +
+	"\x18card_place_records_count\x18\b \x01(\x05R\x15cardPlaceRecordsCount\x12:\n" +
+	"\x19calibration_records_count\x18\t \x01(\x05R\x17calibrationRecordsCountB\xf3\x02\n" +
 	"*com.wayplatform.connect.tachograph.card.v1B&WorkshopApplicationIdentificationProtoP\x01Z`github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1;cardv1\xa2\x02\x04WCTC\xaa\x02&Wayplatform.Connect.Tachograph.Card.V1\xca\x02&Wayplatform\\Connect\\Tachograph\\Card\\V1\xe2\x022Wayplatform\\Connect\\Tachograph\\Card\\V1\\GPBMetadata\xea\x02*Wayplatform::Connect::Tachograph::Card::V1b\beditionsp\xe8\a"
 
 var file_wayplatform_connect_tachograph_card_v1_workshop_application_identification_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_wayplatform_connect_tachograph_card_v1_workshop_application_identification_proto_goTypes = []any{
-	(*WorkshopApplicationIdentification)(nil), // 0: wayplatform.connect.tachograph.card.v1.WorkshopApplicationIdentification
+	(*WorkshopCardApplicationIdentification)(nil), // 0: wayplatform.connect.tachograph.card.v1.WorkshopCardApplicationIdentification
+	(v1.EquipmentType)(0),                         // 1: wayplatform.connect.tachograph.datadictionary.v1.EquipmentType
 }
 var file_wayplatform_connect_tachograph_card_v1_workshop_application_identification_proto_depIdxs = []int32{
-	0, // [0:0] is the sub-list for method output_type
-	0, // [0:0] is the sub-list for method input_type
-	0, // [0:0] is the sub-list for extension type_name
-	0, // [0:0] is the sub-list for extension extendee
-	0, // [0:0] is the sub-list for field type_name
+	1, // 0: wayplatform.connect.tachograph.card.v1.WorkshopCardApplicationIdentification.type_of_tachograph_card_id:type_name -> wayplatform.connect.tachograph.datadictionary.v1.EquipmentType
+	1, // [1:1] is the sub-list for method output_type
+	1, // [1:1] is the sub-list for method input_type
+	1, // [1:1] is the sub-list for extension type_name
+	1, // [1:1] is the sub-list for extension extendee
+	0, // [0:1] is the sub-list for field type_name
 }
 
 func init() {

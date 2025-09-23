@@ -24,33 +24,33 @@ const (
 //
 // See regulation document Appendix 2, Section 4.3.
 type WorkshopCardFile struct {
-	state                                  protoimpl.MessageState               `protogen:"opaque.v1"`
-	xxx_hidden_Icc                         *IccIdentification                   `protobuf:"bytes,1,opt,name=icc"`
-	xxx_hidden_Ic                          *ChipIdentification                  `protobuf:"bytes,2,opt,name=ic"`
-	xxx_hidden_Identification              *CardIdentification                  `protobuf:"bytes,3,opt,name=identification"`
-	xxx_hidden_ApplicationIdentification   *WorkshopApplicationIdentification   `protobuf:"bytes,4,opt,name=application_identification,json=applicationIdentification"`
-	xxx_hidden_HolderIdentification        *WorkshopCardHolderIdentification    `protobuf:"bytes,5,opt,name=holder_identification,json=holderIdentification"`
-	xxx_hidden_Calibrations                *Calibrations                        `protobuf:"bytes,6,opt,name=calibrations"`
-	xxx_hidden_SensorInstallationData      *SensorInstallationData              `protobuf:"bytes,7,opt,name=sensor_installation_data,json=sensorInstallationData"`
-	xxx_hidden_CalibrationsSinceDownload   *NoOfCalibrationsSinceDownload       `protobuf:"bytes,8,opt,name=calibrations_since_download,json=calibrationsSinceDownload"`
-	xxx_hidden_EventsData                  *EventData                           `protobuf:"bytes,9,opt,name=events_data,json=eventsData"`
-	xxx_hidden_FaultsData                  *FaultData                           `protobuf:"bytes,10,opt,name=faults_data,json=faultsData"`
-	xxx_hidden_DriverActivityData          *DriverActivity                      `protobuf:"bytes,11,opt,name=driver_activity_data,json=driverActivityData"`
-	xxx_hidden_VehiclesUsed                *VehiclesUsed                        `protobuf:"bytes,12,opt,name=vehicles_used,json=vehiclesUsed"`
-	xxx_hidden_Places                      *Places                              `protobuf:"bytes,13,opt,name=places"`
-	xxx_hidden_CurrentUsage                *CurrentUsage                        `protobuf:"bytes,14,opt,name=current_usage,json=currentUsage"`
-	xxx_hidden_ControlActivityData         *ControlActivityData                 `protobuf:"bytes,15,opt,name=control_activity_data,json=controlActivityData"`
-	xxx_hidden_SpecificConditions          *SpecificConditions                  `protobuf:"bytes,16,opt,name=specific_conditions,json=specificConditions"`
-	xxx_hidden_VehicleUnitsUsed            *VehicleUnitsUsed                    `protobuf:"bytes,17,opt,name=vehicle_units_used,json=vehicleUnitsUsed"`
-	xxx_hidden_GnssPlaces                  *GnssPlaces                          `protobuf:"bytes,18,opt,name=gnss_places,json=gnssPlaces"`
-	xxx_hidden_ApplicationIdentificationV2 *WorkshopApplicationIdentificationV2 `protobuf:"bytes,19,opt,name=application_identification_v2,json=applicationIdentificationV2"`
-	xxx_hidden_PlacesAuthentication        *PlacesAuthentication                `protobuf:"bytes,20,opt,name=places_authentication,json=placesAuthentication"`
-	xxx_hidden_GnssPlacesAuthentication    *GnssPlacesAuthentication            `protobuf:"bytes,21,opt,name=gnss_places_authentication,json=gnssPlacesAuthentication"`
-	xxx_hidden_BorderCrossings             *BorderCrossings                     `protobuf:"bytes,22,opt,name=border_crossings,json=borderCrossings"`
-	xxx_hidden_LoadUnloadOperations        *LoadUnloadOperations                `protobuf:"bytes,23,opt,name=load_unload_operations,json=loadUnloadOperations"`
-	xxx_hidden_LoadTypeEntries             *LoadTypeEntries                     `protobuf:"bytes,24,opt,name=load_type_entries,json=loadTypeEntries"`
-	xxx_hidden_CalibrationsAddData         *CalibrationsAddData                 `protobuf:"bytes,25,opt,name=calibrations_add_data,json=calibrationsAddData"`
-	xxx_hidden_VuConfiguration             *VuConfiguration                     `protobuf:"bytes,26,opt,name=vu_configuration,json=vuConfiguration"`
+	state                                  protoimpl.MessageState                 `protogen:"opaque.v1"`
+	xxx_hidden_Icc                         *IccIdentification                     `protobuf:"bytes,1,opt,name=icc"`
+	xxx_hidden_Ic                          *ChipIdentification                    `protobuf:"bytes,2,opt,name=ic"`
+	xxx_hidden_Identification              *CardIdentification                    `protobuf:"bytes,3,opt,name=identification"`
+	xxx_hidden_ApplicationIdentification   *WorkshopCardApplicationIdentification `protobuf:"bytes,4,opt,name=application_identification,json=applicationIdentification"`
+	xxx_hidden_HolderIdentification        *WorkshopCardHolderIdentification      `protobuf:"bytes,5,opt,name=holder_identification,json=holderIdentification"`
+	xxx_hidden_Calibrations                *Calibrations                          `protobuf:"bytes,6,opt,name=calibrations"`
+	xxx_hidden_SensorInstallationData      *SensorInstallationData                `protobuf:"bytes,7,opt,name=sensor_installation_data,json=sensorInstallationData"`
+	xxx_hidden_CalibrationsSinceDownload   *NoOfCalibrationsSinceDownload         `protobuf:"bytes,8,opt,name=calibrations_since_download,json=calibrationsSinceDownload"`
+	xxx_hidden_EventsData                  *EventData                             `protobuf:"bytes,9,opt,name=events_data,json=eventsData"`
+	xxx_hidden_FaultsData                  *FaultData                             `protobuf:"bytes,10,opt,name=faults_data,json=faultsData"`
+	xxx_hidden_DriverActivityData          *DriverActivity                        `protobuf:"bytes,11,opt,name=driver_activity_data,json=driverActivityData"`
+	xxx_hidden_VehiclesUsed                *VehiclesUsed                          `protobuf:"bytes,12,opt,name=vehicles_used,json=vehiclesUsed"`
+	xxx_hidden_Places                      *Places                                `protobuf:"bytes,13,opt,name=places"`
+	xxx_hidden_CurrentUsage                *CurrentUsage                          `protobuf:"bytes,14,opt,name=current_usage,json=currentUsage"`
+	xxx_hidden_ControlActivityData         *ControlActivityData                   `protobuf:"bytes,15,opt,name=control_activity_data,json=controlActivityData"`
+	xxx_hidden_SpecificConditions          *SpecificConditions                    `protobuf:"bytes,16,opt,name=specific_conditions,json=specificConditions"`
+	xxx_hidden_VehicleUnitsUsed            *VehicleUnitsUsed                      `protobuf:"bytes,17,opt,name=vehicle_units_used,json=vehicleUnitsUsed"`
+	xxx_hidden_GnssPlaces                  *GnssPlaces                            `protobuf:"bytes,18,opt,name=gnss_places,json=gnssPlaces"`
+	xxx_hidden_ApplicationIdentificationV2 *WorkshopApplicationIdentificationV2   `protobuf:"bytes,19,opt,name=application_identification_v2,json=applicationIdentificationV2"`
+	xxx_hidden_PlacesAuthentication        *PlacesAuthentication                  `protobuf:"bytes,20,opt,name=places_authentication,json=placesAuthentication"`
+	xxx_hidden_GnssPlacesAuthentication    *GnssPlacesAuthentication              `protobuf:"bytes,21,opt,name=gnss_places_authentication,json=gnssPlacesAuthentication"`
+	xxx_hidden_BorderCrossings             *BorderCrossings                       `protobuf:"bytes,22,opt,name=border_crossings,json=borderCrossings"`
+	xxx_hidden_LoadUnloadOperations        *LoadUnloadOperations                  `protobuf:"bytes,23,opt,name=load_unload_operations,json=loadUnloadOperations"`
+	xxx_hidden_LoadTypeEntries             *LoadTypeEntries                       `protobuf:"bytes,24,opt,name=load_type_entries,json=loadTypeEntries"`
+	xxx_hidden_CalibrationsAddData         *CalibrationsAddData                   `protobuf:"bytes,25,opt,name=calibrations_add_data,json=calibrationsAddData"`
+	xxx_hidden_VuConfiguration             *VuConfiguration                       `protobuf:"bytes,26,opt,name=vu_configuration,json=vuConfiguration"`
 	unknownFields                          protoimpl.UnknownFields
 	sizeCache                              protoimpl.SizeCache
 }
@@ -101,7 +101,7 @@ func (x *WorkshopCardFile) GetIdentification() *CardIdentification {
 	return nil
 }
 
-func (x *WorkshopCardFile) GetApplicationIdentification() *WorkshopApplicationIdentification {
+func (x *WorkshopCardFile) GetApplicationIdentification() *WorkshopCardApplicationIdentification {
 	if x != nil {
 		return x.xxx_hidden_ApplicationIdentification
 	}
@@ -274,7 +274,7 @@ func (x *WorkshopCardFile) SetIdentification(v *CardIdentification) {
 	x.xxx_hidden_Identification = v
 }
 
-func (x *WorkshopCardFile) SetApplicationIdentification(v *WorkshopApplicationIdentification) {
+func (x *WorkshopCardFile) SetApplicationIdentification(v *WorkshopCardApplicationIdentification) {
 	x.xxx_hidden_ApplicationIdentification = v
 }
 
@@ -660,7 +660,7 @@ type WorkshopCardFile_builder struct {
 	Ic             *ChipIdentification
 	Identification *CardIdentification
 	// --- Workshop Specific Data ---
-	ApplicationIdentification *WorkshopApplicationIdentification
+	ApplicationIdentification *WorkshopCardApplicationIdentification
 	HolderIdentification      *WorkshopCardHolderIdentification
 	Calibrations              *Calibrations
 	SensorInstallationData    *SensorInstallationData
@@ -724,12 +724,12 @@ var File_wayplatform_connect_tachograph_card_v1_workshop_card_file_proto protore
 
 const file_wayplatform_connect_tachograph_card_v1_workshop_card_file_proto_rawDesc = "" +
 	"\n" +
-	"?wayplatform/connect/tachograph/card/v1/workshop_card_file.proto\x12&wayplatform.connect.tachograph.card.v1\x1aJwayplatform/connect/tachograph/card/v1/application_identification_v2.proto\x1a=wayplatform/connect/tachograph/card/v1/border_crossings.proto\x1a9wayplatform/connect/tachograph/card/v1/calibrations.proto\x1aBwayplatform/connect/tachograph/card/v1/calibrations_add_data.proto\x1aDwayplatform/connect/tachograph/card/v1/card_icc_identification.proto\x1a@wayplatform/connect/tachograph/card/v1/card_identification.proto\x1a@wayplatform/connect/tachograph/card/v1/chip_identification.proto\x1aBwayplatform/connect/tachograph/card/v1/control_activity_data.proto\x1a:wayplatform/connect/tachograph/card/v1/current_usage.proto\x1a<wayplatform/connect/tachograph/card/v1/driver_activity.proto\x1a7wayplatform/connect/tachograph/card/v1/event_data.proto\x1a7wayplatform/connect/tachograph/card/v1/fault_data.proto\x1a8wayplatform/connect/tachograph/card/v1/gnss_places.proto\x1aGwayplatform/connect/tachograph/card/v1/gnss_places_authentication.proto\x1a>wayplatform/connect/tachograph/card/v1/load_type_entries.proto\x1aCwayplatform/connect/tachograph/card/v1/load_unload_operations.proto\x1aNwayplatform/connect/tachograph/card/v1/no_of_calibrations_since_download.proto\x1a3wayplatform/connect/tachograph/card/v1/places.proto\x1aBwayplatform/connect/tachograph/card/v1/places_authentication.proto\x1aEwayplatform/connect/tachograph/card/v1/sensor_installation_data.proto\x1a@wayplatform/connect/tachograph/card/v1/specific_conditions.proto\x1a?wayplatform/connect/tachograph/card/v1/vehicle_units_used.proto\x1a:wayplatform/connect/tachograph/card/v1/vehicles_used.proto\x1a=wayplatform/connect/tachograph/card/v1/vu_configuration.proto\x1aPwayplatform/connect/tachograph/card/v1/workshop_application_identification.proto\x1aSwayplatform/connect/tachograph/card/v1/workshop_application_identification_v2.proto\x1aPwayplatform/connect/tachograph/card/v1/workshop_card_holder_identification.proto\"\xb7\x15\n" +
+	"?wayplatform/connect/tachograph/card/v1/workshop_card_file.proto\x12&wayplatform.connect.tachograph.card.v1\x1aJwayplatform/connect/tachograph/card/v1/application_identification_v2.proto\x1a=wayplatform/connect/tachograph/card/v1/border_crossings.proto\x1a9wayplatform/connect/tachograph/card/v1/calibrations.proto\x1aBwayplatform/connect/tachograph/card/v1/calibrations_add_data.proto\x1aDwayplatform/connect/tachograph/card/v1/card_icc_identification.proto\x1a@wayplatform/connect/tachograph/card/v1/card_identification.proto\x1a@wayplatform/connect/tachograph/card/v1/chip_identification.proto\x1aBwayplatform/connect/tachograph/card/v1/control_activity_data.proto\x1a:wayplatform/connect/tachograph/card/v1/current_usage.proto\x1a<wayplatform/connect/tachograph/card/v1/driver_activity.proto\x1a7wayplatform/connect/tachograph/card/v1/event_data.proto\x1a7wayplatform/connect/tachograph/card/v1/fault_data.proto\x1a8wayplatform/connect/tachograph/card/v1/gnss_places.proto\x1aGwayplatform/connect/tachograph/card/v1/gnss_places_authentication.proto\x1a>wayplatform/connect/tachograph/card/v1/load_type_entries.proto\x1aCwayplatform/connect/tachograph/card/v1/load_unload_operations.proto\x1aNwayplatform/connect/tachograph/card/v1/no_of_calibrations_since_download.proto\x1a3wayplatform/connect/tachograph/card/v1/places.proto\x1aBwayplatform/connect/tachograph/card/v1/places_authentication.proto\x1aEwayplatform/connect/tachograph/card/v1/sensor_installation_data.proto\x1a@wayplatform/connect/tachograph/card/v1/specific_conditions.proto\x1a?wayplatform/connect/tachograph/card/v1/vehicle_units_used.proto\x1a:wayplatform/connect/tachograph/card/v1/vehicles_used.proto\x1a=wayplatform/connect/tachograph/card/v1/vu_configuration.proto\x1aPwayplatform/connect/tachograph/card/v1/workshop_application_identification.proto\x1aSwayplatform/connect/tachograph/card/v1/workshop_application_identification_v2.proto\x1aPwayplatform/connect/tachograph/card/v1/workshop_card_holder_identification.proto\"\xbb\x15\n" +
 	"\x10WorkshopCardFile\x12K\n" +
 	"\x03icc\x18\x01 \x01(\v29.wayplatform.connect.tachograph.card.v1.IccIdentificationR\x03icc\x12J\n" +
 	"\x02ic\x18\x02 \x01(\v2:.wayplatform.connect.tachograph.card.v1.ChipIdentificationR\x02ic\x12b\n" +
-	"\x0eidentification\x18\x03 \x01(\v2:.wayplatform.connect.tachograph.card.v1.CardIdentificationR\x0eidentification\x12\x88\x01\n" +
-	"\x1aapplication_identification\x18\x04 \x01(\v2I.wayplatform.connect.tachograph.card.v1.WorkshopApplicationIdentificationR\x19applicationIdentification\x12}\n" +
+	"\x0eidentification\x18\x03 \x01(\v2:.wayplatform.connect.tachograph.card.v1.CardIdentificationR\x0eidentification\x12\x8c\x01\n" +
+	"\x1aapplication_identification\x18\x04 \x01(\v2M.wayplatform.connect.tachograph.card.v1.WorkshopCardApplicationIdentificationR\x19applicationIdentification\x12}\n" +
 	"\x15holder_identification\x18\x05 \x01(\v2H.wayplatform.connect.tachograph.card.v1.WorkshopCardHolderIdentificationR\x14holderIdentification\x12X\n" +
 	"\fcalibrations\x18\x06 \x01(\v24.wayplatform.connect.tachograph.card.v1.CalibrationsR\fcalibrations\x12x\n" +
 	"\x18sensor_installation_data\x18\a \x01(\v2>.wayplatform.connect.tachograph.card.v1.SensorInstallationDataR\x16sensorInstallationData\x12\x85\x01\n" +
@@ -760,39 +760,39 @@ const file_wayplatform_connect_tachograph_card_v1_workshop_card_file_proto_rawDe
 
 var file_wayplatform_connect_tachograph_card_v1_workshop_card_file_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_wayplatform_connect_tachograph_card_v1_workshop_card_file_proto_goTypes = []any{
-	(*WorkshopCardFile)(nil),                    // 0: wayplatform.connect.tachograph.card.v1.WorkshopCardFile
-	(*IccIdentification)(nil),                   // 1: wayplatform.connect.tachograph.card.v1.IccIdentification
-	(*ChipIdentification)(nil),                  // 2: wayplatform.connect.tachograph.card.v1.ChipIdentification
-	(*CardIdentification)(nil),                  // 3: wayplatform.connect.tachograph.card.v1.CardIdentification
-	(*WorkshopApplicationIdentification)(nil),   // 4: wayplatform.connect.tachograph.card.v1.WorkshopApplicationIdentification
-	(*WorkshopCardHolderIdentification)(nil),    // 5: wayplatform.connect.tachograph.card.v1.WorkshopCardHolderIdentification
-	(*Calibrations)(nil),                        // 6: wayplatform.connect.tachograph.card.v1.Calibrations
-	(*SensorInstallationData)(nil),              // 7: wayplatform.connect.tachograph.card.v1.SensorInstallationData
-	(*NoOfCalibrationsSinceDownload)(nil),       // 8: wayplatform.connect.tachograph.card.v1.NoOfCalibrationsSinceDownload
-	(*EventData)(nil),                           // 9: wayplatform.connect.tachograph.card.v1.EventData
-	(*FaultData)(nil),                           // 10: wayplatform.connect.tachograph.card.v1.FaultData
-	(*DriverActivity)(nil),                      // 11: wayplatform.connect.tachograph.card.v1.DriverActivity
-	(*VehiclesUsed)(nil),                        // 12: wayplatform.connect.tachograph.card.v1.VehiclesUsed
-	(*Places)(nil),                              // 13: wayplatform.connect.tachograph.card.v1.Places
-	(*CurrentUsage)(nil),                        // 14: wayplatform.connect.tachograph.card.v1.CurrentUsage
-	(*ControlActivityData)(nil),                 // 15: wayplatform.connect.tachograph.card.v1.ControlActivityData
-	(*SpecificConditions)(nil),                  // 16: wayplatform.connect.tachograph.card.v1.SpecificConditions
-	(*VehicleUnitsUsed)(nil),                    // 17: wayplatform.connect.tachograph.card.v1.VehicleUnitsUsed
-	(*GnssPlaces)(nil),                          // 18: wayplatform.connect.tachograph.card.v1.GnssPlaces
-	(*WorkshopApplicationIdentificationV2)(nil), // 19: wayplatform.connect.tachograph.card.v1.WorkshopApplicationIdentificationV2
-	(*PlacesAuthentication)(nil),                // 20: wayplatform.connect.tachograph.card.v1.PlacesAuthentication
-	(*GnssPlacesAuthentication)(nil),            // 21: wayplatform.connect.tachograph.card.v1.GnssPlacesAuthentication
-	(*BorderCrossings)(nil),                     // 22: wayplatform.connect.tachograph.card.v1.BorderCrossings
-	(*LoadUnloadOperations)(nil),                // 23: wayplatform.connect.tachograph.card.v1.LoadUnloadOperations
-	(*LoadTypeEntries)(nil),                     // 24: wayplatform.connect.tachograph.card.v1.LoadTypeEntries
-	(*CalibrationsAddData)(nil),                 // 25: wayplatform.connect.tachograph.card.v1.CalibrationsAddData
-	(*VuConfiguration)(nil),                     // 26: wayplatform.connect.tachograph.card.v1.VuConfiguration
+	(*WorkshopCardFile)(nil),                      // 0: wayplatform.connect.tachograph.card.v1.WorkshopCardFile
+	(*IccIdentification)(nil),                     // 1: wayplatform.connect.tachograph.card.v1.IccIdentification
+	(*ChipIdentification)(nil),                    // 2: wayplatform.connect.tachograph.card.v1.ChipIdentification
+	(*CardIdentification)(nil),                    // 3: wayplatform.connect.tachograph.card.v1.CardIdentification
+	(*WorkshopCardApplicationIdentification)(nil), // 4: wayplatform.connect.tachograph.card.v1.WorkshopCardApplicationIdentification
+	(*WorkshopCardHolderIdentification)(nil),      // 5: wayplatform.connect.tachograph.card.v1.WorkshopCardHolderIdentification
+	(*Calibrations)(nil),                          // 6: wayplatform.connect.tachograph.card.v1.Calibrations
+	(*SensorInstallationData)(nil),                // 7: wayplatform.connect.tachograph.card.v1.SensorInstallationData
+	(*NoOfCalibrationsSinceDownload)(nil),         // 8: wayplatform.connect.tachograph.card.v1.NoOfCalibrationsSinceDownload
+	(*EventData)(nil),                             // 9: wayplatform.connect.tachograph.card.v1.EventData
+	(*FaultData)(nil),                             // 10: wayplatform.connect.tachograph.card.v1.FaultData
+	(*DriverActivity)(nil),                        // 11: wayplatform.connect.tachograph.card.v1.DriverActivity
+	(*VehiclesUsed)(nil),                          // 12: wayplatform.connect.tachograph.card.v1.VehiclesUsed
+	(*Places)(nil),                                // 13: wayplatform.connect.tachograph.card.v1.Places
+	(*CurrentUsage)(nil),                          // 14: wayplatform.connect.tachograph.card.v1.CurrentUsage
+	(*ControlActivityData)(nil),                   // 15: wayplatform.connect.tachograph.card.v1.ControlActivityData
+	(*SpecificConditions)(nil),                    // 16: wayplatform.connect.tachograph.card.v1.SpecificConditions
+	(*VehicleUnitsUsed)(nil),                      // 17: wayplatform.connect.tachograph.card.v1.VehicleUnitsUsed
+	(*GnssPlaces)(nil),                            // 18: wayplatform.connect.tachograph.card.v1.GnssPlaces
+	(*WorkshopApplicationIdentificationV2)(nil),   // 19: wayplatform.connect.tachograph.card.v1.WorkshopApplicationIdentificationV2
+	(*PlacesAuthentication)(nil),                  // 20: wayplatform.connect.tachograph.card.v1.PlacesAuthentication
+	(*GnssPlacesAuthentication)(nil),              // 21: wayplatform.connect.tachograph.card.v1.GnssPlacesAuthentication
+	(*BorderCrossings)(nil),                       // 22: wayplatform.connect.tachograph.card.v1.BorderCrossings
+	(*LoadUnloadOperations)(nil),                  // 23: wayplatform.connect.tachograph.card.v1.LoadUnloadOperations
+	(*LoadTypeEntries)(nil),                       // 24: wayplatform.connect.tachograph.card.v1.LoadTypeEntries
+	(*CalibrationsAddData)(nil),                   // 25: wayplatform.connect.tachograph.card.v1.CalibrationsAddData
+	(*VuConfiguration)(nil),                       // 26: wayplatform.connect.tachograph.card.v1.VuConfiguration
 }
 var file_wayplatform_connect_tachograph_card_v1_workshop_card_file_proto_depIdxs = []int32{
 	1,  // 0: wayplatform.connect.tachograph.card.v1.WorkshopCardFile.icc:type_name -> wayplatform.connect.tachograph.card.v1.IccIdentification
 	2,  // 1: wayplatform.connect.tachograph.card.v1.WorkshopCardFile.ic:type_name -> wayplatform.connect.tachograph.card.v1.ChipIdentification
 	3,  // 2: wayplatform.connect.tachograph.card.v1.WorkshopCardFile.identification:type_name -> wayplatform.connect.tachograph.card.v1.CardIdentification
-	4,  // 3: wayplatform.connect.tachograph.card.v1.WorkshopCardFile.application_identification:type_name -> wayplatform.connect.tachograph.card.v1.WorkshopApplicationIdentification
+	4,  // 3: wayplatform.connect.tachograph.card.v1.WorkshopCardFile.application_identification:type_name -> wayplatform.connect.tachograph.card.v1.WorkshopCardApplicationIdentification
 	5,  // 4: wayplatform.connect.tachograph.card.v1.WorkshopCardFile.holder_identification:type_name -> wayplatform.connect.tachograph.card.v1.WorkshopCardHolderIdentification
 	6,  // 5: wayplatform.connect.tachograph.card.v1.WorkshopCardFile.calibrations:type_name -> wayplatform.connect.tachograph.card.v1.Calibrations
 	7,  // 6: wayplatform.connect.tachograph.card.v1.WorkshopCardFile.sensor_installation_data:type_name -> wayplatform.connect.tachograph.card.v1.SensorInstallationData

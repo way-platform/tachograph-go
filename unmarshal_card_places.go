@@ -56,14 +56,16 @@ func parsePlaceRecord(r *bytes.Reader) (*cardv1.Places_Record, error) {
 	if err := binary.Read(r, binary.BigEndian, &entryType); err != nil {
 		return nil, fmt.Errorf("failed to read entry type: %w", err)
 	}
-	record.SetEntryType(int32(entryType))
+	// Convert raw entry type to enum using protocol annotations
+	SetEntryTypeDailyWorkPeriod(int32(entryType), record.SetEntryType, record.SetUnrecognizedEntryType)
 
 	// Read daily work period country (1 byte)
 	var country byte
 	if err := binary.Read(r, binary.BigEndian, &country); err != nil {
 		return nil, fmt.Errorf("failed to read country: %w", err)
 	}
-	record.SetDailyWorkPeriodCountry(int32(country))
+	// Convert raw country to enum using protocol annotations
+	SetNationNumeric(int32(country), record.SetDailyWorkPeriodCountry, record.SetUnrecognizedDailyWorkPeriodCountry)
 
 	// Read daily work period region (2 bytes)
 	var region uint16

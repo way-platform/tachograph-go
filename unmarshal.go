@@ -4,6 +4,8 @@ import (
 	"bytes"
 	"encoding/binary"
 	"errors"
+	"fmt"
+	"unsafe"
 
 	"google.golang.org/protobuf/proto"
 
@@ -28,6 +30,9 @@ func unmarshalCard(data []byte) (*tachographv1.File, error) {
 	file := &tachographv1.File{}
 	file.SetType(tachographv1.File_DRIVER_CARD) // Assume Driver card for now
 	file.SetDriverCard(&cardv1.DriverCardFile{})
+
+	// Track proprietary EFs for this card
+	var proprietaryEFs ProprietaryEFs
 
 	r := bytes.NewReader(data)
 
@@ -59,7 +64,18 @@ func unmarshalCard(data []byte) (*tachographv1.File, error) {
 
 		// Find file type from FID and dispatch
 		fileType := findFileTypeByTag(int32(fid))
+
+		// Debug: log all FIDs being processed
+		if fid >= 0xC000 {
+			fmt.Printf("DEBUG: Processing FID 0x%04X, fileType=%v, appendix=0x%02X\n", fid, fileType, appendix)
+		}
+
 		if fileType == cardv1.ElementaryFileType_ELEMENTARY_FILE_UNSPECIFIED {
+			// Handle proprietary EFs (0xC000-0xFFFF range)
+			if fid >= 0xC000 {
+				UnmarshalProprietaryEF(fid, value, &proprietaryEFs)
+				fmt.Printf("DEBUG: Added proprietary EF 0x%04X with %d bytes\n", fid, len(value))
+			}
 			continue // Skip unknown tags
 		}
 
@@ -71,6 +87,12 @@ func unmarshalCard(data []byte) (*tachographv1.File, error) {
 				return nil, err
 			}
 			driverCard.SetIcc(icc)
+		case cardv1.ElementaryFileType_EF_IC:
+			ic := &cardv1.ChipIdentification{}
+			if err := UnmarshalCardIc(value, ic); err != nil {
+				return nil, err
+			}
+			driverCard.SetIc(ic)
 		case cardv1.ElementaryFileType_EF_IDENTIFICATION:
 			identification := &cardv1.CardIdentification{}
 			holderIdentification := &cardv1.DriverCardHolderIdentification{}
@@ -121,8 +143,63 @@ func unmarshalCard(data []byte) (*tachographv1.File, error) {
 				return nil, err
 			}
 			driverCard.SetCurrentUsage(currentUsage)
-			// ... other cases to be added
+		case cardv1.ElementaryFileType_EF_APPLICATION_IDENTIFICATION:
+			appId := &cardv1.DriverCardApplicationIdentification{}
+			if err := UnmarshalCardApplicationIdentification(value, appId); err != nil {
+				return nil, err
+			}
+			driverCard.SetApplicationIdentification(appId)
+		case cardv1.ElementaryFileType_EF_CONTROL_ACTIVITY_DATA:
+			controlActivity := &cardv1.ControlActivityData{}
+			if err := UnmarshalCardControlActivityData(value, controlActivity); err != nil {
+				return nil, err
+			}
+			driverCard.SetControlActivityData(controlActivity)
+		case cardv1.ElementaryFileType_EF_SPECIFIC_CONDITIONS:
+			specificConditions := &cardv1.SpecificConditions{}
+			if err := UnmarshalCardSpecificConditions(value, specificConditions); err != nil {
+				return nil, err
+			}
+			driverCard.SetSpecificConditions(specificConditions)
+		case cardv1.ElementaryFileType_EF_CARD_DOWNLOAD_DRIVER:
+			lastDownload := &cardv1.LastCardDownload{}
+			if err := UnmarshalCardLastDownload(value, lastDownload); err != nil {
+				return nil, err
+			}
+			driverCard.SetLastCardDownload(lastDownload)
+		case cardv1.ElementaryFileType_EF_VEHICLE_UNITS_USED:
+			vehicleUnits := &cardv1.VehicleUnitsUsed{}
+			if err := UnmarshalCardVehicleUnitsUsed(value, vehicleUnits); err != nil {
+				return nil, err
+			}
+			driverCard.SetVehicleUnitsUsed(vehicleUnits)
+		case cardv1.ElementaryFileType_EF_GNSS_PLACES:
+			gnssPlaces := &cardv1.GnssPlaces{}
+			if err := UnmarshalCardGnssPlaces(value, gnssPlaces); err != nil {
+				return nil, err
+			}
+			driverCard.SetGnssPlaces(gnssPlaces)
+		case cardv1.ElementaryFileType_EF_APPLICATION_IDENTIFICATION_V2:
+			appIdV2 := &cardv1.ApplicationIdentificationV2{}
+			if err := UnmarshalCardApplicationIdentificationV2(value, appIdV2); err != nil {
+				return nil, err
+			}
+			driverCard.SetApplicationIdentificationV2(appIdV2)
+		case cardv1.ElementaryFileType_EF_CARD_CERTIFICATE:
+			// Store as proprietary EF for marshalling since not in protobuf yet
+			UnmarshalProprietaryEF(fid, value, &proprietaryEFs)
+			fmt.Printf("DEBUG: Added certificate EF 0x%04X with %d bytes\n", fid, len(value))
+		case cardv1.ElementaryFileType_EF_CA_CERTIFICATE:
+			// Store as proprietary EF for marshalling since not in protobuf yet
+			UnmarshalProprietaryEF(fid, value, &proprietaryEFs)
+			fmt.Printf("DEBUG: Added certificate EF 0x%04X with %d bytes\n", fid, len(value))
 		}
+	}
+
+	// Store proprietary EFs for later use during marshalling
+	if len(proprietaryEFs.EFs) > 0 {
+		cardPtr := uintptr(unsafe.Pointer(file.GetDriverCard()))
+		StoreProprietaryEFs(cardPtr, &proprietaryEFs)
 	}
 
 	return file, nil
@@ -198,7 +275,48 @@ func unmarshalVU(data []byte) (*tachographv1.File, error) {
 				return nil, err
 			}
 			transfer.SetActivities(activities)
-		// Add more cases as we implement them
+		case vuv1.TransferType_EVENTS_AND_FAULTS_GEN1:
+			eventsAndFaults := &vuv1.EventsAndFaults{}
+			_, err := UnmarshalVuEventsAndFaults(r, eventsAndFaults, 1)
+			if err != nil {
+				return nil, err
+			}
+			transfer.SetEventsAndFaults(eventsAndFaults)
+		case vuv1.TransferType_EVENTS_AND_FAULTS_GEN2_V1:
+			eventsAndFaults := &vuv1.EventsAndFaults{}
+			_, err := UnmarshalVuEventsAndFaults(r, eventsAndFaults, 2)
+			if err != nil {
+				return nil, err
+			}
+			transfer.SetEventsAndFaults(eventsAndFaults)
+		case vuv1.TransferType_DETAILED_SPEED_GEN1:
+			detailedSpeed := &vuv1.DetailedSpeed{}
+			_, err := UnmarshalVuDetailedSpeed(r, detailedSpeed, 1)
+			if err != nil {
+				return nil, err
+			}
+			transfer.SetDetailedSpeed(detailedSpeed)
+		case vuv1.TransferType_DETAILED_SPEED_GEN2:
+			detailedSpeed := &vuv1.DetailedSpeed{}
+			_, err := UnmarshalVuDetailedSpeed(r, detailedSpeed, 2)
+			if err != nil {
+				return nil, err
+			}
+			transfer.SetDetailedSpeed(detailedSpeed)
+		case vuv1.TransferType_TECHNICAL_DATA_GEN1:
+			technicalData := &vuv1.TechnicalData{}
+			_, err := UnmarshalVuTechnicalData(r, technicalData, 1)
+			if err != nil {
+				return nil, err
+			}
+			transfer.SetTechnicalData(technicalData)
+		case vuv1.TransferType_TECHNICAL_DATA_GEN2_V1:
+			technicalData := &vuv1.TechnicalData{}
+			_, err := UnmarshalVuTechnicalData(r, technicalData, 2)
+			if err != nil {
+				return nil, err
+			}
+			transfer.SetTechnicalData(technicalData)
 		default:
 			// For now, skip unknown transfer types
 			break

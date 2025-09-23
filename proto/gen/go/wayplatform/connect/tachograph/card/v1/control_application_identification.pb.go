@@ -7,6 +7,7 @@
 package cardv1
 
 import (
+	v1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/datadictionary/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -25,14 +26,15 @@ const (
 // Corresponds to the `ControlCardApplicationIdentification` data type.
 // See Data Dictionary, Section 2.50.
 type ControlApplicationIdentification struct {
-	state                                  protoimpl.MessageState `protogen:"opaque.v1"`
-	xxx_hidden_TypeOfTachographCardId      int32                  `protobuf:"varint,1,opt,name=type_of_tachograph_card_id,json=typeOfTachographCardId"`
-	xxx_hidden_CardStructureVersion        []byte                 `protobuf:"bytes,2,opt,name=card_structure_version,json=cardStructureVersion"`
-	xxx_hidden_ControlActivityRecordsCount int32                  `protobuf:"varint,3,opt,name=control_activity_records_count,json=controlActivityRecordsCount"`
-	XXX_raceDetectHookData                 protoimpl.RaceDetectHookData
-	XXX_presence                           [1]uint32
-	unknownFields                          protoimpl.UnknownFields
-	sizeCache                              protoimpl.SizeCache
+	state                                         protoimpl.MessageState `protogen:"opaque.v1"`
+	xxx_hidden_TypeOfTachographCardId             v1.EquipmentType       `protobuf:"varint,1,opt,name=type_of_tachograph_card_id,json=typeOfTachographCardId,enum=wayplatform.connect.tachograph.datadictionary.v1.EquipmentType"`
+	xxx_hidden_UnrecognizedTypeOfTachographCardId int32                  `protobuf:"varint,2,opt,name=unrecognized_type_of_tachograph_card_id,json=unrecognizedTypeOfTachographCardId"`
+	xxx_hidden_CardStructureVersion               []byte                 `protobuf:"bytes,3,opt,name=card_structure_version,json=cardStructureVersion"`
+	xxx_hidden_ControlActivityRecordsCount        int32                  `protobuf:"varint,4,opt,name=control_activity_records_count,json=controlActivityRecordsCount"`
+	XXX_raceDetectHookData                        protoimpl.RaceDetectHookData
+	XXX_presence                                  [1]uint32
+	unknownFields                                 protoimpl.UnknownFields
+	sizeCache                                     protoimpl.SizeCache
 }
 
 func (x *ControlApplicationIdentification) Reset() {
@@ -60,9 +62,18 @@ func (x *ControlApplicationIdentification) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-func (x *ControlApplicationIdentification) GetTypeOfTachographCardId() int32 {
+func (x *ControlApplicationIdentification) GetTypeOfTachographCardId() v1.EquipmentType {
 	if x != nil {
-		return x.xxx_hidden_TypeOfTachographCardId
+		if protoimpl.X.Present(&(x.XXX_presence[0]), 0) {
+			return x.xxx_hidden_TypeOfTachographCardId
+		}
+	}
+	return v1.EquipmentType(0)
+}
+
+func (x *ControlApplicationIdentification) GetUnrecognizedTypeOfTachographCardId() int32 {
+	if x != nil {
+		return x.xxx_hidden_UnrecognizedTypeOfTachographCardId
 	}
 	return 0
 }
@@ -81,9 +92,14 @@ func (x *ControlApplicationIdentification) GetControlActivityRecordsCount() int3
 	return 0
 }
 
-func (x *ControlApplicationIdentification) SetTypeOfTachographCardId(v int32) {
+func (x *ControlApplicationIdentification) SetTypeOfTachographCardId(v v1.EquipmentType) {
 	x.xxx_hidden_TypeOfTachographCardId = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 3)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 4)
+}
+
+func (x *ControlApplicationIdentification) SetUnrecognizedTypeOfTachographCardId(v int32) {
+	x.xxx_hidden_UnrecognizedTypeOfTachographCardId = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 4)
 }
 
 func (x *ControlApplicationIdentification) SetCardStructureVersion(v []byte) {
@@ -91,12 +107,12 @@ func (x *ControlApplicationIdentification) SetCardStructureVersion(v []byte) {
 		v = []byte{}
 	}
 	x.xxx_hidden_CardStructureVersion = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 3)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 4)
 }
 
 func (x *ControlApplicationIdentification) SetControlActivityRecordsCount(v int32) {
 	x.xxx_hidden_ControlActivityRecordsCount = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 3)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 3, 4)
 }
 
 func (x *ControlApplicationIdentification) HasTypeOfTachographCardId() bool {
@@ -106,32 +122,44 @@ func (x *ControlApplicationIdentification) HasTypeOfTachographCardId() bool {
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 0)
 }
 
-func (x *ControlApplicationIdentification) HasCardStructureVersion() bool {
+func (x *ControlApplicationIdentification) HasUnrecognizedTypeOfTachographCardId() bool {
 	if x == nil {
 		return false
 	}
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 1)
 }
 
-func (x *ControlApplicationIdentification) HasControlActivityRecordsCount() bool {
+func (x *ControlApplicationIdentification) HasCardStructureVersion() bool {
 	if x == nil {
 		return false
 	}
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 2)
 }
 
+func (x *ControlApplicationIdentification) HasControlActivityRecordsCount() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 3)
+}
+
 func (x *ControlApplicationIdentification) ClearTypeOfTachographCardId() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 0)
-	x.xxx_hidden_TypeOfTachographCardId = 0
+	x.xxx_hidden_TypeOfTachographCardId = v1.EquipmentType_EQUIPMENT_TYPE_UNSPECIFIED
+}
+
+func (x *ControlApplicationIdentification) ClearUnrecognizedTypeOfTachographCardId() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 1)
+	x.xxx_hidden_UnrecognizedTypeOfTachographCardId = 0
 }
 
 func (x *ControlApplicationIdentification) ClearCardStructureVersion() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 1)
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 2)
 	x.xxx_hidden_CardStructureVersion = nil
 }
 
 func (x *ControlApplicationIdentification) ClearControlActivityRecordsCount() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 2)
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 3)
 	x.xxx_hidden_ControlActivityRecordsCount = 0
 }
 
@@ -139,7 +167,8 @@ type ControlApplicationIdentification_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
 	// See Data Dictionary, Section 2.50, `typeOfTachographCardId`.
-	TypeOfTachographCardId *int32
+	TypeOfTachographCardId             *v1.EquipmentType
+	UnrecognizedTypeOfTachographCardId *int32
 	// See Data Dictionary, Section 2.50, `cardStructureVersion`.
 	CardStructureVersion []byte
 	// See Data Dictionary, Section 2.50, `noOfControlActivityRecords`.
@@ -151,15 +180,19 @@ func (b0 ControlApplicationIdentification_builder) Build() *ControlApplicationId
 	b, x := &b0, m0
 	_, _ = b, x
 	if b.TypeOfTachographCardId != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 3)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 4)
 		x.xxx_hidden_TypeOfTachographCardId = *b.TypeOfTachographCardId
 	}
+	if b.UnrecognizedTypeOfTachographCardId != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 4)
+		x.xxx_hidden_UnrecognizedTypeOfTachographCardId = *b.UnrecognizedTypeOfTachographCardId
+	}
 	if b.CardStructureVersion != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 3)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 4)
 		x.xxx_hidden_CardStructureVersion = b.CardStructureVersion
 	}
 	if b.ControlActivityRecordsCount != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 3)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 3, 4)
 		x.xxx_hidden_ControlActivityRecordsCount = *b.ControlActivityRecordsCount
 	}
 	return m0
@@ -169,23 +202,26 @@ var File_wayplatform_connect_tachograph_card_v1_control_application_identificati
 
 const file_wayplatform_connect_tachograph_card_v1_control_application_identification_proto_rawDesc = "" +
 	"\n" +
-	"Owayplatform/connect/tachograph/card/v1/control_application_identification.proto\x12&wayplatform.connect.tachograph.card.v1\"\xd9\x01\n" +
-	" ControlApplicationIdentification\x12:\n" +
-	"\x1atype_of_tachograph_card_id\x18\x01 \x01(\x05R\x16typeOfTachographCardId\x124\n" +
-	"\x16card_structure_version\x18\x02 \x01(\fR\x14cardStructureVersion\x12C\n" +
-	"\x1econtrol_activity_records_count\x18\x03 \x01(\x05R\x1bcontrolActivityRecordsCountB\xf2\x02\n" +
+	"Owayplatform/connect/tachograph/card/v1/control_application_identification.proto\x12&wayplatform.connect.tachograph.card.v1\x1aEwayplatform/connect/tachograph/datadictionary/v1/equipment_type.proto\"\xef\x02\n" +
+	" ControlApplicationIdentification\x12{\n" +
+	"\x1atype_of_tachograph_card_id\x18\x01 \x01(\x0e2?.wayplatform.connect.tachograph.datadictionary.v1.EquipmentTypeR\x16typeOfTachographCardId\x12S\n" +
+	"'unrecognized_type_of_tachograph_card_id\x18\x02 \x01(\x05R\"unrecognizedTypeOfTachographCardId\x124\n" +
+	"\x16card_structure_version\x18\x03 \x01(\fR\x14cardStructureVersion\x12C\n" +
+	"\x1econtrol_activity_records_count\x18\x04 \x01(\x05R\x1bcontrolActivityRecordsCountB\xf2\x02\n" +
 	"*com.wayplatform.connect.tachograph.card.v1B%ControlApplicationIdentificationProtoP\x01Z`github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1;cardv1\xa2\x02\x04WCTC\xaa\x02&Wayplatform.Connect.Tachograph.Card.V1\xca\x02&Wayplatform\\Connect\\Tachograph\\Card\\V1\xe2\x022Wayplatform\\Connect\\Tachograph\\Card\\V1\\GPBMetadata\xea\x02*Wayplatform::Connect::Tachograph::Card::V1b\beditionsp\xe8\a"
 
 var file_wayplatform_connect_tachograph_card_v1_control_application_identification_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_wayplatform_connect_tachograph_card_v1_control_application_identification_proto_goTypes = []any{
 	(*ControlApplicationIdentification)(nil), // 0: wayplatform.connect.tachograph.card.v1.ControlApplicationIdentification
+	(v1.EquipmentType)(0),                    // 1: wayplatform.connect.tachograph.datadictionary.v1.EquipmentType
 }
 var file_wayplatform_connect_tachograph_card_v1_control_application_identification_proto_depIdxs = []int32{
-	0, // [0:0] is the sub-list for method output_type
-	0, // [0:0] is the sub-list for method input_type
-	0, // [0:0] is the sub-list for extension type_name
-	0, // [0:0] is the sub-list for extension extendee
-	0, // [0:0] is the sub-list for field type_name
+	1, // 0: wayplatform.connect.tachograph.card.v1.ControlApplicationIdentification.type_of_tachograph_card_id:type_name -> wayplatform.connect.tachograph.datadictionary.v1.EquipmentType
+	1, // [1:1] is the sub-list for method output_type
+	1, // [1:1] is the sub-list for method input_type
+	1, // [1:1] is the sub-list for extension type_name
+	1, // [1:1] is the sub-list for extension extendee
+	0, // [0:1] is the sub-list for field type_name
 }
 
 func init() {

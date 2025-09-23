@@ -1,0 +1,14 @@
+edition = "2023";
+
+package wayplatform.connect.tachograph.datadictionary.v1;
+
+import "wayplatform/connect/tachograph/datadictionary/v1/annotations.proto";
+
+// ManualInputFlag indicates if data was entered manually.
+// See Data Dictionary, Section 2.93.
+enum ManualInputFlag {
+  MANUAL_INPUT_FLAG_UNSPECIFIED = 0;
+  MANUAL_INPUT_FLAG_UNRECOGNIZED = 1;
+  NO = 2 [(protocol_enum_value) = 0];
+  YES = 3 [(protocol_enum_value) = 1];
+}

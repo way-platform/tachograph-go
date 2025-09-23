@@ -3,6 +3,7 @@ edition = "2023";
 package wayplatform.connect.tachograph.card.v1;
 
 import "google/protobuf/timestamp.proto";
+import "wayplatform/connect/tachograph/datadictionary/v1/specific_condition_type.proto";
 
 // Represents specific conditions data (e.g., Ferry/Train crossing).
 //
@@ -18,7 +19,8 @@ message SpecificConditions {
     google.protobuf.Timestamp entry_time = 1;
 
     // Type of specific condition. See DD Section 2.154 for `SpecificConditionType`.
-    int32 specific_condition_type = 2;
+    datadictionary.v1.SpecificConditionType specific_condition_type = 2;
+    int32 unrecognized_specific_condition_type = 3;
   }
 
   repeated Record records = 1;

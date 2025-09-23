@@ -2,17 +2,20 @@ edition = "2023";
 
 package wayplatform.connect.tachograph.card.v1;
 
+import "wayplatform/connect/tachograph/datadictionary/v1/equipment_type.proto";
+
 // Represents the application identification data for a control card.
 //
 // Corresponds to the `ControlCardApplicationIdentification` data type.
 // See Data Dictionary, Section 2.50.
 message ControlApplicationIdentification {
   // See Data Dictionary, Section 2.50, `typeOfTachographCardId`.
-  int32 type_of_tachograph_card_id = 1;
+  datadictionary.v1.EquipmentType type_of_tachograph_card_id = 1;
+  int32 unrecognized_type_of_tachograph_card_id = 2;
 
   // See Data Dictionary, Section 2.50, `cardStructureVersion`.
-  bytes card_structure_version = 2;
+  bytes card_structure_version = 3;
 
   // See Data Dictionary, Section 2.50, `noOfControlActivityRecords`.
-  int32 control_activity_records_count = 3;
+  int32 control_activity_records_count = 4;
 }

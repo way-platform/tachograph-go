@@ -41,7 +41,10 @@ func UnmarshalEventsData(data []byte, ed *cardv1.EventData) error {
 func UnmarshalEventRecord(data []byte, rec *cardv1.EventData_Record) error {
 	r := bytes.NewReader(data)
 	eventType, _ := r.ReadByte()
-	rec.SetEventType(int32(eventType))
+
+	// Convert raw event type to enum using protocol annotations
+	SetEventFaultType(int32(eventType), rec.SetEventType, rec.SetUnrecognizedEventType)
+
 	rec.SetEventBeginTime(readTimeReal(r))
 	rec.SetEventEndTime(readTimeReal(r))
 	// TODO: Read BCD nation code

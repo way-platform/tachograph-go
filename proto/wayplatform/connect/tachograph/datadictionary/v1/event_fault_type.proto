@@ -1,0 +1,69 @@
+edition = "2023";
+
+package wayplatform.connect.tachograph.datadictionary.v1;
+
+import "wayplatform/connect/tachograph/datadictionary/v1/annotations.proto";
+
+// EventFaultType qualifies dozens of different events and faults.
+// See Data Dictionary, Section 2.70.
+enum EventFaultType {
+  EVENT_FAULT_TYPE_UNSPECIFIED = 0;
+  EVENT_FAULT_TYPE_UNRECOGNIZED = 1;
+
+  // General Events (0x00 - 0x0F)
+  GENERAL_NO_FURTHER_DETAILS = 2 [(protocol_enum_value) = 0x00];
+  GENERAL_INSERTION_OF_NON_VALID_CARD = 3 [(protocol_enum_value) = 0x01];
+  GENERAL_CARD_CONFLICT = 4 [(protocol_enum_value) = 0x02];
+  GENERAL_TIME_OVERLAP = 5 [(protocol_enum_value) = 0x03];
+  GENERAL_DRIVING_WITHOUT_APPROPRIATE_CARD = 6 [(protocol_enum_value) = 0x04];
+  GENERAL_CARD_INSERTION_WHILE_DRIVING = 7 [(protocol_enum_value) = 0x05];
+  GENERAL_LAST_CARD_SESSION_NOT_CORRECTLY_CLOSED = 8 [(protocol_enum_value) = 0x06];
+  GENERAL_OVER_SPEEDING = 9 [(protocol_enum_value) = 0x07];
+  GENERAL_POWER_SUPPLY_INTERRUPTION = 10 [(protocol_enum_value) = 0x08];
+  GENERAL_MOTION_DATA_ERROR = 11 [(protocol_enum_value) = 0x09];
+  GENERAL_VEHICLE_MOTION_CONFLICT = 12 [(protocol_enum_value) = 0x0A];
+  GENERAL_TIME_CONFLICT_GNSS_VS_VU = 13 [(protocol_enum_value) = 0x0B]; // Gen2+
+  GENERAL_COMM_ERROR_REMOTE_COMM_FACILITY = 14 [(protocol_enum_value) = 0x0C]; // Gen2+
+  GENERAL_ABSENCE_OF_POSITION_INFO_FROM_GNSS = 15 [(protocol_enum_value) = 0x0D]; // Gen2+
+  GENERAL_COMM_ERROR_EXTERNAL_GNSS_FACILITY = 16 [(protocol_enum_value) = 0x0E]; // Gen2+
+  GENERAL_GNSS_ANOMALY = 17 [(protocol_enum_value) = 0x0F]; // Gen2v2+
+
+  // VU Security Breach Events (0x10 - 0x1F)
+  VU_SEC_NO_FURTHER_DETAILS = 18 [(protocol_enum_value) = 0x10];
+  VU_SEC_MOTION_SENSOR_AUTH_FAILURE = 19 [(protocol_enum_value) = 0x11];
+  VU_SEC_TACHOGRAPH_CARD_AUTH_FAILURE = 20 [(protocol_enum_value) = 0x12];
+  VU_SEC_UNAUTHORISED_CHANGE_OF_MOTION_SENSOR = 21 [(protocol_enum_value) = 0x13];
+  VU_SEC_CARD_DATA_INPUT_INTEGRITY_ERROR = 22 [(protocol_enum_value) = 0x14];
+  VU_SEC_STORED_USER_DATA_INTEGRITY_ERROR = 23 [(protocol_enum_value) = 0x15];
+  VU_SEC_INTERNAL_DATA_TRANSFER_ERROR = 24 [(protocol_enum_value) = 0x16];
+  VU_SEC_UNAUTHORISED_CASE_OPENING = 25 [(protocol_enum_value) = 0x17];
+  VU_SEC_HARDWARE_SABOTAGE = 26 [(protocol_enum_value) = 0x18];
+  VU_SEC_TAMPER_DETECTION_OF_GNSS = 27 [(protocol_enum_value) = 0x19]; // Gen2+
+  VU_SEC_EXTERNAL_GNSS_FACILITY_AUTH_FAILURE = 28 [(protocol_enum_value) = 0x1A]; // Gen2+
+  VU_SEC_EXTERNAL_GNSS_FACILITY_CERT_EXPIRED = 29 [(protocol_enum_value) = 0x1B]; // Gen2+
+  VU_SEC_INCONSISTENCY_MOTION_VS_ACTIVITY = 30 [(protocol_enum_value) = 0x1C]; // Gen2v2+
+
+  // Sensor Security Breach Events (0x20 - 0x2F)
+  SENSOR_SEC_NO_FURTHER_DETAILS = 31 [(protocol_enum_value) = 0x20];
+  SENSOR_SEC_AUTHENTICATION_FAILURE = 32 [(protocol_enum_value) = 0x21];
+  SENSOR_SEC_STORED_DATA_INTEGRITY_ERROR = 33 [(protocol_enum_value) = 0x22];
+  SENSOR_SEC_INTERNAL_DATA_TRANSFER_ERROR = 34 [(protocol_enum_value) = 0x23];
+  SENSOR_SEC_UNAUTHORISED_CASE_OPENING = 35 [(protocol_enum_value) = 0x24];
+  SENSOR_SEC_HARDWARE_SABOTAGE = 36 [(protocol_enum_value) = 0x25];
+
+  // Recording Equipment Faults (0x30 - 0x3F)
+  FAULT_REC_EQ_NO_FURTHER_DETAILS = 37 [(protocol_enum_value) = 0x30];
+  FAULT_REC_EQ_VU_INTERNAL_FAULT = 38 [(protocol_enum_value) = 0x31];
+  FAULT_REC_EQ_PRINTER_FAULT = 39 [(protocol_enum_value) = 0x32];
+  FAULT_REC_EQ_DISPLAY_FAULT = 40 [(protocol_enum_value) = 0x33];
+  FAULT_REC_EQ_DOWNLOADING_FAULT = 41 [(protocol_enum_value) = 0x34];
+  FAULT_REC_EQ_SENSOR_FAULT = 42 [(protocol_enum_value) = 0x35];
+  FAULT_REC_EQ_INTERNAL_GNSS_RECEIVER = 43 [(protocol_enum_value) = 0x36]; // Gen2+
+  FAULT_REC_EQ_EXTERNAL_GNSS_FACILITY = 44 [(protocol_enum_value) = 0x37]; // Gen2+
+  FAULT_REC_EQ_REMOTE_COMM_FACILITY = 45 [(protocol_enum_value) = 0x38]; // Gen2+
+  FAULT_REC_EQ_ITS_INTERFACE = 46 [(protocol_enum_value) = 0x39]; // Gen2+
+  FAULT_REC_EQ_INTERNAL_SENSOR_FAULT = 47 [(protocol_enum_value) = 0x3A]; // Gen2v2+
+
+  // Card Faults (0x40 - 0x4F)
+  FAULT_CARD_NO_FURTHER_DETAILS = 48 [(protocol_enum_value) = 0x40];
+}

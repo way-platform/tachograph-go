@@ -3,6 +3,10 @@ edition = "2023";
 package wayplatform.connect.tachograph.card.v1;
 
 import "google/protobuf/timestamp.proto";
+import "wayplatform/connect/tachograph/datadictionary/v1/card_slot_number.proto";
+import "wayplatform/connect/tachograph/datadictionary/v1/card_status.proto";
+import "wayplatform/connect/tachograph/datadictionary/v1/driver_activity_value.proto";
+import "wayplatform/connect/tachograph/datadictionary/v1/driving_status.proto";
 
 // Represents driver activity data from a tachograph card.
 //
@@ -20,19 +24,27 @@ message DriverActivity {
     // See Data Dictionary, Section 2.1.
     message ActivityChange {
       // Slot of the driver/co-driver.
-      int32 slot = 1;
+      datadictionary.v1.CardSlotNumber slot = 1;
+      // Populated only when slot is CARD_SLOT_NUMBER_UNRECOGNIZED.
+      int32 unrecognized_slot = 2;
 
       // Driving status (single or crew).
-      int32 driving_status = 2;
+      datadictionary.v1.DrivingStatus driving_status = 3;
+      // Populated only when driving_status is DRIVING_STATUS_UNRECOGNIZED.
+      int32 unrecognized_driving_status = 4;
 
       // Card status (inserted or not inserted).
-      int32 card_status = 3;
+      datadictionary.v1.CardStatus card_status = 5;
+      // Populated only when card_status is CARD_STATUS_UNRECOGNIZED.
+      int32 unrecognized_card_status = 6;
 
       // Driver's activity (break/rest, availability, work, driving).
-      int32 activity = 4;
+      datadictionary.v1.DriverActivityValue activity = 7;
+      // Populated only when activity is DRIVER_ACTIVITY_UNRECOGNIZED.
+      int32 unrecognized_activity = 8;
 
       // Time of the change in minutes since 00:00.
-      int32 time_of_change_minutes = 5;
+      int32 time_of_change_minutes = 9;
     }
 
     // See Data Dictionary, Section 2.9, `activityPreviousRecordLength`.

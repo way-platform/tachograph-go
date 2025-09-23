@@ -7,6 +7,7 @@
 package cardv1
 
 import (
+	v1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/datadictionary/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
@@ -370,16 +371,20 @@ func (b0 DriverActivity_DailyRecord_builder) Build() *DriverActivity_DailyRecord
 // Corresponds to the `ActivityChangeInfo` data type.
 // See Data Dictionary, Section 2.1.
 type DriverActivity_DailyRecord_ActivityChange struct {
-	state                          protoimpl.MessageState `protogen:"opaque.v1"`
-	xxx_hidden_Slot                int32                  `protobuf:"varint,1,opt,name=slot"`
-	xxx_hidden_DrivingStatus       int32                  `protobuf:"varint,2,opt,name=driving_status,json=drivingStatus"`
-	xxx_hidden_CardStatus          int32                  `protobuf:"varint,3,opt,name=card_status,json=cardStatus"`
-	xxx_hidden_Activity            int32                  `protobuf:"varint,4,opt,name=activity"`
-	xxx_hidden_TimeOfChangeMinutes int32                  `protobuf:"varint,5,opt,name=time_of_change_minutes,json=timeOfChangeMinutes"`
-	XXX_raceDetectHookData         protoimpl.RaceDetectHookData
-	XXX_presence                   [1]uint32
-	unknownFields                  protoimpl.UnknownFields
-	sizeCache                      protoimpl.SizeCache
+	state                                protoimpl.MessageState `protogen:"opaque.v1"`
+	xxx_hidden_Slot                      v1.CardSlotNumber      `protobuf:"varint,1,opt,name=slot,enum=wayplatform.connect.tachograph.datadictionary.v1.CardSlotNumber"`
+	xxx_hidden_UnrecognizedSlot          int32                  `protobuf:"varint,2,opt,name=unrecognized_slot,json=unrecognizedSlot"`
+	xxx_hidden_DrivingStatus             v1.DrivingStatus       `protobuf:"varint,3,opt,name=driving_status,json=drivingStatus,enum=wayplatform.connect.tachograph.datadictionary.v1.DrivingStatus"`
+	xxx_hidden_UnrecognizedDrivingStatus int32                  `protobuf:"varint,4,opt,name=unrecognized_driving_status,json=unrecognizedDrivingStatus"`
+	xxx_hidden_CardStatus                v1.CardStatus          `protobuf:"varint,5,opt,name=card_status,json=cardStatus,enum=wayplatform.connect.tachograph.datadictionary.v1.CardStatus"`
+	xxx_hidden_UnrecognizedCardStatus    int32                  `protobuf:"varint,6,opt,name=unrecognized_card_status,json=unrecognizedCardStatus"`
+	xxx_hidden_Activity                  v1.DriverActivityValue `protobuf:"varint,7,opt,name=activity,enum=wayplatform.connect.tachograph.datadictionary.v1.DriverActivityValue"`
+	xxx_hidden_UnrecognizedActivity      int32                  `protobuf:"varint,8,opt,name=unrecognized_activity,json=unrecognizedActivity"`
+	xxx_hidden_TimeOfChangeMinutes       int32                  `protobuf:"varint,9,opt,name=time_of_change_minutes,json=timeOfChangeMinutes"`
+	XXX_raceDetectHookData               protoimpl.RaceDetectHookData
+	XXX_presence                         [1]uint32
+	unknownFields                        protoimpl.UnknownFields
+	sizeCache                            protoimpl.SizeCache
 }
 
 func (x *DriverActivity_DailyRecord_ActivityChange) Reset() {
@@ -407,30 +412,66 @@ func (x *DriverActivity_DailyRecord_ActivityChange) ProtoReflect() protoreflect.
 	return mi.MessageOf(x)
 }
 
-func (x *DriverActivity_DailyRecord_ActivityChange) GetSlot() int32 {
+func (x *DriverActivity_DailyRecord_ActivityChange) GetSlot() v1.CardSlotNumber {
 	if x != nil {
-		return x.xxx_hidden_Slot
+		if protoimpl.X.Present(&(x.XXX_presence[0]), 0) {
+			return x.xxx_hidden_Slot
+		}
+	}
+	return v1.CardSlotNumber(0)
+}
+
+func (x *DriverActivity_DailyRecord_ActivityChange) GetUnrecognizedSlot() int32 {
+	if x != nil {
+		return x.xxx_hidden_UnrecognizedSlot
 	}
 	return 0
 }
 
-func (x *DriverActivity_DailyRecord_ActivityChange) GetDrivingStatus() int32 {
+func (x *DriverActivity_DailyRecord_ActivityChange) GetDrivingStatus() v1.DrivingStatus {
 	if x != nil {
-		return x.xxx_hidden_DrivingStatus
+		if protoimpl.X.Present(&(x.XXX_presence[0]), 2) {
+			return x.xxx_hidden_DrivingStatus
+		}
+	}
+	return v1.DrivingStatus(0)
+}
+
+func (x *DriverActivity_DailyRecord_ActivityChange) GetUnrecognizedDrivingStatus() int32 {
+	if x != nil {
+		return x.xxx_hidden_UnrecognizedDrivingStatus
 	}
 	return 0
 }
 
-func (x *DriverActivity_DailyRecord_ActivityChange) GetCardStatus() int32 {
+func (x *DriverActivity_DailyRecord_ActivityChange) GetCardStatus() v1.CardStatus {
 	if x != nil {
-		return x.xxx_hidden_CardStatus
+		if protoimpl.X.Present(&(x.XXX_presence[0]), 4) {
+			return x.xxx_hidden_CardStatus
+		}
+	}
+	return v1.CardStatus(0)
+}
+
+func (x *DriverActivity_DailyRecord_ActivityChange) GetUnrecognizedCardStatus() int32 {
+	if x != nil {
+		return x.xxx_hidden_UnrecognizedCardStatus
 	}
 	return 0
 }
 
-func (x *DriverActivity_DailyRecord_ActivityChange) GetActivity() int32 {
+func (x *DriverActivity_DailyRecord_ActivityChange) GetActivity() v1.DriverActivityValue {
 	if x != nil {
-		return x.xxx_hidden_Activity
+		if protoimpl.X.Present(&(x.XXX_presence[0]), 6) {
+			return x.xxx_hidden_Activity
+		}
+	}
+	return v1.DriverActivityValue(0)
+}
+
+func (x *DriverActivity_DailyRecord_ActivityChange) GetUnrecognizedActivity() int32 {
+	if x != nil {
+		return x.xxx_hidden_UnrecognizedActivity
 	}
 	return 0
 }
@@ -442,29 +483,49 @@ func (x *DriverActivity_DailyRecord_ActivityChange) GetTimeOfChangeMinutes() int
 	return 0
 }
 
-func (x *DriverActivity_DailyRecord_ActivityChange) SetSlot(v int32) {
+func (x *DriverActivity_DailyRecord_ActivityChange) SetSlot(v v1.CardSlotNumber) {
 	x.xxx_hidden_Slot = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 5)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 9)
 }
 
-func (x *DriverActivity_DailyRecord_ActivityChange) SetDrivingStatus(v int32) {
+func (x *DriverActivity_DailyRecord_ActivityChange) SetUnrecognizedSlot(v int32) {
+	x.xxx_hidden_UnrecognizedSlot = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 9)
+}
+
+func (x *DriverActivity_DailyRecord_ActivityChange) SetDrivingStatus(v v1.DrivingStatus) {
 	x.xxx_hidden_DrivingStatus = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 5)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 9)
 }
 
-func (x *DriverActivity_DailyRecord_ActivityChange) SetCardStatus(v int32) {
+func (x *DriverActivity_DailyRecord_ActivityChange) SetUnrecognizedDrivingStatus(v int32) {
+	x.xxx_hidden_UnrecognizedDrivingStatus = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 3, 9)
+}
+
+func (x *DriverActivity_DailyRecord_ActivityChange) SetCardStatus(v v1.CardStatus) {
 	x.xxx_hidden_CardStatus = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 5)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 4, 9)
 }
 
-func (x *DriverActivity_DailyRecord_ActivityChange) SetActivity(v int32) {
+func (x *DriverActivity_DailyRecord_ActivityChange) SetUnrecognizedCardStatus(v int32) {
+	x.xxx_hidden_UnrecognizedCardStatus = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 5, 9)
+}
+
+func (x *DriverActivity_DailyRecord_ActivityChange) SetActivity(v v1.DriverActivityValue) {
 	x.xxx_hidden_Activity = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 3, 5)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 6, 9)
+}
+
+func (x *DriverActivity_DailyRecord_ActivityChange) SetUnrecognizedActivity(v int32) {
+	x.xxx_hidden_UnrecognizedActivity = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 7, 9)
 }
 
 func (x *DriverActivity_DailyRecord_ActivityChange) SetTimeOfChangeMinutes(v int32) {
 	x.xxx_hidden_TimeOfChangeMinutes = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 4, 5)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 8, 9)
 }
 
 func (x *DriverActivity_DailyRecord_ActivityChange) HasSlot() bool {
@@ -474,56 +535,104 @@ func (x *DriverActivity_DailyRecord_ActivityChange) HasSlot() bool {
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 0)
 }
 
-func (x *DriverActivity_DailyRecord_ActivityChange) HasDrivingStatus() bool {
+func (x *DriverActivity_DailyRecord_ActivityChange) HasUnrecognizedSlot() bool {
 	if x == nil {
 		return false
 	}
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 1)
 }
 
-func (x *DriverActivity_DailyRecord_ActivityChange) HasCardStatus() bool {
+func (x *DriverActivity_DailyRecord_ActivityChange) HasDrivingStatus() bool {
 	if x == nil {
 		return false
 	}
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 2)
 }
 
-func (x *DriverActivity_DailyRecord_ActivityChange) HasActivity() bool {
+func (x *DriverActivity_DailyRecord_ActivityChange) HasUnrecognizedDrivingStatus() bool {
 	if x == nil {
 		return false
 	}
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 3)
 }
 
-func (x *DriverActivity_DailyRecord_ActivityChange) HasTimeOfChangeMinutes() bool {
+func (x *DriverActivity_DailyRecord_ActivityChange) HasCardStatus() bool {
 	if x == nil {
 		return false
 	}
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 4)
 }
 
+func (x *DriverActivity_DailyRecord_ActivityChange) HasUnrecognizedCardStatus() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 5)
+}
+
+func (x *DriverActivity_DailyRecord_ActivityChange) HasActivity() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 6)
+}
+
+func (x *DriverActivity_DailyRecord_ActivityChange) HasUnrecognizedActivity() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 7)
+}
+
+func (x *DriverActivity_DailyRecord_ActivityChange) HasTimeOfChangeMinutes() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 8)
+}
+
 func (x *DriverActivity_DailyRecord_ActivityChange) ClearSlot() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 0)
-	x.xxx_hidden_Slot = 0
+	x.xxx_hidden_Slot = v1.CardSlotNumber_CARD_SLOT_NUMBER_UNSPECIFIED
+}
+
+func (x *DriverActivity_DailyRecord_ActivityChange) ClearUnrecognizedSlot() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 1)
+	x.xxx_hidden_UnrecognizedSlot = 0
 }
 
 func (x *DriverActivity_DailyRecord_ActivityChange) ClearDrivingStatus() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 1)
-	x.xxx_hidden_DrivingStatus = 0
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 2)
+	x.xxx_hidden_DrivingStatus = v1.DrivingStatus_DRIVING_STATUS_UNSPECIFIED
+}
+
+func (x *DriverActivity_DailyRecord_ActivityChange) ClearUnrecognizedDrivingStatus() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 3)
+	x.xxx_hidden_UnrecognizedDrivingStatus = 0
 }
 
 func (x *DriverActivity_DailyRecord_ActivityChange) ClearCardStatus() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 2)
-	x.xxx_hidden_CardStatus = 0
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 4)
+	x.xxx_hidden_CardStatus = v1.CardStatus_CARD_STATUS_UNSPECIFIED
+}
+
+func (x *DriverActivity_DailyRecord_ActivityChange) ClearUnrecognizedCardStatus() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 5)
+	x.xxx_hidden_UnrecognizedCardStatus = 0
 }
 
 func (x *DriverActivity_DailyRecord_ActivityChange) ClearActivity() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 3)
-	x.xxx_hidden_Activity = 0
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 6)
+	x.xxx_hidden_Activity = v1.DriverActivityValue_DRIVER_ACTIVITY_UNSPECIFIED
+}
+
+func (x *DriverActivity_DailyRecord_ActivityChange) ClearUnrecognizedActivity() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 7)
+	x.xxx_hidden_UnrecognizedActivity = 0
 }
 
 func (x *DriverActivity_DailyRecord_ActivityChange) ClearTimeOfChangeMinutes() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 4)
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 8)
 	x.xxx_hidden_TimeOfChangeMinutes = 0
 }
 
@@ -531,13 +640,21 @@ type DriverActivity_DailyRecord_ActivityChange_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
 	// Slot of the driver/co-driver.
-	Slot *int32
+	Slot *v1.CardSlotNumber
+	// Populated only when slot is CARD_SLOT_NUMBER_UNRECOGNIZED.
+	UnrecognizedSlot *int32
 	// Driving status (single or crew).
-	DrivingStatus *int32
+	DrivingStatus *v1.DrivingStatus
+	// Populated only when driving_status is DRIVING_STATUS_UNRECOGNIZED.
+	UnrecognizedDrivingStatus *int32
 	// Card status (inserted or not inserted).
-	CardStatus *int32
+	CardStatus *v1.CardStatus
+	// Populated only when card_status is CARD_STATUS_UNRECOGNIZED.
+	UnrecognizedCardStatus *int32
 	// Driver's activity (break/rest, availability, work, driving).
-	Activity *int32
+	Activity *v1.DriverActivityValue
+	// Populated only when activity is DRIVER_ACTIVITY_UNRECOGNIZED.
+	UnrecognizedActivity *int32
 	// Time of the change in minutes since 00:00.
 	TimeOfChangeMinutes *int32
 }
@@ -547,23 +664,39 @@ func (b0 DriverActivity_DailyRecord_ActivityChange_builder) Build() *DriverActiv
 	b, x := &b0, m0
 	_, _ = b, x
 	if b.Slot != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 5)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 9)
 		x.xxx_hidden_Slot = *b.Slot
 	}
+	if b.UnrecognizedSlot != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 9)
+		x.xxx_hidden_UnrecognizedSlot = *b.UnrecognizedSlot
+	}
 	if b.DrivingStatus != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 5)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 9)
 		x.xxx_hidden_DrivingStatus = *b.DrivingStatus
 	}
+	if b.UnrecognizedDrivingStatus != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 3, 9)
+		x.xxx_hidden_UnrecognizedDrivingStatus = *b.UnrecognizedDrivingStatus
+	}
 	if b.CardStatus != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 5)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 4, 9)
 		x.xxx_hidden_CardStatus = *b.CardStatus
 	}
+	if b.UnrecognizedCardStatus != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 5, 9)
+		x.xxx_hidden_UnrecognizedCardStatus = *b.UnrecognizedCardStatus
+	}
 	if b.Activity != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 3, 5)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 6, 9)
 		x.xxx_hidden_Activity = *b.Activity
 	}
+	if b.UnrecognizedActivity != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 7, 9)
+		x.xxx_hidden_UnrecognizedActivity = *b.UnrecognizedActivity
+	}
 	if b.TimeOfChangeMinutes != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 4, 5)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 8, 9)
 		x.xxx_hidden_TimeOfChangeMinutes = *b.TimeOfChangeMinutes
 	}
 	return m0
@@ -573,25 +706,30 @@ var File_wayplatform_connect_tachograph_card_v1_driver_activity_proto protorefle
 
 const file_wayplatform_connect_tachograph_card_v1_driver_activity_proto_rawDesc = "" +
 	"\n" +
-	"<wayplatform/connect/tachograph/card/v1/driver_activity.proto\x12&wayplatform.connect.tachograph.card.v1\x1a\x1fgoogle/protobuf/timestamp.proto\"\x83\a\n" +
+	"<wayplatform/connect/tachograph/card/v1/driver_activity.proto\x12&wayplatform.connect.tachograph.card.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1aGwayplatform/connect/tachograph/datadictionary/v1/card_slot_number.proto\x1aBwayplatform/connect/tachograph/datadictionary/v1/card_status.proto\x1aLwayplatform/connect/tachograph/datadictionary/v1/driver_activity_value.proto\x1aEwayplatform/connect/tachograph/datadictionary/v1/driving_status.proto\"\xe7\n" +
+	"\n" +
 	"\x0eDriverActivity\x125\n" +
 	"\x17oldest_day_record_index\x18\x01 \x01(\x05R\x14oldestDayRecordIndex\x125\n" +
 	"\x17newest_day_record_index\x18\x02 \x01(\x05R\x14newestDayRecordIndex\x12g\n" +
-	"\rdaily_records\x18\x03 \x03(\v2B.wayplatform.connect.tachograph.card.v1.DriverActivity.DailyRecordR\fdailyRecords\x1a\x99\x05\n" +
+	"\rdaily_records\x18\x03 \x03(\v2B.wayplatform.connect.tachograph.card.v1.DriverActivity.DailyRecordR\fdailyRecords\x1a\xfd\b\n" +
 	"\vDailyRecord\x12E\n" +
 	"\x1factivity_previous_record_length\x18\x01 \x01(\x05R\x1cactivityPreviousRecordLength\x124\n" +
 	"\x16activity_record_length\x18\x02 \x01(\x05R\x14activityRecordLength\x12L\n" +
 	"\x14activity_record_date\x18\x03 \x01(\v2\x1a.google.protobuf.TimestampR\x12activityRecordDate\x12E\n" +
 	"\x1factivity_daily_presence_counter\x18\x04 \x01(\x05R\x1cactivityDailyPresenceCounter\x122\n" +
 	"\x15activity_day_distance\x18\x05 \x01(\x05R\x13activityDayDistance\x12\x83\x01\n" +
-	"\x14activity_change_info\x18\x06 \x03(\v2Q.wayplatform.connect.tachograph.card.v1.DriverActivity.DailyRecord.ActivityChangeR\x12activityChangeInfo\x1a\xbd\x01\n" +
-	"\x0eActivityChange\x12\x12\n" +
-	"\x04slot\x18\x01 \x01(\x05R\x04slot\x12%\n" +
-	"\x0edriving_status\x18\x02 \x01(\x05R\rdrivingStatus\x12\x1f\n" +
-	"\vcard_status\x18\x03 \x01(\x05R\n" +
-	"cardStatus\x12\x1a\n" +
-	"\bactivity\x18\x04 \x01(\x05R\bactivity\x123\n" +
-	"\x16time_of_change_minutes\x18\x05 \x01(\x05R\x13timeOfChangeMinutesB\xe0\x02\n" +
+	"\x14activity_change_info\x18\x06 \x03(\v2Q.wayplatform.connect.tachograph.card.v1.DriverActivity.DailyRecord.ActivityChangeR\x12activityChangeInfo\x1a\xa1\x05\n" +
+	"\x0eActivityChange\x12T\n" +
+	"\x04slot\x18\x01 \x01(\x0e2@.wayplatform.connect.tachograph.datadictionary.v1.CardSlotNumberR\x04slot\x12+\n" +
+	"\x11unrecognized_slot\x18\x02 \x01(\x05R\x10unrecognizedSlot\x12f\n" +
+	"\x0edriving_status\x18\x03 \x01(\x0e2?.wayplatform.connect.tachograph.datadictionary.v1.DrivingStatusR\rdrivingStatus\x12>\n" +
+	"\x1bunrecognized_driving_status\x18\x04 \x01(\x05R\x19unrecognizedDrivingStatus\x12]\n" +
+	"\vcard_status\x18\x05 \x01(\x0e2<.wayplatform.connect.tachograph.datadictionary.v1.CardStatusR\n" +
+	"cardStatus\x128\n" +
+	"\x18unrecognized_card_status\x18\x06 \x01(\x05R\x16unrecognizedCardStatus\x12a\n" +
+	"\bactivity\x18\a \x01(\x0e2E.wayplatform.connect.tachograph.datadictionary.v1.DriverActivityValueR\bactivity\x123\n" +
+	"\x15unrecognized_activity\x18\b \x01(\x05R\x14unrecognizedActivity\x123\n" +
+	"\x16time_of_change_minutes\x18\t \x01(\x05R\x13timeOfChangeMinutesB\xe0\x02\n" +
 	"*com.wayplatform.connect.tachograph.card.v1B\x13DriverActivityProtoP\x01Z`github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1;cardv1\xa2\x02\x04WCTC\xaa\x02&Wayplatform.Connect.Tachograph.Card.V1\xca\x02&Wayplatform\\Connect\\Tachograph\\Card\\V1\xe2\x022Wayplatform\\Connect\\Tachograph\\Card\\V1\\GPBMetadata\xea\x02*Wayplatform::Connect::Tachograph::Card::V1b\beditionsp\xe8\a"
 
 var file_wayplatform_connect_tachograph_card_v1_driver_activity_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
@@ -600,16 +738,24 @@ var file_wayplatform_connect_tachograph_card_v1_driver_activity_proto_goTypes = 
 	(*DriverActivity_DailyRecord)(nil),                // 1: wayplatform.connect.tachograph.card.v1.DriverActivity.DailyRecord
 	(*DriverActivity_DailyRecord_ActivityChange)(nil), // 2: wayplatform.connect.tachograph.card.v1.DriverActivity.DailyRecord.ActivityChange
 	(*timestamppb.Timestamp)(nil),                     // 3: google.protobuf.Timestamp
+	(v1.CardSlotNumber)(0),                            // 4: wayplatform.connect.tachograph.datadictionary.v1.CardSlotNumber
+	(v1.DrivingStatus)(0),                             // 5: wayplatform.connect.tachograph.datadictionary.v1.DrivingStatus
+	(v1.CardStatus)(0),                                // 6: wayplatform.connect.tachograph.datadictionary.v1.CardStatus
+	(v1.DriverActivityValue)(0),                       // 7: wayplatform.connect.tachograph.datadictionary.v1.DriverActivityValue
 }
 var file_wayplatform_connect_tachograph_card_v1_driver_activity_proto_depIdxs = []int32{
 	1, // 0: wayplatform.connect.tachograph.card.v1.DriverActivity.daily_records:type_name -> wayplatform.connect.tachograph.card.v1.DriverActivity.DailyRecord
 	3, // 1: wayplatform.connect.tachograph.card.v1.DriverActivity.DailyRecord.activity_record_date:type_name -> google.protobuf.Timestamp
 	2, // 2: wayplatform.connect.tachograph.card.v1.DriverActivity.DailyRecord.activity_change_info:type_name -> wayplatform.connect.tachograph.card.v1.DriverActivity.DailyRecord.ActivityChange
-	3, // [3:3] is the sub-list for method output_type
-	3, // [3:3] is the sub-list for method input_type
-	3, // [3:3] is the sub-list for extension type_name
-	3, // [3:3] is the sub-list for extension extendee
-	0, // [0:3] is the sub-list for field type_name
+	4, // 3: wayplatform.connect.tachograph.card.v1.DriverActivity.DailyRecord.ActivityChange.slot:type_name -> wayplatform.connect.tachograph.datadictionary.v1.CardSlotNumber
+	5, // 4: wayplatform.connect.tachograph.card.v1.DriverActivity.DailyRecord.ActivityChange.driving_status:type_name -> wayplatform.connect.tachograph.datadictionary.v1.DrivingStatus
+	6, // 5: wayplatform.connect.tachograph.card.v1.DriverActivity.DailyRecord.ActivityChange.card_status:type_name -> wayplatform.connect.tachograph.datadictionary.v1.CardStatus
+	7, // 6: wayplatform.connect.tachograph.card.v1.DriverActivity.DailyRecord.ActivityChange.activity:type_name -> wayplatform.connect.tachograph.datadictionary.v1.DriverActivityValue
+	7, // [7:7] is the sub-list for method output_type
+	7, // [7:7] is the sub-list for method input_type
+	7, // [7:7] is the sub-list for extension type_name
+	7, // [7:7] is the sub-list for extension extendee
+	0, // [0:7] is the sub-list for field type_name
 }
 
 func init() { file_wayplatform_connect_tachograph_card_v1_driver_activity_proto_init() }

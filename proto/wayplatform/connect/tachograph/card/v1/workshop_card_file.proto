@@ -44,7 +44,7 @@ message WorkshopCardFile {
   CardIdentification identification = 3;
 
   // --- Workshop Specific Data ---
-  WorkshopApplicationIdentification application_identification = 4;
+  WorkshopCardApplicationIdentification application_identification = 4;
   WorkshopCardHolderIdentification holder_identification = 5;
   Calibrations calibrations = 6;
   SensorInstallationData sensor_installation_data = 7;

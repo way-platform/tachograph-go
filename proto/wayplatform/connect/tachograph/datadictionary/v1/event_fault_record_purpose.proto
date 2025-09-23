@@ -1,0 +1,20 @@
+edition = "2023";
+
+package wayplatform.connect.tachograph.datadictionary.v1;
+
+import "wayplatform/connect/tachograph/datadictionary/v1/annotations.proto";
+
+// EventFaultRecordPurpose explains why an event or fault was recorded.
+// See Data Dictionary, Section 2.69.
+enum EventFaultRecordPurpose {
+  EVENT_FAULT_RECORD_PURPOSE_UNSPECIFIED = 0;
+  EVENT_FAULT_RECORD_PURPOSE_UNRECOGNIZED = 1;
+  TEN_MOST_RECENT = 2 [(protocol_enum_value) = 0x00];
+  LONGEST_IN_LAST_10_DAYS = 3 [(protocol_enum_value) = 0x01];
+  FIVE_LONGEST_IN_LAST_365_DAYS = 4 [(protocol_enum_value) = 0x02];
+  LAST_IN_LAST_10_DAYS = 5 [(protocol_enum_value) = 0x03];
+  MOST_SERIOUS_IN_LAST_10_DAYS = 6 [(protocol_enum_value) = 0x04];
+  FIVE_MOST_SERIOUS_IN_LAST_365_DAYS = 7 [(protocol_enum_value) = 0x05];
+  FIRST_AFTER_LAST_CALIBRATION = 8 [(protocol_enum_value) = 0x06];
+  ACTIVE_OR_ONGOING = 9 [(protocol_enum_value) = 0x07];
+}

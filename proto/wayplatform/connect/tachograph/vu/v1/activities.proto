@@ -3,6 +3,15 @@ edition = "2023";
 package wayplatform.connect.tachograph.vu.v1;
 
 import "google/protobuf/timestamp.proto";
+import "wayplatform/connect/tachograph/datadictionary/v1/card_slot_number.proto";
+import "wayplatform/connect/tachograph/datadictionary/v1/card_status.proto";
+import "wayplatform/connect/tachograph/datadictionary/v1/driver_activity_value.proto";
+import "wayplatform/connect/tachograph/datadictionary/v1/driving_status.proto";
+import "wayplatform/connect/tachograph/datadictionary/v1/entry_type_daily_work_period.proto";
+import "wayplatform/connect/tachograph/datadictionary/v1/manual_input_flag.proto";
+import "wayplatform/connect/tachograph/datadictionary/v1/nation_numeric.proto";
+import "wayplatform/connect/tachograph/datadictionary/v1/position_authentication_status.proto";
+import "wayplatform/connect/tachograph/datadictionary/v1/specific_condition_type.proto";
 import "wayplatform/connect/tachograph/vu/v1/versioning.proto";
 
 // Represents the consolidated data structure for an Activities transfer.
@@ -30,17 +39,19 @@ message Activities {
     // See Data Dictionary, Section 2.113 for `OdometerShort`.
     int32 odometer_at_insertion_km = 5;
     // See Data Dictionary, Section 2.33 for `CardSlotNumber`.
-    int32 card_slot_number = 6;
+    datadictionary.v1.CardSlotNumber card_slot_number = 6;
+    int32 unrecognized_card_slot_number = 7;
     // See Data Dictionary, Section 2.162 for `TimeReal`.
-    google.protobuf.Timestamp card_withdrawal_time = 7;
+    google.protobuf.Timestamp card_withdrawal_time = 8;
     // See Data Dictionary, Section 2.113 for `OdometerShort`.
-    int32 odometer_at_withdrawal_km = 8;
+    int32 odometer_at_withdrawal_km = 9;
     // Part of `PreviousVehicleInfo`. See Data Dictionary, Section 2.118.
-    string previous_vrn = 9;
+    string previous_vrn = 10;
     // Part of `PreviousVehicleInfo`. See Data Dictionary, Section 2.118.
-    google.protobuf.Timestamp previous_card_withdrawal_time = 10;
+    google.protobuf.Timestamp previous_card_withdrawal_time = 11;
     // See Data Dictionary, Section 2.93 for `ManualInputFlag`.
-    int32 manual_input_flag = 11;
+    datadictionary.v1.ManualInputFlag manual_input_flag = 12;
+    int32 unrecognized_manual_input_flag = 13;
   }
 
   // Represents a change in driver activity, driving status, or card status.
@@ -49,15 +60,19 @@ message Activities {
   // See Data Dictionary, Section 2.1.
   message ActivityChange {
     // Slot of the driver/co-driver.
-    int32 slot = 1;
+    datadictionary.v1.CardSlotNumber slot = 1;
+    int32 unrecognized_slot = 2;
     // Driving status (single or crew).
-    int32 driving_status = 2;
+    datadictionary.v1.DrivingStatus driving_status = 3;
+    int32 unrecognized_driving_status = 4;
     // Card status (inserted or not inserted).
-    int32 card_status = 3;
+    datadictionary.v1.CardStatus card_status = 5;
+    int32 unrecognized_card_status = 6;
     // Driver's activity (break/rest, availability, work, driving).
-    int32 activity = 4;
+    datadictionary.v1.DriverActivityValue activity = 7;
+    int32 unrecognized_activity = 8;
     // Time of the change in minutes since 00:00.
-    int32 time_of_change_minutes = 5;
+    int32 time_of_change_minutes = 9;
   }
 
   // Represents a place record for the beginning or end of a daily work period.
@@ -68,13 +83,15 @@ message Activities {
     // Time of the entry. See DD Section 2.162 for `TimeReal`.
     google.protobuf.Timestamp entry_time = 1;
     // Type of entry (begin or end). See DD Section 2.66 for `EntryTypeDailyWorkPeriod`.
-    int32 entry_type = 2;
+    datadictionary.v1.EntryTypeDailyWorkPeriod entry_type = 2;
+    int32 unrecognized_entry_type = 3;
     // Country code. See DD Section 2.101 for `NationNumeric`.
-    int32 country = 3;
+    datadictionary.v1.NationNumeric country = 4;
+    int32 unrecognized_country = 5;
     // Region code. See DD Section 2.122 for `RegionNumeric`.
-    int32 region = 4;
+    int32 region = 6;
     // Odometer value at the time of entry. See DD Section 2.113 for `OdometerShort`.
-    int32 odometer_km = 5;
+    int32 odometer_km = 7;
   }
 
   // Represents a GNSS position record.
@@ -91,7 +108,8 @@ message Activities {
     sint32 latitude = 4;
     // For Gen2v2+, indicates the authentication status of the position.
     // See Data Dictionary, Section 2.117a for `PositionAuthenticationStatus`.
-    int32 authentication_status = 5;
+    datadictionary.v1.PositionAuthenticationStatus authentication_status = 5;
+    int32 unrecognized_authentication_status = 6;
   }
 
   // Represents a specific condition record (e.g., Ferry/Train crossing).
@@ -102,7 +120,8 @@ message Activities {
     // Time of the entry. See DD Section 2.162 for `TimeReal`.
     google.protobuf.Timestamp entry_time = 1;
     // Type of specific condition. See DD Section 2.154 for `SpecificConditionType`.
-    int32 specific_condition_type = 2;
+    datadictionary.v1.SpecificConditionType specific_condition_type = 2;
+    int32 unrecognized_specific_condition_type = 3;
   }
 
   // Represents a border crossing record (Gen2v2+).
@@ -115,13 +134,15 @@ message Activities {
     // Generation of the driver's card. See DD Section 2.75 for `Generation`.
     Generation card_generation = 2;
     // Country the vehicle is leaving. See DD Section 2.101 for `NationNumeric`.
-    int32 country_left = 3;
+    datadictionary.v1.NationNumeric country_left = 3;
+    int32 unrecognized_country_left = 4;
     // Country the vehicle is entering. See DD Section 2.101 for `NationNumeric`.
-    int32 country_entered = 4;
+    datadictionary.v1.NationNumeric country_entered = 5;
+    int32 unrecognized_country_entered = 6;
     // Position of the vehicle at the time of crossing.
-    GnssRecord place_record = 5;
+    GnssRecord place_record = 7;
     // Odometer value at the time of crossing. See DD Section 2.113 for `OdometerShort`.
-    int32 odometer_km = 6;
+    int32 odometer_km = 8;
   }
 
   // Represents a load/unload operation record (Gen2v2+).
