@@ -9,24 +9,35 @@ import "google/protobuf/timestamp.proto";
 // Corresponds to the `CardControlActivityDataRecord` data type from EF_Control_Activity_Data.
 // See Data Dictionary, Section 2.15.
 message ControlActivityData {
+  // If true, the fields below are populated with parsed, semantic data.
+  // If false, the 'raw_data' field contains the original, unprocessed record
+  // bytes for perfect roundtrip accuracy.
+  bool valid = 1;
+
+  // --- Fields for a valid record (when valid = true) ---
+
   // See Data Dictionary, Section 2.53 for `ControlType`.
-  bytes control_type = 1;
+  bytes control_type = 2;
 
   // Date and time of the control. See DD Section 2.162 for `TimeReal`.
-  google.protobuf.Timestamp control_time = 2;
+  google.protobuf.Timestamp control_time = 3;
 
   // Card number of the control officer. See DD Section 2.73 for `FullCardNumber`.
-  string control_card_number = 3;
+  string control_card_number = 4;
 
   // Nation of the vehicle's registration. See DD Section 2.166.
-  string vehicle_registration_nation = 4;
+  string vehicle_registration_nation = 5;
 
   // Vehicle's registration number. See DD Section 2.166.
-  string vehicle_registration_number = 5;
+  string vehicle_registration_number = 6;
 
   // Start of the downloaded period. See DD Section 2.162 for `TimeReal`.
-  google.protobuf.Timestamp control_download_period_begin = 6;
+  google.protobuf.Timestamp control_download_period_begin = 7;
 
   // End of the downloaded period. See DD Section 2.162 for `TimeReal`.
-  google.protobuf.Timestamp control_download_period_end = 7;
+  google.protobuf.Timestamp control_download_period_end = 8;
+
+  // --- Field for raw data preservation (when valid = false) ---
+  // Holds the raw 46 bytes of the original record for perfect roundtrip.
+  bytes raw_data = 9;
 }

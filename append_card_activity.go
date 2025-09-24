@@ -11,9 +11,18 @@ func AppendDriverActivity(dst []byte, activity *cardv1.DriverActivity) ([]byte, 
 	if activity == nil {
 		return dst, nil
 	}
+
+	// Append header (pointers)
 	dst = binary.BigEndian.AppendUint16(dst, uint16(activity.GetOldestDayRecordIndex()))
 	dst = binary.BigEndian.AppendUint16(dst, uint16(activity.GetNewestDayRecordIndex()))
 
+	if !activity.GetValid() {
+		// Non-valid data: use preserved raw ring buffer data
+		rawData := activity.GetRawData()
+		return append(dst, rawData...), nil
+	}
+
+	// Valid data: serialize semantic data
 	var err error
 	for _, rec := range activity.GetDailyRecords() {
 		dst, err = AppendActivityDailyRecord(dst, rec)
@@ -45,14 +54,19 @@ func AppendActivityDailyRecord(dst []byte, rec *cardv1.DriverActivity_DailyRecor
 		return dst, nil
 	}
 
-	// Normal record processing
-	// Marshal the record content to a temporary buffer to calculate its length.
+	// Normal record processing - serialize content to temporary buffer first
 	contentBuf := make([]byte, 0, 2048)
-	contentBuf = appendTimeReal(contentBuf, rec.GetActivityRecordDate())
-	// TODO: Append BCD daily presence counter
-	contentBuf = append(contentBuf, 0, 0)
+
+	// Activity record date (4 bytes BCD)
+	contentBuf = appendDatef(contentBuf, rec.GetActivityRecordDate())
+
+	// Activity daily presence counter (2 bytes BCD)
+	contentBuf = binary.BigEndian.AppendUint16(contentBuf, uint16(rec.GetActivityDailyPresenceCounter()))
+
+	// Activity day distance (2 bytes)
 	contentBuf = binary.BigEndian.AppendUint16(contentBuf, uint16(rec.GetActivityDayDistance()))
 
+	// Activity change info (2 bytes each)
 	for _, ac := range rec.GetActivityChangeInfo() {
 		var err error
 		contentBuf, err = AppendActivityChange(contentBuf, ac)
@@ -61,9 +75,14 @@ func AppendActivityDailyRecord(dst []byte, rec *cardv1.DriverActivity_DailyRecor
 		}
 	}
 
-	recordLength := len(contentBuf) + 4 // +4 for the two length fields
+	// Calculate total record length (content + 4-byte header)
+	recordLength := len(contentBuf) + 4
+
+	// Append header with lengths
 	dst = binary.BigEndian.AppendUint16(dst, uint16(rec.GetActivityPreviousRecordLength()))
 	dst = binary.BigEndian.AppendUint16(dst, uint16(recordLength))
+
+	// Append content
 	dst = append(dst, contentBuf...)
 
 	return dst, nil

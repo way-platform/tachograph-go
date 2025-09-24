@@ -14,6 +14,19 @@ func UnmarshalCardControlActivityData(data []byte, target *cardv1.ControlActivit
 		return fmt.Errorf("insufficient data for control activity data")
 	}
 
+	// Check if this is a valid record by examining the control time (bytes 1-4)
+	controlTime := binary.BigEndian.Uint32(data[1:5])
+
+	if controlTime == 0 {
+		// Non-valid record: preserve original bytes
+		target.SetValid(false)
+		target.SetRawData(data)
+		return nil
+	}
+
+	// Valid record: parse semantic data
+	target.SetValid(true)
+
 	r := bytes.NewReader(data)
 
 	// Read control type (1 byte)

@@ -12,6 +12,17 @@ func AppendCardControlActivityData(data []byte, controlData *cardv1.ControlActiv
 		return data, nil
 	}
 
+	if !controlData.GetValid() {
+		// Non-valid record: use preserved raw data
+		rawData := controlData.GetRawData()
+		if len(rawData) != 46 {
+			// Fallback to zeros if raw data is invalid
+			return append(data, make([]byte, 46)...), nil
+		}
+		return append(data, rawData...), nil
+	}
+
+	// Valid record: serialize semantic data
 	// Control type (1 byte)
 	controlType := controlData.GetControlType()
 	if len(controlType) > 0 {
@@ -25,9 +36,7 @@ func AppendCardControlActivityData(data []byte, controlData *cardv1.ControlActiv
 
 	// Control card number (18 bytes)
 	cardNumber := controlData.GetControlCardNumber()
-	cardNumberBytes := make([]byte, 18)
-	copy(cardNumberBytes, []byte(cardNumber))
-	data = append(data, cardNumberBytes...)
+	data = appendString(data, cardNumber, 18)
 
 	// Vehicle registration nation (1 byte)
 	nationStr := controlData.GetVehicleRegistrationNation()
@@ -41,9 +50,7 @@ func AppendCardControlActivityData(data []byte, controlData *cardv1.ControlActiv
 
 	// Vehicle registration number (14 bytes)
 	regNumber := controlData.GetVehicleRegistrationNumber()
-	regNumberBytes := make([]byte, 14)
-	copy(regNumberBytes, []byte(regNumber))
-	data = append(data, regNumberBytes...)
+	data = appendString(data, regNumber, 14)
 
 	// Control download period begin (4 bytes)
 	data = appendTimeReal(data, controlData.GetControlDownloadPeriodBegin())

@@ -257,3 +257,17 @@ func SetSpecificConditionType(rawValue int32, setEnum func(datadictionaryv1.Spec
 		setUnrecognized(rawValue)
 	}
 }
+
+// GetSpecificConditionTypeProtocolValue returns the protocol value for marshalling
+func GetSpecificConditionTypeProtocolValue(enumValue datadictionaryv1.SpecificConditionType, unrecognizedValue int32) int32 {
+	if enumValue == datadictionaryv1.SpecificConditionType_SPECIFIC_CONDITION_TYPE_UNRECOGNIZED {
+		return unrecognizedValue
+	}
+
+	enumDesc := enumValue.Descriptor()
+	if protocolValue, ok := getProtocolValueFromEnumNumber(enumDesc, protoreflect.EnumNumber(enumValue)); ok {
+		return protocolValue
+	}
+
+	return int32(enumValue)
+}

@@ -37,6 +37,14 @@ func UnmarshalCardPlaces(data []byte, target *cardv1.Places) error {
 	}
 
 	target.SetRecords(records)
+
+	// Capture any remaining trailing bytes for roundtrip accuracy
+	if r.Len() > 0 {
+		trailingBytes := make([]byte, r.Len())
+		r.Read(trailingBytes)
+		target.SetTrailingBytes(trailingBytes)
+	}
+
 	return nil
 }
 
@@ -81,9 +89,10 @@ func parsePlaceRecord(r *bytes.Reader) (*cardv1.Places_Record, error) {
 	}
 	record.SetVehicleOdometerKm(int32(binary.BigEndian.Uint32(append([]byte{0}, odometerBytes...))))
 
-	// Skip reserved byte (1 byte)
+	// Read reserved byte (1 byte) and store it for roundtrip accuracy
 	var reserved byte
 	binary.Read(r, binary.BigEndian, &reserved)
+	record.SetReservedByte(int32(reserved))
 
 	return record, nil
 }

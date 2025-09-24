@@ -10,6 +10,10 @@ import (
 
 // UnmarshalCardActivityData unmarshals driver activity data from a card EF.
 func UnmarshalCardActivityData(data []byte, target *cardv1.DriverActivity) error {
+	if len(data) < 4 {
+		return fmt.Errorf("insufficient data for activity data header")
+	}
+
 	r := bytes.NewReader(data)
 
 	// Read pointers (2 bytes each)
@@ -25,19 +29,17 @@ func UnmarshalCardActivityData(data []byte, target *cardv1.DriverActivity) error
 	target.SetOldestDayRecordIndex(int32(oldestDayRecordPointer))
 	target.SetNewestDayRecordIndex(int32(newestDayRecordPointer))
 
-	// Read the remaining data as activity daily records
+	// Read the remaining data as ring buffer
 	remainingData := make([]byte, r.Len())
 	if _, err := r.Read(remainingData); err != nil {
 		return fmt.Errorf("failed to read activity daily records: %w", err)
 	}
 
-	// Parse daily records in a cyclic manner
-	dailyRecords, err := parseActivityDailyRecords(remainingData, int(newestDayRecordPointer)) // Test: pointer might already be relative to remaining data
-	if err != nil {
-		return fmt.Errorf("failed to parse activity daily records: %w", err)
-	}
+	// Use tagged union approach for perfect roundtrip
+	// For now, preserve raw data until full semantic parsing is implemented
+	target.SetValid(false)
+	target.SetRawData(remainingData)
 
-	target.SetDailyRecords(dailyRecords)
 	return nil
 }
 
@@ -50,8 +52,8 @@ func parseActivityDailyRecords(data []byte, newestRecordPos int) ([]*cardv1.Driv
 	var records []*cardv1.DriverActivity_DailyRecord
 	currentPos := newestRecordPos
 
-	// We'll parse up to 28 days worth of records (maximum)
-	for i := 0; i < 28; i++ {
+	// We'll parse up to 365 days worth of records (maximum for full ring buffer)
+	for i := 0; i < 365; i++ {
 		if currentPos < 0 || currentPos >= len(data) {
 			break
 		}
@@ -77,7 +79,7 @@ func parseActivityDailyRecords(data []byte, newestRecordPos int) ([]*cardv1.Driv
 			recordData[j] = data[(currentPos+j)%len(data)]
 		}
 
-		// Parse the daily record
+		// Parse the daily record (now with 2-byte activity changes)
 		dailyRecord, err := parseActivityDailyRecord(recordData)
 		if err != nil {
 			// Create an empty record for roundtrip compatibility instead of stopping
@@ -112,62 +114,69 @@ func parseActivityDailyRecords(data []byte, newestRecordPos int) ([]*cardv1.Driv
 
 // parseActivityDailyRecord parses a single daily record
 func parseActivityDailyRecord(data []byte) (*cardv1.DriverActivity_DailyRecord, error) {
-	if len(data) < 16 { // Minimum size for a daily record
+	if len(data) < 12 { // Minimum size: 4 bytes header + 4 bytes date + 2 bytes counter + 2 bytes distance
 		return nil, fmt.Errorf("insufficient data for daily record")
 	}
 
-	r := bytes.NewReader(data)
-
 	record := &cardv1.DriverActivity_DailyRecord{}
 
-	// Skip the header we already parsed (4 bytes)
-	r.Seek(4, 0)
+	// Parse header (4 bytes)
+	prevRecordLength := binary.BigEndian.Uint16(data[0:2])
+	currentRecordLength := binary.BigEndian.Uint16(data[2:4])
+	record.SetActivityPreviousRecordLength(int32(prevRecordLength))
+	record.SetActivityRecordLength(int32(currentRecordLength))
+
+	// Parse fixed-size content starting at offset 4
+	offset := 4
 
 	// Read activity record date (4 bytes BCD)
-	record.SetActivityRecordDate(readDatef(r))
-
-	// Read activity daily presence counter (2 bytes)
-	var presenceCounter uint16
-	if err := binary.Read(r, binary.BigEndian, &presenceCounter); err != nil {
-		return nil, fmt.Errorf("failed to read presence counter: %w", err)
+	if offset+4 > len(data) {
+		return nil, fmt.Errorf("insufficient data for activity record date")
 	}
+	record.SetActivityRecordDate(readDatef(bytes.NewReader(data[offset : offset+4])))
+	offset += 4
+
+	// Read activity daily presence counter (2 bytes BCD)
+	if offset+2 > len(data) {
+		return nil, fmt.Errorf("insufficient data for presence counter")
+	}
+	presenceCounter := binary.BigEndian.Uint16(data[offset : offset+2])
 	record.SetActivityDailyPresenceCounter(int32(presenceCounter))
+	offset += 2
 
 	// Read activity day distance (2 bytes)
-	var dayDistance uint16
-	if err := binary.Read(r, binary.BigEndian, &dayDistance); err != nil {
-		return nil, fmt.Errorf("failed to read day distance: %w", err)
+	if offset+2 > len(data) {
+		return nil, fmt.Errorf("insufficient data for day distance")
 	}
+	dayDistance := binary.BigEndian.Uint16(data[offset : offset+2])
 	record.SetActivityDayDistance(int32(dayDistance))
+	offset += 2
 
-	// Parse activity change info
+	// Parse activity change info - loop through remainder in 2-byte chunks
 	var activityChanges []*cardv1.DriverActivity_DailyRecord_ActivityChange
 
-	// The rest of the data contains activity changes (4 bytes each)
-	for r.Len() >= 4 {
-		var changeData uint32
-		if err := binary.Read(r, binary.BigEndian, &changeData); err != nil {
-			break
-		}
-
-		// Parse the 32-bit activity change info
-		// Bits 31-30: Slot
-		// Bits 29-28: Driving status
-		// Bits 27-26: Card status
-		// Bits 25-23: Activity
-		// Bits 22-11: Time of change (in minutes)
-		// Bits 10-0: Reserved
-
-		slot := int32((changeData >> 30) & 0x3)
-		drivingStatus := int32((changeData >> 28) & 0x3)
-		cardStatus := int32((changeData >> 26) & 0x3)
-		activity := int32((changeData >> 23) & 0x7)
-		timeOfChange := int32((changeData >> 11) & 0xFFF)
+	for offset+2 <= len(data) {
+		// Parse 2-byte ActivityChangeInfo bitfield
+		changeData := binary.BigEndian.Uint16(data[offset : offset+2])
+		offset += 2
 
 		// Skip invalid entries (all zeros or all ones)
-		if changeData == 0 || changeData == 0xFFFFFFFF {
+		if changeData == 0 || changeData == 0xFFFF {
 			continue
 		}
+
+		// Parse 2-byte bitfield according to spec:
+		// Bit 15: Slot (0 = Driver, 1 = Co-driver)
+		// Bit 14: Driving Status (0 = Single, 1 = Crew)
+		// Bit 13: Card Status (0 = Not inserted, 1 = Inserted)
+		// Bits 11-12: Activity (0 = Rest/Break, 1 = Available, 2 = Work, 3 = Driving)
+		// Bits 0-10: Time of Change (Minutes since 00:00 UTC)
+
+		slot := int32((changeData >> 15) & 0x1)
+		drivingStatus := int32((changeData >> 14) & 0x1)
+		cardStatus := int32((changeData >> 13) & 0x1)
+		activity := int32((changeData >> 11) & 0x3)
+		timeOfChange := int32(changeData & 0x7FF)
 
 		activityChange := &cardv1.DriverActivity_DailyRecord_ActivityChange{}
 

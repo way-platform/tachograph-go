@@ -20,6 +20,12 @@ func AppendPlaces(dst []byte, p *cardv1.Places) ([]byte, error) {
 			return nil, err
 		}
 	}
+
+	// Append trailing bytes for roundtrip accuracy
+	if trailingBytes := p.GetTrailingBytes(); len(trailingBytes) > 0 {
+		dst = append(dst, trailingBytes...)
+	}
+
 	return dst, nil
 }
 
@@ -40,6 +46,6 @@ func AppendPlaceRecord(dst []byte, rec *cardv1.Places_Record) ([]byte, error) {
 
 	dst = binary.BigEndian.AppendUint16(dst, uint16(rec.GetDailyWorkPeriodRegion())) // 2 bytes
 	dst = appendOdometer(dst, rec.GetVehicleOdometerKm())                            // 3 bytes
-	dst = append(dst, 0x00)                                                          // 1 byte reserved
+	dst = append(dst, byte(rec.GetReservedByte()))                                   // 1 byte reserved (preserved)
 	return dst, nil
 }

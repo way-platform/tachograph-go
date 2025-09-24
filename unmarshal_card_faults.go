@@ -2,6 +2,7 @@ package tachograph
 
 import (
 	"bytes"
+	"encoding/binary"
 
 	cardv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1"
 )
@@ -10,30 +11,34 @@ import (
 func UnmarshalFaultsData(data []byte, fd *cardv1.FaultData) error {
 	const recordSize = 24
 	r := bytes.NewReader(data)
+	var records []*cardv1.FaultData_Record
+
 	for r.Len() >= recordSize {
 		recordData := make([]byte, recordSize)
 		r.Read(recordData)
 
-		// Check if the record is empty (padded with nulls or spaces)
-		isEmpty := true
-		for _, b := range recordData {
-			if b != 0 && b != 0x20 { // Allow both null and space padding
-				isEmpty = false
-				break
-			}
-		}
-		if isEmpty {
-			continue
-		}
+		// Check if this is a valid record by examining the fault begin time (first 4 bytes after fault type)
+		// Fault type is 1 byte, so fault begin time starts at byte 1
+		faultBeginTime := binary.BigEndian.Uint32(recordData[1:5])
 
 		rec := &cardv1.FaultData_Record{}
-		if err := UnmarshalFaultRecord(recordData, rec); err != nil {
-			return err
+
+		if faultBeginTime == 0 {
+			// Non-valid record: preserve original bytes
+			rec.SetValid(false)
+			rec.SetRawData(recordData)
+		} else {
+			// Valid record: parse semantic data
+			rec.SetValid(true)
+			if err := UnmarshalFaultRecord(recordData, rec); err != nil {
+				return err
+			}
 		}
-		records := fd.GetRecords()
+
 		records = append(records, rec)
-		fd.SetRecords(records)
 	}
+
+	fd.SetRecords(records)
 	return nil
 }
 

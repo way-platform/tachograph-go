@@ -30,6 +30,7 @@ type Places struct {
 	state                        protoimpl.MessageState `protogen:"opaque.v1"`
 	xxx_hidden_NewestRecordIndex int32                  `protobuf:"varint,1,opt,name=newest_record_index,json=newestRecordIndex"`
 	xxx_hidden_Records           *[]*Places_Record      `protobuf:"bytes,2,rep,name=records"`
+	xxx_hidden_TrailingBytes     []byte                 `protobuf:"bytes,3,opt,name=trailing_bytes,json=trailingBytes"`
 	XXX_raceDetectHookData       protoimpl.RaceDetectHookData
 	XXX_presence                 [1]uint32
 	unknownFields                protoimpl.UnknownFields
@@ -77,13 +78,28 @@ func (x *Places) GetRecords() []*Places_Record {
 	return nil
 }
 
+func (x *Places) GetTrailingBytes() []byte {
+	if x != nil {
+		return x.xxx_hidden_TrailingBytes
+	}
+	return nil
+}
+
 func (x *Places) SetNewestRecordIndex(v int32) {
 	x.xxx_hidden_NewestRecordIndex = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 2)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 3)
 }
 
 func (x *Places) SetRecords(v []*Places_Record) {
 	x.xxx_hidden_Records = &v
+}
+
+func (x *Places) SetTrailingBytes(v []byte) {
+	if v == nil {
+		v = []byte{}
+	}
+	x.xxx_hidden_TrailingBytes = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 3)
 }
 
 func (x *Places) HasNewestRecordIndex() bool {
@@ -93,9 +109,21 @@ func (x *Places) HasNewestRecordIndex() bool {
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 0)
 }
 
+func (x *Places) HasTrailingBytes() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 2)
+}
+
 func (x *Places) ClearNewestRecordIndex() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 0)
 	x.xxx_hidden_NewestRecordIndex = 0
+}
+
+func (x *Places) ClearTrailingBytes() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 2)
+	x.xxx_hidden_TrailingBytes = nil
 }
 
 type Places_builder struct {
@@ -105,6 +133,8 @@ type Places_builder struct {
 	NewestRecordIndex *int32
 	// The set of place records.
 	Records []*Places_Record
+	// Trailing bytes that don't form complete records (for roundtrip accuracy).
+	TrailingBytes []byte
 }
 
 func (b0 Places_builder) Build() *Places {
@@ -112,10 +142,14 @@ func (b0 Places_builder) Build() *Places {
 	b, x := &b0, m0
 	_, _ = b, x
 	if b.NewestRecordIndex != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 2)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 3)
 		x.xxx_hidden_NewestRecordIndex = *b.NewestRecordIndex
 	}
 	x.xxx_hidden_Records = &b.Records
+	if b.TrailingBytes != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 3)
+		x.xxx_hidden_TrailingBytes = b.TrailingBytes
+	}
 	return m0
 }
 
@@ -132,6 +166,7 @@ type Places_Record struct {
 	xxx_hidden_UnrecognizedDailyWorkPeriodCountry int32                       `protobuf:"varint,5,opt,name=unrecognized_daily_work_period_country,json=unrecognizedDailyWorkPeriodCountry"`
 	xxx_hidden_DailyWorkPeriodRegion              int32                       `protobuf:"varint,6,opt,name=daily_work_period_region,json=dailyWorkPeriodRegion"`
 	xxx_hidden_VehicleOdometerKm                  int32                       `protobuf:"varint,7,opt,name=vehicle_odometer_km,json=vehicleOdometerKm"`
+	xxx_hidden_ReservedByte                       int32                       `protobuf:"varint,8,opt,name=reserved_byte,json=reservedByte"`
 	XXX_raceDetectHookData                        protoimpl.RaceDetectHookData
 	XXX_presence                                  [1]uint32
 	unknownFields                                 protoimpl.UnknownFields
@@ -216,38 +251,50 @@ func (x *Places_Record) GetVehicleOdometerKm() int32 {
 	return 0
 }
 
+func (x *Places_Record) GetReservedByte() int32 {
+	if x != nil {
+		return x.xxx_hidden_ReservedByte
+	}
+	return 0
+}
+
 func (x *Places_Record) SetEntryTime(v *timestamppb.Timestamp) {
 	x.xxx_hidden_EntryTime = v
 }
 
 func (x *Places_Record) SetEntryType(v v1.EntryTypeDailyWorkPeriod) {
 	x.xxx_hidden_EntryType = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 7)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 8)
 }
 
 func (x *Places_Record) SetUnrecognizedEntryType(v int32) {
 	x.xxx_hidden_UnrecognizedEntryType = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 7)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 8)
 }
 
 func (x *Places_Record) SetDailyWorkPeriodCountry(v v1.NationNumeric) {
 	x.xxx_hidden_DailyWorkPeriodCountry = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 3, 7)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 3, 8)
 }
 
 func (x *Places_Record) SetUnrecognizedDailyWorkPeriodCountry(v int32) {
 	x.xxx_hidden_UnrecognizedDailyWorkPeriodCountry = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 4, 7)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 4, 8)
 }
 
 func (x *Places_Record) SetDailyWorkPeriodRegion(v int32) {
 	x.xxx_hidden_DailyWorkPeriodRegion = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 5, 7)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 5, 8)
 }
 
 func (x *Places_Record) SetVehicleOdometerKm(v int32) {
 	x.xxx_hidden_VehicleOdometerKm = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 6, 7)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 6, 8)
+}
+
+func (x *Places_Record) SetReservedByte(v int32) {
+	x.xxx_hidden_ReservedByte = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 7, 8)
 }
 
 func (x *Places_Record) HasEntryTime() bool {
@@ -299,6 +346,13 @@ func (x *Places_Record) HasVehicleOdometerKm() bool {
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 6)
 }
 
+func (x *Places_Record) HasReservedByte() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 7)
+}
+
 func (x *Places_Record) ClearEntryTime() {
 	x.xxx_hidden_EntryTime = nil
 }
@@ -333,6 +387,11 @@ func (x *Places_Record) ClearVehicleOdometerKm() {
 	x.xxx_hidden_VehicleOdometerKm = 0
 }
 
+func (x *Places_Record) ClearReservedByte() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 7)
+	x.xxx_hidden_ReservedByte = 0
+}
+
 type Places_Record_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
@@ -348,6 +407,8 @@ type Places_Record_builder struct {
 	DailyWorkPeriodRegion *int32
 	// Odometer at the time of entry. See DD Section 2.113 for `OdometerShort`.
 	VehicleOdometerKm *int32
+	// Reserved byte (usually 0x00, but preserved for roundtrip accuracy).
+	ReservedByte *int32
 }
 
 func (b0 Places_Record_builder) Build() *Places_Record {
@@ -356,28 +417,32 @@ func (b0 Places_Record_builder) Build() *Places_Record {
 	_, _ = b, x
 	x.xxx_hidden_EntryTime = b.EntryTime
 	if b.EntryType != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 7)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 8)
 		x.xxx_hidden_EntryType = *b.EntryType
 	}
 	if b.UnrecognizedEntryType != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 7)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 8)
 		x.xxx_hidden_UnrecognizedEntryType = *b.UnrecognizedEntryType
 	}
 	if b.DailyWorkPeriodCountry != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 3, 7)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 3, 8)
 		x.xxx_hidden_DailyWorkPeriodCountry = *b.DailyWorkPeriodCountry
 	}
 	if b.UnrecognizedDailyWorkPeriodCountry != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 4, 7)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 4, 8)
 		x.xxx_hidden_UnrecognizedDailyWorkPeriodCountry = *b.UnrecognizedDailyWorkPeriodCountry
 	}
 	if b.DailyWorkPeriodRegion != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 5, 7)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 5, 8)
 		x.xxx_hidden_DailyWorkPeriodRegion = *b.DailyWorkPeriodRegion
 	}
 	if b.VehicleOdometerKm != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 6, 7)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 6, 8)
 		x.xxx_hidden_VehicleOdometerKm = *b.VehicleOdometerKm
+	}
+	if b.ReservedByte != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 7, 8)
+		x.xxx_hidden_ReservedByte = *b.ReservedByte
 	}
 	return m0
 }
@@ -386,10 +451,11 @@ var File_wayplatform_connect_tachograph_card_v1_places_proto protoreflect.FileDe
 
 const file_wayplatform_connect_tachograph_card_v1_places_proto_rawDesc = "" +
 	"\n" +
-	"3wayplatform/connect/tachograph/card/v1/places.proto\x12&wayplatform.connect.tachograph.card.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1aSwayplatform/connect/tachograph/datadictionary/v1/entry_type_daily_work_period.proto\x1aEwayplatform/connect/tachograph/datadictionary/v1/nation_numeric.proto\"\xab\x05\n" +
+	"3wayplatform/connect/tachograph/card/v1/places.proto\x12&wayplatform.connect.tachograph.card.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1aSwayplatform/connect/tachograph/datadictionary/v1/entry_type_daily_work_period.proto\x1aEwayplatform/connect/tachograph/datadictionary/v1/nation_numeric.proto\"\xf7\x05\n" +
 	"\x06Places\x12.\n" +
 	"\x13newest_record_index\x18\x01 \x01(\x05R\x11newestRecordIndex\x12O\n" +
-	"\arecords\x18\x02 \x03(\v25.wayplatform.connect.tachograph.card.v1.Places.RecordR\arecords\x1a\x9f\x04\n" +
+	"\arecords\x18\x02 \x03(\v25.wayplatform.connect.tachograph.card.v1.Places.RecordR\arecords\x12%\n" +
+	"\x0etrailing_bytes\x18\x03 \x01(\fR\rtrailingBytes\x1a\xc4\x04\n" +
 	"\x06Record\x129\n" +
 	"\n" +
 	"entry_time\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\tentryTime\x12i\n" +
@@ -399,7 +465,8 @@ const file_wayplatform_connect_tachograph_card_v1_places_proto_rawDesc = "" +
 	"\x19daily_work_period_country\x18\x04 \x01(\x0e2?.wayplatform.connect.tachograph.datadictionary.v1.NationNumericR\x16dailyWorkPeriodCountry\x12R\n" +
 	"&unrecognized_daily_work_period_country\x18\x05 \x01(\x05R\"unrecognizedDailyWorkPeriodCountry\x127\n" +
 	"\x18daily_work_period_region\x18\x06 \x01(\x05R\x15dailyWorkPeriodRegion\x12.\n" +
-	"\x13vehicle_odometer_km\x18\a \x01(\x05R\x11vehicleOdometerKmB\xd8\x02\n" +
+	"\x13vehicle_odometer_km\x18\a \x01(\x05R\x11vehicleOdometerKm\x12#\n" +
+	"\rreserved_byte\x18\b \x01(\x05R\freservedByteB\xd8\x02\n" +
 	"*com.wayplatform.connect.tachograph.card.v1B\vPlacesProtoP\x01Z`github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1;cardv1\xa2\x02\x04WCTC\xaa\x02&Wayplatform.Connect.Tachograph.Card.V1\xca\x02&Wayplatform\\Connect\\Tachograph\\Card\\V1\xe2\x022Wayplatform\\Connect\\Tachograph\\Card\\V1\\GPBMetadata\xea\x02*Wayplatform::Connect::Tachograph::Card::V1b\beditionsp\xe8\a"
 
 var file_wayplatform_connect_tachograph_card_v1_places_proto_msgTypes = make([]protoimpl.MessageInfo, 2)

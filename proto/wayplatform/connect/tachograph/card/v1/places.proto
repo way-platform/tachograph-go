@@ -32,6 +32,9 @@ message Places {
 
     // Odometer at the time of entry. See DD Section 2.113 for `OdometerShort`.
     int32 vehicle_odometer_km = 7;
+
+    // Reserved byte (usually 0x00, but preserved for roundtrip accuracy).
+    int32 reserved_byte = 8;
   }
 
   // Index of the last updated place record.
@@ -39,4 +42,7 @@ message Places {
 
   // The set of place records.
   repeated Record records = 2;
+
+  // Trailing bytes that don't form complete records (for roundtrip accuracy).
+  bytes trailing_bytes = 3;
 }

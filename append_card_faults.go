@@ -9,7 +9,20 @@ func AppendFaultRecord(dst []byte, rec *cardv1.FaultData_Record) ([]byte, error)
 	if rec == nil {
 		return append(dst, make([]byte, 24)...), nil
 	}
-	dst = append(dst, byte(rec.GetFaultType()))
+
+	if !rec.GetValid() {
+		// Non-valid record: use preserved raw data
+		rawData := rec.GetRawData()
+		if len(rawData) != 24 {
+			// Fallback to zeros if raw data is invalid
+			return append(dst, make([]byte, 24)...), nil
+		}
+		return append(dst, rawData...), nil
+	}
+
+	// Valid record: serialize semantic data
+	faultTypeProtocol := GetEventFaultTypeProtocolValue(rec.GetFaultType(), rec.GetUnrecognizedFaultType())
+	dst = append(dst, byte(faultTypeProtocol))
 	dst = appendTimeReal(dst, rec.GetFaultBeginTime())
 	dst = appendTimeReal(dst, rec.GetFaultEndTime())
 	dst = append(dst, byte(0)) // Placeholder for vehicleRegistrationNation, assuming BCD

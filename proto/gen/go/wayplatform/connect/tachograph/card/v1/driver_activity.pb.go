@@ -28,9 +28,11 @@ const (
 // See Data Dictionary, Section 2.17.
 type DriverActivity struct {
 	state                           protoimpl.MessageState         `protogen:"opaque.v1"`
-	xxx_hidden_OldestDayRecordIndex int32                          `protobuf:"varint,1,opt,name=oldest_day_record_index,json=oldestDayRecordIndex"`
-	xxx_hidden_NewestDayRecordIndex int32                          `protobuf:"varint,2,opt,name=newest_day_record_index,json=newestDayRecordIndex"`
-	xxx_hidden_DailyRecords         *[]*DriverActivity_DailyRecord `protobuf:"bytes,3,rep,name=daily_records,json=dailyRecords"`
+	xxx_hidden_Valid                bool                           `protobuf:"varint,1,opt,name=valid"`
+	xxx_hidden_OldestDayRecordIndex int32                          `protobuf:"varint,2,opt,name=oldest_day_record_index,json=oldestDayRecordIndex"`
+	xxx_hidden_NewestDayRecordIndex int32                          `protobuf:"varint,3,opt,name=newest_day_record_index,json=newestDayRecordIndex"`
+	xxx_hidden_DailyRecords         *[]*DriverActivity_DailyRecord `protobuf:"bytes,4,rep,name=daily_records,json=dailyRecords"`
+	xxx_hidden_RawData              []byte                         `protobuf:"bytes,5,opt,name=raw_data,json=rawData"`
 	XXX_raceDetectHookData          protoimpl.RaceDetectHookData
 	XXX_presence                    [1]uint32
 	unknownFields                   protoimpl.UnknownFields
@@ -62,6 +64,13 @@ func (x *DriverActivity) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
+func (x *DriverActivity) GetValid() bool {
+	if x != nil {
+		return x.xxx_hidden_Valid
+	}
+	return false
+}
+
 func (x *DriverActivity) GetOldestDayRecordIndex() int32 {
 	if x != nil {
 		return x.xxx_hidden_OldestDayRecordIndex
@@ -85,68 +94,127 @@ func (x *DriverActivity) GetDailyRecords() []*DriverActivity_DailyRecord {
 	return nil
 }
 
+func (x *DriverActivity) GetRawData() []byte {
+	if x != nil {
+		return x.xxx_hidden_RawData
+	}
+	return nil
+}
+
+func (x *DriverActivity) SetValid(v bool) {
+	x.xxx_hidden_Valid = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 5)
+}
+
 func (x *DriverActivity) SetOldestDayRecordIndex(v int32) {
 	x.xxx_hidden_OldestDayRecordIndex = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 3)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 5)
 }
 
 func (x *DriverActivity) SetNewestDayRecordIndex(v int32) {
 	x.xxx_hidden_NewestDayRecordIndex = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 3)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 5)
 }
 
 func (x *DriverActivity) SetDailyRecords(v []*DriverActivity_DailyRecord) {
 	x.xxx_hidden_DailyRecords = &v
 }
 
-func (x *DriverActivity) HasOldestDayRecordIndex() bool {
+func (x *DriverActivity) SetRawData(v []byte) {
+	if v == nil {
+		v = []byte{}
+	}
+	x.xxx_hidden_RawData = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 4, 5)
+}
+
+func (x *DriverActivity) HasValid() bool {
 	if x == nil {
 		return false
 	}
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 0)
 }
 
-func (x *DriverActivity) HasNewestDayRecordIndex() bool {
+func (x *DriverActivity) HasOldestDayRecordIndex() bool {
 	if x == nil {
 		return false
 	}
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 1)
 }
 
-func (x *DriverActivity) ClearOldestDayRecordIndex() {
+func (x *DriverActivity) HasNewestDayRecordIndex() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 2)
+}
+
+func (x *DriverActivity) HasRawData() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 4)
+}
+
+func (x *DriverActivity) ClearValid() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 0)
+	x.xxx_hidden_Valid = false
+}
+
+func (x *DriverActivity) ClearOldestDayRecordIndex() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 1)
 	x.xxx_hidden_OldestDayRecordIndex = 0
 }
 
 func (x *DriverActivity) ClearNewestDayRecordIndex() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 1)
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 2)
 	x.xxx_hidden_NewestDayRecordIndex = 0
+}
+
+func (x *DriverActivity) ClearRawData() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 4)
+	x.xxx_hidden_RawData = nil
 }
 
 type DriverActivity_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
+	// If true, the fields below are populated with parsed, semantic data.
+	// If false, the 'raw_data' field contains the original, unprocessed ring buffer
+	// bytes for perfect roundtrip accuracy.
+	Valid *bool
 	// See Data Dictionary, Section 2.17, `activityPointerOldestDayRecord`.
 	OldestDayRecordIndex *int32
 	// See Data Dictionary, Section 2.17, `activityPointerNewestRecord`.
 	NewestDayRecordIndex *int32
 	// See Data Dictionary, Section 2.17, `activityDailyRecords`.
 	DailyRecords []*DriverActivity_DailyRecord
+	// --- Field for raw data preservation (when valid = false) ---
+	// Holds the raw ring buffer bytes (after the 4-byte header) for perfect roundtrip.
+	RawData []byte
 }
 
 func (b0 DriverActivity_builder) Build() *DriverActivity {
 	m0 := &DriverActivity{}
 	b, x := &b0, m0
 	_, _ = b, x
+	if b.Valid != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 5)
+		x.xxx_hidden_Valid = *b.Valid
+	}
 	if b.OldestDayRecordIndex != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 3)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 5)
 		x.xxx_hidden_OldestDayRecordIndex = *b.OldestDayRecordIndex
 	}
 	if b.NewestDayRecordIndex != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 3)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 5)
 		x.xxx_hidden_NewestDayRecordIndex = *b.NewestDayRecordIndex
 	}
 	x.xxx_hidden_DailyRecords = &b.DailyRecords
+	if b.RawData != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 4, 5)
+		x.xxx_hidden_RawData = b.RawData
+	}
 	return m0
 }
 
@@ -706,12 +774,13 @@ var File_wayplatform_connect_tachograph_card_v1_driver_activity_proto protorefle
 
 const file_wayplatform_connect_tachograph_card_v1_driver_activity_proto_rawDesc = "" +
 	"\n" +
-	"<wayplatform/connect/tachograph/card/v1/driver_activity.proto\x12&wayplatform.connect.tachograph.card.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1aGwayplatform/connect/tachograph/datadictionary/v1/card_slot_number.proto\x1aBwayplatform/connect/tachograph/datadictionary/v1/card_status.proto\x1aLwayplatform/connect/tachograph/datadictionary/v1/driver_activity_value.proto\x1aEwayplatform/connect/tachograph/datadictionary/v1/driving_status.proto\"\xe7\n" +
-	"\n" +
-	"\x0eDriverActivity\x125\n" +
-	"\x17oldest_day_record_index\x18\x01 \x01(\x05R\x14oldestDayRecordIndex\x125\n" +
-	"\x17newest_day_record_index\x18\x02 \x01(\x05R\x14newestDayRecordIndex\x12g\n" +
-	"\rdaily_records\x18\x03 \x03(\v2B.wayplatform.connect.tachograph.card.v1.DriverActivity.DailyRecordR\fdailyRecords\x1a\xfd\b\n" +
+	"<wayplatform/connect/tachograph/card/v1/driver_activity.proto\x12&wayplatform.connect.tachograph.card.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1aGwayplatform/connect/tachograph/datadictionary/v1/card_slot_number.proto\x1aBwayplatform/connect/tachograph/datadictionary/v1/card_status.proto\x1aLwayplatform/connect/tachograph/datadictionary/v1/driver_activity_value.proto\x1aEwayplatform/connect/tachograph/datadictionary/v1/driving_status.proto\"\x98\v\n" +
+	"\x0eDriverActivity\x12\x14\n" +
+	"\x05valid\x18\x01 \x01(\bR\x05valid\x125\n" +
+	"\x17oldest_day_record_index\x18\x02 \x01(\x05R\x14oldestDayRecordIndex\x125\n" +
+	"\x17newest_day_record_index\x18\x03 \x01(\x05R\x14newestDayRecordIndex\x12g\n" +
+	"\rdaily_records\x18\x04 \x03(\v2B.wayplatform.connect.tachograph.card.v1.DriverActivity.DailyRecordR\fdailyRecords\x12\x19\n" +
+	"\braw_data\x18\x05 \x01(\fR\arawData\x1a\xfd\b\n" +
 	"\vDailyRecord\x12E\n" +
 	"\x1factivity_previous_record_length\x18\x01 \x01(\x05R\x1cactivityPreviousRecordLength\x124\n" +
 	"\x16activity_record_length\x18\x02 \x01(\x05R\x14activityRecordLength\x12L\n" +

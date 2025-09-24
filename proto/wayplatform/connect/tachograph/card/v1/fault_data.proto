@@ -15,22 +15,33 @@ message FaultData {
   // Corresponds to the `CardFaultRecord` data type.
   // See Data Dictionary, Section 2.22.
   message Record {
+    // If true, the fields below are populated with parsed, semantic data.
+    // If false, the 'raw_data' field contains the original, unprocessed record
+    // bytes.
+    bool valid = 1;
+
+    // --- Fields for a valid record (when valid = true) ---
+
     // See Data Dictionary, Section 2.70 for `EventFaultType`.
-    datadictionary.v1.EventFaultType fault_type = 1;
+    datadictionary.v1.EventFaultType fault_type = 2;
     // Populated only when fault_type is EVENT_FAULT_TYPE_UNRECOGNIZED.
-    int32 unrecognized_fault_type = 2;
+    int32 unrecognized_fault_type = 3;
 
     // See Data Dictionary, Section 2.162 for `TimeReal`.
-    google.protobuf.Timestamp fault_begin_time = 3;
+    google.protobuf.Timestamp fault_begin_time = 4;
 
     // See Data Dictionary, Section 2.162 for `TimeReal`.
-    google.protobuf.Timestamp fault_end_time = 4;
+    google.protobuf.Timestamp fault_end_time = 5;
 
     // Part of `VehicleRegistrationIdentification`. See DD Section 2.166.
-    string vehicle_registration_nation = 5;
+    string vehicle_registration_nation = 6;
 
     // Part of `VehicleRegistrationIdentification`. See DD Section 2.166.
-    string vehicle_registration_number = 6;
+    string vehicle_registration_number = 7;
+
+    // --- Field for a non-valid record (when valid = false) ---
+    // Holds the raw 24 bytes of the original record.
+    bytes raw_data = 8;
   }
 
   repeated Record records = 1;

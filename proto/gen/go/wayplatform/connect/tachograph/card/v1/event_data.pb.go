@@ -91,12 +91,14 @@ func (b0 EventData_builder) Build() *EventData {
 // See Data Dictionary, Section 2.20.
 type EventData_Record struct {
 	state                                protoimpl.MessageState `protogen:"opaque.v1"`
-	xxx_hidden_EventType                 v1.EventFaultType      `protobuf:"varint,1,opt,name=event_type,json=eventType,enum=wayplatform.connect.tachograph.datadictionary.v1.EventFaultType"`
-	xxx_hidden_UnrecognizedEventType     int32                  `protobuf:"varint,2,opt,name=unrecognized_event_type,json=unrecognizedEventType"`
-	xxx_hidden_EventBeginTime            *timestamppb.Timestamp `protobuf:"bytes,3,opt,name=event_begin_time,json=eventBeginTime"`
-	xxx_hidden_EventEndTime              *timestamppb.Timestamp `protobuf:"bytes,4,opt,name=event_end_time,json=eventEndTime"`
-	xxx_hidden_VehicleRegistrationNation *string                `protobuf:"bytes,5,opt,name=vehicle_registration_nation,json=vehicleRegistrationNation"`
-	xxx_hidden_VehicleRegistrationNumber *string                `protobuf:"bytes,6,opt,name=vehicle_registration_number,json=vehicleRegistrationNumber"`
+	xxx_hidden_Valid                     bool                   `protobuf:"varint,1,opt,name=valid"`
+	xxx_hidden_EventType                 v1.EventFaultType      `protobuf:"varint,2,opt,name=event_type,json=eventType,enum=wayplatform.connect.tachograph.datadictionary.v1.EventFaultType"`
+	xxx_hidden_UnrecognizedEventType     int32                  `protobuf:"varint,3,opt,name=unrecognized_event_type,json=unrecognizedEventType"`
+	xxx_hidden_EventBeginTime            *timestamppb.Timestamp `protobuf:"bytes,4,opt,name=event_begin_time,json=eventBeginTime"`
+	xxx_hidden_EventEndTime              *timestamppb.Timestamp `protobuf:"bytes,5,opt,name=event_end_time,json=eventEndTime"`
+	xxx_hidden_VehicleRegistrationNation *string                `protobuf:"bytes,6,opt,name=vehicle_registration_nation,json=vehicleRegistrationNation"`
+	xxx_hidden_VehicleRegistrationNumber *string                `protobuf:"bytes,7,opt,name=vehicle_registration_number,json=vehicleRegistrationNumber"`
+	xxx_hidden_RawData                   []byte                 `protobuf:"bytes,8,opt,name=raw_data,json=rawData"`
 	XXX_raceDetectHookData               protoimpl.RaceDetectHookData
 	XXX_presence                         [1]uint32
 	unknownFields                        protoimpl.UnknownFields
@@ -128,9 +130,16 @@ func (x *EventData_Record) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
+func (x *EventData_Record) GetValid() bool {
+	if x != nil {
+		return x.xxx_hidden_Valid
+	}
+	return false
+}
+
 func (x *EventData_Record) GetEventType() v1.EventFaultType {
 	if x != nil {
-		if protoimpl.X.Present(&(x.XXX_presence[0]), 0) {
+		if protoimpl.X.Present(&(x.XXX_presence[0]), 1) {
 			return x.xxx_hidden_EventType
 		}
 	}
@@ -178,14 +187,26 @@ func (x *EventData_Record) GetVehicleRegistrationNumber() string {
 	return ""
 }
 
+func (x *EventData_Record) GetRawData() []byte {
+	if x != nil {
+		return x.xxx_hidden_RawData
+	}
+	return nil
+}
+
+func (x *EventData_Record) SetValid(v bool) {
+	x.xxx_hidden_Valid = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 8)
+}
+
 func (x *EventData_Record) SetEventType(v v1.EventFaultType) {
 	x.xxx_hidden_EventType = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 6)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 8)
 }
 
 func (x *EventData_Record) SetUnrecognizedEventType(v int32) {
 	x.xxx_hidden_UnrecognizedEventType = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 6)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 8)
 }
 
 func (x *EventData_Record) SetEventBeginTime(v *timestamppb.Timestamp) {
@@ -198,26 +219,41 @@ func (x *EventData_Record) SetEventEndTime(v *timestamppb.Timestamp) {
 
 func (x *EventData_Record) SetVehicleRegistrationNation(v string) {
 	x.xxx_hidden_VehicleRegistrationNation = &v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 4, 6)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 5, 8)
 }
 
 func (x *EventData_Record) SetVehicleRegistrationNumber(v string) {
 	x.xxx_hidden_VehicleRegistrationNumber = &v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 5, 6)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 6, 8)
 }
 
-func (x *EventData_Record) HasEventType() bool {
+func (x *EventData_Record) SetRawData(v []byte) {
+	if v == nil {
+		v = []byte{}
+	}
+	x.xxx_hidden_RawData = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 7, 8)
+}
+
+func (x *EventData_Record) HasValid() bool {
 	if x == nil {
 		return false
 	}
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 0)
 }
 
-func (x *EventData_Record) HasUnrecognizedEventType() bool {
+func (x *EventData_Record) HasEventType() bool {
 	if x == nil {
 		return false
 	}
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 1)
+}
+
+func (x *EventData_Record) HasUnrecognizedEventType() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 2)
 }
 
 func (x *EventData_Record) HasEventBeginTime() bool {
@@ -238,23 +274,35 @@ func (x *EventData_Record) HasVehicleRegistrationNation() bool {
 	if x == nil {
 		return false
 	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 4)
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 5)
 }
 
 func (x *EventData_Record) HasVehicleRegistrationNumber() bool {
 	if x == nil {
 		return false
 	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 5)
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 6)
+}
+
+func (x *EventData_Record) HasRawData() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 7)
+}
+
+func (x *EventData_Record) ClearValid() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 0)
+	x.xxx_hidden_Valid = false
 }
 
 func (x *EventData_Record) ClearEventType() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 0)
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 1)
 	x.xxx_hidden_EventType = v1.EventFaultType_EVENT_FAULT_TYPE_UNSPECIFIED
 }
 
 func (x *EventData_Record) ClearUnrecognizedEventType() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 1)
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 2)
 	x.xxx_hidden_UnrecognizedEventType = 0
 }
 
@@ -267,18 +315,27 @@ func (x *EventData_Record) ClearEventEndTime() {
 }
 
 func (x *EventData_Record) ClearVehicleRegistrationNation() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 4)
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 5)
 	x.xxx_hidden_VehicleRegistrationNation = nil
 }
 
 func (x *EventData_Record) ClearVehicleRegistrationNumber() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 5)
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 6)
 	x.xxx_hidden_VehicleRegistrationNumber = nil
+}
+
+func (x *EventData_Record) ClearRawData() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 7)
+	x.xxx_hidden_RawData = nil
 }
 
 type EventData_Record_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
+	// If true, the fields below are populated with parsed, semantic data.
+	// If false, the 'raw_data' field contains the original, unprocessed record
+	// bytes.
+	Valid *bool
 	// See Data Dictionary, Section 2.70 for `EventFaultType`.
 	EventType *v1.EventFaultType
 	// Populated only when event_type is EVENT_FAULT_TYPE_UNRECOGNIZED.
@@ -291,29 +348,40 @@ type EventData_Record_builder struct {
 	VehicleRegistrationNation *string
 	// Part of `VehicleRegistrationIdentification`. See DD Section 2.166.
 	VehicleRegistrationNumber *string
+	// --- Field for a non-valid record (when valid = false) ---
+	// Holds the raw 24 bytes of the original record.
+	RawData []byte
 }
 
 func (b0 EventData_Record_builder) Build() *EventData_Record {
 	m0 := &EventData_Record{}
 	b, x := &b0, m0
 	_, _ = b, x
+	if b.Valid != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 8)
+		x.xxx_hidden_Valid = *b.Valid
+	}
 	if b.EventType != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 6)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 8)
 		x.xxx_hidden_EventType = *b.EventType
 	}
 	if b.UnrecognizedEventType != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 6)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 8)
 		x.xxx_hidden_UnrecognizedEventType = *b.UnrecognizedEventType
 	}
 	x.xxx_hidden_EventBeginTime = b.EventBeginTime
 	x.xxx_hidden_EventEndTime = b.EventEndTime
 	if b.VehicleRegistrationNation != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 4, 6)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 5, 8)
 		x.xxx_hidden_VehicleRegistrationNation = b.VehicleRegistrationNation
 	}
 	if b.VehicleRegistrationNumber != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 5, 6)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 6, 8)
 		x.xxx_hidden_VehicleRegistrationNumber = b.VehicleRegistrationNumber
+	}
+	if b.RawData != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 7, 8)
+		x.xxx_hidden_RawData = b.RawData
 	}
 	return m0
 }
@@ -322,17 +390,19 @@ var File_wayplatform_connect_tachograph_card_v1_event_data_proto protoreflect.Fi
 
 const file_wayplatform_connect_tachograph_card_v1_event_data_proto_rawDesc = "" +
 	"\n" +
-	"7wayplatform/connect/tachograph/card/v1/event_data.proto\x12&wayplatform.connect.tachograph.card.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1aGwayplatform/connect/tachograph/datadictionary/v1/event_fault_type.proto\"\x8b\x04\n" +
+	"7wayplatform/connect/tachograph/card/v1/event_data.proto\x12&wayplatform.connect.tachograph.card.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1aGwayplatform/connect/tachograph/datadictionary/v1/event_fault_type.proto\"\xbc\x04\n" +
 	"\tEventData\x12R\n" +
-	"\arecords\x18\x01 \x03(\v28.wayplatform.connect.tachograph.card.v1.EventData.RecordR\arecords\x1a\xa9\x03\n" +
-	"\x06Record\x12_\n" +
+	"\arecords\x18\x01 \x03(\v28.wayplatform.connect.tachograph.card.v1.EventData.RecordR\arecords\x1a\xda\x03\n" +
+	"\x06Record\x12\x14\n" +
+	"\x05valid\x18\x01 \x01(\bR\x05valid\x12_\n" +
 	"\n" +
-	"event_type\x18\x01 \x01(\x0e2@.wayplatform.connect.tachograph.datadictionary.v1.EventFaultTypeR\teventType\x126\n" +
-	"\x17unrecognized_event_type\x18\x02 \x01(\x05R\x15unrecognizedEventType\x12D\n" +
-	"\x10event_begin_time\x18\x03 \x01(\v2\x1a.google.protobuf.TimestampR\x0eeventBeginTime\x12@\n" +
-	"\x0eevent_end_time\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampR\feventEndTime\x12>\n" +
-	"\x1bvehicle_registration_nation\x18\x05 \x01(\tR\x19vehicleRegistrationNation\x12>\n" +
-	"\x1bvehicle_registration_number\x18\x06 \x01(\tR\x19vehicleRegistrationNumberB\xdb\x02\n" +
+	"event_type\x18\x02 \x01(\x0e2@.wayplatform.connect.tachograph.datadictionary.v1.EventFaultTypeR\teventType\x126\n" +
+	"\x17unrecognized_event_type\x18\x03 \x01(\x05R\x15unrecognizedEventType\x12D\n" +
+	"\x10event_begin_time\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampR\x0eeventBeginTime\x12@\n" +
+	"\x0eevent_end_time\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampR\feventEndTime\x12>\n" +
+	"\x1bvehicle_registration_nation\x18\x06 \x01(\tR\x19vehicleRegistrationNation\x12>\n" +
+	"\x1bvehicle_registration_number\x18\a \x01(\tR\x19vehicleRegistrationNumber\x12\x19\n" +
+	"\braw_data\x18\b \x01(\fR\arawDataB\xdb\x02\n" +
 	"*com.wayplatform.connect.tachograph.card.v1B\x0eEventDataProtoP\x01Z`github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1;cardv1\xa2\x02\x04WCTC\xaa\x02&Wayplatform.Connect.Tachograph.Card.V1\xca\x02&Wayplatform\\Connect\\Tachograph\\Card\\V1\xe2\x022Wayplatform\\Connect\\Tachograph\\Card\\V1\\GPBMetadata\xea\x02*Wayplatform::Connect::Tachograph::Card::V1b\beditionsp\xe8\a"
 
 var file_wayplatform_connect_tachograph_card_v1_event_data_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
