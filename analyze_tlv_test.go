@@ -7,7 +7,7 @@ import (
 )
 
 func TestAnalyzeTLVStructure(t *testing.T) {
-	filePath := "testdata/card/proprietary-Nuutti_Nestori_Sahala_2025-09-11_08-38-24.DDD"
+	filePath := "testdata/card/driver/proprietary-Nuutti_Nestori_Sahala_2025-09-11_08-38-24.DDD"
 
 	data, err := os.ReadFile(filePath)
 	if err != nil {

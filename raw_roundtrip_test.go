@@ -12,15 +12,15 @@ import (
 // TestRawCardFileRoundtrip tests that RawCardFile → Binary → RawCardFile conversion is 100% perfect
 func TestRawCardFileRoundtrip(t *testing.T) {
 	// Dynamically discover test files
-	files, err := os.ReadDir("testdata/card")
+	files, err := os.ReadDir("testdata/card/driver")
 	if err != nil {
-		t.Fatalf("Failed to read testdata/card directory: %v", err)
+		t.Fatalf("Failed to read testdata/card/driver directory: %v", err)
 	}
 
 	var testFiles []string
 	for _, file := range files {
 		if !file.IsDir() && filepath.Ext(file.Name()) == ".DDD" {
-			testFiles = append(testFiles, filepath.Join("testdata/card", file.Name()))
+			testFiles = append(testFiles, filepath.Join("testdata/card/driver", file.Name()))
 		}
 	}
 
@@ -108,10 +108,10 @@ func TestRawCardFileRoundtrip(t *testing.T) {
 // TestRawCardFileStructureConsistency tests that all card files have consistent RawCardFile structure
 func TestRawCardFileStructureConsistency(t *testing.T) {
 	testFiles := []string{
-		"testdata/card/proprietary-Nuutti_Nestori_Sahala_2025-09-11_08-38-24.DDD",
-		"testdata/card/proprietary-Omar_Khyam_Khawaja_2025-09-12_12-02-20.DDD",
-		"testdata/card/proprietary-Teemu_Samuli_Hyvärinen_2025-09-12_12-03-47.DDD",
-		"testdata/card/proprietary-Ville_Petteri_Kalske_2025-09-12_11-41-51.DDD",
+		"testdata/card/driver/proprietary-Nuutti_Nestori_Sahala_2025-09-11_08-38-24.DDD",
+		"testdata/card/driver/proprietary-Omar_Khyam_Khawaja_2025-09-12_12-02-20.DDD",
+		"testdata/card/driver/proprietary-Teemu_Samuli_Hyvärinen_2025-09-12_12-03-47.DDD",
+		"testdata/card/driver/proprietary-Ville_Petteri_Kalske_2025-09-12_11-41-51.DDD",
 	}
 
 	type RecordSummary struct {

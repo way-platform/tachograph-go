@@ -9,7 +9,7 @@ import (
 
 // TestRoundtripCard tests that card files can be unmarshalled and marshalled back to identical binary data.
 func TestRoundtripCard(t *testing.T) {
-	cardDir := "testdata/card"
+	cardDir := "testdata/card/driver"
 
 	entries, err := os.ReadDir(cardDir)
 	if err != nil {
@@ -129,7 +129,7 @@ func TestRoundtripAllFiles(t *testing.T) {
 
 // BenchmarkRoundtripCard benchmarks the roundtrip performance for card files.
 func BenchmarkRoundtripCard(b *testing.B) {
-	cardDir := "testdata/card"
+	cardDir := "testdata/card/driver"
 
 	entries, err := os.ReadDir(cardDir)
 	if err != nil {

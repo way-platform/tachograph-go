@@ -16,15 +16,15 @@ import (
 // This isolates semantic conversion issues from binary serialization issues
 func TestSemanticRoundtrip(t *testing.T) {
 	// Dynamically discover test files
-	files, err := os.ReadDir("testdata/card")
+	files, err := os.ReadDir("testdata/card/driver")
 	if err != nil {
-		t.Fatalf("Failed to read testdata/card directory: %v", err)
+		t.Fatalf("Failed to read testdata/card/driver directory: %v", err)
 	}
 
 	var testFiles []string
 	for _, file := range files {
 		if !file.IsDir() && filepath.Ext(file.Name()) == ".DDD" {
-			testFiles = append(testFiles, filepath.Join("testdata/card", file.Name()))
+			testFiles = append(testFiles, filepath.Join("testdata/card/driver", file.Name()))
 		}
 	}
 
