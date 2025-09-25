@@ -37,7 +37,7 @@ func TestSemanticRoundtrip(t *testing.T) {
 			}
 
 			// Step 1: Binary → RawCardFile (ground truth)
-			originalRawFile, err := UnmarshalRawCardFile(originalData)
+			originalRawFile, err := unmarshalRawCardFile(originalData)
 			if err != nil {
 				t.Fatalf("Failed to unmarshal original binary to RawCardFile: %v", err)
 			}

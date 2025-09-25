@@ -33,7 +33,7 @@ func TestRawCardFileRoundtrip(t *testing.T) {
 			}
 
 			// Step 1: Binary → RawCardFile
-			originalRawFile, err := UnmarshalRawCardFile(originalData)
+			originalRawFile, err := unmarshalRawCardFile(originalData)
 			if err != nil {
 				t.Fatalf("Failed to unmarshal to RawCardFile: %v", err)
 			}
@@ -45,7 +45,7 @@ func TestRawCardFileRoundtrip(t *testing.T) {
 			}
 
 			// Step 3: Binary → RawCardFile (roundtrip)
-			roundtripRawFile, err := UnmarshalRawCardFile(marshalledData)
+			roundtripRawFile, err := unmarshalRawCardFile(marshalledData)
 			if err != nil {
 				t.Fatalf("Failed to unmarshal roundtrip binary: %v", err)
 			}
@@ -133,7 +133,7 @@ func TestRawCardFileStructureConsistency(t *testing.T) {
 			t.Fatalf("Failed to read file %s: %v", filePath, err)
 		}
 
-		rawFile, err := UnmarshalRawCardFile(originalData)
+		rawFile, err := unmarshalRawCardFile(originalData)
 		if err != nil {
 			t.Fatalf("Failed to unmarshal file %s: %v", filePath, err)
 		}

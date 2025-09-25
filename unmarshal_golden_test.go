@@ -1,6 +1,8 @@
 package tachograph
 
 import (
+	"bytes"
+	"encoding/json"
 	"flag"
 	"os"
 	"path/filepath"
@@ -28,17 +30,21 @@ func TestUnmarshalFile_golden(t *testing.T) {
 			if err != nil {
 				t.Fatalf("Failed to read DDD file %s: %v", path, err)
 			}
-
 			var actual string
 			file, err := UnmarshalFile(data)
 			if err != nil {
 				// If parsing fails, use the error message as the golden content
-				actual = "ERROR: " + err.Error()
+				actual = `{"error":"` + err.Error() + `"}`
 			} else {
 				// If parsing succeeds, use the JSON representation
-				actual = protojson.Format(file)
+				actualBytes, err := (protojson.MarshalOptions{}).Marshal(file)
+				if err != nil {
+					t.Fatalf("Failed to marshal file %s: %v", path, err)
+				}
+				var actualIndented bytes.Buffer
+				json.Indent(&actualIndented, actualBytes, "", "  ")
+				actual = actualIndented.String()
 			}
-
 			if *update {
 				if err := os.WriteFile(goldenFile, []byte(actual), 0o644); err != nil {
 					t.Fatalf("Failed to write golden file %s: %v", goldenFile, err)

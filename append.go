@@ -40,7 +40,7 @@ func MarshalWithOriginal(file *tachographv1.File, originalData []byte) ([]byte, 
 		// Strategy: DriverCardFile → RawCardFile → Binary with signature preservation
 		var originalRawFile *cardv1.RawCardFile
 		if originalData != nil {
-			originalRawFile, err = UnmarshalRawCardFile(originalData)
+			originalRawFile, err = unmarshalRawCardFile(originalData)
 			if err != nil {
 				return nil, err
 			}

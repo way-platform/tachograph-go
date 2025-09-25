@@ -2,61 +2,11 @@ package tachograph
 
 import (
 	"encoding/binary"
-	"fmt"
 
 	"google.golang.org/protobuf/proto"
 
 	cardv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1"
 )
-
-// UnmarshalRawCardFile parses binary card data into a RawCardFile with raw TLV records
-func UnmarshalRawCardFile(data []byte) (*cardv1.RawCardFile, error) {
-	rawFile := &cardv1.RawCardFile{}
-	var records []*cardv1.RawCardFile_Record
-
-	for offset := 0; offset < len(data); {
-		if len(data[offset:]) < 5 { // Need at least 3 bytes tag + 2 bytes length
-			break
-		}
-
-		// Read tag (FID + appendix)
-		fid := binary.BigEndian.Uint16(data[offset:])
-		appendix := data[offset+2]
-		tag := (int32(fid) << 8) | int32(appendix)
-
-		// Read length
-		length := binary.BigEndian.Uint16(data[offset+3:])
-
-		if len(data[offset+5:]) < int(length) {
-			return nil, fmt.Errorf("insufficient data for record at offset %d: need %d bytes, have %d", offset, length, len(data[offset+5:]))
-		}
-
-		// Read value
-		value := make([]byte, length)
-		copy(value, data[offset+5:offset+5+int(length)])
-
-		// Determine file type and content type
-		fileType := getElementaryFileTypeFromTag(int32(fid))
-		contentType := cardv1.ContentType_DATA
-		if appendix == 0x01 {
-			contentType = cardv1.ContentType_SIGNATURE
-		}
-
-		record := &cardv1.RawCardFile_Record{}
-		record.SetTag(tag)
-		record.SetFile(fileType)
-		record.SetGeneration(cardv1.ApplicationGeneration_GENERATION_1) // Default to Gen1
-		record.SetContentType(contentType)
-		record.SetLength(int32(length))
-		record.SetValue(value)
-
-		records = append(records, record)
-		offset += 5 + int(length)
-	}
-
-	rawFile.SetRecords(records)
-	return rawFile, nil
-}
 
 // MarshalRawCardFile converts a RawCardFile back to binary data
 func MarshalRawCardFile(rawFile *cardv1.RawCardFile) ([]byte, error) {

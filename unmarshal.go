@@ -14,25 +14,41 @@ import (
 
 // UnmarshalFile parses a .DDD file's byte data into a protobuf File message.
 func UnmarshalFile(data []byte) (*tachographv1.File, error) {
-	fileType := InferFileType(data)
+	fileType := inferFileType(data)
 	switch fileType {
-	case CardFileType:
-		return unmarshalCard(data)
-	case UnitFileType:
+	case tachographv1.File_DRIVER_CARD:
+		return unmarshalCardFile(data)
+	case tachographv1.File_VEHICLE_UNIT:
 		return unmarshalVU(data)
 	}
 	return nil, errors.New("unknown or unsupported file type")
 }
 
-func unmarshalCard(data []byte) (*tachographv1.File, error) {
+func unmarshalDriverCardFile(input *cardv1.RawCardFile) (*cardv1.DriverCardFile, error) {
+	var output cardv1.DriverCardFile
+	// TODO: Implement.
+	return &output, nil
+}
+
+func unmarshalCardFile(data []byte) (*tachographv1.File, error) {
 	file := &tachographv1.File{}
 	file.SetType(tachographv1.File_DRIVER_CARD) // Assume Driver card for now
 	file.SetDriverCard(&cardv1.DriverCardFile{})
 
 	// Pass 1: Build complete RawCardFile with all TLV records (data + signatures)
-	rawCardFile, err := UnmarshalRawCardFile(data)
+	rawCardFile, err := unmarshalRawCardFile(data)
 	if err != nil {
 		return nil, err
+	}
+	switch fileType := inferCardFileType(rawCardFile); fileType {
+	case cardv1.CardType_DRIVER_CARD:
+		file.SetDriverCard(&cardv1.DriverCardFile{})
+	case cardv1.CardType_WORKSHOP_CARD:
+		file.SetWorkshopCard(&cardv1.WorkshopCardFile{})
+	case cardv1.CardType_CONTROL_CARD:
+		file.SetControlCard(&cardv1.ControlCardFile{})
+	case cardv1.CardType_COMPANY_CARD:
+		file.SetCompanyCard(&cardv1.CompanyCardFile{})
 	}
 
 	// Pass 2: Process each data record from RawCardFile and parse into protobuf messages

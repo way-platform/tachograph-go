@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"image/color"
 	"os"
-	"strings"
 
 	"github.com/charmbracelet/fang"
 	"github.com/charmbracelet/lipgloss/v2"
@@ -48,45 +47,10 @@ func newRootCommand() *cobra.Command {
 		Short: "Tachograph CLI",
 	}
 	cmd.AddGroup(&cobra.Group{ID: "ddd", Title: ".DDD Files"})
-	cmd.AddCommand(newStatCommand())
 	cmd.AddCommand(newParseCommand())
 	cmd.AddGroup(&cobra.Group{ID: "utils", Title: "Utils"})
 	cmd.SetHelpCommandGroupID("utils")
 	cmd.SetCompletionCommandGroupID("utils")
-	return cmd
-}
-
-func newStatCommand() *cobra.Command {
-	cmd := &cobra.Command{
-		Use:     "stat <file1> [file2] [...]",
-		Short:   "Get info about .DDD files",
-		GroupID: "ddd",
-		Args:    cobra.MinimumNArgs(1),
-	}
-	cmd.RunE = func(cmd *cobra.Command, args []string) error {
-		for i, filename := range args {
-			// Add separator between files if processing multiple files
-			if i > 0 {
-				fmt.Println("\n" + strings.Repeat("=", 80))
-			}
-			fmt.Printf("File: %s\n", filename)
-			data, err := os.ReadFile(filename)
-			if err != nil {
-				fmt.Printf("Error reading file: %v\n", err)
-				continue
-			}
-			fileType := tachograph.InferFileType(data)
-			fmt.Printf("Type: %s\n", fileType)
-			fmt.Printf("Size: %d bytes\n", len(data))
-			// TODO: Re-implement outline parsing using the new structure
-			if fileType == tachograph.CardFileType {
-				fmt.Println("\nCard file detected. Use 'parse' command for detailed parsing.")
-			} else if fileType == tachograph.UnitFileType {
-				fmt.Println("\nUnit file detected. Unit parsing not yet implemented.")
-			}
-		}
-		return nil
-	}
 	return cmd
 }
 
