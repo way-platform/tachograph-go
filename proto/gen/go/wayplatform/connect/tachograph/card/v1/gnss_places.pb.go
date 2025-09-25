@@ -30,6 +30,7 @@ type GnssPlaces struct {
 	state                        protoimpl.MessageState `protogen:"opaque.v1"`
 	xxx_hidden_NewestRecordIndex int32                  `protobuf:"varint,1,opt,name=newest_record_index,json=newestRecordIndex"`
 	xxx_hidden_Records           *[]*GnssPlaces_Record  `protobuf:"bytes,2,rep,name=records"`
+	xxx_hidden_Signature         []byte                 `protobuf:"bytes,3,opt,name=signature"`
 	XXX_raceDetectHookData       protoimpl.RaceDetectHookData
 	XXX_presence                 [1]uint32
 	unknownFields                protoimpl.UnknownFields
@@ -77,13 +78,28 @@ func (x *GnssPlaces) GetRecords() []*GnssPlaces_Record {
 	return nil
 }
 
+func (x *GnssPlaces) GetSignature() []byte {
+	if x != nil {
+		return x.xxx_hidden_Signature
+	}
+	return nil
+}
+
 func (x *GnssPlaces) SetNewestRecordIndex(v int32) {
 	x.xxx_hidden_NewestRecordIndex = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 2)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 3)
 }
 
 func (x *GnssPlaces) SetRecords(v []*GnssPlaces_Record) {
 	x.xxx_hidden_Records = &v
+}
+
+func (x *GnssPlaces) SetSignature(v []byte) {
+	if v == nil {
+		v = []byte{}
+	}
+	x.xxx_hidden_Signature = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 3)
 }
 
 func (x *GnssPlaces) HasNewestRecordIndex() bool {
@@ -93,9 +109,21 @@ func (x *GnssPlaces) HasNewestRecordIndex() bool {
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 0)
 }
 
+func (x *GnssPlaces) HasSignature() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 2)
+}
+
 func (x *GnssPlaces) ClearNewestRecordIndex() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 0)
 	x.xxx_hidden_NewestRecordIndex = 0
+}
+
+func (x *GnssPlaces) ClearSignature() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 2)
+	x.xxx_hidden_Signature = nil
 }
 
 type GnssPlaces_builder struct {
@@ -105,6 +133,8 @@ type GnssPlaces_builder struct {
 	NewestRecordIndex *int32
 	// The set of GNSS accumulated driving records.
 	Records []*GnssPlaces_Record
+	// Digital signature for the EF_GNSS_Places file content.
+	Signature []byte
 }
 
 func (b0 GnssPlaces_builder) Build() *GnssPlaces {
@@ -112,10 +142,14 @@ func (b0 GnssPlaces_builder) Build() *GnssPlaces {
 	b, x := &b0, m0
 	_, _ = b, x
 	if b.NewestRecordIndex != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 2)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 3)
 		x.xxx_hidden_NewestRecordIndex = *b.NewestRecordIndex
 	}
 	x.xxx_hidden_Records = &b.Records
+	if b.Signature != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 3)
+		x.xxx_hidden_Signature = b.Signature
+	}
 	return m0
 }
 
@@ -425,11 +459,12 @@ var File_wayplatform_connect_tachograph_card_v1_gnss_places_proto protoreflect.F
 
 const file_wayplatform_connect_tachograph_card_v1_gnss_places_proto_rawDesc = "" +
 	"\n" +
-	"8wayplatform/connect/tachograph/card/v1/gnss_places.proto\x12&wayplatform.connect.tachograph.card.v1\x1a\x1fgoogle/protobuf/timestamp.proto\"\x91\x04\n" +
+	"8wayplatform/connect/tachograph/card/v1/gnss_places.proto\x12&wayplatform.connect.tachograph.card.v1\x1a\x1fgoogle/protobuf/timestamp.proto\"\xaf\x04\n" +
 	"\n" +
 	"GnssPlaces\x12.\n" +
 	"\x13newest_record_index\x18\x01 \x01(\x05R\x11newestRecordIndex\x12S\n" +
-	"\arecords\x18\x02 \x03(\v29.wayplatform.connect.tachograph.card.v1.GnssPlaces.RecordR\arecords\x1a\xfd\x02\n" +
+	"\arecords\x18\x02 \x03(\v29.wayplatform.connect.tachograph.card.v1.GnssPlaces.RecordR\arecords\x12\x1c\n" +
+	"\tsignature\x18\x03 \x01(\fR\tsignature\x1a\xfd\x02\n" +
 	"\x06Record\x128\n" +
 	"\ttimestamp\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\ttimestamp\x12b\n" +
 	"\n" +

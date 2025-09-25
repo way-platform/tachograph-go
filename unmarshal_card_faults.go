@@ -7,8 +7,8 @@ import (
 	cardv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1"
 )
 
-// UnmarshalFaultsData parses the binary data for an EF_Faults_Data record.
-func UnmarshalFaultsData(data []byte, fd *cardv1.FaultData) error {
+// unmarshalFaultsData parses the binary data for an EF_Faults_Data record.
+func unmarshalFaultsData(data []byte) (*cardv1.FaultData, error) {
 	const recordSize = 24
 	r := bytes.NewReader(data)
 	var records []*cardv1.FaultData_Record
@@ -31,14 +31,26 @@ func UnmarshalFaultsData(data []byte, fd *cardv1.FaultData) error {
 			// Valid record: parse semantic data
 			rec.SetValid(true)
 			if err := UnmarshalFaultRecord(recordData, rec); err != nil {
-				return err
+				return nil, err
 			}
 		}
 
 		records = append(records, rec)
 	}
 
+	var fd cardv1.FaultData
 	fd.SetRecords(records)
+	return &fd, nil
+}
+
+// UnmarshalFaultsData parses the binary data for an EF_Faults_Data record (legacy function).
+// Deprecated: Use unmarshalFaultsData instead.
+func UnmarshalFaultsData(data []byte, fd *cardv1.FaultData) error {
+	result, err := unmarshalFaultsData(data)
+	if err != nil {
+		return err
+	}
+	*fd = *result
 	return nil
 }
 

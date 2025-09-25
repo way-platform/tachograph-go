@@ -31,6 +31,7 @@ type Places struct {
 	xxx_hidden_NewestRecordIndex int32                  `protobuf:"varint,1,opt,name=newest_record_index,json=newestRecordIndex"`
 	xxx_hidden_Records           *[]*Places_Record      `protobuf:"bytes,2,rep,name=records"`
 	xxx_hidden_TrailingBytes     []byte                 `protobuf:"bytes,3,opt,name=trailing_bytes,json=trailingBytes"`
+	xxx_hidden_Signature         []byte                 `protobuf:"bytes,4,opt,name=signature"`
 	XXX_raceDetectHookData       protoimpl.RaceDetectHookData
 	XXX_presence                 [1]uint32
 	unknownFields                protoimpl.UnknownFields
@@ -85,9 +86,16 @@ func (x *Places) GetTrailingBytes() []byte {
 	return nil
 }
 
+func (x *Places) GetSignature() []byte {
+	if x != nil {
+		return x.xxx_hidden_Signature
+	}
+	return nil
+}
+
 func (x *Places) SetNewestRecordIndex(v int32) {
 	x.xxx_hidden_NewestRecordIndex = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 3)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 4)
 }
 
 func (x *Places) SetRecords(v []*Places_Record) {
@@ -99,7 +107,15 @@ func (x *Places) SetTrailingBytes(v []byte) {
 		v = []byte{}
 	}
 	x.xxx_hidden_TrailingBytes = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 3)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 4)
+}
+
+func (x *Places) SetSignature(v []byte) {
+	if v == nil {
+		v = []byte{}
+	}
+	x.xxx_hidden_Signature = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 3, 4)
 }
 
 func (x *Places) HasNewestRecordIndex() bool {
@@ -116,6 +132,13 @@ func (x *Places) HasTrailingBytes() bool {
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 2)
 }
 
+func (x *Places) HasSignature() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 3)
+}
+
 func (x *Places) ClearNewestRecordIndex() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 0)
 	x.xxx_hidden_NewestRecordIndex = 0
@@ -124,6 +147,11 @@ func (x *Places) ClearNewestRecordIndex() {
 func (x *Places) ClearTrailingBytes() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 2)
 	x.xxx_hidden_TrailingBytes = nil
+}
+
+func (x *Places) ClearSignature() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 3)
+	x.xxx_hidden_Signature = nil
 }
 
 type Places_builder struct {
@@ -135,6 +163,8 @@ type Places_builder struct {
 	Records []*Places_Record
 	// Trailing bytes that don't form complete records (for roundtrip accuracy).
 	TrailingBytes []byte
+	// Digital signature for the EF_Places file content.
+	Signature []byte
 }
 
 func (b0 Places_builder) Build() *Places {
@@ -142,13 +172,17 @@ func (b0 Places_builder) Build() *Places {
 	b, x := &b0, m0
 	_, _ = b, x
 	if b.NewestRecordIndex != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 3)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 4)
 		x.xxx_hidden_NewestRecordIndex = *b.NewestRecordIndex
 	}
 	x.xxx_hidden_Records = &b.Records
 	if b.TrailingBytes != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 3)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 4)
 		x.xxx_hidden_TrailingBytes = b.TrailingBytes
+	}
+	if b.Signature != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 3, 4)
+		x.xxx_hidden_Signature = b.Signature
 	}
 	return m0
 }
@@ -451,11 +485,12 @@ var File_wayplatform_connect_tachograph_card_v1_places_proto protoreflect.FileDe
 
 const file_wayplatform_connect_tachograph_card_v1_places_proto_rawDesc = "" +
 	"\n" +
-	"3wayplatform/connect/tachograph/card/v1/places.proto\x12&wayplatform.connect.tachograph.card.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1aSwayplatform/connect/tachograph/datadictionary/v1/entry_type_daily_work_period.proto\x1aEwayplatform/connect/tachograph/datadictionary/v1/nation_numeric.proto\"\xf7\x05\n" +
+	"3wayplatform/connect/tachograph/card/v1/places.proto\x12&wayplatform.connect.tachograph.card.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1aSwayplatform/connect/tachograph/datadictionary/v1/entry_type_daily_work_period.proto\x1aEwayplatform/connect/tachograph/datadictionary/v1/nation_numeric.proto\"\x95\x06\n" +
 	"\x06Places\x12.\n" +
 	"\x13newest_record_index\x18\x01 \x01(\x05R\x11newestRecordIndex\x12O\n" +
 	"\arecords\x18\x02 \x03(\v25.wayplatform.connect.tachograph.card.v1.Places.RecordR\arecords\x12%\n" +
-	"\x0etrailing_bytes\x18\x03 \x01(\fR\rtrailingBytes\x1a\xc4\x04\n" +
+	"\x0etrailing_bytes\x18\x03 \x01(\fR\rtrailingBytes\x12\x1c\n" +
+	"\tsignature\x18\x04 \x01(\fR\tsignature\x1a\xc4\x04\n" +
 	"\x06Record\x129\n" +
 	"\n" +
 	"entry_time\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\tentryTime\x12i\n" +

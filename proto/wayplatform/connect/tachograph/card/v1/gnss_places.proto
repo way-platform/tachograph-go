@@ -50,4 +50,7 @@ message GnssPlaces {
 
   // The set of GNSS accumulated driving records.
   repeated Record records = 2;
+
+  // Digital signature for the EF_GNSS_Places file content.
+  bytes signature = 3;
 }

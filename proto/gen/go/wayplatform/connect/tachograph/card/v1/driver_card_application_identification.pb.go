@@ -38,6 +38,7 @@ type DriverCardApplicationIdentification struct {
 	xxx_hidden_GnssAdRecordsCount                 int32                  `protobuf:"varint,9,opt,name=gnss_ad_records_count,json=gnssAdRecordsCount"`
 	xxx_hidden_SpecificConditionRecordsCount      int32                  `protobuf:"varint,10,opt,name=specific_condition_records_count,json=specificConditionRecordsCount"`
 	xxx_hidden_CardVehicleUnitRecordsCount        int32                  `protobuf:"varint,11,opt,name=card_vehicle_unit_records_count,json=cardVehicleUnitRecordsCount"`
+	xxx_hidden_Signature                          []byte                 `protobuf:"bytes,12,opt,name=signature"`
 	XXX_raceDetectHookData                        protoimpl.RaceDetectHookData
 	XXX_presence                                  [1]uint32
 	unknownFields                                 protoimpl.UnknownFields
@@ -148,14 +149,21 @@ func (x *DriverCardApplicationIdentification) GetCardVehicleUnitRecordsCount() i
 	return 0
 }
 
+func (x *DriverCardApplicationIdentification) GetSignature() []byte {
+	if x != nil {
+		return x.xxx_hidden_Signature
+	}
+	return nil
+}
+
 func (x *DriverCardApplicationIdentification) SetTypeOfTachographCardId(v v1.EquipmentType) {
 	x.xxx_hidden_TypeOfTachographCardId = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 11)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 12)
 }
 
 func (x *DriverCardApplicationIdentification) SetUnrecognizedTypeOfTachographCardId(v int32) {
 	x.xxx_hidden_UnrecognizedTypeOfTachographCardId = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 11)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 12)
 }
 
 func (x *DriverCardApplicationIdentification) SetCardStructureVersion(v []byte) {
@@ -163,47 +171,55 @@ func (x *DriverCardApplicationIdentification) SetCardStructureVersion(v []byte) 
 		v = []byte{}
 	}
 	x.xxx_hidden_CardStructureVersion = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 11)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 12)
 }
 
 func (x *DriverCardApplicationIdentification) SetEventsPerTypeCount(v int32) {
 	x.xxx_hidden_EventsPerTypeCount = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 3, 11)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 3, 12)
 }
 
 func (x *DriverCardApplicationIdentification) SetFaultsPerTypeCount(v int32) {
 	x.xxx_hidden_FaultsPerTypeCount = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 4, 11)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 4, 12)
 }
 
 func (x *DriverCardApplicationIdentification) SetActivityStructureLength(v int32) {
 	x.xxx_hidden_ActivityStructureLength = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 5, 11)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 5, 12)
 }
 
 func (x *DriverCardApplicationIdentification) SetCardVehicleRecordsCount(v int32) {
 	x.xxx_hidden_CardVehicleRecordsCount = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 6, 11)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 6, 12)
 }
 
 func (x *DriverCardApplicationIdentification) SetCardPlaceRecordsCount(v int32) {
 	x.xxx_hidden_CardPlaceRecordsCount = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 7, 11)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 7, 12)
 }
 
 func (x *DriverCardApplicationIdentification) SetGnssAdRecordsCount(v int32) {
 	x.xxx_hidden_GnssAdRecordsCount = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 8, 11)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 8, 12)
 }
 
 func (x *DriverCardApplicationIdentification) SetSpecificConditionRecordsCount(v int32) {
 	x.xxx_hidden_SpecificConditionRecordsCount = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 9, 11)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 9, 12)
 }
 
 func (x *DriverCardApplicationIdentification) SetCardVehicleUnitRecordsCount(v int32) {
 	x.xxx_hidden_CardVehicleUnitRecordsCount = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 10, 11)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 10, 12)
+}
+
+func (x *DriverCardApplicationIdentification) SetSignature(v []byte) {
+	if v == nil {
+		v = []byte{}
+	}
+	x.xxx_hidden_Signature = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 11, 12)
 }
 
 func (x *DriverCardApplicationIdentification) HasTypeOfTachographCardId() bool {
@@ -283,6 +299,13 @@ func (x *DriverCardApplicationIdentification) HasCardVehicleUnitRecordsCount() b
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 10)
 }
 
+func (x *DriverCardApplicationIdentification) HasSignature() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 11)
+}
+
 func (x *DriverCardApplicationIdentification) ClearTypeOfTachographCardId() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 0)
 	x.xxx_hidden_TypeOfTachographCardId = v1.EquipmentType_EQUIPMENT_TYPE_UNSPECIFIED
@@ -338,6 +361,11 @@ func (x *DriverCardApplicationIdentification) ClearCardVehicleUnitRecordsCount()
 	x.xxx_hidden_CardVehicleUnitRecordsCount = 0
 }
 
+func (x *DriverCardApplicationIdentification) ClearSignature() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 11)
+	x.xxx_hidden_Signature = nil
+}
+
 type DriverCardApplicationIdentification_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
@@ -362,6 +390,8 @@ type DriverCardApplicationIdentification_builder struct {
 	SpecificConditionRecordsCount *int32
 	// See Data Dictionary, Section 2.61, `noOfCardVehicleUnitRecords`.
 	CardVehicleUnitRecordsCount *int32
+	// Digital signature for the EF_Application_Identification file content.
+	Signature []byte
 }
 
 func (b0 DriverCardApplicationIdentification_builder) Build() *DriverCardApplicationIdentification {
@@ -369,48 +399,52 @@ func (b0 DriverCardApplicationIdentification_builder) Build() *DriverCardApplica
 	b, x := &b0, m0
 	_, _ = b, x
 	if b.TypeOfTachographCardId != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 11)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 12)
 		x.xxx_hidden_TypeOfTachographCardId = *b.TypeOfTachographCardId
 	}
 	if b.UnrecognizedTypeOfTachographCardId != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 11)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 12)
 		x.xxx_hidden_UnrecognizedTypeOfTachographCardId = *b.UnrecognizedTypeOfTachographCardId
 	}
 	if b.CardStructureVersion != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 11)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 12)
 		x.xxx_hidden_CardStructureVersion = b.CardStructureVersion
 	}
 	if b.EventsPerTypeCount != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 3, 11)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 3, 12)
 		x.xxx_hidden_EventsPerTypeCount = *b.EventsPerTypeCount
 	}
 	if b.FaultsPerTypeCount != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 4, 11)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 4, 12)
 		x.xxx_hidden_FaultsPerTypeCount = *b.FaultsPerTypeCount
 	}
 	if b.ActivityStructureLength != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 5, 11)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 5, 12)
 		x.xxx_hidden_ActivityStructureLength = *b.ActivityStructureLength
 	}
 	if b.CardVehicleRecordsCount != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 6, 11)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 6, 12)
 		x.xxx_hidden_CardVehicleRecordsCount = *b.CardVehicleRecordsCount
 	}
 	if b.CardPlaceRecordsCount != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 7, 11)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 7, 12)
 		x.xxx_hidden_CardPlaceRecordsCount = *b.CardPlaceRecordsCount
 	}
 	if b.GnssAdRecordsCount != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 8, 11)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 8, 12)
 		x.xxx_hidden_GnssAdRecordsCount = *b.GnssAdRecordsCount
 	}
 	if b.SpecificConditionRecordsCount != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 9, 11)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 9, 12)
 		x.xxx_hidden_SpecificConditionRecordsCount = *b.SpecificConditionRecordsCount
 	}
 	if b.CardVehicleUnitRecordsCount != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 10, 11)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 10, 12)
 		x.xxx_hidden_CardVehicleUnitRecordsCount = *b.CardVehicleUnitRecordsCount
+	}
+	if b.Signature != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 11, 12)
+		x.xxx_hidden_Signature = b.Signature
 	}
 	return m0
 }
@@ -419,7 +453,7 @@ var File_wayplatform_connect_tachograph_card_v1_driver_card_application_identifi
 
 const file_wayplatform_connect_tachograph_card_v1_driver_card_application_identification_proto_rawDesc = "" +
 	"\n" +
-	"Swayplatform/connect/tachograph/card/v1/driver_card_application_identification.proto\x12&wayplatform.connect.tachograph.card.v1\x1aEwayplatform/connect/tachograph/datadictionary/v1/equipment_type.proto\"\x87\x06\n" +
+	"Swayplatform/connect/tachograph/card/v1/driver_card_application_identification.proto\x12&wayplatform.connect.tachograph.card.v1\x1aEwayplatform/connect/tachograph/datadictionary/v1/equipment_type.proto\"\xa5\x06\n" +
 	"#DriverCardApplicationIdentification\x12{\n" +
 	"\x1atype_of_tachograph_card_id\x18\x01 \x01(\x0e2?.wayplatform.connect.tachograph.datadictionary.v1.EquipmentTypeR\x16typeOfTachographCardId\x12S\n" +
 	"'unrecognized_type_of_tachograph_card_id\x18\x02 \x01(\x05R\"unrecognizedTypeOfTachographCardId\x124\n" +
@@ -432,7 +466,8 @@ const file_wayplatform_connect_tachograph_card_v1_driver_card_application_identi
 	"\x15gnss_ad_records_count\x18\t \x01(\x05R\x12gnssAdRecordsCount\x12G\n" +
 	" specific_condition_records_count\x18\n" +
 	" \x01(\x05R\x1dspecificConditionRecordsCount\x12D\n" +
-	"\x1fcard_vehicle_unit_records_count\x18\v \x01(\x05R\x1bcardVehicleUnitRecordsCountB\xf5\x02\n" +
+	"\x1fcard_vehicle_unit_records_count\x18\v \x01(\x05R\x1bcardVehicleUnitRecordsCount\x12\x1c\n" +
+	"\tsignature\x18\f \x01(\fR\tsignatureB\xf5\x02\n" +
 	"*com.wayplatform.connect.tachograph.card.v1B(DriverCardApplicationIdentificationProtoP\x01Z`github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1;cardv1\xa2\x02\x04WCTC\xaa\x02&Wayplatform.Connect.Tachograph.Card.V1\xca\x02&Wayplatform\\Connect\\Tachograph\\Card\\V1\xe2\x022Wayplatform\\Connect\\Tachograph\\Card\\V1\\GPBMetadata\xea\x02*Wayplatform::Connect::Tachograph::Card::V1b\beditionsp\xe8\a"
 
 var file_wayplatform_connect_tachograph_card_v1_driver_card_application_identification_proto_msgTypes = make([]protoimpl.MessageInfo, 1)

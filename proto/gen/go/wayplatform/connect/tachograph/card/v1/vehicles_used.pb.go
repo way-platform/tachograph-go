@@ -7,7 +7,6 @@
 package cardv1
 
 import (
-	_ "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/vu/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
@@ -30,6 +29,7 @@ type VehiclesUsed struct {
 	state                        protoimpl.MessageState  `protogen:"opaque.v1"`
 	xxx_hidden_NewestRecordIndex int32                   `protobuf:"varint,1,opt,name=newest_record_index,json=newestRecordIndex"`
 	xxx_hidden_Records           *[]*VehiclesUsed_Record `protobuf:"bytes,2,rep,name=records"`
+	xxx_hidden_Signature         []byte                  `protobuf:"bytes,3,opt,name=signature"`
 	XXX_raceDetectHookData       protoimpl.RaceDetectHookData
 	XXX_presence                 [1]uint32
 	unknownFields                protoimpl.UnknownFields
@@ -77,13 +77,28 @@ func (x *VehiclesUsed) GetRecords() []*VehiclesUsed_Record {
 	return nil
 }
 
+func (x *VehiclesUsed) GetSignature() []byte {
+	if x != nil {
+		return x.xxx_hidden_Signature
+	}
+	return nil
+}
+
 func (x *VehiclesUsed) SetNewestRecordIndex(v int32) {
 	x.xxx_hidden_NewestRecordIndex = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 2)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 3)
 }
 
 func (x *VehiclesUsed) SetRecords(v []*VehiclesUsed_Record) {
 	x.xxx_hidden_Records = &v
+}
+
+func (x *VehiclesUsed) SetSignature(v []byte) {
+	if v == nil {
+		v = []byte{}
+	}
+	x.xxx_hidden_Signature = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 3)
 }
 
 func (x *VehiclesUsed) HasNewestRecordIndex() bool {
@@ -93,9 +108,21 @@ func (x *VehiclesUsed) HasNewestRecordIndex() bool {
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 0)
 }
 
+func (x *VehiclesUsed) HasSignature() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 2)
+}
+
 func (x *VehiclesUsed) ClearNewestRecordIndex() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 0)
 	x.xxx_hidden_NewestRecordIndex = 0
+}
+
+func (x *VehiclesUsed) ClearSignature() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 2)
+	x.xxx_hidden_Signature = nil
 }
 
 type VehiclesUsed_builder struct {
@@ -105,6 +132,8 @@ type VehiclesUsed_builder struct {
 	NewestRecordIndex *int32
 	// The set of records for vehicles used.
 	Records []*VehiclesUsed_Record
+	// Digital signature for the EF_Vehicles_Used file content.
+	Signature []byte
 }
 
 func (b0 VehiclesUsed_builder) Build() *VehiclesUsed {
@@ -112,10 +141,14 @@ func (b0 VehiclesUsed_builder) Build() *VehiclesUsed {
 	b, x := &b0, m0
 	_, _ = b, x
 	if b.NewestRecordIndex != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 2)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 3)
 		x.xxx_hidden_NewestRecordIndex = *b.NewestRecordIndex
 	}
 	x.xxx_hidden_Records = &b.Records
+	if b.Signature != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 3)
+		x.xxx_hidden_Signature = b.Signature
+	}
 	return m0
 }
 
@@ -419,10 +452,11 @@ var File_wayplatform_connect_tachograph_card_v1_vehicles_used_proto protoreflect
 
 const file_wayplatform_connect_tachograph_card_v1_vehicles_used_proto_rawDesc = "" +
 	"\n" +
-	":wayplatform/connect/tachograph/card/v1/vehicles_used.proto\x12&wayplatform.connect.tachograph.card.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a5wayplatform/connect/tachograph/vu/v1/versioning.proto\"\x97\x05\n" +
+	":wayplatform/connect/tachograph/card/v1/vehicles_used.proto\x12&wayplatform.connect.tachograph.card.v1\x1a\x1fgoogle/protobuf/timestamp.proto\"\xb5\x05\n" +
 	"\fVehiclesUsed\x12.\n" +
 	"\x13newest_record_index\x18\x01 \x01(\x05R\x11newestRecordIndex\x12U\n" +
-	"\arecords\x18\x02 \x03(\v2;.wayplatform.connect.tachograph.card.v1.VehiclesUsed.RecordR\arecords\x1a\xff\x03\n" +
+	"\arecords\x18\x02 \x03(\v2;.wayplatform.connect.tachograph.card.v1.VehiclesUsed.RecordR\arecords\x12\x1c\n" +
+	"\tsignature\x18\x03 \x01(\fR\tsignature\x1a\xff\x03\n" +
 	"\x06Record\x129\n" +
 	"\x19vehicle_odometer_begin_km\x18\x01 \x01(\x05R\x16vehicleOdometerBeginKm\x125\n" +
 	"\x17vehicle_odometer_end_km\x18\x02 \x01(\x05R\x14vehicleOdometerEndKm\x12F\n" +

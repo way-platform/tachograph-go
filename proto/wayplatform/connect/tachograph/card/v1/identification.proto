@@ -1,0 +1,40 @@
+edition = "2023";
+
+package wayplatform.connect.tachograph.card.v1;
+
+import "wayplatform/connect/tachograph/card/v1/card_identification.proto";
+import "wayplatform/connect/tachograph/card/v1/card_type.proto";
+import "wayplatform/connect/tachograph/card/v1/company_card_holder_identification.proto";
+import "wayplatform/connect/tachograph/card/v1/control_card_holder_identification.proto";
+import "wayplatform/connect/tachograph/card/v1/driver_card_holder_identification.proto";
+import "wayplatform/connect/tachograph/card/v1/workshop_card_holder_identification.proto";
+
+// Represents the data structure of EF_Identification, which varies by card type.
+// See regulation document Appendix 2, Section 4.2.1, 4.3.1, 4.4.1, 4.5.1.
+message Identification {
+  // The common card identification part.
+  CardIdentification card_identification = 1;
+
+  // The type of card this identification belongs to. This determines which
+  // of the following holder identification fields is populated.
+  CardType card_type = 2;
+
+  // Holder identification for a driver card.
+  // Populated only if card_type is DRIVER_CARD.
+  DriverCardHolderIdentification driver_card_holder_identification = 3;
+
+  // Holder identification for a workshop card.
+  // Populated only if card_type is WORKSHOP_CARD.
+  WorkshopCardHolderIdentification workshop_card_holder_identification = 4;
+
+  // Holder identification for a control card.
+  // Populated only if card_type is CONTROL_CARD.
+  ControlCardHolderIdentification control_card_holder_identification = 5;
+
+  // Holder identification for a company card.
+  // Populated only if card_type is COMPANY_CARD.
+  CompanyCardHolderIdentification company_card_holder_identification = 6;
+
+  // Digital signature for the EF_Identification file content.
+  bytes signature = 7;
+}

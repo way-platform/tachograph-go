@@ -45,4 +45,7 @@ message Places {
 
   // Trailing bytes that don't form complete records (for roundtrip accuracy).
   bytes trailing_bytes = 3;
+
+  // Digital signature for the EF_Places file content.
+  bytes signature = 4;
 }

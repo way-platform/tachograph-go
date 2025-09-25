@@ -3,7 +3,6 @@ edition = "2023";
 package wayplatform.connect.tachograph.card.v1;
 
 import "google/protobuf/timestamp.proto";
-import "wayplatform/connect/tachograph/vu/v1/versioning.proto";
 
 // Represents data from EF_Vehicles_Used.
 //
@@ -45,4 +44,7 @@ message VehiclesUsed {
 
   // The set of records for vehicles used.
   repeated Record records = 2;
+
+  // Digital signature for the EF_Vehicles_Used file content.
+  bytes signature = 3;
 }

@@ -8,22 +8,23 @@ import (
 	cardv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1"
 )
 
-// UnmarshalCardActivityData unmarshals driver activity data from a card EF.
-func UnmarshalCardActivityData(data []byte, target *cardv1.DriverActivity) error {
+// unmarshalCardActivityData unmarshals driver activity data from a card EF.
+func unmarshalCardActivityData(data []byte) (*cardv1.DriverActivity, error) {
 	if len(data) < 4 {
-		return fmt.Errorf("insufficient data for activity data header")
+		return nil, fmt.Errorf("insufficient data for activity data header")
 	}
 
+	var target cardv1.DriverActivity
 	r := bytes.NewReader(data)
 
 	// Read pointers (2 bytes each)
 	var oldestDayRecordPointer uint16
 	var newestDayRecordPointer uint16
 	if err := binary.Read(r, binary.BigEndian, &oldestDayRecordPointer); err != nil {
-		return fmt.Errorf("failed to read oldest day record pointer: %w", err)
+		return nil, fmt.Errorf("failed to read oldest day record pointer: %w", err)
 	}
 	if err := binary.Read(r, binary.BigEndian, &newestDayRecordPointer); err != nil {
-		return fmt.Errorf("failed to read newest day record pointer: %w", err)
+		return nil, fmt.Errorf("failed to read newest day record pointer: %w", err)
 	}
 
 	target.SetOldestDayRecordIndex(int32(oldestDayRecordPointer))
@@ -32,7 +33,7 @@ func UnmarshalCardActivityData(data []byte, target *cardv1.DriverActivity) error
 	// Read the remaining data as ring buffer
 	remainingData := make([]byte, r.Len())
 	if _, err := r.Read(remainingData); err != nil {
-		return fmt.Errorf("failed to read activity daily records: %w", err)
+		return nil, fmt.Errorf("failed to read activity daily records: %w", err)
 	}
 
 	// Use tagged union approach for perfect roundtrip
@@ -40,7 +41,7 @@ func UnmarshalCardActivityData(data []byte, target *cardv1.DriverActivity) error
 	target.SetValid(false)
 	target.SetRawData(remainingData)
 
-	return nil
+	return &target, nil
 }
 
 // parseActivityDailyRecords parses the cyclic activity daily records structure

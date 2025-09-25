@@ -26,10 +26,13 @@ const (
 // Corresponds to the `LastCardDownload` data type.
 // See Data Dictionary, Section 2.89.
 type LastCardDownload struct {
-	state                protoimpl.MessageState `protogen:"opaque.v1"`
-	xxx_hidden_Timestamp *timestamppb.Timestamp `protobuf:"bytes,1,opt,name=timestamp"`
-	unknownFields        protoimpl.UnknownFields
-	sizeCache            protoimpl.SizeCache
+	state                  protoimpl.MessageState `protogen:"opaque.v1"`
+	xxx_hidden_Timestamp   *timestamppb.Timestamp `protobuf:"bytes,1,opt,name=timestamp"`
+	xxx_hidden_Signature   []byte                 `protobuf:"bytes,2,opt,name=signature"`
+	XXX_raceDetectHookData protoimpl.RaceDetectHookData
+	XXX_presence           [1]uint32
+	unknownFields          protoimpl.UnknownFields
+	sizeCache              protoimpl.SizeCache
 }
 
 func (x *LastCardDownload) Reset() {
@@ -64,8 +67,23 @@ func (x *LastCardDownload) GetTimestamp() *timestamppb.Timestamp {
 	return nil
 }
 
+func (x *LastCardDownload) GetSignature() []byte {
+	if x != nil {
+		return x.xxx_hidden_Signature
+	}
+	return nil
+}
+
 func (x *LastCardDownload) SetTimestamp(v *timestamppb.Timestamp) {
 	x.xxx_hidden_Timestamp = v
+}
+
+func (x *LastCardDownload) SetSignature(v []byte) {
+	if v == nil {
+		v = []byte{}
+	}
+	x.xxx_hidden_Signature = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 2)
 }
 
 func (x *LastCardDownload) HasTimestamp() bool {
@@ -75,14 +93,28 @@ func (x *LastCardDownload) HasTimestamp() bool {
 	return x.xxx_hidden_Timestamp != nil
 }
 
+func (x *LastCardDownload) HasSignature() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 1)
+}
+
 func (x *LastCardDownload) ClearTimestamp() {
 	x.xxx_hidden_Timestamp = nil
+}
+
+func (x *LastCardDownload) ClearSignature() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 1)
+	x.xxx_hidden_Signature = nil
 }
 
 type LastCardDownload_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
 	Timestamp *timestamppb.Timestamp
+	// Digital signature for the EF_Card_Download file content.
+	Signature []byte
 }
 
 func (b0 LastCardDownload_builder) Build() *LastCardDownload {
@@ -90,6 +122,10 @@ func (b0 LastCardDownload_builder) Build() *LastCardDownload {
 	b, x := &b0, m0
 	_, _ = b, x
 	x.xxx_hidden_Timestamp = b.Timestamp
+	if b.Signature != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 2)
+		x.xxx_hidden_Signature = b.Signature
+	}
 	return m0
 }
 
@@ -97,9 +133,10 @@ var File_wayplatform_connect_tachograph_card_v1_last_card_download_proto protore
 
 const file_wayplatform_connect_tachograph_card_v1_last_card_download_proto_rawDesc = "" +
 	"\n" +
-	"?wayplatform/connect/tachograph/card/v1/last_card_download.proto\x12&wayplatform.connect.tachograph.card.v1\x1a\x1fgoogle/protobuf/timestamp.proto\"L\n" +
+	"?wayplatform/connect/tachograph/card/v1/last_card_download.proto\x12&wayplatform.connect.tachograph.card.v1\x1a\x1fgoogle/protobuf/timestamp.proto\"j\n" +
 	"\x10LastCardDownload\x128\n" +
-	"\ttimestamp\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\ttimestampB\xe2\x02\n" +
+	"\ttimestamp\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\ttimestamp\x12\x1c\n" +
+	"\tsignature\x18\x02 \x01(\fR\tsignatureB\xe2\x02\n" +
 	"*com.wayplatform.connect.tachograph.card.v1B\x15LastCardDownloadProtoP\x01Z`github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1;cardv1\xa2\x02\x04WCTC\xaa\x02&Wayplatform.Connect.Tachograph.Card.V1\xca\x02&Wayplatform\\Connect\\Tachograph\\Card\\V1\xe2\x022Wayplatform\\Connect\\Tachograph\\Card\\V1\\GPBMetadata\xea\x02*Wayplatform::Connect::Tachograph::Card::V1b\beditionsp\xe8\a"
 
 var file_wayplatform_connect_tachograph_card_v1_last_card_download_proto_msgTypes = make([]protoimpl.MessageInfo, 1)

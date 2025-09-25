@@ -8,14 +8,16 @@ import (
 	cardv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1"
 )
 
-// UnmarshalCardSpecificConditions unmarshals specific conditions data from a card EF.
-func UnmarshalCardSpecificConditions(data []byte, target *cardv1.SpecificConditions) error {
+// unmarshalCardSpecificConditions unmarshals specific conditions data from a card EF.
+func unmarshalCardSpecificConditions(data []byte) (*cardv1.SpecificConditions, error) {
 	if len(data) == 0 {
 		// Empty data is valid - no specific conditions
+		var target cardv1.SpecificConditions
 		target.SetRecords([]*cardv1.SpecificConditions_Record{})
-		return nil
+		return &target, nil
 	}
 
+	var target cardv1.SpecificConditions
 	r := bytes.NewReader(data)
 	var records []*cardv1.SpecificConditions_Record
 
@@ -31,6 +33,17 @@ func UnmarshalCardSpecificConditions(data []byte, target *cardv1.SpecificConditi
 	}
 
 	target.SetRecords(records)
+	return &target, nil
+}
+
+// UnmarshalCardSpecificConditions unmarshals specific conditions data from a card EF (legacy function).
+// Deprecated: Use unmarshalCardSpecificConditions instead.
+func UnmarshalCardSpecificConditions(data []byte, target *cardv1.SpecificConditions) error {
+	result, err := unmarshalCardSpecificConditions(data)
+	if err != nil {
+		return err
+	}
+	*target = *result
 	return nil
 }
 

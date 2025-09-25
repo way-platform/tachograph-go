@@ -29,6 +29,7 @@ type VehicleUnitsUsed struct {
 	state                                     protoimpl.MessageState      `protogen:"opaque.v1"`
 	xxx_hidden_VehicleUnitPointerNewestRecord int32                       `protobuf:"varint,1,opt,name=vehicle_unit_pointer_newest_record,json=vehicleUnitPointerNewestRecord"`
 	xxx_hidden_Records                        *[]*VehicleUnitsUsed_Record `protobuf:"bytes,2,rep,name=records"`
+	xxx_hidden_Signature                      []byte                      `protobuf:"bytes,3,opt,name=signature"`
 	XXX_raceDetectHookData                    protoimpl.RaceDetectHookData
 	XXX_presence                              [1]uint32
 	unknownFields                             protoimpl.UnknownFields
@@ -76,13 +77,28 @@ func (x *VehicleUnitsUsed) GetRecords() []*VehicleUnitsUsed_Record {
 	return nil
 }
 
+func (x *VehicleUnitsUsed) GetSignature() []byte {
+	if x != nil {
+		return x.xxx_hidden_Signature
+	}
+	return nil
+}
+
 func (x *VehicleUnitsUsed) SetVehicleUnitPointerNewestRecord(v int32) {
 	x.xxx_hidden_VehicleUnitPointerNewestRecord = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 2)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 3)
 }
 
 func (x *VehicleUnitsUsed) SetRecords(v []*VehicleUnitsUsed_Record) {
 	x.xxx_hidden_Records = &v
+}
+
+func (x *VehicleUnitsUsed) SetSignature(v []byte) {
+	if v == nil {
+		v = []byte{}
+	}
+	x.xxx_hidden_Signature = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 3)
 }
 
 func (x *VehicleUnitsUsed) HasVehicleUnitPointerNewestRecord() bool {
@@ -92,9 +108,21 @@ func (x *VehicleUnitsUsed) HasVehicleUnitPointerNewestRecord() bool {
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 0)
 }
 
+func (x *VehicleUnitsUsed) HasSignature() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 2)
+}
+
 func (x *VehicleUnitsUsed) ClearVehicleUnitPointerNewestRecord() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 0)
 	x.xxx_hidden_VehicleUnitPointerNewestRecord = 0
+}
+
+func (x *VehicleUnitsUsed) ClearSignature() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 2)
+	x.xxx_hidden_Signature = nil
 }
 
 type VehicleUnitsUsed_builder struct {
@@ -104,6 +132,8 @@ type VehicleUnitsUsed_builder struct {
 	VehicleUnitPointerNewestRecord *int32
 	// The set of records for vehicle units used.
 	Records []*VehicleUnitsUsed_Record
+	// Digital signature for the EF_VehicleUnits_Used file content.
+	Signature []byte
 }
 
 func (b0 VehicleUnitsUsed_builder) Build() *VehicleUnitsUsed {
@@ -111,10 +141,14 @@ func (b0 VehicleUnitsUsed_builder) Build() *VehicleUnitsUsed {
 	b, x := &b0, m0
 	_, _ = b, x
 	if b.VehicleUnitPointerNewestRecord != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 2)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 3)
 		x.xxx_hidden_VehicleUnitPointerNewestRecord = *b.VehicleUnitPointerNewestRecord
 	}
 	x.xxx_hidden_Records = &b.Records
+	if b.Signature != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 3)
+		x.xxx_hidden_Signature = b.Signature
+	}
 	return m0
 }
 
@@ -293,10 +327,11 @@ var File_wayplatform_connect_tachograph_card_v1_vehicle_units_used_proto protore
 
 const file_wayplatform_connect_tachograph_card_v1_vehicle_units_used_proto_rawDesc = "" +
 	"\n" +
-	"?wayplatform/connect/tachograph/card/v1/vehicle_units_used.proto\x12&wayplatform.connect.tachograph.card.v1\x1a\x1fgoogle/protobuf/timestamp.proto\"\xf8\x02\n" +
+	"?wayplatform/connect/tachograph/card/v1/vehicle_units_used.proto\x12&wayplatform.connect.tachograph.card.v1\x1a\x1fgoogle/protobuf/timestamp.proto\"\x96\x03\n" +
 	"\x10VehicleUnitsUsed\x12J\n" +
 	"\"vehicle_unit_pointer_newest_record\x18\x01 \x01(\x05R\x1evehicleUnitPointerNewestRecord\x12Y\n" +
-	"\arecords\x18\x02 \x03(\v2?.wayplatform.connect.tachograph.card.v1.VehicleUnitsUsed.RecordR\arecords\x1a\xbc\x01\n" +
+	"\arecords\x18\x02 \x03(\v2?.wayplatform.connect.tachograph.card.v1.VehicleUnitsUsed.RecordR\arecords\x12\x1c\n" +
+	"\tsignature\x18\x03 \x01(\fR\tsignature\x1a\xbc\x01\n" +
 	"\x06Record\x128\n" +
 	"\ttimestamp\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\ttimestamp\x12+\n" +
 	"\x11manufacturer_code\x18\x02 \x01(\x05R\x10manufacturerCode\x12\x1b\n" +

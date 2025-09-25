@@ -45,4 +45,7 @@ message EventData {
   }
 
   repeated Record records = 1;
+
+  // Digital signature for the EF_Events_Data file content.
+  bytes signature = 2;
 }

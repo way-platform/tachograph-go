@@ -19,4 +19,7 @@ message ApplicationIdentificationV2 {
 
   // See Data Dictionary, Section 2.61a, `vuConfigurationLengthRange`.
   int32 vu_configuration_length_range = 4;
+
+  // Digital signature for the EF_Application_Identification_V2 file content.
+  bytes signature = 5;
 }

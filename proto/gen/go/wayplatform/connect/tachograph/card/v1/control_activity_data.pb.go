@@ -36,6 +36,7 @@ type ControlActivityData struct {
 	xxx_hidden_ControlDownloadPeriodBegin *timestamppb.Timestamp `protobuf:"bytes,7,opt,name=control_download_period_begin,json=controlDownloadPeriodBegin"`
 	xxx_hidden_ControlDownloadPeriodEnd   *timestamppb.Timestamp `protobuf:"bytes,8,opt,name=control_download_period_end,json=controlDownloadPeriodEnd"`
 	xxx_hidden_RawData                    []byte                 `protobuf:"bytes,9,opt,name=raw_data,json=rawData"`
+	xxx_hidden_Signature                  []byte                 `protobuf:"bytes,10,opt,name=signature"`
 	XXX_raceDetectHookData                protoimpl.RaceDetectHookData
 	XXX_presence                          [1]uint32
 	unknownFields                         protoimpl.UnknownFields
@@ -139,9 +140,16 @@ func (x *ControlActivityData) GetRawData() []byte {
 	return nil
 }
 
+func (x *ControlActivityData) GetSignature() []byte {
+	if x != nil {
+		return x.xxx_hidden_Signature
+	}
+	return nil
+}
+
 func (x *ControlActivityData) SetValid(v bool) {
 	x.xxx_hidden_Valid = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 9)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 10)
 }
 
 func (x *ControlActivityData) SetControlType(v []byte) {
@@ -149,7 +157,7 @@ func (x *ControlActivityData) SetControlType(v []byte) {
 		v = []byte{}
 	}
 	x.xxx_hidden_ControlType = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 9)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 10)
 }
 
 func (x *ControlActivityData) SetControlTime(v *timestamppb.Timestamp) {
@@ -158,17 +166,17 @@ func (x *ControlActivityData) SetControlTime(v *timestamppb.Timestamp) {
 
 func (x *ControlActivityData) SetControlCardNumber(v string) {
 	x.xxx_hidden_ControlCardNumber = &v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 3, 9)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 3, 10)
 }
 
 func (x *ControlActivityData) SetVehicleRegistrationNation(v string) {
 	x.xxx_hidden_VehicleRegistrationNation = &v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 4, 9)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 4, 10)
 }
 
 func (x *ControlActivityData) SetVehicleRegistrationNumber(v string) {
 	x.xxx_hidden_VehicleRegistrationNumber = &v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 5, 9)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 5, 10)
 }
 
 func (x *ControlActivityData) SetControlDownloadPeriodBegin(v *timestamppb.Timestamp) {
@@ -184,7 +192,15 @@ func (x *ControlActivityData) SetRawData(v []byte) {
 		v = []byte{}
 	}
 	x.xxx_hidden_RawData = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 8, 9)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 8, 10)
+}
+
+func (x *ControlActivityData) SetSignature(v []byte) {
+	if v == nil {
+		v = []byte{}
+	}
+	x.xxx_hidden_Signature = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 9, 10)
 }
 
 func (x *ControlActivityData) HasValid() bool {
@@ -250,6 +266,13 @@ func (x *ControlActivityData) HasRawData() bool {
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 8)
 }
 
+func (x *ControlActivityData) HasSignature() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 9)
+}
+
 func (x *ControlActivityData) ClearValid() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 0)
 	x.xxx_hidden_Valid = false
@@ -292,6 +315,11 @@ func (x *ControlActivityData) ClearRawData() {
 	x.xxx_hidden_RawData = nil
 }
 
+func (x *ControlActivityData) ClearSignature() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 9)
+	x.xxx_hidden_Signature = nil
+}
+
 type ControlActivityData_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
@@ -316,6 +344,8 @@ type ControlActivityData_builder struct {
 	// --- Field for raw data preservation (when valid = false) ---
 	// Holds the raw 46 bytes of the original record for perfect roundtrip.
 	RawData []byte
+	// Digital signature for the EF_Control_Activity_Data file content.
+	Signature []byte
 }
 
 func (b0 ControlActivityData_builder) Build() *ControlActivityData {
@@ -323,31 +353,35 @@ func (b0 ControlActivityData_builder) Build() *ControlActivityData {
 	b, x := &b0, m0
 	_, _ = b, x
 	if b.Valid != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 9)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 10)
 		x.xxx_hidden_Valid = *b.Valid
 	}
 	if b.ControlType != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 9)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 10)
 		x.xxx_hidden_ControlType = b.ControlType
 	}
 	x.xxx_hidden_ControlTime = b.ControlTime
 	if b.ControlCardNumber != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 3, 9)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 3, 10)
 		x.xxx_hidden_ControlCardNumber = b.ControlCardNumber
 	}
 	if b.VehicleRegistrationNation != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 4, 9)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 4, 10)
 		x.xxx_hidden_VehicleRegistrationNation = b.VehicleRegistrationNation
 	}
 	if b.VehicleRegistrationNumber != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 5, 9)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 5, 10)
 		x.xxx_hidden_VehicleRegistrationNumber = b.VehicleRegistrationNumber
 	}
 	x.xxx_hidden_ControlDownloadPeriodBegin = b.ControlDownloadPeriodBegin
 	x.xxx_hidden_ControlDownloadPeriodEnd = b.ControlDownloadPeriodEnd
 	if b.RawData != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 8, 9)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 8, 10)
 		x.xxx_hidden_RawData = b.RawData
+	}
+	if b.Signature != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 9, 10)
+		x.xxx_hidden_Signature = b.Signature
 	}
 	return m0
 }
@@ -356,7 +390,7 @@ var File_wayplatform_connect_tachograph_card_v1_control_activity_data_proto prot
 
 const file_wayplatform_connect_tachograph_card_v1_control_activity_data_proto_rawDesc = "" +
 	"\n" +
-	"Bwayplatform/connect/tachograph/card/v1/control_activity_data.proto\x12&wayplatform.connect.tachograph.card.v1\x1a\x1fgoogle/protobuf/timestamp.proto\"\x92\x04\n" +
+	"Bwayplatform/connect/tachograph/card/v1/control_activity_data.proto\x12&wayplatform.connect.tachograph.card.v1\x1a\x1fgoogle/protobuf/timestamp.proto\"\xb0\x04\n" +
 	"\x13ControlActivityData\x12\x14\n" +
 	"\x05valid\x18\x01 \x01(\bR\x05valid\x12!\n" +
 	"\fcontrol_type\x18\x02 \x01(\fR\vcontrolType\x12=\n" +
@@ -366,7 +400,9 @@ const file_wayplatform_connect_tachograph_card_v1_control_activity_data_proto_ra
 	"\x1bvehicle_registration_number\x18\x06 \x01(\tR\x19vehicleRegistrationNumber\x12]\n" +
 	"\x1dcontrol_download_period_begin\x18\a \x01(\v2\x1a.google.protobuf.TimestampR\x1acontrolDownloadPeriodBegin\x12Y\n" +
 	"\x1bcontrol_download_period_end\x18\b \x01(\v2\x1a.google.protobuf.TimestampR\x18controlDownloadPeriodEnd\x12\x19\n" +
-	"\braw_data\x18\t \x01(\fR\arawDataB\xe5\x02\n" +
+	"\braw_data\x18\t \x01(\fR\arawData\x12\x1c\n" +
+	"\tsignature\x18\n" +
+	" \x01(\fR\tsignatureB\xe5\x02\n" +
 	"*com.wayplatform.connect.tachograph.card.v1B\x18ControlActivityDataProtoP\x01Z`github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1;cardv1\xa2\x02\x04WCTC\xaa\x02&Wayplatform.Connect.Tachograph.Card.V1\xca\x02&Wayplatform\\Connect\\Tachograph\\Card\\V1\xe2\x022Wayplatform\\Connect\\Tachograph\\Card\\V1\\GPBMetadata\xea\x02*Wayplatform::Connect::Tachograph::Card::V1b\beditionsp\xe8\a"
 
 var file_wayplatform_connect_tachograph_card_v1_control_activity_data_proto_msgTypes = make([]protoimpl.MessageInfo, 1)

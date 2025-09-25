@@ -33,6 +33,7 @@ type DriverActivity struct {
 	xxx_hidden_NewestDayRecordIndex int32                          `protobuf:"varint,3,opt,name=newest_day_record_index,json=newestDayRecordIndex"`
 	xxx_hidden_DailyRecords         *[]*DriverActivity_DailyRecord `protobuf:"bytes,4,rep,name=daily_records,json=dailyRecords"`
 	xxx_hidden_RawData              []byte                         `protobuf:"bytes,5,opt,name=raw_data,json=rawData"`
+	xxx_hidden_Signature            []byte                         `protobuf:"bytes,6,opt,name=signature"`
 	XXX_raceDetectHookData          protoimpl.RaceDetectHookData
 	XXX_presence                    [1]uint32
 	unknownFields                   protoimpl.UnknownFields
@@ -101,19 +102,26 @@ func (x *DriverActivity) GetRawData() []byte {
 	return nil
 }
 
+func (x *DriverActivity) GetSignature() []byte {
+	if x != nil {
+		return x.xxx_hidden_Signature
+	}
+	return nil
+}
+
 func (x *DriverActivity) SetValid(v bool) {
 	x.xxx_hidden_Valid = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 5)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 6)
 }
 
 func (x *DriverActivity) SetOldestDayRecordIndex(v int32) {
 	x.xxx_hidden_OldestDayRecordIndex = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 5)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 6)
 }
 
 func (x *DriverActivity) SetNewestDayRecordIndex(v int32) {
 	x.xxx_hidden_NewestDayRecordIndex = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 5)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 6)
 }
 
 func (x *DriverActivity) SetDailyRecords(v []*DriverActivity_DailyRecord) {
@@ -125,7 +133,15 @@ func (x *DriverActivity) SetRawData(v []byte) {
 		v = []byte{}
 	}
 	x.xxx_hidden_RawData = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 4, 5)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 4, 6)
+}
+
+func (x *DriverActivity) SetSignature(v []byte) {
+	if v == nil {
+		v = []byte{}
+	}
+	x.xxx_hidden_Signature = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 5, 6)
 }
 
 func (x *DriverActivity) HasValid() bool {
@@ -156,6 +172,13 @@ func (x *DriverActivity) HasRawData() bool {
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 4)
 }
 
+func (x *DriverActivity) HasSignature() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 5)
+}
+
 func (x *DriverActivity) ClearValid() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 0)
 	x.xxx_hidden_Valid = false
@@ -176,6 +199,11 @@ func (x *DriverActivity) ClearRawData() {
 	x.xxx_hidden_RawData = nil
 }
 
+func (x *DriverActivity) ClearSignature() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 5)
+	x.xxx_hidden_Signature = nil
+}
+
 type DriverActivity_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
@@ -192,6 +220,8 @@ type DriverActivity_builder struct {
 	// --- Field for raw data preservation (when valid = false) ---
 	// Holds the raw ring buffer bytes (after the 4-byte header) for perfect roundtrip.
 	RawData []byte
+	// Digital signature for the EF_Driver_Activity_Data file content.
+	Signature []byte
 }
 
 func (b0 DriverActivity_builder) Build() *DriverActivity {
@@ -199,21 +229,25 @@ func (b0 DriverActivity_builder) Build() *DriverActivity {
 	b, x := &b0, m0
 	_, _ = b, x
 	if b.Valid != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 5)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 6)
 		x.xxx_hidden_Valid = *b.Valid
 	}
 	if b.OldestDayRecordIndex != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 5)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 6)
 		x.xxx_hidden_OldestDayRecordIndex = *b.OldestDayRecordIndex
 	}
 	if b.NewestDayRecordIndex != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 5)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 6)
 		x.xxx_hidden_NewestDayRecordIndex = *b.NewestDayRecordIndex
 	}
 	x.xxx_hidden_DailyRecords = &b.DailyRecords
 	if b.RawData != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 4, 5)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 4, 6)
 		x.xxx_hidden_RawData = b.RawData
+	}
+	if b.Signature != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 5, 6)
+		x.xxx_hidden_Signature = b.Signature
 	}
 	return m0
 }
@@ -774,13 +808,14 @@ var File_wayplatform_connect_tachograph_card_v1_driver_activity_proto protorefle
 
 const file_wayplatform_connect_tachograph_card_v1_driver_activity_proto_rawDesc = "" +
 	"\n" +
-	"<wayplatform/connect/tachograph/card/v1/driver_activity.proto\x12&wayplatform.connect.tachograph.card.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1aGwayplatform/connect/tachograph/datadictionary/v1/card_slot_number.proto\x1aBwayplatform/connect/tachograph/datadictionary/v1/card_status.proto\x1aLwayplatform/connect/tachograph/datadictionary/v1/driver_activity_value.proto\x1aEwayplatform/connect/tachograph/datadictionary/v1/driving_status.proto\"\x98\v\n" +
+	"<wayplatform/connect/tachograph/card/v1/driver_activity.proto\x12&wayplatform.connect.tachograph.card.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1aGwayplatform/connect/tachograph/datadictionary/v1/card_slot_number.proto\x1aBwayplatform/connect/tachograph/datadictionary/v1/card_status.proto\x1aLwayplatform/connect/tachograph/datadictionary/v1/driver_activity_value.proto\x1aEwayplatform/connect/tachograph/datadictionary/v1/driving_status.proto\"\xb6\v\n" +
 	"\x0eDriverActivity\x12\x14\n" +
 	"\x05valid\x18\x01 \x01(\bR\x05valid\x125\n" +
 	"\x17oldest_day_record_index\x18\x02 \x01(\x05R\x14oldestDayRecordIndex\x125\n" +
 	"\x17newest_day_record_index\x18\x03 \x01(\x05R\x14newestDayRecordIndex\x12g\n" +
 	"\rdaily_records\x18\x04 \x03(\v2B.wayplatform.connect.tachograph.card.v1.DriverActivity.DailyRecordR\fdailyRecords\x12\x19\n" +
-	"\braw_data\x18\x05 \x01(\fR\arawData\x1a\xfd\b\n" +
+	"\braw_data\x18\x05 \x01(\fR\arawData\x12\x1c\n" +
+	"\tsignature\x18\x06 \x01(\fR\tsignature\x1a\xfd\b\n" +
 	"\vDailyRecord\x12E\n" +
 	"\x1factivity_previous_record_length\x18\x01 \x01(\x05R\x1cactivityPreviousRecordLength\x124\n" +
 	"\x16activity_record_length\x18\x02 \x01(\x05R\x14activityRecordLength\x12L\n" +

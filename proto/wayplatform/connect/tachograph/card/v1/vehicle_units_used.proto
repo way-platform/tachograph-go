@@ -32,4 +32,7 @@ message VehicleUnitsUsed {
 
   // The set of records for vehicle units used.
   repeated Record records = 2;
+
+  // Digital signature for the EF_VehicleUnits_Used file content.
+  bytes signature = 3;
 }

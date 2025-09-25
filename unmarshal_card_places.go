@@ -8,18 +8,19 @@ import (
 	cardv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1"
 )
 
-// UnmarshalCardPlaces unmarshals places data from a card EF.
-func UnmarshalCardPlaces(data []byte, target *cardv1.Places) error {
+// unmarshalCardPlaces unmarshals places data from a card EF.
+func unmarshalCardPlaces(data []byte) (*cardv1.Places, error) {
 	if len(data) < 2 {
-		return fmt.Errorf("insufficient data for places")
+		return nil, fmt.Errorf("insufficient data for places")
 	}
 
+	var target cardv1.Places
 	r := bytes.NewReader(data)
 
 	// Read newest record pointer (2 bytes)
 	var newestRecordIndex uint16
 	if err := binary.Read(r, binary.BigEndian, &newestRecordIndex); err != nil {
-		return fmt.Errorf("failed to read newest record index: %w", err)
+		return nil, fmt.Errorf("failed to read newest record index: %w", err)
 	}
 
 	target.SetNewestRecordIndex(int32(newestRecordIndex))
@@ -45,6 +46,17 @@ func UnmarshalCardPlaces(data []byte, target *cardv1.Places) error {
 		target.SetTrailingBytes(trailingBytes)
 	}
 
+	return &target, nil
+}
+
+// UnmarshalCardPlaces unmarshals places data from a card EF (legacy function).
+// Deprecated: Use unmarshalCardPlaces instead.
+func UnmarshalCardPlaces(data []byte, target *cardv1.Places) error {
+	result, err := unmarshalCardPlaces(data)
+	if err != nil {
+		return err
+	}
+	*target = *result
 	return nil
 }
 

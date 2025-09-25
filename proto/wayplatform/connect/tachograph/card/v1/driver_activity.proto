@@ -85,4 +85,7 @@ message DriverActivity {
   // --- Field for raw data preservation (when valid = false) ---
   // Holds the raw ring buffer bytes (after the 4-byte header) for perfect roundtrip.
   bytes raw_data = 5;
+
+  // Digital signature for the EF_Driver_Activity_Data file content.
+  bytes signature = 6;
 }

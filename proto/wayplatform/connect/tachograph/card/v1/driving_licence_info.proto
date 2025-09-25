@@ -15,4 +15,7 @@ message DrivingLicenceInfo {
 
   // The driving licence number.
   string driving_licence_number = 3;
+
+  // Digital signature for the EF_Driving_Licence_Info file content.
+  bytes signature = 4;
 }

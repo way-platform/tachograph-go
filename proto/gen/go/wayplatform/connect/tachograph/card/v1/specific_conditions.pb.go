@@ -27,10 +27,13 @@ const (
 // Corresponds to the `SpecificConditions` data type from EF_Specific_Conditions.
 // See Data Dictionary, Section 2.153.
 type SpecificConditions struct {
-	state              protoimpl.MessageState        `protogen:"opaque.v1"`
-	xxx_hidden_Records *[]*SpecificConditions_Record `protobuf:"bytes,1,rep,name=records"`
-	unknownFields      protoimpl.UnknownFields
-	sizeCache          protoimpl.SizeCache
+	state                  protoimpl.MessageState        `protogen:"opaque.v1"`
+	xxx_hidden_Records     *[]*SpecificConditions_Record `protobuf:"bytes,1,rep,name=records"`
+	xxx_hidden_Signature   []byte                        `protobuf:"bytes,2,opt,name=signature"`
+	XXX_raceDetectHookData protoimpl.RaceDetectHookData
+	XXX_presence           [1]uint32
+	unknownFields          protoimpl.UnknownFields
+	sizeCache              protoimpl.SizeCache
 }
 
 func (x *SpecificConditions) Reset() {
@@ -67,14 +70,43 @@ func (x *SpecificConditions) GetRecords() []*SpecificConditions_Record {
 	return nil
 }
 
+func (x *SpecificConditions) GetSignature() []byte {
+	if x != nil {
+		return x.xxx_hidden_Signature
+	}
+	return nil
+}
+
 func (x *SpecificConditions) SetRecords(v []*SpecificConditions_Record) {
 	x.xxx_hidden_Records = &v
+}
+
+func (x *SpecificConditions) SetSignature(v []byte) {
+	if v == nil {
+		v = []byte{}
+	}
+	x.xxx_hidden_Signature = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 2)
+}
+
+func (x *SpecificConditions) HasSignature() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 1)
+}
+
+func (x *SpecificConditions) ClearSignature() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 1)
+	x.xxx_hidden_Signature = nil
 }
 
 type SpecificConditions_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
 	Records []*SpecificConditions_Record
+	// Digital signature for the EF_Specific_Conditions file content.
+	Signature []byte
 }
 
 func (b0 SpecificConditions_builder) Build() *SpecificConditions {
@@ -82,6 +114,10 @@ func (b0 SpecificConditions_builder) Build() *SpecificConditions {
 	b, x := &b0, m0
 	_, _ = b, x
 	x.xxx_hidden_Records = &b.Records
+	if b.Signature != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 2)
+		x.xxx_hidden_Signature = b.Signature
+	}
 	return m0
 }
 
@@ -227,9 +263,10 @@ var File_wayplatform_connect_tachograph_card_v1_specific_conditions_proto protor
 
 const file_wayplatform_connect_tachograph_card_v1_specific_conditions_proto_rawDesc = "" +
 	"\n" +
-	"@wayplatform/connect/tachograph/card/v1/specific_conditions.proto\x12&wayplatform.connect.tachograph.card.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1aNwayplatform/connect/tachograph/datadictionary/v1/specific_condition_type.proto\"\x89\x03\n" +
+	"@wayplatform/connect/tachograph/card/v1/specific_conditions.proto\x12&wayplatform.connect.tachograph.card.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1aNwayplatform/connect/tachograph/datadictionary/v1/specific_condition_type.proto\"\xa7\x03\n" +
 	"\x12SpecificConditions\x12[\n" +
-	"\arecords\x18\x01 \x03(\v2A.wayplatform.connect.tachograph.card.v1.SpecificConditions.RecordR\arecords\x1a\x95\x02\n" +
+	"\arecords\x18\x01 \x03(\v2A.wayplatform.connect.tachograph.card.v1.SpecificConditions.RecordR\arecords\x12\x1c\n" +
+	"\tsignature\x18\x02 \x01(\fR\tsignature\x1a\x95\x02\n" +
 	"\x06Record\x129\n" +
 	"\n" +
 	"entry_time\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\tentryTime\x12\x7f\n" +

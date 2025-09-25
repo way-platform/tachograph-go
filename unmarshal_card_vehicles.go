@@ -8,18 +8,19 @@ import (
 	cardv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1"
 )
 
-// UnmarshalCardVehiclesUsed unmarshals vehicles used data from a card EF.
-func UnmarshalCardVehiclesUsed(data []byte, target *cardv1.VehiclesUsed) error {
+// unmarshalCardVehiclesUsed unmarshals vehicles used data from a card EF.
+func unmarshalCardVehiclesUsed(data []byte) (*cardv1.VehiclesUsed, error) {
 	if len(data) < 2 {
-		return fmt.Errorf("insufficient data for vehicles used")
+		return nil, fmt.Errorf("insufficient data for vehicles used")
 	}
 
+	var target cardv1.VehiclesUsed
 	r := bytes.NewReader(data)
 
 	// Read newest record pointer (2 bytes)
 	var newestRecordIndex uint16
 	if err := binary.Read(r, binary.BigEndian, &newestRecordIndex); err != nil {
-		return fmt.Errorf("failed to read newest record index: %w", err)
+		return nil, fmt.Errorf("failed to read newest record index: %w", err)
 	}
 
 	target.SetNewestRecordIndex(int32(newestRecordIndex))
@@ -37,6 +38,17 @@ func UnmarshalCardVehiclesUsed(data []byte, target *cardv1.VehiclesUsed) error {
 	}
 
 	target.SetRecords(records)
+	return &target, nil
+}
+
+// UnmarshalCardVehiclesUsed unmarshals vehicles used data from a card EF (legacy function).
+// Deprecated: Use unmarshalCardVehiclesUsed instead.
+func UnmarshalCardVehiclesUsed(data []byte, target *cardv1.VehiclesUsed) error {
+	result, err := unmarshalCardVehiclesUsed(data)
+	if err != nil {
+		return err
+	}
+	*target = *result
 	return nil
 }
 

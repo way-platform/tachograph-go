@@ -10,4 +10,7 @@ import "google/protobuf/timestamp.proto";
 // See Data Dictionary, Section 2.89.
 message LastCardDownload {
   google.protobuf.Timestamp timestamp = 1;
+
+  // Digital signature for the EF_Card_Download file content.
+  bytes signature = 2;
 }

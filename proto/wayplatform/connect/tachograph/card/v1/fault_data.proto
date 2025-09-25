@@ -45,4 +45,7 @@ message FaultData {
   }
 
   repeated Record records = 1;
+
+  // Digital signature for the EF_Faults_Data file content.
+  bytes signature = 2;
 }

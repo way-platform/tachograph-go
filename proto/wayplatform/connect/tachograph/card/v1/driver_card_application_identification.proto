@@ -41,4 +41,7 @@ message DriverCardApplicationIdentification {
 
   // See Data Dictionary, Section 2.61, `noOfCardVehicleUnitRecords`.
   int32 card_vehicle_unit_records_count = 11;
+
+  // Digital signature for the EF_Application_Identification file content.
+  bytes signature = 12;
 }

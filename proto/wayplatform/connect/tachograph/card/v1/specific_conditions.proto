@@ -24,4 +24,7 @@ message SpecificConditions {
   }
 
   repeated Record records = 1;
+
+  // Digital signature for the EF_Specific_Conditions file content.
+  bytes signature = 2;
 }

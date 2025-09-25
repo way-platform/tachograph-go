@@ -40,4 +40,7 @@ message ControlActivityData {
   // --- Field for raw data preservation (when valid = false) ---
   // Holds the raw 46 bytes of the original record for perfect roundtrip.
   bytes raw_data = 9;
+
+  // Digital signature for the EF_Control_Activity_Data file content.
+  bytes signature = 10;
 }

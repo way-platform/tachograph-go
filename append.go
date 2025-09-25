@@ -14,60 +14,9 @@ import (
 	vuv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/vu/v1"
 )
 
-// compositeMessage is a helper for composite EFs like EF_IDENTIFICATION
-type compositeMessage struct {
-	data []byte
-}
-
-func (c *compositeMessage) ProtoReflect() protoreflect.Message { return nil }
-func (c *compositeMessage) Reset()                             {}
-func (c *compositeMessage) String() string                     { return "" }
-
 // Marshal serializes a protobuf File message into the binary DDD file format.
 func Marshal(file *tachographv1.File) ([]byte, error) {
-	return MarshalWithOriginal(file, nil)
-}
-
-// MarshalWithOriginal serializes a protobuf File message into the binary DDD file format,
-// preserving original signatures from the originalData if provided.
-func MarshalWithOriginal(file *tachographv1.File, originalData []byte) ([]byte, error) {
-	// Start with a reasonably sized buffer to avoid reallocations.
-	buf := make([]byte, 0, 8192)
-	var err error
-
-	switch file.GetType() {
-	case tachographv1.File_DRIVER_CARD:
-		// Strategy: DriverCardFile → RawCardFile → Binary with signature preservation
-		var originalRawFile *cardv1.RawCardFile
-		if originalData != nil {
-			originalRawFile, err = unmarshalRawCardFile(originalData)
-			if err != nil {
-				return nil, err
-			}
-		}
-
-		// Build new RawCardFile with marshalled data but preserve original signatures
-		rawFile, err := DriverCardFileToRawWithSignatures(file.GetDriverCard(), originalRawFile)
-		if err != nil {
-			return nil, err
-		}
-		return MarshalRawCardFile(rawFile)
-
-	case tachographv1.File_WORKSHOP_CARD, tachographv1.File_CONTROL_CARD, tachographv1.File_COMPANY_CARD:
-		// For now, keep the old marshalling until we implement Raw versions for these
-		buf, err = appendCard(buf, file)
-
-	case tachographv1.File_VEHICLE_UNIT:
-		buf, err = appendVU(buf, file)
-
-	default:
-		err = errors.New("unsupported file type for marshaling")
-	}
-
-	if err != nil {
-		return nil, err
-	}
-	return buf, nil
+	return appendCard(nil, file)
 }
 
 // appendCard orchestrates writing a card file.
@@ -109,21 +58,21 @@ func appendDriverCard(dst []byte, card *cardv1.DriverCardFile) ([]byte, error) {
 	}
 
 	// 4. EF_IDENTIFICATION (0x0520) - composite file
-	valBuf := make([]byte, 0, 143)
-	valBuf, err = AppendCardIdentification(valBuf, card.GetIdentification())
-	if err != nil {
-		return nil, err
-	}
-	valBuf, err = AppendDriverCardHolderIdentification(valBuf, card.GetHolderIdentification())
-	if err != nil {
-		return nil, err
-	}
-	dst, err = appendTlv(dst, cardv1.ElementaryFileType_EF_IDENTIFICATION, &compositeMessage{data: valBuf}, func(dst []byte, msg *compositeMessage) ([]byte, error) {
-		return append(dst, msg.data...), nil
-	})
-	if err != nil {
-		return nil, err
-	}
+	// valBuf := make([]byte, 0, 143)
+	// valBuf, err = AppendCardIdentification(valBuf, card.GetIdentification())
+	// if err != nil {
+	// 	return nil, err
+	// }
+	// valBuf, err = AppendDriverCardHolderIdentification(valBuf, card.GetHolderIdentification())
+	// if err != nil {
+	// 	return nil, err
+	// }
+	// dst, err = appendTlv(dst, cardv1.ElementaryFileType_EF_IDENTIFICATION, &compositeMessage{data: valBuf}, func(dst []byte, msg *compositeMessage) ([]byte, error) {
+	// 	return append(dst, msg.data...), nil
+	// })
+	// if err != nil {
+	// 	return nil, err
+	// }
 
 	// 4. EF_IDENTIFICATION (0x0520) - already handled above
 

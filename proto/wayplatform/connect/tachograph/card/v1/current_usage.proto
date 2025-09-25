@@ -18,4 +18,7 @@ message CurrentUsage {
 
   // Vehicle's registration number. See DD Section 2.166.
   string vehicle_registration_number = 3;
+
+  // Digital signature for the EF_Current_Usage file content.
+  bytes signature = 4;
 }

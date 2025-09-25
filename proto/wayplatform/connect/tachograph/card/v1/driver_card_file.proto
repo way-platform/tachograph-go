@@ -2,13 +2,10 @@ edition = "2023";
 
 package wayplatform.connect.tachograph.card.v1;
 
-// Import Gen2-specific EFs
 import "wayplatform/connect/tachograph/card/v1/application_identification_v2.proto";
 import "wayplatform/connect/tachograph/card/v1/border_crossings.proto";
 import "wayplatform/connect/tachograph/card/v1/card_icc_identification.proto";
-import "wayplatform/connect/tachograph/card/v1/card_identification.proto";
 import "wayplatform/connect/tachograph/card/v1/certificates.proto";
-// Import Gen1 and common EFs
 import "wayplatform/connect/tachograph/card/v1/chip_identification.proto";
 import "wayplatform/connect/tachograph/card/v1/control_activity_data.proto";
 import "wayplatform/connect/tachograph/card/v1/current_usage.proto";
@@ -20,6 +17,7 @@ import "wayplatform/connect/tachograph/card/v1/event_data.proto";
 import "wayplatform/connect/tachograph/card/v1/fault_data.proto";
 import "wayplatform/connect/tachograph/card/v1/gnss_places.proto";
 import "wayplatform/connect/tachograph/card/v1/gnss_places_authentication.proto";
+import "wayplatform/connect/tachograph/card/v1/identification.proto";
 import "wayplatform/connect/tachograph/card/v1/last_card_download.proto";
 import "wayplatform/connect/tachograph/card/v1/load_type_entries.proto";
 import "wayplatform/connect/tachograph/card/v1/load_unload_operations.proto";
@@ -45,11 +43,8 @@ message DriverCardFile {
   // Data from EF_Application_Identification.
   DriverCardApplicationIdentification application_identification = 3;
 
-  // Data from EF_Identification (Card Identification part).
-  CardIdentification identification = 4;
-
-  // Data from EF_Identification (Holder Identification part).
-  DriverCardHolderIdentification holder_identification = 5;
+  // Data from EF_Identification.
+  Identification identification = 4;
 
   // Data from EF_Driving_Licence_Info.
   DrivingLicenceInfo driving_licence_info = 6;
@@ -111,7 +106,4 @@ message DriverCardFile {
 
   // Certificate data from various certificate EFs.
   Certificates certificates = 24;
-
-  // Digital signature for EF_Identification (signed as a whole).
-  bytes identification_signature = 25;
 }

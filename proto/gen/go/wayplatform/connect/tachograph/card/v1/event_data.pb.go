@@ -27,10 +27,13 @@ const (
 // Corresponds to the `CardEventData` data type.
 // See Data Dictionary, Section 2.19.
 type EventData struct {
-	state              protoimpl.MessageState `protogen:"opaque.v1"`
-	xxx_hidden_Records *[]*EventData_Record   `protobuf:"bytes,1,rep,name=records"`
-	unknownFields      protoimpl.UnknownFields
-	sizeCache          protoimpl.SizeCache
+	state                  protoimpl.MessageState `protogen:"opaque.v1"`
+	xxx_hidden_Records     *[]*EventData_Record   `protobuf:"bytes,1,rep,name=records"`
+	xxx_hidden_Signature   []byte                 `protobuf:"bytes,2,opt,name=signature"`
+	XXX_raceDetectHookData protoimpl.RaceDetectHookData
+	XXX_presence           [1]uint32
+	unknownFields          protoimpl.UnknownFields
+	sizeCache              protoimpl.SizeCache
 }
 
 func (x *EventData) Reset() {
@@ -67,14 +70,43 @@ func (x *EventData) GetRecords() []*EventData_Record {
 	return nil
 }
 
+func (x *EventData) GetSignature() []byte {
+	if x != nil {
+		return x.xxx_hidden_Signature
+	}
+	return nil
+}
+
 func (x *EventData) SetRecords(v []*EventData_Record) {
 	x.xxx_hidden_Records = &v
+}
+
+func (x *EventData) SetSignature(v []byte) {
+	if v == nil {
+		v = []byte{}
+	}
+	x.xxx_hidden_Signature = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 2)
+}
+
+func (x *EventData) HasSignature() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 1)
+}
+
+func (x *EventData) ClearSignature() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 1)
+	x.xxx_hidden_Signature = nil
 }
 
 type EventData_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
 	Records []*EventData_Record
+	// Digital signature for the EF_Events_Data file content.
+	Signature []byte
 }
 
 func (b0 EventData_builder) Build() *EventData {
@@ -82,6 +114,10 @@ func (b0 EventData_builder) Build() *EventData {
 	b, x := &b0, m0
 	_, _ = b, x
 	x.xxx_hidden_Records = &b.Records
+	if b.Signature != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 2)
+		x.xxx_hidden_Signature = b.Signature
+	}
 	return m0
 }
 
@@ -390,9 +426,10 @@ var File_wayplatform_connect_tachograph_card_v1_event_data_proto protoreflect.Fi
 
 const file_wayplatform_connect_tachograph_card_v1_event_data_proto_rawDesc = "" +
 	"\n" +
-	"7wayplatform/connect/tachograph/card/v1/event_data.proto\x12&wayplatform.connect.tachograph.card.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1aGwayplatform/connect/tachograph/datadictionary/v1/event_fault_type.proto\"\xbc\x04\n" +
+	"7wayplatform/connect/tachograph/card/v1/event_data.proto\x12&wayplatform.connect.tachograph.card.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1aGwayplatform/connect/tachograph/datadictionary/v1/event_fault_type.proto\"\xda\x04\n" +
 	"\tEventData\x12R\n" +
-	"\arecords\x18\x01 \x03(\v28.wayplatform.connect.tachograph.card.v1.EventData.RecordR\arecords\x1a\xda\x03\n" +
+	"\arecords\x18\x01 \x03(\v28.wayplatform.connect.tachograph.card.v1.EventData.RecordR\arecords\x12\x1c\n" +
+	"\tsignature\x18\x02 \x01(\fR\tsignature\x1a\xda\x03\n" +
 	"\x06Record\x12\x14\n" +
 	"\x05valid\x18\x01 \x01(\bR\x05valid\x12_\n" +
 	"\n" +
