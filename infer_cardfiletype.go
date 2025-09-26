@@ -23,7 +23,7 @@ func inferCardFileType(input *cardv1.RawCardFile) cardv1.CardType {
 func hasAllElementaryFiles(fileStructure *cardv1.FileDescriptor, records []*cardv1.RawCardFile_Record) bool {
 	for _, record := range records {
 		if record.GetContentType() == cardv1.ContentType_DATA {
-			if !containsEF(fileStructure, record.GetFile()) {
+			if !hasEF(fileStructure, record.GetFile()) {
 				return false
 			}
 		}
@@ -31,12 +31,12 @@ func hasAllElementaryFiles(fileStructure *cardv1.FileDescriptor, records []*card
 	return true
 }
 
-func containsEF(desc *cardv1.FileDescriptor, targetEF cardv1.ElementaryFileType) bool {
+func hasEF(desc *cardv1.FileDescriptor, targetEF cardv1.ElementaryFileType) bool {
 	if desc.GetType() == cardv1.FileType_EF && desc.GetEf() == targetEF {
 		return true
 	}
 	for _, child := range desc.GetFiles() {
-		if containsEF(child, targetEF) {
+		if hasEF(child, targetEF) {
 			return true
 		}
 	}

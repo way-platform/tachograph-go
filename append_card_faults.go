@@ -4,28 +4,32 @@ import (
 	cardv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1"
 )
 
-// AppendFaultRecord appends the binary representation of a single fault record to dst.
-func AppendFaultRecord(dst []byte, rec *cardv1.FaultData_Record) ([]byte, error) {
-	if rec == nil {
-		return append(dst, make([]byte, 24)...), nil
-	}
-
-	if !rec.GetValid() {
-		// Non-valid record: use preserved raw data
-		rawData := rec.GetRawData()
-		if len(rawData) != 24 {
-			// Fallback to zeros if raw data is invalid
-			return append(dst, make([]byte, 24)...), nil
+// AppendFaultsData appends the binary representation of FaultData to dst.
+func AppendFaultsData(dst []byte, data *cardv1.FaultData) ([]byte, error) {
+	var err error
+	for _, r := range data.GetRecords() {
+		dst, err = AppendFaultRecord(dst, r)
+		if err != nil {
+			return nil, err
 		}
-		return append(dst, rawData...), nil
+	}
+	return dst, nil
+}
+
+// AppendFaultRecord appends a single fault record.
+func AppendFaultRecord(dst []byte, record *cardv1.FaultData_Record) ([]byte, error) {
+	if !record.GetValid() {
+		return append(dst, record.GetRawData()...), nil
 	}
 
-	// Valid record: serialize semantic data
-	faultTypeProtocol := GetEventFaultTypeProtocolValue(rec.GetFaultType(), rec.GetUnrecognizedFaultType())
-	dst = append(dst, byte(faultTypeProtocol))
-	dst = appendTimeReal(dst, rec.GetFaultBeginTime())
-	dst = appendTimeReal(dst, rec.GetFaultEndTime())
-	dst = append(dst, byte(0)) // Placeholder for vehicleRegistrationNation, assuming BCD
-	dst = appendString(dst, rec.GetVehicleRegistrationNumber(), 14)
+	protocolValue := GetEventFaultTypeProtocolValue(record.GetFaultType(), record.GetUnrecognizedFaultType())
+	dst = append(dst, byte(protocolValue))
+	dst = appendTimeReal(dst, record.GetFaultBeginTime())
+	dst = appendTimeReal(dst, record.GetFaultEndTime())
+	dst, err := AppendVehicleRegistration(dst, record.GetVehicleRegistrationNation(), record.GetVehicleRegistrationNumber())
+	if err != nil {
+		return nil, err
+	}
+
 	return dst, nil
 }

@@ -2,11 +2,8 @@ edition = "2023";
 
 package wayplatform.connect.tachograph.v1;
 
-import "wayplatform/connect/tachograph/card/v1/company_card_file.proto";
-import "wayplatform/connect/tachograph/card/v1/control_card_file.proto";
 import "wayplatform/connect/tachograph/card/v1/driver_card_file.proto";
 import "wayplatform/connect/tachograph/card/v1/raw_card_file.proto";
-import "wayplatform/connect/tachograph/card/v1/workshop_card_file.proto";
 import "wayplatform/connect/tachograph/vu/v1/vehicle_unit_file.proto";
 
 // Represents the entire content of a single parsed tachograph data file (e.g., .DDD, .C1B, .V1B).
@@ -29,15 +26,15 @@ message File {
 
   // The content of the file if it is from a Workshop Card.
   // This field is populated if and only if `type` is `WORKSHOP_CARD`.
-  wayplatform.connect.tachograph.card.v1.WorkshopCardFile workshop_card = 4;
+  // wayplatform.connect.tachograph.card.v1.WorkshopCardFile workshop_card = 4;
 
   // The content of the file if it is from a Control Card.
   // This field is populated if and only if `type` is `CONTROL_CARD`.
-  wayplatform.connect.tachograph.card.v1.ControlCardFile control_card = 5;
+  // wayplatform.connect.tachograph.card.v1.ControlCardFile control_card = 5;
 
   // The content of the file if it is from a Company Card.
   // This field is populated if and only if `type` is `COMPANY_CARD`.
-  wayplatform.connect.tachograph.card.v1.CompanyCardFile company_card = 6;
+  // wayplatform.connect.tachograph.card.v1.CompanyCardFile company_card = 6;
 
   // The raw, uninterpreted content of a card file. This can be used as a
   // fallback or for applications that need to do their own detailed parsing.

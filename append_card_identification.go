@@ -9,9 +9,19 @@ func AppendCardIdentification(dst []byte, id *cardv1.CardIdentification) ([]byte
 	if id == nil {
 		return dst, nil
 	}
-	dst = appendBCDNation(dst, id.GetCardIssuingMemberState()) // NationNumeric is BCD-encoded
-	dst = appendString(dst, id.GetCardNumber(), 16)
-	dst = appendString(dst, id.GetCardIssuingAuthorityName(), 36)
+	var err error
+	dst, err = appendBCDNation(dst, id.GetCardIssuingMemberState()) // NationNumeric is BCD-encoded
+	if err != nil {
+		return nil, err
+	}
+	dst, err = appendString(dst, id.GetCardNumber(), 16)
+	if err != nil {
+		return nil, err
+	}
+	dst, err = appendString(dst, id.GetCardIssuingAuthorityName(), 36)
+	if err != nil {
+		return nil, err
+	}
 	dst = appendTimeReal(dst, id.GetCardIssueDate())
 	dst = appendTimeReal(dst, id.GetCardValidityBegin())
 	dst = appendTimeReal(dst, id.GetCardExpiryDate())
@@ -23,13 +33,23 @@ func AppendDriverCardHolderIdentification(dst []byte, h *cardv1.DriverCardHolder
 	if h == nil {
 		return dst, nil
 	}
+	var err error
 	nameBlock := make([]byte, 0, 72)
-	nameBlock = appendString(nameBlock, h.GetCardHolderSurname(), 36)
-	nameBlock = appendString(nameBlock, h.GetCardHolderFirstNames(), 36)
+	nameBlock, err = appendString(nameBlock, h.GetCardHolderSurname(), 36)
+	if err != nil {
+		return nil, err
+	}
+	nameBlock, err = appendString(nameBlock, h.GetCardHolderFirstNames(), 36)
+	if err != nil {
+		return nil, err
+	}
 	dst = append(dst, nameBlock...)
 
 	dst = appendDatef(dst, h.GetCardHolderBirthDate())
 
-	dst = appendString(dst, h.GetCardHolderPreferredLanguage(), 2)
+	dst, err = appendString(dst, h.GetCardHolderPreferredLanguage(), 2)
+	if err != nil {
+		return nil, err
+	}
 	return dst, nil
 }

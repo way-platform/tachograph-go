@@ -6,8 +6,8 @@ import (
 	cardv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1"
 )
 
-// AppendDriverActivity appends the binary representation of DriverActivity to dst.
-func AppendDriverActivity(dst []byte, activity *cardv1.DriverActivity) ([]byte, error) {
+// AppendDriverActivity appends the binary representation of DriverActivityData to dst.
+func AppendDriverActivity(dst []byte, activity *cardv1.DriverActivityData) ([]byte, error) {
 	if activity == nil {
 		return dst, nil
 	}
@@ -16,25 +16,25 @@ func AppendDriverActivity(dst []byte, activity *cardv1.DriverActivity) ([]byte, 
 	dst = binary.BigEndian.AppendUint16(dst, uint16(activity.GetOldestDayRecordIndex()))
 	dst = binary.BigEndian.AppendUint16(dst, uint16(activity.GetNewestDayRecordIndex()))
 
-	if !activity.GetValid() {
-		// Non-valid data: use preserved raw ring buffer data
-		rawData := activity.GetRawData()
-		return append(dst, rawData...), nil
-	}
-
-	// Valid data: serialize semantic data
+	// Append the records
 	var err error
 	for _, rec := range activity.GetDailyRecords() {
-		dst, err = AppendActivityDailyRecord(dst, rec)
-		if err != nil {
-			return nil, err
+		if rec.GetValid() {
+			// It's a parsed record, so we need to serialize it.
+			dst, err = appendParsedDailyRecord(dst, rec)
+			if err != nil {
+				return nil, err
+			}
+		} else {
+			// It's a raw record, just append the bytes.
+			dst = append(dst, rec.GetRaw()...)
 		}
 	}
 	return dst, nil
 }
 
-// AppendActivityDailyRecord appends a single daily activity record.
-func AppendActivityDailyRecord(dst []byte, rec *cardv1.DriverActivity_DailyRecord) ([]byte, error) {
+// appendParsedDailyRecord appends a single parsed daily activity record.
+func appendParsedDailyRecord(dst []byte, rec *cardv1.DriverActivityData_DailyRecord) ([]byte, error) {
 	// Check if this is an empty record (for roundtrip compatibility)
 	isEmpty := rec.GetActivityDayDistance() == 0 &&
 		len(rec.GetActivityChangeInfo()) == 0 &&
@@ -89,12 +89,19 @@ func AppendActivityDailyRecord(dst []byte, rec *cardv1.DriverActivity_DailyRecor
 }
 
 // AppendActivityChange appends a single 2-byte activity change info.
-func AppendActivityChange(dst []byte, ac *cardv1.DriverActivity_DailyRecord_ActivityChange) ([]byte, error) {
+func AppendActivityChange(dst []byte, ac *cardv1.DriverActivityData_DailyRecord_ActivityChange) ([]byte, error) {
 	var aci uint16
-	aci |= (uint16(ac.GetSlot()) & 0x1) << 15
-	aci |= (uint16(ac.GetDrivingStatus()) & 0x1) << 14
-	aci |= (uint16(ac.GetCardStatus()) & 0x1) << 13
-	aci |= (uint16(ac.GetActivity()) & 0x3) << 11
+
+	// Reconstruct the bitfield from enum values
+	slot := GetCardSlotNumber(ac.GetSlot(), ac.GetUnrecognizedSlot())
+	drivingStatus := GetDrivingStatus(ac.GetDrivingStatus(), ac.GetUnrecognizedDrivingStatus())
+	cardStatus := GetCardStatus(ac.GetCardStatus(), ac.GetUnrecognizedCardStatus())
+	activity := GetDriverActivityValue(ac.GetActivity(), ac.GetUnrecognizedActivity())
+
+	aci |= (uint16(slot) & 0x1) << 15
+	aci |= (uint16(drivingStatus) & 0x1) << 14
+	aci |= (uint16(cardStatus) & 0x1) << 13
+	aci |= (uint16(activity) & 0x3) << 11
 	aci |= (uint16(ac.GetTimeOfChangeMinutes()) & 0x7FF)
 
 	return binary.BigEndian.AppendUint16(dst, aci), nil

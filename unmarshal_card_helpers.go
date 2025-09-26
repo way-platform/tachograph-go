@@ -3,13 +3,24 @@ package tachograph
 import (
 	"bytes"
 	"encoding/binary"
+	"encoding/hex"
+	"fmt"
+	"strconv"
 	"time"
 
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
-func fromBCD(b byte) int {
-	return (int(b>>4) * 10) + int(b&0x0F)
+func bcdBytesToInt(b []byte) (int, error) {
+	if len(b) == 0 {
+		return 0, nil
+	}
+	s := hex.EncodeToString(b)
+	i, err := strconv.ParseInt(s, 10, 64)
+	if err != nil {
+		return 0, fmt.Errorf("invalid BCD value: %s", s)
+	}
+	return int(i), nil
 }
 
 func readString(r *bytes.Reader, len int) string {
@@ -17,12 +28,12 @@ func readString(r *bytes.Reader, len int) string {
 	r.Read(b)
 	// Trim trailing spaces and null bytes
 	b = bytes.TrimRight(b, " \x00")
-	
+
 	// Check if the result is valid UTF-8, if not convert to hex representation
 	if !isValidUTF8(b) {
 		return bytesToHexString(b)
 	}
-	
+
 	return string(b)
 }
 
@@ -61,14 +72,16 @@ func readTimeReal(r *bytes.Reader) *timestamppb.Timestamp {
 	return timestamppb.New(time.Unix(int64(timeVal), 0))
 }
 
-func readDatef(r *bytes.Reader) *timestamppb.Timestamp {
+func readDatef(r *bytes.Reader) (*timestamppb.Timestamp, error) {
 	b := make([]byte, 4)
 	r.Read(b)
-	year := fromBCD(b[0])*100 + fromBCD(b[1])
-	month := fromBCD(b[2])
-	day := fromBCD(b[3])
-	if year == 0 || month == 0 || day == 0 {
-		return nil
+
+	year, _ := bcdBytesToInt(b[0:2])
+	month, _ := bcdBytesToInt(b[2:3])
+	day, _ := bcdBytesToInt(b[3:4])
+
+	if year < 1900 || year > 9999 || month < 1 || month > 12 || day < 1 || day > 31 {
+		return nil, nil // Return nil for invalid or zero dates
 	}
-	return timestamppb.New(time.Date(year, time.Month(month), day, 0, 0, 0, 0, time.UTC))
+	return timestamppb.New(time.Date(year, time.Month(month), day, 0, 0, 0, 0, time.UTC)), nil
 }

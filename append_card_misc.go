@@ -9,9 +9,13 @@ func AppendCurrentUsage(dst []byte, cu *cardv1.CurrentUsage) ([]byte, error) {
 	if cu == nil {
 		return dst, nil
 	}
+	var err error
 	dst = appendTimeReal(dst, cu.GetSessionOpenTime())
 	dst = append(dst, byte(0)) // Placeholder for vehicleRegistrationNation
-	dst = appendString(dst, cu.GetVehicleRegistrationNumber(), 14)
+	dst, err = appendString(dst, cu.GetVehicleRegistrationNumber(), 14)
+	if err != nil {
+		return nil, err
+	}
 	return dst, nil
 }
 

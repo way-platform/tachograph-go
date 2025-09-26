@@ -33,7 +33,11 @@ func unmarshalIdentification(data []byte) (*cardv1.Identification, error) {
 	holderId := &cardv1.DriverCardHolderIdentification{}
 	holderId.SetCardHolderSurname(readString(r, 36))
 	holderId.SetCardHolderFirstNames(readString(r, 36))
-	holderId.SetCardHolderBirthDate(readDatef(r))
+		birthDate, err := readDatef(r)
+	if err != nil {
+		return nil, err
+	}
+	holderId.SetCardHolderBirthDate(birthDate)
 	holderId.SetCardHolderPreferredLanguage(readString(r, 2))
 	identification.SetDriverCardHolderIdentification(holderId)
 

@@ -8,22 +8,14 @@ import "wayplatform/connect/tachograph/datadictionary/v1/card_status.proto";
 import "wayplatform/connect/tachograph/datadictionary/v1/driver_activity_value.proto";
 import "wayplatform/connect/tachograph/datadictionary/v1/driving_status.proto";
 
-// Represents driver activity data from a tachograph card.
+// Represents the EF_Driver_Activity_Data file from a tachograph card.
 //
 // Corresponds to the `CardDriverActivity` data type.
 // See Data Dictionary, Section 2.17.
-message DriverActivity {
-  // If true, the fields below are populated with parsed, semantic data.
-  // If false, the 'raw_data' field contains the original, unprocessed ring buffer
-  // bytes for perfect roundtrip accuracy.
-  bool valid = 1;
-
-  // --- Fields for valid data (when valid = true) ---
-
-  // Represents a record of driver activity for a single day.
-  //
+message DriverActivityData {
+  // Represents a single daily activity record, which can either be fully parsed
+  // or stored as raw bytes, indicated by the `valid` flag.
   // Corresponds to the `CardActivityDailyRecord` data type.
-  // See Data Dictionary, Section 2.9.
   message DailyRecord {
     // Represents a change in driver activity, driving status, or card status.
     //
@@ -54,38 +46,46 @@ message DriverActivity {
       int32 time_of_change_minutes = 9;
     }
 
+    // If true, the fields below are populated with semantic data.
+    // If false, the `raw` field contains the original, unprocessed record bytes.
+    bool valid = 1;
+
+    // --- Fields for valid data (when valid = true) ---
+
     // See Data Dictionary, Section 2.9, `activityPreviousRecordLength`.
-    int32 activity_previous_record_length = 1;
+    int32 activity_previous_record_length = 2;
 
     // See Data Dictionary, Section 2.9, `activityRecordLength`.
-    int32 activity_record_length = 2;
+    int32 activity_record_length = 3;
 
     // See Data Dictionary, Section 2.9, `activityRecordDate`.
-    google.protobuf.Timestamp activity_record_date = 3;
+    google.protobuf.Timestamp activity_record_date = 4;
 
     // See Data Dictionary, Section 2.9, `activityDailyPresenceCounter`.
-    int32 activity_daily_presence_counter = 4;
+    int32 activity_daily_presence_counter = 5;
 
     // See Data Dictionary, Section 2.9, `activityDayDistance`.
-    int32 activity_day_distance = 5;
+    int32 activity_day_distance = 6;
 
     // See Data Dictionary, Section 2.9, `activityChangeInfo`.
-    repeated ActivityChange activity_change_info = 6;
+    repeated ActivityChange activity_change_info = 7;
+
+    // --- Field for raw data (when valid = false) ---
+
+    // The raw bytes of a daily record that could not be parsed.
+    bytes raw = 8;
   }
 
   // See Data Dictionary, Section 2.17, `activityPointerOldestDayRecord`.
-  int32 oldest_day_record_index = 2;
+  int32 oldest_day_record_index = 1;
 
   // See Data Dictionary, Section 2.17, `activityPointerNewestRecord`.
-  int32 newest_day_record_index = 3;
+  int32 newest_day_record_index = 2;
 
+  // A collection of daily activity records, which may be parsed or raw.
   // See Data Dictionary, Section 2.17, `activityDailyRecords`.
-  repeated DailyRecord daily_records = 4;
-
-  // --- Field for raw data preservation (when valid = false) ---
-  // Holds the raw ring buffer bytes (after the 4-byte header) for perfect roundtrip.
-  bytes raw_data = 5;
+  repeated DailyRecord daily_records = 3;
 
   // Digital signature for the EF_Driver_Activity_Data file content.
-  bytes signature = 6;
+  bytes signature = 4;
 }

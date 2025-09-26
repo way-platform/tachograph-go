@@ -92,18 +92,15 @@ func (x File_Type) Number() protoreflect.EnumNumber {
 // for any kind of tachograph file. It uses a manually tagged union pattern, where the
 // `type` field indicates which of the specific file-type fields is populated.
 type File struct {
-	state                   protoimpl.MessageState `protogen:"opaque.v1"`
-	xxx_hidden_Type         File_Type              `protobuf:"varint,1,opt,name=type,enum=wayplatform.connect.tachograph.v1.File_Type"`
-	xxx_hidden_VehicleUnit  *v1.VehicleUnitFile    `protobuf:"bytes,2,opt,name=vehicle_unit,json=vehicleUnit"`
-	xxx_hidden_DriverCard   *v11.DriverCardFile    `protobuf:"bytes,3,opt,name=driver_card,json=driverCard"`
-	xxx_hidden_WorkshopCard *v11.WorkshopCardFile  `protobuf:"bytes,4,opt,name=workshop_card,json=workshopCard"`
-	xxx_hidden_ControlCard  *v11.ControlCardFile   `protobuf:"bytes,5,opt,name=control_card,json=controlCard"`
-	xxx_hidden_CompanyCard  *v11.CompanyCardFile   `protobuf:"bytes,6,opt,name=company_card,json=companyCard"`
-	xxx_hidden_RawCard      *v11.RawCardFile       `protobuf:"bytes,7,opt,name=raw_card,json=rawCard"`
-	XXX_raceDetectHookData  protoimpl.RaceDetectHookData
-	XXX_presence            [1]uint32
-	unknownFields           protoimpl.UnknownFields
-	sizeCache               protoimpl.SizeCache
+	state                  protoimpl.MessageState `protogen:"opaque.v1"`
+	xxx_hidden_Type        File_Type              `protobuf:"varint,1,opt,name=type,enum=wayplatform.connect.tachograph.v1.File_Type"`
+	xxx_hidden_VehicleUnit *v1.VehicleUnitFile    `protobuf:"bytes,2,opt,name=vehicle_unit,json=vehicleUnit"`
+	xxx_hidden_DriverCard  *v11.DriverCardFile    `protobuf:"bytes,3,opt,name=driver_card,json=driverCard"`
+	xxx_hidden_RawCard     *v11.RawCardFile       `protobuf:"bytes,7,opt,name=raw_card,json=rawCard"`
+	XXX_raceDetectHookData protoimpl.RaceDetectHookData
+	XXX_presence           [1]uint32
+	unknownFields          protoimpl.UnknownFields
+	sizeCache              protoimpl.SizeCache
 }
 
 func (x *File) Reset() {
@@ -154,27 +151,6 @@ func (x *File) GetDriverCard() *v11.DriverCardFile {
 	return nil
 }
 
-func (x *File) GetWorkshopCard() *v11.WorkshopCardFile {
-	if x != nil {
-		return x.xxx_hidden_WorkshopCard
-	}
-	return nil
-}
-
-func (x *File) GetControlCard() *v11.ControlCardFile {
-	if x != nil {
-		return x.xxx_hidden_ControlCard
-	}
-	return nil
-}
-
-func (x *File) GetCompanyCard() *v11.CompanyCardFile {
-	if x != nil {
-		return x.xxx_hidden_CompanyCard
-	}
-	return nil
-}
-
 func (x *File) GetRawCard() *v11.RawCardFile {
 	if x != nil {
 		return x.xxx_hidden_RawCard
@@ -184,7 +160,7 @@ func (x *File) GetRawCard() *v11.RawCardFile {
 
 func (x *File) SetType(v File_Type) {
 	x.xxx_hidden_Type = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 7)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 4)
 }
 
 func (x *File) SetVehicleUnit(v *v1.VehicleUnitFile) {
@@ -193,18 +169,6 @@ func (x *File) SetVehicleUnit(v *v1.VehicleUnitFile) {
 
 func (x *File) SetDriverCard(v *v11.DriverCardFile) {
 	x.xxx_hidden_DriverCard = v
-}
-
-func (x *File) SetWorkshopCard(v *v11.WorkshopCardFile) {
-	x.xxx_hidden_WorkshopCard = v
-}
-
-func (x *File) SetControlCard(v *v11.ControlCardFile) {
-	x.xxx_hidden_ControlCard = v
-}
-
-func (x *File) SetCompanyCard(v *v11.CompanyCardFile) {
-	x.xxx_hidden_CompanyCard = v
 }
 
 func (x *File) SetRawCard(v *v11.RawCardFile) {
@@ -232,27 +196,6 @@ func (x *File) HasDriverCard() bool {
 	return x.xxx_hidden_DriverCard != nil
 }
 
-func (x *File) HasWorkshopCard() bool {
-	if x == nil {
-		return false
-	}
-	return x.xxx_hidden_WorkshopCard != nil
-}
-
-func (x *File) HasControlCard() bool {
-	if x == nil {
-		return false
-	}
-	return x.xxx_hidden_ControlCard != nil
-}
-
-func (x *File) HasCompanyCard() bool {
-	if x == nil {
-		return false
-	}
-	return x.xxx_hidden_CompanyCard != nil
-}
-
 func (x *File) HasRawCard() bool {
 	if x == nil {
 		return false
@@ -273,18 +216,6 @@ func (x *File) ClearDriverCard() {
 	x.xxx_hidden_DriverCard = nil
 }
 
-func (x *File) ClearWorkshopCard() {
-	x.xxx_hidden_WorkshopCard = nil
-}
-
-func (x *File) ClearControlCard() {
-	x.xxx_hidden_ControlCard = nil
-}
-
-func (x *File) ClearCompanyCard() {
-	x.xxx_hidden_CompanyCard = nil
-}
-
 func (x *File) ClearRawCard() {
 	x.xxx_hidden_RawCard = nil
 }
@@ -301,15 +232,6 @@ type File_builder struct {
 	// The content of the file if it is from a Driver Card.
 	// This field is populated if and only if `type` is `DRIVER_CARD`.
 	DriverCard *v11.DriverCardFile
-	// The content of the file if it is from a Workshop Card.
-	// This field is populated if and only if `type` is `WORKSHOP_CARD`.
-	WorkshopCard *v11.WorkshopCardFile
-	// The content of the file if it is from a Control Card.
-	// This field is populated if and only if `type` is `CONTROL_CARD`.
-	ControlCard *v11.ControlCardFile
-	// The content of the file if it is from a Company Card.
-	// This field is populated if and only if `type` is `COMPANY_CARD`.
-	CompanyCard *v11.CompanyCardFile
 	// The raw, uninterpreted content of a card file. This can be used as a
 	// fallback or for applications that need to do their own detailed parsing.
 	// This field is populated if and only if `type` is `RAW_CARD`.
@@ -321,14 +243,11 @@ func (b0 File_builder) Build() *File {
 	b, x := &b0, m0
 	_, _ = b, x
 	if b.Type != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 7)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 4)
 		x.xxx_hidden_Type = *b.Type
 	}
 	x.xxx_hidden_VehicleUnit = b.VehicleUnit
 	x.xxx_hidden_DriverCard = b.DriverCard
-	x.xxx_hidden_WorkshopCard = b.WorkshopCard
-	x.xxx_hidden_ControlCard = b.ControlCard
-	x.xxx_hidden_CompanyCard = b.CompanyCard
 	x.xxx_hidden_RawCard = b.RawCard
 	return m0
 }
@@ -337,15 +256,12 @@ var File_wayplatform_connect_tachograph_v1_file_proto protoreflect.FileDescripto
 
 const file_wayplatform_connect_tachograph_v1_file_proto_rawDesc = "" +
 	"\n" +
-	",wayplatform/connect/tachograph/v1/file.proto\x12!wayplatform.connect.tachograph.v1\x1a>wayplatform/connect/tachograph/card/v1/company_card_file.proto\x1a>wayplatform/connect/tachograph/card/v1/control_card_file.proto\x1a=wayplatform/connect/tachograph/card/v1/driver_card_file.proto\x1a:wayplatform/connect/tachograph/card/v1/raw_card_file.proto\x1a?wayplatform/connect/tachograph/card/v1/workshop_card_file.proto\x1a<wayplatform/connect/tachograph/vu/v1/vehicle_unit_file.proto\"\xe9\x05\n" +
+	",wayplatform/connect/tachograph/v1/file.proto\x12!wayplatform.connect.tachograph.v1\x1a=wayplatform/connect/tachograph/card/v1/driver_card_file.proto\x1a:wayplatform/connect/tachograph/card/v1/raw_card_file.proto\x1a<wayplatform/connect/tachograph/vu/v1/vehicle_unit_file.proto\"\xd2\x03\n" +
 	"\x04File\x12@\n" +
 	"\x04type\x18\x01 \x01(\x0e2,.wayplatform.connect.tachograph.v1.File.TypeR\x04type\x12X\n" +
 	"\fvehicle_unit\x18\x02 \x01(\v25.wayplatform.connect.tachograph.vu.v1.VehicleUnitFileR\vvehicleUnit\x12W\n" +
 	"\vdriver_card\x18\x03 \x01(\v26.wayplatform.connect.tachograph.card.v1.DriverCardFileR\n" +
-	"driverCard\x12]\n" +
-	"\rworkshop_card\x18\x04 \x01(\v28.wayplatform.connect.tachograph.card.v1.WorkshopCardFileR\fworkshopCard\x12Z\n" +
-	"\fcontrol_card\x18\x05 \x01(\v27.wayplatform.connect.tachograph.card.v1.ControlCardFileR\vcontrolCard\x12Z\n" +
-	"\fcompany_card\x18\x06 \x01(\v27.wayplatform.connect.tachograph.card.v1.CompanyCardFileR\vcompanyCard\x12N\n" +
+	"driverCard\x12N\n" +
 	"\braw_card\x18\a \x01(\v23.wayplatform.connect.tachograph.card.v1.RawCardFileR\arawCard\"\x84\x01\n" +
 	"\x04Type\x12\x14\n" +
 	"\x10TYPE_UNSPECIFIED\x10\x00\x12\x10\n" +
@@ -360,28 +276,22 @@ const file_wayplatform_connect_tachograph_v1_file_proto_rawDesc = "" +
 var file_wayplatform_connect_tachograph_v1_file_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
 var file_wayplatform_connect_tachograph_v1_file_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_wayplatform_connect_tachograph_v1_file_proto_goTypes = []any{
-	(File_Type)(0),               // 0: wayplatform.connect.tachograph.v1.File.Type
-	(*File)(nil),                 // 1: wayplatform.connect.tachograph.v1.File
-	(*v1.VehicleUnitFile)(nil),   // 2: wayplatform.connect.tachograph.vu.v1.VehicleUnitFile
-	(*v11.DriverCardFile)(nil),   // 3: wayplatform.connect.tachograph.card.v1.DriverCardFile
-	(*v11.WorkshopCardFile)(nil), // 4: wayplatform.connect.tachograph.card.v1.WorkshopCardFile
-	(*v11.ControlCardFile)(nil),  // 5: wayplatform.connect.tachograph.card.v1.ControlCardFile
-	(*v11.CompanyCardFile)(nil),  // 6: wayplatform.connect.tachograph.card.v1.CompanyCardFile
-	(*v11.RawCardFile)(nil),      // 7: wayplatform.connect.tachograph.card.v1.RawCardFile
+	(File_Type)(0),             // 0: wayplatform.connect.tachograph.v1.File.Type
+	(*File)(nil),               // 1: wayplatform.connect.tachograph.v1.File
+	(*v1.VehicleUnitFile)(nil), // 2: wayplatform.connect.tachograph.vu.v1.VehicleUnitFile
+	(*v11.DriverCardFile)(nil), // 3: wayplatform.connect.tachograph.card.v1.DriverCardFile
+	(*v11.RawCardFile)(nil),    // 4: wayplatform.connect.tachograph.card.v1.RawCardFile
 }
 var file_wayplatform_connect_tachograph_v1_file_proto_depIdxs = []int32{
 	0, // 0: wayplatform.connect.tachograph.v1.File.type:type_name -> wayplatform.connect.tachograph.v1.File.Type
 	2, // 1: wayplatform.connect.tachograph.v1.File.vehicle_unit:type_name -> wayplatform.connect.tachograph.vu.v1.VehicleUnitFile
 	3, // 2: wayplatform.connect.tachograph.v1.File.driver_card:type_name -> wayplatform.connect.tachograph.card.v1.DriverCardFile
-	4, // 3: wayplatform.connect.tachograph.v1.File.workshop_card:type_name -> wayplatform.connect.tachograph.card.v1.WorkshopCardFile
-	5, // 4: wayplatform.connect.tachograph.v1.File.control_card:type_name -> wayplatform.connect.tachograph.card.v1.ControlCardFile
-	6, // 5: wayplatform.connect.tachograph.v1.File.company_card:type_name -> wayplatform.connect.tachograph.card.v1.CompanyCardFile
-	7, // 6: wayplatform.connect.tachograph.v1.File.raw_card:type_name -> wayplatform.connect.tachograph.card.v1.RawCardFile
-	7, // [7:7] is the sub-list for method output_type
-	7, // [7:7] is the sub-list for method input_type
-	7, // [7:7] is the sub-list for extension type_name
-	7, // [7:7] is the sub-list for extension extendee
-	0, // [0:7] is the sub-list for field type_name
+	4, // 3: wayplatform.connect.tachograph.v1.File.raw_card:type_name -> wayplatform.connect.tachograph.card.v1.RawCardFile
+	4, // [4:4] is the sub-list for method output_type
+	4, // [4:4] is the sub-list for method input_type
+	4, // [4:4] is the sub-list for extension type_name
+	4, // [4:4] is the sub-list for extension extendee
+	0, // [0:4] is the sub-list for field type_name
 }
 
 func init() { file_wayplatform_connect_tachograph_v1_file_proto_init() }

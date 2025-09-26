@@ -4,37 +4,32 @@ import (
 	cardv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1"
 )
 
-// AppendEventRecord appends the binary representation of a single event record to dst.
-func AppendEventRecord(dst []byte, rec *cardv1.EventData_Record) ([]byte, error) {
-	if rec == nil {
-		return append(dst, make([]byte, 24)...), nil
-	}
-
-	if !rec.GetValid() {
-		// Non-valid record: use preserved raw data
-		rawData := rec.GetRawData()
-		if len(rawData) != 24 {
-			// Fallback to zeros if raw data is invalid
-			return append(dst, make([]byte, 24)...), nil
-		}
-		return append(dst, rawData...), nil
-	}
-
-	// Valid record: serialize semantic data
-	eventTypeProtocol := GetEventFaultTypeProtocolValue(rec.GetEventType(), rec.GetUnrecognizedEventType())
-	dst = append(dst, byte(eventTypeProtocol))
-	dst = appendTimeReal(dst, rec.GetEventBeginTime())
-	dst = appendTimeReal(dst, rec.GetEventEndTime())
-
-	// Convert hex string nation back to byte
-	nationByte := byte(0) // Default fallback
-	if nationStr := rec.GetVehicleRegistrationNation(); len(nationStr) >= 2 {
-		if parsedNation, err := parseHexByte(nationStr); err == nil {
-			nationByte = parsedNation
+// AppendEventsData appends the binary representation of EventData to dst.
+func AppendEventsData(dst []byte, data *cardv1.EventData) ([]byte, error) {
+	var err error
+	for _, r := range data.GetRecords() {
+		dst, err = AppendEventRecord(dst, r)
+		if err != nil {
+			return nil, err
 		}
 	}
-	dst = append(dst, nationByte)
+	return dst, nil
+}
 
-	dst = appendString(dst, rec.GetVehicleRegistrationNumber(), 14)
+// AppendEventRecord appends a single event record.
+func AppendEventRecord(dst []byte, record *cardv1.EventData_Record) ([]byte, error) {
+	if !record.GetValid() {
+		return append(dst, record.GetRawData()...), nil
+	}
+
+	protocolValue := GetEventFaultTypeProtocolValue(record.GetEventType(), record.GetUnrecognizedEventType())
+	dst = append(dst, byte(protocolValue))
+	dst = appendTimeReal(dst, record.GetEventBeginTime())
+	dst = appendTimeReal(dst, record.GetEventEndTime())
+	dst, err := AppendVehicleRegistration(dst, record.GetVehicleRegistrationNation(), record.GetVehicleRegistrationNumber())
+	if err != nil {
+		return nil, err
+	}
+
 	return dst, nil
 }

@@ -8,13 +8,13 @@ import (
 	cardv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1"
 )
 
-// unmarshalCardActivityData unmarshals driver activity data from a card EF.
-func unmarshalCardActivityData(data []byte) (*cardv1.DriverActivity, error) {
+// unmarshalDriverActivityData unmarshals driver activity data from a card EF.
+func unmarshalDriverActivityData(data []byte) (*cardv1.DriverActivityData, error) {
 	if len(data) < 4 {
 		return nil, fmt.Errorf("insufficient data for activity data header")
 	}
 
-	var target cardv1.DriverActivity
+	target := &cardv1.DriverActivityData{}
 	r := bytes.NewReader(data)
 
 	// Read pointers (2 bytes each)
@@ -30,82 +30,85 @@ func unmarshalCardActivityData(data []byte) (*cardv1.DriverActivity, error) {
 	target.SetOldestDayRecordIndex(int32(oldestDayRecordPointer))
 	target.SetNewestDayRecordIndex(int32(newestDayRecordPointer))
 
-	// Read the remaining data as ring buffer
-	remainingData := make([]byte, r.Len())
-	if _, err := r.Read(remainingData); err != nil {
+	// The rest of the data is the cyclic buffer of daily records.
+	activityData := make([]byte, r.Len())
+	if _, err := r.Read(activityData); err != nil {
 		return nil, fmt.Errorf("failed to read activity daily records: %w", err)
 	}
 
-	// Use tagged union approach for perfect roundtrip
-	// For now, preserve raw data until full semantic parsing is implemented
-	target.SetValid(false)
-	target.SetRawData(remainingData)
+	dailyRecords, err := parseCyclicActivityDailyRecords(activityData, int(newestDayRecordPointer))
+	if err != nil {
+		return nil, fmt.Errorf("failed to parse cyclic activity daily records: %w", err)
+	}
+	target.SetDailyRecords(dailyRecords)
 
-	return &target, nil
+	return target, nil
 }
 
-// parseActivityDailyRecords parses the cyclic activity daily records structure
-func parseActivityDailyRecords(data []byte, newestRecordPos int) ([]*cardv1.DriverActivity_DailyRecord, error) {
-	if len(data) < 4 {
-		return nil, fmt.Errorf("insufficient data for activity daily records")
+// parseCyclicActivityDailyRecords parses the cyclic activity daily records structure.
+func parseCyclicActivityDailyRecords(data []byte, newestRecordPos int) ([]*cardv1.DriverActivityData_DailyRecord, error) {
+	if len(data) == 0 {
+		return nil, nil // No data to parse
 	}
 
-	var records []*cardv1.DriverActivity_DailyRecord
+	var records []*cardv1.DriverActivityData_DailyRecord
 	currentPos := newestRecordPos
 
-	// We'll parse up to 365 days worth of records (maximum for full ring buffer)
-	for i := 0; i < 365; i++ {
-		if currentPos < 0 || currentPos >= len(data) {
+	// We'll parse up to 366 days worth of records as a safeguard against infinite loops.
+	for i := 0; i < 366; i++ {
+		// The current position must be valid to read a header.
+		if currentPos < 0 || currentPos+4 > len(data) {
+			// Invalid starting position for a header, stop.
 			break
 		}
 
-		// Read the record header (first 4 bytes)
-		headerBytes := make([]byte, 4)
-		for j := 0; j < 4; j++ {
-			headerBytes[j] = data[(currentPos+j)%len(data)]
+		// Read the record header
+		prevRecordLength := int(binary.BigEndian.Uint16(data[currentPos : currentPos+2]))
+		currentRecordLength := int(binary.BigEndian.Uint16(data[currentPos+2 : currentPos+4]))
+
+		if currentRecordLength == 0 {
+			// A zero-length record signifies the end of the chain.
+			break
 		}
-
-		// Parse header
-		prevRecordLength := binary.BigEndian.Uint16(headerBytes[0:2])
-		currentRecordLength := binary.BigEndian.Uint16(headerBytes[2:4])
-
-		// Invalid records: truly malformed data that should stop parsing
-		if currentRecordLength == 0 || currentRecordLength > uint16(len(data)) || currentRecordLength < 4 {
-			break // Invalid record length (must be at least 4 bytes for header)
-		}
-
-		// Read the full record
+		// Read the full record data, handling buffer wrap-around.
 		recordData := make([]byte, currentRecordLength)
-		for j := 0; j < int(currentRecordLength); j++ {
+		for j := 0; j < currentRecordLength; j++ {
 			recordData[j] = data[(currentPos+j)%len(data)]
 		}
 
-		// Parse the daily record (now with 2-byte activity changes)
-		dailyRecord, err := parseActivityDailyRecord(recordData)
-		if err != nil {
-			// Create an empty record for roundtrip compatibility instead of stopping
-			dailyRecord = &cardv1.DriverActivity_DailyRecord{}
-			// Set the record lengths from the header we already parsed
-			dailyRecord.SetActivityPreviousRecordLength(int32(prevRecordLength))
-			dailyRecord.SetActivityRecordLength(int32(currentRecordLength))
-		}
+		// Attempt to parse the record semantically.
+		parsedRecord, err := parseSingleActivityDailyRecord(recordData)
+		dailyRecord := &cardv1.DriverActivityData_DailyRecord{}
 
+		if err != nil {
+			// Parsing failed, store as raw.
+			dailyRecord.SetValid(false)
+			dailyRecord.SetRaw(recordData)
+		} else {
+			// Parsing succeeded.
+			dailyRecord.SetValid(true)
+			dailyRecord.SetActivityPreviousRecordLength(parsedRecord.GetActivityPreviousRecordLength())
+			dailyRecord.SetActivityRecordLength(parsedRecord.GetActivityRecordLength())
+			dailyRecord.SetActivityRecordDate(parsedRecord.GetActivityRecordDate())
+			dailyRecord.SetActivityDailyPresenceCounter(parsedRecord.GetActivityDailyPresenceCounter())
+			dailyRecord.SetActivityDayDistance(parsedRecord.GetActivityDayDistance())
+			dailyRecord.SetActivityChangeInfo(parsedRecord.GetActivityChangeInfo())
+		}
 		records = append(records, dailyRecord)
 
-		// Move to previous record
-		// Continue parsing even if prevRecordLength is 0 (empty record)
-		// Only break if we've parsed all 28 expected records or hit an invalid position
 		if prevRecordLength == 0 {
-			// For empty records, assume a minimum record size to continue
-			prevRecordLength = 4 // Minimum record size (header only)
+			// End of the chain.
+			break
 		}
-		currentPos -= int(prevRecordLength)
+
+		// Move to the previous record, handling wrap-around.
+		currentPos -= prevRecordLength
 		if currentPos < 0 {
-			currentPos += len(data) // Wrap around
+			currentPos += len(data)
 		}
 	}
 
-	// Reverse the order since we parsed backwards
+	// Reverse the order since we parsed backwards from newest to oldest.
 	for i, j := 0, len(records)-1; i < j; i, j = i+1, j-1 {
 		records[i], records[j] = records[j], records[i]
 	}
@@ -113,13 +116,13 @@ func parseActivityDailyRecords(data []byte, newestRecordPos int) ([]*cardv1.Driv
 	return records, nil
 }
 
-// parseActivityDailyRecord parses a single daily record
-func parseActivityDailyRecord(data []byte) (*cardv1.DriverActivity_DailyRecord, error) {
+// parseSingleActivityDailyRecord parses a single daily record byte slice.
+func parseSingleActivityDailyRecord(data []byte) (*cardv1.DriverActivityData_DailyRecord, error) {
 	if len(data) < 12 { // Minimum size: 4 bytes header + 4 bytes date + 2 bytes counter + 2 bytes distance
-		return nil, fmt.Errorf("insufficient data for daily record")
+		return nil, fmt.Errorf("insufficient data for daily record, got %d bytes", len(data))
 	}
 
-	record := &cardv1.DriverActivity_DailyRecord{}
+	record := &cardv1.DriverActivityData_DailyRecord{}
 
 	// Parse header (4 bytes)
 	prevRecordLength := binary.BigEndian.Uint16(data[0:2])
@@ -134,14 +137,18 @@ func parseActivityDailyRecord(data []byte) (*cardv1.DriverActivity_DailyRecord, 
 	if offset+4 > len(data) {
 		return nil, fmt.Errorf("insufficient data for activity record date")
 	}
-	record.SetActivityRecordDate(readDatef(bytes.NewReader(data[offset : offset+4])))
+	date, err := readDatef(bytes.NewReader(data[offset : offset+4]))
+	if err != nil {
+		return nil, fmt.Errorf("failed to read datef: %w", err)
+	}
+	record.SetActivityRecordDate(date)
 	offset += 4
 
 	// Read activity daily presence counter (2 bytes BCD)
 	if offset+2 > len(data) {
 		return nil, fmt.Errorf("insufficient data for presence counter")
 	}
-	presenceCounter := binary.BigEndian.Uint16(data[offset : offset+2])
+	presenceCounter, _ := bcdBytesToInt(data[offset : offset+2])
 	record.SetActivityDailyPresenceCounter(int32(presenceCounter))
 	offset += 2
 
@@ -154,7 +161,7 @@ func parseActivityDailyRecord(data []byte) (*cardv1.DriverActivity_DailyRecord, 
 	offset += 2
 
 	// Parse activity change info - loop through remainder in 2-byte chunks
-	var activityChanges []*cardv1.DriverActivity_DailyRecord_ActivityChange
+	var activityChanges []*cardv1.DriverActivityData_DailyRecord_ActivityChange
 
 	for offset+2 <= len(data) {
 		// Parse 2-byte ActivityChangeInfo bitfield
@@ -166,20 +173,14 @@ func parseActivityDailyRecord(data []byte) (*cardv1.DriverActivity_DailyRecord, 
 			continue
 		}
 
-		// Parse 2-byte bitfield according to spec:
-		// Bit 15: Slot (0 = Driver, 1 = Co-driver)
-		// Bit 14: Driving Status (0 = Single, 1 = Crew)
-		// Bit 13: Card Status (0 = Not inserted, 1 = Inserted)
-		// Bits 11-12: Activity (0 = Rest/Break, 1 = Available, 2 = Work, 3 = Driving)
-		// Bits 0-10: Time of Change (Minutes since 00:00 UTC)
-
+		// Parse 2-byte bitfield according to spec
 		slot := int32((changeData >> 15) & 0x1)
 		drivingStatus := int32((changeData >> 14) & 0x1)
 		cardStatus := int32((changeData >> 13) & 0x1)
 		activity := int32((changeData >> 11) & 0x3)
 		timeOfChange := int32(changeData & 0x7FF)
 
-		activityChange := &cardv1.DriverActivity_DailyRecord_ActivityChange{}
+		activityChange := &cardv1.DriverActivityData_DailyRecord_ActivityChange{}
 
 		// Convert raw values to enums using protocol annotations
 		SetCardSlotNumber(slot, activityChange.SetSlot, activityChange.SetUnrecognizedSlot)

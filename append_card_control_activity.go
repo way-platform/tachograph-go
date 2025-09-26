@@ -34,9 +34,13 @@ func AppendCardControlActivityData(data []byte, controlData *cardv1.ControlActiv
 	// Control time (4 bytes)
 	data = appendTimeReal(data, controlData.GetControlTime())
 
+	var err error
 	// Control card number (18 bytes)
 	cardNumber := controlData.GetControlCardNumber()
-	data = appendString(data, cardNumber, 18)
+	data, err = appendString(data, cardNumber, 18)
+	if err != nil {
+		return nil, err
+	}
 
 	// Vehicle registration nation (1 byte)
 	nationStr := controlData.GetVehicleRegistrationNation()
@@ -50,7 +54,10 @@ func AppendCardControlActivityData(data []byte, controlData *cardv1.ControlActiv
 
 	// Vehicle registration number (14 bytes)
 	regNumber := controlData.GetVehicleRegistrationNumber()
-	data = appendString(data, regNumber, 14)
+	data, err = appendString(data, regNumber, 14)
+	if err != nil {
+		return nil, err
+	}
 
 	// Control download period begin (4 bytes)
 	data = appendTimeReal(data, controlData.GetControlDownloadPeriodBegin())

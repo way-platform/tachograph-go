@@ -8,10 +8,8 @@ import (
 
 func unmarshalDriverCardFile(input *cardv1.RawCardFile) (*cardv1.DriverCardFile, error) {
 	var output cardv1.DriverCardFile
-	records := input.GetRecords()
-
-	for i := 0; i < len(records); i++ {
-		record := records[i]
+	for i := 0; i < len(input.GetRecords()); i++ {
+		record := input.GetRecords()[i]
 		if record.GetContentType() != cardv1.ContentType_DATA {
 			return nil, fmt.Errorf("record %d has unexpected content type", i)
 		}
@@ -19,8 +17,8 @@ func unmarshalDriverCardFile(input *cardv1.RawCardFile) (*cardv1.DriverCardFile,
 			return nil, fmt.Errorf("record %d has no file type", i)
 		}
 		var signature []byte
-		if i+1 < len(records) {
-			nextRecord := records[i+1]
+		if i+1 < len(input.GetRecords()) {
+			nextRecord := input.GetRecords()[i+1]
 			if nextRecord.GetFile() == record.GetFile() && nextRecord.GetContentType() == cardv1.ContentType_SIGNATURE {
 				signature = nextRecord.GetValue()
 				i++
@@ -98,7 +96,7 @@ func unmarshalDriverCardFile(input *cardv1.RawCardFile) (*cardv1.DriverCardFile,
 			output.SetFaultsData(faultsData)
 
 		case cardv1.ElementaryFileType_EF_DRIVER_ACTIVITY_DATA:
-			activityData, err := unmarshalCardActivityData(record.GetValue())
+			activityData, err := unmarshalDriverActivityData(record.GetValue())
 			if err != nil {
 				return nil, err
 			}

@@ -9,8 +9,15 @@ func AppendDrivingLicenceInfo(dst []byte, dli *cardv1.DrivingLicenceInfo) ([]byt
 	if dli == nil {
 		return dst, nil
 	}
-	dst = appendString(dst, dli.GetDrivingLicenceIssuingAuthority(), 36)
+	var err error
+	dst, err = appendString(dst, dli.GetDrivingLicenceIssuingAuthority(), 36)
+	if err != nil {
+		return nil, err
+	}
 	dst = append(dst, byte(dli.GetDrivingLicenceIssuingNation()))
-	dst = appendString(dst, dli.GetDrivingLicenceNumber(), 16)
+	dst, err = appendString(dst, dli.GetDrivingLicenceNumber(), 16)
+	if err != nil {
+		return nil, err
+	}
 	return dst, nil
 }

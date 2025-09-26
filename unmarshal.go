@@ -3,6 +3,7 @@ package tachograph
 import (
 	"encoding/binary"
 	"errors"
+	"fmt"
 	"io"
 
 	cardv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1"
@@ -12,10 +13,11 @@ import (
 // UnmarshalFile parses a .DDD file's byte data into a protobuf File message.
 func UnmarshalFile(data []byte) (*tachographv1.File, error) {
 	if len(data) < 2 {
-		return nil, io.ErrUnexpectedEOF
+		return nil, fmt.Errorf("insufficient data for tachograph file: %w", io.ErrUnexpectedEOF)
 	}
 	var output tachographv1.File
 	switch {
+
 	// Vehicle unit file (starts with TREP prefix).
 	case data[0] == 0x76:
 		vehicleUnitFile, err := unmarshalVehicleUnitFile(data)
@@ -25,6 +27,7 @@ func UnmarshalFile(data []byte) (*tachographv1.File, error) {
 		output.SetType(tachographv1.File_VEHICLE_UNIT)
 		output.SetVehicleUnit(vehicleUnitFile)
 		return &output, nil
+
 	// Card file (starts with EF_ICC prefix).
 	case binary.BigEndian.Uint16(data[0:2]) == 0x0002:
 		rawCardFile, err := unmarshalRawCardFile(data)

@@ -2,6 +2,7 @@ package tachograph
 
 import (
 	"encoding/binary"
+	"encoding/hex"
 
 	cardv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1"
 )
@@ -28,19 +29,24 @@ func AppendVehicleRecord(dst []byte, rec *cardv1.VehiclesUsed_Record) ([]byte, e
 	if rec == nil {
 		return append(dst, make([]byte, 31)...), nil
 	}
-	dst = appendOdometer(dst, rec.GetVehicleOdometerBeginKm())
-	dst = appendOdometer(dst, rec.GetVehicleOdometerEndKm())
+	dst = appendOdometer(dst, uint32(rec.GetVehicleOdometerBeginKm()))
+	dst = appendOdometer(dst, uint32(rec.GetVehicleOdometerEndKm()))
 	dst = appendTimeReal(dst, rec.GetVehicleFirstUse())
 	dst = appendTimeReal(dst, rec.GetVehicleLastUse())
 	// Convert hex string nation back to byte
 	nationByte := byte(0) // Default fallback
-	if nationStr := rec.GetVehicleRegistrationNation(); len(nationStr) >= 2 {
-		if parsedNation, err := parseHexByte(nationStr); err == nil {
-			nationByte = parsedNation
+	if nationStr := rec.GetVehicleRegistrationNation(); len(nationStr) > 0 {
+		if b, err := hex.DecodeString(nationStr); err == nil && len(b) > 0 {
+			nationByte = b[0]
 		}
 	}
 	dst = append(dst, nationByte)
-	dst = appendString(dst, rec.GetVehicleRegistrationNumber(), 14)
+
+	var err error
+	dst, err = appendString(dst, rec.GetVehicleRegistrationNumber(), 14)
+	if err != nil {
+		return nil, err
+	}
 	dst = binary.BigEndian.AppendUint16(dst, uint16(rec.GetVuDataBlockCounter()))
 	return dst, nil
 }

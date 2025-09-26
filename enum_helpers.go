@@ -271,3 +271,51 @@ func GetSpecificConditionTypeProtocolValue(enumValue datadictionaryv1.SpecificCo
 
 	return int32(enumValue)
 }
+
+// GetCardSlotNumber returns the protocol value for marshalling
+func GetCardSlotNumber(enumValue datadictionaryv1.CardSlotNumber, unrecognizedValue int32) int32 {
+	if enumValue == datadictionaryv1.CardSlotNumber_CARD_SLOT_NUMBER_UNRECOGNIZED {
+		return unrecognizedValue
+	}
+	enumDesc := enumValue.Descriptor()
+	if protocolValue, ok := getProtocolValueFromEnumNumber(enumDesc, protoreflect.EnumNumber(enumValue)); ok {
+		return protocolValue
+	}
+	return int32(enumValue)
+}
+
+// GetDrivingStatus returns the protocol value for marshalling
+func GetDrivingStatus(enumValue datadictionaryv1.DrivingStatus, unrecognizedValue int32) int32 {
+	if enumValue == datadictionaryv1.DrivingStatus_DRIVING_STATUS_UNRECOGNIZED {
+		return unrecognizedValue
+	}
+	enumDesc := enumValue.Descriptor()
+	if protocolValue, ok := getProtocolValueFromEnumNumber(enumDesc, protoreflect.EnumNumber(enumValue)); ok {
+		return protocolValue
+	}
+	return int32(enumValue)
+}
+
+// GetCardStatus returns the protocol value for marshalling
+func GetCardStatus(enumValue datadictionaryv1.CardStatus, unrecognizedValue int32) int32 {
+	if enumValue == datadictionaryv1.CardStatus_CARD_STATUS_UNRECOGNIZED {
+		return unrecognizedValue
+	}
+	enumDesc := enumValue.Descriptor()
+	if protocolValue, ok := getProtocolValueFromEnumNumber(enumDesc, protoreflect.EnumNumber(enumValue)); ok {
+		return protocolValue
+	}
+	return int32(enumValue)
+}
+
+// GetDriverActivityValue returns the protocol value for marshalling
+func GetDriverActivityValue(enumValue datadictionaryv1.DriverActivityValue, unrecognizedValue int32) int32 {
+	if enumValue == datadictionaryv1.DriverActivityValue_DRIVER_ACTIVITY_UNRECOGNIZED {
+		return unrecognizedValue
+	}
+	enumDesc := enumValue.Descriptor()
+	if protocolValue, ok := getProtocolValueFromEnumNumber(enumDesc, protoreflect.EnumNumber(enumValue)); ok {
+		return protocolValue
+	}
+	return int32(enumValue)
+}

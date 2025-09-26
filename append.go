@@ -76,75 +76,15 @@ func appendDriverCard(dst []byte, card *cardv1.DriverCardFile) ([]byte, error) {
 
 	// 4. EF_IDENTIFICATION (0x0520) - already handled above
 
-	// 5. EF_EVENTS_DATA (0x0502) - special handling
-	eventsValBuf := make([]byte, 0, 1728) // Max size for Gen1
-	eventsPerType := int(card.GetApplicationIdentification().GetEventsPerTypeCount())
-	allEvents := card.GetEventsData().GetRecords()
-
-	eventsByType := make(map[int32][]*cardv1.EventData_Record)
-	for _, e := range allEvents {
-		protocolValue := GetEventFaultTypeProtocolValue(e.GetEventType(), e.GetUnrecognizedEventType())
-		eventsByType[protocolValue] = append(eventsByType[protocolValue], e)
+	dst, err = appendTlv(dst, cardv1.ElementaryFileType_EF_EVENTS_DATA, card.GetEventsData(), AppendEventsData)
+	if err != nil {
+		return nil, err
 	}
 
-	// The 6 event groups in a Gen1 card file structure, ordered by type code.
-	eventGroupTypeCodes := []int32{0x01, 0x02, 0x03, 0x04, 0x05, 0x07} // Example codes
-
-	for _, eventTypeCode := range eventGroupTypeCodes {
-		groupEvents := eventsByType[eventTypeCode]
-		for j := 0; j < eventsPerType; j++ {
-			if j < len(groupEvents) {
-				eventsValBuf, err = AppendEventRecord(eventsValBuf, groupEvents[j])
-				if err != nil {
-					return nil, err
-				}
-			} else {
-				// Pad with an empty 24-byte record
-				eventsValBuf = append(eventsValBuf, make([]byte, 24)...)
-			}
-		}
+	dst, err = appendTlv(dst, cardv1.ElementaryFileType_EF_FAULTS_DATA, card.GetFaultsData(), AppendFaultsData)
+	if err != nil {
+		return nil, err
 	}
-
-	eventsOpts := cardv1.ElementaryFileType_EF_EVENTS_DATA.Descriptor().Values().ByNumber(protoreflect.EnumNumber(cardv1.ElementaryFileType_EF_EVENTS_DATA)).Options()
-	eventsTag := proto.GetExtension(eventsOpts, cardv1.E_FileId).(int32)
-	dst = binary.BigEndian.AppendUint16(dst, uint16(eventsTag))
-	dst = binary.BigEndian.AppendUint16(dst, uint16(len(eventsValBuf)))
-	dst = append(dst, eventsValBuf...)
-
-	// --- Special handling for EF_Faults_Data ---
-	faultsValBuf := make([]byte, 0, 1152) // Max size for Gen1
-	faultsPerType := int(card.GetApplicationIdentification().GetFaultsPerTypeCount())
-	allFaults := card.GetFaultsData().GetRecords()
-
-	faultsByType := make(map[bool][]*cardv1.FaultData_Record)
-	for _, f := range allFaults {
-		isEquipmentFault := (f.GetFaultType() >= 0x30 && f.GetFaultType() <= 0x3F)
-		faultsByType[isEquipmentFault] = append(faultsByType[isEquipmentFault], f)
-	}
-
-	// Order: Equipment faults (true), then Card faults (false)
-	faultGroupOrder := []bool{true, false}
-
-	for _, isEquipmentFault := range faultGroupOrder {
-		groupFaults := faultsByType[isEquipmentFault]
-		for j := 0; j < faultsPerType; j++ {
-			if j < len(groupFaults) {
-				faultsValBuf, err = AppendFaultRecord(faultsValBuf, groupFaults[j])
-				if err != nil {
-					return nil, err
-				}
-			} else {
-				// Pad with an empty 24-byte record
-				faultsValBuf = append(faultsValBuf, make([]byte, 24)...)
-			}
-		}
-	}
-
-	faultsOpts := cardv1.ElementaryFileType_EF_FAULTS_DATA.Descriptor().Values().ByNumber(protoreflect.EnumNumber(cardv1.ElementaryFileType_EF_FAULTS_DATA)).Options()
-	faultsTag := proto.GetExtension(faultsOpts, cardv1.E_FileId).(int32)
-	dst = binary.BigEndian.AppendUint16(dst, uint16(faultsTag))
-	dst = binary.BigEndian.AppendUint16(dst, uint16(len(faultsValBuf)))
-	dst = append(dst, faultsValBuf...)
 
 	dst, err = appendTlv(dst, cardv1.ElementaryFileType_EF_DRIVER_ACTIVITY_DATA, card.GetDriverActivityData(), AppendDriverActivity)
 	if err != nil {
