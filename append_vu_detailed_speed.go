@@ -29,3 +29,4 @@ func AppendVuDetailedSpeed(buf *bytes.Buffer, detailedSpeed *vuv1.DetailedSpeed)
 
 	return nil
 }
+

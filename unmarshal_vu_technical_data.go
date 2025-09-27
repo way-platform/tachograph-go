@@ -36,3 +36,4 @@ func UnmarshalVuTechnicalData(r *bytes.Reader, target *vuv1.TechnicalData, gener
 
 	return initialLen - r.Len(), nil
 }
+

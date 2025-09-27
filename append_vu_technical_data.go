@@ -29,3 +29,4 @@ func AppendVuTechnicalData(buf *bytes.Buffer, technicalData *vuv1.TechnicalData)
 
 	return nil
 }
+

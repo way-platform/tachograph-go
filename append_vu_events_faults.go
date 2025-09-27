@@ -29,3 +29,4 @@ func AppendVuEventsAndFaults(buf *bytes.Buffer, eventsAndFaults *vuv1.EventsAndF
 
 	return nil
 }
+

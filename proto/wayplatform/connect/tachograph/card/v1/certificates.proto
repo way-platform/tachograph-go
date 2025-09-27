@@ -22,3 +22,4 @@ message Certificates {
   // EF_Link_Certificate (FID 0xC109)
   bytes link_certificate = 4;
 }
+

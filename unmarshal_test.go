@@ -3,7 +3,6 @@ package tachograph
 import (
 	"bytes"
 	"encoding/json"
-	"flag"
 	"os"
 	"path/filepath"
 	"strings"
@@ -12,8 +11,6 @@ import (
 	"github.com/google/go-cmp/cmp"
 	"google.golang.org/protobuf/encoding/protojson"
 )
-
-var update = flag.Bool("update", false, "update golden files")
 
 func TestUnmarshalFile_golden(t *testing.T) {
 	if err := filepath.WalkDir("testdata", func(path string, d os.DirEntry, err error) error {

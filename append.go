@@ -14,8 +14,8 @@ import (
 	vuv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/vu/v1"
 )
 
-// Marshal serializes a protobuf File message into the binary DDD file format.
-func Marshal(file *tachographv1.File) ([]byte, error) {
+// MarshalFile serializes a protobuf File message into the binary DDD file format.
+func MarshalFile(file *tachographv1.File) ([]byte, error) {
 	return appendCard(nil, file)
 }
 

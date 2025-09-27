@@ -29,3 +29,4 @@ func AppendVuActivities(buf *bytes.Buffer, activities *vuv1.Activities) error {
 
 	return nil
 }
+

@@ -37,3 +37,4 @@ func UnmarshalVuEventsAndFaults(r *bytes.Reader, target *vuv1.EventsAndFaults, g
 
 	return initialLen - r.Len(), nil
 }
+

@@ -36,3 +36,4 @@ func UnmarshalVuDetailedSpeed(r *bytes.Reader, target *vuv1.DetailedSpeed, gener
 
 	return initialLen - r.Len(), nil
 }
+
