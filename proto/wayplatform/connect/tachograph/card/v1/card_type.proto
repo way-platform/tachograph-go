@@ -25,18 +25,15 @@ enum CardType {
       {
         type: EF
         ef: EF_DIR
-        sfid: 30
       },
       {
         type: EF
         ef: EF_ATR_INFO
-        sfid: 29
         conditional: true
       },
       {
         type: EF
         ef: EF_EXTENDED_LENGTH
-        sfid: 28
         conditional: true
       },
       {
@@ -108,133 +105,108 @@ enum CardType {
           {
             type: EF
             ef: EF_APPLICATION_IDENTIFICATION
-            sfid: 1
           },
           {
             type: EF
             ef: EF_CARD_CERTIFICATE
-            sfid: 2
           },
           {
             type: EF
             ef: EF_CARD_SIGN_CERTIFICATE
-            sfid: 3
           },
           {
             type: EF
             ef: EF_CA_CERTIFICATE
-            sfid: 4
           },
           {
             type: EF
             ef: EF_LINK_CERTIFICATE
-            sfid: 5
           },
           {
             type: EF
             ef: EF_IDENTIFICATION
-            sfid: 6
           },
           {
             type: EF
             ef: EF_CARD_DOWNLOAD_DRIVER
-            sfid: 7
           },
           {
             type: EF
             ef: EF_DRIVING_LICENCE_INFO
-            sfid: 10
           },
           {
             type: EF
             ef: EF_EVENTS_DATA
-            sfid: 12
           },
           {
             type: EF
             ef: EF_FAULTS_DATA
-            sfid: 13
           },
           {
             type: EF
             ef: EF_DRIVER_ACTIVITY_DATA
-            sfid: 14
           },
           {
             type: EF
             ef: EF_VEHICLES_USED
-            sfid: 15
           },
           {
             type: EF
             ef: EF_PLACES
-            sfid: 16
           },
           {
             type: EF
             ef: EF_CURRENT_USAGE
-            sfid: 17
           },
           {
             type: EF
             ef: EF_CONTROL_ACTIVITY_DATA
-            sfid: 18
           },
           {
             type: EF
             ef: EF_SPECIFIC_CONDITIONS
-            sfid: 19
           },
           {
             type: EF
             ef: EF_VEHICLE_UNITS_USED
-            sfid: 20
           },
           {
             type: EF
             ef: EF_GNSS_PLACES
-            sfid: 21
           },
           {
             type: EF
             ef: EF_APPLICATION_IDENTIFICATION_V2
-            sfid: 22
             conditional: true
           },
           {
             type: EF
             ef: EF_PLACES_AUTHENTICATION
-            sfid: 23
             conditional: true
           },
           {
             type: EF
             ef: EF_GNSS_PLACES_AUTHENTICATION
-            sfid: 24
             conditional: true
           },
           {
             type: EF
             ef: EF_BORDER_CROSSINGS
-            sfid: 25
             conditional: true
           },
           {
             type: EF
             ef: EF_LOAD_UNLOAD_OPERATIONS
-            sfid: 26
             conditional: true
           },
           {
             type: EF
             ef: EF_LOAD_TYPE_ENTRIES
-            sfid: 27
             conditional: true
           },
           {
             type: EF
             ef: EF_VU_CONFIGURATION
-            sfid: 30
             conditional: true
           }
         ]
@@ -257,18 +229,15 @@ enum CardType {
       {
         type: EF
         ef: EF_DIR
-        sfid: 30
       },
       {
         type: EF
         ef: EF_ATR_INFO
-        sfid: 29
         conditional: true
       },
       {
         type: EF
         ef: EF_EXTENDED_LENGTH
-        sfid: 28
         conditional: true
       },
       {
@@ -344,144 +313,117 @@ enum CardType {
           {
             type: EF
             ef: EF_APPLICATION_IDENTIFICATION
-            sfid: 1
           },
           {
             type: EF
             ef: EF_CARD_CERTIFICATE
-            sfid: 2
           },
           {
             type: EF
             ef: EF_CARD_SIGN_CERTIFICATE
-            sfid: 3
           },
           {
             type: EF
             ef: EF_CA_CERTIFICATE
-            sfid: 4
           },
           {
             type: EF
             ef: EF_LINK_CERTIFICATE
-            sfid: 5
           },
           {
             type: EF
             ef: EF_IDENTIFICATION
-            sfid: 6
           },
           {
             type: EF
             ef: EF_CARD_DOWNLOAD_WORKSHOP
-            sfid: 7
           },
           {
             type: EF
             ef: EF_CALIBRATION
-            sfid: 10
           },
           {
             type: EF
             ef: EF_SENSOR_INSTALLATION_DATA
-            sfid: 11
           },
           {
             type: EF
             ef: EF_EVENTS_DATA
-            sfid: 12
           },
           {
             type: EF
             ef: EF_FAULTS_DATA
-            sfid: 13
           },
           {
             type: EF
             ef: EF_DRIVER_ACTIVITY_DATA
-            sfid: 14
           },
           {
             type: EF
             ef: EF_VEHICLES_USED
-            sfid: 15
           },
           {
             type: EF
             ef: EF_PLACES
-            sfid: 16
           },
           {
             type: EF
             ef: EF_CURRENT_USAGE
-            sfid: 17
           },
           {
             type: EF
             ef: EF_CONTROL_ACTIVITY_DATA
-            sfid: 18
           },
           {
             type: EF
             ef: EF_SPECIFIC_CONDITIONS
-            sfid: 19
           },
           {
             type: EF
             ef: EF_VEHICLE_UNITS_USED
-            sfid: 20
           },
           {
             type: EF
             ef: EF_GNSS_PLACES
-            sfid: 21
           },
           {
             type: EF
             ef: EF_APPLICATION_IDENTIFICATION_V2
-            sfid: 22
             conditional: true
           },
           {
             type: EF
             ef: EF_PLACES_AUTHENTICATION
-            sfid: 23
             conditional: true
           },
           {
             type: EF
             ef: EF_GNSS_PLACES_AUTHENTICATION
-            sfid: 24
             conditional: true
           },
           {
             type: EF
             ef: EF_BORDER_CROSSINGS
-            sfid: 25
             conditional: true
           },
           {
             type: EF
             ef: EF_LOAD_UNLOAD_OPERATIONS
-            sfid: 26
             conditional: true
           },
           {
             type: EF
             ef: EF_LOAD_TYPE_ENTRIES
-            sfid: 27
             conditional: true
           },
           {
             type: EF
             ef: EF_CALIBRATION_ADD_DATA
-            sfid: 28
             conditional: true
           },
           {
             type: EF
             ef: EF_VU_CONFIGURATION
-            sfid: 30
             conditional: true
           }
         ]
@@ -504,18 +446,15 @@ enum CardType {
       {
         type: EF
         ef: EF_DIR
-        sfid: 30
       },
       {
         type: EF
         ef: EF_ATR_INFO
-        sfid: 29
         conditional: true
       },
       {
         type: EF
         ef: EF_EXTENDED_LENGTH
-        sfid: 28
         conditional: true
       },
       {
@@ -551,43 +490,35 @@ enum CardType {
           {
             type: EF
             ef: EF_APPLICATION_IDENTIFICATION
-            sfid: 1
           },
           {
             type: EF
             ef: EF_CARD_CERTIFICATE
-            sfid: 2
           },
           {
             type: EF
             ef: EF_CA_CERTIFICATE
-            sfid: 4
           },
           {
             type: EF
             ef: EF_LINK_CERTIFICATE
-            sfid: 5
           },
           {
             type: EF
             ef: EF_IDENTIFICATION
-            sfid: 6
           },
           {
             type: EF
             ef: EF_CONTROLLER_ACTIVITY_DATA
-            sfid: 14
           },
           {
             type: EF
             ef: EF_APPLICATION_IDENTIFICATION_V2
-            sfid: 22
             conditional: true
           },
           {
             type: EF
             ef: EF_VU_CONFIGURATION
-            sfid: 30
             conditional: true
           }
         ]
@@ -610,18 +541,15 @@ enum CardType {
       {
         type: EF
         ef: EF_DIR
-        sfid: 30
       },
       {
         type: EF
         ef: EF_ATR_INFO
-        sfid: 29
         conditional: true
       },
       {
         type: EF
         ef: EF_EXTENDED_LENGTH
-        sfid: 28
         conditional: true
       },
       {
@@ -657,43 +585,35 @@ enum CardType {
           {
             type: EF
             ef: EF_APPLICATION_IDENTIFICATION
-            sfid: 1
           },
           {
             type: EF
             ef: EF_CARD_CERTIFICATE
-            sfid: 2
           },
           {
             type: EF
             ef: EF_CA_CERTIFICATE
-            sfid: 4
           },
           {
             type: EF
             ef: EF_LINK_CERTIFICATE
-            sfid: 5
           },
           {
             type: EF
             ef: EF_IDENTIFICATION
-            sfid: 6
           },
           {
             type: EF
             ef: EF_COMPANY_ACTIVITY_DATA
-            sfid: 14
           },
           {
             type: EF
             ef: EF_APPLICATION_IDENTIFICATION_V2
-            sfid: 22
             conditional: true
           },
           {
             type: EF
             ef: EF_VU_CONFIGURATION
-            sfid: 30
             conditional: true
           }
         ]

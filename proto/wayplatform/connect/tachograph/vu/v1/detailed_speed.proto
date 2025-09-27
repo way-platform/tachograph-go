@@ -9,6 +9,17 @@ import "wayplatform/connect/tachograph/datadictionary/v1/generation.proto";
 //
 // This message corresponds to the data defined in the regulation document:
 // Appendix 7, Section 2.2.6.5: "Positive Response Transfer Data Detailed Speed".
+//
+// TREP 0x04 (Gen1):
+//
+//     ├─VuDetailedSpeedData
+//     └─Signature
+//
+// TREP 0x24 (Gen2):
+//
+//     ├─VuDetailedSpeedBlockRecordArray
+//     └─SignatureRecordArray
+//
 message DetailedSpeed {
   // The generation of the vehicle unit, parsed from the raw transfer data.
   //

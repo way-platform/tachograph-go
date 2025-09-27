@@ -4,8 +4,8 @@ package wayplatform.connect.tachograph.vu.v1;
 
 import "google/protobuf/timestamp.proto";
 import "wayplatform/connect/tachograph/datadictionary/v1/full_card_number.proto";
-import "wayplatform/connect/tachograph/datadictionary/v1/vehicle_registration_identification.proto";
 import "wayplatform/connect/tachograph/datadictionary/v1/generation.proto";
+import "wayplatform/connect/tachograph/datadictionary/v1/vehicle_registration_identification.proto";
 import "wayplatform/connect/tachograph/vu/v1/versioning.proto";
 
 // Represents the consolidated data structure for an Overview transfer.
@@ -13,11 +13,7 @@ import "wayplatform/connect/tachograph/vu/v1/versioning.proto";
 // This message corresponds to the data defined in the regulation document:
 // Appendix 7, Section 2.2.6.2: "Positive Response Transfer Data Overview".
 //
-// TREP Values: 0x01 (Gen1), 0x21 (Gen2v1), 0x31 (Gen2v2)
-//
-// ---
-//
-// Transfer Structure (Gen1 / TREP 0x01):
+// TREP 0x01 (Gen1):
 //
 //     ├─MemberStateCertificate
 //     ├─VUCertificate
@@ -31,9 +27,7 @@ import "wayplatform/connect/tachograph/vu/v1/versioning.proto";
 //     ├─VuControlActivityData
 //     └─Signature
 //
-// ---
-//
-// Transfer Structure (Gen2v1 / TREP 0x21):
+// TREP 0x21 (Gen2v1):
 //
 //     ├─MemberStateCertificateRecordArray
 //     ├─VUCertificateRecordArray
@@ -47,9 +41,7 @@ import "wayplatform/connect/tachograph/vu/v1/versioning.proto";
 //     ├─VuControlActivityRecordArray
 //     └─SignatureRecordArray
 //
-// ---
-//
-// Transfer Structure (Gen2v2 / TREP 0x31):
+// TREP 0x31 (Gen2v2):
 //
 //     ├─MemberStateCertificateRecordArray
 //     ├─VUCertificateRecordArray
@@ -68,15 +60,30 @@ message Overview {
   //
   // Corresponds to the `VuDownloadablePeriod` data type.
   // See Data Dictionary, Section 2.193.
+  //
+  // ASN.1 Specification:
+  //
+  //     VuDownloadablePeriod ::= SEQUENCE {
+  //         minDownloadableTime TimeReal,
+  //         maxDownloadableTime TimeReal
+  //     }
   message DownloadablePeriod {
     // Earliest downloadable date.
+    //
+    // ASN.1 Specification:
+    //
+    //     TimeReal ::= INTEGER (0..2^32-1)
     google.protobuf.Timestamp min_time = 1;
+
     // Latest downloadable date.
+    //
+    // ASN.1 Specification:
+    //
+    //     TimeReal ::= INTEGER (0..2^32-1)
     google.protobuf.Timestamp max_time = 2;
   }
 
   // Defines the type of card that can be in a slot.
-  //
   // See Data Dictionary, Section 2.34 for `CardSlotsStatus`.
   enum SlotCardType {
     SLOT_CARD_TYPE_UNSPECIFIED = 0;
@@ -91,16 +98,47 @@ message Overview {
   //
   // Corresponds to the `VuCompanyLocksRecord` data type.
   // See Data Dictionary, Section 2.184.
+  //
+  // ASN.1 Specification:
+  //
+  //     VuCompanyLocksRecord ::= SEQUENCE {
+  //         lockInTime TimeReal,
+  //         lockOutTime TimeReal,
+  //         companyName Name,
+  //         companyAddress Address,
+  //         companyCardNumber FullCardNumber
+  //     }
   message CompanyLock {
     // The time the lock was engaged.
+    //
+    // ASN.1 Specification:
+    //
+    //     TimeReal ::= INTEGER (0..2^32-1)
     google.protobuf.Timestamp lock_in_time = 1;
+
     // The time the lock was disengaged.
+    //
+    // ASN.1 Specification:
+    //
+    //     TimeReal ::= INTEGER (0..2^32-1)
     google.protobuf.Timestamp lock_out_time = 2;
+
     // The name of the company that applied the lock.
+    //
+    // ASN.1 Specification:
+    //
+    //     Name ::= IA5String(SIZE(35))
     string company_name = 3;
+
     // The address of the company.
+    //
+    // ASN.1 Specification:
+    //
+    //     Address ::= IA5String(SIZE(35))
     string company_address = 4;
+
     // The card number of the company.
+    // See Data Dictionary, Section 2.73.
     datadictionary.v1.FullCardNumber company_card_number = 5;
   }
 
@@ -108,39 +146,78 @@ message Overview {
   //
   // Corresponds to the `VuControlActivityRecord` data type.
   // See Data Dictionary, Section 2.187.
+  //
+  // ASN.1 Specification:
+  //
+  //     VuControlActivityRecord ::= SEQUENCE {
+  //         controlType ControlType,
+  //         controlTime TimeReal,
+  //         controlCardNumber FullCardNumber,
+  //         downloadPeriodBeginTime TimeReal,
+  //         downloadPeriodEndTime TimeReal
+  //     }
   message ControlActivity {
     // The type of control activity.
+    //
+    // ASN.1 Specification:
+    //
+    //     ControlType ::= OCTET STRING (SIZE(1))
     bytes control_type = 1;
+
     // The time of the control.
+    //
+    // ASN.1 Specification:
+    //
+    //     TimeReal ::= INTEGER (0..2^32-1)
     google.protobuf.Timestamp control_time = 2;
+
     // The card number of the control officer.
+    // See Data Dictionary, Section 2.73.
     datadictionary.v1.FullCardNumber control_card_number = 3;
+
     // The start of the downloaded period.
+    //
+    // ASN.1 Specification:
+    //
+    //     TimeReal ::= INTEGER (0..2^32-1)
     google.protobuf.Timestamp download_period_begin_time = 4;
+
     // The end of the downloaded period.
+    //
+    // ASN.1 Specification:
+    //
+    //     TimeReal ::= INTEGER (0..2^32-1)
     google.protobuf.Timestamp download_period_end_time = 5;
   }
 
   // The generation of the vehicle unit, parsed from the raw transfer data.
-  //
   // Discriminator field.
   datadictionary.v1.Generation generation = 1;
 
   // The version of the interface, parsed from the raw transfer data.
-  //
   // Discriminator field.
   Version version = 2;
 
   // VU Security certificate from the Member State.
+  // Corresponds to `MemberStateCertificate` (DD 2.96).
   bytes member_state_certificate = 3;
 
   // The VU's own security certificate.
+  // Corresponds to `VuCertificate` (DD 2.181).
   bytes vu_certificate = 4;
 
   // The Vehicle Identification Number.
+  //
+  // ASN.1 Specification:
+  //
+  //     VehicleIdentificationNumber ::= IA5String(SIZE(17))
   string vehicle_identification_number = 5;
 
   // Current date and time of the VU.
+  //
+  // ASN.1 Specification:
+  //
+  //     CurrentDateTime ::= TimeReal ::= INTEGER (0..2^32-1)
   google.protobuf.Timestamp current_date_time = 6;
 
   // The range of dates for which data can be downloaded.
@@ -153,23 +230,36 @@ message Overview {
   SlotCardType co_driver_slot_card = 9;
 
   // Time of the last VU download.
+  // Corresponds to `VuDownloadActivityData` (DD 2.195).
   google.protobuf.Timestamp last_download_time = 10;
 
   // All company locks stored in the VU.
+  // Corresponds to `VuCompanyLocksData` (DD 2.183).
   repeated CompanyLock company_locks = 11;
 
   // All control records stored in the VU.
+  // Corresponds to `VuControlActivityData` (DD 2.186).
   repeated ControlActivity control_activities = 12;
 
   // The vehicle registration, including nation (Gen1, Gen2v1).
+  // See Data Dictionary, Section 2.166.
   datadictionary.v1.VehicleRegistrationIdentification vehicle_registration_with_nation = 13;
 
   // The vehicle registration number only (Gen2v2).
+  //
+  // ASN.1 Specification:
+  //
+  //     VehicleRegistrationNumber ::= IA5String(SIZE(13))
   string vehicle_registration_number_only = 14;
 
   // Signature for Gen1 data.
+  //
+  // ASN.1 Specification:
+  //
+  //     Signature ::= OCTET STRING (SIZE (128))
   bytes signature_gen1 = 15;
 
   // Signature for Gen2 data.
+  // See Data Dictionary, Section 2.149.
   bytes signature_gen2 = 16;
 }

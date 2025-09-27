@@ -35,6 +35,9 @@ This chapter contains the requirements for the tachograph system.
 This chapter contains the data dictionary for the tachograph system.
 Read this chapter to understand the data types and their relationships.
 
+This section contains ASN.1 specifications for data types, which is absolutely
+critical information to this project.
+
 **IMPORTANT**: Always read this chapter before working with data parsing.
 
 ### [04-tachograph-cards-specification.md](docs/regulation/chapters/04-tachograph-cards-specification.md)

@@ -18,6 +18,4 @@ message FileDescriptor {
   repeated FileDescriptor files = 4;
   // Indicates if the file is conditionally present.
   bool conditional = 5;
-  // Short File Identifier (if applicable).
-  int32 sfid = 6;
 }

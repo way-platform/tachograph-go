@@ -2,8 +2,16 @@ edition = "2023";
 
 package wayplatform.connect.tachograph.vu.v1;
 
-// Represents the payload of a card download transfer from a Vehicle Unit.
+// Represents the payload of a card download transfer from a Vehicle Unit (TREP 0x06).
+//
+// This transfer type is used when the VU acts as an intermediary to download data
+// from a tachograph card inserted into one of its slots.
+// See Appendix 7, Section 2.2.2.9.
 message CardDownload {
-  // The raw binary content of the downloaded card file, in its own TLV format.
+  // The raw binary content of the downloaded card file.
+  //
+  // This payload is a complete card file dump, structured in the card's own
+  // TLV format. It is NOT a VU data structure. This data can be parsed
+  // using the `wayplatform.connect.tachograph.card.v1.RawCardFile` message.
   bytes raw_data = 1;
 }

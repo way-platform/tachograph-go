@@ -12,9 +12,27 @@ import "wayplatform/connect/tachograph/datadictionary/v1/generation.proto";
 //
 // This message corresponds to the data defined in the regulation document:
 // Appendix 7, Section 2.2.6.4: "Positive Response Transfer Data Events and Faults".
+//
+// TREP 0x03 (Gen1):
+//
+//     ├─VuFaultData
+//     ├─VuEventData
+//     ├─VuOverSpeedingControlData
+//     ├─VuOverSpeedingEventData
+//     ├─VuTimeAdjustmentData
+//     └─Signature
+//
+// TREP 0x23 (Gen2v1) & 0x33 (Gen2v2):
+//
+//     ├─VuFaultRecordArray
+//     ├─VuEventRecordArray
+//     ├─VuOverSpeedingControlDataRecordArray
+//     ├─VuOverSpeedingEventRecordArray
+//     ├─VuTimeAdjustmentRecordArray
+//     └─SignatureRecordArray
+//
 message EventsAndFaults {
   // The generation of the vehicle unit, parsed from the raw transfer data.
-  //
   // Discriminator field.
   datadictionary.v1.Generation generation = 1;
 
@@ -22,26 +40,53 @@ message EventsAndFaults {
   //
   // Corresponds to the `VuFaultRecord` data type.
   // See Data Dictionary, Section 2.201.
+  //
+  // ASN.1 Specification:
+  //
+  //     VuFaultRecord ::= SEQUENCE {
+  //         faultType EventFaultType,
+  //         faultRecordPurpose EventFaultRecordPurpose,
+  //         faultBeginTime TimeReal,
+  //         faultEndTime TimeReal,
+  //         cardNumberDriverSlotBegin FullCardNumber,
+  //         cardNumberCodriverSlotBegin FullCardNumber,
+  //         cardNumberDriverSlotEnd FullCardNumber,
+  //         cardNumberCodriverSlotEnd FullCardNumber
+  //     }
   message FaultRecord {
     // Type of the fault.
-    // See Data Dictionary, Section 2.70 for `EventFaultType`.
+    //
+    // ASN.1 Specification:
+    //
+    //     EventFaultType ::= OCTET STRING (SIZE (1))
     datadictionary.v1.EventFaultType fault_type = 1;
     int32 unrecognized_fault_type = 2;
 
     // Purpose for which the fault has been recorded.
-    // See Data Dictionary, Section 2.69 for `EventFaultRecordPurpose`.
+    //
+    // ASN.1 Specification:
+    //
+    //     EventFaultRecordPurpose ::= OCTET STRING (SIZE (1))
     datadictionary.v1.EventFaultRecordPurpose record_purpose = 3;
     int32 unrecognized_record_purpose = 4;
 
     // Date and time of the beginning of the fault.
-    // See Data Dictionary, Section 2.162 for `TimeReal`.
+    //
+    // ASN.1 Specification:
+    //
+    //     TimeReal ::= INTEGER (0..2^32-1)
     google.protobuf.Timestamp begin_time = 5;
 
     // Date and time of the end of the fault.
-    // See Data Dictionary, Section 2.162 for `TimeReal`.
+    //
+    // ASN.1 Specification:
+    //
+    //     TimeReal ::= INTEGER (0..2^32-1)
     google.protobuf.Timestamp end_time = 6;
 
     // The card number and generation of the driver/workshop associated with the event.
+    // This field is a simplification, combining multiple card number fields from the raw record.
+    // See Data Dictionary, Section 2.74.
     datadictionary.v1.FullCardNumberAndGeneration card_identifier = 7;
   }
 
@@ -49,30 +94,61 @@ message EventsAndFaults {
   //
   // Corresponds to the `VuEventRecord` data type.
   // See Data Dictionary, Section 2.198.
+  //
+  // ASN.1 Specification:
+  //
+  //     VuEventRecord ::= SEQUENCE {
+  //         eventType EventFaultType,
+  //         eventRecordPurpose EventFaultRecordPurpose,
+  //         eventBeginTime TimeReal,
+  //         eventEndTime TimeReal,
+  //         cardNumberDriverSlotBegin FullCardNumber,
+  //         cardNumberCodriverSlotBegin FullCardNumber,
+  //         cardNumberDriverSlotEnd FullCardNumber,
+  //         cardNumberCodriverSlotEnd FullCardNumber,
+  //         similarEventsNumber SimilarEventsNumber
+  //     }
   message EventRecord {
     // Type of the event.
-    // See Data Dictionary, Section 2.70 for `EventFaultType`.
+    //
+    // ASN.1 Specification:
+    //
+    //     EventFaultType ::= OCTET STRING (SIZE (1))
     datadictionary.v1.EventFaultType event_type = 1;
     int32 unrecognized_event_type = 2;
 
     // Purpose for which the event has been recorded.
-    // See Data Dictionary, Section 2.69 for `EventFaultRecordPurpose`.
+    //
+    // ASN.1 Specification:
+    //
+    //     EventFaultRecordPurpose ::= OCTET STRING (SIZE (1))
     datadictionary.v1.EventFaultRecordPurpose record_purpose = 3;
     int32 unrecognized_record_purpose = 4;
 
     // Date and time of the beginning of the event.
-    // See Data Dictionary, Section 2.162 for `TimeReal`.
+    //
+    // ASN.1 Specification:
+    //
+    //     TimeReal ::= INTEGER (0..2^32-1)
     google.protobuf.Timestamp begin_time = 5;
 
     // Date and time of the end of the event.
-    // See Data Dictionary, Section 2.162 for `TimeReal`.
+    //
+    // ASN.1 Specification:
+    //
+    //     TimeReal ::= INTEGER (0..2^32-1)
     google.protobuf.Timestamp end_time = 6;
 
     // The card number and generation of the driver/workshop associated with the event.
+    // This field is a simplification, combining multiple card number fields from the raw record.
+    // See Data Dictionary, Section 2.74.
     datadictionary.v1.FullCardNumberAndGeneration card_identifier = 7;
 
     // Number of similar events on the same day.
-    // See Data Dictionary, Section 2.151 for `SimilarEventsNumber`.
+    //
+    // ASN.1 Specification:
+    //
+    //     SimilarEventsNumber ::= INTEGER(0..255)
     int32 similar_events_number = 8;
   }
 
@@ -80,17 +156,34 @@ message EventsAndFaults {
   //
   // Corresponds to the `VuOverSpeedingControlData` data type.
   // See Data Dictionary, Section 2.212.
+  //
+  // ASN.1 Specification:
+  //
+  //     VuOverSpeedingControlData ::= SEQUENCE {
+  //         lastOverspeedControlTime TimeReal,
+  //         firstOverspeedSince TimeReal,
+  //         numberOfOverspeedSince OverspeedNumber
+  //     }
   message OverSpeedingControlData {
     // Date and time of the last overspeeding control.
-    // See Data Dictionary, Section 2.162 for `TimeReal`.
+    //
+    // ASN.1 Specification:
+    //
+    //     TimeReal ::= INTEGER (0..2^32-1)
     google.protobuf.Timestamp last_control_time = 1;
 
     // Date and time of the first overspeeding since the last control.
-    // See Data Dictionary, Section 2.162 for `TimeReal`.
+    //
+    // ASN.1 Specification:
+    //
+    //     TimeReal ::= INTEGER (0..2^32-1)
     google.protobuf.Timestamp first_overspeed_since_last_control = 2;
 
     // Number of overspeeding events since the last control.
-    // See Data Dictionary, Section 2.116 for `OverspeedNumber`.
+    //
+    // ASN.1 Specification:
+    //
+    //     OverspeedNumber ::= INTEGER (0..255)
     int32 number_of_overspeed_since_last_control = 3;
   }
 
@@ -98,34 +191,66 @@ message EventsAndFaults {
   //
   // Corresponds to the `VuOverSpeedingEventRecord` data type.
   // See Data Dictionary, Section 2.215.
+  //
+  // ASN.1 Specification:
+  //
+  //     VuOverSpeedingEventRecord ::= SEQUENCE {
+  //         eventType EventFaultType,
+  //         eventRecordPurpose EventFaultRecordPurpose,
+  //         eventBeginTime TimeReal,
+  //         eventEndTime TimeReal,
+  //         maxSpeedValue SpeedMax,
+  //         averageSpeedValue SpeedAverage,
+  //         cardNumberDriverSlotBegin FullCardNumber,
+  //         similarEventsNumber SimilarEventsNumber
+  //     }
   message OverSpeedingEventRecord {
     // Type of the event (always 'Over speeding').
-    // See Data Dictionary, Section 2.70 for `EventFaultType`.
+    //
+    // ASN.1 Specification:
+    //
+    //     EventFaultType ::= OCTET STRING (SIZE (1))
     datadictionary.v1.EventFaultType event_type = 1;
     int32 unrecognized_event_type = 2;
 
     // Purpose for which the event has been recorded.
-    // See Data Dictionary, Section 2.69 for `EventFaultRecordPurpose`.
+    //
+    // ASN.1 Specification:
+    //
+    //     EventFaultRecordPurpose ::= OCTET STRING (SIZE (1))
     datadictionary.v1.EventFaultRecordPurpose record_purpose = 3;
     int32 unrecognized_record_purpose = 4;
 
     // Date and time of the beginning of the event.
-    // See Data Dictionary, Section 2.162 for `TimeReal`.
+    //
+    // ASN.1 Specification:
+    //
+    //     TimeReal ::= INTEGER (0..2^32-1)
     google.protobuf.Timestamp begin_time = 5;
 
     // Date and time of the end of the event.
-    // See Data Dictionary, Section 2.162 for `TimeReal`.
+    //
+    // ASN.1 Specification:
+    //
+    //     TimeReal ::= INTEGER (0..2^32-1)
     google.protobuf.Timestamp end_time = 6;
 
     // Maximum speed measured during the event.
-    // See Data Dictionary, Section 2.158 for `SpeedMax`.
+    //
+    // ASN.1 Specification:
+    //
+    //     SpeedMax ::= Speed ::= INTEGER(0..255)
     int32 max_speed_kmh = 7;
 
     // Average speed measured during the event.
-    // See Data Dictionary, Section 2.157 for `SpeedAverage`.
+    //
+    // ASN.1 Specification:
+    //
+    //     SpeedAverage ::= Speed ::= INTEGER(0..255)
     int32 average_speed_kmh = 8;
 
     // The card number and generation of the driver who caused the event.
+    // See Data Dictionary, Section 2.74.
     datadictionary.v1.FullCardNumberAndGeneration card_identifier = 9;
   }
 
@@ -133,45 +258,68 @@ message EventsAndFaults {
   //
   // Corresponds to the `VuTimeAdjustmentRecord` data type.
   // See Data Dictionary, Section 2.232.
+  //
+  // ASN.1 Specification:
+  //
+  //     VuTimeAdjustmentRecord ::= SEQUENCE {
+  //         oldTimeValue TimeReal,
+  //         newTimeValue TimeReal,
+  //         workshopName Name,
+  //         workshopAddress Address,
+  //         workshopCardNumber FullCardNumber
+  //     }
   message TimeAdjustmentRecord {
     // Time value before adjustment.
-    // See Data Dictionary, Section 2.162 for `TimeReal`.
+    //
+    // ASN.1 Specification:
+    //
+    //     TimeReal ::= INTEGER (0..2^32-1)
     google.protobuf.Timestamp old_time = 1;
 
     // Time value after adjustment.
-    // See Data Dictionary, Section 2.162 for `TimeReal`.
+    //
+    // ASN.1 Specification:
+    //
+    //     TimeReal ::= INTEGER (0..2^32-1)
     google.protobuf.Timestamp new_time = 2;
 
     // Name of the workshop that performed the adjustment.
-    // See Data Dictionary, Section 2.99 for `Name`.
+    //
+    // ASN.1 Specification:
+    //
+    //     Name ::= IA5String(SIZE(35))
     string workshop_name = 3;
 
     // Address of the workshop.
-    // See Data Dictionary, Section 2.2 for `Address`.
+    //
+    // ASN.1 Specification:
+    //
+    //     Address ::= IA5String(SIZE(35))
     string workshop_address = 4;
 
     // The card number and generation of the workshop that performed the adjustment.
+    // See Data Dictionary, Section 2.74.
     datadictionary.v1.FullCardNumberAndGeneration workshop_card_identifier = 5;
   }
 
   // All faults stored or on-going in the VU.
-  // Corresponds to `VuFaultData` (Gen1) or `VuFaultRecordArray` (Gen2).
+  // Corresponds to `VuFaultData` (DD 2.200) or `VuFaultRecordArray` (DD 2.202).
   repeated FaultRecord faults = 2;
 
   // All events (except over speeding) stored or on-going in the VU.
-  // Corresponds to `VuEventData` (Gen1) or `VuEventRecordArray` (Gen2).
+  // Corresponds to `VuEventData` (DD 2.197) or `VuEventRecordArray` (DD 2.199).
   repeated EventRecord events = 3;
 
   // Data related to the last overspeeding control.
-  // Corresponds to `VuOverSpeedingControlData` (Gen1) or `VuOverSpeedingControlDataRecordArray` (Gen2).
+  // Corresponds to `VuOverSpeedingControlData` (DD 2.212) or `VuOverSpeedingControlDataRecordArray` (DD 2.213).
   OverSpeedingControlData overspeeding_control = 4;
 
   // All overspeeding events stored in the VU.
-  // Corresponds to `VuOverSpeedingEventData` (Gen1) or `VuOverSpeedingEventRecordArray` (Gen2).
+  // Corresponds to `VuOverSpeedingEventData` (DD 2.214) or `VuOverSpeedingEventRecordArray` (DD 2.216).
   repeated OverSpeedingEventRecord overspeeding_events = 5;
 
   // All time adjustment events stored in the VU (outside a full calibration).
-  // Corresponds to `VuTimeAdjustmentData` (Gen1) or `VuTimeAdjustmentRecordArray` (Gen2).
+  // Corresponds to `VuTimeAdjustmentData` (DD 2.229) or `VuTimeAdjustmentRecordArray` (DD 2.233).
   repeated TimeAdjustmentRecord time_adjustments = 6;
 
   // Signature for Gen1 data (RSA, 128 bytes).

@@ -8,63 +8,154 @@ import "wayplatform/connect/tachograph/datadictionary/v1/driver_activity_value.p
 import "wayplatform/connect/tachograph/datadictionary/v1/driving_status.proto";
 import "wayplatform/connect/tachograph/datadictionary/v1/entry_type_daily_work_period.proto";
 import "wayplatform/connect/tachograph/datadictionary/v1/full_card_number.proto";
+import "wayplatform/connect/tachograph/datadictionary/v1/generation.proto";
 import "wayplatform/connect/tachograph/datadictionary/v1/nation_numeric.proto";
 import "wayplatform/connect/tachograph/datadictionary/v1/position_authentication_status.proto";
 import "wayplatform/connect/tachograph/datadictionary/v1/specific_condition_type.proto";
 import "wayplatform/connect/tachograph/datadictionary/v1/vehicle_registration_identification.proto";
-import "wayplatform/connect/tachograph/datadictionary/v1/generation.proto";
 import "wayplatform/connect/tachograph/vu/v1/versioning.proto";
 
 // Represents the consolidated data structure for an Activities transfer.
 //
 // This message corresponds to the data defined in the regulation document:
 // Appendix 7, Section 2.2.6.3: "Positive Response Transfer Data Activities".
+//
+// TREP 0x02 (Gen1):
+//
+//     ├─TimeReal (Date of day downloaded)
+//     ├─OdometerValueMidnight
+//     ├─VuCardIWData
+//     ├─VuActivityDailyData
+//     ├─VuPlaceDailyWorkPeriodData
+//     ├─VuSpecificConditionData
+//     └─Signature
+//
+// TREP 0x22 (Gen2v1):
+//
+//     ├─DateOfDayDownloadedRecordArray
+//     ├─OdometerValueMidnightRecordArray
+//     ├─VuCardIWRecordArray
+//     ├─VuActivityDailyRecordArray
+//     ├─VuPlaceDailyWorkPeriodRecordArray
+//     ├─VuGNSSADRecordArray
+//     ├─VuSpecificConditionRecordArray
+//     └─SignatureRecordArray
+//
+// TREP 0x32 (Gen2v2):
+//
+//     ├─DateOfDayDownloadedRecordArray
+//     ├─OdometerValueMidnightRecordArray
+//     ├─VuCardIWRecordArray
+//     ├─VuActivityDailyRecordArray
+//     ├─VuPlaceDailyWorkPeriodRecordArray
+//     ├─VuGNSSADRecordArray
+//     ├─VuSpecificConditionRecordArray
+//     ├─VuBorderCrossingRecordArray
+//     ├─VuLoadUnloadRecordArray
+//     └─SignatureRecordArray
+//
 message Activities {
   // Represents a card insertion and withdrawal record.
   //
   // Corresponds to the `VuCardIWRecord` data type.
   // See Data Dictionary, Section 2.177.
+  //
+  // ASN.1 Specification (Gen1):
+  //
+  //     VuCardIWRecord ::= SEQUENCE {
+  //         cardHolderName HolderName,
+  //         fullCardNumber FullCardNumber,
+  //         cardExpiryDate Datef,
+  //         cardInsertionTime TimeReal,
+  //         vehicleOdometerValueAtInsertion OdometerShort,
+  //         cardSlotNumber CardSlotNumber,
+  //         cardWithdrawalTime TimeReal,
+  //         vehicleOdometerValueAtWithdrawal OdometerShort,
+  //         previousVehicleInfo PreviousVehicleInfo,
+  //         manualInputFlag ManualInputFlag
+  //     }
+  //
+  // For Gen2, `fullCardNumber` is replaced by `fullCardNumberAndGeneration`.
   message CardIWRecord {
     // Represents information about the previous vehicle used by the driver.
     //
     // Corresponds to the `PreviousVehicleInfo` data type.
     // See Data Dictionary, Section 2.118.
+    //
+    // ASN.1 Specification (Gen1):
+    //
+    //     PreviousVehicleInfo ::= SEQUENCE {
+    //         vehicleRegistrationIdentification VehicleRegistrationIdentification,
+    //         cardWithdrawalTime TimeReal
+    //     }
+    //
+    // For Gen2, `vuGeneration Generation` is added.
     message PreviousVehicleInfo {
       // The registration of the previous vehicle.
+      // See Data Dictionary, Section 2.166.
       datadictionary.v1.VehicleRegistrationIdentification vehicle_registration = 1;
 
       // The time the card was withdrawn from the previous vehicle.
+      //
+      // ASN.1 Specification:
+      //
+      //     TimeReal ::= INTEGER (0..2^32-1)
       google.protobuf.Timestamp card_withdrawal_time = 2;
     }
 
-    // The name of the card holder.
+    // The name of the card holder. This is a simplification of the `HolderName`
+    // ASN.1 type, which is a SEQUENCE of surname and first names.
+    // See Data Dictionary, Section 2.83.
     string card_holder_name = 1;
 
     // The full card number of the inserted card.
+    // See Data Dictionary, Section 2.73 and 2.74.
     datadictionary.v1.FullCardNumber full_card_number = 2;
 
     // The expiry date of the card.
+    //
+    // ASN.1 Specification:
+    //
+    //     Datef ::= BCDString(SIZE(4))
     google.protobuf.Timestamp card_expiry_date = 3;
 
     // The time the card was inserted.
+    //
+    // ASN.1 Specification:
+    //
+    //     TimeReal ::= INTEGER (0..2^32-1)
     google.protobuf.Timestamp card_insertion_time = 4;
 
     // The odometer value at the time of card insertion.
+    //
+    // ASN.1 Specification:
+    //
+    //     OdometerShort ::= INTEGER(0..9999999)
     int32 odometer_at_insertion_km = 5;
 
     // The slot the card was inserted into.
+    // See Data Dictionary, Section 2.33.
     datadictionary.v1.CardSlotNumber card_slot_number = 6;
 
     // The time the card was withdrawn.
+    //
+    // ASN.1 Specification:
+    //
+    //     TimeReal ::= INTEGER (0..2^32-1)
     google.protobuf.Timestamp card_withdrawal_time = 8;
 
     // The odometer value at the time of card withdrawal.
+    //
+    // ASN.1 Specification:
+  //
+    //     OdometerShort ::= INTEGER(0..9999999)
     int32 odometer_at_withdrawal_km = 9;
 
     // Information about the previous vehicle used.
     PreviousVehicleInfo previous_vehicle_info = 10;
 
     // Indicates if manual entries were made.
+    // See Data Dictionary, Section 2.93.
     bool manual_input_flag = 11;
   }
 
@@ -72,6 +163,10 @@ message Activities {
   //
   // Corresponds to the `ActivityChangeInfo` data type.
   // See Data Dictionary, Section 2.1.
+  //
+  // ASN.1 Specification:
+  //
+  //     ActivityChangeInfo ::= OCTET STRING (SIZE (2))
   message ActivityChange {
     // Slot of the driver/co-driver.
     datadictionary.v1.CardSlotNumber slot = 1;
@@ -87,18 +182,38 @@ message Activities {
 
   // Represents a place record for the beginning or end of a daily work period.
   //
-  // Corresponds to the `PlaceRecord` data type.
-  // See Data Dictionary, Section 2.117.
+  // Corresponds to the `PlaceRecord` data type (DD 2.117) or `PlaceAuthRecord` (DD 2.116a).
   message PlaceRecord {
     // Time of the entry.
+    //
+    // ASN.1 Specification:
+    //
+    //     TimeReal ::= INTEGER (0..2^32-1)
     google.protobuf.Timestamp entry_time = 1;
+
     // Type of entry (begin or end).
+    // See Data Dictionary, Section 2.66.
     datadictionary.v1.EntryTypeDailyWorkPeriod entry_type = 2;
+
     // Country code.
+    //
+    // ASN.1 Specification:
+    //
+    //     NationNumeric ::= INTEGER (0..255)
     datadictionary.v1.NationNumeric country = 4;
+
     // Region code.
+    //
+    // ASN.1 Specification:
+    //
+    //     RegionNumeric ::= OCTET STRING (SIZE (1))
     int32 region = 6;
+
     // Odometer value at the time of entry.
+    //
+    // ASN.1 Specification:
+    //
+    //     OdometerShort ::= INTEGER(0..9999999)
     int32 odometer_km = 7;
   }
 
@@ -107,14 +222,29 @@ message Activities {
   // Corresponds to `GNSSPlaceRecord` (DD 2.80) or `GNSSPlaceAuthRecord` (DD 2.79c).
   message GnssRecord {
     // Timestamp of the position fix.
+    //
+    // ASN.1 Specification:
+    //
+    //     TimeReal ::= INTEGER (0..2^32-1)
     google.protobuf.Timestamp timestamp = 1;
+
     // Accuracy of the GNSS fix.
+    //
+    // ASN.1 Specification:
+    //
+    //     GNSSAccuracy ::= INTEGER (1..100)
     int32 gnss_accuracy = 2;
-    // Longitude.
+
+    // Longitude in 1/10000 of a minute.
+    // See Data Dictionary, Section 2.76.
     sint32 longitude = 3;
-    // Latitude.
+
+    // Latitude in 1/10000 of a minute.
+    // See Data Dictionary, Section 2.76.
     sint32 latitude = 4;
+
     // For Gen2v2+, indicates the authentication status of the position.
+    // See Data Dictionary, Section 2.117a.
     datadictionary.v1.PositionAuthenticationStatus authentication_status = 5;
   }
 
@@ -122,10 +252,23 @@ message Activities {
   //
   // Corresponds to the `SpecificConditionRecord` data type.
   // See Data Dictionary, Section 2.152.
+  //
+  // ASN.1 Specification:
+  //
+  //     SpecificConditionRecord ::= SEQUENCE {
+  //         entryTime TimeReal,
+  //         specificConditionType SpecificConditionType
+  //     }
   message SpecificConditionRecord {
     // Time of the entry.
+    //
+    // ASN.1 Specification:
+    //
+    //     TimeReal ::= INTEGER (0..2^32-1)
     google.protobuf.Timestamp entry_time = 1;
+
     // Type of specific condition.
+    // See Data Dictionary, Section 2.154.
     datadictionary.v1.SpecificConditionType specific_condition_type = 2;
   }
 
@@ -133,18 +276,43 @@ message Activities {
   //
   // Corresponds to the `VuBorderCrossingRecord` data type.
   // See Data Dictionary, Section 2.203a.
+  //
+  // ASN.1 Specification:
+  //
+  //     VuBorderCrossingRecord ::= SEQUENCE {
+  //         cardNumberAndGenDriverSlot FullCardNumberAndGeneration,
+  //         cardNumberAndGenCodriverSlot FullCardNumberAndGeneration,
+  //         countryLeft NationNumeric,
+  //         countryEntered NationNumeric,
+  //         gnssPlaceAuthRecord GNSSPlaceAuthRecord,
+  //         vehicleOdometerValue OdometerShort
+  //     }
   message BorderCrossingRecord {
     // Card number of the driver.
+    // See Data Dictionary, Section 2.74.
     datadictionary.v1.FullCardNumber full_card_number = 1;
-    // datadictionary.v1.Generation of the driver's card.
+
+    // Generation of the driver's card.
+    // See Data Dictionary, Section 2.75.
     datadictionary.v1.Generation card_generation = 2;
+
     // Country the vehicle is leaving.
+    // See Data Dictionary, Section 2.101.
     datadictionary.v1.NationNumeric country_left = 3;
+
     // Country the vehicle is entering.
+    // See Data Dictionary, Section 2.101.
     datadictionary.v1.NationNumeric country_entered = 5;
+
     // Position of the vehicle at the time of crossing.
+    // See Data Dictionary, Section 2.79c.
     GnssRecord place_record = 7;
+
     // Odometer value at the time of crossing.
+    //
+    // ASN.1 Specification:
+    //
+    //     OdometerShort ::= INTEGER(0..9999999)
     int32 odometer_km = 8;
   }
 
@@ -152,7 +320,19 @@ message Activities {
   //
   // Corresponds to the `VuLoadUnloadRecord` data type.
   // See Data Dictionary, Section 2.208a.
+  //
+  // ASN.1 Specification:
+  //
+  //     VuLoadUnloadRecord ::= SEQUENCE {
+  //         timeStamp TimeReal,
+  //         operationType OperationType,
+  //         cardNumberAndGenDriverSlot FullCardNumberAndGeneration,
+  //         cardNumberAndGenCodriverSlot FullCardNumberAndGeneration,
+  //         gnssPlaceAuthRecord GNSSPlaceAuthRecord,
+  //         vehicleOdometerValue OdometerShort
+  //     }
   message LoadUnloadRecord {
+    // See Data Dictionary, Section 2.114a.
     enum OperationType {
       OPERATION_TYPE_UNSPECIFIED = 0;
       LOAD = 1;
@@ -160,50 +340,83 @@ message Activities {
       SIMULTANEOUS = 3;
     }
     // Card number of the driver.
+    // See Data Dictionary, Section 2.74.
     datadictionary.v1.FullCardNumber full_card_number = 1;
-    // datadictionary.v1.Generation of the driver's card.
+
+    // Generation of the driver's card.
+    // See Data Dictionary, Section 2.75.
     datadictionary.v1.Generation card_generation = 2;
+
     // Type of operation (load, unload, or both).
     OperationType operation_type = 3;
+
     // Position of the vehicle at the time of the operation.
+    // See Data Dictionary, Section 2.79c.
     GnssRecord place_record = 4;
+
     // Odometer value at the time of the operation.
+    //
+    // ASN.1 Specification:
+    //
+    //     OdometerShort ::= INTEGER(0..9999999)
     int32 odometer_km = 5;
   }
 
   // The generation of the vehicle unit, parsed from the raw transfer data.
-  //
   // Discriminator field.
   datadictionary.v1.Generation generation = 1;
 
   // The version of the interface, parsed from the raw transfer data.
-  //
   // Discriminator field.
   Version version = 2;
 
   // Date of the downloaded day.
+  //
+  // ASN.1 Specification:
+  //
+  //     TimeReal ::= INTEGER (0..2^32-1)
   google.protobuf.Timestamp date_of_day = 3;
+
   // Odometer value at midnight.
+  //
+  // ASN.1 Specification:
+  //
+  //     OdometerValueMidnight ::= OdometerShort ::= INTEGER(0..9999999)
   int32 odometer_midnight_km = 4;
+
   // Card insertion and withdrawal data.
+  // Corresponds to `VuCardIWData` (DD 2.176) or `VuCardIWRecordArray` (DD 2.178).
   repeated CardIWRecord card_iw_data = 5;
+
   // Driver activity changes.
+  // Corresponds to `VuActivityDailyData` (DD 2.170) or `VuActivityDailyRecordArray` (DD 2.171).
   repeated ActivityChange activity_changes = 6;
+
   // Daily work period place entries.
+  // Corresponds to `VuPlaceDailyWorkPeriodData` (DD 2.218) or `VuPlaceDailyWorkPeriodRecordArray` (DD 2.220).
   repeated PlaceRecord places = 7;
+
   // Specific conditions data.
+  // Corresponds to `VuSpecificConditionData` (DD 2.227) or `VuSpecificConditionRecordArray` (DD 2.228).
   repeated SpecificConditionRecord specific_conditions = 8;
 
   // Gen2+ Fields: GNSS positions recorded at 3-hour accumulated driving time intervals.
+  // Corresponds to `VuGNSSADRecordArray` (DD 2.204).
   repeated GnssRecord gnss_accumulated_driving = 9;
 
   // Gen2v2+ Fields: Border crossing records.
+  // Corresponds to `VuBorderCrossingRecordArray` (DD 2.203b).
   repeated BorderCrossingRecord border_crossings = 10;
+
   // Gen2v2+ Fields: Load/unload operation records.
+  // Corresponds to `VuLoadUnloadRecordArray` (DD 2.208b).
   repeated LoadUnloadRecord load_unload_operations = 11;
 
   // Signature for Gen1 data (RSA, 128 bytes).
+  // See Data Dictionary, Section 2.149.
   bytes signature_gen1 = 12;
+
   // Signature for Gen2 data (ECC).
+  // See Data Dictionary, Section 2.149.
   bytes signature_gen2 = 13;
 }
