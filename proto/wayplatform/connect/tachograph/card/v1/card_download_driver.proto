@@ -8,7 +8,7 @@ import "google/protobuf/timestamp.proto";
 //
 // Corresponds to the `LastCardDownload` data type.
 // See Data Dictionary, Section 2.89.
-message LastCardDownload {
+message CardDownloadDriver {
   google.protobuf.Timestamp timestamp = 1;
 
   // Digital signature for the EF_Card_Download file content.

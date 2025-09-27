@@ -7,6 +7,6 @@ package wayplatform.connect.tachograph.card.v1;
 //
 // Corresponds to the `NoOfCalibrationsSinceDownload` data type.
 // See Data Dictionary, Section 2.103.
-message NoOfCalibrationsSinceDownload {
+message CardDownloadWorkshop {
   int32 count = 1;
 }

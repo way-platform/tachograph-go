@@ -9,7 +9,7 @@ import "wayplatform/connect/tachograph/datadictionary/v1/calibration_purpose.pro
 //
 // Corresponds to the `WorkshopCardCalibrationData` data type.
 // See Data Dictionary, Section 2.235.
-message Calibrations {
+message Calibration {
   // Represents a single calibration record.
   //
   // Corresponds to the `WorkshopCardCalibrationRecord` data type.

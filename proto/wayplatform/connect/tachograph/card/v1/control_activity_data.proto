@@ -4,9 +4,10 @@ package wayplatform.connect.tachograph.card.v1;
 
 import "google/protobuf/timestamp.proto";
 
-// Represents data about the last control the driver was subject to.
+// Represents the content of the EF_Control_Activity_Data file, which logs details
+// about the last control session performed on the driver.
 //
-// Corresponds to the `CardControlActivityDataRecord` data type from EF_Control_Activity_Data.
+// Corresponds to the `CardControlActivityDataRecord` data type.
 // See Data Dictionary, Section 2.15.
 message ControlActivityData {
   // If true, the fields below are populated with parsed, semantic data.

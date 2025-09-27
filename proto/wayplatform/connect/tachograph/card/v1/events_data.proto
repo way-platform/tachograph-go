@@ -5,11 +5,12 @@ package wayplatform.connect.tachograph.card.v1;
 import "google/protobuf/timestamp.proto";
 import "wayplatform/connect/tachograph/datadictionary/v1/event_fault_type.proto";
 
-// Represents event data from a tachograph card.
+// Represents the content of the EF_Events_Data file, which contains a log of
+// events related to the tachograph system.
 //
 // Corresponds to the `CardEventData` data type.
 // See Data Dictionary, Section 2.19.
-message EventData {
+message EventsData {
   // Represents a single event record.
   //
   // Corresponds to the `CardEventRecord` data type.

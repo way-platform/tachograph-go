@@ -2,7 +2,6 @@ edition = "2023";
 
 package wayplatform.connect.tachograph.card.v1;
 
-import "wayplatform/connect/tachograph/card/v1/access_condition.proto";
 import "wayplatform/connect/tachograph/card/v1/dedicated_file_type.proto";
 import "wayplatform/connect/tachograph/card/v1/elementary_file_type.proto";
 import "wayplatform/connect/tachograph/card/v1/file_type.proto";
@@ -21,8 +20,4 @@ message FileDescriptor {
   bool conditional = 5;
   // Short File Identifier (if applicable).
   int32 sfid = 6;
-  // Access condition for Read and Select operations.
-  AccessCondition read = 7;
-  // Access condition for Update operations.
-  AccessCondition update = 8;
 }

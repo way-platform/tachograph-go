@@ -8,7 +8,7 @@ import "google/protobuf/timestamp.proto";
 //
 // Corresponds to the `WorkshopCardCalibrationAddData` data type.
 // See Data Dictionary, Section 2.234b.
-message CalibrationsAddData {
+message CalibrationAddData {
   // Represents a single additional data record for a calibration.
   //
   // Corresponds to the `WorkshopCardCalibrationAddDataRecord` data type.

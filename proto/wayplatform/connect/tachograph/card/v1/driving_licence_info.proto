@@ -2,9 +2,10 @@ edition = "2023";
 
 package wayplatform.connect.tachograph.card.v1;
 
-// Represents the card holder's driving licence information.
+// Represents the content of the EF_Driving_Licence_Info file, which contains the
+// card holder's driving licence information.
 //
-// Corresponds to the `CardDrivingLicenceInformation` data type from EF_Driving_Licence_Info.
+// Corresponds to the `CardDrivingLicenceInformation` data type.
 // See Data Dictionary, Section 2.18.
 message DrivingLicenceInfo {
   // Authority that issued the driving licence.

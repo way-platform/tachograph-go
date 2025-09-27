@@ -2,18 +2,99 @@ edition = "2023";
 
 package wayplatform.connect.tachograph.card.v1;
 
-import "wayplatform/connect/tachograph/card/v1/card_identification.proto";
+import "google/protobuf/timestamp.proto";
 import "wayplatform/connect/tachograph/card/v1/card_type.proto";
-import "wayplatform/connect/tachograph/card/v1/company_card_holder_identification.proto";
-import "wayplatform/connect/tachograph/card/v1/control_card_holder_identification.proto";
-import "wayplatform/connect/tachograph/card/v1/driver_card_holder_identification.proto";
-import "wayplatform/connect/tachograph/card/v1/workshop_card_holder_identification.proto";
 
-// Represents the data structure of EF_Identification, which varies by card type.
-// See regulation document Appendix 2, Section 4.2.1, 4.3.1, 4.4.1, 4.5.1.
+// Represents data from EF_Identification, which contains identification data for
+// the card and its holder. The structure of the holder identification part varies
+// by card type.
+//
+// As specified in regulation document Appendix 2, Section 4.2.1 (Driver),
+// 4.3.1 (Workshop), 4.4.1 (Control), and 4.5.1 (Company).
 message Identification {
+  // Represents card identification data.
+  //
+  // Corresponds to the `CardIdentification` data type.
+  // See Data Dictionary, Section 2.24.
+  message Card {
+    // See Data Dictionary, Section 2.24, `cardIssuingMemberState`.
+    string card_issuing_member_state = 1;
+    // See Data Dictionary, Section 2.24, `cardNumber`.
+    string card_number = 2;
+    // See Data Dictionary, Section 2.24, `cardIssuingAuthorityName`.
+    string card_issuing_authority_name = 3;
+    // See Data Dictionary, Section 2.24, `cardIssueDate`.
+    google.protobuf.Timestamp card_issue_date = 4;
+    // See Data Dictionary, Section 2.24, `cardValidityBegin`.
+    google.protobuf.Timestamp card_validity_begin = 5;
+    // See Data Dictionary, Section 2.24, `cardExpiryDate`.
+    google.protobuf.Timestamp card_expiry_date = 6;
+  }
+
+  // Represents the identification of the driver card holder.
+  //
+  // Corresponds to the `DriverCardHolderIdentification` data type.
+  // See Data Dictionary, Section 2.62.
+  message DriverCardHolder {
+    // Corresponds to `holderSurname`.
+    string card_holder_surname = 1;
+    // Corresponds to `holderFirstNames`.
+    string card_holder_first_names = 2;
+    // See Data Dictionary, Section 2.62, `cardHolderBirthDate`.
+    google.protobuf.Timestamp card_holder_birth_date = 3;
+    // See Data Dictionary, Section 2.62, `cardHolderPreferredLanguage`.
+    string card_holder_preferred_language = 4;
+  }
+
+  // Represents the identification of the workshop card holder.
+  //
+  // Corresponds to the `WorkshopCardHolderIdentification` data type.
+  // See Data Dictionary, Section 2.237.
+  message WorkshopCardHolder {
+    // See Data Dictionary, Section 2.237, `workshopName`.
+    string workshop_name = 1;
+    // See Data Dictionary, Section 2.237, `workshopAddress`.
+    string workshop_address = 2;
+    // Corresponds to `holderSurname`.
+    string card_holder_surname = 3;
+    // Corresponds to `holderFirstNames`.
+    string card_holder_first_names = 4;
+    // See Data Dictionary, Section 2.237, `cardHolderPreferredLanguage`.
+    string card_holder_preferred_language = 5;
+  }
+
+  // Represents the identification of the control card holder.
+  //
+  // Corresponds to the `ControlCardHolderIdentification` data type.
+  // See Data Dictionary, Section 2.52.
+  message ControlCardHolder {
+    // See Data Dictionary, Section 2.52, `controlBodyName`.
+    string control_body_name = 1;
+    // See Data Dictionary, Section 2.52, `controlBodyAddress`.
+    string control_body_address = 2;
+    // Corresponds to `holderSurname`.
+    string card_holder_surname = 3;
+    // Corresponds to `holderFirstNames`.
+    string card_holder_first_names = 4;
+    // See Data Dictionary, Section 2.52, `cardHolderPreferredLanguage`.
+    string card_holder_preferred_language = 5;
+  }
+
+  // Represents the identification of the company card holder.
+  //
+  // Corresponds to the `CompanyCardHolderIdentification` data type.
+  // See Data Dictionary, Section 2.49.
+  message CompanyCardHolder {
+    // See Data Dictionary, Section 2.49, `companyName`.
+    string company_name = 1;
+    // See Data Dictionary, Section 2.49, `companyAddress`.
+    string company_address = 2;
+    // See Data Dictionary, Section 2.49, `cardHolderPreferredLanguage`.
+    string card_holder_preferred_language = 3;
+  }
+
   // The common card identification part.
-  CardIdentification card_identification = 1;
+  Card card = 1;
 
   // The type of card this identification belongs to. This determines which
   // of the following holder identification fields is populated.
@@ -21,19 +102,19 @@ message Identification {
 
   // Holder identification for a driver card.
   // Populated only if card_type is DRIVER_CARD.
-  DriverCardHolderIdentification driver_card_holder_identification = 3;
+  DriverCardHolder driver_card_holder = 3;
 
   // Holder identification for a workshop card.
   // Populated only if card_type is WORKSHOP_CARD.
-  WorkshopCardHolderIdentification workshop_card_holder_identification = 4;
+  WorkshopCardHolder workshop_card_holder = 4;
 
   // Holder identification for a control card.
   // Populated only if card_type is CONTROL_CARD.
-  ControlCardHolderIdentification control_card_holder_identification = 5;
+  ControlCardHolder control_card_holder = 5;
 
   // Holder identification for a company card.
   // Populated only if card_type is COMPANY_CARD.
-  CompanyCardHolderIdentification company_card_holder_identification = 6;
+  CompanyCardHolder company_card_holder = 6;
 
   // Digital signature for the EF_Identification file content.
   bytes signature = 7;

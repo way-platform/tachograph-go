@@ -4,10 +4,11 @@ package wayplatform.connect.tachograph.card.v1;
 
 import "google/protobuf/timestamp.proto";
 
-// Represents authentication status for daily work period places.
+// Represents the content of the EF_Places_Authentication file, which contains
+// authentication statuses for daily work period places.
 //
-// Corresponds to the `CardPlaceAuthDailyWorkPeriod` data type from EF_Places_Authentication.
-// See Data Dictionary, Section 2.26a.
+// The file structure is specified in Appendix 2, Section 4.2.2.
+// The data type `CardPlaceAuthDailyWorkPeriod` is specified in the Data Dictionary, Section 2.26a.
 message PlacesAuthentication {
   // Represents the authentication status for a single place record.
   //

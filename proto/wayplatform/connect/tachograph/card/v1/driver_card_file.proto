@@ -4,21 +4,21 @@ package wayplatform.connect.tachograph.card.v1;
 
 import "wayplatform/connect/tachograph/card/v1/application_identification_v2.proto";
 import "wayplatform/connect/tachograph/card/v1/border_crossings.proto";
-import "wayplatform/connect/tachograph/card/v1/card_icc_identification.proto";
+import "wayplatform/connect/tachograph/card/v1/icc.proto";
 import "wayplatform/connect/tachograph/card/v1/certificates.proto";
-import "wayplatform/connect/tachograph/card/v1/chip_identification.proto";
+import "wayplatform/connect/tachograph/card/v1/ic.proto";
 import "wayplatform/connect/tachograph/card/v1/control_activity_data.proto";
 import "wayplatform/connect/tachograph/card/v1/current_usage.proto";
 import "wayplatform/connect/tachograph/card/v1/driver_activity_data.proto";
 import "wayplatform/connect/tachograph/card/v1/driver_card_application_identification.proto";
 import "wayplatform/connect/tachograph/card/v1/driver_card_holder_identification.proto";
 import "wayplatform/connect/tachograph/card/v1/driving_licence_info.proto";
-import "wayplatform/connect/tachograph/card/v1/event_data.proto";
-import "wayplatform/connect/tachograph/card/v1/fault_data.proto";
+import "wayplatform/connect/tachograph/card/v1/events_data.proto";
+import "wayplatform/connect/tachograph/card/v1/faults_data.proto";
 import "wayplatform/connect/tachograph/card/v1/gnss_places.proto";
 import "wayplatform/connect/tachograph/card/v1/gnss_places_authentication.proto";
 import "wayplatform/connect/tachograph/card/v1/identification.proto";
-import "wayplatform/connect/tachograph/card/v1/last_card_download.proto";
+import "wayplatform/connect/tachograph/card/v1/card_download_driver.proto";
 import "wayplatform/connect/tachograph/card/v1/load_type_entries.proto";
 import "wayplatform/connect/tachograph/card/v1/load_unload_operations.proto";
 import "wayplatform/connect/tachograph/card/v1/places.proto";
@@ -35,10 +35,10 @@ import "wayplatform/connect/tachograph/card/v1/vehicles_used.proto";
 // See regulation document Appendix 2, Section 4.2.
 message DriverCardFile {
   // Data from EF_ICC (Integrated Circuit Card Identification).
-  IccIdentification icc = 1;
+  Icc icc = 1;
 
   // Data from EF_IC (Integrated Circuit Identification).
-  ChipIdentification ic = 2;
+  Ic ic = 2;
 
   // Data from EF_Application_Identification.
   DriverCardApplicationIdentification application_identification = 3;
@@ -50,10 +50,10 @@ message DriverCardFile {
   DrivingLicenceInfo driving_licence_info = 6;
 
   // Data from EF_Events_Data.
-  EventData events_data = 7;
+  EventsData events_data = 7;
 
   // Data from EF_Faults_Data.
-  FaultData faults_data = 8;
+  FaultsData faults_data = 8;
 
   // Data from EF_Driver_Activity_Data.
   DriverActivityData driver_activity_data = 9;
@@ -74,7 +74,7 @@ message DriverCardFile {
   SpecificConditions specific_conditions = 14;
 
   // Data from EF_Card_Download.
-  LastCardDownload last_card_download = 15;
+  CardDownloadDriver card_download_driver = 15;
 
   // --- Gen2 Specific Fields ---
 

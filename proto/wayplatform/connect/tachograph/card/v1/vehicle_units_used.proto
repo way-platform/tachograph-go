@@ -4,10 +4,11 @@ package wayplatform.connect.tachograph.card.v1;
 
 import "google/protobuf/timestamp.proto";
 
-// Represents data about the vehicle units used by the card holder.
+// Represents the content of the EF_VehicleUnits_Used file, which contains data
+// about the vehicle units used by the card holder.
 //
-// Corresponds to the `CardVehicleUnitsUsed` data type from EF_VehicleUnits_Used.
-// See Data Dictionary, Section 2.40.
+// The file structure is specified in Appendix 2, Section 4.2.2.
+// The data type `CardVehicleUnitsUsed` is specified in the Data Dictionary, Section 2.40.
 message VehicleUnitsUsed {
   // Represents a record for a single vehicle unit that was used.
   //

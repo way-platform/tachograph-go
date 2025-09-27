@@ -4,9 +4,10 @@ package wayplatform.connect.tachograph.card.v1;
 
 import "google/protobuf/timestamp.proto";
 
-// Represents data about the actual usage of the card.
+// Represents the content of the EF_Current_Usage file, which contains data
+// about the actual usage of the card.
 //
-// Corresponds to the `CardCurrentUse` data type from EF_Current_Usage.
+// Corresponds to the `CardCurrentUse` data type.
 // See Data Dictionary, Section 2.16.
 message CurrentUsage {
   // Time when the card was inserted for the current session.

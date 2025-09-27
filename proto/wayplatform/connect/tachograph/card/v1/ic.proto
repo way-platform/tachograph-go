@@ -2,11 +2,12 @@ edition = "2023";
 
 package wayplatform.connect.tachograph.card.v1;
 
-// Represents Integrated Circuit chip identification data.
+// Represents the content of the EF_IC file, which contains identification data
+// for the integrated circuit chip.
 //
-// Corresponds to the `CardChipIdentification` data type from EF_IC.
+// Corresponds to the `CardChipIdentification` data type.
 // See Data Dictionary, Section 2.13.
-message ChipIdentification {
+message Ic {
   // See Data Dictionary, Section 2.13, `icSerialNumber`.
   string ic_serial_number = 1;
 
