@@ -31,7 +31,7 @@ const (
 //
 // The data type `CardIccIdentification` is specified in the Data Dictionary, Section 2.23.
 //
-// ASN.1 Specification:
+// ASN.1 Definition:
 //
 //	CardIccIdentification ::= SEQUENCE {
 //	    clockStop OCTET STRING (SIZE(1)),
@@ -231,35 +231,39 @@ type Icc_builder struct {
 
 	// The Clockstop mode.
 	//
-	// ASN.1 Specification:
+	// See Data Dictionary, Section 2.23, `clockStop`.
+	// ASN.1 Definition:
 	//
-	//	clockStop OCTET STRING (SIZE(1))
+	//	OCTET STRING (SIZE(1))
 	ClockStop *int32
 	// The unique serial number of the IC card.
 	//
-	// ASN.1 Specification:
-	//
-	//	ExtendedSerialNumber ::= SEQUENCE { ... }
+	// See Data Dictionary, Section 2.72, `ExtendedSerialNumber`.
 	CardExtendedSerialNumber *v1.ExtendedSerialNumber
 	// The type approval number of the card.
 	//
-	// ASN.1 Specification:
+	// See Data Dictionary, Section 2.11, `CardApprovalNumber`.
+	// ASN.1 Definition:
 	//
 	//	CardApprovalNumber ::= IA5String (SIZE (8))
 	CardApprovalNumber *string
 	// The ID of the card personaliser.
 	//
-	// ASN.1 Specification:
+	// See Data Dictionary, Section 2.94, `ManufacturerCode`.
+	// ASN.1 Definition:
 	//
 	//	ManufacturerCode ::= INTEGER(0..255)
 	CardPersonaliserId *int32
 	// Information about the IC embedder and assembler.
+	//
+	// See Data Dictionary, Section 2.65, `EmbedderIcAssemblerId`.
 	EmbedderIcAssemblerId *Icc_EmbedderIcAssemblerId
 	// The Identifier of the IC on the card and its manufacturer.
 	//
-	// ASN.1 Specification:
+	// See Data Dictionary, Section 2.23, `icIdentifier`.
+	// ASN.1 Definition:
 	//
-	//	icIdentifier OCTET STRING (SIZE(2))
+	//	OCTET STRING (SIZE(2))
 	IcIdentifier []byte
 }
 
@@ -292,7 +296,7 @@ func (b0 Icc_builder) Build() *Icc {
 //
 // The data type `EmbedderIcAssemblerId` is specified in the Data Dictionary, Section 2.65.
 //
-// ASN.1 Specification:
+// ASN.1 Definition:
 //
 //	EmbedderIcAssemblerId ::= SEQUENCE {
 //	    countryCode IA5String(SIZE(2)),
@@ -417,10 +421,25 @@ type Icc_EmbedderIcAssemblerId_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
 	// 2-letter country code of the module embedder.
+	//
+	// See Data Dictionary, Section 2.65, `countryCode`.
+	// ASN.1 Definition:
+	//
+	//	IA5String(SIZE(2))
 	CountryCode *string
 	// 2-character code identifying the module embedder.
+	//
+	// See Data Dictionary, Section 2.65, `moduleEmbedder`.
+	// ASN.1 Definition:
+	//
+	//	IA5String(SIZE(2))
 	ModuleEmbedder *string
 	// Manufacturer-specific information.
+	//
+	// See Data Dictionary, Section 2.65, `manufacturerInformation`.
+	// ASN.1 Definition:
+	//
+	//	INTEGER(0..255)
 	ManufacturerInformation *int32
 }
 

@@ -12,16 +12,26 @@ package wayplatform.connect.tachograph.card.v1;
 //
 // The data type `CardChipIdentification` is specified in the Data Dictionary, Section 2.13.
 //
-// ASN.1 Specification:
+// ASN.1 Definition:
 //
 //     CardChipIdentification ::= SEQUENCE {
 //         icSerialNumber OCTET STRING (SIZE(4)),
 //         icManufacturingReferences OCTET STRING (SIZE(4))
 //     }
 message Ic {
+  // The serial number of the integrated circuit.
+  //
   // See Data Dictionary, Section 2.13, `icSerialNumber`.
+  // ASN.1 Definition:
+  //
+  //     OCTET STRING (SIZE(4))
   string ic_serial_number = 1;
 
+  // The manufacturing references of the integrated circuit.
+  //
   // See Data Dictionary, Section 2.13, `icManufacturingReferences`.
+  // ASN.1 Definition:
+  //
+  //     OCTET STRING (SIZE(4))
   string ic_manufacturing_references = 2;
 }

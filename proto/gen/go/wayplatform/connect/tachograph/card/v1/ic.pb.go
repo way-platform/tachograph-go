@@ -30,7 +30,7 @@ const (
 //
 // The data type `CardChipIdentification` is specified in the Data Dictionary, Section 2.13.
 //
-// ASN.1 Specification:
+// ASN.1 Definition:
 //
 //	CardChipIdentification ::= SEQUENCE {
 //	    icSerialNumber OCTET STRING (SIZE(4)),
@@ -128,9 +128,19 @@ func (x *Ic) ClearIcManufacturingReferences() {
 type Ic_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
+	// The serial number of the integrated circuit.
+	//
 	// See Data Dictionary, Section 2.13, `icSerialNumber`.
+	// ASN.1 Definition:
+	//
+	//	OCTET STRING (SIZE(4))
 	IcSerialNumber *string
+	// The manufacturing references of the integrated circuit.
+	//
 	// See Data Dictionary, Section 2.13, `icManufacturingReferences`.
+	// ASN.1 Definition:
+	//
+	//	OCTET STRING (SIZE(4))
 	IcManufacturingReferences *string
 }
 

@@ -108,11 +108,16 @@ func appendExtendedSerialNumber(dst []byte, esn *datadictionaryv1.ExtendedSerial
 	// First 4 bytes: serial number (big-endian)
 	binary.BigEndian.PutUint32(serialBytes[0:4], esn.GetSerialNumber())
 
-	// Next 2 bytes: month/year BCD
-	monthYear := esn.GetMonthYear()
-	if len(monthYear) >= 2 {
-		serialBytes[4] = monthYear[0]
-		serialBytes[5] = monthYear[1]
+	// Next 2 bytes: month/year BCD (MMYY format)
+	month := esn.GetMonth()
+	year := esn.GetYear()
+	if month > 0 && year > 0 {
+		// Convert 4-digit year to 2-digit year
+		year2digit := year % 100
+		// Create MMYY as 4-digit integer, then encode as BCD in 2 bytes
+		monthYear := int(month*100 + year2digit)
+		serialBytes[4] = byte((monthYear/1000)%10<<4 | (monthYear/100)%10)
+		serialBytes[5] = byte((monthYear/10)%10<<4 | monthYear%10)
 	}
 
 	// Next byte: equipment type (converted to protocol value)

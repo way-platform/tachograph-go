@@ -34,6 +34,8 @@ var file_wayplatform_connect_tachograph_card_v1_file_structure_proto_extTypes = 
 
 // Extension fields to descriptorpb.EnumValueOptions.
 var (
+	// A descriptor for the file system structure associated with a card type.
+	//
 	// optional wayplatform.connect.tachograph.card.v1.FileDescriptor file_structure = 50302;
 	E_FileStructure = &file_wayplatform_connect_tachograph_card_v1_file_structure_proto_extTypes[0]
 )

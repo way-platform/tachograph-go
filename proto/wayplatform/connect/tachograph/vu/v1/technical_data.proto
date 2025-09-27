@@ -17,36 +17,16 @@ import "wayplatform/connect/tachograph/vu/v1/versioning.proto";
 //
 // This message corresponds to the data defined in the regulation document:
 // Appendix 7, Section 2.2.6.6: "Positive Response Transfer Data Technical Data".
-//
-// TREP 0x05 (Gen1):
-//
-//     ├─VuIdentification
-//     ├─SensorPaired
-//     ├─VuCalibrationData
-//     └─Signature
-//
-// TREP 0x25 (Gen2v1) & 0x35 (Gen2v2):
-//
-//     ├─VuIdentificationRecordArray
-//     ├─VuSensorPairedRecordArray
-//     ├─VuSensorExternalGNSSCoupledRecordArray
-//     ├─VuCalibrationRecordArray
-//     ├─VuCardRecordArray
-//     ├─VuITSConsentRecordArray
-//     ├─VuPowerSupplyInterruptionRecordArray
-//     └─SignatureRecordArray
-//
 message TechnicalData {
   // The generation of the vehicle unit, parsed from the raw transfer data.
-  // Discriminator field.
+  // This is a discriminator field used for parsing.
   datadictionary.v1.Generation generation = 1;
 
   // Represents the identification data of the vehicle unit.
   //
-  // Corresponds to the `VuIdentification` data type.
-  // See Data Dictionary, Section 2.205.
+  // See Data Dictionary, Section 2.205, `VuIdentification`.
   //
-  // ASN.1 Specification:
+  // ASN.1 Definition:
   //
   //     VuIdentification ::= SEQUENCE {
   //         vuManufacturerName VuManufacturerName,
@@ -60,10 +40,9 @@ message TechnicalData {
   message VuIdentification {
     // Represents the software identification of the vehicle unit.
     //
-    // Corresponds to the `VuSoftwareIdentification` data type.
-    // See Data Dictionary, Section 2.225.
+    // See Data Dictionary, Section 2.225, `VuSoftwareIdentification`.
     //
-    // ASN.1 Specification:
+    // ASN.1 Definition:
     //
     //     VuSoftwareIdentification ::= SEQUENCE {
     //         vuSoftwareVersion VuSoftwareVersion,
@@ -72,14 +51,16 @@ message TechnicalData {
     message VuSoftwareIdentification {
       // The software version of the VU.
       //
-      // ASN.1 Specification:
+      // See Data Dictionary, Section 2.226, `VuSoftwareVersion`.
+      // ASN.1 Definition:
       //
-      //     VuSoftwareVersion ::= IA5String(SIZE(4))
+      //     VuSoftwareVersion ::= OCTET STRING (SIZE(4))
       string software_version = 1;
 
       // The installation date of the software.
       //
-      // ASN.1 Specification:
+      // See Data Dictionary, Section 2.224, `VuSoftInstallationDate`.
+      // ASN.1 Definition:
       //
       //     VuSoftInstallationDate ::= TimeReal ::= INTEGER (0..2^32-1)
       google.protobuf.Timestamp software_installation_date = 2;
@@ -87,27 +68,31 @@ message TechnicalData {
 
     // The name of the VU manufacturer.
     //
-    // ASN.1 Specification:
+    // See Data Dictionary, Section 2.210, `VuManufacturerName`.
+    // ASN.1 Definition:
     //
-    //     VuManufacturerName ::= Name ::= IA5String(SIZE(35))
+    //     VuManufacturerName ::= Name
     string manufacturer_name = 1;
 
     // The address of the VU manufacturer.
     //
-    // ASN.1 Specification:
+    // See Data Dictionary, Section 2.209, `VuManufacturerAddress`.
+    // ASN.1 Definition:
     //
-    //     VuManufacturerAddress ::= Address ::= IA5String(SIZE(35))
+    //     VuManufacturerAddress ::= Address
     string manufacturer_address = 2;
 
     // The part number of the VU.
     //
-    // ASN.1 Specification:
+    // See Data Dictionary, Section 2.217, `VuPartNumber`.
+    // ASN.1 Definition:
     //
     //     VuPartNumber ::= IA5String(SIZE(16))
     string part_number = 3;
 
     // The serial number of the VU.
-    // See Data Dictionary, Section 2.223 and 2.72.
+    //
+    // See Data Dictionary, Section 2.223, `VuSerialNumber`.
     datadictionary.v1.ExtendedSerialNumber serial_number = 4;
 
     // The software identification of the VU.
@@ -115,14 +100,16 @@ message TechnicalData {
 
     // The manufacturing date of the VU.
     //
-    // ASN.1 Specification:
+    // See Data Dictionary, Section 2.211, `VuManufacturingDate`.
+    // ASN.1 Definition:
     //
     //     VuManufacturingDate ::= TimeReal ::= INTEGER (0..2^32-1)
     google.protobuf.Timestamp manufacturing_date = 6;
 
     // The approval number of the VU.
     //
-    // ASN.1 Specification:
+    // See Data Dictionary, Section 2.172, `VuApprovalNumber`.
+    // ASN.1 Definition:
     //
     //     VuApprovalNumber ::= IA5String(SIZE(8)) or IA5String(SIZE(16))
     string approval_number = 7;
@@ -130,10 +117,9 @@ message TechnicalData {
 
   // Represents a paired motion sensor record.
   //
-  // Corresponds to the `SensorPairedRecord` data type.
-  // See Data Dictionary, Section 2.145.
+  // See Data Dictionary, Section 2.145, `SensorPairedRecord`.
   //
-  // ASN.1 Specification:
+  // ASN.1 Definition:
   //
   //     SensorPairedRecord ::= SEQUENCE {
   //         sensorSerialNumber SensorSerialNumber,
@@ -142,19 +128,22 @@ message TechnicalData {
   //     }
   message PairedSensor {
     // The serial number of the motion sensor.
-    // See Data Dictionary, Section 2.148 and 2.72.
+    //
+    // See Data Dictionary, Section 2.148, `SensorSerialNumber`.
     datadictionary.v1.ExtendedSerialNumber serial_number = 1;
 
     // The approval number of the motion sensor.
     //
-    // ASN.1 Specification:
+    // See Data Dictionary, Section 2.131, `SensorApprovalNumber`.
+    // ASN.1 Definition:
     //
     //     SensorApprovalNumber ::= IA5String(SIZE(8)) or IA5String(SIZE(16))
     string approval_number = 2;
 
     // The date the sensor was paired.
     //
-    // ASN.1 Specification:
+    // See Data Dictionary, Section 2.146, `SensorPairingDate`.
+    // ASN.1 Definition:
     //
     //     SensorPairingDate ::= TimeReal ::= INTEGER (0..2^32-1)
     google.protobuf.Timestamp pairing_date = 3;
@@ -162,10 +151,9 @@ message TechnicalData {
 
   // Represents a coupled external GNSS facility record.
   //
-  // Corresponds to the `SensorExternalGNSSCoupledRecord` data type.
-  // See Data Dictionary, Section 2.133.
+  // See Data Dictionary, Section 2.133, `SensorExternalGNSSCoupledRecord`.
   //
-  // ASN.1 Specification:
+  // ASN.1 Definition:
   //
   //     SensorExternalGNSSCoupledRecord ::= SEQUENCE {
   //         sensorSerialNumber SensorGNSSSerialNumber,
@@ -174,19 +162,22 @@ message TechnicalData {
   //     }
   message CoupledGnss {
     // The serial number of the external GNSS.
-    // See Data Dictionary, Section 2.139 and 2.72.
+    //
+    // See Data Dictionary, Section 2.139, `SensorGNSSSerialNumber`.
     datadictionary.v1.ExtendedSerialNumber serial_number = 1;
 
     // The approval number of the external GNSS.
     //
-    // ASN.1 Specification:
+    // See Data Dictionary, Section 2.132, `SensorExternalGNSSApprovalNumber`.
+    // ASN.1 Definition:
     //
     //     SensorExternalGNSSApprovalNumber ::= IA5String(SIZE(16))
     string approval_number = 2;
 
     // The date the GNSS was coupled.
     //
-    // ASN.1 Specification:
+    // See Data Dictionary, Section 2.138, `SensorGNSSCouplingDate`.
+    // ASN.1 Definition:
     //
     //     SensorGNSSCouplingDate ::= TimeReal ::= INTEGER (0..2^32-1)
     google.protobuf.Timestamp coupling_date = 3;
@@ -194,116 +185,132 @@ message TechnicalData {
 
   // Represents a calibration record.
   //
-  // Corresponds to the `VuCalibrationRecord` data type.
-  // See Data Dictionary, Section 2.174.
+  // See Data Dictionary, Section 2.174, `VuCalibrationRecord`.
   message CalibrationRecord {
     // The purpose of the calibration.
-    // See Data Dictionary, Section 2.8.
+    //
+    // See Data Dictionary, Section 2.8, `CalibrationPurpose`.
     datadictionary.v1.CalibrationPurpose purpose = 1;
     int32 unrecognized_purpose = 2;
 
     // The name of the workshop.
     //
-    // ASN.1 Specification:
+    // See Data Dictionary, Section 2.99, `Name`.
+    // ASN.1 Definition:
     //
-    //     Name ::= IA5String(SIZE(35))
+    //     Name ::= SEQUENCE { codePage INTEGER(0..255), name OCTET STRING (SIZE(36)) }
     string workshop_name = 3;
 
     // The address of the workshop.
     //
-    // ASN.1 Specification:
+    // See Data Dictionary, Section 2.2, `Address`.
+    // ASN.1 Definition:
     //
-    //     Address ::= IA5String(SIZE(35))
+    //     Address ::= SEQUENCE { codePage INTEGER(0..255), address OCTET STRING (SIZE(36)) }
     string workshop_address = 4;
 
     // The card number of the workshop.
-    // See Data Dictionary, Section 2.73.
+    //
+    // See Data Dictionary, Section 2.73, `FullCardNumber`.
     datadictionary.v1.FullCardNumber workshop_card_number = 5;
 
     // The expiry date of the workshop card.
     //
-    // ASN.1 Specification:
+    // See Data Dictionary, Section 2.57, `Datef`.
+    // ASN.1 Definition:
     //
-    //     Datef ::= BCDString(SIZE(4))
+    //     Datef ::= OCTET STRING (SIZE(4))
     google.protobuf.Timestamp workshop_card_expiry_date = 6;
 
     // The Vehicle Identification Number.
     //
-    // ASN.1 Specification:
+    // See Data Dictionary, Section 2.164, `VehicleIdentificationNumber`.
+    // ASN.1 Definition:
     //
     //     VehicleIdentificationNumber ::= IA5String(SIZE(17))
     string vin = 7;
 
     // The vehicle registration identifier.
-    // See Data Dictionary, Section 2.166.
+    //
+    // See Data Dictionary, Section 2.166, `VehicleRegistrationIdentification`.
     datadictionary.v1.VehicleRegistrationIdentification vehicle_registration = 8;
 
     // The vehicle characteristic constant.
     //
-    // ASN.1 Specification:
+    // See Data Dictionary, Section 2.239, `W-VehicleCharacteristicConstant`.
+    // ASN.1 Definition:
     //
     //     W-VehicleCharacteristicConstant ::= INTEGER(0..65535)
     int32 w_vehicle_characteristic_constant = 9;
 
     // The constant of the recording equipment.
     //
-    // ASN.1 Specification:
+    // See Data Dictionary, Section 2.85, `K-ConstantOfRecordingEquipment`.
+    // ASN.1 Definition:
     //
     //     K-ConstantOfRecordingEquipment ::= INTEGER(0..65535)
     int32 k_constant_of_recording_equipment = 10;
 
     // The tyre circumference in mm.
     //
-    // ASN.1 Specification:
+    // See Data Dictionary, Section 2.91, `L-TyreCircumference`.
+    // ASN.1 Definition:
     //
     //     L-TyreCircumference ::= INTEGER(0..65535)
     int32 l_tyre_circumference_mm = 11;
 
     // The tyre size designation.
     //
-    // ASN.1 Specification:
+    // See Data Dictionary, Section 2.163, `TyreSize`.
+    // ASN.1 Definition:
     //
     //     TyreSize ::= IA5String(SIZE(15))
     string tyre_size = 12;
 
     // The authorised speed in km/h.
     //
-    // ASN.1 Specification:
+    // See Data Dictionary, Section 2.156, `SpeedAuthorised`.
+    // ASN.1 Definition:
     //
     //     SpeedAuthorised ::= INTEGER(0..255)
     int32 authorised_speed_kmh = 13;
 
     // The odometer value before calibration in km.
     //
-    // ASN.1 Specification:
+    // See Data Dictionary, Section 2.113, `OdometerShort`.
+    // ASN.1 Definition:
     //
-    //     OdometerShort ::= INTEGER(0..9999999)
+    //     OdometerShort ::= INTEGER(0..999999)
     int32 old_odometer_value_km = 14;
 
     // The odometer value after calibration in km.
     //
-    // ASN.1 Specification:
+    // See Data Dictionary, Section 2.113, `OdometerShort`.
+    // ASN.1 Definition:
     //
-    //     OdometerShort ::= INTEGER(0..9999999)
+    //     OdometerShort ::= INTEGER(0..999999)
     int32 new_odometer_value_km = 15;
 
     // The time value before calibration.
     //
-    // ASN.1 Specification:
+    // See Data Dictionary, Section 2.162, `TimeReal`.
+    // ASN.1 Definition:
     //
     //     TimeReal ::= INTEGER (0..2^32-1)
     google.protobuf.Timestamp old_time_value = 16;
 
     // The time value after calibration.
     //
-    // ASN.1 Specification:
+    // See Data Dictionary, Section 2.162, `TimeReal`.
+    // ASN.1 Definition:
     //
     //     TimeReal ::= INTEGER (0..2^32-1)
     google.protobuf.Timestamp new_time_value = 17;
 
     // The date of the next calibration.
     //
-    // ASN.1 Specification:
+    // See Data Dictionary, Section 2.162, `TimeReal`.
+    // ASN.1 Definition:
     //
     //     TimeReal ::= INTEGER (0..2^32-1)
     google.protobuf.Timestamp next_calibration_date = 18;
@@ -311,10 +318,9 @@ message TechnicalData {
 
   // Represents a record of a card used in the VU.
   //
-  // Corresponds to the `VuCardRecord` data type.
-  // See Data Dictionary, Section 2.179.
+  // See Data Dictionary, Section 2.179, `VuCardRecord`.
   //
-  // ASN.1 Specification:
+  // ASN.1 Definition:
   //
   //     VuCardRecord ::= SEQUENCE {
   //         cardNumberAndGenerationInformation FullCardNumberAndGeneration,
@@ -324,28 +330,30 @@ message TechnicalData {
   //     }
   message CardRecord {
     // The full card number.
-    // See Data Dictionary, Section 2.74.
+    //
+    // See Data Dictionary, Section 2.74, `FullCardNumberAndGeneration`.
     datadictionary.v1.FullCardNumber full_card_number = 1;
 
     // The structure version of the card.
     //
-    // ASN.1 Specification:
+    // See Data Dictionary, Section 2.36, `CardStructureVersion`.
+    // ASN.1 Definition:
     //
     //     CardStructureVersion ::= OCTET STRING (SIZE (2))
     bytes card_structure_version = 2;
 
     // The type of the card.
-    // See Data Dictionary, Section 2.67.
+    //
+    // See Data Dictionary, Section 2.67, `EquipmentType`.
     datadictionary.v1.EquipmentType card_type = 3;
     int32 unrecognized_card_type = 4;
   }
 
   // Represents a record of ITS consent status for a card.
   //
-  // Corresponds to the `VuITSConsentRecord` data type.
-  // See Data Dictionary, Section 2.207.
+  // See Data Dictionary, Section 2.207, `VuITSConsentRecord`.
   //
-  // ASN.1 Specification:
+  // ASN.1 Definition:
   //
   //     VuITSConsentRecord ::= SEQUENCE {
   //         cardNumberAndGen FullCardNumberAndGeneration,
@@ -353,27 +361,33 @@ message TechnicalData {
   //     }
   message ItsConsentRecord {
     // The full card number.
-    // See Data Dictionary, Section 2.74.
+    //
+    // See Data Dictionary, Section 2.74, `FullCardNumberAndGeneration`.
     datadictionary.v1.FullCardNumber full_card_number = 1;
 
     // The consent status for ITS data provision.
+    //
+    // ASN.1 Definition:
+    //
+    //     BOOLEAN
     int32 consent_status = 2;
   }
 
   // Represents a record of a power supply interruption.
   //
-  // Corresponds to the `VuPowerSupplyInterruptionRecord` data type.
-  // See Data Dictionary, Section 2.240.
+  // See Data Dictionary, Section 2.240, `VuPowerSupplyInterruptionRecord`.
   message PowerSupplyInterruptionRecord {
     // The timestamp of the interruption.
     //
-    // ASN.1 Specification:
+    // See Data Dictionary, Section 2.162, `TimeReal`.
+    // ASN.1 Definition:
     //
     //     TimeReal ::= INTEGER (0..2^32-1)
     google.protobuf.Timestamp timestamp = 1;
 
     // The slot number of the card affected.
-    // See Data Dictionary, Section 2.33.
+    //
+    // See Data Dictionary, Section 2.33, `CardSlotNumber`.
     datadictionary.v1.CardSlotNumber card_slot_number = 2;
     int32 unrecognized_card_slot_number = 3;
   }
@@ -411,10 +425,15 @@ message TechnicalData {
   repeated PowerSupplyInterruptionRecord power_supply_interruptions = 9;
 
   // Signature for Gen1 data (RSA, 128 bytes).
-  // See Data Dictionary, Section 2.149.
+  //
+  // See Data Dictionary, Section 2.149, `Signature`.
+  // ASN.1 Definition:
+  //
+  //     Signature ::= OCTET STRING (SIZE (128))
   bytes signature_gen1 = 10;
 
   // Signature for Gen2 data (ECC).
-  // See Data Dictionary, Section 2.149.
+  //
+  // See Data Dictionary, Section 2.149, `Signature`.
   bytes signature_gen2 = 11;
 }

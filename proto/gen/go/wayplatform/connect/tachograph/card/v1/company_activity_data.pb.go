@@ -121,8 +121,15 @@ type CompanyActivityData_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
 	// Index of the last updated record.
+	// Corresponds to `companyPointerNewestRecord`.
+	//
+	// See Data Dictionary, Section 2.46.
+	// ASN.1 Specification:
+	//
+	//	INTEGER(0..NoOfCompanyActivityRecords-1)
 	NewestRecordIndex *int32
 	// The set of company activity records.
+	// Corresponds to `companyActivityRecords`.
 	Records []*CompanyActivityData_Record
 }
 
@@ -318,6 +325,7 @@ type CompanyActivityData_Record_builder struct {
 
 	// The type of the company activity.
 	//
+	// See Data Dictionary, Section 2.47, `CompanyActivityType`.
 	// ASN.1 Specification:
 	//
 	//	CompanyActivityType ::= INTEGER {
@@ -326,30 +334,35 @@ type CompanyActivityData_Record_builder struct {
 	CompanyActivityType *int32
 	// The date and time of the company activity.
 	//
+	// See Data Dictionary, Section 2.162, `TimeReal`.
 	// ASN.1 Specification:
 	//
 	//	TimeReal ::= INTEGER (0..2^32-1)
 	CompanyActivityTime *timestamppb.Timestamp
 	// The full card number of the card that was downloaded, if applicable.
 	//
+	// See Data Dictionary, Section 2.73, `FullCardNumber`.
 	// ASN.1 Specification:
 	//
 	//	FullCardNumber ::= SEQUENCE { ... }
 	CardNumberInformation *v1.FullCardNumber
 	// The vehicle registration of the vehicle downloaded or locked in/out.
 	//
+	// See Data Dictionary, Section 2.166, `VehicleRegistrationIdentification`.
 	// ASN.1 Specification:
 	//
 	//	VehicleRegistrationIdentification ::= SEQUENCE { ... }
 	VehicleRegistrationInformation *v1.VehicleRegistrationIdentification
 	// The beginning of the downloaded period from the VU, if applicable.
 	//
+	// See Data Dictionary, Section 2.162, `TimeReal`.
 	// ASN.1 Specification:
 	//
 	//	TimeReal ::= INTEGER (0..2^32-1)
 	DownloadPeriodBegin *timestamppb.Timestamp
 	// The end of the downloaded period from the VU, if applicable.
 	//
+	// See Data Dictionary, Section 2.162, `TimeReal`.
 	// ASN.1 Specification:
 	//
 	//	TimeReal ::= INTEGER (0..2^32-1)

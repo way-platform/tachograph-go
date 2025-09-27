@@ -29,8 +29,23 @@ func unmarshalIcc(data []byte) (*cardv1.Icc, error) {
 		serialNum := binary.BigEndian.Uint32(serialBytes[0:4])
 		esn.SetSerialNumber(serialNum)
 
-		// Next 2 bytes: month/year BCD
-		esn.SetMonthYear(serialBytes[4:6])
+		// Next 2 bytes: month/year BCD (MMYY format)
+		if len(serialBytes) > 5 {
+			// Decode BCD month/year as 4-digit number MMYY
+			monthYearInt, err := bcdBytesToInt(serialBytes[4:6])
+			if err == nil && monthYearInt > 0 {
+				month := int32(monthYearInt / 100)
+				year := int32(monthYearInt % 100)
+
+				// Convert 2-digit year to 4-digit (assuming 20xx for years 00-99)
+				if year >= 0 && year <= 99 {
+					year += 2000
+				}
+
+				esn.SetMonth(month)
+				esn.SetYear(year)
+			}
+		}
 
 		// Next byte: equipment type (convert from protocol value)
 		if len(serialBytes) > 6 {

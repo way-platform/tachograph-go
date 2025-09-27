@@ -6,11 +6,18 @@ import "wayplatform/connect/tachograph/card/v1/file_structure.proto";
 
 // CardType represents the type of a tachograph card, which determines its specific
 // file layout and data access rights as defined in the EU regulations.
+//
+// See Data Dictionary, Section 2.67, `EquipmentType`.
+//
+// ASN.1 Specification:
+//
+//     EquipmentType ::= INTEGER (0..255)
 enum CardType {
   // Unspecified card type.
   CARD_TYPE_UNSPECIFIED = 0;
 
   // A driver card.
+  // Corresponds to EquipmentType value 1.
   DRIVER_CARD = 1 [(file_structure) = {
     type: MF
     files: [
@@ -215,6 +222,7 @@ enum CardType {
   }];
 
   // A workshop card.
+  // Corresponds to EquipmentType value 2.
   WORKSHOP_CARD = 2 [(file_structure) = {
     type: MF
     files: [
@@ -432,6 +440,7 @@ enum CardType {
   }];
 
   // A control card.
+  // Corresponds to EquipmentType value 3.
   CONTROL_CARD = 3 [(file_structure) = {
     type: MF
     files: [
@@ -527,6 +536,7 @@ enum CardType {
   }];
 
   // A company card.
+  // Corresponds to EquipmentType value 4.
   COMPANY_CARD = 4 [(file_structure) = {
     type: MF
     files: [
@@ -622,6 +632,8 @@ enum CardType {
   }];
 
   // A simulated smart card for an external GNSS facility.
+  // The numeric value corresponds to EquipmentType 5 (Manufacturing Card),
+  // but it is used to represent a GNSS facility (EquipmentType 8).
   GNSS_SIMULATED_CARD = 5 [(file_structure) = {
     type: MF
     files: [

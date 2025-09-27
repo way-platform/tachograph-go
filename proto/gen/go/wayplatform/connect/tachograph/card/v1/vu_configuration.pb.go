@@ -23,6 +23,8 @@ const (
 // Represents data from EF_VU_Configuration.
 //
 // This file contains configuration data stored on the card by a Vehicle Unit.
+// The specific structure of this data is not standardized in the main regulation
+// and may be manufacturer-specific. Therefore, it is represented as raw bytes.
 type VuConfiguration struct {
 	state                  protoimpl.MessageState `protogen:"opaque.v1"`
 	xxx_hidden_Data        []byte                 `protobuf:"bytes,1,opt,name=data"`
@@ -87,7 +89,7 @@ func (x *VuConfiguration) ClearData() {
 type VuConfiguration_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
-	// The raw configuration data.
+	// The raw configuration data from the EF_VU_Configuration file.
 	Data []byte
 }
 

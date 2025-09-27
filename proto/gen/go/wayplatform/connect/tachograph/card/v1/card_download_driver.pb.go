@@ -120,8 +120,19 @@ func (x *CardDownloadDriver) ClearSignature() {
 type CardDownloadDriver_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
+	// The timestamp of the last card download.
+	//
+	// See Data Dictionary, Section 2.89, `LastCardDownload` and Section 2.162, `TimeReal`.
+	// ASN.1 Specification:
+	//
+	//	TimeReal ::= INTEGER (0..2^32-1)
 	Timestamp *timestamppb.Timestamp
 	// Digital signature for the EF_Card_Download file content.
+	//
+	// See Data Dictionary, Section 2.149, `Signature`.
+	// ASN.1 Specification:
+	//
+	//	Signature ::= OCTET STRING (SIZE(128 for Gen1))
 	Signature []byte
 }
 

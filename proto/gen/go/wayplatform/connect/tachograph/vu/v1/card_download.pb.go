@@ -20,7 +20,14 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// Represents the payload of a card download transfer from a Vehicle Unit.
+// Represents the payload of a card download transfer from a Vehicle Unit (TREP 0x06).
+//
+// This transfer type is used when the VU acts as an intermediary to download data
+// from a tachograph card inserted into one of its slots.
+// See Appendix 7, Section 2.2.2.9.
+//
+// This message does not correspond to a specific data type in the Data Dictionary,
+// as it contains the raw byte stream of a downloaded card file.
 type CardDownload struct {
 	state                  protoimpl.MessageState `protogen:"opaque.v1"`
 	xxx_hidden_RawData     []byte                 `protobuf:"bytes,1,opt,name=raw_data,json=rawData"`
@@ -85,7 +92,16 @@ func (x *CardDownload) ClearRawData() {
 type CardDownload_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
-	// The raw binary content of the downloaded card file, in its own TLV format.
+	// The raw binary content of the downloaded card file.
+	//
+	// This payload is a complete card file dump, structured in the card's own
+	// TLV format. It is NOT a VU data structure. This data can be parsed
+	// using the `wayplatform.connect.tachograph.card.v1.RawCardFile` message.
+	//
+	// See Data Dictionary, Section 2.159, `TachographPayload`.
+	// ASN.1 Definition:
+	//
+	//	TachographPayload ::= OCTET STRING
 	RawData []byte
 }
 

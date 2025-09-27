@@ -15,7 +15,7 @@ import "wayplatform/connect/tachograph/datadictionary/v1/specific_condition_type
 //
 // The data type `SpecificConditions` is specified in the Data Dictionary, Section 2.153.
 //
-// ASN.1 Specification:
+// ASN.1 Definition:
 //
 //     SpecificConditions ::= SET SIZE(NoOfSpecificConditionRecords) OF SpecificConditionRecord
 //
@@ -24,19 +24,25 @@ message SpecificConditions {
   //
   // The data type `SpecificConditionRecord` is specified in the Data Dictionary, Section 2.152.
   //
-  // ASN.1 Specification:
+  // ASN.1 Definition:
   //
   //     SpecificConditionRecord ::= SEQUENCE {
   //         entryTime TimeReal,
   //         specificConditionType SpecificConditionType
   //     }
   message Record {
-    // ASN.1 Type: TimeReal (see DD 2.162)
+    // The timestamp of the entry.
+    //
+    // See Data Dictionary, Section 2.162, `TimeReal`.
+    // ASN.1 Definition:
     //
     //     TimeReal ::= INTEGER (0..2^32-1)
     google.protobuf.Timestamp entry_time = 1;
 
-    // ASN.1 Type: SpecificConditionType (see DD 2.154)
+    // The type of the specific condition.
+    //
+    // See Data Dictionary, Section 2.154, `SpecificConditionType`.
+    // ASN.1 Definition:
     //
     //     SpecificConditionType ::= INTEGER {
     //         rfu(0),
@@ -45,11 +51,16 @@ message SpecificConditions {
     //         ferry-train-crossing(3)
     //     } (0..255)
     datadictionary.v1.SpecificConditionType specific_condition_type = 2;
-    
   }
 
+  // The set of specific condition records.
   repeated Record records = 1;
 
   // Digital signature for the EF_Specific_Conditions file content.
+  //
+  // See Data Dictionary, Section 2.149, `Signature`.
+  // ASN.1 Definition:
+  //
+  //     Signature ::= OCTET STRING (SIZE(128 for Gen1))
   bytes signature = 2;
 }

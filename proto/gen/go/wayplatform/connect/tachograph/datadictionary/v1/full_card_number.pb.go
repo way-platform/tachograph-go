@@ -159,9 +159,16 @@ type FullCardNumber_builder struct {
 	CardIssuingMemberState *int32
 	// The card number.
 	//
-	// ASN.1 Specification:
+	// See Data Dictionary, Section 2.26, `CardNumber`.
+	// ASN.1 Definition:
 	//
-	//	CardNumber ::= CHOICE { ... }
+	//	CardNumber ::= CHOICE {
+	//	    driverIdentification IA5String(SIZE(14)),
+	//	    ownerIdentification IA5String(SIZE(13)),
+	//	    cardConsecutiveIndex IA5String(SIZE(1)),
+	//	    cardReplacementIndex IA5String(SIZE(1)),
+	//	    cardRenewalIndex IA5String(SIZE(1))
+	//	}
 	CardNumber *string
 }
 

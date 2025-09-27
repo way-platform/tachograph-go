@@ -22,6 +22,7 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+// See Data Dictionary, Section 2.114a, `OperationType`.
 type Activities_LoadUnloadRecord_OperationType int32
 
 const (
@@ -366,34 +367,53 @@ type Activities_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
 	// The generation of the vehicle unit, parsed from the raw transfer data.
-	//
-	// Discriminator field.
+	// This is a discriminator field used for parsing.
 	Generation *v1.Generation
 	// The version of the interface, parsed from the raw transfer data.
-	//
-	// Discriminator field.
+	// This is a discriminator field used for parsing.
 	Version *Version
 	// Date of the downloaded day.
+	//
+	// See Data Dictionary, Section 2.162, `TimeReal`.
+	// ASN.1 Definition:
+	//
+	//	TimeReal ::= INTEGER (0..2^32-1)
 	DateOfDay *timestamppb.Timestamp
-	// Odometer value at midnight.
+	// Odometer value at midnight in kilometers.
+	//
+	// See Data Dictionary, Section 2.114, `OdometerValueMidnight`.
+	// ASN.1 Definition:
+	//
+	//	OdometerValueMidnight ::= OdometerShort ::= INTEGER(0..999999)
 	OdometerMidnightKm *int32
 	// Card insertion and withdrawal data.
+	// Corresponds to `VuCardIWData` (DD 2.176) or `VuCardIWRecordArray` (DD 2.178).
 	CardIwData []*Activities_CardIWRecord
 	// Driver activity changes.
+	// Corresponds to `VuActivityDailyData` (DD 2.170) or `VuActivityDailyRecordArray` (DD 2.171).
 	ActivityChanges []*Activities_ActivityChange
 	// Daily work period place entries.
+	// Corresponds to `VuPlaceDailyWorkPeriodData` (DD 2.218) or `VuPlaceDailyWorkPeriodRecordArray` (DD 2.220).
 	Places []*Activities_PlaceRecord
 	// Specific conditions data.
+	// Corresponds to `VuSpecificConditionData` (DD 2.227) or `VuSpecificConditionRecordArray` (DD 2.228).
 	SpecificConditions []*Activities_SpecificConditionRecord
 	// Gen2+ Fields: GNSS positions recorded at 3-hour accumulated driving time intervals.
+	// Corresponds to `VuGNSSADRecordArray` (DD 2.204).
 	GnssAccumulatedDriving []*Activities_GnssRecord
 	// Gen2v2+ Fields: Border crossing records.
+	// Corresponds to `VuBorderCrossingRecordArray` (DD 2.203b).
 	BorderCrossings []*Activities_BorderCrossingRecord
 	// Gen2v2+ Fields: Load/unload operation records.
+	// Corresponds to `VuLoadUnloadRecordArray` (DD 2.208b).
 	LoadUnloadOperations []*Activities_LoadUnloadRecord
 	// Signature for Gen1 data (RSA, 128 bytes).
+	//
+	// See Data Dictionary, Section 2.149, `Signature`.
 	SignatureGen1 []byte
 	// Signature for Gen2 data (ECC).
+	//
+	// See Data Dictionary, Section 2.149, `Signature`.
 	SignatureGen2 []byte
 }
 
@@ -434,8 +454,24 @@ func (b0 Activities_builder) Build() *Activities {
 
 // Represents a card insertion and withdrawal record.
 //
-// Corresponds to the `VuCardIWRecord` data type.
-// See Data Dictionary, Section 2.177.
+// See Data Dictionary, Section 2.177, `VuCardIWRecord`.
+//
+// ASN.1 Definition (Gen1):
+//
+//	VuCardIWRecord ::= SEQUENCE {
+//	    cardHolderName HolderName,
+//	    fullCardNumber FullCardNumber,
+//	    cardExpiryDate Datef,
+//	    cardInsertionTime TimeReal,
+//	    vehicleOdometerValueAtInsertion OdometerShort,
+//	    cardSlotNumber CardSlotNumber,
+//	    cardWithdrawalTime TimeReal,
+//	    vehicleOdometerValueAtWithdrawal OdometerShort,
+//	    previousVehicleInfo PreviousVehicleInfo,
+//	    manualInputFlag ManualInputFlag
+//	}
+//
+// For Gen2, `fullCardNumber` is replaced by `fullCardNumberAndGeneration`.
 type Activities_CardIWRecord struct {
 	state                             protoimpl.MessageState                       `protogen:"opaque.v1"`
 	xxx_hidden_CardHolderName         *string                                      `protobuf:"bytes,1,opt,name=card_holder_name,json=cardHolderName"`
@@ -718,24 +754,58 @@ type Activities_CardIWRecord_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
 	// The name of the card holder.
+	// This is a simplification of the `HolderName` type.
+	//
+	// See Data Dictionary, Section 2.83, `HolderName`.
 	CardHolderName *string
 	// The full card number of the inserted card.
+	//
+	// See Data Dictionary, Section 2.73, `FullCardNumber` and 2.74, `FullCardNumberAndGeneration`.
 	FullCardNumber *v1.FullCardNumber
 	// The expiry date of the card.
+	//
+	// See Data Dictionary, Section 2.57, `Datef`.
+	// ASN.1 Definition:
+	//
+	//	Datef ::= OCTET STRING(SIZE(4))
 	CardExpiryDate *timestamppb.Timestamp
 	// The time the card was inserted.
+	//
+	// See Data Dictionary, Section 2.162, `TimeReal`.
+	// ASN.1 Definition:
+	//
+	//	TimeReal ::= INTEGER (0..2^32-1)
 	CardInsertionTime *timestamppb.Timestamp
-	// The odometer value at the time of card insertion.
+	// The odometer value at the time of card insertion in kilometers.
+	//
+	// See Data Dictionary, Section 2.113, `OdometerShort`.
+	// ASN.1 Definition:
+	//
+	//	OdometerShort ::= INTEGER(0..999999)
 	OdometerAtInsertionKm *int32
 	// The slot the card was inserted into.
+	//
+	// See Data Dictionary, Section 2.33, `CardSlotNumber`.
 	CardSlotNumber *v1.CardSlotNumber
 	// The time the card was withdrawn.
+	//
+	// See Data Dictionary, Section 2.162, `TimeReal`.
+	// ASN.1 Definition:
+	//
+	//	TimeReal ::= INTEGER (0..2^32-1)
 	CardWithdrawalTime *timestamppb.Timestamp
-	// The odometer value at the time of card withdrawal.
+	// The odometer value at the time of card withdrawal in kilometers.
+	//
+	// See Data Dictionary, Section 2.113, `OdometerShort`.
+	// ASN.1 Definition:
+	//
+	//	OdometerShort ::= INTEGER(0..999999)
 	OdometerAtWithdrawalKm *int32
 	// Information about the previous vehicle used.
 	PreviousVehicleInfo *Activities_CardIWRecord_PreviousVehicleInfo
 	// Indicates if manual entries were made.
+	//
+	// See Data Dictionary, Section 2.93, `ManualInputFlag`.
 	ManualInputFlag *bool
 }
 
@@ -772,9 +842,13 @@ func (b0 Activities_CardIWRecord_builder) Build() *Activities_CardIWRecord {
 }
 
 // Represents a change in driver activity, driving status, or card status.
+// This is a parsed representation of the `ActivityChangeInfo` bitfield.
 //
-// Corresponds to the `ActivityChangeInfo` data type.
-// See Data Dictionary, Section 2.1.
+// See Data Dictionary, Section 2.1, `ActivityChangeInfo`.
+//
+// ASN.1 Definition:
+//
+//	ActivityChangeInfo ::= OCTET STRING (SIZE (2))
 type Activities_ActivityChange struct {
 	state                          protoimpl.MessageState `protogen:"opaque.v1"`
 	xxx_hidden_Slot                v1.CardSlotNumber      `protobuf:"varint,1,opt,name=slot,enum=wayplatform.connect.tachograph.datadictionary.v1.CardSlotNumber"`
@@ -983,8 +1057,7 @@ func (b0 Activities_ActivityChange_builder) Build() *Activities_ActivityChange {
 
 // Represents a place record for the beginning or end of a daily work period.
 //
-// Corresponds to the `PlaceRecord` data type.
-// See Data Dictionary, Section 2.117.
+// See Data Dictionary, Section 2.117, `PlaceRecord` and 2.116a, `PlaceAuthRecord`.
 type Activities_PlaceRecord struct {
 	state                  protoimpl.MessageState      `protogen:"opaque.v1"`
 	xxx_hidden_EntryTime   *timestamppb.Timestamp      `protobuf:"bytes,1,opt,name=entry_time,json=entryTime"`
@@ -1149,14 +1222,36 @@ type Activities_PlaceRecord_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
 	// Time of the entry.
+	//
+	// See Data Dictionary, Section 2.162, `TimeReal`.
+	// ASN.1 Definition:
+	//
+	//	TimeReal ::= INTEGER (0..2^32-1)
 	EntryTime *timestamppb.Timestamp
 	// Type of entry (begin or end).
+	//
+	// See Data Dictionary, Section 2.66, `EntryTypeDailyWorkPeriod`.
 	EntryType *v1.EntryTypeDailyWorkPeriod
 	// Country code.
+	//
+	// See Data Dictionary, Section 2.101, `NationNumeric`.
+	// ASN.1 Definition:
+	//
+	//	NationNumeric ::= INTEGER (0..255)
 	Country *v1.NationNumeric
 	// Region code.
+	//
+	// See Data Dictionary, Section 2.122, `RegionNumeric`.
+	// ASN.1 Definition:
+	//
+	//	RegionNumeric ::= OCTET STRING (SIZE (1))
 	Region *int32
-	// Odometer value at the time of entry.
+	// Odometer value at the time of entry in kilometers.
+	//
+	// See Data Dictionary, Section 2.113, `OdometerShort`.
+	// ASN.1 Definition:
+	//
+	//	OdometerShort ::= INTEGER(0..999999)
 	OdometerKm *int32
 }
 
@@ -1186,7 +1281,7 @@ func (b0 Activities_PlaceRecord_builder) Build() *Activities_PlaceRecord {
 
 // Represents a GNSS position record.
 //
-// Corresponds to `GNSSPlaceRecord` (DD 2.80) or `GNSSPlaceAuthRecord` (DD 2.79c).
+// See Data Dictionary, Section 2.80, `GNSSPlaceRecord` and 2.79c, `GNSSPlaceAuthRecord`.
 type Activities_GnssRecord struct {
 	state                           protoimpl.MessageState          `protogen:"opaque.v1"`
 	xxx_hidden_Timestamp            *timestamppb.Timestamp          `protobuf:"bytes,1,opt,name=timestamp"`
@@ -1349,14 +1444,27 @@ type Activities_GnssRecord_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
 	// Timestamp of the position fix.
+	//
+	// See Data Dictionary, Section 2.162, `TimeReal`.
+	// ASN.1 Definition:
+	//
+	//	TimeReal ::= INTEGER (0..2^32-1)
 	Timestamp *timestamppb.Timestamp
 	// Accuracy of the GNSS fix.
+	//
+	// See Data Dictionary, Section 2.77, `GNSSAccuracy`.
+	// ASN.1 Definition:
+	//
+	//	GNSSAccuracy ::= OCTET STRING(SIZE(1))
 	GnssAccuracy *int32
-	// Longitude.
+	// Geographic coordinates of the position.
+	//
+	// See Data Dictionary, Section 2.76, `GeoCoordinates`.
 	Longitude *int32
-	// Latitude.
-	Latitude *int32
+	Latitude  *int32
 	// For Gen2v2+, indicates the authentication status of the position.
+	//
+	// See Data Dictionary, Section 2.117a, `PositionAuthenticationStatus`.
 	AuthenticationStatus *v1.PositionAuthenticationStatus
 }
 
@@ -1386,8 +1494,14 @@ func (b0 Activities_GnssRecord_builder) Build() *Activities_GnssRecord {
 
 // Represents a specific condition record (e.g., Ferry/Train crossing).
 //
-// Corresponds to the `SpecificConditionRecord` data type.
-// See Data Dictionary, Section 2.152.
+// See Data Dictionary, Section 2.152, `SpecificConditionRecord`.
+//
+// ASN.1 Definition:
+//
+//	SpecificConditionRecord ::= SEQUENCE {
+//	    entryTime TimeReal,
+//	    specificConditionType SpecificConditionType
+//	}
 type Activities_SpecificConditionRecord struct {
 	state                            protoimpl.MessageState   `protogen:"opaque.v1"`
 	xxx_hidden_EntryTime             *timestamppb.Timestamp   `protobuf:"bytes,1,opt,name=entry_time,json=entryTime"`
@@ -1475,8 +1589,15 @@ type Activities_SpecificConditionRecord_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
 	// Time of the entry.
+	//
+	// See Data Dictionary, Section 2.162, `TimeReal`.
+	// ASN.1 Definition:
+	//
+	//	TimeReal ::= INTEGER (0..2^32-1)
 	EntryTime *timestamppb.Timestamp
 	// Type of specific condition.
+	//
+	// See Data Dictionary, Section 2.154, `SpecificConditionType`.
 	SpecificConditionType *v1.SpecificConditionType
 }
 
@@ -1494,8 +1615,18 @@ func (b0 Activities_SpecificConditionRecord_builder) Build() *Activities_Specifi
 
 // Represents a border crossing record (Gen2v2+).
 //
-// Corresponds to the `VuBorderCrossingRecord` data type.
-// See Data Dictionary, Section 2.203a.
+// See Data Dictionary, Section 2.203a, `VuBorderCrossingRecord`.
+//
+// ASN.1 Definition:
+//
+//	VuBorderCrossingRecord ::= SEQUENCE {
+//	    cardNumberAndGenDriverSlot FullCardNumberAndGeneration,
+//	    cardNumberAndGenCodriverSlot FullCardNumberAndGeneration,
+//	    countryLeft NationNumeric,
+//	    countryEntered NationNumeric,
+//	    gnssPlaceAuthRecord GNSSPlaceAuthRecord,
+//	    vehicleOdometerValue OdometerShort
+//	}
 type Activities_BorderCrossingRecord struct {
 	state                     protoimpl.MessageState `protogen:"opaque.v1"`
 	xxx_hidden_FullCardNumber *v1.FullCardNumber     `protobuf:"bytes,1,opt,name=full_card_number,json=fullCardNumber"`
@@ -1685,16 +1816,31 @@ type Activities_BorderCrossingRecord_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
 	// Card number of the driver.
+	//
+	// See Data Dictionary, Section 2.74, `FullCardNumberAndGeneration`.
 	FullCardNumber *v1.FullCardNumber
-	// datadictionary.v1.Generation of the driver's card.
+	// Generation of the driver's card.
+	//
+	// See Data Dictionary, Section 2.75, `Generation`.
 	CardGeneration *v1.Generation
 	// Country the vehicle is leaving.
+	//
+	// See Data Dictionary, Section 2.101, `NationNumeric`.
 	CountryLeft *v1.NationNumeric
 	// Country the vehicle is entering.
+	//
+	// See Data Dictionary, Section 2.101, `NationNumeric`.
 	CountryEntered *v1.NationNumeric
 	// Position of the vehicle at the time of crossing.
+	//
+	// See Data Dictionary, Section 2.79c, `GNSSPlaceAuthRecord`.
 	PlaceRecord *Activities_GnssRecord
-	// Odometer value at the time of crossing.
+	// Odometer value at the time of crossing in kilometers.
+	//
+	// See Data Dictionary, Section 2.113, `OdometerShort`.
+	// ASN.1 Definition:
+	//
+	//	OdometerShort ::= INTEGER(0..999999)
 	OdometerKm *int32
 }
 
@@ -1725,8 +1871,18 @@ func (b0 Activities_BorderCrossingRecord_builder) Build() *Activities_BorderCros
 
 // Represents a load/unload operation record (Gen2v2+).
 //
-// Corresponds to the `VuLoadUnloadRecord` data type.
-// See Data Dictionary, Section 2.208a.
+// See Data Dictionary, Section 2.208a, `VuLoadUnloadRecord`.
+//
+// ASN.1 Definition:
+//
+//	VuLoadUnloadRecord ::= SEQUENCE {
+//	    timeStamp TimeReal,
+//	    operationType OperationType,
+//	    cardNumberAndGenDriverSlot FullCardNumberAndGeneration,
+//	    cardNumberAndGenCodriverSlot FullCardNumberAndGeneration,
+//	    gnssPlaceAuthRecord GNSSPlaceAuthRecord,
+//	    vehicleOdometerValue OdometerShort
+//	}
 type Activities_LoadUnloadRecord struct {
 	state                     protoimpl.MessageState                    `protogen:"opaque.v1"`
 	xxx_hidden_FullCardNumber *v1.FullCardNumber                        `protobuf:"bytes,1,opt,name=full_card_number,json=fullCardNumber"`
@@ -1889,14 +2045,25 @@ type Activities_LoadUnloadRecord_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
 	// Card number of the driver.
+	//
+	// See Data Dictionary, Section 2.74, `FullCardNumberAndGeneration`.
 	FullCardNumber *v1.FullCardNumber
-	// datadictionary.v1.Generation of the driver's card.
+	// Generation of the driver's card.
+	//
+	// See Data Dictionary, Section 2.75, `Generation`.
 	CardGeneration *v1.Generation
 	// Type of operation (load, unload, or both).
 	OperationType *Activities_LoadUnloadRecord_OperationType
 	// Position of the vehicle at the time of the operation.
+	//
+	// See Data Dictionary, Section 2.79c, `GNSSPlaceAuthRecord`.
 	PlaceRecord *Activities_GnssRecord
-	// Odometer value at the time of the operation.
+	// Odometer value at the time of the operation in kilometers.
+	//
+	// See Data Dictionary, Section 2.113, `OdometerShort`.
+	// ASN.1 Definition:
+	//
+	//	OdometerShort ::= INTEGER(0..999999)
 	OdometerKm *int32
 }
 
@@ -1923,8 +2090,16 @@ func (b0 Activities_LoadUnloadRecord_builder) Build() *Activities_LoadUnloadReco
 
 // Represents information about the previous vehicle used by the driver.
 //
-// Corresponds to the `PreviousVehicleInfo` data type.
-// See Data Dictionary, Section 2.118.
+// See Data Dictionary, Section 2.118, `PreviousVehicleInfo`.
+//
+// ASN.1 Definition (Gen1):
+//
+//	PreviousVehicleInfo ::= SEQUENCE {
+//	    vehicleRegistrationIdentification VehicleRegistrationIdentification,
+//	    cardWithdrawalTime TimeReal
+//	}
+//
+// For Gen2, `vuGeneration Generation` is added.
 type Activities_CardIWRecord_PreviousVehicleInfo struct {
 	state                          protoimpl.MessageState                `protogen:"opaque.v1"`
 	xxx_hidden_VehicleRegistration *v1.VehicleRegistrationIdentification `protobuf:"bytes,1,opt,name=vehicle_registration,json=vehicleRegistration"`
@@ -2006,8 +2181,15 @@ type Activities_CardIWRecord_PreviousVehicleInfo_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
 	// The registration of the previous vehicle.
+	//
+	// See Data Dictionary, Section 2.166, `VehicleRegistrationIdentification`.
 	VehicleRegistration *v1.VehicleRegistrationIdentification
 	// The time the card was withdrawn from the previous vehicle.
+	//
+	// See Data Dictionary, Section 2.162, `TimeReal`.
+	// ASN.1 Definition:
+	//
+	//	TimeReal ::= INTEGER (0..2^32-1)
 	CardWithdrawalTime *timestamppb.Timestamp
 }
 
@@ -2024,7 +2206,7 @@ var File_wayplatform_connect_tachograph_vu_v1_activities_proto protoreflect.File
 
 const file_wayplatform_connect_tachograph_vu_v1_activities_proto_rawDesc = "" +
 	"\n" +
-	"5wayplatform/connect/tachograph/vu/v1/activities.proto\x12$wayplatform.connect.tachograph.vu.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1aGwayplatform/connect/tachograph/datadictionary/v1/card_slot_number.proto\x1aLwayplatform/connect/tachograph/datadictionary/v1/driver_activity_value.proto\x1aEwayplatform/connect/tachograph/datadictionary/v1/driving_status.proto\x1aSwayplatform/connect/tachograph/datadictionary/v1/entry_type_daily_work_period.proto\x1aGwayplatform/connect/tachograph/datadictionary/v1/full_card_number.proto\x1aEwayplatform/connect/tachograph/datadictionary/v1/nation_numeric.proto\x1aUwayplatform/connect/tachograph/datadictionary/v1/position_authentication_status.proto\x1aNwayplatform/connect/tachograph/datadictionary/v1/specific_condition_type.proto\x1aZwayplatform/connect/tachograph/datadictionary/v1/vehicle_registration_identification.proto\x1aAwayplatform/connect/tachograph/datadictionary/v1/generation.proto\x1a5wayplatform/connect/tachograph/vu/v1/versioning.proto\"\xc3#\n" +
+	"5wayplatform/connect/tachograph/vu/v1/activities.proto\x12$wayplatform.connect.tachograph.vu.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1aGwayplatform/connect/tachograph/datadictionary/v1/card_slot_number.proto\x1aLwayplatform/connect/tachograph/datadictionary/v1/driver_activity_value.proto\x1aEwayplatform/connect/tachograph/datadictionary/v1/driving_status.proto\x1aSwayplatform/connect/tachograph/datadictionary/v1/entry_type_daily_work_period.proto\x1aGwayplatform/connect/tachograph/datadictionary/v1/full_card_number.proto\x1aAwayplatform/connect/tachograph/datadictionary/v1/generation.proto\x1aEwayplatform/connect/tachograph/datadictionary/v1/nation_numeric.proto\x1aUwayplatform/connect/tachograph/datadictionary/v1/position_authentication_status.proto\x1aNwayplatform/connect/tachograph/datadictionary/v1/specific_condition_type.proto\x1aZwayplatform/connect/tachograph/datadictionary/v1/vehicle_registration_identification.proto\x1a5wayplatform/connect/tachograph/vu/v1/versioning.proto\"\xc3#\n" +
 	"\n" +
 	"Activities\x12\\\n" +
 	"\n" +

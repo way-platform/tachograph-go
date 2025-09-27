@@ -20,7 +20,13 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// A raw card file.
+// Represents the low-level structure of a downloaded card file, containing a
+// sequence of raw Tag-Length-Value (TLV) records. This is the result of the
+// first parsing pass and is used as input for the second pass, which interprets
+// the `value` bytes into semantic messages.
+//
+// This message is part of the internal data model and does not correspond to a
+// specific data type in the Data Dictionary.
 type RawCardFile struct {
 	state              protoimpl.MessageState `protogen:"opaque.v1"`
 	xxx_hidden_Records *[]*RawCardFile_Record `protobuf:"bytes,1,rep,name=records"`
@@ -69,7 +75,7 @@ func (x *RawCardFile) SetRecords(v []*RawCardFile_Record) {
 type RawCardFile_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
-	// The TLV records of the raw card file.
+	// The sequence of TLV records from the downloaded file.
 	Records []*RawCardFile_Record
 }
 
@@ -277,17 +283,17 @@ func (x *RawCardFile_Record) ClearValue() {
 type RawCardFile_Record_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
-	// The tag of the TLV record.
+	// The tag of the TLV record, identifying the data type.
 	Tag *int32
-	// The file type, inferred from the tag.
+	// The elementary file type, inferred from the tag.
 	File *ElementaryFileType
-	// The application generation, inferred from the tag.
+	// The application generation (Gen1 or Gen2), inferred from the tag.
 	Generation *ApplicationGeneration
-	// The content type of the value, inferred from the tag.
+	// The content type of the value (data or signature), inferred from the tag.
 	ContentType *ContentType
-	// The length of the record value.
+	// The length of the record's value in bytes.
 	Length *int32
-	// The value of the record.
+	// The raw byte value of the record.
 	Value []byte
 }
 

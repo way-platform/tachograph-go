@@ -32,7 +32,7 @@ const (
 //
 // The data type `SpecificConditions` is specified in the Data Dictionary, Section 2.153.
 //
-// ASN.1 Specification:
+// ASN.1 Definition:
 //
 //	SpecificConditions ::= SET SIZE(NoOfSpecificConditionRecords) OF SpecificConditionRecord
 type SpecificConditions struct {
@@ -113,8 +113,14 @@ func (x *SpecificConditions) ClearSignature() {
 type SpecificConditions_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
+	// The set of specific condition records.
 	Records []*SpecificConditions_Record
 	// Digital signature for the EF_Specific_Conditions file content.
+	//
+	// See Data Dictionary, Section 2.149, `Signature`.
+	// ASN.1 Definition:
+	//
+	//	Signature ::= OCTET STRING (SIZE(128 for Gen1))
 	Signature []byte
 }
 
@@ -134,7 +140,7 @@ func (b0 SpecificConditions_builder) Build() *SpecificConditions {
 //
 // The data type `SpecificConditionRecord` is specified in the Data Dictionary, Section 2.152.
 //
-// ASN.1 Specification:
+// ASN.1 Definition:
 //
 //	SpecificConditionRecord ::= SEQUENCE {
 //	    entryTime TimeReal,
@@ -226,11 +232,17 @@ func (x *SpecificConditions_Record) ClearSpecificConditionType() {
 type SpecificConditions_Record_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
-	// ASN.1 Type: TimeReal (see DD 2.162)
+	// The timestamp of the entry.
+	//
+	// See Data Dictionary, Section 2.162, `TimeReal`.
+	// ASN.1 Definition:
 	//
 	//	TimeReal ::= INTEGER (0..2^32-1)
 	EntryTime *timestamppb.Timestamp
-	// ASN.1 Type: SpecificConditionType (see DD 2.154)
+	// The type of the specific condition.
+	//
+	// See Data Dictionary, Section 2.154, `SpecificConditionType`.
+	// ASN.1 Definition:
 	//
 	//	SpecificConditionType ::= INTEGER {
 	//	    rfu(0),

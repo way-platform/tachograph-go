@@ -113,8 +113,15 @@ type BorderCrossings_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
 	// Index of the last updated record.
+	// Corresponds to `borderCrossingPointerNewestRecord`.
+	//
+	// See Data Dictionary, Section 2.11a.
+	// ASN.1 Specification:
+	//
+	//	INTEGER (0..NoOfBorderCrossingRecords -1)
 	NewestRecordIndex *int32
 	// The set of border crossing records.
+	// Corresponds to `cardBorderCrossingRecords`.
 	Records []*BorderCrossings_Record
 }
 
@@ -276,13 +283,30 @@ func (x *BorderCrossings_Record) ClearVehicleOdometerKm() {
 type BorderCrossings_Record_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
-	// Country the vehicle is leaving. See DD Section 2.101 for `NationNumeric`.
+	// Country the vehicle is leaving.
+	//
+	// See Data Dictionary, Section 2.101, `NationNumeric`.
+	// ASN.1 Specification:
+	//
+	//	NationNumeric ::= INTEGER (0..255)
 	CountryLeft *int32
-	// Country the vehicle is entering. See DD Section 2.101 for `NationNumeric`.
+	// Country the vehicle is entering.
+	//
+	// See Data Dictionary, Section 2.101, `NationNumeric`.
+	// ASN.1 Specification:
+	//
+	//	NationNumeric ::= INTEGER (0..255)
 	CountryEntered *int32
 	// Authenticated position of the vehicle at the time of crossing.
+	//
+	// See Data Dictionary, Section 2.79c, `GNSSPlaceAuthRecord`.
 	GnssPlaceAuthRecord *GnssPlaceAuthRecord
-	// Odometer at the time of crossing. See DD Section 2.113 for `OdometerShort`.
+	// Odometer at the time of crossing, in kilometers.
+	//
+	// See Data Dictionary, Section 2.113, `OdometerShort`.
+	// ASN.1 Specification:
+	//
+	//	OdometerShort ::= INTEGER(0..999999)
 	VehicleOdometerKm *int32
 }
 

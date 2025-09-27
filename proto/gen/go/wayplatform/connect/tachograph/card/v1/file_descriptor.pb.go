@@ -21,6 +21,9 @@ const (
 )
 
 // Describes a file (MF, DF, or EF) in the card's file system hierarchy.
+// This message is used to model the file structure of a tachograph card as
+// specified in the regulation (e.g., Appendix 2) and does not correspond to a
+// specific data type in the Data Dictionary.
 type FileDescriptor struct {
 	state                  protoimpl.MessageState `protogen:"opaque.v1"`
 	xxx_hidden_Type        FileType               `protobuf:"varint,1,opt,name=type,enum=wayplatform.connect.tachograph.card.v1.FileType"`
@@ -28,7 +31,6 @@ type FileDescriptor struct {
 	xxx_hidden_Df          DedicatedFileType      `protobuf:"varint,3,opt,name=df,enum=wayplatform.connect.tachograph.card.v1.DedicatedFileType"`
 	xxx_hidden_Files       *[]*FileDescriptor     `protobuf:"bytes,4,rep,name=files"`
 	xxx_hidden_Conditional bool                   `protobuf:"varint,5,opt,name=conditional"`
-	xxx_hidden_Sfid        int32                  `protobuf:"varint,6,opt,name=sfid"`
 	XXX_raceDetectHookData protoimpl.RaceDetectHookData
 	XXX_presence           [1]uint32
 	unknownFields          protoimpl.UnknownFields
@@ -103,26 +105,19 @@ func (x *FileDescriptor) GetConditional() bool {
 	return false
 }
 
-func (x *FileDescriptor) GetSfid() int32 {
-	if x != nil {
-		return x.xxx_hidden_Sfid
-	}
-	return 0
-}
-
 func (x *FileDescriptor) SetType(v FileType) {
 	x.xxx_hidden_Type = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 6)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 5)
 }
 
 func (x *FileDescriptor) SetEf(v ElementaryFileType) {
 	x.xxx_hidden_Ef = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 6)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 5)
 }
 
 func (x *FileDescriptor) SetDf(v DedicatedFileType) {
 	x.xxx_hidden_Df = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 6)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 5)
 }
 
 func (x *FileDescriptor) SetFiles(v []*FileDescriptor) {
@@ -131,12 +126,7 @@ func (x *FileDescriptor) SetFiles(v []*FileDescriptor) {
 
 func (x *FileDescriptor) SetConditional(v bool) {
 	x.xxx_hidden_Conditional = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 4, 6)
-}
-
-func (x *FileDescriptor) SetSfid(v int32) {
-	x.xxx_hidden_Sfid = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 5, 6)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 4, 5)
 }
 
 func (x *FileDescriptor) HasType() bool {
@@ -167,13 +157,6 @@ func (x *FileDescriptor) HasConditional() bool {
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 4)
 }
 
-func (x *FileDescriptor) HasSfid() bool {
-	if x == nil {
-		return false
-	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 5)
-}
-
 func (x *FileDescriptor) ClearType() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 0)
 	x.xxx_hidden_Type = FileType_FILE_TYPE_UNSPECIFIED
@@ -194,26 +177,21 @@ func (x *FileDescriptor) ClearConditional() {
 	x.xxx_hidden_Conditional = false
 }
 
-func (x *FileDescriptor) ClearSfid() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 5)
-	x.xxx_hidden_Sfid = 0
-}
-
 type FileDescriptor_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
-	// The type of the file.
+	// The type of the file (MF, DF, or EF).
 	Type *FileType
-	// The type of the elementary file.
+	// The type of the elementary file (e.g., EF_ICC, EF_Identification).
+	// This is only populated if `type` is EF.
 	Ef *ElementaryFileType
-	// The type of the dedicated file.
+	// The type of the dedicated file (e.g., DF_TACHOGRAPH).
+	// This is only populated if `type` is DF.
 	Df *DedicatedFileType
-	// The files contained in the file.
+	// A list of files contained within this file (if it is a DF or MF).
 	Files []*FileDescriptor
-	// Indicates if the file is conditionally present.
+	// Indicates if the file is conditionally present on the card.
 	Conditional *bool
-	// Short File Identifier (if applicable).
-	Sfid *int32
 }
 
 func (b0 FileDescriptor_builder) Build() *FileDescriptor {
@@ -221,25 +199,21 @@ func (b0 FileDescriptor_builder) Build() *FileDescriptor {
 	b, x := &b0, m0
 	_, _ = b, x
 	if b.Type != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 6)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 5)
 		x.xxx_hidden_Type = *b.Type
 	}
 	if b.Ef != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 6)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 5)
 		x.xxx_hidden_Ef = *b.Ef
 	}
 	if b.Df != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 6)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 5)
 		x.xxx_hidden_Df = *b.Df
 	}
 	x.xxx_hidden_Files = &b.Files
 	if b.Conditional != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 4, 6)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 4, 5)
 		x.xxx_hidden_Conditional = *b.Conditional
-	}
-	if b.Sfid != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 5, 6)
-		x.xxx_hidden_Sfid = *b.Sfid
 	}
 	return m0
 }
@@ -248,14 +222,13 @@ var File_wayplatform_connect_tachograph_card_v1_file_descriptor_proto protorefle
 
 const file_wayplatform_connect_tachograph_card_v1_file_descriptor_proto_rawDesc = "" +
 	"\n" +
-	"<wayplatform/connect/tachograph/card/v1/file_descriptor.proto\x12&wayplatform.connect.tachograph.card.v1\x1a@wayplatform/connect/tachograph/card/v1/dedicated_file_type.proto\x1aAwayplatform/connect/tachograph/card/v1/elementary_file_type.proto\x1a6wayplatform/connect/tachograph/card/v1/file_type.proto\"\xf1\x02\n" +
+	"<wayplatform/connect/tachograph/card/v1/file_descriptor.proto\x12&wayplatform.connect.tachograph.card.v1\x1a@wayplatform/connect/tachograph/card/v1/dedicated_file_type.proto\x1aAwayplatform/connect/tachograph/card/v1/elementary_file_type.proto\x1a6wayplatform/connect/tachograph/card/v1/file_type.proto\"\xdd\x02\n" +
 	"\x0eFileDescriptor\x12D\n" +
 	"\x04type\x18\x01 \x01(\x0e20.wayplatform.connect.tachograph.card.v1.FileTypeR\x04type\x12J\n" +
 	"\x02ef\x18\x02 \x01(\x0e2:.wayplatform.connect.tachograph.card.v1.ElementaryFileTypeR\x02ef\x12I\n" +
 	"\x02df\x18\x03 \x01(\x0e29.wayplatform.connect.tachograph.card.v1.DedicatedFileTypeR\x02df\x12L\n" +
 	"\x05files\x18\x04 \x03(\v26.wayplatform.connect.tachograph.card.v1.FileDescriptorR\x05files\x12 \n" +
-	"\vconditional\x18\x05 \x01(\bR\vconditional\x12\x12\n" +
-	"\x04sfid\x18\x06 \x01(\x05R\x04sfidB\xe0\x02\n" +
+	"\vconditional\x18\x05 \x01(\bR\vconditionalB\xe0\x02\n" +
 	"*com.wayplatform.connect.tachograph.card.v1B\x13FileDescriptorProtoP\x01Z`github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1;cardv1\xa2\x02\x04WCTC\xaa\x02&Wayplatform.Connect.Tachograph.Card.V1\xca\x02&Wayplatform\\Connect\\Tachograph\\Card\\V1\xe2\x022Wayplatform\\Connect\\Tachograph\\Card\\V1\\GPBMetadata\xea\x02*Wayplatform::Connect::Tachograph::Card::V1b\beditionsp\xe8\a"
 
 var file_wayplatform_connect_tachograph_card_v1_file_descriptor_proto_msgTypes = make([]protoimpl.MessageInfo, 1)

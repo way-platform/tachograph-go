@@ -5,21 +5,56 @@ package wayplatform.connect.tachograph.card.v1;
 // Represents data from EF_Application_Identification_V2, which contains
 // additional capacity information for Gen2v2 cards.
 //
-// Corresponds to the `DriverCardApplicationIdentificationV2` data type.
-// See Data Dictionary, Section 2.61a.
+// This message corresponds to data from a driver card.
+// See Data Dictionary, Section 2.61a, `DriverCardApplicationIdentificationV2`.
+//
+// ASN.1 Specification:
+//
+//     DriverCardApplicationIdentificationV2 ::= SEQUENCE {
+//         lengthOfFollowingData LengthOfFollowingData,
+//         noOfBorderCrossingRecords NoOfBorderCrossingRecords,
+//         noOfLoadUnloadRecords NoOfLoadUnloadRecords,
+//         noOfLoadTypeEntryRecords NoOfLoadTypeEntryRecords,
+//         vuConfigurationLengthRange VuConfigurationLengthRange
+//     }
 message ApplicationIdentificationV2 {
-  // See Data Dictionary, Section 2.61a, `noOfBorderCrossingRecords`.
+  // The number of border crossing records the card can store.
+  //
+  // See Data Dictionary, Section 2.101a, `NoOfBorderCrossingRecords`.
+  // ASN.1 Specification:
+  //
+  //     NoOfBorderCrossingRecords ::= INTEGER (0..255)
   int32 border_crossing_records_count = 1;
 
-  // See Data Dictionary, Section 2.61a, `noOfLoadUnloadRecords`.
+  // The number of load/unload records the card can store.
+  //
+  // See Data Dictionary, Section 2.111a, `NoOfLoadUnloadRecords`.
+  // ASN.1 Specification:
+  //
+  //     NoOfLoadUnloadRecords ::= INTEGER (0..255)
   int32 load_unload_records_count = 2;
 
-  // See Data Dictionary, Section 2.61a, `noOfLoadTypeEntryRecords`.
+  // The number of load type entry records the card can store.
+  //
+  // See Data Dictionary, Section 2.112a, `NoOfLoadTypeEntryRecords`.
+  // ASN.1 Specification:
+  //
+  //     NoOfLoadTypeEntryRecords ::= INTEGER (0..255)
   int32 load_type_entry_records_count = 3;
 
-  // See Data Dictionary, Section 2.61a, `vuConfigurationLengthRange`.
+  // The number of bytes available to store VU configurations.
+  //
+  // See Data Dictionary, Section 2.185a, `VuConfigurationLengthRange`.
+  // ASN.1 Specification:
+  //
+  //     VuConfigurationLengthRange ::= INTEGER(0..2^16-1)
   int32 vu_configuration_length_range = 4;
 
   // Digital signature for the EF_Application_Identification_V2 file content.
+  //
+  // See Data Dictionary, Section 2.149, `Signature`.
+  // ASN.1 Specification:
+  //
+  //     Signature ::= OCTET STRING (SIZE(128 for Gen1))
   bytes signature = 5;
 }

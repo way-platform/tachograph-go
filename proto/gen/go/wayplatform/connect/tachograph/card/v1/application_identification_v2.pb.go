@@ -23,8 +23,18 @@ const (
 // Represents data from EF_Application_Identification_V2, which contains
 // additional capacity information for Gen2v2 cards.
 //
-// Corresponds to the `DriverCardApplicationIdentificationV2` data type.
-// See Data Dictionary, Section 2.61a.
+// This message corresponds to data from a driver card.
+// See Data Dictionary, Section 2.61a, `DriverCardApplicationIdentificationV2`.
+//
+// ASN.1 Specification:
+//
+//	DriverCardApplicationIdentificationV2 ::= SEQUENCE {
+//	    lengthOfFollowingData LengthOfFollowingData,
+//	    noOfBorderCrossingRecords NoOfBorderCrossingRecords,
+//	    noOfLoadUnloadRecords NoOfLoadUnloadRecords,
+//	    noOfLoadTypeEntryRecords NoOfLoadTypeEntryRecords,
+//	    vuConfigurationLengthRange VuConfigurationLengthRange
+//	}
 type ApplicationIdentificationV2 struct {
 	state                                 protoimpl.MessageState `protogen:"opaque.v1"`
 	xxx_hidden_BorderCrossingRecordsCount int32                  `protobuf:"varint,1,opt,name=border_crossing_records_count,json=borderCrossingRecordsCount"`
@@ -189,15 +199,40 @@ func (x *ApplicationIdentificationV2) ClearSignature() {
 type ApplicationIdentificationV2_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
-	// See Data Dictionary, Section 2.61a, `noOfBorderCrossingRecords`.
+	// The number of border crossing records the card can store.
+	//
+	// See Data Dictionary, Section 2.101a, `NoOfBorderCrossingRecords`.
+	// ASN.1 Specification:
+	//
+	//	NoOfBorderCrossingRecords ::= INTEGER (0..255)
 	BorderCrossingRecordsCount *int32
-	// See Data Dictionary, Section 2.61a, `noOfLoadUnloadRecords`.
+	// The number of load/unload records the card can store.
+	//
+	// See Data Dictionary, Section 2.111a, `NoOfLoadUnloadRecords`.
+	// ASN.1 Specification:
+	//
+	//	NoOfLoadUnloadRecords ::= INTEGER (0..255)
 	LoadUnloadRecordsCount *int32
-	// See Data Dictionary, Section 2.61a, `noOfLoadTypeEntryRecords`.
+	// The number of load type entry records the card can store.
+	//
+	// See Data Dictionary, Section 2.112a, `NoOfLoadTypeEntryRecords`.
+	// ASN.1 Specification:
+	//
+	//	NoOfLoadTypeEntryRecords ::= INTEGER (0..255)
 	LoadTypeEntryRecordsCount *int32
-	// See Data Dictionary, Section 2.61a, `vuConfigurationLengthRange`.
+	// The number of bytes available to store VU configurations.
+	//
+	// See Data Dictionary, Section 2.185a, `VuConfigurationLengthRange`.
+	// ASN.1 Specification:
+	//
+	//	VuConfigurationLengthRange ::= INTEGER(0..2^16-1)
 	VuConfigurationLengthRange *int32
 	// Digital signature for the EF_Application_Identification_V2 file content.
+	//
+	// See Data Dictionary, Section 2.149, `Signature`.
+	// ASN.1 Specification:
+	//
+	//	Signature ::= OCTET STRING (SIZE(128 for Gen1))
 	Signature []byte
 }
 

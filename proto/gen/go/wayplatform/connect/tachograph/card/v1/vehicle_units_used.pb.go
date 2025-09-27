@@ -31,7 +31,7 @@ const (
 //
 // The data type `CardVehicleUnitsUsed` is specified in the Data Dictionary, Section 2.40.
 //
-// ASN.1 Specification:
+// ASN.1 Definition:
 //
 //	CardVehicleUnitsUsed ::= SEQUENCE {
 //	    vehicleUnitPointerNewestRecord INTEGER(0..NoOfCardVehicleUnitRecords-1),
@@ -141,10 +141,22 @@ type VehicleUnitsUsed_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
 	// Index of the last updated vehicle unit record.
+	// Corresponds to `vehicleUnitPointerNewestRecord`.
+	//
+	// See Data Dictionary, Section 2.40.
+	// ASN.1 Definition:
+	//
+	//	INTEGER(0..NoOfCardVehicleUnitRecords-1)
 	VehicleUnitPointerNewestRecord *int32
 	// The set of records for vehicle units used.
+	// Corresponds to `cardVehicleUnitRecords`.
 	Records []*VehicleUnitsUsed_Record
 	// Digital signature for the EF_VehicleUnits_Used file content.
+	//
+	// See Data Dictionary, Section 2.149, `Signature`.
+	// ASN.1 Definition:
+	//
+	//	Signature ::= OCTET STRING (SIZE(128 for Gen1))
 	Signature []byte
 }
 
@@ -168,7 +180,7 @@ func (b0 VehicleUnitsUsed_builder) Build() *VehicleUnitsUsed {
 //
 // The data type `CardVehicleUnitRecord` is specified in the Data Dictionary, Section 2.39.
 //
-// ASN.1 Specification:
+// ASN.1 Definition:
 //
 //	CardVehicleUnitRecord ::= SEQUENCE {
 //	    timeStamp TimeReal,
@@ -313,17 +325,31 @@ func (x *VehicleUnitsUsed_Record) ClearVuSoftwareVersion() {
 type VehicleUnitsUsed_Record_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
-	// ASN.1 Type: TimeReal (see DD 2.162)
+	// The beginning of the period of use of the vehicle unit.
+	//
+	// See Data Dictionary, Section 2.162, `TimeReal`.
+	// ASN.1 Definition:
 	//
 	//	TimeReal ::= INTEGER (0..2^32-1)
 	Timestamp *timestamppb.Timestamp
-	// ASN.1 Type: ManufacturerCode (see DD 2.94)
+	// The code of the manufacturer of the Vehicle Unit.
+	//
+	// See Data Dictionary, Section 2.94, `ManufacturerCode`.
+	// ASN.1 Definition:
 	//
 	//	ManufacturerCode ::= INTEGER(0..255)
 	ManufacturerCode *int32
-	// ASN.1 Type: OCTET STRING(SIZE(1))
+	// The manufacturer-specific identifier for the Vehicle Unit type.
+	//
+	// See Data Dictionary, Section 2.39, `deviceID`.
+	// ASN.1 Definition:
+	//
+	//	OCTET STRING(SIZE(1))
 	DeviceId *int32
-	// ASN.1 Type: VuSoftwareVersion (see DD 2.226)
+	// The software version of the Vehicle Unit.
+	//
+	// See Data Dictionary, Section 2.226, `VuSoftwareVersion`.
+	// ASN.1 Definition:
 	//
 	//	VuSoftwareVersion ::= OCTET STRING (SIZE(4))
 	VuSoftwareVersion []byte

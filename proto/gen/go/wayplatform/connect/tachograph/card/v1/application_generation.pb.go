@@ -22,14 +22,28 @@ const (
 
 // ApplicationGeneration specifies the generation of the tachograph card application
 // from which the file originates.
-// This corresponds to bit 1 of the tag appendix byte.
+//
+// See Data Dictionary, Section 2.75, `Generation`.
+//
+// ASN.1 Specification:
+//
+//	Generation ::= INTEGER (0..255)
+//
+// Value assignment:
+// '01'H: Generation 1
+// '02'H: Generation 2
+//
+// The original file comment mentioned this corresponds to bit 1 of the tag appendix byte,
+// which is likely an implementation detail of how files are tagged on the card.
 type ApplicationGeneration int32
 
 const (
 	ApplicationGeneration_APPLICATION_GENERATION_UNSPECIFIED ApplicationGeneration = 0
 	// Generation 1 application (bit 1 = 0).
+	// Corresponds to value '01'H in the ASN.1 specification.
 	ApplicationGeneration_GENERATION_1 ApplicationGeneration = 1
 	// Generation 2 application (bit 1 = 1).
+	// Corresponds to value '02'H in the ASN.1 specification.
 	ApplicationGeneration_GENERATION_2 ApplicationGeneration = 2
 )
 

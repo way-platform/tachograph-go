@@ -23,8 +23,20 @@ const (
 
 // Represents the application identification data for a workshop card.
 //
-// Corresponds to the `WorkshopCardApplicationIdentification` data type.
-// See Data Dictionary, Section 2.234.
+// See Data Dictionary, Section 2.234, `WorkshopCardApplicationIdentification`.
+//
+// ASN.1 Definition:
+//
+//	WorkshopCardApplicationIdentification ::= SEQUENCE {
+//	    typeOfTachographCardId EquipmentType,
+//	    cardStructureVersion CardStructureVersion,
+//	    noOfEventsPerType NoOfEventsPerType,
+//	    noOfFaultsPerType NoOfFaultsPerType,
+//	    activityStructureLength CardActivityLengthRange,
+//	    noOfCardVehicleRecords NoOfCardVehicleRecords,
+//	    noOfCardPlaceRecords NoOfCardPlaceRecords,
+//	    noOfCalibrationRecords NoOfCalibrationRecords
+//	}
 type WorkshopCardApplicationIdentification struct {
 	state                              protoimpl.MessageState `protogen:"opaque.v1"`
 	xxx_hidden_TypeOfTachographCardId  v1.EquipmentType       `protobuf:"varint,1,opt,name=type_of_tachograph_card_id,json=typeOfTachographCardId,enum=wayplatform.connect.tachograph.datadictionary.v1.EquipmentType"`
@@ -266,21 +278,61 @@ func (x *WorkshopCardApplicationIdentification) ClearCalibrationRecordsCount() {
 type WorkshopCardApplicationIdentification_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
-	// See Data Dictionary, Section 2.234, `typeOfTachographCardId`.
+	// The type of tachograph card.
+	//
+	// See Data Dictionary, Section 2.67, `EquipmentType`.
+	// ASN.1 Definition:
+	//
+	//	EquipmentType ::= INTEGER (0..255)
 	TypeOfTachographCardId *v1.EquipmentType
-	// See Data Dictionary, Section 2.234, `cardStructureVersion`.
+	// The version of the card structure.
+	//
+	// See Data Dictionary, Section 2.36, `CardStructureVersion`.
+	// ASN.1 Definition:
+	//
+	//	CardStructureVersion ::= OCTET STRING (SIZE (2))
 	CardStructureVersion []byte
-	// See Data Dictionary, Section 2.234, `noOfEventsPerType`.
+	// The number of events per type the card can record.
+	//
+	// See Data Dictionary, Section 2.109, `NoOfEventsPerType`.
+	// ASN.1 Definition:
+	//
+	//	NoOfEventsPerType ::= INTEGER(0..255)
 	EventsPerTypeCount *int32
-	// See Data Dictionary, Section 2.234, `noOfFaultsPerType`.
+	// The number of faults per type the card can record.
+	//
+	// See Data Dictionary, Section 2.110, `NoOfFaultsPerType`.
+	// ASN.1 Definition:
+	//
+	//	NoOfFaultsPerType ::= INTEGER(0..255)
 	FaultsPerTypeCount *int32
-	// See Data Dictionary, Section 2.234, `activityStructureLength`.
+	// The number of bytes available for storing activity records.
+	//
+	// See Data Dictionary, Section 2.10, `CardActivityLengthRange`.
+	// ASN.1 Definition:
+	//
+	//	CardActivityLengthRange ::= INTEGER(0..2^16-1)
 	ActivityStructureLength *int32
-	// See Data Dictionary, Section 2.234, `noOfCardVehicleRecords`.
+	// The number of vehicle records the card can contain.
+	//
+	// See Data Dictionary, Section 2.105, `NoOfCardVehicleRecords`.
+	// ASN.1 Definition:
+	//
+	//	NoOfCardVehicleRecords ::= INTEGER(0..65535)
 	CardVehicleRecordsCount *int32
-	// See Data Dictionary, Section 2.234, `noOfCardPlaceRecords`.
+	// The number of place records the card can store.
+	//
+	// See Data Dictionary, Section 2.104, `NoOfCardPlaceRecords`.
+	// ASN.1 Definition:
+	//
+	//	NoOfCardPlaceRecords ::= INTEGER(0..65535)
 	CardPlaceRecordsCount *int32
-	// See Data Dictionary, Section 2.234, `noOfCalibrationRecords`.
+	// The number of calibration records the card can store.
+	//
+	// See Data Dictionary, Section 2.102, `NoOfCalibrationRecords`.
+	// ASN.1 Definition:
+	//
+	//	NoOfCalibrationRecords ::= INTEGER(0..255)
 	CalibrationRecordsCount *int32
 }
 

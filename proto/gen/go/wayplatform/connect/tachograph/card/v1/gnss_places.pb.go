@@ -31,7 +31,7 @@ const (
 //
 // The data type `GNSSAccumulatedDriving` is specified in the Data Dictionary, Section 2.78.
 //
-// ASN.1 Specification:
+// ASN.1 Definition:
 //
 //	GNSSAccumulatedDriving ::= SEQUENCE {
 //	    gnssADPointerNewestRecord INTEGER(0..NoOfGNSSADRecords-1),
@@ -141,10 +141,22 @@ type GnssPlaces_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
 	// Index of the last updated record.
+	// Corresponds to `gnssADPointerNewestRecord`.
+	//
+	// See Data Dictionary, Section 2.78.
+	// ASN.1 Definition:
+	//
+	//	INTEGER(0..NoOfGNSSADRecords-1)
 	NewestRecordIndex *int32
 	// The set of GNSS accumulated driving records.
+	// Corresponds to `gnssAccumulatedDrivingRecords`.
 	Records []*GnssPlaces_Record
 	// Digital signature for the EF_GNSS_Places file content.
+	//
+	// See Data Dictionary, Section 2.149, `Signature`.
+	// ASN.1 Definition:
+	//
+	//	Signature ::= OCTET STRING (SIZE(128 for Gen1))
 	Signature []byte
 }
 
@@ -168,7 +180,7 @@ func (b0 GnssPlaces_builder) Build() *GnssPlaces {
 //
 // The data type `GNSSAccumulatedDrivingRecord` is specified in the Data Dictionary, Section 2.79.
 //
-// ASN.1 Specification:
+// ASN.1 Definition:
 //
 //	GNSSAccumulatedDrivingRecord ::= SEQUENCE {
 //	    timeStamp TimeReal,
@@ -283,11 +295,22 @@ type GnssPlaces_Record_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
 	// Timestamp from the outer `GNSSAccumulatedDrivingRecord` structure.
-	// See Data Dictionary, Section 2.79.
+	//
+	// See Data Dictionary, Section 2.162, `TimeReal`.
+	// ASN.1 Definition:
+	//
+	//	TimeReal ::= INTEGER (0..2^32-1)
 	Timestamp *timestamppb.Timestamp
 	// The nested GNSS place record.
+	//
+	// See Data Dictionary, Section 2.80, `GNSSPlaceRecord`.
 	GnssPlace *GnssPlaces_Record_GnssPlace
-	// Odometer at the time of the record. See DD Section 2.113.
+	// Odometer at the time of the record in kilometers.
+	//
+	// See Data Dictionary, Section 2.113, `OdometerShort`.
+	// ASN.1 Definition:
+	//
+	//	OdometerShort ::= INTEGER(0..999999)
 	VehicleOdometerKm *int32
 }
 
@@ -308,7 +331,7 @@ func (b0 GnssPlaces_Record_builder) Build() *GnssPlaces_Record {
 //
 // The data type `GNSSPlaceRecord` is specified in the Data Dictionary, Section 2.80.
 //
-// ASN.1 Specification:
+// ASN.1 Definition:
 //
 //	GNSSPlaceRecord ::= SEQUENCE {
 //	    timeStamp TimeReal,
@@ -450,14 +473,30 @@ type GnssPlaces_Record_GnssPlace_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
 	// Timestamp from the inner `GNSSPlaceRecord` structure.
-	// See Data Dictionary, Section 2.80.
+	//
+	// See Data Dictionary, Section 2.162, `TimeReal`.
+	// ASN.1 Definition:
+	//
+	//	TimeReal ::= INTEGER (0..2^32-1)
 	Timestamp *timestamppb.Timestamp
-	// Accuracy of the GNSS fix. See DD Section 2.77.
+	// Accuracy of the GNSS fix.
+	//
+	// See Data Dictionary, Section 2.77, `GNSSAccuracy`.
+	// ASN.1 Definition:
+	//
+	//	GNSSAccuracy ::= OCTET STRING(SIZE(1))
 	GnssAccuracy *int32
-	// Longitude in millionths of a degree. See DD Section 2.76.
+	// Geographic coordinates of the position.
+	//
+	// See Data Dictionary, Section 2.76, `GeoCoordinates`.
+	// ASN.1 Definition:
+	//
+	//	GeoCoordinates ::= SEQUENCE {
+	//	    latitude INTEGER(-90*3600*1000..90*3600*1000),
+	//	    longitude INTEGER(-180*3600*1000+1..180*3600*1000)
+	//	}
 	Longitude *int32
-	// Latitude in millionths of a degree. See DD Section 2.76.
-	Latitude *int32
+	Latitude  *int32
 }
 
 func (b0 GnssPlaces_Record_GnssPlace_builder) Build() *GnssPlaces_Record_GnssPlace {

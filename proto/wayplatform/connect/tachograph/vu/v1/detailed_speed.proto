@@ -22,16 +22,14 @@ import "wayplatform/connect/tachograph/datadictionary/v1/generation.proto";
 //
 message DetailedSpeed {
   // The generation of the vehicle unit, parsed from the raw transfer data.
-  //
-  // Discriminator field.
+  // This is a discriminator field used for parsing.
   datadictionary.v1.Generation generation = 1;
 
   // Represents speed data for a single minute.
   //
-  // Corresponds to the `VuDetailedSpeedBlock` data type.
-  // See Data Dictionary, Section 2.190.
+  // See Data Dictionary, Section 2.190, `VuDetailedSpeedBlock`.
   //
-  // ASN.1 Specification:
+  // ASN.1 Definition:
   //
   //     VuDetailedSpeedBlock ::= SEQUENCE {
   //         speedBlockBeginDate TimeReal,
@@ -40,14 +38,16 @@ message DetailedSpeed {
   message DetailedSpeedBlock {
     // Timestamp for the beginning of the minute.
     //
-    // ASN.1 Specification:
+    // See Data Dictionary, Section 2.162, `TimeReal`.
+    // ASN.1 Definition:
     //
     //     TimeReal ::= INTEGER (0..2^32-1)
     google.protobuf.Timestamp begin_date = 1;
 
     // 60 speed values (in km/h), one for each second of the minute.
     //
-    // ASN.1 Specification:
+    // See Data Dictionary, Section 2.155, `Speed`.
+    // ASN.1 Definition:
     //
     //     Speed ::= INTEGER(0..255)
     repeated int32 speeds_kmh = 2;
@@ -55,14 +55,17 @@ message DetailedSpeed {
 
   // All detailed speed stored in the VU.
   // Corresponds to `VuDetailedSpeedData` (Gen1) or `VuDetailedSpeedBlockRecordArray` (Gen2).
+  //
   // See Data Dictionary, Sections 2.192 and 2.191.
   repeated DetailedSpeedBlock speed_blocks = 2;
 
   // Signature for Gen1 data (RSA, 128 bytes).
-  // See Data Dictionary, Section 2.149.
+  //
+  // See Data Dictionary, Section 2.149, `Signature`.
   bytes signature_gen1 = 3;
 
   // Signature for Gen2 data (ECC).
-  // See Data Dictionary, Section 2.149.
+  //
+  // See Data Dictionary, Section 2.149, `Signature`.
   bytes signature_gen2 = 4;
 }

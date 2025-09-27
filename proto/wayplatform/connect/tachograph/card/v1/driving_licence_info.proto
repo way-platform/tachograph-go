@@ -21,14 +21,34 @@ package wayplatform.connect.tachograph.card.v1;
 //     }
 message DrivingLicenceInfo {
   // Authority that issued the driving licence.
+  //
+  // See Data Dictionary, Section 2.99, `Name`.
+  // ASN.1 Specification:
+  //
+  //     Name ::= SEQUENCE { codePage INTEGER(0..255), name OCTET STRING (SIZE(36)) }
   string driving_licence_issuing_authority = 1;
 
-  // Nation of the issuing authority. See DD Section 2.101 for `NationNumeric`.
+  // Nation of the issuing authority.
+  //
+  // See Data Dictionary, Section 2.101, `NationNumeric`.
+  // ASN.1 Specification:
+  //
+  //     NationNumeric ::= INTEGER(0..255)
   int32 driving_licence_issuing_nation = 2;
 
   // The driving licence number.
+  //
+  // See Data Dictionary, Section 2.18, `drivingLicenceNumber`.
+  // ASN.1 Specification:
+  //
+  //     IA5String(SIZE(16))
   string driving_licence_number = 3;
 
   // Digital signature for the EF_Driving_Licence_Info file content.
+  //
+  // See Data Dictionary, Section 2.149, `Signature`.
+  // ASN.1 Specification:
+  //
+  //     Signature ::= OCTET STRING (SIZE(128 for Gen1))
   bytes signature = 4;
 }

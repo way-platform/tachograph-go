@@ -22,8 +22,14 @@ const (
 
 // Represents data from EF_Application_Identification_V2 for a company card.
 //
-// Corresponds to the `CompanyCardApplicationIdentificationV2` data type.
-// See Data Dictionary, Section 2.48a.
+// See Data Dictionary, Section 2.48a, `CompanyCardApplicationIdentificationV2`.
+//
+// ASN.1 Specification:
+//
+//	CompanyCardApplicationIdentificationV2 ::= SEQUENCE {
+//	    lengthOfFollowingData LengthOfFollowingData,
+//	    vuConfigurationLengthRange VuConfigurationLengthRange
+//	}
 type CompanyApplicationIdentificationV2 struct {
 	state                                 protoimpl.MessageState `protogen:"opaque.v1"`
 	xxx_hidden_VuConfigurationLengthRange int32                  `protobuf:"varint,1,opt,name=vu_configuration_length_range,json=vuConfigurationLengthRange"`
@@ -85,7 +91,12 @@ func (x *CompanyApplicationIdentificationV2) ClearVuConfigurationLengthRange() {
 type CompanyApplicationIdentificationV2_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
-	// See Data Dictionary, Section 2.48a, `vuConfigurationLengthRange`.
+	// The number of bytes available to store VU configurations.
+	//
+	// See Data Dictionary, Section 2.185a, `VuConfigurationLengthRange`.
+	// ASN.1 Specification:
+	//
+	//	VuConfigurationLengthRange ::= INTEGER(0..2^16-1)
 	VuConfigurationLengthRange *int32
 }
 

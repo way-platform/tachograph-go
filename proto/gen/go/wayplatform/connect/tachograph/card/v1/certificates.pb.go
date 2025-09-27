@@ -170,18 +170,44 @@ func (x *Certificates) ClearLinkCertificate() {
 type Certificates_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
-	// Raw data of the card's public key certificate.
-	// Gen1: EF_Card_Certificate (FID 0xC100)
-	// Gen2: EF_CardMA_Certificate (FID 0xC100)
+	// Raw data of the card's public key certificate for mutual authentication.
+	//
+	// Corresponds to:
+	//   - Gen1: EF_Card_Certificate (FID 0xC100), DD 2.12 `CardCertificate`
+	//   - Gen2: EF_CardMA_Certificate (FID 0xC100), DD 2.25 `CardMACertificate`
+	//
+	// ASN.1 Specification (see DD 2.41, `Certificate`):
+	//
+	//	Gen1: Certificate ::= OCTET STRING (SIZE(194))
+	//	Gen2: Certificate ::= OCTET STRING (SIZE (204..341))
 	CardCertificate []byte
 	// Raw data of the Certification Authority's public key certificate.
-	// EF_CA_Certificate (FID 0xC108)
+	//
+	// Corresponds to EF_CA_Certificate (FID 0xC108).
+	// See Data Dictionary, Section 2.96, `MemberStateCertificate`.
+	//
+	// ASN.1 Specification (see DD 2.41, `Certificate`):
+	//
+	//	Gen1: Certificate ::= OCTET STRING (SIZE(194))
+	//	Gen2: Certificate ::= OCTET STRING (SIZE (204..341))
 	CaCertificate []byte
 	// Raw data of the card's public key certificate for digital signatures (Gen2+).
-	// EF_CardSignCertificate (FID 0xC101)
+	//
+	// Corresponds to EF_CardSignCertificate (FID 0xC101).
+	// See Data Dictionary, Section 2.32, `CardSignCertificate`.
+	//
+	// ASN.1 Specification (see DD 2.41, `Certificate`):
+	//
+	//	Certificate ::= OCTET STRING (SIZE (204..341))
 	CardSignCertificate []byte
 	// Raw data of the link certificate for chaining root CAs (Gen2+).
-	// EF_Link_Certificate (FID 0xC109)
+	//
+	// Corresponds to EF_Link_Certificate (FID 0xC109).
+	// See Data Dictionary, Section 2.90, `LinkCertificate`.
+	//
+	// ASN.1 Specification (see DD 2.41, `Certificate`):
+	//
+	//	Certificate ::= OCTET STRING (SIZE (204..341))
 	LinkCertificate []byte
 }
 

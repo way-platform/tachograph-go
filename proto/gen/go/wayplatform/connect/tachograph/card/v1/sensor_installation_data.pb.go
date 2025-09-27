@@ -29,7 +29,7 @@ const (
 //
 // The data type `SensorInstallationSecData` is specified in the Data Dictionary, Section 2.142.
 //
-// ASN.1 Specification:
+// ASN.1 Definition:
 //
 //	SensorInstallationSecData ::= OCTET STRING (SIZE(16))
 type SensorInstallationData struct {
@@ -97,6 +97,11 @@ type SensorInstallationData_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
 	// The raw security data related to sensor installation.
+	//
+	// See Data Dictionary, Section 2.142, `SensorInstallationSecData`.
+	// ASN.1 Definition:
+	//
+	//	SensorInstallationSecData ::= OCTET STRING (SIZE(16))
 	Data []byte
 }
 

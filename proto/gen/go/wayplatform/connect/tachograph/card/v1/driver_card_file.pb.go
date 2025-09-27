@@ -589,51 +589,51 @@ func (x *DriverCardFile) ClearCertificates() {
 type DriverCardFile_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
-	// Data from EF_ICC (Integrated Circuit Card Identification).
+	// Data from EF_ICC (Integrated Circuit Card Identification). See `icc.proto`.
 	Icc *Icc
-	// Data from EF_IC (Integrated Circuit Identification).
+	// Data from EF_IC (Integrated Circuit Identification). See `ic.proto`.
 	Ic *Ic
-	// Data from EF_Application_Identification.
+	// Data from EF_Application_Identification. See `driver_card_application_identification.proto`.
 	ApplicationIdentification *DriverCardApplicationIdentification
-	// Data from EF_Identification.
+	// Data from EF_Identification. See `identification.proto`.
 	Identification *Identification
-	// Data from EF_Driving_Licence_Info.
+	// Data from EF_Driving_Licence_Info. See `driving_licence_info.proto`.
 	DrivingLicenceInfo *DrivingLicenceInfo
-	// Data from EF_Events_Data.
+	// Data from EF_Events_Data. See `events_data.proto`.
 	EventsData *EventsData
-	// Data from EF_Faults_Data.
+	// Data from EF_Faults_Data. See `faults_data.proto`.
 	FaultsData *FaultsData
-	// Data from EF_Driver_Activity_Data.
+	// Data from EF_Driver_Activity_Data. See `driver_activity_data.proto`.
 	DriverActivityData *DriverActivityData
-	// Data from EF_Vehicles_Used.
+	// Data from EF_Vehicles_Used. See `vehicles_used.proto`.
 	VehiclesUsed *VehiclesUsed
-	// Data from EF_Places.
+	// Data from EF_Places. See `places.proto`.
 	Places *Places
-	// Data from EF_Current_Usage.
+	// Data from EF_Current_Usage. See `current_usage.proto`.
 	CurrentUsage *CurrentUsage
-	// Data from EF_Control_Activity_Data.
+	// Data from EF_Control_Activity_Data. See `control_activity_data.proto`.
 	ControlActivityData *ControlActivityData
-	// Data from EF_Specific_Conditions.
+	// Data from EF_Specific_Conditions. See `specific_conditions.proto`.
 	SpecificConditions *SpecificConditions
-	// Data from EF_Card_Download.
+	// Data from EF_Card_Download. See `card_download_driver.proto`.
 	CardDownloadDriver *CardDownloadDriver
-	// Data from EF_VehicleUnits_Used.
+	// Data from EF_VehicleUnits_Used. See `vehicle_units_used.proto`.
 	VehicleUnitsUsed *VehicleUnitsUsed
-	// Data from EF_GNSS_Places.
+	// Data from EF_GNSS_Places. See `gnss_places.proto`.
 	GnssPlaces *GnssPlaces
-	// Data from EF_Application_Identification_V2 (conditional on Gen2v2 cards).
+	// Data from EF_Application_Identification_V2 (conditional on Gen2v2 cards). See `application_identification_v2.proto`.
 	ApplicationIdentificationV2 *ApplicationIdentificationV2
-	// Data from EF_Places_Authentication (conditional on Gen2v2 cards).
+	// Data from EF_Places_Authentication (conditional on Gen2v2 cards). See `places_authentication.proto`.
 	PlacesAuthentication *PlacesAuthentication
-	// Data from EF_GNSS_Places_Authentication (conditional on Gen2v2 cards).
+	// Data from EF_GNSS_Places_Authentication (conditional on Gen2v2 cards). See `gnss_places_authentication.proto`.
 	GnssPlacesAuthentication *GnssPlacesAuthentication
-	// Data from EF_Border_Crossings (conditional on Gen2v2 cards).
+	// Data from EF_Border_Crossings (conditional on Gen2v2 cards). See `border_crossings.proto`.
 	BorderCrossings *BorderCrossings
-	// Data from EF_Load_Unload_Operations (conditional on Gen2v2 cards).
+	// Data from EF_Load_Unload_Operations (conditional on Gen2v2 cards). See `load_unload_operations.proto`.
 	LoadUnloadOperations *LoadUnloadOperations
-	// Data from EF_Load_Type_Entries (conditional on Gen2v2 cards).
+	// Data from EF_Load_Type_Entries (conditional on Gen2v2 cards). See `load_type_entries.proto`.
 	LoadTypeEntries *LoadTypeEntries
-	// Certificate data from various certificate EFs.
+	// Certificate data from various certificate EFs. See `certificates.proto`.
 	Certificates *Certificates
 }
 

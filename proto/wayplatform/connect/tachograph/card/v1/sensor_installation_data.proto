@@ -11,11 +11,16 @@ package wayplatform.connect.tachograph.card.v1;
 //
 // The data type `SensorInstallationSecData` is specified in the Data Dictionary, Section 2.142.
 //
-// ASN.1 Specification:
+// ASN.1 Definition:
 //
 //     SensorInstallationSecData ::= OCTET STRING (SIZE(16))
 //
 message SensorInstallationData {
   // The raw security data related to sensor installation.
+  //
+  // See Data Dictionary, Section 2.142, `SensorInstallationSecData`.
+  // ASN.1 Definition:
+  //
+  //     SensorInstallationSecData ::= OCTET STRING (SIZE(16))
   bytes data = 1;
 }

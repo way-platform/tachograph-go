@@ -24,7 +24,7 @@ const (
 
 // Defines the type of card that can be in a slot.
 //
-// See Data Dictionary, Section 2.34 for `CardSlotsStatus`.
+// See Data Dictionary, Section 2.34, `CardSlotsStatus`.
 type Overview_SlotCardType int32
 
 const (
@@ -82,56 +82,6 @@ func (x Overview_SlotCardType) Number() protoreflect.EnumNumber {
 //
 // This message corresponds to the data defined in the regulation document:
 // Appendix 7, Section 2.2.6.2: "Positive Response Transfer Data Overview".
-//
-// TREP Values: 0x01 (Gen1), 0x21 (Gen2v1), 0x31 (Gen2v2)
-//
-// ---
-//
-// Transfer Structure (Gen1 / TREP 0x01):
-//
-//	├─MemberStateCertificate
-//	├─VUCertificate
-//	├─VehicleIdentificationNumber
-//	├─VehicleRegistrationIdentification
-//	├─CurrentDateTime
-//	├─VuDownloadablePeriod
-//	├─CardSlotsStatus
-//	├─VuDownloadActivityData
-//	├─VuCompanyLocksData
-//	├─VuControlActivityData
-//	└─Signature
-//
-// ---
-//
-// Transfer Structure (Gen2v1 / TREP 0x21):
-//
-//	├─MemberStateCertificateRecordArray
-//	├─VUCertificateRecordArray
-//	├─VehicleIdentificationNumberRecordArray
-//	├─VehicleRegistrationIdentificationRecordArray
-//	├─CurrentDateTimeRecordArray
-//	├─VuDownloadablePeriodRecordArray
-//	├─CardSlotsStatusRecordArray
-//	├─VuDownloadActivityDataRecordArray
-//	├─VuCompanyLocksRecordArray
-//	├─VuControlActivityRecordArray
-//	└─SignatureRecordArray
-//
-// ---
-//
-// Transfer Structure (Gen2v2 / TREP 0x31):
-//
-//	├─MemberStateCertificateRecordArray
-//	├─VUCertificateRecordArray
-//	├─VehicleIdentificationNumberRecordArray
-//	├─VehicleRegistrationNumberRecordArray
-//	├─CurrentDateTimeRecordArray
-//	├─VuDownloadablePeriodRecordArray
-//	├─CardSlotsStatusRecordArray
-//	├─VuDownloadActivityDataRecordArray
-//	├─VuCompanyLocksRecordArray
-//	├─VuControlActivityRecordArray
-//	└─SignatureRecordArray
 type Overview struct {
 	state                                    protoimpl.MessageState                `protogen:"opaque.v1"`
 	xxx_hidden_Generation                    v1.Generation                         `protobuf:"varint,1,opt,name=generation,enum=wayplatform.connect.tachograph.datadictionary.v1.Generation"`
@@ -565,20 +515,38 @@ type Overview_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
 	// The generation of the vehicle unit, parsed from the raw transfer data.
-	//
-	// Discriminator field.
+	// This is a discriminator field used for parsing.
 	Generation *v1.Generation
 	// The version of the interface, parsed from the raw transfer data.
-	//
-	// Discriminator field.
+	// This is a discriminator field used for parsing.
 	Version *Version
 	// VU Security certificate from the Member State.
+	//
+	// See Data Dictionary, Section 2.96, `MemberStateCertificate`.
+	// ASN.1 Definition:
+	//
+	//	MemberStateCertificate ::= Certificate
 	MemberStateCertificate []byte
 	// The VU's own security certificate.
+	//
+	// See Data Dictionary, Section 2.181, `VuCertificate`.
+	// ASN.1 Definition:
+	//
+	//	VuCertificate ::= Certificate
 	VuCertificate []byte
 	// The Vehicle Identification Number.
+	//
+	// See Data Dictionary, Section 2.164, `VehicleIdentificationNumber`.
+	// ASN.1 Definition:
+	//
+	//	VehicleIdentificationNumber ::= IA5String(SIZE(17))
 	VehicleIdentificationNumber *string
 	// Current date and time of the VU.
+	//
+	// See Data Dictionary, Section 2.54, `CurrentDateTime`.
+	// ASN.1 Definition:
+	//
+	//	CurrentDateTime ::= TimeReal
 	CurrentDateTime *timestamppb.Timestamp
 	// The range of dates for which data can be downloaded.
 	DownloadablePeriod *Overview_DownloadablePeriod
@@ -587,18 +555,45 @@ type Overview_builder struct {
 	// Type of card in the co-driver slot.
 	CoDriverSlotCard *Overview_SlotCardType
 	// Time of the last VU download.
+	//
+	// See Data Dictionary, Section 2.195, `VuDownloadActivityData`.
+	// ASN.1 Definition:
+	//
+	//	VuDownloadActivityData ::= SEQUENCE {
+	//	    downloadingTime TimeReal,
+	//	    fullCardNumber FullCardNumber,
+	//	    companyOrWorkshopName Name
+	//	}
 	LastDownloadTime *timestamppb.Timestamp
 	// All company locks stored in the VU.
+	//
+	// See Data Dictionary, Section 2.183, `VuCompanyLocksData`.
 	CompanyLocks []*Overview_CompanyLock
 	// All control records stored in the VU.
+	//
+	// See Data Dictionary, Section 2.186, `VuControlActivityData`.
 	ControlActivities []*Overview_ControlActivity
 	// The vehicle registration, including nation (Gen1, Gen2v1).
+	//
+	// See Data Dictionary, Section 2.166, `VehicleRegistrationIdentification`.
 	VehicleRegistrationWithNation *v1.VehicleRegistrationIdentification
 	// The vehicle registration number only (Gen2v2).
+	//
+	// See Data Dictionary, Section 2.167, `VehicleRegistrationNumber`.
+	// ASN.1 Definition:
+	//
+	//	VehicleRegistrationNumber ::= IA5String(SIZE(13))
 	VehicleRegistrationNumberOnly *string
 	// Signature for Gen1 data.
+	//
+	// See Data Dictionary, Section 2.149, `Signature`.
+	// ASN.1 Definition:
+	//
+	//	Signature ::= OCTET STRING (SIZE (128))
 	SignatureGen1 []byte
 	// Signature for Gen2 data.
+	//
+	// See Data Dictionary, Section 2.149, `Signature`.
 	SignatureGen2 []byte
 }
 
@@ -657,8 +652,14 @@ func (b0 Overview_builder) Build() *Overview {
 
 // Represents the downloadable period for the VU data.
 //
-// Corresponds to the `VuDownloadablePeriod` data type.
-// See Data Dictionary, Section 2.193.
+// See Data Dictionary, Section 2.193, `VuDownloadablePeriod`.
+//
+// ASN.1 Definition:
+//
+//	VuDownloadablePeriod ::= SEQUENCE {
+//	    minDownloadableTime TimeReal,
+//	    maxDownloadableTime TimeReal
+//	}
 type Overview_DownloadablePeriod struct {
 	state              protoimpl.MessageState `protogen:"opaque.v1"`
 	xxx_hidden_MinTime *timestamppb.Timestamp `protobuf:"bytes,1,opt,name=min_time,json=minTime"`
@@ -740,8 +741,18 @@ type Overview_DownloadablePeriod_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
 	// Earliest downloadable date.
+	//
+	// See Data Dictionary, Section 2.162, `TimeReal`.
+	// ASN.1 Definition:
+	//
+	//	TimeReal ::= INTEGER (0..2^32-1)
 	MinTime *timestamppb.Timestamp
 	// Latest downloadable date.
+	//
+	// See Data Dictionary, Section 2.162, `TimeReal`.
+	// ASN.1 Definition:
+	//
+	//	TimeReal ::= INTEGER (0..2^32-1)
 	MaxTime *timestamppb.Timestamp
 }
 
@@ -756,8 +767,17 @@ func (b0 Overview_DownloadablePeriod_builder) Build() *Overview_DownloadablePeri
 
 // Represents a company lock record.
 //
-// Corresponds to the `VuCompanyLocksRecord` data type.
-// See Data Dictionary, Section 2.184.
+// See Data Dictionary, Section 2.184, `VuCompanyLocksRecord`.
+//
+// ASN.1 Definition:
+//
+//	VuCompanyLocksRecord ::= SEQUENCE {
+//	    lockInTime TimeReal,
+//	    lockOutTime TimeReal,
+//	    companyName Name,
+//	    companyAddress Address,
+//	    companyCardNumber FullCardNumber
+//	}
 type Overview_CompanyLock struct {
 	state                        protoimpl.MessageState `protogen:"opaque.v1"`
 	xxx_hidden_LockInTime        *timestamppb.Timestamp `protobuf:"bytes,1,opt,name=lock_in_time,json=lockInTime"`
@@ -920,14 +940,36 @@ type Overview_CompanyLock_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
 	// The time the lock was engaged.
+	//
+	// See Data Dictionary, Section 2.162, `TimeReal`.
+	// ASN.1 Definition:
+	//
+	//	TimeReal ::= INTEGER (0..2^32-1)
 	LockInTime *timestamppb.Timestamp
 	// The time the lock was disengaged.
+	//
+	// See Data Dictionary, Section 2.162, `TimeReal`.
+	// ASN.1 Definition:
+	//
+	//	TimeReal ::= INTEGER (0..2^32-1)
 	LockOutTime *timestamppb.Timestamp
 	// The name of the company that applied the lock.
+	//
+	// See Data Dictionary, Section 2.99, `Name`.
+	// ASN.1 Definition:
+	//
+	//	Name ::= SEQUENCE { codePage INTEGER(0..255), name OCTET STRING (SIZE(36)) }
 	CompanyName *string
 	// The address of the company.
+	//
+	// See Data Dictionary, Section 2.2, `Address`.
+	// ASN.1 Definition:
+	//
+	//	Address ::= SEQUENCE { codePage INTEGER(0..255), address OCTET STRING (SIZE(36)) }
 	CompanyAddress *string
 	// The card number of the company.
+	//
+	// See Data Dictionary, Section 2.73, `FullCardNumber`.
 	CompanyCardNumber *v1.FullCardNumber
 }
 
@@ -951,8 +993,17 @@ func (b0 Overview_CompanyLock_builder) Build() *Overview_CompanyLock {
 
 // Represents a control activity record.
 //
-// Corresponds to the `VuControlActivityRecord` data type.
-// See Data Dictionary, Section 2.187.
+// See Data Dictionary, Section 2.187, `VuControlActivityRecord`.
+//
+// ASN.1 Definition:
+//
+//	VuControlActivityRecord ::= SEQUENCE {
+//	    controlType ControlType,
+//	    controlTime TimeReal,
+//	    controlCardNumber FullCardNumber,
+//	    downloadPeriodBeginTime TimeReal,
+//	    downloadPeriodEndTime TimeReal
+//	}
 type Overview_ControlActivity struct {
 	state                              protoimpl.MessageState `protogen:"opaque.v1"`
 	xxx_hidden_ControlType             []byte                 `protobuf:"bytes,1,opt,name=control_type,json=controlType"`
@@ -1110,14 +1161,36 @@ type Overview_ControlActivity_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
 	// The type of control activity.
+	//
+	// See Data Dictionary, Section 2.53, `ControlType`.
+	// ASN.1 Definition:
+	//
+	//	ControlType ::= OCTET STRING (SIZE(1))
 	ControlType []byte
 	// The time of the control.
+	//
+	// See Data Dictionary, Section 2.162, `TimeReal`.
+	// ASN.1 Definition:
+	//
+	//	TimeReal ::= INTEGER (0..2^32-1)
 	ControlTime *timestamppb.Timestamp
 	// The card number of the control officer.
+	//
+	// See Data Dictionary, Section 2.73, `FullCardNumber`.
 	ControlCardNumber *v1.FullCardNumber
 	// The start of the downloaded period.
+	//
+	// See Data Dictionary, Section 2.162, `TimeReal`.
+	// ASN.1 Definition:
+	//
+	//	TimeReal ::= INTEGER (0..2^32-1)
 	DownloadPeriodBeginTime *timestamppb.Timestamp
 	// The end of the downloaded period.
+	//
+	// See Data Dictionary, Section 2.162, `TimeReal`.
+	// ASN.1 Definition:
+	//
+	//	TimeReal ::= INTEGER (0..2^32-1)
 	DownloadPeriodEndTime *timestamppb.Timestamp
 }
 
@@ -1140,7 +1213,7 @@ var File_wayplatform_connect_tachograph_vu_v1_overview_proto protoreflect.FileDe
 
 const file_wayplatform_connect_tachograph_vu_v1_overview_proto_rawDesc = "" +
 	"\n" +
-	"3wayplatform/connect/tachograph/vu/v1/overview.proto\x12$wayplatform.connect.tachograph.vu.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1aGwayplatform/connect/tachograph/datadictionary/v1/full_card_number.proto\x1aZwayplatform/connect/tachograph/datadictionary/v1/vehicle_registration_identification.proto\x1aAwayplatform/connect/tachograph/datadictionary/v1/generation.proto\x1a5wayplatform/connect/tachograph/vu/v1/versioning.proto\"\xa2\x12\n" +
+	"3wayplatform/connect/tachograph/vu/v1/overview.proto\x12$wayplatform.connect.tachograph.vu.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1aGwayplatform/connect/tachograph/datadictionary/v1/full_card_number.proto\x1aAwayplatform/connect/tachograph/datadictionary/v1/generation.proto\x1aZwayplatform/connect/tachograph/datadictionary/v1/vehicle_registration_identification.proto\x1a5wayplatform/connect/tachograph/vu/v1/versioning.proto\"\xa2\x12\n" +
 	"\bOverview\x12\\\n" +
 	"\n" +
 	"generation\x18\x01 \x01(\x0e2<.wayplatform.connect.tachograph.datadictionary.v1.GenerationR\n" +

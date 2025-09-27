@@ -30,7 +30,7 @@ const (
 //
 // The data type `CardLoadTypeEntries` is specified in the Data Dictionary, Section 2.24a.
 //
-// ASN.1 Specification:
+// ASN.1 Definition:
 //
 //	CardLoadTypeEntries ::= SEQUENCE {
 //	    loadTypeEntryPointerNewestRecord INTEGER(0..NoOfLoadTypeEntryRecords-1),
@@ -112,8 +112,15 @@ type LoadTypeEntries_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
 	// Index of the last updated record in the ring buffer.
+	// Corresponds to `loadTypeEntryPointerNewestRecord`.
+	//
+	// See Data Dictionary, Section 2.24a.
+	// ASN.1 Definition:
+	//
+	//	INTEGER(0..NoOfLoadTypeEntryRecords-1)
 	NewestRecordIndex *int32
 	// The set of load type entry records.
+	// Corresponds to `cardLoadTypeEntryRecords`.
 	Records []*LoadTypeEntries_Record
 }
 
@@ -133,7 +140,7 @@ func (b0 LoadTypeEntries_builder) Build() *LoadTypeEntries {
 //
 // The data type `CardLoadTypeEntryRecord` is specified in the Data Dictionary, Section 2.24b.
 //
-// ASN.1 Specification:
+// ASN.1 Definition:
 //
 //	CardLoadTypeEntryRecord ::= SEQUENCE {
 //	    timeStamp TimeReal,
@@ -223,11 +230,17 @@ func (x *LoadTypeEntries_Record) ClearLoadTypeEntered() {
 type LoadTypeEntries_Record_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
-	// ASN.1 Type: TimeReal (see DD 2.162)
+	// The timestamp when the load type was entered.
+	//
+	// See Data Dictionary, Section 2.162, `TimeReal`.
+	// ASN.1 Definition:
 	//
 	//	TimeReal ::= INTEGER (0..2^32-1)
 	Timestamp *timestamppb.Timestamp
-	// ASN.1 Type: LoadType (see DD 2.90a)
+	// The load type that was entered.
+	//
+	// See Data Dictionary, Section 2.90a, `LoadType`.
+	// ASN.1 Definition:
 	//
 	//	LoadType ::= INTEGER {
 	//	    not-defined(0), passengers(1), goods(2)

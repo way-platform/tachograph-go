@@ -6,42 +6,115 @@ import "wayplatform/connect/tachograph/datadictionary/v1/equipment_type.proto";
 
 // Represents the application identification data for a driver card.
 //
-// Corresponds to the `DriverCardApplicationIdentification` data type.
-// See Data Dictionary, Section 2.61.
+// See Data Dictionary, Section 2.61, `DriverCardApplicationIdentification`.
+//
+// ASN.1 Specification (Gen1):
+//
+//     DriverCardApplicationIdentification ::= SEQUENCE {
+//         typeOfTachographCardId EquipmentType,
+//         cardStructureVersion CardStructureVersion,
+//         noOfEventsPerType NoOfEventsPerType,
+//         noOfFaultsPerType NoOfFaultsPerType,
+//         activityStructureLength CardActivityLengthRange,
+//         noOfCardVehicleRecords NoOfCardVehicleRecords,
+//         noOfCardPlaceRecords NoOfCardPlaceRecords
+//     }
+//
+// ASN.1 Specification (Gen2 adds):
+//
+//     ...
+//     noOfGNSSADRecords NoOfGNSSADRecords,
+//     noOfSpecificConditionRecords NoOfSpecificConditionRecords,
+//     noOfCardVehicleUnitRecords NoOfCardVehicleUnitRecords
+//
 message DriverCardApplicationIdentification {
-  // See Data Dictionary, Section 2.61, `typeOfTachographCardId`.
+  // The type of tachograph card.
+  //
+  // See Data Dictionary, Section 2.67, `EquipmentType`.
+  // ASN.1 Specification:
+  //
+  //     EquipmentType ::= INTEGER (0..255)
   datadictionary.v1.EquipmentType type_of_tachograph_card_id = 1;
-  
 
-  // See Data Dictionary, Section 2.61, `cardStructureVersion`.
+  // The version of the card structure.
+  //
+  // See Data Dictionary, Section 2.36, `CardStructureVersion`.
+  // ASN.1 Specification:
+  //
+  //     CardStructureVersion ::= OCTET STRING (SIZE (2))
   bytes card_structure_version = 3;
 
-  // See Data Dictionary, Section 2.61, `noOfEventsPerType`.
+  // The number of events per type the card can record.
+  //
+  // See Data Dictionary, Section 2.109, `NoOfEventsPerType`.
+  // ASN.1 Specification:
+  //
+  //     NoOfEventsPerType ::= INTEGER(0..255)
   int32 events_per_type_count = 4;
 
-  // See Data Dictionary, Section 2.61, `noOfFaultsPerType`.
+  // The number of faults per type the card can record.
+  //
+  // See Data Dictionary, Section 2.110, `NoOfFaultsPerType`.
+  // ASN.1 Specification:
+  //
+  //     NoOfFaultsPerType ::= INTEGER(0..255)
   int32 faults_per_type_count = 5;
 
-  // See Data Dictionary, Section 2.61, `activityStructureLength`.
+  // The number of bytes available for storing activity records.
+  //
+  // See Data Dictionary, Section 2.10, `CardActivityLengthRange`.
+  // ASN.1 Specification:
+  //
+  //     CardActivityLengthRange ::= INTEGER(0..2^16-1)
   int32 activity_structure_length = 6;
 
-  // See Data Dictionary, Section 2.61, `noOfCardVehicleRecords`.
+  // The number of vehicle records the card can contain.
+  //
+  // See Data Dictionary, Section 2.105, `NoOfCardVehicleRecords`.
+  // ASN.1 Specification:
+  //
+  //     NoOfCardVehicleRecords ::= INTEGER(0..65535)
   int32 card_vehicle_records_count = 7;
 
-  // See Data Dictionary, Section 2.61, `noOfCardPlaceRecords`.
+  // The number of place records the card can store.
+  //
+  // See Data Dictionary, Section 2.104, `NoOfCardPlaceRecords`.
+  // ASN.1 Specification:
+  //
+  //     NoOfCardPlaceRecords ::= INTEGER(0..65535)
   int32 card_place_records_count = 8;
 
-  // Gen2+ fields
+  // --- Gen2+ fields ---
 
-  // See Data Dictionary, Section 2.61, `noOfGNSSADRecords`.
+  // The number of GNSS accumulated driving records the card can store.
+  //
+  // See Data Dictionary, Section 2.111, `NoOfGNSSADRecords`.
+  // ASN.1 Specification:
+  //
+  //     NoOfGNSSADRecords ::= INTEGER(0..65535)
   int32 gnss_ad_records_count = 9;
 
-  // See Data Dictionary, Section 2.61, `noOfSpecificConditionRecords`.
+  // The number of specific condition records the card can store.
+  //
+  // See Data Dictionary, Section 2.112, `NoOfSpecificConditionRecords`.
+  // ASN.1 Specification:
+  //
+  //     NoOfSpecificConditionRecords ::= INTEGER(0..255)
   int32 specific_condition_records_count = 10;
 
-  // See Data Dictionary, Section 2.61, `noOfCardVehicleUnitRecords`.
+  // The number of vehicle units used records the card can store.
+  //
+  // See Data Dictionary, Section 2.106, `NoOfCardVehicleUnitRecords`.
+  // ASN.1 Specification:
+  //
+  //     NoOfCardVehicleUnitRecords ::= INTEGER(0..65535)
   int32 card_vehicle_unit_records_count = 11;
 
   // Digital signature for the EF_Application_Identification file content.
+  //
+  // See Data Dictionary, Section 2.149, `Signature`.
+  // ASN.1 Specification:
+  //
+  //     Signature ::= OCTET STRING (SIZE(128 for Gen1))
   bytes signature = 12;
 }

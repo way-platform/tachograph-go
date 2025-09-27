@@ -255,6 +255,9 @@ type Identification_builder struct {
 	// Populated only if card_type is COMPANY_CARD.
 	CompanyCardHolder *Identification_CompanyCardHolder
 	// Digital signature for the EF_Identification file content.
+	//
+	// See Data Dictionary, Section 2.149, `Signature`.
+	// ASN.1 Specification: Signature ::= OCTET STRING (SIZE(128 for Gen1))
 	Signature []byte
 }
 
@@ -481,17 +484,36 @@ func (x *Identification_Card) ClearCardExpiryDate() {
 type Identification_Card_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
+	// The issuing member state of the card.
+	//
 	// See Data Dictionary, Section 2.24, `cardIssuingMemberState`.
+	// ASN.1 Specification: NationNumeric ::= INTEGER (0..255)
 	CardIssuingMemberState *string
+	// The card number.
+	//
 	// See Data Dictionary, Section 2.24, `cardNumber`.
+	// ASN.1 Specification: CardNumber ::= CHOICE { ... } (see DD 2.26 for the full structure)
+	// This proto field holds a string representation of the card number.
 	CardNumber *string
+	// The name of the authority that issued the card.
+	//
 	// See Data Dictionary, Section 2.24, `cardIssuingAuthorityName`.
+	// ASN.1 Specification: Name ::= SEQUENCE { codePage INTEGER(0..255), name OCTET STRING (SIZE(36)) }
 	CardIssuingAuthorityName *string
+	// The date the card was issued.
+	//
 	// See Data Dictionary, Section 2.24, `cardIssueDate`.
+	// ASN.1 Specification: TimeReal ::= INTEGER (0..2^32-1)
 	CardIssueDate *timestamppb.Timestamp
+	// The date from which the card is valid.
+	//
 	// See Data Dictionary, Section 2.24, `cardValidityBegin`.
+	// ASN.1 Specification: TimeReal ::= INTEGER (0..2^32-1)
 	CardValidityBegin *timestamppb.Timestamp
+	// The date on which the card expires.
+	//
 	// See Data Dictionary, Section 2.24, `cardExpiryDate`.
+	// ASN.1 Specification: TimeReal ::= INTEGER (0..2^32-1)
 	CardExpiryDate *timestamppb.Timestamp
 }
 
@@ -671,13 +693,25 @@ func (x *Identification_DriverCardHolder) ClearCardHolderPreferredLanguage() {
 type Identification_DriverCardHolder_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
-	// Corresponds to `holderSurname`.
+	// The surname of the card holder.
+	//
+	// Corresponds to `holderSurname` within `HolderName` (DD 2.83).
+	// ASN.1 Specification: Name ::= SEQUENCE { codePage INTEGER(0..255), name OCTET STRING (SIZE(36)) }
 	CardHolderSurname *string
-	// Corresponds to `holderFirstNames`.
+	// The first name(s) of the card holder.
+	//
+	// Corresponds to `holderFirstNames` within `HolderName` (DD 2.83).
+	// ASN.1 Specification: Name ::= SEQUENCE { codePage INTEGER(0..255), name OCTET STRING (SIZE(36)) }
 	CardHolderFirstNames *string
+	// The birth date of the card holder.
+	//
 	// See Data Dictionary, Section 2.62, `cardHolderBirthDate`.
+	// ASN.1 Specification: Datef ::= OCTET STRING (SIZE(4))
 	CardHolderBirthDate *timestamppb.Timestamp
+	// The preferred language of the card holder.
+	//
 	// See Data Dictionary, Section 2.62, `cardHolderPreferredLanguage`.
+	// ASN.1 Specification: Language ::= IA5String (SIZE(2))
 	CardHolderPreferredLanguage *string
 }
 
@@ -889,15 +923,30 @@ func (x *Identification_WorkshopCardHolder) ClearCardHolderPreferredLanguage() {
 type Identification_WorkshopCardHolder_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
+	// The name of the workshop.
+	//
 	// See Data Dictionary, Section 2.237, `workshopName`.
+	// ASN.1 Specification: Name ::= SEQUENCE { codePage INTEGER(0..255), name OCTET STRING (SIZE(36)) }
 	WorkshopName *string
+	// The address of the workshop.
+	//
 	// See Data Dictionary, Section 2.237, `workshopAddress`.
+	// ASN.1 Specification: Address ::= SEQUENCE { codePage INTEGER(0..255), address OCTET STRING (SIZE(36)) }
 	WorkshopAddress *string
-	// Corresponds to `holderSurname`.
+	// The surname of the card holder.
+	//
+	// Corresponds to `holderSurname` within `HolderName` (DD 2.83).
+	// ASN.1 Specification: Name ::= SEQUENCE { codePage INTEGER(0..255), name OCTET STRING (SIZE(36)) }
 	CardHolderSurname *string
-	// Corresponds to `holderFirstNames`.
+	// The first name(s) of the card holder.
+	//
+	// Corresponds to `holderFirstNames` within `HolderName` (DD 2.83).
+	// ASN.1 Specification: Name ::= SEQUENCE { codePage INTEGER(0..255), name OCTET STRING (SIZE(36)) }
 	CardHolderFirstNames *string
+	// The preferred language of the card holder.
+	//
 	// See Data Dictionary, Section 2.237, `cardHolderPreferredLanguage`.
+	// ASN.1 Specification: Language ::= IA5String (SIZE(2))
 	CardHolderPreferredLanguage *string
 }
 
@@ -1116,15 +1165,30 @@ func (x *Identification_ControlCardHolder) ClearCardHolderPreferredLanguage() {
 type Identification_ControlCardHolder_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
+	// The name of the control body.
+	//
 	// See Data Dictionary, Section 2.52, `controlBodyName`.
+	// ASN.1 Specification: Name ::= SEQUENCE { codePage INTEGER(0..255), name OCTET STRING (SIZE(36)) }
 	ControlBodyName *string
+	// The address of the control body.
+	//
 	// See Data Dictionary, Section 2.52, `controlBodyAddress`.
+	// ASN.1 Specification: Address ::= SEQUENCE { codePage INTEGER(0..255), address OCTET STRING (SIZE(36)) }
 	ControlBodyAddress *string
-	// Corresponds to `holderSurname`.
+	// The surname of the card holder.
+	//
+	// Corresponds to `holderSurname` within `HolderName` (DD 2.83).
+	// ASN.1 Specification: Name ::= SEQUENCE { codePage INTEGER(0..255), name OCTET STRING (SIZE(36)) }
 	CardHolderSurname *string
-	// Corresponds to `holderFirstNames`.
+	// The first name(s) of the card holder.
+	//
+	// Corresponds to `holderFirstNames` within `HolderName` (DD 2.83).
+	// ASN.1 Specification: Name ::= SEQUENCE { codePage INTEGER(0..255), name OCTET STRING (SIZE(36)) }
 	CardHolderFirstNames *string
+	// The preferred language of the card holder.
+	//
 	// See Data Dictionary, Section 2.52, `cardHolderPreferredLanguage`.
+	// ASN.1 Specification: Language ::= IA5String (SIZE(2))
 	CardHolderPreferredLanguage *string
 }
 
@@ -1286,11 +1350,20 @@ func (x *Identification_CompanyCardHolder) ClearCardHolderPreferredLanguage() {
 type Identification_CompanyCardHolder_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
+	// The name of the company.
+	//
 	// See Data Dictionary, Section 2.49, `companyName`.
+	// ASN.1 Specification: Name ::= SEQUENCE { codePage INTEGER(0..255), name OCTET STRING (SIZE(36)) }
 	CompanyName *string
+	// The address of the company.
+	//
 	// See Data Dictionary, Section 2.49, `companyAddress`.
+	// ASN.1 Specification: Address ::= SEQUENCE { codePage INTEGER(0..255), address OCTET STRING (SIZE(36)) }
 	CompanyAddress *string
+	// The preferred language of the card holder.
+	//
 	// See Data Dictionary, Section 2.49, `cardHolderPreferredLanguage`.
+	// ASN.1 Specification: Language ::= IA5String (SIZE(2))
 	CardHolderPreferredLanguage *string
 }
 

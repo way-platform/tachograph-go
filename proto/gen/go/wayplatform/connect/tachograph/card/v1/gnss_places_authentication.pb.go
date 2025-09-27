@@ -31,7 +31,7 @@ const (
 //
 // The data type `GNSSAuthAccumulatedDriving` is specified in the Data Dictionary, Section 2.79a.
 //
-// ASN.1 Specification:
+// ASN.1 Definition:
 //
 //	GNSSAuthAccumulatedDriving ::= SEQUENCE {
 //	    gnssAuthADPointerNewestRecord INTEGER(0..NoOfGNSSADRecords -1),
@@ -113,8 +113,15 @@ type GnssPlacesAuthentication_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
 	// Index of the last updated record.
+	// Corresponds to `gnssAuthADPointerNewestRecord`.
+	//
+	// See Data Dictionary, Section 2.79a.
+	// ASN.1 Definition:
+	//
+	//	INTEGER(0..NoOfGNSSADRecords -1)
 	NewestRecordIndex *int32
 	// The set of GNSS place authentication status records.
+	// Corresponds to `gnssAuthStatusADRecords`.
 	Records []*GnssPlacesAuthentication_Record
 }
 
@@ -134,7 +141,7 @@ func (b0 GnssPlacesAuthentication_builder) Build() *GnssPlacesAuthentication {
 //
 // The data type `GNSSAuthStatusADRecord` is specified in the Data Dictionary, Section 2.79b.
 //
-// ASN.1 Specification:
+// ASN.1 Definition:
 //
 //	GNSSAuthStatusADRecord ::= SEQUENCE {
 //	    timeStamp TimeReal,
@@ -224,9 +231,24 @@ func (x *GnssPlacesAuthentication_Record) ClearAuthenticationStatus() {
 type GnssPlacesAuthentication_Record_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
-	// Timestamp of the position fix. See DD Section 2.162 for `TimeReal`.
+	// Timestamp of the position fix.
+	//
+	// See Data Dictionary, Section 2.162, `TimeReal`.
+	// ASN.1 Definition:
+	//
+	//	TimeReal ::= INTEGER (0..2^32-1)
 	Timestamp *timestamppb.Timestamp
-	// Authentication status of the position. See DD Section 2.117a.
+	// Authentication status of the position.
+	//
+	// See Data Dictionary, Section 2.117a, `PositionAuthenticationStatus`.
+	// ASN.1 Definition:
+	//
+	//	PositionAuthenticationStatus ::= INTEGER {
+	//	    notAvailable(0),
+	//	    authenticated(1),
+	//	    notAuthenticated(2),
+	//	    authenticationCorrupted(3)
+	//	} (0..255)
 	AuthenticationStatus *int32
 }
 

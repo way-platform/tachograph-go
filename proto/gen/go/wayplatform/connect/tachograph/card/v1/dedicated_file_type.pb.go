@@ -21,7 +21,10 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// DedicatedFileType represents the types of dedicated files that can be found on a tachograph card.
+// DedicatedFileType represents the types of dedicated files (DFs) that can be found on a tachograph card.
+// These correspond to the standardized DF names defined in the tachograph regulation's
+// file structure specifications (e.g., Appendix 2). This enum does not have a direct
+// equivalent data type in the Data Dictionary but is used to model the card's file system.
 type DedicatedFileType int32
 
 const (

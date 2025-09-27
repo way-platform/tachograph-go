@@ -35,6 +35,7 @@ message CompanyActivityData {
   message Record {
     // The type of the company activity.
     //
+    // See Data Dictionary, Section 2.47, `CompanyActivityType`.
     // ASN.1 Specification:
     //
     //     CompanyActivityType ::= INTEGER {
@@ -44,6 +45,7 @@ message CompanyActivityData {
 
     // The date and time of the company activity.
     //
+    // See Data Dictionary, Section 2.162, `TimeReal`.
     // ASN.1 Specification:
     //
     //     TimeReal ::= INTEGER (0..2^32-1)
@@ -51,6 +53,7 @@ message CompanyActivityData {
 
     // The full card number of the card that was downloaded, if applicable.
     //
+    // See Data Dictionary, Section 2.73, `FullCardNumber`.
     // ASN.1 Specification:
     //
     //     FullCardNumber ::= SEQUENCE { ... }
@@ -58,6 +61,7 @@ message CompanyActivityData {
 
     // The vehicle registration of the vehicle downloaded or locked in/out.
     //
+    // See Data Dictionary, Section 2.166, `VehicleRegistrationIdentification`.
     // ASN.1 Specification:
     //
     //     VehicleRegistrationIdentification ::= SEQUENCE { ... }
@@ -65,6 +69,7 @@ message CompanyActivityData {
 
     // The beginning of the downloaded period from the VU, if applicable.
     //
+    // See Data Dictionary, Section 2.162, `TimeReal`.
     // ASN.1 Specification:
     //
     //     TimeReal ::= INTEGER (0..2^32-1)
@@ -72,6 +77,7 @@ message CompanyActivityData {
 
     // The end of the downloaded period from the VU, if applicable.
     //
+    // See Data Dictionary, Section 2.162, `TimeReal`.
     // ASN.1 Specification:
     //
     //     TimeReal ::= INTEGER (0..2^32-1)
@@ -79,8 +85,15 @@ message CompanyActivityData {
   }
 
   // Index of the last updated record.
+  // Corresponds to `companyPointerNewestRecord`.
+  //
+  // See Data Dictionary, Section 2.46.
+  // ASN.1 Specification:
+  //
+  //     INTEGER(0..NoOfCompanyActivityRecords-1)
   int32 newest_record_index = 1;
 
   // The set of company activity records.
+  // Corresponds to `companyActivityRecords`.
   repeated Record records = 2;
 }

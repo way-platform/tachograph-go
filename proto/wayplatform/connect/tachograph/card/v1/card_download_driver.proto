@@ -18,8 +18,19 @@ import "google/protobuf/timestamp.proto";
 //     LastCardDownload ::= TimeReal
 //
 message CardDownloadDriver {
+  // The timestamp of the last card download.
+  //
+  // See Data Dictionary, Section 2.89, `LastCardDownload` and Section 2.162, `TimeReal`.
+  // ASN.1 Specification:
+  //
+  //     TimeReal ::= INTEGER (0..2^32-1)
   google.protobuf.Timestamp timestamp = 1;
 
   // Digital signature for the EF_Card_Download file content.
+  //
+  // See Data Dictionary, Section 2.149, `Signature`.
+  // ASN.1 Specification:
+  //
+  //     Signature ::= OCTET STRING (SIZE(128 for Gen1))
   bytes signature = 2;
 }

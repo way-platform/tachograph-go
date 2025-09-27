@@ -5,6 +5,13 @@ package wayplatform.connect.tachograph.card.v1;
 import "google/protobuf/descriptor.proto";
 import "wayplatform/connect/tachograph/card/v1/file_descriptor.proto";
 
+// This file defines a custom protobuf option to associate a file structure
+// with an enum value. This is used in `card_type.proto` to describe the
+// complete file system layout (MF, DFs, and EFs) for each type of tachograph card.
+//
+// This definition is part of the schema's internal implementation and does not
+// correspond to a data type in the Data Dictionary.
 extend google.protobuf.EnumValueOptions {
+  // A descriptor for the file system structure associated with a card type.
   FileDescriptor file_structure = 50302;
 }

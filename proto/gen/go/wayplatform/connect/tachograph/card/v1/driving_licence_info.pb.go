@@ -183,12 +183,32 @@ type DrivingLicenceInfo_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
 	// Authority that issued the driving licence.
+	//
+	// See Data Dictionary, Section 2.99, `Name`.
+	// ASN.1 Specification:
+	//
+	//	Name ::= SEQUENCE { codePage INTEGER(0..255), name OCTET STRING (SIZE(36)) }
 	DrivingLicenceIssuingAuthority *string
-	// Nation of the issuing authority. See DD Section 2.101 for `NationNumeric`.
+	// Nation of the issuing authority.
+	//
+	// See Data Dictionary, Section 2.101, `NationNumeric`.
+	// ASN.1 Specification:
+	//
+	//	NationNumeric ::= INTEGER(0..255)
 	DrivingLicenceIssuingNation *int32
 	// The driving licence number.
+	//
+	// See Data Dictionary, Section 2.18, `drivingLicenceNumber`.
+	// ASN.1 Specification:
+	//
+	//	IA5String(SIZE(16))
 	DrivingLicenceNumber *string
 	// Digital signature for the EF_Driving_Licence_Info file content.
+	//
+	// See Data Dictionary, Section 2.149, `Signature`.
+	// ASN.1 Specification:
+	//
+	//	Signature ::= OCTET STRING (SIZE(128 for Gen1))
 	Signature []byte
 }
 

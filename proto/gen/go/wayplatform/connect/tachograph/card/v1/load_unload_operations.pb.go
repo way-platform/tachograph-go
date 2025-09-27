@@ -21,7 +21,10 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// ASN.1 Type: OperationType (see DD 2.114a)
+// The type of load/unload operation.
+//
+// See Data Dictionary, Section 2.114a, `OperationType`.
+// ASN.1 Definition:
 //
 //	OperationType ::= INTEGER {
 //	    load(1), unload(2), simultaneous(3)
@@ -82,7 +85,7 @@ func (x LoadUnloadOperations_Record_OperationType) Number() protoreflect.EnumNum
 //
 // The data type `CardLoadUnloadOperations` is specified in the Data Dictionary, Section 2.24c.
 //
-// ASN.1 Specification:
+// ASN.1 Definition:
 //
 //	CardLoadUnloadOperations ::= SEQUENCE {
 //	    loadUnloadPointerNewestRecord INTEGER(0..NoOfLoadUnloadRecords -1),
@@ -164,8 +167,15 @@ type LoadUnloadOperations_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
 	// Index of the last updated record in the ring buffer.
+	// Corresponds to `loadUnloadPointerNewestRecord`.
+	//
+	// See Data Dictionary, Section 2.24c.
+	// ASN.1 Definition:
+	//
+	//	INTEGER(0..NoOfLoadUnloadRecords -1)
 	NewestRecordIndex *int32
 	// The set of load/unload records.
+	// Corresponds to `cardLoadUnloadRecords`.
 	Records []*LoadUnloadOperations_Record
 }
 
@@ -185,7 +195,7 @@ func (b0 LoadUnloadOperations_builder) Build() *LoadUnloadOperations {
 //
 // The data type `CardLoadUnloadRecord` is specified in the Data Dictionary, Section 2.24d.
 //
-// ASN.1 Specification:
+// ASN.1 Definition:
 //
 //	CardLoadUnloadRecord ::= SEQUENCE {
 //	    timeStamp TimeReal,
@@ -327,15 +337,23 @@ func (x *LoadUnloadOperations_Record) ClearVehicleOdometerKm() {
 type LoadUnloadOperations_Record_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
-	// ASN.1 Type: TimeReal (see DD 2.162)
+	// The timestamp at the beginning of the load/unload operation.
+	//
+	// See Data Dictionary, Section 2.162, `TimeReal`.
+	// ASN.1 Definition:
 	//
 	//	TimeReal ::= INTEGER (0..2^32-1)
 	Timestamp *timestamppb.Timestamp
-	// Type of operation.
+	// The type of operation performed.
 	OperationType *LoadUnloadOperations_Record_OperationType
-	// Authenticated position of the vehicle at the time of the operation.
+	// The authenticated position of the vehicle.
+	//
+	// See Data Dictionary, Section 2.79c, `GNSSPlaceAuthRecord`.
 	GnssPlaceAuthRecord *GnssPlaceAuthRecord
-	// ASN.1 Type: OdometerShort (see DD 2.113)
+	// The odometer value at the beginning of the operation in kilometers.
+	//
+	// See Data Dictionary, Section 2.113, `OdometerShort`.
+	// ASN.1 Definition:
 	//
 	//	OdometerShort ::= INTEGER(0..999999)
 	VehicleOdometerKm *int32

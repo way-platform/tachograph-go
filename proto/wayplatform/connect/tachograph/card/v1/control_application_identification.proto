@@ -6,16 +6,37 @@ import "wayplatform/connect/tachograph/datadictionary/v1/equipment_type.proto";
 
 // Represents the application identification data for a control card.
 //
-// Corresponds to the `ControlCardApplicationIdentification` data type.
-// See Data Dictionary, Section 2.50.
+// See Data Dictionary, Section 2.50, `ControlCardApplicationIdentification`.
+//
+// ASN.1 Specification:
+//
+//     ControlCardApplicationIdentification ::= SEQUENCE {
+//         typeOfTachographCardId EquipmentType,
+//         cardStructureVersion CardStructureVersion,
+//         noOfControlActivityRecords NoOfControlActivityRecords
+//     }
 message ControlApplicationIdentification {
-  // See Data Dictionary, Section 2.50, `typeOfTachographCardId`.
+  // The type of tachograph card.
+  //
+  // See Data Dictionary, Section 2.67, `EquipmentType`.
+  // ASN.1 Specification:
+  //
+  //     EquipmentType ::= INTEGER (0..255)
   datadictionary.v1.EquipmentType type_of_tachograph_card_id = 1;
-  
 
-  // See Data Dictionary, Section 2.50, `cardStructureVersion`.
+  // The version of the card structure.
+  //
+  // See Data Dictionary, Section 2.36, `CardStructureVersion`.
+  // ASN.1 Specification:
+  //
+  //     CardStructureVersion ::= OCTET STRING (SIZE (2))
   bytes card_structure_version = 3;
 
-  // See Data Dictionary, Section 2.50, `noOfControlActivityRecords`.
+  // The number of control activity records the card can store.
+  //
+  // See Data Dictionary, Section 2.108, `NoOfControlActivityRecords`.
+  // ASN.1 Specification:
+  //
+  //     NoOfControlActivityRecords ::= INTEGER(0..65535)
   int32 control_activity_records_count = 4;
 }

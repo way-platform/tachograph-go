@@ -26,6 +26,16 @@ const (
 //
 // This message corresponds to the data defined in the regulation document:
 // Appendix 7, Section 2.2.6.5: "Positive Response Transfer Data Detailed Speed".
+//
+// TREP 0x04 (Gen1):
+//
+//	├─VuDetailedSpeedData
+//	└─Signature
+//
+// TREP 0x24 (Gen2):
+//
+//	├─VuDetailedSpeedBlockRecordArray
+//	└─SignatureRecordArray
 type DetailedSpeed struct {
 	state                    protoimpl.MessageState               `protogen:"opaque.v1"`
 	xxx_hidden_Generation    v1.Generation                        `protobuf:"varint,1,opt,name=generation,enum=wayplatform.connect.tachograph.datadictionary.v1.Generation"`
@@ -160,18 +170,20 @@ type DetailedSpeed_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
 	// The generation of the vehicle unit, parsed from the raw transfer data.
-	//
-	// Discriminator field.
+	// This is a discriminator field used for parsing.
 	Generation *v1.Generation
 	// All detailed speed stored in the VU.
 	// Corresponds to `VuDetailedSpeedData` (Gen1) or `VuDetailedSpeedBlockRecordArray` (Gen2).
+	//
 	// See Data Dictionary, Sections 2.192 and 2.191.
 	SpeedBlocks []*DetailedSpeed_DetailedSpeedBlock
 	// Signature for Gen1 data (RSA, 128 bytes).
-	// See Data Dictionary, Section 2.149.
+	//
+	// See Data Dictionary, Section 2.149, `Signature`.
 	SignatureGen1 []byte
 	// Signature for Gen2 data (ECC).
-	// See Data Dictionary, Section 2.149.
+	//
+	// See Data Dictionary, Section 2.149, `Signature`.
 	SignatureGen2 []byte
 }
 
@@ -197,10 +209,9 @@ func (b0 DetailedSpeed_builder) Build() *DetailedSpeed {
 
 // Represents speed data for a single minute.
 //
-// Corresponds to the `VuDetailedSpeedBlock` data type.
-// See Data Dictionary, Section 2.190.
+// See Data Dictionary, Section 2.190, `VuDetailedSpeedBlock`.
 //
-// ASN.1 Specification:
+// ASN.1 Definition:
 //
 //	VuDetailedSpeedBlock ::= SEQUENCE {
 //	    speedBlockBeginDate TimeReal,
@@ -277,13 +288,15 @@ type DetailedSpeed_DetailedSpeedBlock_builder struct {
 
 	// Timestamp for the beginning of the minute.
 	//
-	// ASN.1 Specification:
+	// See Data Dictionary, Section 2.162, `TimeReal`.
+	// ASN.1 Definition:
 	//
 	//	TimeReal ::= INTEGER (0..2^32-1)
 	BeginDate *timestamppb.Timestamp
 	// 60 speed values (in km/h), one for each second of the minute.
 	//
-	// ASN.1 Specification:
+	// See Data Dictionary, Section 2.155, `Speed`.
+	// ASN.1 Definition:
 	//
 	//	Speed ::= INTEGER(0..255)
 	SpeedsKmh []int32

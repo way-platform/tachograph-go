@@ -22,14 +22,27 @@ import "wayplatform/connect/tachograph/datadictionary/v1/vehicle_registration_id
 //         sessionOpenVehicle VehicleRegistrationIdentification
 //     }
 message CurrentUsage {
-  // ASN.1 Type: TimeReal (see DD 2.162)
+  // The time when the card was inserted for the current usage session.
+  //
+  // See Data Dictionary, Section 2.162, `TimeReal`.
+  // ASN.1 Specification:
   //
   //     TimeReal ::= INTEGER (0..2^32-1)
   google.protobuf.Timestamp session_open_time = 1;
 
-  // ASN.1 Type: VehicleRegistrationIdentification (see DD 2.166)
+  // The identification of the vehicle in which the card is currently inserted.
+  //
+  // See Data Dictionary, Section 2.166, `VehicleRegistrationIdentification`.
+  // ASN.1 Specification:
+  //
+  //     VehicleRegistrationIdentification ::= SEQUENCE { ... }
   datadictionary.v1.VehicleRegistrationIdentification session_open_vehicle = 2;
 
   // Digital signature for the EF_Current_Usage file content.
+  //
+  // See Data Dictionary, Section 2.149, `Signature`.
+  // ASN.1 Specification:
+  //
+  //     Signature ::= OCTET STRING (SIZE(128 for Gen1))
   bytes signature = 3;
 }

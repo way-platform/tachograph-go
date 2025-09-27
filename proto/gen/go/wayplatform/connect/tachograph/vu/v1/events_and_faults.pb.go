@@ -225,29 +225,30 @@ type EventsAndFaults_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
 	// The generation of the vehicle unit, parsed from the raw transfer data.
-	//
-	// Discriminator field.
+	// This is a discriminator field used for parsing.
 	Generation *v1.Generation
 	// All faults stored or on-going in the VU.
-	// Corresponds to `VuFaultData` (Gen1) or `VuFaultRecordArray` (Gen2).
+	// Corresponds to `VuFaultData` (DD 2.200) or `VuFaultRecordArray` (DD 2.202).
 	Faults []*EventsAndFaults_FaultRecord
 	// All events (except over speeding) stored or on-going in the VU.
-	// Corresponds to `VuEventData` (Gen1) or `VuEventRecordArray` (Gen2).
+	// Corresponds to `VuEventData` (DD 2.197) or `VuEventRecordArray` (DD 2.199).
 	Events []*EventsAndFaults_EventRecord
 	// Data related to the last overspeeding control.
-	// Corresponds to `VuOverSpeedingControlData` (Gen1) or `VuOverSpeedingControlDataRecordArray` (Gen2).
+	// Corresponds to `VuOverSpeedingControlData` (DD 2.212) or `VuOverSpeedingControlDataRecordArray` (DD 2.213).
 	OverspeedingControl *EventsAndFaults_OverSpeedingControlData
 	// All overspeeding events stored in the VU.
-	// Corresponds to `VuOverSpeedingEventData` (Gen1) or `VuOverSpeedingEventRecordArray` (Gen2).
+	// Corresponds to `VuOverSpeedingEventData` (DD 2.214) or `VuOverSpeedingEventRecordArray` (DD 2.216).
 	OverspeedingEvents []*EventsAndFaults_OverSpeedingEventRecord
 	// All time adjustment events stored in the VU (outside a full calibration).
-	// Corresponds to `VuTimeAdjustmentData` (Gen1) or `VuTimeAdjustmentRecordArray` (Gen2).
+	// Corresponds to `VuTimeAdjustmentData` (DD 2.229) or `VuTimeAdjustmentRecordArray` (DD 2.233).
 	TimeAdjustments []*EventsAndFaults_TimeAdjustmentRecord
 	// Signature for Gen1 data (RSA, 128 bytes).
-	// See Data Dictionary, Section 2.149.
+	//
+	// See Data Dictionary, Section 2.149, `Signature`.
 	SignatureGen1 []byte
 	// Signature for Gen2 data (ECC).
-	// See Data Dictionary, Section 2.149.
+	//
+	// See Data Dictionary, Section 2.149, `Signature`.
 	SignatureGen2 []byte
 }
 
@@ -277,8 +278,20 @@ func (b0 EventsAndFaults_builder) Build() *EventsAndFaults {
 
 // Represents a vehicle unit fault record.
 //
-// Corresponds to the `VuFaultRecord` data type.
-// See Data Dictionary, Section 2.201.
+// See Data Dictionary, Section 2.201, `VuFaultRecord`.
+//
+// ASN.1 Definition:
+//
+//	VuFaultRecord ::= SEQUENCE {
+//	    faultType EventFaultType,
+//	    faultRecordPurpose EventFaultRecordPurpose,
+//	    faultBeginTime TimeReal,
+//	    faultEndTime TimeReal,
+//	    cardNumberDriverSlotBegin FullCardNumber,
+//	    cardNumberCodriverSlotBegin FullCardNumber,
+//	    cardNumberDriverSlotEnd FullCardNumber,
+//	    cardNumberCodriverSlotEnd FullCardNumber
+//	}
 type EventsAndFaults_FaultRecord struct {
 	state                                protoimpl.MessageState          `protogen:"opaque.v1"`
 	xxx_hidden_FaultType                 v1.EventFaultType               `protobuf:"varint,1,opt,name=fault_type,json=faultType,enum=wayplatform.connect.tachograph.datadictionary.v1.EventFaultType"`
@@ -489,20 +502,39 @@ type EventsAndFaults_FaultRecord_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
 	// Type of the fault.
-	// See Data Dictionary, Section 2.70 for `EventFaultType`.
+	//
+	// See Data Dictionary, Section 2.70, `EventFaultType`.
 	FaultType             *v1.EventFaultType
 	UnrecognizedFaultType *int32
 	// Purpose for which the fault has been recorded.
-	// See Data Dictionary, Section 2.69 for `EventFaultRecordPurpose`.
+	//
+	// See Data Dictionary, Section 2.69, `EventFaultRecordPurpose`.
 	RecordPurpose             *v1.EventFaultRecordPurpose
 	UnrecognizedRecordPurpose *int32
 	// Date and time of the beginning of the fault.
-	// See Data Dictionary, Section 2.162 for `TimeReal`.
+	//
+	// See Data Dictionary, Section 2.162, `TimeReal`.
+	// ASN.1 Definition:
+	//
+	//	TimeReal ::= INTEGER (0..2^32-1)
 	BeginTime *timestamppb.Timestamp
 	// Date and time of the end of the fault.
-	// See Data Dictionary, Section 2.162 for `TimeReal`.
+	//
+	// See Data Dictionary, Section 2.162, `TimeReal`.
+	// ASN.1 Definition:
+	//
+	//	TimeReal ::= INTEGER (0..2^32-1)
 	EndTime *timestamppb.Timestamp
 	// The card number and generation of the driver/workshop associated with the event.
+	// This field is a simplification, combining multiple card number fields from the raw record.
+	//
+	// See Data Dictionary, Section 2.74, `FullCardNumberAndGeneration`.
+	// ASN.1 Definition:
+	//
+	//	FullCardNumberAndGeneration ::= SEQUENCE {
+	//	    fullcardNumber FullCardNumber,
+	//	    generation Generation
+	//	}
 	CardIdentifier *v1.FullCardNumberAndGeneration
 }
 
@@ -534,8 +566,21 @@ func (b0 EventsAndFaults_FaultRecord_builder) Build() *EventsAndFaults_FaultReco
 
 // Represents a vehicle unit event record.
 //
-// Corresponds to the `VuEventRecord` data type.
-// See Data Dictionary, Section 2.198.
+// See Data Dictionary, Section 2.198, `VuEventRecord`.
+//
+// ASN.1 Definition:
+//
+//	VuEventRecord ::= SEQUENCE {
+//	    eventType EventFaultType,
+//	    eventRecordPurpose EventFaultRecordPurpose,
+//	    eventBeginTime TimeReal,
+//	    eventEndTime TimeReal,
+//	    cardNumberDriverSlotBegin FullCardNumber,
+//	    cardNumberCodriverSlotBegin FullCardNumber,
+//	    cardNumberDriverSlotEnd FullCardNumber,
+//	    cardNumberCodriverSlotEnd FullCardNumber,
+//	    similarEventsNumber SimilarEventsNumber
+//	}
 type EventsAndFaults_EventRecord struct {
 	state                                protoimpl.MessageState          `protogen:"opaque.v1"`
 	xxx_hidden_EventType                 v1.EventFaultType               `protobuf:"varint,1,opt,name=event_type,json=eventType,enum=wayplatform.connect.tachograph.datadictionary.v1.EventFaultType"`
@@ -771,23 +816,46 @@ type EventsAndFaults_EventRecord_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
 	// Type of the event.
-	// See Data Dictionary, Section 2.70 for `EventFaultType`.
+	//
+	// See Data Dictionary, Section 2.70, `EventFaultType`.
 	EventType             *v1.EventFaultType
 	UnrecognizedEventType *int32
 	// Purpose for which the event has been recorded.
-	// See Data Dictionary, Section 2.69 for `EventFaultRecordPurpose`.
+	//
+	// See Data Dictionary, Section 2.69, `EventFaultRecordPurpose`.
 	RecordPurpose             *v1.EventFaultRecordPurpose
 	UnrecognizedRecordPurpose *int32
 	// Date and time of the beginning of the event.
-	// See Data Dictionary, Section 2.162 for `TimeReal`.
+	//
+	// See Data Dictionary, Section 2.162, `TimeReal`.
+	// ASN.1 Definition:
+	//
+	//	TimeReal ::= INTEGER (0..2^32-1)
 	BeginTime *timestamppb.Timestamp
 	// Date and time of the end of the event.
-	// See Data Dictionary, Section 2.162 for `TimeReal`.
+	//
+	// See Data Dictionary, Section 2.162, `TimeReal`.
+	// ASN.1 Definition:
+	//
+	//	TimeReal ::= INTEGER (0..2^32-1)
 	EndTime *timestamppb.Timestamp
 	// The card number and generation of the driver/workshop associated with the event.
+	// This field is a simplification, combining multiple card number fields from the raw record.
+	//
+	// See Data Dictionary, Section 2.74, `FullCardNumberAndGeneration`.
+	// ASN.1 Definition:
+	//
+	//	FullCardNumberAndGeneration ::= SEQUENCE {
+	//	    fullcardNumber FullCardNumber,
+	//	    generation Generation
+	//	}
 	CardIdentifier *v1.FullCardNumberAndGeneration
 	// Number of similar events on the same day.
-	// See Data Dictionary, Section 2.151 for `SimilarEventsNumber`.
+	//
+	// See Data Dictionary, Section 2.151, `SimilarEventsNumber`.
+	// ASN.1 Definition:
+	//
+	//	SimilarEventsNumber ::= INTEGER(0..255)
 	SimilarEventsNumber *int32
 }
 
@@ -823,8 +891,15 @@ func (b0 EventsAndFaults_EventRecord_builder) Build() *EventsAndFaults_EventReco
 
 // Represents overspeeding control data.
 //
-// Corresponds to the `VuOverSpeedingControlData` data type.
-// See Data Dictionary, Section 2.212.
+// See Data Dictionary, Section 2.212, `VuOverSpeedingControlData`.
+//
+// ASN.1 Definition:
+//
+//	VuOverSpeedingControlData ::= SEQUENCE {
+//	    lastOverspeedControlTime TimeReal,
+//	    firstOverspeedSince TimeReal,
+//	    numberOfOverspeedSince OverspeedNumber
+//	}
 type EventsAndFaults_OverSpeedingControlData struct {
 	state                                        protoimpl.MessageState `protogen:"opaque.v1"`
 	xxx_hidden_LastControlTime                   *timestamppb.Timestamp `protobuf:"bytes,1,opt,name=last_control_time,json=lastControlTime"`
@@ -933,13 +1008,25 @@ type EventsAndFaults_OverSpeedingControlData_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
 	// Date and time of the last overspeeding control.
-	// See Data Dictionary, Section 2.162 for `TimeReal`.
+	//
+	// See Data Dictionary, Section 2.162, `TimeReal`.
+	// ASN.1 Definition:
+	//
+	//	TimeReal ::= INTEGER (0..2^32-1)
 	LastControlTime *timestamppb.Timestamp
 	// Date and time of the first overspeeding since the last control.
-	// See Data Dictionary, Section 2.162 for `TimeReal`.
+	//
+	// See Data Dictionary, Section 2.162, `TimeReal`.
+	// ASN.1 Definition:
+	//
+	//	TimeReal ::= INTEGER (0..2^32-1)
 	FirstOverspeedSinceLastControl *timestamppb.Timestamp
 	// Number of overspeeding events since the last control.
-	// See Data Dictionary, Section 2.116 for `OverspeedNumber`.
+	//
+	// See Data Dictionary, Section 2.116, `OverspeedNumber`.
+	// ASN.1 Definition:
+	//
+	//	OverspeedNumber ::= INTEGER (0..255)
 	NumberOfOverspeedSinceLastControl *int32
 }
 
@@ -958,8 +1045,20 @@ func (b0 EventsAndFaults_OverSpeedingControlData_builder) Build() *EventsAndFaul
 
 // Represents an overspeeding event record.
 //
-// Corresponds to the `VuOverSpeedingEventRecord` data type.
-// See Data Dictionary, Section 2.215.
+// See Data Dictionary, Section 2.215, `VuOverSpeedingEventRecord`.
+//
+// ASN.1 Definition:
+//
+//	VuOverSpeedingEventRecord ::= SEQUENCE {
+//	    eventType EventFaultType,
+//	    eventRecordPurpose EventFaultRecordPurpose,
+//	    eventBeginTime TimeReal,
+//	    eventEndTime TimeReal,
+//	    maxSpeedValue SpeedMax,
+//	    averageSpeedValue SpeedAverage,
+//	    cardNumberDriverSlotBegin FullCardNumber,
+//	    similarEventsNumber SimilarEventsNumber
+//	}
 type EventsAndFaults_OverSpeedingEventRecord struct {
 	state                                protoimpl.MessageState          `protogen:"opaque.v1"`
 	xxx_hidden_EventType                 v1.EventFaultType               `protobuf:"varint,1,opt,name=event_type,json=eventType,enum=wayplatform.connect.tachograph.datadictionary.v1.EventFaultType"`
@@ -1220,26 +1319,52 @@ type EventsAndFaults_OverSpeedingEventRecord_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
 	// Type of the event (always 'Over speeding').
-	// See Data Dictionary, Section 2.70 for `EventFaultType`.
+	//
+	// See Data Dictionary, Section 2.70, `EventFaultType`.
 	EventType             *v1.EventFaultType
 	UnrecognizedEventType *int32
 	// Purpose for which the event has been recorded.
-	// See Data Dictionary, Section 2.69 for `EventFaultRecordPurpose`.
+	//
+	// See Data Dictionary, Section 2.69, `EventFaultRecordPurpose`.
 	RecordPurpose             *v1.EventFaultRecordPurpose
 	UnrecognizedRecordPurpose *int32
 	// Date and time of the beginning of the event.
-	// See Data Dictionary, Section 2.162 for `TimeReal`.
+	//
+	// See Data Dictionary, Section 2.162, `TimeReal`.
+	// ASN.1 Definition:
+	//
+	//	TimeReal ::= INTEGER (0..2^32-1)
 	BeginTime *timestamppb.Timestamp
 	// Date and time of the end of the event.
-	// See Data Dictionary, Section 2.162 for `TimeReal`.
+	//
+	// See Data Dictionary, Section 2.162, `TimeReal`.
+	// ASN.1 Definition:
+	//
+	//	TimeReal ::= INTEGER (0..2^32-1)
 	EndTime *timestamppb.Timestamp
-	// Maximum speed measured during the event.
-	// See Data Dictionary, Section 2.158 for `SpeedMax`.
+	// Maximum speed measured during the event in km/h.
+	//
+	// See Data Dictionary, Section 2.158, `SpeedMax`.
+	// ASN.1 Definition:
+	//
+	//	SpeedMax ::= Speed ::= INTEGER(0..255)
 	MaxSpeedKmh *int32
-	// Average speed measured during the event.
-	// See Data Dictionary, Section 2.157 for `SpeedAverage`.
+	// Average speed measured during the event in km/h.
+	//
+	// See Data Dictionary, Section 2.157, `SpeedAverage`.
+	// ASN.1 Definition:
+	//
+	//	SpeedAverage ::= Speed ::= INTEGER(0..255)
 	AverageSpeedKmh *int32
 	// The card number and generation of the driver who caused the event.
+	//
+	// See Data Dictionary, Section 2.74, `FullCardNumberAndGeneration`.
+	// ASN.1 Definition:
+	//
+	//	FullCardNumberAndGeneration ::= SEQUENCE {
+	//	    fullcardNumber FullCardNumber,
+	//	    generation Generation
+	//	}
 	CardIdentifier *v1.FullCardNumberAndGeneration
 }
 
@@ -1279,8 +1404,17 @@ func (b0 EventsAndFaults_OverSpeedingEventRecord_builder) Build() *EventsAndFaul
 
 // Represents a time adjustment record.
 //
-// Corresponds to the `VuTimeAdjustmentRecord` data type.
-// See Data Dictionary, Section 2.232.
+// See Data Dictionary, Section 2.232, `VuTimeAdjustmentRecord`.
+//
+// ASN.1 Definition:
+//
+//	VuTimeAdjustmentRecord ::= SEQUENCE {
+//	    oldTimeValue TimeReal,
+//	    newTimeValue TimeReal,
+//	    workshopName Name,
+//	    workshopAddress Address,
+//	    workshopCardNumber FullCardNumber
+//	}
 type EventsAndFaults_TimeAdjustmentRecord struct {
 	state                             protoimpl.MessageState          `protogen:"opaque.v1"`
 	xxx_hidden_OldTime                *timestamppb.Timestamp          `protobuf:"bytes,1,opt,name=old_time,json=oldTime"`
@@ -1443,18 +1577,42 @@ type EventsAndFaults_TimeAdjustmentRecord_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
 	// Time value before adjustment.
-	// See Data Dictionary, Section 2.162 for `TimeReal`.
+	//
+	// See Data Dictionary, Section 2.162, `TimeReal`.
+	// ASN.1 Definition:
+	//
+	//	TimeReal ::= INTEGER (0..2^32-1)
 	OldTime *timestamppb.Timestamp
 	// Time value after adjustment.
-	// See Data Dictionary, Section 2.162 for `TimeReal`.
+	//
+	// See Data Dictionary, Section 2.162, `TimeReal`.
+	// ASN.1 Definition:
+	//
+	//	TimeReal ::= INTEGER (0..2^32-1)
 	NewTime *timestamppb.Timestamp
 	// Name of the workshop that performed the adjustment.
-	// See Data Dictionary, Section 2.99 for `Name`.
+	//
+	// See Data Dictionary, Section 2.99, `Name`.
+	// ASN.1 Definition:
+	//
+	//	Name ::= SEQUENCE { codePage INTEGER(0..255), name OCTET STRING (SIZE(36)) }
 	WorkshopName *string
 	// Address of the workshop.
-	// See Data Dictionary, Section 2.2 for `Address`.
+	//
+	// See Data Dictionary, Section 2.2, `Address`.
+	// ASN.1 Definition:
+	//
+	//	Address ::= SEQUENCE { codePage INTEGER(0..255), address OCTET STRING (SIZE(36)) }
 	WorkshopAddress *string
 	// The card number and generation of the workshop that performed the adjustment.
+	//
+	// See Data Dictionary, Section 2.74, `FullCardNumberAndGeneration`.
+	// ASN.1 Definition:
+	//
+	//	FullCardNumberAndGeneration ::= SEQUENCE {
+	//	    fullcardNumber FullCardNumber,
+	//	    generation Generation
+	//	}
 	WorkshopCardIdentifier *v1.FullCardNumberAndGeneration
 }
 

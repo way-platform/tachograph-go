@@ -35,23 +35,46 @@ message BorderCrossings {
   //         vehicleOdometerValue OdometerShort
   //     }
   message Record {
-
-    // Country the vehicle is leaving. See DD Section 2.101 for `NationNumeric`.
+    // Country the vehicle is leaving.
+    //
+    // See Data Dictionary, Section 2.101, `NationNumeric`.
+    // ASN.1 Specification:
+    //
+    //     NationNumeric ::= INTEGER (0..255)
     int32 country_left = 1;
 
-    // Country the vehicle is entering. See DD Section 2.101 for `NationNumeric`.
+    // Country the vehicle is entering.
+    //
+    // See Data Dictionary, Section 2.101, `NationNumeric`.
+    // ASN.1 Specification:
+    //
+    //     NationNumeric ::= INTEGER (0..255)
     int32 country_entered = 2;
 
     // Authenticated position of the vehicle at the time of crossing.
+    //
+    // See Data Dictionary, Section 2.79c, `GNSSPlaceAuthRecord`.
     GnssPlaceAuthRecord gnss_place_auth_record = 3;
 
-    // Odometer at the time of crossing. See DD Section 2.113 for `OdometerShort`.
+    // Odometer at the time of crossing, in kilometers.
+    //
+    // See Data Dictionary, Section 2.113, `OdometerShort`.
+    // ASN.1 Specification:
+    //
+    //     OdometerShort ::= INTEGER(0..999999)
     int32 vehicle_odometer_km = 4;
   }
 
   // Index of the last updated record.
+  // Corresponds to `borderCrossingPointerNewestRecord`.
+  //
+  // See Data Dictionary, Section 2.11a.
+  // ASN.1 Specification:
+  //
+  //     INTEGER (0..NoOfBorderCrossingRecords -1)
   int32 newest_record_index = 1;
 
   // The set of border crossing records.
+  // Corresponds to `cardBorderCrossingRecords`.
   repeated Record records = 2;
 }

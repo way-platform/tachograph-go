@@ -20,17 +20,21 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// FileType represents the type of a tachograph file.
+// FileType represents the type of a file in the tachograph card's file system,
+// based on ISO/IEC 7816 standards.
+//
+// This enum is used to model the card's file structure and does not correspond
+// to a specific data type in the Data Dictionary.
 type FileType int32
 
 const (
 	// Default value. This value is unused.
 	FileType_FILE_TYPE_UNSPECIFIED FileType = 0
-	// Master file.
+	// Master File (the root of the file system).
 	FileType_MF FileType = 1
-	// Dedicated file.
+	// Dedicated File (a directory).
 	FileType_DF FileType = 2
-	// Elementary file.
+	// Elementary File (a data file).
 	FileType_EF FileType = 3
 )
 

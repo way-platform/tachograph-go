@@ -23,8 +23,15 @@ const (
 
 // Represents the application identification data for a company card.
 //
-// Corresponds to the `CompanyCardApplicationIdentification` data type.
-// See Data Dictionary, Section 2.48.
+// See Data Dictionary, Section 2.48, `CompanyCardApplicationIdentification`.
+//
+// ASN.1 Specification:
+//
+//	CompanyCardApplicationIdentification ::= SEQUENCE {
+//	    typeOfTachographCardId EquipmentType,
+//	    cardStructureVersion CardStructureVersion,
+//	    noOfCompanyActivityRecords NoOfCompanyActivityRecords
+//	}
 type CompanyApplicationIdentification struct {
 	state                                  protoimpl.MessageState `protogen:"opaque.v1"`
 	xxx_hidden_TypeOfTachographCardId      v1.EquipmentType       `protobuf:"varint,1,opt,name=type_of_tachograph_card_id,json=typeOfTachographCardId,enum=wayplatform.connect.tachograph.datadictionary.v1.EquipmentType"`
@@ -141,11 +148,26 @@ func (x *CompanyApplicationIdentification) ClearCompanyActivityRecordsCount() {
 type CompanyApplicationIdentification_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
-	// See Data Dictionary, Section 2.48, `typeOfTachographCardId`.
+	// The type of tachograph card.
+	//
+	// See Data Dictionary, Section 2.67, `EquipmentType`.
+	// ASN.1 Specification:
+	//
+	//	EquipmentType ::= INTEGER (0..255)
 	TypeOfTachographCardId *v1.EquipmentType
-	// See Data Dictionary, Section 2.48, `cardStructureVersion`.
+	// The version of the card structure.
+	//
+	// See Data Dictionary, Section 2.36, `CardStructureVersion`.
+	// ASN.1 Specification:
+	//
+	//	CardStructureVersion ::= OCTET STRING (SIZE (2))
 	CardStructureVersion []byte
-	// See Data Dictionary, Section 2.48, `noOfCompanyActivityRecords`.
+	// The number of company activity records the card can store.
+	//
+	// See Data Dictionary, Section 2.107, `NoOfCompanyActivityRecords`.
+	// ASN.1 Specification:
+	//
+	//	NoOfCompanyActivityRecords ::= INTEGER(0..65535)
 	CompanyActivityRecordsCount *int32
 }
 

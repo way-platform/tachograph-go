@@ -32,7 +32,7 @@ const (
 //
 // The data type `CardFaultData` is specified in the Data Dictionary, Section 2.21.
 //
-// ASN.1 Specification:
+// ASN.1 Definition:
 //
 //	CardFaultData ::= SEQUENCE (SIZE(2)) OF
 //	    cardFaultRecords SET SIZE(NoOfFaultsPerType) OF CardFaultRecord
@@ -114,8 +114,15 @@ func (x *FaultsData) ClearSignature() {
 type FaultsData_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
+	// The set of fault records.
+	// Corresponds to `cardFaultRecords`.
 	Records []*FaultsData_Record
 	// Digital signature for the EF_Faults_Data file content.
+	//
+	// See Data Dictionary, Section 2.149, `Signature`.
+	// ASN.1 Definition:
+	//
+	//	Signature ::= OCTET STRING (SIZE(128 for Gen1))
 	Signature []byte
 }
 
@@ -135,7 +142,7 @@ func (b0 FaultsData_builder) Build() *FaultsData {
 //
 // The data type `CardFaultRecord` is specified in the Data Dictionary, Section 2.22.
 //
-// ASN.1 Specification:
+// ASN.1 Definition:
 //
 //	CardFaultRecord ::= SEQUENCE {
 //	    faultType EventFaultType,
@@ -332,17 +339,33 @@ type FaultsData_Record_builder struct {
 	// If false, the 'raw_data' field contains the original, unprocessed record
 	// bytes.
 	Valid *bool
-	// ASN.1 Type: EventFaultType (see DD 2.70)
+	// The type of the fault.
+	//
+	// See Data Dictionary, Section 2.70, `EventFaultType`.
+	// ASN.1 Definition:
+	//
+	//	EventFaultType ::= OCTET STRING (SIZE (1))
 	FaultType *v1.EventFaultType
-	// ASN.1 Type: TimeReal (see DD 2.162)
+	// The date and time of the beginning of the fault.
+	//
+	// See Data Dictionary, Section 2.162, `TimeReal`.
+	// ASN.1 Definition:
 	//
 	//	TimeReal ::= INTEGER (0..2^32-1)
 	FaultBeginTime *timestamppb.Timestamp
-	// ASN.1 Type: TimeReal (see DD 2.162)
+	// The date and time of the end of the fault.
+	//
+	// See Data Dictionary, Section 2.162, `TimeReal`.
+	// ASN.1 Definition:
 	//
 	//	TimeReal ::= INTEGER (0..2^32-1)
 	FaultEndTime *timestamppb.Timestamp
-	// ASN.1 Type: VehicleRegistrationIdentification (see DD 2.166)
+	// The vehicle registration of the vehicle in which the fault happened.
+	//
+	// See Data Dictionary, Section 2.166, `VehicleRegistrationIdentification`.
+	// ASN.1 Definition:
+	//
+	//	VehicleRegistrationIdentification ::= SEQUENCE { ... }
 	FaultVehicleRegistration *v1.VehicleRegistrationIdentification
 	// --- Field for a non-valid record (when valid = false) ---
 	// Holds the raw 24 bytes of the original record.

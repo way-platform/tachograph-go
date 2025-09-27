@@ -2,15 +2,17 @@ edition = "2023";
 
 package wayplatform.connect.tachograph.card.v1;
 
-// ContentType specifies whether a TLV value contains file data or a signature.
-// This corresponds to bit 0 of the tag appendix byte.
+// ContentType specifies whether a TLV-encoded value contains file data or a signature.
+// This enum does not have a direct equivalent in the Data Dictionary but is derived
+// from the file tagging structure, where bit 0 of the tag appendix byte indicates
+// whether the content is data or a signature.
 enum ContentType {
   // Default value. This value is unused.
   CONTENT_TYPE_UNSPECIFIED = 0;
 
-  // The value contains elementary file data (bit 0 = 0).
+  // The value contains elementary file data (tag appendix byte, bit 0 = 0).
   DATA = 1;
 
-  // The value contains a signature for an elementary file (bit 0 = 1).
+  // The value contains a signature for an elementary file (tag appendix byte, bit 0 = 1).
   SIGNATURE = 2;
 }

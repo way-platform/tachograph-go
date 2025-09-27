@@ -31,7 +31,7 @@ const (
 //
 // The data type `CardVehiclesUsed` is specified in the Data Dictionary, Section 2.38.
 //
-// ASN.1 Specification:
+// ASN.1 Definition:
 //
 //	CardVehiclesUsed ::= SEQUENCE {
 //	    vehiclePointerNewestRecord INTEGER(0..NoOfCardVehicleRecords-1),
@@ -141,10 +141,22 @@ type VehiclesUsed_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
 	// Index of the last updated vehicle record.
+	// Corresponds to `vehiclePointerNewestRecord`.
+	//
+	// See Data Dictionary, Section 2.38.
+	// ASN.1 Definition:
+	//
+	//	INTEGER(0..NoOfCardVehicleRecords-1)
 	NewestRecordIndex *int32
 	// The set of records for vehicles used.
+	// Corresponds to `cardVehicleRecords`.
 	Records []*VehiclesUsed_Record
 	// Digital signature for the EF_Vehicles_Used file content.
+	//
+	// See Data Dictionary, Section 2.149, `Signature`.
+	// ASN.1 Definition:
+	//
+	//	Signature ::= OCTET STRING (SIZE(128 for Gen1))
 	Signature []byte
 }
 
@@ -168,7 +180,7 @@ func (b0 VehiclesUsed_builder) Build() *VehiclesUsed {
 //
 // The data type `CardVehicleRecord` is specified in the Data Dictionary, Section 2.37.
 //
-// ASN.1 Specification:
+// ASN.1 Definition:
 //
 //	CardVehicleRecord ::= SEQUENCE {
 //	    vehicleOdometerBegin OdometerShort,
@@ -177,7 +189,7 @@ func (b0 VehiclesUsed_builder) Build() *VehiclesUsed {
 //	    vehicleLastUse TimeReal,
 //	    vehicleRegistration VehicleRegistrationIdentification,
 //	    vuDataBlockCounter VuDataBlockCounter,
-//	    vehicleIdentificationNumber VehicleIdentificationNumber
+//	    vehicleIdentificationNumber VehicleIdentificationNumber -- Gen2
 //	}
 type VehiclesUsed_Record struct {
 	state                                  protoimpl.MessageState                `protogen:"opaque.v1"`
@@ -387,29 +399,49 @@ func (x *VehiclesUsed_Record) ClearVehicleIdentificationNumber() {
 type VehiclesUsed_Record_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
-	// ASN.1 Type: OdometerShort (see DD 2.113)
+	// The vehicle odometer value at the beginning of the period of use, in kilometers.
+	//
+	// See Data Dictionary, Section 2.113, `OdometerShort`.
+	// ASN.1 Definition:
 	//
 	//	OdometerShort ::= INTEGER(0..999999)
 	VehicleOdometerBeginKm *int32
-	// ASN.1 Type: OdometerShort (see DD 2.113)
+	// The vehicle odometer value at the end of the period of use, in kilometers.
+	//
+	// See Data Dictionary, Section 2.113, `OdometerShort`.
+	// ASN.1 Definition:
 	//
 	//	OdometerShort ::= INTEGER(0..999999)
 	VehicleOdometerEndKm *int32
-	// ASN.1 Type: TimeReal (see DD 2.162)
+	// The date and time of the beginning of the period of use.
+	//
+	// See Data Dictionary, Section 2.162, `TimeReal`.
+	// ASN.1 Definition:
 	//
 	//	TimeReal ::= INTEGER (0..2^32-1)
 	VehicleFirstUse *timestamppb.Timestamp
-	// ASN.1 Type: TimeReal (see DD 2.162)
+	// The date and time of the end of the period of use.
+	//
+	// See Data Dictionary, Section 2.162, `TimeReal`.
+	// ASN.1 Definition:
 	//
 	//	TimeReal ::= INTEGER (0..2^32-1)
 	VehicleLastUse *timestamppb.Timestamp
-	// ASN.1 Type: VehicleRegistrationIdentification (see DD 2.166)
+	// The VRN and registering Member State of the vehicle.
+	//
+	// See Data Dictionary, Section 2.166, `VehicleRegistrationIdentification`.
 	VehicleRegistration *v1.VehicleRegistrationIdentification
-	// ASN.1 Type: VuDataBlockCounter (see DD 2.189)
+	// The value of the VuDataBlockCounter at last extraction.
+	//
+	// See Data Dictionary, Section 2.189, `VuDataBlockCounter`.
+	// ASN.1 Definition:
 	//
 	//	VuDataBlockCounter ::= INTEGER(0..65535)
 	VuDataBlockCounter *int32
-	// ASN.1 Type: VehicleIdentificationNumber (see DD 2.164)
+	// The Vehicle Identification Number (VIN). (Gen2 only)
+	//
+	// See Data Dictionary, Section 2.164, `VehicleIdentificationNumber`.
+	// ASN.1 Definition:
 	//
 	//	VehicleIdentificationNumber ::= IA5String(SIZE(17))
 	VehicleIdentificationNumber *string

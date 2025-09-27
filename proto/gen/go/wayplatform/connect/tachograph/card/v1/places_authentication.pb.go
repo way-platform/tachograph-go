@@ -31,7 +31,7 @@ const (
 //
 // The data type `CardPlaceAuthDailyWorkPeriod` is specified in the Data Dictionary, Section 2.26a.
 //
-// ASN.1 Specification:
+// ASN.1 Definition:
 //
 //	CardPlaceAuthDailyWorkPeriod ::= SEQUENCE {
 //	    placeAuthPointerNewestRecord INTEGER(0..NoOfCardPlaceRecords -1),
@@ -113,8 +113,15 @@ type PlacesAuthentication_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
 	// Index of the last updated record.
+	// Corresponds to `placeAuthPointerNewestRecord`.
+	//
+	// See Data Dictionary, Section 2.26a.
+	// ASN.1 Definition:
+	//
+	//	INTEGER(0..NoOfCardPlaceRecords -1)
 	NewestRecordIndex *int32
 	// The set of place authentication status records.
+	// Corresponds to `placeAuthStatusRecords`.
 	Records []*PlacesAuthentication_Record
 }
 
@@ -134,7 +141,7 @@ func (b0 PlacesAuthentication_builder) Build() *PlacesAuthentication {
 //
 // The data type `PlaceAuthStatusRecord` is specified in the Data Dictionary, Section 2.116b.
 //
-// ASN.1 Specification:
+// ASN.1 Definition:
 //
 //	PlaceAuthStatusRecord ::= SEQUENCE {
 //	    entryTime TimeReal,
@@ -224,11 +231,17 @@ func (x *PlacesAuthentication_Record) ClearAuthenticationStatus() {
 type PlacesAuthentication_Record_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
-	// ASN.1 Type: TimeReal (see DD 2.162)
+	// The timestamp of the entry.
+	//
+	// See Data Dictionary, Section 2.162, `TimeReal`.
+	// ASN.1 Definition:
 	//
 	//	TimeReal ::= INTEGER (0..2^32-1)
 	EntryTime *timestamppb.Timestamp
-	// ASN.1 Type: PositionAuthenticationStatus (see DD 2.117a)
+	// The authentication status of the position.
+	//
+	// See Data Dictionary, Section 2.117a, `PositionAuthenticationStatus`.
+	// ASN.1 Definition:
 	//
 	//	PositionAuthenticationStatus ::= INTEGER {
 	//	    notAvailable(0),

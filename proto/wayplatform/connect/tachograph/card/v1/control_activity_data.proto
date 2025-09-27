@@ -36,6 +36,7 @@ message ControlActivityData {
 
   // The type of the control.
   //
+  // See Data Dictionary, Section 2.53, `ControlType`.
   // ASN.1 Specification:
   //
   //     ControlType ::= OCTET STRING (SIZE(1))
@@ -43,6 +44,7 @@ message ControlActivityData {
 
   // The date and time of the control.
   //
+  // See Data Dictionary, Section 2.162, `TimeReal`.
   // ASN.1 Specification:
   //
   //     TimeReal ::= INTEGER (0..2^32-1)
@@ -50,6 +52,7 @@ message ControlActivityData {
 
   // The full card number of the control officer who performed the control.
   //
+  // See Data Dictionary, Section 2.73, `FullCardNumber`.
   // ASN.1 Specification:
   //
   //     FullCardNumber ::= SEQUENCE { ... }
@@ -57,6 +60,7 @@ message ControlActivityData {
 
   // The vehicle registration of the vehicle in which the control happened.
   //
+  // See Data Dictionary, Section 2.166, `VehicleRegistrationIdentification`.
   // ASN.1 Specification:
   //
   //     VehicleRegistrationIdentification ::= SEQUENCE { ... }
@@ -64,6 +68,7 @@ message ControlActivityData {
 
   // The beginning of the downloaded period, in case of downloading.
   //
+  // See Data Dictionary, Section 2.162, `TimeReal`.
   // ASN.1 Specification:
   //
   //     TimeReal ::= INTEGER (0..2^32-1)
@@ -71,6 +76,7 @@ message ControlActivityData {
 
   // The end of the downloaded period, in case of downloading.
   //
+  // See Data Dictionary, Section 2.162, `TimeReal`.
   // ASN.1 Specification:
   //
   //     TimeReal ::= INTEGER (0..2^32-1)
@@ -81,5 +87,10 @@ message ControlActivityData {
   bytes raw_data = 8;
 
   // Digital signature for the EF_Control_Activity_Data file content.
+  //
+  // See Data Dictionary, Section 2.149, `Signature`.
+  // ASN.1 Specification:
+  //
+  //     Signature ::= OCTET STRING (SIZE(128 for Gen1))
   bytes signature = 9;
 }

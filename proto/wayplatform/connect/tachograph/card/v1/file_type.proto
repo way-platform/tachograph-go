@@ -2,14 +2,21 @@ edition = "2023";
 
 package wayplatform.connect.tachograph.card.v1;
 
-// FileType represents the type of a tachograph file.
+// FileType represents the type of a file in the tachograph card's file system,
+// based on ISO/IEC 7816 standards.
+//
+// This enum is used to model the card's file structure and does not correspond
+// to a specific data type in the Data Dictionary.
 enum FileType {
   // Default value. This value is unused.
   FILE_TYPE_UNSPECIFIED = 0;
-  // Master file.
+
+  // Master File (the root of the file system).
   MF = 1;
-  // Dedicated file.
+
+  // Dedicated File (a directory).
   DF = 2;
-  // Elementary file.
+
+  // Elementary File (a data file).
   EF = 3;
 }

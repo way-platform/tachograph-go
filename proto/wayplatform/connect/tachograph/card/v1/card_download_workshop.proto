@@ -16,5 +16,11 @@ package wayplatform.connect.tachograph.card.v1;
 //     NoOfCalibrationsSinceDownload ::= INTEGER(0..255)
 //
 message CardDownloadWorkshop {
+  // The number of calibrations performed since the last download.
+  //
+  // See Data Dictionary, Section 2.103, `NoOfCalibrationsSinceDownload`.
+  // ASN.1 Specification:
+  //
+  //     NoOfCalibrationsSinceDownload ::= INTEGER(0..255)
   int32 count = 1;
 }

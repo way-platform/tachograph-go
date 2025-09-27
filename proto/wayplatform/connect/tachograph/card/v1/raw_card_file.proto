@@ -6,29 +6,35 @@ import "wayplatform/connect/tachograph/card/v1/application_generation.proto";
 import "wayplatform/connect/tachograph/card/v1/content_type.proto";
 import "wayplatform/connect/tachograph/card/v1/elementary_file_type.proto";
 
-// A raw card file.
+// Represents the low-level structure of a downloaded card file, containing a
+// sequence of raw Tag-Length-Value (TLV) records. This is the result of the
+// first parsing pass and is used as input for the second pass, which interprets
+// the `value` bytes into semantic messages.
+//
+// This message is part of the internal data model and does not correspond to a
+// specific data type in the Data Dictionary.
 message RawCardFile {
-  // The TLV records of the raw card file.
-  repeated Record records = 1;
-
   // A TLV record of the raw card file.
   message Record {
-    // The tag of the TLV record.
+    // The tag of the TLV record, identifying the data type.
     int32 tag = 1;
 
-    // The file type, inferred from the tag.
+    // The elementary file type, inferred from the tag.
     ElementaryFileType file = 2;
 
-    // The application generation, inferred from the tag.
+    // The application generation (Gen1 or Gen2), inferred from the tag.
     ApplicationGeneration generation = 3;
 
-    // The content type of the value, inferred from the tag.
+    // The content type of the value (data or signature), inferred from the tag.
     ContentType content_type = 4;
 
-    // The length of the record value.
+    // The length of the record's value in bytes.
     int32 length = 5;
 
-    // The value of the record.
+    // The raw byte value of the record.
     bytes value = 6;
   }
+
+  // The sequence of TLV records from the downloaded file.
+  repeated Record records = 1;
 }

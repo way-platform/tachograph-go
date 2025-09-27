@@ -6,28 +6,41 @@ import "google/protobuf/timestamp.proto";
 
 // Represents an authenticated GNSS position record.
 //
-// The data type `GNSSPlaceAuthRecord` is specified in the Data Dictionary, Section 2.79c.
+// See Data Dictionary, Section 2.79c, `GNSSPlaceAuthRecord`.
 //
-// ASN.1 Specification:
+// ASN.1 Definition:
 //
 //     GNSSPlaceAuthRecord ::= SEQUENCE {
 //         timeStamp TimeReal,
 //         gnssAccuracy GNSSAccuracy,
 //         geoCoordinates GeoCoordinates,
-//         authenticationStatus PositionAuthenticationStatus
+//         posAuthStatus PositionAuthenticationStatus
 //     }
+//
+// Note: The Data Dictionary at 2.79c appears to have a typo, listing `longitude`
+// and `latitude` as separate fields of type `GeoCoordinates`. The definition
+// above, taken from the original proto file, is assumed to be correct.
 message GnssPlaceAuthRecord {
-  // ASN.1 Type: TimeReal (see DD 2.162)
+  // The timestamp of the position record.
+  //
+  // See Data Dictionary, Section 2.162, `TimeReal`.
+  // ASN.1 Definition:
   //
   //     TimeReal ::= INTEGER (0..2^32-1)
   google.protobuf.Timestamp timestamp = 1;
 
-  // ASN.1 Type: GNSSAccuracy (see DD 2.77)
+  // The accuracy of the GNSS position.
+  //
+  // See Data Dictionary, Section 2.77, `GNSSAccuracy`.
+  // ASN.1 Definition:
   //
   //     GNSSAccuracy ::= OCTET STRING(SIZE(1))
   int32 gnss_accuracy = 2;
 
-  // ASN.1 Type: GeoCoordinates (see DD 2.76)
+  // The geographic coordinates of the position, corresponding to the `geoCoordinates` field.
+  //
+  // See Data Dictionary, Section 2.76, `GeoCoordinates`.
+  // ASN.1 Definition:
   //
   //     GeoCoordinates ::= SEQUENCE {
   //         latitude INTEGER(-90*3600*1000..90*3600*1000),
@@ -36,7 +49,10 @@ message GnssPlaceAuthRecord {
   sint32 longitude = 3;
   sint32 latitude = 4;
 
-  // ASN.1 Type: PositionAuthenticationStatus (see DD 2.117a)
+  // The authentication status of the position.
+  //
+  // See Data Dictionary, Section 2.117a, `PositionAuthenticationStatus`.
+  // ASN.1 Definition:
   //
   //     PositionAuthenticationStatus ::= INTEGER {
   //         notAvailable(0),

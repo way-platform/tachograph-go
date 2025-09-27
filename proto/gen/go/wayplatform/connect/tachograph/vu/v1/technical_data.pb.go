@@ -276,28 +276,42 @@ type TechnicalData_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
 	// The generation of the vehicle unit, parsed from the raw transfer data.
-	//
-	// Discriminator field.
+	// This is a discriminator field used for parsing.
 	Generation *v1.Generation
 	// Vehicle unit identification data.
+	// Corresponds to `VuIdentification` (DD 2.205).
 	VuIdentification *TechnicalData_VuIdentification
 	// All calibration records stored in the VU.
+	// Corresponds to `VuCalibrationData` (DD 2.173) or `VuCalibrationRecordArray` (DD 2.175).
 	CalibrationRecords []*TechnicalData_CalibrationRecord
 	// For Gen1, the single paired sensor.
+	// Corresponds to `SensorPaired` (DD 2.144).
 	PairedSensor *TechnicalData_PairedSensor
 	// For Gen2, the list of paired sensors.
+	// Corresponds to `VuSensorPairedRecordArray` (DD 2.243).
 	PairedSensors []*TechnicalData_PairedSensor
 	// For Gen2, the list of coupled external GNSS facilities.
+	// Corresponds to `VuSensorExternalGNSSCoupledRecordArray` (DD 2.242).
 	CoupledGnssFacilities []*TechnicalData_CoupledGnss
 	// For Gen2, the list of cards that have been used in the VU.
+	// Corresponds to `VuCardRecordArray` (DD 2.180).
 	CardRecords []*TechnicalData_CardRecord
 	// For Gen2, the list of ITS consent records.
+	// Corresponds to `VuITSConsentRecordArray` (DD 2.208).
 	ItsConsentRecords []*TechnicalData_ItsConsentRecord
 	// For Gen2, the list of power supply interruptions.
+	// Corresponds to `VuPowerSupplyInterruptionRecordArray` (DD 2.241).
 	PowerSupplyInterruptions []*TechnicalData_PowerSupplyInterruptionRecord
 	// Signature for Gen1 data (RSA, 128 bytes).
+	//
+	// See Data Dictionary, Section 2.149, `Signature`.
+	// ASN.1 Definition:
+	//
+	//	Signature ::= OCTET STRING (SIZE (128))
 	SignatureGen1 []byte
 	// Signature for Gen2 data (ECC).
+	//
+	// See Data Dictionary, Section 2.149, `Signature`.
 	SignatureGen2 []byte
 }
 
@@ -330,8 +344,19 @@ func (b0 TechnicalData_builder) Build() *TechnicalData {
 
 // Represents the identification data of the vehicle unit.
 //
-// Corresponds to the `VuIdentification` data type.
-// See Data Dictionary, Section 2.205.
+// See Data Dictionary, Section 2.205, `VuIdentification`.
+//
+// ASN.1 Definition:
+//
+//	VuIdentification ::= SEQUENCE {
+//	    vuManufacturerName VuManufacturerName,
+//	    vuManufacturerAddress VuManufacturerAddress,
+//	    vuPartNumber VuPartNumber,
+//	    vuSerialNumber VuSerialNumber,
+//	    vuSoftwareIdentification VuSoftwareIdentification,
+//	    vuManufacturingDate VuManufacturingDate,
+//	    vuApprovalNumber VuApprovalNumber
+//	}
 type TechnicalData_VuIdentification struct {
 	state                             protoimpl.MessageState                                   `protogen:"opaque.v1"`
 	xxx_hidden_ManufacturerName       *string                                                  `protobuf:"bytes,1,opt,name=manufacturer_name,json=manufacturerName"`
@@ -550,18 +575,45 @@ type TechnicalData_VuIdentification_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
 	// The name of the VU manufacturer.
+	//
+	// See Data Dictionary, Section 2.210, `VuManufacturerName`.
+	// ASN.1 Definition:
+	//
+	//	VuManufacturerName ::= Name
 	ManufacturerName *string
 	// The address of the VU manufacturer.
+	//
+	// See Data Dictionary, Section 2.209, `VuManufacturerAddress`.
+	// ASN.1 Definition:
+	//
+	//	VuManufacturerAddress ::= Address
 	ManufacturerAddress *string
 	// The part number of the VU.
+	//
+	// See Data Dictionary, Section 2.217, `VuPartNumber`.
+	// ASN.1 Definition:
+	//
+	//	VuPartNumber ::= IA5String(SIZE(16))
 	PartNumber *string
 	// The serial number of the VU.
+	//
+	// See Data Dictionary, Section 2.223, `VuSerialNumber`.
 	SerialNumber *v1.ExtendedSerialNumber
 	// The software identification of the VU.
 	SoftwareIdentification *TechnicalData_VuIdentification_VuSoftwareIdentification
 	// The manufacturing date of the VU.
+	//
+	// See Data Dictionary, Section 2.211, `VuManufacturingDate`.
+	// ASN.1 Definition:
+	//
+	//	VuManufacturingDate ::= TimeReal ::= INTEGER (0..2^32-1)
 	ManufacturingDate *timestamppb.Timestamp
 	// The approval number of the VU.
+	//
+	// See Data Dictionary, Section 2.172, `VuApprovalNumber`.
+	// ASN.1 Definition:
+	//
+	//	VuApprovalNumber ::= IA5String(SIZE(8)) or IA5String(SIZE(16))
 	ApprovalNumber *string
 }
 
@@ -593,8 +645,15 @@ func (b0 TechnicalData_VuIdentification_builder) Build() *TechnicalData_VuIdenti
 
 // Represents a paired motion sensor record.
 //
-// Corresponds to the `SensorPairedRecord` data type.
-// See Data Dictionary, Section 2.145.
+// See Data Dictionary, Section 2.145, `SensorPairedRecord`.
+//
+// ASN.1 Definition:
+//
+//	SensorPairedRecord ::= SEQUENCE {
+//	    sensorSerialNumber SensorSerialNumber,
+//	    sensorApprovalNumber SensorApprovalNumber,
+//	    sensorPairingDate SensorPairingDate
+//	}
 type TechnicalData_PairedSensor struct {
 	state                     protoimpl.MessageState   `protogen:"opaque.v1"`
 	xxx_hidden_SerialNumber   *v1.ExtendedSerialNumber `protobuf:"bytes,1,opt,name=serial_number,json=serialNumber"`
@@ -706,10 +765,22 @@ type TechnicalData_PairedSensor_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
 	// The serial number of the motion sensor.
+	//
+	// See Data Dictionary, Section 2.148, `SensorSerialNumber`.
 	SerialNumber *v1.ExtendedSerialNumber
 	// The approval number of the motion sensor.
+	//
+	// See Data Dictionary, Section 2.131, `SensorApprovalNumber`.
+	// ASN.1 Definition:
+	//
+	//	SensorApprovalNumber ::= IA5String(SIZE(8)) or IA5String(SIZE(16))
 	ApprovalNumber *string
 	// The date the sensor was paired.
+	//
+	// See Data Dictionary, Section 2.146, `SensorPairingDate`.
+	// ASN.1 Definition:
+	//
+	//	SensorPairingDate ::= TimeReal ::= INTEGER (0..2^32-1)
 	PairingDate *timestamppb.Timestamp
 }
 
@@ -728,8 +799,15 @@ func (b0 TechnicalData_PairedSensor_builder) Build() *TechnicalData_PairedSensor
 
 // Represents a coupled external GNSS facility record.
 //
-// Corresponds to the `SensorExternalGNSSCoupledRecord` data type.
-// See Data Dictionary, Section 2.133.
+// See Data Dictionary, Section 2.133, `SensorExternalGNSSCoupledRecord`.
+//
+// ASN.1 Definition:
+//
+//	SensorExternalGNSSCoupledRecord ::= SEQUENCE {
+//	    sensorSerialNumber SensorGNSSSerialNumber,
+//	    sensorApprovalNumber SensorExternalGNSSApprovalNumber,
+//	    sensorCouplingDate SensorGNSSCouplingDate
+//	}
 type TechnicalData_CoupledGnss struct {
 	state                     protoimpl.MessageState   `protogen:"opaque.v1"`
 	xxx_hidden_SerialNumber   *v1.ExtendedSerialNumber `protobuf:"bytes,1,opt,name=serial_number,json=serialNumber"`
@@ -841,10 +919,22 @@ type TechnicalData_CoupledGnss_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
 	// The serial number of the external GNSS.
+	//
+	// See Data Dictionary, Section 2.139, `SensorGNSSSerialNumber`.
 	SerialNumber *v1.ExtendedSerialNumber
 	// The approval number of the external GNSS.
+	//
+	// See Data Dictionary, Section 2.132, `SensorExternalGNSSApprovalNumber`.
+	// ASN.1 Definition:
+	//
+	//	SensorExternalGNSSApprovalNumber ::= IA5String(SIZE(16))
 	ApprovalNumber *string
 	// The date the GNSS was coupled.
+	//
+	// See Data Dictionary, Section 2.138, `SensorGNSSCouplingDate`.
+	// ASN.1 Definition:
+	//
+	//	SensorGNSSCouplingDate ::= TimeReal ::= INTEGER (0..2^32-1)
 	CouplingDate *timestamppb.Timestamp
 }
 
@@ -863,8 +953,7 @@ func (b0 TechnicalData_CoupledGnss_builder) Build() *TechnicalData_CoupledGnss {
 
 // Represents a calibration record.
 //
-// Corresponds to the `VuCalibrationRecord` data type.
-// See Data Dictionary, Section 2.174.
+// See Data Dictionary, Section 2.174, `VuCalibrationRecord`.
 type TechnicalData_CalibrationRecord struct {
 	state                                     protoimpl.MessageState                `protogen:"opaque.v1"`
 	xxx_hidden_Purpose                        v1.CalibrationPurpose                 `protobuf:"varint,1,opt,name=purpose,enum=wayplatform.connect.tachograph.datadictionary.v1.CalibrationPurpose"`
@@ -1354,39 +1443,115 @@ type TechnicalData_CalibrationRecord_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
 	// The purpose of the calibration.
+	//
+	// See Data Dictionary, Section 2.8, `CalibrationPurpose`.
 	Purpose             *v1.CalibrationPurpose
 	UnrecognizedPurpose *int32
 	// The name of the workshop.
+	//
+	// See Data Dictionary, Section 2.99, `Name`.
+	// ASN.1 Definition:
+	//
+	//	Name ::= SEQUENCE { codePage INTEGER(0..255), name OCTET STRING (SIZE(36)) }
 	WorkshopName *string
 	// The address of the workshop.
+	//
+	// See Data Dictionary, Section 2.2, `Address`.
+	// ASN.1 Definition:
+	//
+	//	Address ::= SEQUENCE { codePage INTEGER(0..255), address OCTET STRING (SIZE(36)) }
 	WorkshopAddress *string
 	// The card number of the workshop.
+	//
+	// See Data Dictionary, Section 2.73, `FullCardNumber`.
 	WorkshopCardNumber *v1.FullCardNumber
 	// The expiry date of the workshop card.
+	//
+	// See Data Dictionary, Section 2.57, `Datef`.
+	// ASN.1 Definition:
+	//
+	//	Datef ::= OCTET STRING (SIZE(4))
 	WorkshopCardExpiryDate *timestamppb.Timestamp
 	// The Vehicle Identification Number.
+	//
+	// See Data Dictionary, Section 2.164, `VehicleIdentificationNumber`.
+	// ASN.1 Definition:
+	//
+	//	VehicleIdentificationNumber ::= IA5String(SIZE(17))
 	Vin *string
 	// The vehicle registration identifier.
+	//
+	// See Data Dictionary, Section 2.166, `VehicleRegistrationIdentification`.
 	VehicleRegistration *v1.VehicleRegistrationIdentification
 	// The vehicle characteristic constant.
+	//
+	// See Data Dictionary, Section 2.239, `W-VehicleCharacteristicConstant`.
+	// ASN.1 Definition:
+	//
+	//	W-VehicleCharacteristicConstant ::= INTEGER(0..65535)
 	WVehicleCharacteristicConstant *int32
 	// The constant of the recording equipment.
+	//
+	// See Data Dictionary, Section 2.85, `K-ConstantOfRecordingEquipment`.
+	// ASN.1 Definition:
+	//
+	//	K-ConstantOfRecordingEquipment ::= INTEGER(0..65535)
 	KConstantOfRecordingEquipment *int32
 	// The tyre circumference in mm.
+	//
+	// See Data Dictionary, Section 2.91, `L-TyreCircumference`.
+	// ASN.1 Definition:
+	//
+	//	L-TyreCircumference ::= INTEGER(0..65535)
 	LTyreCircumferenceMm *int32
 	// The tyre size designation.
+	//
+	// See Data Dictionary, Section 2.163, `TyreSize`.
+	// ASN.1 Definition:
+	//
+	//	TyreSize ::= IA5String(SIZE(15))
 	TyreSize *string
 	// The authorised speed in km/h.
+	//
+	// See Data Dictionary, Section 2.156, `SpeedAuthorised`.
+	// ASN.1 Definition:
+	//
+	//	SpeedAuthorised ::= INTEGER(0..255)
 	AuthorisedSpeedKmh *int32
 	// The odometer value before calibration in km.
+	//
+	// See Data Dictionary, Section 2.113, `OdometerShort`.
+	// ASN.1 Definition:
+	//
+	//	OdometerShort ::= INTEGER(0..999999)
 	OldOdometerValueKm *int32
 	// The odometer value after calibration in km.
+	//
+	// See Data Dictionary, Section 2.113, `OdometerShort`.
+	// ASN.1 Definition:
+	//
+	//	OdometerShort ::= INTEGER(0..999999)
 	NewOdometerValueKm *int32
 	// The time value before calibration.
+	//
+	// See Data Dictionary, Section 2.162, `TimeReal`.
+	// ASN.1 Definition:
+	//
+	//	TimeReal ::= INTEGER (0..2^32-1)
 	OldTimeValue *timestamppb.Timestamp
 	// The time value after calibration.
+	//
+	// See Data Dictionary, Section 2.162, `TimeReal`.
+	// ASN.1 Definition:
+	//
+	//	TimeReal ::= INTEGER (0..2^32-1)
 	NewTimeValue *timestamppb.Timestamp
 	// The date of the next calibration.
+	//
+	// See Data Dictionary, Section 2.162, `TimeReal`.
+	// ASN.1 Definition:
+	//
+	//	TimeReal ::= INTEGER (0..2^32-1)
 	NextCalibrationDate *timestamppb.Timestamp
 }
 
@@ -1453,8 +1618,16 @@ func (b0 TechnicalData_CalibrationRecord_builder) Build() *TechnicalData_Calibra
 
 // Represents a record of a card used in the VU.
 //
-// Corresponds to the `VuCardRecord` data type.
-// See Data Dictionary, Section 2.179.
+// See Data Dictionary, Section 2.179, `VuCardRecord`.
+//
+// ASN.1 Definition:
+//
+//	VuCardRecord ::= SEQUENCE {
+//	    cardNumberAndGenerationInformation FullCardNumberAndGeneration,
+//	    cardExtendedSerialNumber ExtendedSerialNumber,
+//	    cardStructureVersion CardStructureVersion,
+//	    cardNumber CardNumber
+//	}
 type TechnicalData_CardRecord struct {
 	state                           protoimpl.MessageState `protogen:"opaque.v1"`
 	xxx_hidden_FullCardNumber       *v1.FullCardNumber     `protobuf:"bytes,1,opt,name=full_card_number,json=fullCardNumber"`
@@ -1595,10 +1768,19 @@ type TechnicalData_CardRecord_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
 	// The full card number.
+	//
+	// See Data Dictionary, Section 2.74, `FullCardNumberAndGeneration`.
 	FullCardNumber *v1.FullCardNumber
 	// The structure version of the card.
+	//
+	// See Data Dictionary, Section 2.36, `CardStructureVersion`.
+	// ASN.1 Definition:
+	//
+	//	CardStructureVersion ::= OCTET STRING (SIZE (2))
 	CardStructureVersion []byte
 	// The type of the card.
+	//
+	// See Data Dictionary, Section 2.67, `EquipmentType`.
 	CardType             *v1.EquipmentType
 	UnrecognizedCardType *int32
 }
@@ -1625,8 +1807,14 @@ func (b0 TechnicalData_CardRecord_builder) Build() *TechnicalData_CardRecord {
 
 // Represents a record of ITS consent status for a card.
 //
-// Corresponds to the `VuITSConsentRecord` data type.
-// See Data Dictionary, Section 2.207.
+// See Data Dictionary, Section 2.207, `VuITSConsentRecord`.
+//
+// ASN.1 Definition:
+//
+//	VuITSConsentRecord ::= SEQUENCE {
+//	    cardNumberAndGen FullCardNumberAndGeneration,
+//	    consent BOOLEAN
+//	}
 type TechnicalData_ItsConsentRecord struct {
 	state                     protoimpl.MessageState `protogen:"opaque.v1"`
 	xxx_hidden_FullCardNumber *v1.FullCardNumber     `protobuf:"bytes,1,opt,name=full_card_number,json=fullCardNumber"`
@@ -1712,8 +1900,14 @@ type TechnicalData_ItsConsentRecord_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
 	// The full card number.
+	//
+	// See Data Dictionary, Section 2.74, `FullCardNumberAndGeneration`.
 	FullCardNumber *v1.FullCardNumber
 	// The consent status for ITS data provision.
+	//
+	// ASN.1 Definition:
+	//
+	//	BOOLEAN
 	ConsentStatus *int32
 }
 
@@ -1731,8 +1925,7 @@ func (b0 TechnicalData_ItsConsentRecord_builder) Build() *TechnicalData_ItsConse
 
 // Represents a record of a power supply interruption.
 //
-// Corresponds to the `VuPowerSupplyInterruptionRecord` data type.
-// See Data Dictionary, Section 2.240.
+// See Data Dictionary, Section 2.240, `VuPowerSupplyInterruptionRecord`.
 type TechnicalData_PowerSupplyInterruptionRecord struct {
 	state                                 protoimpl.MessageState `protogen:"opaque.v1"`
 	xxx_hidden_Timestamp                  *timestamppb.Timestamp `protobuf:"bytes,1,opt,name=timestamp"`
@@ -1845,8 +2038,15 @@ type TechnicalData_PowerSupplyInterruptionRecord_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
 	// The timestamp of the interruption.
+	//
+	// See Data Dictionary, Section 2.162, `TimeReal`.
+	// ASN.1 Definition:
+	//
+	//	TimeReal ::= INTEGER (0..2^32-1)
 	Timestamp *timestamppb.Timestamp
 	// The slot number of the card affected.
+	//
+	// See Data Dictionary, Section 2.33, `CardSlotNumber`.
 	CardSlotNumber             *v1.CardSlotNumber
 	UnrecognizedCardSlotNumber *int32
 }
@@ -1869,8 +2069,14 @@ func (b0 TechnicalData_PowerSupplyInterruptionRecord_builder) Build() *Technical
 
 // Represents the software identification of the vehicle unit.
 //
-// Corresponds to the `VuSoftwareIdentification` data type.
-// See Data Dictionary, Section 2.225.
+// See Data Dictionary, Section 2.225, `VuSoftwareIdentification`.
+//
+// ASN.1 Definition:
+//
+//	VuSoftwareIdentification ::= SEQUENCE {
+//	    vuSoftwareVersion VuSoftwareVersion,
+//	    vuSoftInstallationDate VuSoftInstallationDate
+//	}
 type TechnicalData_VuIdentification_VuSoftwareIdentification struct {
 	state                               protoimpl.MessageState `protogen:"opaque.v1"`
 	xxx_hidden_SoftwareVersion          *string                `protobuf:"bytes,1,opt,name=software_version,json=softwareVersion"`
@@ -1959,8 +2165,18 @@ type TechnicalData_VuIdentification_VuSoftwareIdentification_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
 	// The software version of the VU.
+	//
+	// See Data Dictionary, Section 2.226, `VuSoftwareVersion`.
+	// ASN.1 Definition:
+	//
+	//	VuSoftwareVersion ::= OCTET STRING (SIZE(4))
 	SoftwareVersion *string
 	// The installation date of the software.
+	//
+	// See Data Dictionary, Section 2.224, `VuSoftInstallationDate`.
+	// ASN.1 Definition:
+	//
+	//	VuSoftInstallationDate ::= TimeReal ::= INTEGER (0..2^32-1)
 	SoftwareInstallationDate *timestamppb.Timestamp
 }
 
@@ -1980,7 +2196,7 @@ var File_wayplatform_connect_tachograph_vu_v1_technical_data_proto protoreflect.
 
 const file_wayplatform_connect_tachograph_vu_v1_technical_data_proto_rawDesc = "" +
 	"\n" +
-	"9wayplatform/connect/tachograph/vu/v1/technical_data.proto\x12$wayplatform.connect.tachograph.vu.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1aJwayplatform/connect/tachograph/datadictionary/v1/calibration_purpose.proto\x1aGwayplatform/connect/tachograph/datadictionary/v1/card_slot_number.proto\x1aEwayplatform/connect/tachograph/datadictionary/v1/equipment_type.proto\x1aMwayplatform/connect/tachograph/datadictionary/v1/extended_serial_number.proto\x1aGwayplatform/connect/tachograph/datadictionary/v1/full_card_number.proto\x1aEwayplatform/connect/tachograph/datadictionary/v1/nation_numeric.proto\x1aZwayplatform/connect/tachograph/datadictionary/v1/vehicle_registration_identification.proto\x1aAwayplatform/connect/tachograph/datadictionary/v1/generation.proto\x1a5wayplatform/connect/tachograph/vu/v1/versioning.proto\"\x85!\n" +
+	"9wayplatform/connect/tachograph/vu/v1/technical_data.proto\x12$wayplatform.connect.tachograph.vu.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1aJwayplatform/connect/tachograph/datadictionary/v1/calibration_purpose.proto\x1aGwayplatform/connect/tachograph/datadictionary/v1/card_slot_number.proto\x1aEwayplatform/connect/tachograph/datadictionary/v1/equipment_type.proto\x1aMwayplatform/connect/tachograph/datadictionary/v1/extended_serial_number.proto\x1aGwayplatform/connect/tachograph/datadictionary/v1/full_card_number.proto\x1aAwayplatform/connect/tachograph/datadictionary/v1/generation.proto\x1aEwayplatform/connect/tachograph/datadictionary/v1/nation_numeric.proto\x1aZwayplatform/connect/tachograph/datadictionary/v1/vehicle_registration_identification.proto\x1a5wayplatform/connect/tachograph/vu/v1/versioning.proto\"\x85!\n" +
 	"\rTechnicalData\x12\\\n" +
 	"\n" +
 	"generation\x18\x01 \x01(\x0e2<.wayplatform.connect.tachograph.datadictionary.v1.GenerationR\n" +

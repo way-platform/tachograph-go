@@ -148,13 +148,26 @@ func (x *CurrentUsage) ClearSignature() {
 type CurrentUsage_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
-	// ASN.1 Type: TimeReal (see DD 2.162)
+	// The time when the card was inserted for the current usage session.
+	//
+	// See Data Dictionary, Section 2.162, `TimeReal`.
+	// ASN.1 Specification:
 	//
 	//	TimeReal ::= INTEGER (0..2^32-1)
 	SessionOpenTime *timestamppb.Timestamp
-	// ASN.1 Type: VehicleRegistrationIdentification (see DD 2.166)
+	// The identification of the vehicle in which the card is currently inserted.
+	//
+	// See Data Dictionary, Section 2.166, `VehicleRegistrationIdentification`.
+	// ASN.1 Specification:
+	//
+	//	VehicleRegistrationIdentification ::= SEQUENCE { ... }
 	SessionOpenVehicle *v1.VehicleRegistrationIdentification
 	// Digital signature for the EF_Current_Usage file content.
+	//
+	// See Data Dictionary, Section 2.149, `Signature`.
+	// ASN.1 Specification:
+	//
+	//	Signature ::= OCTET STRING (SIZE(128 for Gen1))
 	Signature []byte
 }
 

@@ -35,6 +35,7 @@ message ControllerActivityData {
   message Record {
     // The type of the control.
     //
+    // See Data Dictionary, Section 2.53, `ControlType`.
     // ASN.1 Specification:
     //
     //     ControlType ::= OCTET STRING (SIZE(1))
@@ -42,6 +43,7 @@ message ControllerActivityData {
 
     // The date and time of the control.
     //
+    // See Data Dictionary, Section 2.162, `TimeReal`.
     // ASN.1 Specification:
     //
     //     TimeReal ::= INTEGER (0..2^32-1)
@@ -49,6 +51,7 @@ message ControllerActivityData {
 
     // The full card number of the card that was controlled.
     //
+    // See Data Dictionary, Section 2.73, `FullCardNumber`.
     // ASN.1 Specification:
     //
     //     FullCardNumber ::= SEQUENCE { ... }
@@ -56,6 +59,7 @@ message ControllerActivityData {
 
     // The vehicle registration of the vehicle in which the control happened.
     //
+    // See Data Dictionary, Section 2.166, `VehicleRegistrationIdentification`.
     // ASN.1 Specification:
     //
     //     VehicleRegistrationIdentification ::= SEQUENCE { ... }
@@ -63,6 +67,7 @@ message ControllerActivityData {
 
     // The beginning of the downloaded period, if any.
     //
+    // See Data Dictionary, Section 2.162, `TimeReal`.
     // ASN.1 Specification:
     //
     //     TimeReal ::= INTEGER (0..2^32-1)
@@ -70,6 +75,7 @@ message ControllerActivityData {
 
     // The end of the downloaded period, if any.
     //
+    // See Data Dictionary, Section 2.162, `TimeReal`.
     // ASN.1 Specification:
     //
     //     TimeReal ::= INTEGER (0..2^32-1)
@@ -77,8 +83,15 @@ message ControllerActivityData {
   }
 
   // Index of the last updated record in the ring buffer.
+  // Corresponds to `controlPointerNewestRecord`.
+  //
+  // See Data Dictionary, Section 2.51.
+  // ASN.1 Specification:
+  //
+  //     INTEGER(0..NoOfControlActivityRecords-1)
   int32 newest_record_index = 1;
 
   // The set of control activity records.
+  // Corresponds to `controlActivityRecords`.
   repeated Record records = 2;
 }

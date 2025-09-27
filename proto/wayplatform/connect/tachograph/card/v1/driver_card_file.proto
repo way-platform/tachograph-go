@@ -34,76 +34,76 @@ import "wayplatform/connect/tachograph/card/v1/vehicles_used.proto";
 // semantic meaning according to the driver card specification.
 // See regulation document Appendix 2, Section 4.2.
 message DriverCardFile {
-  // Data from EF_ICC (Integrated Circuit Card Identification).
+  // Data from EF_ICC (Integrated Circuit Card Identification). See `icc.proto`.
   Icc icc = 1;
 
-  // Data from EF_IC (Integrated Circuit Identification).
+  // Data from EF_IC (Integrated Circuit Identification). See `ic.proto`.
   Ic ic = 2;
 
-  // Data from EF_Application_Identification.
+  // Data from EF_Application_Identification. See `driver_card_application_identification.proto`.
   DriverCardApplicationIdentification application_identification = 3;
 
-  // Data from EF_Identification.
+  // Data from EF_Identification. See `identification.proto`.
   Identification identification = 4;
 
-  // Data from EF_Driving_Licence_Info.
+  // Data from EF_Driving_Licence_Info. See `driving_licence_info.proto`.
   DrivingLicenceInfo driving_licence_info = 6;
 
-  // Data from EF_Events_Data.
+  // Data from EF_Events_Data. See `events_data.proto`.
   EventsData events_data = 7;
 
-  // Data from EF_Faults_Data.
+  // Data from EF_Faults_Data. See `faults_data.proto`.
   FaultsData faults_data = 8;
 
-  // Data from EF_Driver_Activity_Data.
+  // Data from EF_Driver_Activity_Data. See `driver_activity_data.proto`.
   DriverActivityData driver_activity_data = 9;
 
-  // Data from EF_Vehicles_Used.
+  // Data from EF_Vehicles_Used. See `vehicles_used.proto`.
   VehiclesUsed vehicles_used = 10;
 
-  // Data from EF_Places.
+  // Data from EF_Places. See `places.proto`.
   Places places = 11;
 
-  // Data from EF_Current_Usage.
+  // Data from EF_Current_Usage. See `current_usage.proto`.
   CurrentUsage current_usage = 12;
 
-  // Data from EF_Control_Activity_Data.
+  // Data from EF_Control_Activity_Data. See `control_activity_data.proto`.
   ControlActivityData control_activity_data = 13;
 
-  // Data from EF_Specific_Conditions.
+  // Data from EF_Specific_Conditions. See `specific_conditions.proto`.
   SpecificConditions specific_conditions = 14;
 
-  // Data from EF_Card_Download.
+  // Data from EF_Card_Download. See `card_download_driver.proto`.
   CardDownloadDriver card_download_driver = 15;
 
   // --- Gen2 Specific Fields ---
 
-  // Data from EF_VehicleUnits_Used.
+  // Data from EF_VehicleUnits_Used. See `vehicle_units_used.proto`.
   VehicleUnitsUsed vehicle_units_used = 16;
 
-  // Data from EF_GNSS_Places.
+  // Data from EF_GNSS_Places. See `gnss_places.proto`.
   GnssPlaces gnss_places = 17;
 
-  // Data from EF_Application_Identification_V2 (conditional on Gen2v2 cards).
+  // Data from EF_Application_Identification_V2 (conditional on Gen2v2 cards). See `application_identification_v2.proto`.
   ApplicationIdentificationV2 application_identification_v2 = 18;
 
-  // Data from EF_Places_Authentication (conditional on Gen2v2 cards).
+  // Data from EF_Places_Authentication (conditional on Gen2v2 cards). See `places_authentication.proto`.
   PlacesAuthentication places_authentication = 19;
 
-  // Data from EF_GNSS_Places_Authentication (conditional on Gen2v2 cards).
+  // Data from EF_GNSS_Places_Authentication (conditional on Gen2v2 cards). See `gnss_places_authentication.proto`.
   GnssPlacesAuthentication gnss_places_authentication = 20;
 
-  // Data from EF_Border_Crossings (conditional on Gen2v2 cards).
+  // Data from EF_Border_Crossings (conditional on Gen2v2 cards). See `border_crossings.proto`.
   BorderCrossings border_crossings = 21;
 
-  // Data from EF_Load_Unload_Operations (conditional on Gen2v2 cards).
+  // Data from EF_Load_Unload_Operations (conditional on Gen2v2 cards). See `load_unload_operations.proto`.
   LoadUnloadOperations load_unload_operations = 22;
 
-  // Data from EF_Load_Type_Entries (conditional on Gen2v2 cards).
+  // Data from EF_Load_Type_Entries (conditional on Gen2v2 cards). See `load_type_entries.proto`.
   LoadTypeEntries load_type_entries = 23;
 
   // --- Security Data ---
 
-  // Certificate data from various certificate EFs.
+  // Certificate data from various certificate EFs. See `certificates.proto`.
   Certificates certificates = 24;
 }

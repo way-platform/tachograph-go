@@ -139,10 +139,23 @@ type Calibration_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
 	// Total number of calibrations performed with the card.
+	// Corresponds to `calibrationTotalNumber`.
+	//
+	// See Data Dictionary, Section 2.235.
+	// ASN.1 Specification:
+	//
+	//	INTEGER(0..NoOfCalibrationRecords)
 	CalibrationTotalCount *int32
 	// Index of the last updated record.
+	// Corresponds to `calibrationPointerNewestRecord`.
+	//
+	// See Data Dictionary, Section 2.235.
+	// ASN.1 Specification:
+	//
+	//	INTEGER(0..NoOfCalibrationRecords-1)
 	NewestRecordIndex *int32
 	// The set of calibration records.
+	// Corresponds to `calibrationRecords`.
 	Records []*Calibration_Record
 }
 
@@ -623,96 +636,112 @@ type Calibration_Record_builder struct {
 
 	// The purpose of the calibration.
 	//
+	// See Data Dictionary, Section 2.8, `CalibrationPurpose`.
 	// ASN.1 Specification:
 	//
 	//	CalibrationPurpose ::= OCTET STRING (SIZE(1))
 	CalibrationPurpose *v1.CalibrationPurpose
 	// The Vehicle Identification Number.
 	//
+	// See Data Dictionary, Section 2.164, `VehicleIdentificationNumber`.
 	// ASN.1 Specification:
 	//
 	//	VehicleIdentificationNumber ::= IA5String(SIZE(17))
 	VehicleIdentificationNumber *string
 	// The vehicle registration identifier.
 	//
+	// See Data Dictionary, Section 2.166, `VehicleRegistrationIdentification`.
 	// ASN.1 Specification:
 	//
 	//	VehicleRegistrationIdentification ::= SEQUENCE { ... }
 	VehicleRegistration *v1.VehicleRegistrationIdentification
 	// The vehicle characteristic constant.
 	//
+	// See Data Dictionary, Section 2.239, `W-VehicleCharacteristicConstant`.
 	// ASN.1 Specification:
 	//
 	//	W-VehicleCharacteristicConstant ::= INTEGER(0..65535)
 	WVehicleCharacteristicConstant *int32
 	// The constant of the recording equipment.
 	//
+	// See Data Dictionary, Section 2.85, `K-ConstantOfRecordingEquipment`.
 	// ASN.1 Specification:
 	//
 	//	K-ConstantOfRecordingEquipment ::= INTEGER(0..65535)
 	KConstantOfRecordingEquipment *int32
 	// The tyre circumference in mm.
 	//
+	// See Data Dictionary, Section 2.91, `L-TyreCircumference`.
 	// ASN.1 Specification:
 	//
 	//	L-TyreCircumference ::= INTEGER(0..65535)
 	LTyreCircumferenceMm *int32
 	// The tyre size designation.
 	//
+	// See Data Dictionary, Section 2.163, `TyreSize`.
 	// ASN.1 Specification:
 	//
 	//	TyreSize ::= IA5String(SIZE(15))
 	TyreSize *string
 	// The authorised speed in km/h.
 	//
+	// See Data Dictionary, Section 2.156, `SpeedAuthorised`.
 	// ASN.1 Specification:
 	//
 	//	SpeedAuthorised ::= INTEGER(0..255)
 	AuthorisedSpeedKmh *int32
 	// The odometer value before calibration in km.
 	//
+	// See Data Dictionary, Section 2.113, `OdometerShort`.
 	// ASN.1 Specification:
 	//
 	//	OdometerShort ::= INTEGER(0..999999)
 	OldOdometerKm *int32
 	// The odometer value after calibration in km.
 	//
+	// See Data Dictionary, Section 2.113, `OdometerShort`.
 	// ASN.1 Specification:
 	//
 	//	OdometerShort ::= INTEGER(0..999999)
 	NewOdometerKm *int32
 	// The time value before calibration.
 	//
+	// See Data Dictionary, Section 2.162, `TimeReal`.
 	// ASN.1 Specification:
 	//
 	//	TimeReal ::= INTEGER (0..2^32-1)
 	OldTime *timestamppb.Timestamp
 	// The time value after calibration.
 	//
+	// See Data Dictionary, Section 2.162, `TimeReal`.
 	// ASN.1 Specification:
 	//
 	//	TimeReal ::= INTEGER (0..2^32-1)
 	NewTime *timestamppb.Timestamp
 	// The date of the next calibration.
 	//
+	// See Data Dictionary, Section 2.162, `TimeReal`.
 	// ASN.1 Specification:
 	//
 	//	TimeReal ::= INTEGER (0..2^32-1)
 	NextCalibrationDate *timestamppb.Timestamp
 	// The part number of the Vehicle Unit.
 	//
+	// See Data Dictionary, Section 2.217, `VuPartNumber`.
 	// ASN.1 Specification:
 	//
 	//	VuPartNumber ::= IA5String(SIZE(16))
 	VuPartNumber *string
 	// The serial number of the Vehicle Unit.
 	//
+	// See Data Dictionary, Section 2.72, `ExtendedSerialNumber`.
 	// ASN.1 Specification:
 	//
 	//	ExtendedSerialNumber ::= SEQUENCE { ... }
 	VuSerialNumber *v1.ExtendedSerialNumber
 	// The serial number of the motion sensor.
 	//
+	// See Data Dictionary, Section 2.148, `SensorSerialNumber`.
 	// ASN.1 Specification:
 	//
 	//	SensorSerialNumber ::= ExtendedSerialNumber

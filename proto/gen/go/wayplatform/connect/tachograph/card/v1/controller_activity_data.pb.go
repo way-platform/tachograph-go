@@ -121,8 +121,15 @@ type ControllerActivityData_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
 	// Index of the last updated record in the ring buffer.
+	// Corresponds to `controlPointerNewestRecord`.
+	//
+	// See Data Dictionary, Section 2.51.
+	// ASN.1 Specification:
+	//
+	//	INTEGER(0..NoOfControlActivityRecords-1)
 	NewestRecordIndex *int32
 	// The set of control activity records.
+	// Corresponds to `controlActivityRecords`.
 	Records []*ControllerActivityData_Record
 }
 
@@ -321,36 +328,42 @@ type ControllerActivityData_Record_builder struct {
 
 	// The type of the control.
 	//
+	// See Data Dictionary, Section 2.53, `ControlType`.
 	// ASN.1 Specification:
 	//
 	//	ControlType ::= OCTET STRING (SIZE(1))
 	ControlType []byte
 	// The date and time of the control.
 	//
+	// See Data Dictionary, Section 2.162, `TimeReal`.
 	// ASN.1 Specification:
 	//
 	//	TimeReal ::= INTEGER (0..2^32-1)
 	ControlTime *timestamppb.Timestamp
 	// The full card number of the card that was controlled.
 	//
+	// See Data Dictionary, Section 2.73, `FullCardNumber`.
 	// ASN.1 Specification:
 	//
 	//	FullCardNumber ::= SEQUENCE { ... }
 	ControlledCardNumber *v1.FullCardNumber
 	// The vehicle registration of the vehicle in which the control happened.
 	//
+	// See Data Dictionary, Section 2.166, `VehicleRegistrationIdentification`.
 	// ASN.1 Specification:
 	//
 	//	VehicleRegistrationIdentification ::= SEQUENCE { ... }
 	ControlledVehicleRegistration *v1.VehicleRegistrationIdentification
 	// The beginning of the downloaded period, if any.
 	//
+	// See Data Dictionary, Section 2.162, `TimeReal`.
 	// ASN.1 Specification:
 	//
 	//	TimeReal ::= INTEGER (0..2^32-1)
 	ControlDownloadPeriodBegin *timestamppb.Timestamp
 	// The end of the downloaded period, if any.
 	//
+	// See Data Dictionary, Section 2.162, `TimeReal`.
 	// ASN.1 Specification:
 	//
 	//	TimeReal ::= INTEGER (0..2^32-1)

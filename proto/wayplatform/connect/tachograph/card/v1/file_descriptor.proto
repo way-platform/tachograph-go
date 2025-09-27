@@ -7,15 +7,24 @@ import "wayplatform/connect/tachograph/card/v1/elementary_file_type.proto";
 import "wayplatform/connect/tachograph/card/v1/file_type.proto";
 
 // Describes a file (MF, DF, or EF) in the card's file system hierarchy.
+// This message is used to model the file structure of a tachograph card as
+// specified in the regulation (e.g., Appendix 2) and does not correspond to a
+// specific data type in the Data Dictionary.
 message FileDescriptor {
-  // The type of the file.
+  // The type of the file (MF, DF, or EF).
   FileType type = 1;
-  // The type of the elementary file.
+
+  // The type of the elementary file (e.g., EF_ICC, EF_Identification).
+  // This is only populated if `type` is EF.
   ElementaryFileType ef = 2;
-  // The type of the dedicated file.
+
+  // The type of the dedicated file (e.g., DF_TACHOGRAPH).
+  // This is only populated if `type` is DF.
   DedicatedFileType df = 3;
-  // The files contained in the file.
+
+  // A list of files contained within this file (if it is a DF or MF).
   repeated FileDescriptor files = 4;
-  // Indicates if the file is conditionally present.
+
+  // Indicates if the file is conditionally present on the card.
   bool conditional = 5;
 }

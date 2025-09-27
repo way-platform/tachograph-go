@@ -21,12 +21,16 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// Represents the data structure for a DownloadInterfaceVersion transfer.
-// See Appendix 7, Section 2.2.6.1.
+// Represents the parsed version of the VU's download interface.
 //
-// ASN.1 Specification:
+// This message is a parsed representation of the `DownloadInterfaceVersion` data type.
+// See Data Dictionary, Section 2.60a.
+//
+// ASN.1 Definition:
 //
 //	DownloadInterfaceVersion ::= OCTET STRING (SIZE (2))
+//
+// The two bytes of the OCTET STRING are parsed into the fields below.
 type DownloadInterfaceVersion struct {
 	state                  protoimpl.MessageState `protogen:"opaque.v1"`
 	xxx_hidden_Generation  v1.Generation          `protobuf:"varint,1,opt,name=generation,enum=wayplatform.connect.tachograph.datadictionary.v1.Generation"`
@@ -117,13 +121,11 @@ func (x *DownloadInterfaceVersion) ClearVersion() {
 type DownloadInterfaceVersion_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
-	// The generation of the vehicle unit, parsed from the first byte of the data element.
+	// The generation of the vehicle unit, parsed from the first byte.
 	//
-	// Discriminator field.
+	// See Data Dictionary, Section 2.75, `Generation`.
 	Generation *v1.Generation
 	// The version of the download interface, parsed from the second byte.
-	//
-	// Discriminator field.
 	Version *Version
 }
 

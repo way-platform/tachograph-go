@@ -7,11 +7,19 @@ package wayplatform.connect.tachograph.vu.v1;
 // This transfer type is used when the VU acts as an intermediary to download data
 // from a tachograph card inserted into one of its slots.
 // See Appendix 7, Section 2.2.2.9.
+//
+// This message does not correspond to a specific data type in the Data Dictionary,
+// as it contains the raw byte stream of a downloaded card file.
 message CardDownload {
   // The raw binary content of the downloaded card file.
   //
   // This payload is a complete card file dump, structured in the card's own
   // TLV format. It is NOT a VU data structure. This data can be parsed
   // using the `wayplatform.connect.tachograph.card.v1.RawCardFile` message.
+  //
+  // See Data Dictionary, Section 2.159, `TachographPayload`.
+  // ASN.1 Definition:
+  //
+  //     TachographPayload ::= OCTET STRING
   bytes raw_data = 1;
 }

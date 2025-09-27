@@ -32,7 +32,7 @@ const (
 //
 // The data type `CardEventData` is specified in the Data Dictionary, Section 2.19.
 //
-// ASN.1 Specification:
+// ASN.1 Definition:
 //
 //	CardEventData ::= SEQUENCE (SIZE(6)) OF
 //	    cardEventRecords SET SIZE(NoOfEventsPerType) OF CardEventRecord
@@ -114,8 +114,15 @@ func (x *EventsData) ClearSignature() {
 type EventsData_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
+	// The set of event records.
+	// Corresponds to `cardEventRecords`.
 	Records []*EventsData_Record
 	// Digital signature for the EF_Events_Data file content.
+	//
+	// See Data Dictionary, Section 2.149, `Signature`.
+	// ASN.1 Definition:
+	//
+	//	Signature ::= OCTET STRING (SIZE(128 for Gen1))
 	Signature []byte
 }
 
@@ -135,7 +142,7 @@ func (b0 EventsData_builder) Build() *EventsData {
 //
 // The data type `CardEventRecord` is specified in the Data Dictionary, Section 2.20.
 //
-// ASN.1 Specification:
+// ASN.1 Definition:
 //
 //	CardEventRecord ::= SEQUENCE {
 //	    eventType EventFaultType,
@@ -332,17 +339,33 @@ type EventsData_Record_builder struct {
 	// If false, the 'raw_data' field contains the original, unprocessed record
 	// bytes.
 	Valid *bool
-	// ASN.1 Type: EventFaultType (see DD 2.70)
+	// The type of the event.
+	//
+	// See Data Dictionary, Section 2.70, `EventFaultType`.
+	// ASN.1 Definition:
+	//
+	//	EventFaultType ::= OCTET STRING (SIZE (1))
 	EventType *v1.EventFaultType
-	// ASN.1 Type: TimeReal (see DD 2.162)
+	// The date and time of the beginning of the event.
+	//
+	// See Data Dictionary, Section 2.162, `TimeReal`.
+	// ASN.1 Definition:
 	//
 	//	TimeReal ::= INTEGER (0..2^32-1)
 	EventBeginTime *timestamppb.Timestamp
-	// ASN.1 Type: TimeReal (see DD 2.162)
+	// The date and time of the end of the event.
+	//
+	// See Data Dictionary, Section 2.162, `TimeReal`.
+	// ASN.1 Definition:
 	//
 	//	TimeReal ::= INTEGER (0..2^32-1)
 	EventEndTime *timestamppb.Timestamp
-	// ASN.1 Type: VehicleRegistrationIdentification (see DD 2.166)
+	// The vehicle registration of the vehicle in which the event happened.
+	//
+	// See Data Dictionary, Section 2.166, `VehicleRegistrationIdentification`.
+	// ASN.1 Definition:
+	//
+	//	VehicleRegistrationIdentification ::= SEQUENCE { ... }
 	EventVehicleRegistration *v1.VehicleRegistrationIdentification
 	// --- Field for a non-valid record (when valid = false) ---
 	// Holds the raw 24 bytes of the original record.

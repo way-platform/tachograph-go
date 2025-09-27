@@ -34,6 +34,8 @@ var file_wayplatform_connect_tachograph_card_v1_file_id_proto_extTypes = []proto
 
 // Extension fields to descriptorpb.EnumValueOptions.
 var (
+	// The 2-byte file identifier for an elementary file.
+	//
 	// optional int32 file_id = 50001;
 	E_FileId = &file_wayplatform_connect_tachograph_card_v1_file_id_proto_extTypes[0]
 )

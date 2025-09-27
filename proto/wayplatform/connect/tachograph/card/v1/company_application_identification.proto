@@ -6,16 +6,37 @@ import "wayplatform/connect/tachograph/datadictionary/v1/equipment_type.proto";
 
 // Represents the application identification data for a company card.
 //
-// Corresponds to the `CompanyCardApplicationIdentification` data type.
-// See Data Dictionary, Section 2.48.
+// See Data Dictionary, Section 2.48, `CompanyCardApplicationIdentification`.
+//
+// ASN.1 Specification:
+//
+//     CompanyCardApplicationIdentification ::= SEQUENCE {
+//         typeOfTachographCardId EquipmentType,
+//         cardStructureVersion CardStructureVersion,
+//         noOfCompanyActivityRecords NoOfCompanyActivityRecords
+//     }
 message CompanyApplicationIdentification {
-  // See Data Dictionary, Section 2.48, `typeOfTachographCardId`.
+  // The type of tachograph card.
+  //
+  // See Data Dictionary, Section 2.67, `EquipmentType`.
+  // ASN.1 Specification:
+  //
+  //     EquipmentType ::= INTEGER (0..255)
   datadictionary.v1.EquipmentType type_of_tachograph_card_id = 1;
-  
 
-  // See Data Dictionary, Section 2.48, `cardStructureVersion`.
+  // The version of the card structure.
+  //
+  // See Data Dictionary, Section 2.36, `CardStructureVersion`.
+  // ASN.1 Specification:
+  //
+  //     CardStructureVersion ::= OCTET STRING (SIZE (2))
   bytes card_structure_version = 3;
 
-  // See Data Dictionary, Section 2.48, `noOfCompanyActivityRecords`.
+  // The number of company activity records the card can store.
+  //
+  // See Data Dictionary, Section 2.107, `NoOfCompanyActivityRecords`.
+  // ASN.1 Specification:
+  //
+  //     NoOfCompanyActivityRecords ::= INTEGER(0..65535)
   int32 company_activity_records_count = 4;
 }

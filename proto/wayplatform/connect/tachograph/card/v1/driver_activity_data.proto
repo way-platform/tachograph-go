@@ -41,28 +41,33 @@ message DriverActivityData {
   //     }
   message DailyRecord {
     // Represents a change in driver activity, driving status, or card status.
+    // This is a parsed representation of the `ActivityChangeInfo` bitfield.
     //
-    // The data type `ActivityChangeInfo` is specified in the Data Dictionary, Section 2.1.
+    // See Data Dictionary, Section 2.1, `ActivityChangeInfo`.
     //
     // ASN.1 Specification:
     //
     //     ActivityChangeInfo ::= OCTET STRING (SIZE (2))
     message ActivityChange {
       // Slot of the driver/co-driver.
+      // Corresponds to bit 's' in `ActivityChangeInfo`.
       datadictionary.v1.CardSlotNumber slot = 1;
 
       // Driving status (single or crew).
+      // Corresponds to bit 'c' in `ActivityChangeInfo`.
       datadictionary.v1.DrivingStatus driving_status = 3;
 
       // Indicates if a card is inserted.
-      //
+      // Corresponds to bit 'p' in `ActivityChangeInfo`.
       // ASN.1 value `0` maps to `true`, `1` to `false`.
       bool inserted = 5;
 
       // Driver's activity (break/rest, availability, work, driving).
+      // Corresponds to bits 'aa' in `ActivityChangeInfo`.
       datadictionary.v1.DriverActivityValue activity = 7;
 
       // Time of the change in minutes since 00:00.
+      // Corresponds to bits 'ttttttttttt' in `ActivityChangeInfo`.
       int32 time_of_change_minutes = 9;
     }
 
@@ -72,21 +77,48 @@ message DriverActivityData {
 
     // --- Fields for valid data (when valid = true) ---
 
+    // The total length in bytes of the previous daily record.
+    //
     // See Data Dictionary, Section 2.9, `activityPreviousRecordLength`.
+    // ASN.1 Specification:
+    //
+    //     INTEGER(0..CardActivityLengthRange)
     int32 activity_previous_record_length = 2;
 
+    // The total length in bytes of this record.
+    //
     // See Data Dictionary, Section 2.9, `activityRecordLength`.
+    // ASN.1 Specification:
+    //
+    //     INTEGER(0..CardActivityLengthRange)
     int32 activity_record_length = 3;
 
+    // The date of the record.
+    //
     // See Data Dictionary, Section 2.9, `activityRecordDate`.
+    // ASN.1 Specification:
+    //
+    //     TimeReal ::= INTEGER (0..2^32-1)
     google.protobuf.Timestamp activity_record_date = 4;
 
+    // The daily presence counter for the card on this day.
+    //
     // See Data Dictionary, Section 2.9, `activityDailyPresenceCounter`.
+    // ASN.1 Specification:
+    //
+    //     DailyPresenceCounter ::= BCDString(SIZE(2))
     int32 activity_daily_presence_counter = 5;
 
+    // The total distance travelled this day in kilometers.
+    //
     // See Data Dictionary, Section 2.9, `activityDayDistance`.
+    // ASN.1 Specification:
+    //
+    //     Distance ::= INTEGER (0..2^16-1)
     int32 activity_day_distance = 6;
 
+    // The set of activity changes for the driver on this day.
+    //
     // See Data Dictionary, Section 2.9, `activityChangeInfo`.
     repeated ActivityChange activity_change_info = 7;
 
@@ -96,16 +128,35 @@ message DriverActivityData {
     bytes raw = 8;
   }
 
+  // The byte offset of the oldest complete day record.
+  //
   // See Data Dictionary, Section 2.17, `activityPointerOldestDayRecord`.
+  // ASN.1 Specification:
+  //
+  //     INTEGER(0..CardActivityLengthRange)
   int32 oldest_day_record_index = 1;
 
+  // The byte offset of the most recent day record.
+  //
   // See Data Dictionary, Section 2.17, `activityPointerNewestRecord`.
+  // ASN.1 Specification:
+  //
+  //     INTEGER(0..CardActivityLengthRange)
   int32 newest_day_record_index = 2;
 
   // A collection of daily activity records, which may be parsed or raw.
+  //
   // See Data Dictionary, Section 2.17, `activityDailyRecords`.
+  // ASN.1 Specification:
+  //
+  //     OCTET STRING (SIZE(CardActivityLengthRange))
   repeated DailyRecord daily_records = 3;
 
   // Digital signature for the EF_Driver_Activity_Data file content.
+  //
+  // See Data Dictionary, Section 2.149, `Signature`.
+  // ASN.1 Specification:
+  //
+  //     Signature ::= OCTET STRING (SIZE(128 for Gen1))
   bytes signature = 4;
 }

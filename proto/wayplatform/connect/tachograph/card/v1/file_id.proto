@@ -4,6 +4,14 @@ package wayplatform.connect.tachograph.card.v1;
 
 import "google/protobuf/descriptor.proto";
 
+// This file defines a custom protobuf option to associate a numeric file ID
+// with an enum value. This is used, for example, in `elementary_file_type.proto`
+// to link the enum representation of a file to its official 2-byte file identifier
+// as specified in the tachograph regulations.
+//
+// This definition is part of the schema's internal implementation and does not
+// correspond to a data type in the Data Dictionary.
 extend google.protobuf.EnumValueOptions {
+  // The 2-byte file identifier for an elementary file.
   int32 file_id = 50001;
 }

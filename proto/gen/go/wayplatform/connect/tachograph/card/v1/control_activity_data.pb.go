@@ -308,36 +308,42 @@ type ControlActivityData_builder struct {
 	Valid *bool
 	// The type of the control.
 	//
+	// See Data Dictionary, Section 2.53, `ControlType`.
 	// ASN.1 Specification:
 	//
 	//	ControlType ::= OCTET STRING (SIZE(1))
 	ControlType []byte
 	// The date and time of the control.
 	//
+	// See Data Dictionary, Section 2.162, `TimeReal`.
 	// ASN.1 Specification:
 	//
 	//	TimeReal ::= INTEGER (0..2^32-1)
 	ControlTime *timestamppb.Timestamp
 	// The full card number of the control officer who performed the control.
 	//
+	// See Data Dictionary, Section 2.73, `FullCardNumber`.
 	// ASN.1 Specification:
 	//
 	//	FullCardNumber ::= SEQUENCE { ... }
 	ControlCardNumber *v1.FullCardNumber
 	// The vehicle registration of the vehicle in which the control happened.
 	//
+	// See Data Dictionary, Section 2.166, `VehicleRegistrationIdentification`.
 	// ASN.1 Specification:
 	//
 	//	VehicleRegistrationIdentification ::= SEQUENCE { ... }
 	ControlVehicleRegistration *v1.VehicleRegistrationIdentification
 	// The beginning of the downloaded period, in case of downloading.
 	//
+	// See Data Dictionary, Section 2.162, `TimeReal`.
 	// ASN.1 Specification:
 	//
 	//	TimeReal ::= INTEGER (0..2^32-1)
 	ControlDownloadPeriodBegin *timestamppb.Timestamp
 	// The end of the downloaded period, in case of downloading.
 	//
+	// See Data Dictionary, Section 2.162, `TimeReal`.
 	// ASN.1 Specification:
 	//
 	//	TimeReal ::= INTEGER (0..2^32-1)
@@ -346,6 +352,11 @@ type ControlActivityData_builder struct {
 	// Holds the raw 46 bytes of the original record for perfect roundtrip.
 	RawData []byte
 	// Digital signature for the EF_Control_Activity_Data file content.
+	//
+	// See Data Dictionary, Section 2.149, `Signature`.
+	// ASN.1 Specification:
+	//
+	//	Signature ::= OCTET STRING (SIZE(128 for Gen1))
 	Signature []byte
 }
 

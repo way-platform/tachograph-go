@@ -31,7 +31,7 @@ const (
 //
 // The data type `CardPlaceDailyWorkPeriod` is specified in the Data Dictionary, Section 2.27.
 //
-// ASN.1 Specification:
+// ASN.1 Definition:
 //
 //	CardPlaceDailyWorkPeriod ::= SEQUENCE {
 //	    placePointerNewestRecord INTEGER(0..NoOfCardPlaceRecords-1),
@@ -169,12 +169,24 @@ type Places_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
 	// Index of the last updated place record.
+	// Corresponds to `placePointerNewestRecord`.
+	//
+	// See Data Dictionary, Section 2.27.
+	// ASN.1 Definition:
+	//
+	//	INTEGER(0..NoOfCardPlaceRecords-1)
 	NewestRecordIndex *int32
 	// The set of place records.
+	// Corresponds to `placeRecords`.
 	Records []*Places_Record
 	// Trailing bytes that don't form complete records (for roundtrip accuracy).
 	TrailingBytes []byte
 	// Digital signature for the EF_Places file content.
+	//
+	// See Data Dictionary, Section 2.149, `Signature`.
+	// ASN.1 Definition:
+	//
+	//	Signature ::= OCTET STRING (SIZE(128 for Gen1))
 	Signature []byte
 }
 
@@ -202,7 +214,7 @@ func (b0 Places_builder) Build() *Places {
 //
 // The data type `PlaceRecord` is specified in the Data Dictionary, Section 2.117.
 //
-// ASN.1 Specification:
+// ASN.1 Definition:
 //
 //	PlaceRecord ::= SEQUENCE {
 //	    entryTime TimeReal,
@@ -399,17 +411,45 @@ func (x *Places_Record) ClearReservedByte() {
 type Places_Record_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
-	// Time of the entry. See DD Section 2.162 for `TimeReal`.
+	// Time of the entry.
+	//
+	// See Data Dictionary, Section 2.162, `TimeReal`.
+	// ASN.1 Definition:
+	//
+	//	TimeReal ::= INTEGER (0..2^32-1)
 	EntryTime *timestamppb.Timestamp
-	// Type of entry (begin or end). See DD Section 2.66 for `EntryTypeDailyWorkPeriod`.
+	// Type of entry (begin or end).
+	//
+	// See Data Dictionary, Section 2.66, `EntryTypeDailyWorkPeriod`.
+	// ASN.1 Definition:
+	//
+	//	EntryTypeDailyWorkPeriod ::= INTEGER {
+	//	    begin(0), end(1), relatedToGNSS(2), relatedToITS(3)
+	//	} (0..255)
 	EntryType *v1.EntryTypeDailyWorkPeriod
-	// Country code. See DD Section 2.101 for `NationNumeric`.
+	// Country code.
+	//
+	// See Data Dictionary, Section 2.101, `NationNumeric`.
+	// ASN.1 Definition:
+	//
+	//	NationNumeric ::= INTEGER(0..255)
 	DailyWorkPeriodCountry *v1.NationNumeric
-	// Region code. See DD Section 2.122 for `RegionNumeric`.
+	// Region code.
+	//
+	// See Data Dictionary, Section 2.122, `RegionNumeric`.
+	// ASN.1 Definition:
+	//
+	//	RegionNumeric ::= OCTET STRING (SIZE (1))
 	DailyWorkPeriodRegion *int32
-	// Odometer at the time of entry. See DD Section 2.113 for `OdometerShort`.
+	// Odometer at the time of entry in kilometers.
+	//
+	// See Data Dictionary, Section 2.113, `OdometerShort`.
+	// ASN.1 Definition:
+	//
+	//	OdometerShort ::= INTEGER(0..999999)
 	VehicleOdometerKm *int32
 	// Reserved byte (usually 0x00, but preserved for roundtrip accuracy).
+	// This field is not part of the `PlaceRecord` definition in the Data Dictionary.
 	ReservedByte *int32
 }
 

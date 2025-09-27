@@ -166,14 +166,33 @@ func (x *DriverActivityData) ClearSignature() {
 type DriverActivityData_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
+	// The byte offset of the oldest complete day record.
+	//
 	// See Data Dictionary, Section 2.17, `activityPointerOldestDayRecord`.
+	// ASN.1 Specification:
+	//
+	//	INTEGER(0..CardActivityLengthRange)
 	OldestDayRecordIndex *int32
+	// The byte offset of the most recent day record.
+	//
 	// See Data Dictionary, Section 2.17, `activityPointerNewestRecord`.
+	// ASN.1 Specification:
+	//
+	//	INTEGER(0..CardActivityLengthRange)
 	NewestDayRecordIndex *int32
 	// A collection of daily activity records, which may be parsed or raw.
+	//
 	// See Data Dictionary, Section 2.17, `activityDailyRecords`.
+	// ASN.1 Specification:
+	//
+	//	OCTET STRING (SIZE(CardActivityLengthRange))
 	DailyRecords []*DriverActivityData_DailyRecord
 	// Digital signature for the EF_Driver_Activity_Data file content.
+	//
+	// See Data Dictionary, Section 2.149, `Signature`.
+	// ASN.1 Specification:
+	//
+	//	Signature ::= OCTET STRING (SIZE(128 for Gen1))
 	Signature []byte
 }
 
@@ -441,16 +460,43 @@ type DriverActivityData_DailyRecord_builder struct {
 	// If true, the fields below are populated with semantic data.
 	// If false, the `raw` field contains the original, unprocessed record bytes.
 	Valid *bool
+	// The total length in bytes of the previous daily record.
+	//
 	// See Data Dictionary, Section 2.9, `activityPreviousRecordLength`.
+	// ASN.1 Specification:
+	//
+	//	INTEGER(0..CardActivityLengthRange)
 	ActivityPreviousRecordLength *int32
+	// The total length in bytes of this record.
+	//
 	// See Data Dictionary, Section 2.9, `activityRecordLength`.
+	// ASN.1 Specification:
+	//
+	//	INTEGER(0..CardActivityLengthRange)
 	ActivityRecordLength *int32
+	// The date of the record.
+	//
 	// See Data Dictionary, Section 2.9, `activityRecordDate`.
+	// ASN.1 Specification:
+	//
+	//	TimeReal ::= INTEGER (0..2^32-1)
 	ActivityRecordDate *timestamppb.Timestamp
+	// The daily presence counter for the card on this day.
+	//
 	// See Data Dictionary, Section 2.9, `activityDailyPresenceCounter`.
+	// ASN.1 Specification:
+	//
+	//	DailyPresenceCounter ::= BCDString(SIZE(2))
 	ActivityDailyPresenceCounter *int32
+	// The total distance travelled this day in kilometers.
+	//
 	// See Data Dictionary, Section 2.9, `activityDayDistance`.
+	// ASN.1 Specification:
+	//
+	//	Distance ::= INTEGER (0..2^16-1)
 	ActivityDayDistance *int32
+	// The set of activity changes for the driver on this day.
+	//
 	// See Data Dictionary, Section 2.9, `activityChangeInfo`.
 	ActivityChangeInfo []*DriverActivityData_DailyRecord_ActivityChange
 	// The raw bytes of a daily record that could not be parsed.
@@ -491,8 +537,9 @@ func (b0 DriverActivityData_DailyRecord_builder) Build() *DriverActivityData_Dai
 }
 
 // Represents a change in driver activity, driving status, or card status.
+// This is a parsed representation of the `ActivityChangeInfo` bitfield.
 //
-// The data type `ActivityChangeInfo` is specified in the Data Dictionary, Section 2.1.
+// See Data Dictionary, Section 2.1, `ActivityChangeInfo`.
 //
 // ASN.1 Specification:
 //
@@ -665,16 +712,20 @@ type DriverActivityData_DailyRecord_ActivityChange_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
 	// Slot of the driver/co-driver.
+	// Corresponds to bit 's' in `ActivityChangeInfo`.
 	Slot *v1.CardSlotNumber
 	// Driving status (single or crew).
+	// Corresponds to bit 'c' in `ActivityChangeInfo`.
 	DrivingStatus *v1.DrivingStatus
 	// Indicates if a card is inserted.
-	//
+	// Corresponds to bit 'p' in `ActivityChangeInfo`.
 	// ASN.1 value `0` maps to `true`, `1` to `false`.
 	Inserted *bool
 	// Driver's activity (break/rest, availability, work, driving).
+	// Corresponds to bits 'aa' in `ActivityChangeInfo`.
 	Activity *v1.DriverActivityValue
 	// Time of the change in minutes since 00:00.
+	// Corresponds to bits 'ttttttttttt' in `ActivityChangeInfo`.
 	TimeOfChangeMinutes *int32
 }
 

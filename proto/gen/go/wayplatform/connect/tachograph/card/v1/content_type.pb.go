@@ -20,16 +20,18 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// ContentType specifies whether a TLV value contains file data or a signature.
-// This corresponds to bit 0 of the tag appendix byte.
+// ContentType specifies whether a TLV-encoded value contains file data or a signature.
+// This enum does not have a direct equivalent in the Data Dictionary but is derived
+// from the file tagging structure, where bit 0 of the tag appendix byte indicates
+// whether the content is data or a signature.
 type ContentType int32
 
 const (
 	// Default value. This value is unused.
 	ContentType_CONTENT_TYPE_UNSPECIFIED ContentType = 0
-	// The value contains elementary file data (bit 0 = 0).
+	// The value contains elementary file data (tag appendix byte, bit 0 = 0).
 	ContentType_DATA ContentType = 1
-	// The value contains a signature for an elementary file (bit 0 = 1).
+	// The value contains a signature for an elementary file (tag appendix byte, bit 0 = 1).
 	ContentType_SIGNATURE ContentType = 2
 )
 

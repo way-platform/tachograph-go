@@ -23,16 +23,20 @@ const (
 
 // Represents an authenticated GNSS position record.
 //
-// The data type `GNSSPlaceAuthRecord` is specified in the Data Dictionary, Section 2.79c.
+// See Data Dictionary, Section 2.79c, `GNSSPlaceAuthRecord`.
 //
-// ASN.1 Specification:
+// ASN.1 Definition:
 //
 //	GNSSPlaceAuthRecord ::= SEQUENCE {
 //	    timeStamp TimeReal,
 //	    gnssAccuracy GNSSAccuracy,
 //	    geoCoordinates GeoCoordinates,
-//	    authenticationStatus PositionAuthenticationStatus
+//	    posAuthStatus PositionAuthenticationStatus
 //	}
+//
+// Note: The Data Dictionary at 2.79c appears to have a typo, listing `longitude`
+// and `latitude` as separate fields of type `GeoCoordinates`. The definition
+// above, taken from the original proto file, is assumed to be correct.
 type GnssPlaceAuthRecord struct {
 	state                           protoimpl.MessageState `protogen:"opaque.v1"`
 	xxx_hidden_Timestamp            *timestamppb.Timestamp `protobuf:"bytes,1,opt,name=timestamp"`
@@ -192,15 +196,24 @@ func (x *GnssPlaceAuthRecord) ClearAuthenticationStatus() {
 type GnssPlaceAuthRecord_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
-	// ASN.1 Type: TimeReal (see DD 2.162)
+	// The timestamp of the position record.
+	//
+	// See Data Dictionary, Section 2.162, `TimeReal`.
+	// ASN.1 Definition:
 	//
 	//	TimeReal ::= INTEGER (0..2^32-1)
 	Timestamp *timestamppb.Timestamp
-	// ASN.1 Type: GNSSAccuracy (see DD 2.77)
+	// The accuracy of the GNSS position.
+	//
+	// See Data Dictionary, Section 2.77, `GNSSAccuracy`.
+	// ASN.1 Definition:
 	//
 	//	GNSSAccuracy ::= OCTET STRING(SIZE(1))
 	GnssAccuracy *int32
-	// ASN.1 Type: GeoCoordinates (see DD 2.76)
+	// The geographic coordinates of the position, corresponding to the `geoCoordinates` field.
+	//
+	// See Data Dictionary, Section 2.76, `GeoCoordinates`.
+	// ASN.1 Definition:
 	//
 	//	GeoCoordinates ::= SEQUENCE {
 	//	    latitude INTEGER(-90*3600*1000..90*3600*1000),
@@ -208,7 +221,10 @@ type GnssPlaceAuthRecord_builder struct {
 	//	}
 	Longitude *int32
 	Latitude  *int32
-	// ASN.1 Type: PositionAuthenticationStatus (see DD 2.117a)
+	// The authentication status of the position.
+	//
+	// See Data Dictionary, Section 2.117a, `PositionAuthenticationStatus`.
+	// ASN.1 Definition:
 	//
 	//	PositionAuthenticationStatus ::= INTEGER {
 	//	    notAvailable(0),

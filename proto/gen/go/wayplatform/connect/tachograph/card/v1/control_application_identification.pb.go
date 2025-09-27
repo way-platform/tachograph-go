@@ -23,8 +23,15 @@ const (
 
 // Represents the application identification data for a control card.
 //
-// Corresponds to the `ControlCardApplicationIdentification` data type.
-// See Data Dictionary, Section 2.50.
+// See Data Dictionary, Section 2.50, `ControlCardApplicationIdentification`.
+//
+// ASN.1 Specification:
+//
+//	ControlCardApplicationIdentification ::= SEQUENCE {
+//	    typeOfTachographCardId EquipmentType,
+//	    cardStructureVersion CardStructureVersion,
+//	    noOfControlActivityRecords NoOfControlActivityRecords
+//	}
 type ControlApplicationIdentification struct {
 	state                                  protoimpl.MessageState `protogen:"opaque.v1"`
 	xxx_hidden_TypeOfTachographCardId      v1.EquipmentType       `protobuf:"varint,1,opt,name=type_of_tachograph_card_id,json=typeOfTachographCardId,enum=wayplatform.connect.tachograph.datadictionary.v1.EquipmentType"`
@@ -141,11 +148,26 @@ func (x *ControlApplicationIdentification) ClearControlActivityRecordsCount() {
 type ControlApplicationIdentification_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
-	// See Data Dictionary, Section 2.50, `typeOfTachographCardId`.
+	// The type of tachograph card.
+	//
+	// See Data Dictionary, Section 2.67, `EquipmentType`.
+	// ASN.1 Specification:
+	//
+	//	EquipmentType ::= INTEGER (0..255)
 	TypeOfTachographCardId *v1.EquipmentType
-	// See Data Dictionary, Section 2.50, `cardStructureVersion`.
+	// The version of the card structure.
+	//
+	// See Data Dictionary, Section 2.36, `CardStructureVersion`.
+	// ASN.1 Specification:
+	//
+	//	CardStructureVersion ::= OCTET STRING (SIZE (2))
 	CardStructureVersion []byte
-	// See Data Dictionary, Section 2.50, `noOfControlActivityRecords`.
+	// The number of control activity records the card can store.
+	//
+	// See Data Dictionary, Section 2.108, `NoOfControlActivityRecords`.
+	// ASN.1 Specification:
+	//
+	//	NoOfControlActivityRecords ::= INTEGER(0..65535)
 	ControlActivityRecordsCount *int32
 }
 

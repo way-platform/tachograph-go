@@ -117,11 +117,17 @@ func (x *VehicleRegistrationIdentification) ClearNumber() {
 type VehicleRegistrationIdentification_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
-	// ASN.1 Type: NationNumeric (see DD 2.101)
+	// The nation of the vehicle registration.
+	//
+	// See Data Dictionary, Section 2.101, `NationNumeric`.
+	// ASN.1 Definition:
 	//
 	//	NationNumeric ::= INTEGER(0..255)
 	Nation *int32
-	// ASN.1 Type: VehicleRegistrationNumber (see DD 2.167)
+	// The vehicle registration number.
+	//
+	// See Data Dictionary, Section 2.167, `VehicleRegistrationNumber`.
+	// ASN.1 Definition:
 	//
 	//	VehicleRegistrationNumber ::= CHOICE {
 	//	    codePage INTEGER(0..255),

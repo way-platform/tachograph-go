@@ -33,9 +33,10 @@ const (
 type ExtendedSerialNumber struct {
 	state                       protoimpl.MessageState `protogen:"opaque.v1"`
 	xxx_hidden_SerialNumber     uint32                 `protobuf:"varint,1,opt,name=serial_number,json=serialNumber"`
-	xxx_hidden_MonthYear        []byte                 `protobuf:"bytes,2,opt,name=month_year,json=monthYear"`
-	xxx_hidden_Type             EquipmentType          `protobuf:"varint,3,opt,name=type,enum=wayplatform.connect.tachograph.datadictionary.v1.EquipmentType"`
-	xxx_hidden_ManufacturerCode int32                  `protobuf:"varint,4,opt,name=manufacturer_code,json=manufacturerCode"`
+	xxx_hidden_Month            int32                  `protobuf:"varint,2,opt,name=month"`
+	xxx_hidden_Year             int32                  `protobuf:"varint,3,opt,name=year"`
+	xxx_hidden_Type             EquipmentType          `protobuf:"varint,4,opt,name=type,enum=wayplatform.connect.tachograph.datadictionary.v1.EquipmentType"`
+	xxx_hidden_ManufacturerCode int32                  `protobuf:"varint,5,opt,name=manufacturer_code,json=manufacturerCode"`
 	XXX_raceDetectHookData      protoimpl.RaceDetectHookData
 	XXX_presence                [1]uint32
 	unknownFields               protoimpl.UnknownFields
@@ -74,16 +75,23 @@ func (x *ExtendedSerialNumber) GetSerialNumber() uint32 {
 	return 0
 }
 
-func (x *ExtendedSerialNumber) GetMonthYear() []byte {
+func (x *ExtendedSerialNumber) GetMonth() int32 {
 	if x != nil {
-		return x.xxx_hidden_MonthYear
+		return x.xxx_hidden_Month
 	}
-	return nil
+	return 0
+}
+
+func (x *ExtendedSerialNumber) GetYear() int32 {
+	if x != nil {
+		return x.xxx_hidden_Year
+	}
+	return 0
 }
 
 func (x *ExtendedSerialNumber) GetType() EquipmentType {
 	if x != nil {
-		if protoimpl.X.Present(&(x.XXX_presence[0]), 2) {
+		if protoimpl.X.Present(&(x.XXX_presence[0]), 3) {
 			return x.xxx_hidden_Type
 		}
 	}
@@ -99,25 +107,27 @@ func (x *ExtendedSerialNumber) GetManufacturerCode() int32 {
 
 func (x *ExtendedSerialNumber) SetSerialNumber(v uint32) {
 	x.xxx_hidden_SerialNumber = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 4)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 5)
 }
 
-func (x *ExtendedSerialNumber) SetMonthYear(v []byte) {
-	if v == nil {
-		v = []byte{}
-	}
-	x.xxx_hidden_MonthYear = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 4)
+func (x *ExtendedSerialNumber) SetMonth(v int32) {
+	x.xxx_hidden_Month = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 5)
+}
+
+func (x *ExtendedSerialNumber) SetYear(v int32) {
+	x.xxx_hidden_Year = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 5)
 }
 
 func (x *ExtendedSerialNumber) SetType(v EquipmentType) {
 	x.xxx_hidden_Type = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 4)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 3, 5)
 }
 
 func (x *ExtendedSerialNumber) SetManufacturerCode(v int32) {
 	x.xxx_hidden_ManufacturerCode = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 3, 4)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 4, 5)
 }
 
 func (x *ExtendedSerialNumber) HasSerialNumber() bool {
@@ -127,25 +137,32 @@ func (x *ExtendedSerialNumber) HasSerialNumber() bool {
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 0)
 }
 
-func (x *ExtendedSerialNumber) HasMonthYear() bool {
+func (x *ExtendedSerialNumber) HasMonth() bool {
 	if x == nil {
 		return false
 	}
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 1)
 }
 
-func (x *ExtendedSerialNumber) HasType() bool {
+func (x *ExtendedSerialNumber) HasYear() bool {
 	if x == nil {
 		return false
 	}
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 2)
 }
 
-func (x *ExtendedSerialNumber) HasManufacturerCode() bool {
+func (x *ExtendedSerialNumber) HasType() bool {
 	if x == nil {
 		return false
 	}
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 3)
+}
+
+func (x *ExtendedSerialNumber) HasManufacturerCode() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 4)
 }
 
 func (x *ExtendedSerialNumber) ClearSerialNumber() {
@@ -153,18 +170,23 @@ func (x *ExtendedSerialNumber) ClearSerialNumber() {
 	x.xxx_hidden_SerialNumber = 0
 }
 
-func (x *ExtendedSerialNumber) ClearMonthYear() {
+func (x *ExtendedSerialNumber) ClearMonth() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 1)
-	x.xxx_hidden_MonthYear = nil
+	x.xxx_hidden_Month = 0
+}
+
+func (x *ExtendedSerialNumber) ClearYear() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 2)
+	x.xxx_hidden_Year = 0
 }
 
 func (x *ExtendedSerialNumber) ClearType() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 2)
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 3)
 	x.xxx_hidden_Type = EquipmentType_EQUIPMENT_TYPE_UNSPECIFIED
 }
 
 func (x *ExtendedSerialNumber) ClearManufacturerCode() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 3)
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 4)
 	x.xxx_hidden_ManufacturerCode = 0
 }
 
@@ -177,23 +199,33 @@ type ExtendedSerialNumber_builder struct {
 	//
 	//	serialNumber INTEGER(0..2^32-1)
 	SerialNumber *uint32
-	// The month and year of manufacturing or serial number assignment (BCD encoded).
+	// The month of manufacturing (1-12).
+	// Parsed from the BCD-encoded `monthYear` field.
 	//
-	// ASN.1 Specification:
+	// Source ASN.1 Specification:
 	//
 	//	monthYear BCDString(SIZE(2))
-	MonthYear []byte
+	Month *int32
+	// The year of manufacturing (e.g., 2023).
+	// Parsed from the BCD-encoded `monthYear` field.
+	//
+	// Source ASN.1 Specification:
+	//
+	//	monthYear BCDString(SIZE(2))
+	Year *int32
 	// The type of equipment.
 	//
 	// ASN.1 Specification:
 	//
-	//	type EquipmentType
+	//	type EquipmentType,
+	//	EquipmentType ::= INTEGER (0..255)
 	Type *EquipmentType
 	// The numerical code of the manufacturer.
 	//
 	// ASN.1 Specification:
 	//
-	//	manufacturerCode ManufacturerCode
+	//	manufacturerCode ManufacturerCode,
+	//	ManufacturerCode ::= INTEGER (0..255)
 	ManufacturerCode *int32
 }
 
@@ -202,19 +234,23 @@ func (b0 ExtendedSerialNumber_builder) Build() *ExtendedSerialNumber {
 	b, x := &b0, m0
 	_, _ = b, x
 	if b.SerialNumber != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 4)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 5)
 		x.xxx_hidden_SerialNumber = *b.SerialNumber
 	}
-	if b.MonthYear != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 4)
-		x.xxx_hidden_MonthYear = b.MonthYear
+	if b.Month != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 5)
+		x.xxx_hidden_Month = *b.Month
+	}
+	if b.Year != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 5)
+		x.xxx_hidden_Year = *b.Year
 	}
 	if b.Type != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 4)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 3, 5)
 		x.xxx_hidden_Type = *b.Type
 	}
 	if b.ManufacturerCode != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 3, 4)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 4, 5)
 		x.xxx_hidden_ManufacturerCode = *b.ManufacturerCode
 	}
 	return m0
@@ -224,13 +260,13 @@ var File_wayplatform_connect_tachograph_datadictionary_v1_extended_serial_number
 
 const file_wayplatform_connect_tachograph_datadictionary_v1_extended_serial_number_proto_rawDesc = "" +
 	"\n" +
-	"Mwayplatform/connect/tachograph/datadictionary/v1/extended_serial_number.proto\x120wayplatform.connect.tachograph.datadictionary.v1\x1aEwayplatform/connect/tachograph/datadictionary/v1/equipment_type.proto\"\xdc\x01\n" +
+	"Mwayplatform/connect/tachograph/datadictionary/v1/extended_serial_number.proto\x120wayplatform.connect.tachograph.datadictionary.v1\x1aEwayplatform/connect/tachograph/datadictionary/v1/equipment_type.proto\"\xe7\x01\n" +
 	"\x14ExtendedSerialNumber\x12#\n" +
-	"\rserial_number\x18\x01 \x01(\rR\fserialNumber\x12\x1d\n" +
-	"\n" +
-	"month_year\x18\x02 \x01(\fR\tmonthYear\x12S\n" +
-	"\x04type\x18\x03 \x01(\x0e2?.wayplatform.connect.tachograph.datadictionary.v1.EquipmentTypeR\x04type\x12+\n" +
-	"\x11manufacturer_code\x18\x04 \x01(\x05R\x10manufacturerCodeB\xac\x03\n" +
+	"\rserial_number\x18\x01 \x01(\rR\fserialNumber\x12\x14\n" +
+	"\x05month\x18\x02 \x01(\x05R\x05month\x12\x12\n" +
+	"\x04year\x18\x03 \x01(\x05R\x04year\x12S\n" +
+	"\x04type\x18\x04 \x01(\x0e2?.wayplatform.connect.tachograph.datadictionary.v1.EquipmentTypeR\x04type\x12+\n" +
+	"\x11manufacturer_code\x18\x05 \x01(\x05R\x10manufacturerCodeB\xac\x03\n" +
 	"4com.wayplatform.connect.tachograph.datadictionary.v1B\x19ExtendedSerialNumberProtoP\x01Ztgithub.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/datadictionary/v1;datadictionaryv1\xa2\x02\x04WCTD\xaa\x020Wayplatform.Connect.Tachograph.Datadictionary.V1\xca\x020Wayplatform\\Connect\\Tachograph\\Datadictionary\\V1\xe2\x02<Wayplatform\\Connect\\Tachograph\\Datadictionary\\V1\\GPBMetadata\xea\x024Wayplatform::Connect::Tachograph::Datadictionary::V1b\beditionsp\xe8\a"
 
 var file_wayplatform_connect_tachograph_datadictionary_v1_extended_serial_number_proto_msgTypes = make([]protoimpl.MessageInfo, 1)

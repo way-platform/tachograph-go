@@ -112,8 +112,15 @@ type CalibrationAddData_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
 	// Index of the last updated record.
+	// Corresponds to `calibrationPointerNewestRecord`.
+	//
+	// See Data Dictionary, Section 2.234b.
+	// ASN.1 Specification:
+	//
+	//	INTEGER(0..NoOfCalibrationRecords-1)
 	NewestRecordIndex *int32
 	// The set of additional calibration data records.
+	// Corresponds to `workshopCardCalibrationAddDataRecords`.
 	Records []*CalibrationAddData_Record
 }
 
@@ -302,25 +309,40 @@ func (x *CalibrationAddData_Record) ClearCalibrationCountryTimestamp() {
 type CalibrationAddData_Record_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
-	// ASN.1 Type: TimeReal (see DD 2.162)
+	// The old time value before adjustment.
+	//
+	// See Data Dictionary, Section 2.162, `TimeReal`.
+	// ASN.1 Specification:
 	//
 	//	TimeReal ::= INTEGER (0..2^32-1)
 	OldTime *timestamppb.Timestamp
-	// ASN.1 Type: VehicleIdentificationNumber (see DD 2.164)
+	// The Vehicle Identification Number (VIN).
+	//
+	// See Data Dictionary, Section 2.164, `VehicleIdentificationNumber`.
+	// ASN.1 Specification:
 	//
 	//	VehicleIdentificationNumber ::= IA5String(SIZE(17))
 	VehicleIdentificationNumber *string
-	// ASN.1 Type: LoadType (see DD 2.90a)
+	// The default load type.
+	//
+	// See Data Dictionary, Section 2.90a, `LoadType`.
+	// ASN.1 Specification:
 	//
 	//	LoadType ::= INTEGER {
 	//	    not-defined(0), passengers(1), goods(2)
 	//	} (0..255)
 	ByDefaultLoadType *int32
-	// ASN.1 Type: NationNumeric (see DD 2.101)
+	// The country where the calibration was performed.
+	//
+	// See Data Dictionary, Section 2.101, `NationNumeric`.
+	// ASN.1 Specification:
 	//
 	//	NationNumeric ::= INTEGER(0..255)
 	CalibrationCountry *int32
-	// ASN.1 Type: TimeReal (see DD 2.162)
+	// The timestamp when the calibration country was recorded.
+	//
+	// See Data Dictionary, Section 2.162, `TimeReal`.
+	// ASN.1 Specification:
 	//
 	//	TimeReal ::= INTEGER (0..2^32-1)
 	CalibrationCountryTimestamp *timestamppb.Timestamp

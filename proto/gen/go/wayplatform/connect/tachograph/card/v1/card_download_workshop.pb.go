@@ -93,6 +93,12 @@ func (x *CardDownloadWorkshop) ClearCount() {
 type CardDownloadWorkshop_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
+	// The number of calibrations performed since the last download.
+	//
+	// See Data Dictionary, Section 2.103, `NoOfCalibrationsSinceDownload`.
+	// ASN.1 Specification:
+	//
+	//	NoOfCalibrationsSinceDownload ::= INTEGER(0..255)
 	Count *int32
 }
 

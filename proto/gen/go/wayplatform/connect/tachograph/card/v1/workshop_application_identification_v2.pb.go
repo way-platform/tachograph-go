@@ -22,8 +22,22 @@ const (
 
 // Represents data from EF_Application_Identification_V2 for a workshop card.
 //
-// Corresponds to the `WorkshopCardApplicationIdentificationV2` data type.
-// See Data Dictionary, Section 2.234a.
+// See Data Dictionary, Section 2.234a, `WorkshopCardApplicationIdentificationV2`.
+//
+// ASN.1 Definition:
+//
+//	WorkshopCardApplicationIdentificationV2 ::= SEQUENCE {
+//	    lengthOfFollowingData LengthOfFollowingData,
+//	    noOfBorderCrossingRecords NoOfBorderCrossingRecords,
+//	    noOfLoadUnloadRecords NoOfLoadUnloadRecords,
+//	    noOfLoadTypeEntryRecords NoOfLoadTypeEntryRecords,
+//	    vuConfigurationLengthRange VuConfigurationLengthRange,
+//	    noOfSpecificConditionRecords NoOfSpecificConditionRecords,
+//	    noOfCardVehicleUnitRecords NoOfCardVehicleUnitRecords
+//	}
+//
+// Note: This proto message is incomplete and is missing some fields from the
+// ASN.1 definition (`noOfSpecificConditionRecords`, `noOfCardVehicleUnitRecords`).
 type WorkshopApplicationIdentificationV2 struct {
 	state                                 protoimpl.MessageState `protogen:"opaque.v1"`
 	xxx_hidden_BorderCrossingRecordsCount int32                  `protobuf:"varint,1,opt,name=border_crossing_records_count,json=borderCrossingRecordsCount"`
@@ -160,13 +174,33 @@ func (x *WorkshopApplicationIdentificationV2) ClearVuConfigurationLengthRange() 
 type WorkshopApplicationIdentificationV2_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
-	// See Data Dictionary, Section 2.234a, `noOfBorderCrossingRecords`.
+	// The number of border crossing records the card can store.
+	//
+	// See Data Dictionary, Section 2.101a, `NoOfBorderCrossingRecords`.
+	// ASN.1 Definition:
+	//
+	//	NoOfBorderCrossingRecords ::= INTEGER (0..255)
 	BorderCrossingRecordsCount *int32
-	// See Data Dictionary, Section 2.234a, `noOfLoadUnloadRecords`.
+	// The number of load/unload records the card can store.
+	//
+	// See Data Dictionary, Section 2.111a, `NoOfLoadUnloadRecords`.
+	// ASN.1 Definition:
+	//
+	//	NoOfLoadUnloadRecords ::= INTEGER (0..255)
 	LoadUnloadRecordsCount *int32
-	// See Data Dictionary, Section 2.234a, `noOfLoadTypeEntryRecords`.
+	// The number of load type entry records the card can store.
+	//
+	// See Data Dictionary, Section 2.112a, `NoOfLoadTypeEntryRecords`.
+	// ASN.1 Definition:
+	//
+	//	NoOfLoadTypeEntryRecords ::= INTEGER (0..255)
 	LoadTypeEntryRecordsCount *int32
-	// See Data Dictionary, Section 2.234a, `vuConfigurationLengthRange`.
+	// The number of bytes available to store VU configurations.
+	//
+	// See Data Dictionary, Section 2.185a, `VuConfigurationLengthRange`.
+	// ASN.1 Definition:
+	//
+	//	VuConfigurationLengthRange ::= INTEGER(0..2^16-1)
 	VuConfigurationLengthRange *int32
 }
 

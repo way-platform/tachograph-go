@@ -13,3 +13,4 @@ enum Generation {
 extend google.protobuf.EnumValueOptions {
   Generation generation = 50304;
 }
+

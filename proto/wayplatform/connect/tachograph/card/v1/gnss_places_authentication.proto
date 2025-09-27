@@ -14,7 +14,7 @@ import "google/protobuf/timestamp.proto";
 //
 // The data type `GNSSAuthAccumulatedDriving` is specified in the Data Dictionary, Section 2.79a.
 //
-// ASN.1 Specification:
+// ASN.1 Definition:
 //
 //     GNSSAuthAccumulatedDriving ::= SEQUENCE {
 //         gnssAuthADPointerNewestRecord INTEGER(0..NoOfGNSSADRecords -1),
@@ -25,23 +25,45 @@ message GnssPlacesAuthentication {
   //
   // The data type `GNSSAuthStatusADRecord` is specified in the Data Dictionary, Section 2.79b.
   //
-  // ASN.1 Specification:
+  // ASN.1 Definition:
   //
   //     GNSSAuthStatusADRecord ::= SEQUENCE {
   //         timeStamp TimeReal,
   //         authenticationStatus PositionAuthenticationStatus
   //     }
   message Record {
-    // Timestamp of the position fix. See DD Section 2.162 for `TimeReal`.
+    // Timestamp of the position fix.
+    //
+    // See Data Dictionary, Section 2.162, `TimeReal`.
+    // ASN.1 Definition:
+    //
+    //     TimeReal ::= INTEGER (0..2^32-1)
     google.protobuf.Timestamp timestamp = 1;
 
-    // Authentication status of the position. See DD Section 2.117a.
+    // Authentication status of the position.
+    //
+    // See Data Dictionary, Section 2.117a, `PositionAuthenticationStatus`.
+    // ASN.1 Definition:
+    //
+    //     PositionAuthenticationStatus ::= INTEGER {
+    //         notAvailable(0),
+    //         authenticated(1),
+    //         notAuthenticated(2),
+    //         authenticationCorrupted(3)
+    //     } (0..255)
     int32 authentication_status = 2;
   }
 
   // Index of the last updated record.
+  // Corresponds to `gnssAuthADPointerNewestRecord`.
+  //
+  // See Data Dictionary, Section 2.79a.
+  // ASN.1 Definition:
+  //
+  //     INTEGER(0..NoOfGNSSADRecords -1)
   int32 newest_record_index = 1;
 
   // The set of GNSS place authentication status records.
+  // Corresponds to `gnssAuthStatusADRecords`.
   repeated Record records = 2;
 }

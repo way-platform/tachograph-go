@@ -18,48 +18,48 @@ enum NationNumeric {
   BELGIUM = 8 [(protocol_enum_value) = 6];
   BULGARIA = 9 [(protocol_enum_value) = 7];
   BOSNIA_HERZEGOVINA = 10 [(protocol_enum_value) = 8];
-  BELARUS = 11; // 9
-  SWITZERLAND = 12; // 10
-  CYPRUS = 13; // 11
-  CZECH_REPUBLIC = 14; // 12
-  GERMANY = 15; // 13
-  DENMARK = 16; // 14
-  SPAIN = 17; // 15
-  ESTONIA = 18; // 16
-  FRANCE = 19; // 17
-  FINLAND = 20; // 18
-  LIECHTENSTEIN = 21; // 19
-  FAROE_ISLANDS = 22; // 20
-  UNITED_KINGDOM = 23; // 21
-  GEORGIA = 24; // 22
-  GREECE = 25; // 23
-  HUNGARY = 26; // 24
-  CROATIA = 27; // 25
-  ITALY = 28; // 26
-  IRELAND = 29; // 27
-  ICELAND = 30; // 28
-  KAZAKHSTAN = 31; // 29
-  LUXEMBOURG = 32; // 30
-  LITHUANIA = 33; // 31
-  LATVIA = 34; // 32
-  MALTA = 35; // 33
-  MONACO = 36; // 34
-  REPUBLIC_OF_MOLDOVA = 37; // 35
-  NORTH_MACEDONIA = 38; // 36
-  NORWAY = 39; // 37
-  NETHERLANDS = 40; // 38
-  PORTUGAL = 41; // 39
-  POLAND = 42; // 40
-  ROMANIA = 43; // 41
-  RUSSIAN_FEDERATION = 44; // 42
-  SAN_MARINO = 45; // 43
-  SWEDEN = 46; // 44
-  SLOVAKIA = 47; // 45
-  SLOVENIA = 48; // 46
-  TURKMENISTAN = 49; // 47
-  TURKEY = 50; // 48
-  UKRAINE = 51; // 49
-  VATICAN_CITY = 52; // 50
-  REST_OF_EUROPE = 53; // 250
-  REST_OF_THE_WORLD = 54; // 251
+  BELARUS = 11 [(protocol_enum_value) = 9];
+  SWITZERLAND = 12 [(protocol_enum_value) = 10];
+  CYPRUS = 13 [(protocol_enum_value) = 11];
+  CZECH_REPUBLIC = 14 [(protocol_enum_value) = 12];
+  GERMANY = 15 [(protocol_enum_value) = 13];
+  DENMARK = 16 [(protocol_enum_value) = 14];
+  SPAIN = 17 [(protocol_enum_value) = 15];
+  ESTONIA = 18 [(protocol_enum_value) = 16];
+  FRANCE = 19 [(protocol_enum_value) = 17];
+  FINLAND = 20 [(protocol_enum_value) = 18];
+  LIECHTENSTEIN = 21 [(protocol_enum_value) = 19];
+  FAROE_ISLANDS = 22 [(protocol_enum_value) = 20];
+  UNITED_KINGDOM = 23 [(protocol_enum_value) = 21];
+  GEORGIA = 24 [(protocol_enum_value) = 22];
+  GREECE = 25 [(protocol_enum_value) = 23];
+  HUNGARY = 26 [(protocol_enum_value) = 24];
+  CROATIA = 27 [(protocol_enum_value) = 25];
+  ITALY = 28 [(protocol_enum_value) = 26];
+  IRELAND = 29 [(protocol_enum_value) = 27];
+  ICELAND = 30 [(protocol_enum_value) = 28];
+  KAZAKHSTAN = 31 [(protocol_enum_value) = 29];
+  LUXEMBOURG = 32 [(protocol_enum_value) = 30];
+  LITHUANIA = 33 [(protocol_enum_value) = 31];
+  LATVIA = 34 [(protocol_enum_value) = 32];
+  MALTA = 35 [(protocol_enum_value) = 33];
+  MONACO = 36 [(protocol_enum_value) = 34];
+  REPUBLIC_OF_MOLDOVA = 37 [(protocol_enum_value) = 35];
+  NORTH_MACEDONIA = 38 [(protocol_enum_value) = 36];
+  NORWAY = 39 [(protocol_enum_value) = 37];
+  NETHERLANDS = 40 [(protocol_enum_value) = 38];
+  PORTUGAL = 41 [(protocol_enum_value) = 39];
+  POLAND = 42 [(protocol_enum_value) = 40];
+  ROMANIA = 43 [(protocol_enum_value) = 41];
+  RUSSIAN_FEDERATION = 44 [(protocol_enum_value) = 42];
+  SAN_MARINO = 45 [(protocol_enum_value) = 43];
+  SWEDEN = 46 [(protocol_enum_value) = 44];
+  SLOVAKIA = 47 [(protocol_enum_value) = 45];
+  SLOVENIA = 48 [(protocol_enum_value) = 46];
+  TURKMENISTAN = 49 [(protocol_enum_value) = 47];
+  TURKEY = 50 [(protocol_enum_value) = 48];
+  UKRAINE = 51 [(protocol_enum_value) = 49];
+  VATICAN_CITY = 52 [(protocol_enum_value) = 50];
+  REST_OF_EUROPE = 53 [(protocol_enum_value) = 250];
+  REST_OF_THE_WORLD = 54 [(protocol_enum_value) = 251];
 }

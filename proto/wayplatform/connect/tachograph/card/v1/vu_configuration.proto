@@ -5,7 +5,9 @@ package wayplatform.connect.tachograph.card.v1;
 // Represents data from EF_VU_Configuration.
 //
 // This file contains configuration data stored on the card by a Vehicle Unit.
+// The specific structure of this data is not standardized in the main regulation
+// and may be manufacturer-specific. Therefore, it is represented as raw bytes.
 message VuConfiguration {
-  // The raw configuration data.
+  // The raw configuration data from the EF_VU_Configuration file.
   bytes data = 1;
 }
