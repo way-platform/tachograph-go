@@ -49,8 +49,12 @@ func SetEventFaultType(rawValue int32, setEnum func(datadictionaryv1.EventFaultT
 	if enumNumber, found := findEnumValueByProtocol(enumDesc, rawValue); found {
 		setEnum(datadictionaryv1.EventFaultType(enumNumber))
 	} else {
-		setEnum(datadictionaryv1.EventFaultType_EVENT_FAULT_TYPE_UNRECOGNIZED)
-		setUnrecognized(rawValue)
+		// For unknown values, use a default or log error - no unrecognized field support
+		setEnum(datadictionaryv1.EventFaultType_EVENT_FAULT_TYPE_UNSPECIFIED)
+		// Only call setUnrecognized if it's not nil (for backwards compatibility)
+		if setUnrecognized != nil {
+			setUnrecognized(rawValue)
+		}
 	}
 }
 
@@ -60,8 +64,12 @@ func SetCalibrationPurpose(rawValue int32, setEnum func(datadictionaryv1.Calibra
 	if enumNumber, found := findEnumValueByProtocol(enumDesc, rawValue); found {
 		setEnum(datadictionaryv1.CalibrationPurpose(enumNumber))
 	} else {
-		setEnum(datadictionaryv1.CalibrationPurpose_CALIBRATION_PURPOSE_UNRECOGNIZED)
-		setUnrecognized(rawValue)
+		// For unknown values, use a default or log error - no unrecognized field support
+		setEnum(datadictionaryv1.CalibrationPurpose_CALIBRATION_PURPOSE_UNSPECIFIED)
+		// Only call setUnrecognized if it's not nil (for backwards compatibility)
+		if setUnrecognized != nil {
+			setUnrecognized(rawValue)
+		}
 	}
 }
 
@@ -71,8 +79,12 @@ func SetDriverActivityValue(rawValue int32, setEnum func(datadictionaryv1.Driver
 	if enumNumber, found := findEnumValueByProtocol(enumDesc, rawValue); found {
 		setEnum(datadictionaryv1.DriverActivityValue(enumNumber))
 	} else {
-		setEnum(datadictionaryv1.DriverActivityValue_DRIVER_ACTIVITY_UNRECOGNIZED)
-		setUnrecognized(rawValue)
+		// For unknown values, use a default or log error - no unrecognized field support
+		setEnum(datadictionaryv1.DriverActivityValue_DRIVER_ACTIVITY_UNSPECIFIED)
+		// Only call setUnrecognized if it's not nil (for backwards compatibility)
+		if setUnrecognized != nil {
+			setUnrecognized(rawValue)
+		}
 	}
 }
 
@@ -82,20 +94,18 @@ func SetCardSlotNumber(rawValue int32, setEnum func(datadictionaryv1.CardSlotNum
 	if enumNumber, found := findEnumValueByProtocol(enumDesc, rawValue); found {
 		setEnum(datadictionaryv1.CardSlotNumber(enumNumber))
 	} else {
-		setEnum(datadictionaryv1.CardSlotNumber_CARD_SLOT_NUMBER_UNRECOGNIZED)
-		setUnrecognized(rawValue)
+		// For unknown values, use a default or log error - no unrecognized field support
+		setEnum(datadictionaryv1.CardSlotNumber_CARD_SLOT_NUMBER_UNSPECIFIED)
+		// Only call setUnrecognized if it's not nil (for backwards compatibility)
+		if setUnrecognized != nil {
+			setUnrecognized(rawValue)
+		}
 	}
 }
 
-// SetCardStatus converts a raw protocol value to CardStatus enum
-func SetCardStatus(rawValue int32, setEnum func(datadictionaryv1.CardStatus), setUnrecognized func(int32)) {
-	enumDesc := datadictionaryv1.CardStatus_CARD_STATUS_UNSPECIFIED.Descriptor()
-	if enumNumber, found := findEnumValueByProtocol(enumDesc, rawValue); found {
-		setEnum(datadictionaryv1.CardStatus(enumNumber))
-	} else {
-		setEnum(datadictionaryv1.CardStatus_CARD_STATUS_UNRECOGNIZED)
-		setUnrecognized(rawValue)
-	}
+// SetCardInserted converts a raw protocol value to bool inserted field
+func SetCardInserted(rawValue int32) bool {
+	return rawValue != 0
 }
 
 // SetDrivingStatus converts a raw protocol value to DrivingStatus enum
@@ -104,8 +114,12 @@ func SetDrivingStatus(rawValue int32, setEnum func(datadictionaryv1.DrivingStatu
 	if enumNumber, found := findEnumValueByProtocol(enumDesc, rawValue); found {
 		setEnum(datadictionaryv1.DrivingStatus(enumNumber))
 	} else {
-		setEnum(datadictionaryv1.DrivingStatus_DRIVING_STATUS_UNRECOGNIZED)
-		setUnrecognized(rawValue)
+		// For unknown values, use a default or log error - no unrecognized field support
+		setEnum(datadictionaryv1.DrivingStatus_DRIVING_STATUS_UNSPECIFIED)
+		// Only call setUnrecognized if it's not nil (for backwards compatibility)
+		if setUnrecognized != nil {
+			setUnrecognized(rawValue)
+		}
 	}
 }
 
@@ -115,8 +129,12 @@ func SetEquipmentType(rawValue int32, setEnum func(datadictionaryv1.EquipmentTyp
 	if enumNumber, found := findEnumValueByProtocol(enumDesc, rawValue); found {
 		setEnum(datadictionaryv1.EquipmentType(enumNumber))
 	} else {
-		setEnum(datadictionaryv1.EquipmentType_EQUIPMENT_TYPE_UNRECOGNIZED)
-		setUnrecognized(rawValue)
+		// For unknown values, use a default or log error - no unrecognized field support
+		setEnum(datadictionaryv1.EquipmentType_EQUIPMENT_TYPE_UNSPECIFIED)
+		// Only call setUnrecognized if it's not nil (for backwards compatibility)
+		if setUnrecognized != nil {
+			setUnrecognized(rawValue)
+		}
 	}
 }
 
@@ -126,8 +144,12 @@ func SetEventFaultRecordPurpose(rawValue int32, setEnum func(datadictionaryv1.Ev
 	if enumNumber, found := findEnumValueByProtocol(enumDesc, rawValue); found {
 		setEnum(datadictionaryv1.EventFaultRecordPurpose(enumNumber))
 	} else {
-		setEnum(datadictionaryv1.EventFaultRecordPurpose_EVENT_FAULT_RECORD_PURPOSE_UNRECOGNIZED)
-		setUnrecognized(rawValue)
+		// For unknown values, use a default or log error - no unrecognized field support
+		setEnum(datadictionaryv1.EventFaultRecordPurpose_EVENT_FAULT_RECORD_PURPOSE_UNSPECIFIED)
+		// Only call setUnrecognized if it's not nil (for backwards compatibility)
+		if setUnrecognized != nil {
+			setUnrecognized(rawValue)
+		}
 	}
 }
 
@@ -231,8 +253,12 @@ func SetEntryTypeDailyWorkPeriod(rawValue int32, setEnum func(datadictionaryv1.E
 	if enumNumber, found := findEnumValueByProtocol(enumDesc, rawValue); found {
 		setEnum(datadictionaryv1.EntryTypeDailyWorkPeriod(enumNumber))
 	} else {
-		setEnum(datadictionaryv1.EntryTypeDailyWorkPeriod_ENTRY_TYPE_DAILY_WORK_PERIOD_UNRECOGNIZED)
-		setUnrecognized(rawValue)
+		// For unknown values, use a default or log error - no unrecognized field support
+		setEnum(datadictionaryv1.EntryTypeDailyWorkPeriod_ENTRY_TYPE_DAILY_WORK_PERIOD_UNSPECIFIED)
+		// Only call setUnrecognized if it's not nil (for backwards compatibility)
+		if setUnrecognized != nil {
+			setUnrecognized(rawValue)
+		}
 	}
 }
 
@@ -242,8 +268,12 @@ func SetNationNumeric(rawValue int32, setEnum func(datadictionaryv1.NationNumeri
 	if enumNumber, found := findEnumValueByProtocol(enumDesc, rawValue); found {
 		setEnum(datadictionaryv1.NationNumeric(enumNumber))
 	} else {
-		setEnum(datadictionaryv1.NationNumeric_NATION_NUMERIC_UNRECOGNIZED)
-		setUnrecognized(rawValue)
+		// For unknown values, use a default or log error - no unrecognized field support
+		setEnum(datadictionaryv1.NationNumeric_NATION_NUMERIC_UNSPECIFIED)
+		// Only call setUnrecognized if it's not nil (for backwards compatibility)
+		if setUnrecognized != nil {
+			setUnrecognized(rawValue)
+		}
 	}
 }
 
@@ -253,8 +283,12 @@ func SetSpecificConditionType(rawValue int32, setEnum func(datadictionaryv1.Spec
 	if enumNumber, found := findEnumValueByProtocol(enumDesc, rawValue); found {
 		setEnum(datadictionaryv1.SpecificConditionType(enumNumber))
 	} else {
-		setEnum(datadictionaryv1.SpecificConditionType_SPECIFIC_CONDITION_TYPE_UNRECOGNIZED)
-		setUnrecognized(rawValue)
+		// For unknown values, use a default or log error - no unrecognized field support
+		setEnum(datadictionaryv1.SpecificConditionType_SPECIFIC_CONDITION_TYPE_UNSPECIFIED)
+		// Only call setUnrecognized if it's not nil (for backwards compatibility)
+		if setUnrecognized != nil {
+			setUnrecognized(rawValue)
+		}
 	}
 }
 
@@ -296,16 +330,12 @@ func GetDrivingStatus(enumValue datadictionaryv1.DrivingStatus, unrecognizedValu
 	return int32(enumValue)
 }
 
-// GetCardStatus returns the protocol value for marshalling
-func GetCardStatus(enumValue datadictionaryv1.CardStatus, unrecognizedValue int32) int32 {
-	if enumValue == datadictionaryv1.CardStatus_CARD_STATUS_UNRECOGNIZED {
-		return unrecognizedValue
+// GetCardInserted returns the protocol value for marshalling
+func GetCardInserted(inserted bool) int32 {
+	if inserted {
+		return 1
 	}
-	enumDesc := enumValue.Descriptor()
-	if protocolValue, ok := getProtocolValueFromEnumNumber(enumDesc, protoreflect.EnumNumber(enumValue)); ok {
-		return protocolValue
-	}
-	return int32(enumValue)
+	return 0
 }
 
 // GetDriverActivityValue returns the protocol value for marshalling

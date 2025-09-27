@@ -4,21 +4,46 @@ package wayplatform.connect.tachograph.card.v1;
 
 import "google/protobuf/timestamp.proto";
 
-// Represents data from EF_GNSS_Places, containing GNSS position records for
+// Represents the content of the EF_GNSS_Places file, containing GNSS position records for
 // accumulated driving periods.
 //
-// Corresponds to the `GNSSAccumulatedDriving` data type.
-// See Data Dictionary, Section 2.78.
+// The file structure is specified in Appendix 2, Section 4.2.2.
+//
+//     EF GNSS_Places
+//     └─GNSSAccumulatedDriving
+//
+// The data type `GNSSAccumulatedDriving` is specified in the Data Dictionary, Section 2.78.
+//
+// ASN.1 Specification:
+//
+//     GNSSAccumulatedDriving ::= SEQUENCE {
+//         gnssADPointerNewestRecord INTEGER(0..NoOfGNSSADRecords-1),
+//         gnssAccumulatedDrivingRecords SET SIZE(NoOfGNSSADRecords) OF GNSSAccumulatedDrivingRecord
+//     }
 message GnssPlaces {
   // Represents a single record of accumulated driving and GNSS position.
   //
-  // Corresponds to the `GNSSAccumulatedDrivingRecord` data type.
-  // See Data Dictionary, Section 2.79.
+  // The data type `GNSSAccumulatedDrivingRecord` is specified in the Data Dictionary, Section 2.79.
+  //
+  // ASN.1 Specification:
+  //
+  //     GNSSAccumulatedDrivingRecord ::= SEQUENCE {
+  //         timeStamp TimeReal,
+  //         gnssPlaceRecord GNSSPlaceRecord,
+  //         vehicleOdometerValue OdometerShort
+  //     }
   message Record {
     // Represents the nested GNSS position record.
     //
-    // Corresponds to the `GNSSPlaceRecord` data type.
-    // See Data Dictionary, Section 2.80.
+    // The data type `GNSSPlaceRecord` is specified in the Data Dictionary, Section 2.80.
+    //
+    // ASN.1 Specification:
+    //
+    //     GNSSPlaceRecord ::= SEQUENCE {
+    //         timeStamp TimeReal,
+    //         gnssAccuracy GNSSAccuracy,
+    //         geoCoordinates GeoCoordinates
+    //     }
     message GnssPlace {
       // Timestamp from the inner `GNSSPlaceRecord` structure.
       // See Data Dictionary, Section 2.80.

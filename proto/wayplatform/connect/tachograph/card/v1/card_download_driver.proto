@@ -4,10 +4,19 @@ package wayplatform.connect.tachograph.card.v1;
 
 import "google/protobuf/timestamp.proto";
 
-// Represents the timestamp of the last card download from EF_Card_Download.
+// Represents the content of the EF_Card_Download file for a driver card.
 //
-// Corresponds to the `LastCardDownload` data type.
-// See Data Dictionary, Section 2.89.
+// The file structure is specified in Appendix 2, Section 4.2.1.
+//
+//     EF Card_Download
+//     └─LastCardDownload
+//
+// The data type `LastCardDownload` is specified in the Data Dictionary, Section 2.89.
+//
+// ASN.1 Specification:
+//
+//     LastCardDownload ::= TimeReal
+//
 message CardDownloadDriver {
   google.protobuf.Timestamp timestamp = 1;
 

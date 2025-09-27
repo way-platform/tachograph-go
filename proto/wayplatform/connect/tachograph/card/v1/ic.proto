@@ -5,8 +5,19 @@ package wayplatform.connect.tachograph.card.v1;
 // Represents the content of the EF_IC file, which contains identification data
 // for the integrated circuit chip.
 //
-// Corresponds to the `CardChipIdentification` data type.
-// See Data Dictionary, Section 2.13.
+// The file structure is specified in Appendix 2, Section 4.1.
+//
+//     EF IC
+//     └─CardChipIdentification
+//
+// The data type `CardChipIdentification` is specified in the Data Dictionary, Section 2.13.
+//
+// ASN.1 Specification:
+//
+//     CardChipIdentification ::= SEQUENCE {
+//         icSerialNumber OCTET STRING (SIZE(4)),
+//         icManufacturingReferences OCTET STRING (SIZE(4))
+//     }
 message Ic {
   // See Data Dictionary, Section 2.13, `icSerialNumber`.
   string ic_serial_number = 1;

@@ -5,7 +5,7 @@ import (
 )
 
 // AppendFaultsData appends the binary representation of FaultData to dst.
-func AppendFaultsData(dst []byte, data *cardv1.FaultData) ([]byte, error) {
+func AppendFaultsData(dst []byte, data *cardv1.FaultsData) ([]byte, error) {
 	var err error
 	for _, r := range data.GetRecords() {
 		dst, err = AppendFaultRecord(dst, r)
@@ -17,16 +17,16 @@ func AppendFaultsData(dst []byte, data *cardv1.FaultData) ([]byte, error) {
 }
 
 // AppendFaultRecord appends a single fault record.
-func AppendFaultRecord(dst []byte, record *cardv1.FaultData_Record) ([]byte, error) {
+func AppendFaultRecord(dst []byte, record *cardv1.FaultsData_Record) ([]byte, error) {
 	if !record.GetValid() {
 		return append(dst, record.GetRawData()...), nil
 	}
 
-	protocolValue := GetEventFaultTypeProtocolValue(record.GetFaultType(), record.GetUnrecognizedFaultType())
+	protocolValue := GetEventFaultTypeProtocolValue(record.GetFaultType(), 0)
 	dst = append(dst, byte(protocolValue))
 	dst = appendTimeReal(dst, record.GetFaultBeginTime())
 	dst = appendTimeReal(dst, record.GetFaultEndTime())
-	dst, err := AppendVehicleRegistration(dst, record.GetVehicleRegistrationNation(), record.GetVehicleRegistrationNumber())
+	dst, err := appendVehicleRegistration(dst, record.GetFaultVehicleRegistration())
 	if err != nil {
 		return nil, err
 	}

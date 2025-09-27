@@ -116,7 +116,7 @@ func appendDriverCard(dst []byte, card *cardv1.DriverCardFile) ([]byte, error) {
 		return nil, err
 	}
 
-	dst, err = appendTlv(dst, cardv1.ElementaryFileType_EF_CARD_DOWNLOAD_DRIVER, card.GetLastCardDownload(), AppendCardLastDownload)
+	dst, err = appendTlv(dst, cardv1.ElementaryFileType_EF_CARD_DOWNLOAD_DRIVER, card.GetCardDownloadDriver(), AppendCardLastDownload)
 	if err != nil {
 		return nil, err
 	}

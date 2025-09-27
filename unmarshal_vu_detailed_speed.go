@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"fmt"
 
+	datadictionaryv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/datadictionary/v1"
 	vuv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/vu/v1"
 )
 
@@ -13,9 +14,9 @@ func UnmarshalVuDetailedSpeed(r *bytes.Reader, target *vuv1.DetailedSpeed, gener
 
 	// Set generation
 	if generation == 1 {
-		target.SetGeneration(vuv1.Generation_GENERATION_1)
+		target.SetGeneration(datadictionaryv1.Generation_GENERATION_1)
 	} else {
-		target.SetGeneration(vuv1.Generation_GENERATION_2)
+		target.SetGeneration(datadictionaryv1.Generation_GENERATION_2)
 	}
 
 	// For now, implement a simplified version that just reads the data
@@ -36,4 +37,3 @@ func UnmarshalVuDetailedSpeed(r *bytes.Reader, target *vuv1.DetailedSpeed, gener
 
 	return initialLen - r.Len(), nil
 }
-

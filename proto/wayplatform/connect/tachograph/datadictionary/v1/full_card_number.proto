@@ -1,0 +1,37 @@
+edition = "2023";
+
+package wayplatform.connect.tachograph.datadictionary.v1;
+
+import "wayplatform/connect/tachograph/datadictionary/v1/equipment_type.proto";
+
+// Corresponds to the `FullCardNumber` data type in the Data Dictionary, Section 2.73.
+//
+// ASN.1 Specification:
+//
+//     FullCardNumber ::= SEQUENCE {
+//         cardType EquipmentType,
+//         cardIssuingMemberState NationNumeric,
+//         cardNumber CardNumber
+//     }
+message FullCardNumber {
+  // The type of the tachograph card.
+  //
+  // ASN.1 Specification:
+  //
+  //     EquipmentType ::= INTEGER (0..255)
+  EquipmentType card_type = 1;
+
+  // The code of the Member State issuing the card.
+  //
+  // ASN.1 Specification:
+  //
+  //     NationNumeric ::= INTEGER(0..255)
+  int32 card_issuing_member_state = 2;
+
+  // The card number.
+  //
+  // ASN.1 Specification:
+  //
+  //     CardNumber ::= CHOICE { ... }
+  string card_number = 3;
+}

@@ -5,10 +5,10 @@ import (
 )
 
 // AppendIcc appends the binary representation of an EF_ICC message to dst.
-func AppendIcc(dst []byte, icc *cardv1.IccIdentification) ([]byte, error) {
+func AppendIcc(dst []byte, icc *cardv1.Icc) ([]byte, error) {
 	var err error
 	dst = append(dst, byte(icc.GetClockStop()))
-	dst, err = appendString(dst, icc.GetCardExtendedSerialNumber(), 8)
+	dst, err = appendExtendedSerialNumber(dst, icc.GetCardExtendedSerialNumber(), 8)
 	if err != nil {
 		return nil, err
 	}
@@ -17,7 +17,10 @@ func AppendIcc(dst []byte, icc *cardv1.IccIdentification) ([]byte, error) {
 		return nil, err
 	}
 	dst = append(dst, byte(icc.GetCardPersonaliserId()))
-	dst = append(dst, icc.GetEmbedderIcAssemblerId()...)
+	dst, err = appendEmbedderIcAssemblerId(dst, icc.GetEmbedderIcAssemblerId())
+	if err != nil {
+		return nil, err
+	}
 	dst = append(dst, icc.GetIcIdentifier()...)
 	return dst, nil
 }

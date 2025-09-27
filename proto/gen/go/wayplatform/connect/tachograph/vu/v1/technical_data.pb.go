@@ -28,7 +28,7 @@ const (
 // Appendix 7, Section 2.2.6.6: "Positive Response Transfer Data Technical Data".
 type TechnicalData struct {
 	state                               protoimpl.MessageState                          `protogen:"opaque.v1"`
-	xxx_hidden_Generation               Generation                                      `protobuf:"varint,1,opt,name=generation,enum=wayplatform.connect.tachograph.vu.v1.Generation"`
+	xxx_hidden_Generation               v1.Generation                                   `protobuf:"varint,1,opt,name=generation,enum=wayplatform.connect.tachograph.datadictionary.v1.Generation"`
 	xxx_hidden_VuIdentification         *TechnicalData_VuIdentification                 `protobuf:"bytes,2,opt,name=vu_identification,json=vuIdentification"`
 	xxx_hidden_CalibrationRecords       *[]*TechnicalData_CalibrationRecord             `protobuf:"bytes,3,rep,name=calibration_records,json=calibrationRecords"`
 	xxx_hidden_PairedSensor             *TechnicalData_PairedSensor                     `protobuf:"bytes,4,opt,name=paired_sensor,json=pairedSensor"`
@@ -70,13 +70,13 @@ func (x *TechnicalData) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-func (x *TechnicalData) GetGeneration() Generation {
+func (x *TechnicalData) GetGeneration() v1.Generation {
 	if x != nil {
 		if protoimpl.X.Present(&(x.XXX_presence[0]), 0) {
 			return x.xxx_hidden_Generation
 		}
 	}
-	return Generation_GENERATION_UNSPECIFIED
+	return v1.Generation(0)
 }
 
 func (x *TechnicalData) GetVuIdentification() *TechnicalData_VuIdentification {
@@ -161,7 +161,7 @@ func (x *TechnicalData) GetSignatureGen2() []byte {
 	return nil
 }
 
-func (x *TechnicalData) SetGeneration(v Generation) {
+func (x *TechnicalData) SetGeneration(v v1.Generation) {
 	x.xxx_hidden_Generation = v
 	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 11)
 }
@@ -251,7 +251,7 @@ func (x *TechnicalData) HasSignatureGen2() bool {
 
 func (x *TechnicalData) ClearGeneration() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 0)
-	x.xxx_hidden_Generation = Generation_GENERATION_UNSPECIFIED
+	x.xxx_hidden_Generation = v1.Generation_GENERATION_UNSPECIFIED
 }
 
 func (x *TechnicalData) ClearVuIdentification() {
@@ -275,8 +275,10 @@ func (x *TechnicalData) ClearSignatureGen2() {
 type TechnicalData_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
-	// Discriminator field indicating the generation of the data.
-	Generation *Generation
+	// The generation of the vehicle unit, parsed from the raw transfer data.
+	//
+	// Discriminator field.
+	Generation *v1.Generation
 	// Vehicle unit identification data.
 	VuIdentification *TechnicalData_VuIdentification
 	// All calibration records stored in the VU.
@@ -294,10 +296,8 @@ type TechnicalData_builder struct {
 	// For Gen2, the list of power supply interruptions.
 	PowerSupplyInterruptions []*TechnicalData_PowerSupplyInterruptionRecord
 	// Signature for Gen1 data (RSA, 128 bytes).
-	// See Data Dictionary, Section 2.149.
 	SignatureGen1 []byte
 	// Signature for Gen2 data (ECC).
-	// See Data Dictionary, Section 2.149.
 	SignatureGen2 []byte
 }
 
@@ -333,19 +333,18 @@ func (b0 TechnicalData_builder) Build() *TechnicalData {
 // Corresponds to the `VuIdentification` data type.
 // See Data Dictionary, Section 2.205.
 type TechnicalData_VuIdentification struct {
-	state                               protoimpl.MessageState `protogen:"opaque.v1"`
-	xxx_hidden_ManufacturerName         *string                `protobuf:"bytes,1,opt,name=manufacturer_name,json=manufacturerName"`
-	xxx_hidden_ManufacturerAddress      *string                `protobuf:"bytes,2,opt,name=manufacturer_address,json=manufacturerAddress"`
-	xxx_hidden_PartNumber               *string                `protobuf:"bytes,3,opt,name=part_number,json=partNumber"`
-	xxx_hidden_SerialNumber             *string                `protobuf:"bytes,4,opt,name=serial_number,json=serialNumber"`
-	xxx_hidden_SoftwareVersion          *string                `protobuf:"bytes,5,opt,name=software_version,json=softwareVersion"`
-	xxx_hidden_SoftwareInstallationDate *timestamppb.Timestamp `protobuf:"bytes,6,opt,name=software_installation_date,json=softwareInstallationDate"`
-	xxx_hidden_ManufacturingDate        *timestamppb.Timestamp `protobuf:"bytes,7,opt,name=manufacturing_date,json=manufacturingDate"`
-	xxx_hidden_ApprovalNumber           *string                `protobuf:"bytes,8,opt,name=approval_number,json=approvalNumber"`
-	XXX_raceDetectHookData              protoimpl.RaceDetectHookData
-	XXX_presence                        [1]uint32
-	unknownFields                       protoimpl.UnknownFields
-	sizeCache                           protoimpl.SizeCache
+	state                             protoimpl.MessageState                                   `protogen:"opaque.v1"`
+	xxx_hidden_ManufacturerName       *string                                                  `protobuf:"bytes,1,opt,name=manufacturer_name,json=manufacturerName"`
+	xxx_hidden_ManufacturerAddress    *string                                                  `protobuf:"bytes,2,opt,name=manufacturer_address,json=manufacturerAddress"`
+	xxx_hidden_PartNumber             *string                                                  `protobuf:"bytes,3,opt,name=part_number,json=partNumber"`
+	xxx_hidden_SerialNumber           *v1.ExtendedSerialNumber                                 `protobuf:"bytes,4,opt,name=serial_number,json=serialNumber"`
+	xxx_hidden_SoftwareIdentification *TechnicalData_VuIdentification_VuSoftwareIdentification `protobuf:"bytes,5,opt,name=software_identification,json=softwareIdentification"`
+	xxx_hidden_ManufacturingDate      *timestamppb.Timestamp                                   `protobuf:"bytes,6,opt,name=manufacturing_date,json=manufacturingDate"`
+	xxx_hidden_ApprovalNumber         *string                                                  `protobuf:"bytes,7,opt,name=approval_number,json=approvalNumber"`
+	XXX_raceDetectHookData            protoimpl.RaceDetectHookData
+	XXX_presence                      [1]uint32
+	unknownFields                     protoimpl.UnknownFields
+	sizeCache                         protoimpl.SizeCache
 }
 
 func (x *TechnicalData_VuIdentification) Reset() {
@@ -403,29 +402,16 @@ func (x *TechnicalData_VuIdentification) GetPartNumber() string {
 	return ""
 }
 
-func (x *TechnicalData_VuIdentification) GetSerialNumber() string {
+func (x *TechnicalData_VuIdentification) GetSerialNumber() *v1.ExtendedSerialNumber {
 	if x != nil {
-		if x.xxx_hidden_SerialNumber != nil {
-			return *x.xxx_hidden_SerialNumber
-		}
-		return ""
+		return x.xxx_hidden_SerialNumber
 	}
-	return ""
+	return nil
 }
 
-func (x *TechnicalData_VuIdentification) GetSoftwareVersion() string {
+func (x *TechnicalData_VuIdentification) GetSoftwareIdentification() *TechnicalData_VuIdentification_VuSoftwareIdentification {
 	if x != nil {
-		if x.xxx_hidden_SoftwareVersion != nil {
-			return *x.xxx_hidden_SoftwareVersion
-		}
-		return ""
-	}
-	return ""
-}
-
-func (x *TechnicalData_VuIdentification) GetSoftwareInstallationDate() *timestamppb.Timestamp {
-	if x != nil {
-		return x.xxx_hidden_SoftwareInstallationDate
+		return x.xxx_hidden_SoftwareIdentification
 	}
 	return nil
 }
@@ -449,31 +435,25 @@ func (x *TechnicalData_VuIdentification) GetApprovalNumber() string {
 
 func (x *TechnicalData_VuIdentification) SetManufacturerName(v string) {
 	x.xxx_hidden_ManufacturerName = &v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 8)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 7)
 }
 
 func (x *TechnicalData_VuIdentification) SetManufacturerAddress(v string) {
 	x.xxx_hidden_ManufacturerAddress = &v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 8)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 7)
 }
 
 func (x *TechnicalData_VuIdentification) SetPartNumber(v string) {
 	x.xxx_hidden_PartNumber = &v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 8)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 7)
 }
 
-func (x *TechnicalData_VuIdentification) SetSerialNumber(v string) {
-	x.xxx_hidden_SerialNumber = &v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 3, 8)
+func (x *TechnicalData_VuIdentification) SetSerialNumber(v *v1.ExtendedSerialNumber) {
+	x.xxx_hidden_SerialNumber = v
 }
 
-func (x *TechnicalData_VuIdentification) SetSoftwareVersion(v string) {
-	x.xxx_hidden_SoftwareVersion = &v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 4, 8)
-}
-
-func (x *TechnicalData_VuIdentification) SetSoftwareInstallationDate(v *timestamppb.Timestamp) {
-	x.xxx_hidden_SoftwareInstallationDate = v
+func (x *TechnicalData_VuIdentification) SetSoftwareIdentification(v *TechnicalData_VuIdentification_VuSoftwareIdentification) {
+	x.xxx_hidden_SoftwareIdentification = v
 }
 
 func (x *TechnicalData_VuIdentification) SetManufacturingDate(v *timestamppb.Timestamp) {
@@ -482,7 +462,7 @@ func (x *TechnicalData_VuIdentification) SetManufacturingDate(v *timestamppb.Tim
 
 func (x *TechnicalData_VuIdentification) SetApprovalNumber(v string) {
 	x.xxx_hidden_ApprovalNumber = &v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 7, 8)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 6, 7)
 }
 
 func (x *TechnicalData_VuIdentification) HasManufacturerName() bool {
@@ -510,21 +490,14 @@ func (x *TechnicalData_VuIdentification) HasSerialNumber() bool {
 	if x == nil {
 		return false
 	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 3)
+	return x.xxx_hidden_SerialNumber != nil
 }
 
-func (x *TechnicalData_VuIdentification) HasSoftwareVersion() bool {
+func (x *TechnicalData_VuIdentification) HasSoftwareIdentification() bool {
 	if x == nil {
 		return false
 	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 4)
-}
-
-func (x *TechnicalData_VuIdentification) HasSoftwareInstallationDate() bool {
-	if x == nil {
-		return false
-	}
-	return x.xxx_hidden_SoftwareInstallationDate != nil
+	return x.xxx_hidden_SoftwareIdentification != nil
 }
 
 func (x *TechnicalData_VuIdentification) HasManufacturingDate() bool {
@@ -538,7 +511,7 @@ func (x *TechnicalData_VuIdentification) HasApprovalNumber() bool {
 	if x == nil {
 		return false
 	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 7)
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 6)
 }
 
 func (x *TechnicalData_VuIdentification) ClearManufacturerName() {
@@ -557,17 +530,11 @@ func (x *TechnicalData_VuIdentification) ClearPartNumber() {
 }
 
 func (x *TechnicalData_VuIdentification) ClearSerialNumber() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 3)
 	x.xxx_hidden_SerialNumber = nil
 }
 
-func (x *TechnicalData_VuIdentification) ClearSoftwareVersion() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 4)
-	x.xxx_hidden_SoftwareVersion = nil
-}
-
-func (x *TechnicalData_VuIdentification) ClearSoftwareInstallationDate() {
-	x.xxx_hidden_SoftwareInstallationDate = nil
+func (x *TechnicalData_VuIdentification) ClearSoftwareIdentification() {
+	x.xxx_hidden_SoftwareIdentification = nil
 }
 
 func (x *TechnicalData_VuIdentification) ClearManufacturingDate() {
@@ -575,28 +542,26 @@ func (x *TechnicalData_VuIdentification) ClearManufacturingDate() {
 }
 
 func (x *TechnicalData_VuIdentification) ClearApprovalNumber() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 7)
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 6)
 	x.xxx_hidden_ApprovalNumber = nil
 }
 
 type TechnicalData_VuIdentification_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
-	// See Data Dictionary, Section 2.210 for `VuManufacturerName`.
+	// The name of the VU manufacturer.
 	ManufacturerName *string
-	// See Data Dictionary, Section 2.209 for `VuManufacturerAddress`.
+	// The address of the VU manufacturer.
 	ManufacturerAddress *string
-	// See Data Dictionary, Section 2.217 for `VuPartNumber`.
+	// The part number of the VU.
 	PartNumber *string
-	// Part of `ExtendedSerialNumber`. See Data Dictionary, Section 2.72.
-	SerialNumber *string
-	// Part of `VuSoftwareIdentification`. See Data Dictionary, Section 2.225.
-	SoftwareVersion *string
-	// See Data Dictionary, Section 2.224 for `VuSoftInstallationDate`.
-	SoftwareInstallationDate *timestamppb.Timestamp
-	// See Data Dictionary, Section 2.211 for `VuManufacturingDate`.
+	// The serial number of the VU.
+	SerialNumber *v1.ExtendedSerialNumber
+	// The software identification of the VU.
+	SoftwareIdentification *TechnicalData_VuIdentification_VuSoftwareIdentification
+	// The manufacturing date of the VU.
 	ManufacturingDate *timestamppb.Timestamp
-	// See Data Dictionary, Section 2.172 for `VuApprovalNumber`.
+	// The approval number of the VU.
 	ApprovalNumber *string
 }
 
@@ -605,29 +570,22 @@ func (b0 TechnicalData_VuIdentification_builder) Build() *TechnicalData_VuIdenti
 	b, x := &b0, m0
 	_, _ = b, x
 	if b.ManufacturerName != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 8)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 7)
 		x.xxx_hidden_ManufacturerName = b.ManufacturerName
 	}
 	if b.ManufacturerAddress != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 8)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 7)
 		x.xxx_hidden_ManufacturerAddress = b.ManufacturerAddress
 	}
 	if b.PartNumber != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 8)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 7)
 		x.xxx_hidden_PartNumber = b.PartNumber
 	}
-	if b.SerialNumber != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 3, 8)
-		x.xxx_hidden_SerialNumber = b.SerialNumber
-	}
-	if b.SoftwareVersion != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 4, 8)
-		x.xxx_hidden_SoftwareVersion = b.SoftwareVersion
-	}
-	x.xxx_hidden_SoftwareInstallationDate = b.SoftwareInstallationDate
+	x.xxx_hidden_SerialNumber = b.SerialNumber
+	x.xxx_hidden_SoftwareIdentification = b.SoftwareIdentification
 	x.xxx_hidden_ManufacturingDate = b.ManufacturingDate
 	if b.ApprovalNumber != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 7, 8)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 6, 7)
 		x.xxx_hidden_ApprovalNumber = b.ApprovalNumber
 	}
 	return m0
@@ -638,10 +596,10 @@ func (b0 TechnicalData_VuIdentification_builder) Build() *TechnicalData_VuIdenti
 // Corresponds to the `SensorPairedRecord` data type.
 // See Data Dictionary, Section 2.145.
 type TechnicalData_PairedSensor struct {
-	state                     protoimpl.MessageState `protogen:"opaque.v1"`
-	xxx_hidden_SerialNumber   *string                `protobuf:"bytes,1,opt,name=serial_number,json=serialNumber"`
-	xxx_hidden_ApprovalNumber *string                `protobuf:"bytes,2,opt,name=approval_number,json=approvalNumber"`
-	xxx_hidden_PairingDate    *timestamppb.Timestamp `protobuf:"bytes,3,opt,name=pairing_date,json=pairingDate"`
+	state                     protoimpl.MessageState   `protogen:"opaque.v1"`
+	xxx_hidden_SerialNumber   *v1.ExtendedSerialNumber `protobuf:"bytes,1,opt,name=serial_number,json=serialNumber"`
+	xxx_hidden_ApprovalNumber *string                  `protobuf:"bytes,2,opt,name=approval_number,json=approvalNumber"`
+	xxx_hidden_PairingDate    *timestamppb.Timestamp   `protobuf:"bytes,3,opt,name=pairing_date,json=pairingDate"`
 	XXX_raceDetectHookData    protoimpl.RaceDetectHookData
 	XXX_presence              [1]uint32
 	unknownFields             protoimpl.UnknownFields
@@ -673,14 +631,11 @@ func (x *TechnicalData_PairedSensor) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-func (x *TechnicalData_PairedSensor) GetSerialNumber() string {
+func (x *TechnicalData_PairedSensor) GetSerialNumber() *v1.ExtendedSerialNumber {
 	if x != nil {
-		if x.xxx_hidden_SerialNumber != nil {
-			return *x.xxx_hidden_SerialNumber
-		}
-		return ""
+		return x.xxx_hidden_SerialNumber
 	}
-	return ""
+	return nil
 }
 
 func (x *TechnicalData_PairedSensor) GetApprovalNumber() string {
@@ -700,9 +655,8 @@ func (x *TechnicalData_PairedSensor) GetPairingDate() *timestamppb.Timestamp {
 	return nil
 }
 
-func (x *TechnicalData_PairedSensor) SetSerialNumber(v string) {
-	x.xxx_hidden_SerialNumber = &v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 3)
+func (x *TechnicalData_PairedSensor) SetSerialNumber(v *v1.ExtendedSerialNumber) {
+	x.xxx_hidden_SerialNumber = v
 }
 
 func (x *TechnicalData_PairedSensor) SetApprovalNumber(v string) {
@@ -718,7 +672,7 @@ func (x *TechnicalData_PairedSensor) HasSerialNumber() bool {
 	if x == nil {
 		return false
 	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 0)
+	return x.xxx_hidden_SerialNumber != nil
 }
 
 func (x *TechnicalData_PairedSensor) HasApprovalNumber() bool {
@@ -736,7 +690,6 @@ func (x *TechnicalData_PairedSensor) HasPairingDate() bool {
 }
 
 func (x *TechnicalData_PairedSensor) ClearSerialNumber() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 0)
 	x.xxx_hidden_SerialNumber = nil
 }
 
@@ -752,11 +705,11 @@ func (x *TechnicalData_PairedSensor) ClearPairingDate() {
 type TechnicalData_PairedSensor_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
-	// See Data Dictionary, Section 2.148 for `SensorSerialNumber`.
-	SerialNumber *string
-	// See Data Dictionary, Section 2.131 for `SensorApprovalNumber`.
+	// The serial number of the motion sensor.
+	SerialNumber *v1.ExtendedSerialNumber
+	// The approval number of the motion sensor.
 	ApprovalNumber *string
-	// See Data Dictionary, Section 2.146 for `SensorPairingDate`.
+	// The date the sensor was paired.
 	PairingDate *timestamppb.Timestamp
 }
 
@@ -764,10 +717,7 @@ func (b0 TechnicalData_PairedSensor_builder) Build() *TechnicalData_PairedSensor
 	m0 := &TechnicalData_PairedSensor{}
 	b, x := &b0, m0
 	_, _ = b, x
-	if b.SerialNumber != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 3)
-		x.xxx_hidden_SerialNumber = b.SerialNumber
-	}
+	x.xxx_hidden_SerialNumber = b.SerialNumber
 	if b.ApprovalNumber != nil {
 		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 3)
 		x.xxx_hidden_ApprovalNumber = b.ApprovalNumber
@@ -781,10 +731,10 @@ func (b0 TechnicalData_PairedSensor_builder) Build() *TechnicalData_PairedSensor
 // Corresponds to the `SensorExternalGNSSCoupledRecord` data type.
 // See Data Dictionary, Section 2.133.
 type TechnicalData_CoupledGnss struct {
-	state                     protoimpl.MessageState `protogen:"opaque.v1"`
-	xxx_hidden_SerialNumber   *string                `protobuf:"bytes,1,opt,name=serial_number,json=serialNumber"`
-	xxx_hidden_ApprovalNumber *string                `protobuf:"bytes,2,opt,name=approval_number,json=approvalNumber"`
-	xxx_hidden_CouplingDate   *timestamppb.Timestamp `protobuf:"bytes,3,opt,name=coupling_date,json=couplingDate"`
+	state                     protoimpl.MessageState   `protogen:"opaque.v1"`
+	xxx_hidden_SerialNumber   *v1.ExtendedSerialNumber `protobuf:"bytes,1,opt,name=serial_number,json=serialNumber"`
+	xxx_hidden_ApprovalNumber *string                  `protobuf:"bytes,2,opt,name=approval_number,json=approvalNumber"`
+	xxx_hidden_CouplingDate   *timestamppb.Timestamp   `protobuf:"bytes,3,opt,name=coupling_date,json=couplingDate"`
 	XXX_raceDetectHookData    protoimpl.RaceDetectHookData
 	XXX_presence              [1]uint32
 	unknownFields             protoimpl.UnknownFields
@@ -816,14 +766,11 @@ func (x *TechnicalData_CoupledGnss) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-func (x *TechnicalData_CoupledGnss) GetSerialNumber() string {
+func (x *TechnicalData_CoupledGnss) GetSerialNumber() *v1.ExtendedSerialNumber {
 	if x != nil {
-		if x.xxx_hidden_SerialNumber != nil {
-			return *x.xxx_hidden_SerialNumber
-		}
-		return ""
+		return x.xxx_hidden_SerialNumber
 	}
-	return ""
+	return nil
 }
 
 func (x *TechnicalData_CoupledGnss) GetApprovalNumber() string {
@@ -843,9 +790,8 @@ func (x *TechnicalData_CoupledGnss) GetCouplingDate() *timestamppb.Timestamp {
 	return nil
 }
 
-func (x *TechnicalData_CoupledGnss) SetSerialNumber(v string) {
-	x.xxx_hidden_SerialNumber = &v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 3)
+func (x *TechnicalData_CoupledGnss) SetSerialNumber(v *v1.ExtendedSerialNumber) {
+	x.xxx_hidden_SerialNumber = v
 }
 
 func (x *TechnicalData_CoupledGnss) SetApprovalNumber(v string) {
@@ -861,7 +807,7 @@ func (x *TechnicalData_CoupledGnss) HasSerialNumber() bool {
 	if x == nil {
 		return false
 	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 0)
+	return x.xxx_hidden_SerialNumber != nil
 }
 
 func (x *TechnicalData_CoupledGnss) HasApprovalNumber() bool {
@@ -879,7 +825,6 @@ func (x *TechnicalData_CoupledGnss) HasCouplingDate() bool {
 }
 
 func (x *TechnicalData_CoupledGnss) ClearSerialNumber() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 0)
 	x.xxx_hidden_SerialNumber = nil
 }
 
@@ -895,11 +840,11 @@ func (x *TechnicalData_CoupledGnss) ClearCouplingDate() {
 type TechnicalData_CoupledGnss_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
-	// See Data Dictionary, Section 2.139 for `SensorGNSSSerialNumber`.
-	SerialNumber *string
-	// See Data Dictionary, Section 2.132 for `SensorExternalGNSSApprovalNumber`.
+	// The serial number of the external GNSS.
+	SerialNumber *v1.ExtendedSerialNumber
+	// The approval number of the external GNSS.
 	ApprovalNumber *string
-	// See Data Dictionary, Section 2.138 for `SensorGNSSCouplingDate`.
+	// The date the GNSS was coupled.
 	CouplingDate *timestamppb.Timestamp
 }
 
@@ -907,10 +852,7 @@ func (b0 TechnicalData_CoupledGnss_builder) Build() *TechnicalData_CoupledGnss {
 	m0 := &TechnicalData_CoupledGnss{}
 	b, x := &b0, m0
 	_, _ = b, x
-	if b.SerialNumber != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 3)
-		x.xxx_hidden_SerialNumber = b.SerialNumber
-	}
+	x.xxx_hidden_SerialNumber = b.SerialNumber
 	if b.ApprovalNumber != nil {
 		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 3)
 		x.xxx_hidden_ApprovalNumber = b.ApprovalNumber
@@ -924,27 +866,25 @@ func (b0 TechnicalData_CoupledGnss_builder) Build() *TechnicalData_CoupledGnss {
 // Corresponds to the `VuCalibrationRecord` data type.
 // See Data Dictionary, Section 2.174.
 type TechnicalData_CalibrationRecord struct {
-	state                                     protoimpl.MessageState `protogen:"opaque.v1"`
-	xxx_hidden_Purpose                        v1.CalibrationPurpose  `protobuf:"varint,1,opt,name=purpose,enum=wayplatform.connect.tachograph.datadictionary.v1.CalibrationPurpose"`
-	xxx_hidden_UnrecognizedPurpose            int32                  `protobuf:"varint,2,opt,name=unrecognized_purpose,json=unrecognizedPurpose"`
-	xxx_hidden_WorkshopName                   *string                `protobuf:"bytes,3,opt,name=workshop_name,json=workshopName"`
-	xxx_hidden_WorkshopAddress                *string                `protobuf:"bytes,4,opt,name=workshop_address,json=workshopAddress"`
-	xxx_hidden_WorkshopCardNumber             *string                `protobuf:"bytes,5,opt,name=workshop_card_number,json=workshopCardNumber"`
-	xxx_hidden_WorkshopCardExpiryDate         *timestamppb.Timestamp `protobuf:"bytes,6,opt,name=workshop_card_expiry_date,json=workshopCardExpiryDate"`
-	xxx_hidden_Vin                            *string                `protobuf:"bytes,7,opt,name=vin"`
-	xxx_hidden_Vrn                            *string                `protobuf:"bytes,8,opt,name=vrn"`
-	xxx_hidden_RegisteringNation              v1.NationNumeric       `protobuf:"varint,9,opt,name=registering_nation,json=registeringNation,enum=wayplatform.connect.tachograph.datadictionary.v1.NationNumeric"`
-	xxx_hidden_UnrecognizedRegisteringNation  int32                  `protobuf:"varint,10,opt,name=unrecognized_registering_nation,json=unrecognizedRegisteringNation"`
-	xxx_hidden_WVehicleCharacteristicConstant int32                  `protobuf:"varint,11,opt,name=w_vehicle_characteristic_constant,json=wVehicleCharacteristicConstant"`
-	xxx_hidden_KConstantOfRecordingEquipment  int32                  `protobuf:"varint,12,opt,name=k_constant_of_recording_equipment,json=kConstantOfRecordingEquipment"`
-	xxx_hidden_LTyreCircumferenceMm           int32                  `protobuf:"varint,13,opt,name=l_tyre_circumference_mm,json=lTyreCircumferenceMm"`
-	xxx_hidden_TyreSize                       *string                `protobuf:"bytes,14,opt,name=tyre_size,json=tyreSize"`
-	xxx_hidden_AuthorisedSpeedKmh             int32                  `protobuf:"varint,15,opt,name=authorised_speed_kmh,json=authorisedSpeedKmh"`
-	xxx_hidden_OldOdometerValueKm             int32                  `protobuf:"varint,16,opt,name=old_odometer_value_km,json=oldOdometerValueKm"`
-	xxx_hidden_NewOdometerValueKm             int32                  `protobuf:"varint,17,opt,name=new_odometer_value_km,json=newOdometerValueKm"`
-	xxx_hidden_OldTimeValue                   *timestamppb.Timestamp `protobuf:"bytes,18,opt,name=old_time_value,json=oldTimeValue"`
-	xxx_hidden_NewTimeValue                   *timestamppb.Timestamp `protobuf:"bytes,19,opt,name=new_time_value,json=newTimeValue"`
-	xxx_hidden_NextCalibrationDate            *timestamppb.Timestamp `protobuf:"bytes,20,opt,name=next_calibration_date,json=nextCalibrationDate"`
+	state                                     protoimpl.MessageState                `protogen:"opaque.v1"`
+	xxx_hidden_Purpose                        v1.CalibrationPurpose                 `protobuf:"varint,1,opt,name=purpose,enum=wayplatform.connect.tachograph.datadictionary.v1.CalibrationPurpose"`
+	xxx_hidden_UnrecognizedPurpose            int32                                 `protobuf:"varint,2,opt,name=unrecognized_purpose,json=unrecognizedPurpose"`
+	xxx_hidden_WorkshopName                   *string                               `protobuf:"bytes,3,opt,name=workshop_name,json=workshopName"`
+	xxx_hidden_WorkshopAddress                *string                               `protobuf:"bytes,4,opt,name=workshop_address,json=workshopAddress"`
+	xxx_hidden_WorkshopCardNumber             *v1.FullCardNumber                    `protobuf:"bytes,5,opt,name=workshop_card_number,json=workshopCardNumber"`
+	xxx_hidden_WorkshopCardExpiryDate         *timestamppb.Timestamp                `protobuf:"bytes,6,opt,name=workshop_card_expiry_date,json=workshopCardExpiryDate"`
+	xxx_hidden_Vin                            *string                               `protobuf:"bytes,7,opt,name=vin"`
+	xxx_hidden_VehicleRegistration            *v1.VehicleRegistrationIdentification `protobuf:"bytes,8,opt,name=vehicle_registration,json=vehicleRegistration"`
+	xxx_hidden_WVehicleCharacteristicConstant int32                                 `protobuf:"varint,9,opt,name=w_vehicle_characteristic_constant,json=wVehicleCharacteristicConstant"`
+	xxx_hidden_KConstantOfRecordingEquipment  int32                                 `protobuf:"varint,10,opt,name=k_constant_of_recording_equipment,json=kConstantOfRecordingEquipment"`
+	xxx_hidden_LTyreCircumferenceMm           int32                                 `protobuf:"varint,11,opt,name=l_tyre_circumference_mm,json=lTyreCircumferenceMm"`
+	xxx_hidden_TyreSize                       *string                               `protobuf:"bytes,12,opt,name=tyre_size,json=tyreSize"`
+	xxx_hidden_AuthorisedSpeedKmh             int32                                 `protobuf:"varint,13,opt,name=authorised_speed_kmh,json=authorisedSpeedKmh"`
+	xxx_hidden_OldOdometerValueKm             int32                                 `protobuf:"varint,14,opt,name=old_odometer_value_km,json=oldOdometerValueKm"`
+	xxx_hidden_NewOdometerValueKm             int32                                 `protobuf:"varint,15,opt,name=new_odometer_value_km,json=newOdometerValueKm"`
+	xxx_hidden_OldTimeValue                   *timestamppb.Timestamp                `protobuf:"bytes,16,opt,name=old_time_value,json=oldTimeValue"`
+	xxx_hidden_NewTimeValue                   *timestamppb.Timestamp                `protobuf:"bytes,17,opt,name=new_time_value,json=newTimeValue"`
+	xxx_hidden_NextCalibrationDate            *timestamppb.Timestamp                `protobuf:"bytes,18,opt,name=next_calibration_date,json=nextCalibrationDate"`
 	XXX_raceDetectHookData                    protoimpl.RaceDetectHookData
 	XXX_presence                              [1]uint32
 	unknownFields                             protoimpl.UnknownFields
@@ -1012,14 +952,11 @@ func (x *TechnicalData_CalibrationRecord) GetWorkshopAddress() string {
 	return ""
 }
 
-func (x *TechnicalData_CalibrationRecord) GetWorkshopCardNumber() string {
+func (x *TechnicalData_CalibrationRecord) GetWorkshopCardNumber() *v1.FullCardNumber {
 	if x != nil {
-		if x.xxx_hidden_WorkshopCardNumber != nil {
-			return *x.xxx_hidden_WorkshopCardNumber
-		}
-		return ""
+		return x.xxx_hidden_WorkshopCardNumber
 	}
-	return ""
+	return nil
 }
 
 func (x *TechnicalData_CalibrationRecord) GetWorkshopCardExpiryDate() *timestamppb.Timestamp {
@@ -1039,30 +976,11 @@ func (x *TechnicalData_CalibrationRecord) GetVin() string {
 	return ""
 }
 
-func (x *TechnicalData_CalibrationRecord) GetVrn() string {
+func (x *TechnicalData_CalibrationRecord) GetVehicleRegistration() *v1.VehicleRegistrationIdentification {
 	if x != nil {
-		if x.xxx_hidden_Vrn != nil {
-			return *x.xxx_hidden_Vrn
-		}
-		return ""
+		return x.xxx_hidden_VehicleRegistration
 	}
-	return ""
-}
-
-func (x *TechnicalData_CalibrationRecord) GetRegisteringNation() v1.NationNumeric {
-	if x != nil {
-		if protoimpl.X.Present(&(x.XXX_presence[0]), 8) {
-			return x.xxx_hidden_RegisteringNation
-		}
-	}
-	return v1.NationNumeric(0)
-}
-
-func (x *TechnicalData_CalibrationRecord) GetUnrecognizedRegisteringNation() int32 {
-	if x != nil {
-		return x.xxx_hidden_UnrecognizedRegisteringNation
-	}
-	return 0
+	return nil
 }
 
 func (x *TechnicalData_CalibrationRecord) GetWVehicleCharacteristicConstant() int32 {
@@ -1140,27 +1058,26 @@ func (x *TechnicalData_CalibrationRecord) GetNextCalibrationDate() *timestamppb.
 
 func (x *TechnicalData_CalibrationRecord) SetPurpose(v v1.CalibrationPurpose) {
 	x.xxx_hidden_Purpose = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 20)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 18)
 }
 
 func (x *TechnicalData_CalibrationRecord) SetUnrecognizedPurpose(v int32) {
 	x.xxx_hidden_UnrecognizedPurpose = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 20)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 18)
 }
 
 func (x *TechnicalData_CalibrationRecord) SetWorkshopName(v string) {
 	x.xxx_hidden_WorkshopName = &v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 20)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 18)
 }
 
 func (x *TechnicalData_CalibrationRecord) SetWorkshopAddress(v string) {
 	x.xxx_hidden_WorkshopAddress = &v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 3, 20)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 3, 18)
 }
 
-func (x *TechnicalData_CalibrationRecord) SetWorkshopCardNumber(v string) {
-	x.xxx_hidden_WorkshopCardNumber = &v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 4, 20)
+func (x *TechnicalData_CalibrationRecord) SetWorkshopCardNumber(v *v1.FullCardNumber) {
+	x.xxx_hidden_WorkshopCardNumber = v
 }
 
 func (x *TechnicalData_CalibrationRecord) SetWorkshopCardExpiryDate(v *timestamppb.Timestamp) {
@@ -1169,57 +1086,46 @@ func (x *TechnicalData_CalibrationRecord) SetWorkshopCardExpiryDate(v *timestamp
 
 func (x *TechnicalData_CalibrationRecord) SetVin(v string) {
 	x.xxx_hidden_Vin = &v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 6, 20)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 6, 18)
 }
 
-func (x *TechnicalData_CalibrationRecord) SetVrn(v string) {
-	x.xxx_hidden_Vrn = &v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 7, 20)
-}
-
-func (x *TechnicalData_CalibrationRecord) SetRegisteringNation(v v1.NationNumeric) {
-	x.xxx_hidden_RegisteringNation = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 8, 20)
-}
-
-func (x *TechnicalData_CalibrationRecord) SetUnrecognizedRegisteringNation(v int32) {
-	x.xxx_hidden_UnrecognizedRegisteringNation = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 9, 20)
+func (x *TechnicalData_CalibrationRecord) SetVehicleRegistration(v *v1.VehicleRegistrationIdentification) {
+	x.xxx_hidden_VehicleRegistration = v
 }
 
 func (x *TechnicalData_CalibrationRecord) SetWVehicleCharacteristicConstant(v int32) {
 	x.xxx_hidden_WVehicleCharacteristicConstant = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 10, 20)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 8, 18)
 }
 
 func (x *TechnicalData_CalibrationRecord) SetKConstantOfRecordingEquipment(v int32) {
 	x.xxx_hidden_KConstantOfRecordingEquipment = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 11, 20)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 9, 18)
 }
 
 func (x *TechnicalData_CalibrationRecord) SetLTyreCircumferenceMm(v int32) {
 	x.xxx_hidden_LTyreCircumferenceMm = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 12, 20)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 10, 18)
 }
 
 func (x *TechnicalData_CalibrationRecord) SetTyreSize(v string) {
 	x.xxx_hidden_TyreSize = &v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 13, 20)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 11, 18)
 }
 
 func (x *TechnicalData_CalibrationRecord) SetAuthorisedSpeedKmh(v int32) {
 	x.xxx_hidden_AuthorisedSpeedKmh = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 14, 20)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 12, 18)
 }
 
 func (x *TechnicalData_CalibrationRecord) SetOldOdometerValueKm(v int32) {
 	x.xxx_hidden_OldOdometerValueKm = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 15, 20)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 13, 18)
 }
 
 func (x *TechnicalData_CalibrationRecord) SetNewOdometerValueKm(v int32) {
 	x.xxx_hidden_NewOdometerValueKm = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 16, 20)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 14, 18)
 }
 
 func (x *TechnicalData_CalibrationRecord) SetOldTimeValue(v *timestamppb.Timestamp) {
@@ -1266,7 +1172,7 @@ func (x *TechnicalData_CalibrationRecord) HasWorkshopCardNumber() bool {
 	if x == nil {
 		return false
 	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 4)
+	return x.xxx_hidden_WorkshopCardNumber != nil
 }
 
 func (x *TechnicalData_CalibrationRecord) HasWorkshopCardExpiryDate() bool {
@@ -1283,74 +1189,60 @@ func (x *TechnicalData_CalibrationRecord) HasVin() bool {
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 6)
 }
 
-func (x *TechnicalData_CalibrationRecord) HasVrn() bool {
+func (x *TechnicalData_CalibrationRecord) HasVehicleRegistration() bool {
 	if x == nil {
 		return false
 	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 7)
-}
-
-func (x *TechnicalData_CalibrationRecord) HasRegisteringNation() bool {
-	if x == nil {
-		return false
-	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 8)
-}
-
-func (x *TechnicalData_CalibrationRecord) HasUnrecognizedRegisteringNation() bool {
-	if x == nil {
-		return false
-	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 9)
+	return x.xxx_hidden_VehicleRegistration != nil
 }
 
 func (x *TechnicalData_CalibrationRecord) HasWVehicleCharacteristicConstant() bool {
 	if x == nil {
 		return false
 	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 10)
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 8)
 }
 
 func (x *TechnicalData_CalibrationRecord) HasKConstantOfRecordingEquipment() bool {
 	if x == nil {
 		return false
 	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 11)
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 9)
 }
 
 func (x *TechnicalData_CalibrationRecord) HasLTyreCircumferenceMm() bool {
 	if x == nil {
 		return false
 	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 12)
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 10)
 }
 
 func (x *TechnicalData_CalibrationRecord) HasTyreSize() bool {
 	if x == nil {
 		return false
 	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 13)
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 11)
 }
 
 func (x *TechnicalData_CalibrationRecord) HasAuthorisedSpeedKmh() bool {
 	if x == nil {
 		return false
 	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 14)
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 12)
 }
 
 func (x *TechnicalData_CalibrationRecord) HasOldOdometerValueKm() bool {
 	if x == nil {
 		return false
 	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 15)
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 13)
 }
 
 func (x *TechnicalData_CalibrationRecord) HasNewOdometerValueKm() bool {
 	if x == nil {
 		return false
 	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 16)
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 14)
 }
 
 func (x *TechnicalData_CalibrationRecord) HasOldTimeValue() bool {
@@ -1395,7 +1287,6 @@ func (x *TechnicalData_CalibrationRecord) ClearWorkshopAddress() {
 }
 
 func (x *TechnicalData_CalibrationRecord) ClearWorkshopCardNumber() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 4)
 	x.xxx_hidden_WorkshopCardNumber = nil
 }
 
@@ -1408,53 +1299,42 @@ func (x *TechnicalData_CalibrationRecord) ClearVin() {
 	x.xxx_hidden_Vin = nil
 }
 
-func (x *TechnicalData_CalibrationRecord) ClearVrn() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 7)
-	x.xxx_hidden_Vrn = nil
-}
-
-func (x *TechnicalData_CalibrationRecord) ClearRegisteringNation() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 8)
-	x.xxx_hidden_RegisteringNation = v1.NationNumeric_NATION_NUMERIC_UNSPECIFIED
-}
-
-func (x *TechnicalData_CalibrationRecord) ClearUnrecognizedRegisteringNation() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 9)
-	x.xxx_hidden_UnrecognizedRegisteringNation = 0
+func (x *TechnicalData_CalibrationRecord) ClearVehicleRegistration() {
+	x.xxx_hidden_VehicleRegistration = nil
 }
 
 func (x *TechnicalData_CalibrationRecord) ClearWVehicleCharacteristicConstant() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 10)
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 8)
 	x.xxx_hidden_WVehicleCharacteristicConstant = 0
 }
 
 func (x *TechnicalData_CalibrationRecord) ClearKConstantOfRecordingEquipment() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 11)
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 9)
 	x.xxx_hidden_KConstantOfRecordingEquipment = 0
 }
 
 func (x *TechnicalData_CalibrationRecord) ClearLTyreCircumferenceMm() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 12)
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 10)
 	x.xxx_hidden_LTyreCircumferenceMm = 0
 }
 
 func (x *TechnicalData_CalibrationRecord) ClearTyreSize() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 13)
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 11)
 	x.xxx_hidden_TyreSize = nil
 }
 
 func (x *TechnicalData_CalibrationRecord) ClearAuthorisedSpeedKmh() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 14)
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 12)
 	x.xxx_hidden_AuthorisedSpeedKmh = 0
 }
 
 func (x *TechnicalData_CalibrationRecord) ClearOldOdometerValueKm() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 15)
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 13)
 	x.xxx_hidden_OldOdometerValueKm = 0
 }
 
 func (x *TechnicalData_CalibrationRecord) ClearNewOdometerValueKm() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 16)
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 14)
 	x.xxx_hidden_NewOdometerValueKm = 0
 }
 
@@ -1473,43 +1353,40 @@ func (x *TechnicalData_CalibrationRecord) ClearNextCalibrationDate() {
 type TechnicalData_CalibrationRecord_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
-	// See Data Dictionary, Section 2.8 for `CalibrationPurpose`.
+	// The purpose of the calibration.
 	Purpose             *v1.CalibrationPurpose
 	UnrecognizedPurpose *int32
-	// See Data Dictionary, Section 2.99 for `Name`.
+	// The name of the workshop.
 	WorkshopName *string
-	// See Data Dictionary, Section 2.2 for `Address`.
+	// The address of the workshop.
 	WorkshopAddress *string
-	// Part of `FullCardNumber`. See Data Dictionary, Section 2.73.
-	WorkshopCardNumber *string
-	// See Data Dictionary, Section 2.24 for `cardExpiryDate`.
+	// The card number of the workshop.
+	WorkshopCardNumber *v1.FullCardNumber
+	// The expiry date of the workshop card.
 	WorkshopCardExpiryDate *timestamppb.Timestamp
-	// See Data Dictionary, Section 2.164 for `VehicleIdentificationNumber`.
+	// The Vehicle Identification Number.
 	Vin *string
-	// Part of `VehicleRegistrationIdentification`. See DD Sections 2.166 & 2.167.
-	Vrn *string
-	// Part of `VehicleRegistrationIdentification`. See DD Sections 2.166 & 2.101.
-	RegisteringNation             *v1.NationNumeric
-	UnrecognizedRegisteringNation *int32
-	// See Data Dictionary, Section 2.239 for `W-VehicleCharacteristicConstant`.
+	// The vehicle registration identifier.
+	VehicleRegistration *v1.VehicleRegistrationIdentification
+	// The vehicle characteristic constant.
 	WVehicleCharacteristicConstant *int32
-	// See Data Dictionary, Section 2.85 for `K-ConstantOfRecordingEquipment`.
+	// The constant of the recording equipment.
 	KConstantOfRecordingEquipment *int32
-	// See Data Dictionary, Section 2.91 for `L-TyreCircumference`.
+	// The tyre circumference in mm.
 	LTyreCircumferenceMm *int32
-	// See Data Dictionary, Section 2.163 for `TyreSize`.
+	// The tyre size designation.
 	TyreSize *string
-	// See Data Dictionary, Section 2.156 for `SpeedAuthorised`.
+	// The authorised speed in km/h.
 	AuthorisedSpeedKmh *int32
-	// Odometer value before calibration. See DD Section 2.113 for `OdometerShort`.
+	// The odometer value before calibration in km.
 	OldOdometerValueKm *int32
-	// Odometer value after calibration. See DD Section 2.113 for `OdometerShort`.
+	// The odometer value after calibration in km.
 	NewOdometerValueKm *int32
-	// Time value before calibration. See DD Section 2.162 for `TimeReal`.
+	// The time value before calibration.
 	OldTimeValue *timestamppb.Timestamp
-	// Time value after calibration. See DD Section 2.162 for `TimeReal`.
+	// The time value after calibration.
 	NewTimeValue *timestamppb.Timestamp
-	// Date of next calibration. See DD Section 2.57 for `Datef`.
+	// The date of the next calibration.
 	NextCalibrationDate *timestamppb.Timestamp
 }
 
@@ -1518,68 +1395,54 @@ func (b0 TechnicalData_CalibrationRecord_builder) Build() *TechnicalData_Calibra
 	b, x := &b0, m0
 	_, _ = b, x
 	if b.Purpose != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 20)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 18)
 		x.xxx_hidden_Purpose = *b.Purpose
 	}
 	if b.UnrecognizedPurpose != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 20)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 18)
 		x.xxx_hidden_UnrecognizedPurpose = *b.UnrecognizedPurpose
 	}
 	if b.WorkshopName != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 20)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 18)
 		x.xxx_hidden_WorkshopName = b.WorkshopName
 	}
 	if b.WorkshopAddress != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 3, 20)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 3, 18)
 		x.xxx_hidden_WorkshopAddress = b.WorkshopAddress
 	}
-	if b.WorkshopCardNumber != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 4, 20)
-		x.xxx_hidden_WorkshopCardNumber = b.WorkshopCardNumber
-	}
+	x.xxx_hidden_WorkshopCardNumber = b.WorkshopCardNumber
 	x.xxx_hidden_WorkshopCardExpiryDate = b.WorkshopCardExpiryDate
 	if b.Vin != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 6, 20)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 6, 18)
 		x.xxx_hidden_Vin = b.Vin
 	}
-	if b.Vrn != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 7, 20)
-		x.xxx_hidden_Vrn = b.Vrn
-	}
-	if b.RegisteringNation != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 8, 20)
-		x.xxx_hidden_RegisteringNation = *b.RegisteringNation
-	}
-	if b.UnrecognizedRegisteringNation != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 9, 20)
-		x.xxx_hidden_UnrecognizedRegisteringNation = *b.UnrecognizedRegisteringNation
-	}
+	x.xxx_hidden_VehicleRegistration = b.VehicleRegistration
 	if b.WVehicleCharacteristicConstant != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 10, 20)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 8, 18)
 		x.xxx_hidden_WVehicleCharacteristicConstant = *b.WVehicleCharacteristicConstant
 	}
 	if b.KConstantOfRecordingEquipment != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 11, 20)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 9, 18)
 		x.xxx_hidden_KConstantOfRecordingEquipment = *b.KConstantOfRecordingEquipment
 	}
 	if b.LTyreCircumferenceMm != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 12, 20)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 10, 18)
 		x.xxx_hidden_LTyreCircumferenceMm = *b.LTyreCircumferenceMm
 	}
 	if b.TyreSize != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 13, 20)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 11, 18)
 		x.xxx_hidden_TyreSize = b.TyreSize
 	}
 	if b.AuthorisedSpeedKmh != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 14, 20)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 12, 18)
 		x.xxx_hidden_AuthorisedSpeedKmh = *b.AuthorisedSpeedKmh
 	}
 	if b.OldOdometerValueKm != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 15, 20)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 13, 18)
 		x.xxx_hidden_OldOdometerValueKm = *b.OldOdometerValueKm
 	}
 	if b.NewOdometerValueKm != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 16, 20)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 14, 18)
 		x.xxx_hidden_NewOdometerValueKm = *b.NewOdometerValueKm
 	}
 	x.xxx_hidden_OldTimeValue = b.OldTimeValue
@@ -1594,7 +1457,7 @@ func (b0 TechnicalData_CalibrationRecord_builder) Build() *TechnicalData_Calibra
 // See Data Dictionary, Section 2.179.
 type TechnicalData_CardRecord struct {
 	state                           protoimpl.MessageState `protogen:"opaque.v1"`
-	xxx_hidden_FullCardNumber       *string                `protobuf:"bytes,1,opt,name=full_card_number,json=fullCardNumber"`
+	xxx_hidden_FullCardNumber       *v1.FullCardNumber     `protobuf:"bytes,1,opt,name=full_card_number,json=fullCardNumber"`
 	xxx_hidden_CardStructureVersion []byte                 `protobuf:"bytes,2,opt,name=card_structure_version,json=cardStructureVersion"`
 	xxx_hidden_CardType             v1.EquipmentType       `protobuf:"varint,3,opt,name=card_type,json=cardType,enum=wayplatform.connect.tachograph.datadictionary.v1.EquipmentType"`
 	xxx_hidden_UnrecognizedCardType int32                  `protobuf:"varint,4,opt,name=unrecognized_card_type,json=unrecognizedCardType"`
@@ -1629,14 +1492,11 @@ func (x *TechnicalData_CardRecord) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-func (x *TechnicalData_CardRecord) GetFullCardNumber() string {
+func (x *TechnicalData_CardRecord) GetFullCardNumber() *v1.FullCardNumber {
 	if x != nil {
-		if x.xxx_hidden_FullCardNumber != nil {
-			return *x.xxx_hidden_FullCardNumber
-		}
-		return ""
+		return x.xxx_hidden_FullCardNumber
 	}
-	return ""
+	return nil
 }
 
 func (x *TechnicalData_CardRecord) GetCardStructureVersion() []byte {
@@ -1662,9 +1522,8 @@ func (x *TechnicalData_CardRecord) GetUnrecognizedCardType() int32 {
 	return 0
 }
 
-func (x *TechnicalData_CardRecord) SetFullCardNumber(v string) {
-	x.xxx_hidden_FullCardNumber = &v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 4)
+func (x *TechnicalData_CardRecord) SetFullCardNumber(v *v1.FullCardNumber) {
+	x.xxx_hidden_FullCardNumber = v
 }
 
 func (x *TechnicalData_CardRecord) SetCardStructureVersion(v []byte) {
@@ -1689,7 +1548,7 @@ func (x *TechnicalData_CardRecord) HasFullCardNumber() bool {
 	if x == nil {
 		return false
 	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 0)
+	return x.xxx_hidden_FullCardNumber != nil
 }
 
 func (x *TechnicalData_CardRecord) HasCardStructureVersion() bool {
@@ -1714,7 +1573,6 @@ func (x *TechnicalData_CardRecord) HasUnrecognizedCardType() bool {
 }
 
 func (x *TechnicalData_CardRecord) ClearFullCardNumber() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 0)
 	x.xxx_hidden_FullCardNumber = nil
 }
 
@@ -1736,11 +1594,11 @@ func (x *TechnicalData_CardRecord) ClearUnrecognizedCardType() {
 type TechnicalData_CardRecord_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
-	// See Data Dictionary, Section 2.73 for `FullCardNumber`.
-	FullCardNumber *string
-	// See Data Dictionary, Section 2.36 for `CardStructureVersion`.
+	// The full card number.
+	FullCardNumber *v1.FullCardNumber
+	// The structure version of the card.
 	CardStructureVersion []byte
-	// Part of `FullCardNumber`. See Data Dictionary, Section 2.73.
+	// The type of the card.
 	CardType             *v1.EquipmentType
 	UnrecognizedCardType *int32
 }
@@ -1749,10 +1607,7 @@ func (b0 TechnicalData_CardRecord_builder) Build() *TechnicalData_CardRecord {
 	m0 := &TechnicalData_CardRecord{}
 	b, x := &b0, m0
 	_, _ = b, x
-	if b.FullCardNumber != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 4)
-		x.xxx_hidden_FullCardNumber = b.FullCardNumber
-	}
+	x.xxx_hidden_FullCardNumber = b.FullCardNumber
 	if b.CardStructureVersion != nil {
 		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 4)
 		x.xxx_hidden_CardStructureVersion = b.CardStructureVersion
@@ -1774,7 +1629,7 @@ func (b0 TechnicalData_CardRecord_builder) Build() *TechnicalData_CardRecord {
 // See Data Dictionary, Section 2.207.
 type TechnicalData_ItsConsentRecord struct {
 	state                     protoimpl.MessageState `protogen:"opaque.v1"`
-	xxx_hidden_FullCardNumber *string                `protobuf:"bytes,1,opt,name=full_card_number,json=fullCardNumber"`
+	xxx_hidden_FullCardNumber *v1.FullCardNumber     `protobuf:"bytes,1,opt,name=full_card_number,json=fullCardNumber"`
 	xxx_hidden_ConsentStatus  int32                  `protobuf:"varint,2,opt,name=consent_status,json=consentStatus"`
 	XXX_raceDetectHookData    protoimpl.RaceDetectHookData
 	XXX_presence              [1]uint32
@@ -1807,14 +1662,11 @@ func (x *TechnicalData_ItsConsentRecord) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-func (x *TechnicalData_ItsConsentRecord) GetFullCardNumber() string {
+func (x *TechnicalData_ItsConsentRecord) GetFullCardNumber() *v1.FullCardNumber {
 	if x != nil {
-		if x.xxx_hidden_FullCardNumber != nil {
-			return *x.xxx_hidden_FullCardNumber
-		}
-		return ""
+		return x.xxx_hidden_FullCardNumber
 	}
-	return ""
+	return nil
 }
 
 func (x *TechnicalData_ItsConsentRecord) GetConsentStatus() int32 {
@@ -1824,9 +1676,8 @@ func (x *TechnicalData_ItsConsentRecord) GetConsentStatus() int32 {
 	return 0
 }
 
-func (x *TechnicalData_ItsConsentRecord) SetFullCardNumber(v string) {
-	x.xxx_hidden_FullCardNumber = &v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 2)
+func (x *TechnicalData_ItsConsentRecord) SetFullCardNumber(v *v1.FullCardNumber) {
+	x.xxx_hidden_FullCardNumber = v
 }
 
 func (x *TechnicalData_ItsConsentRecord) SetConsentStatus(v int32) {
@@ -1838,7 +1689,7 @@ func (x *TechnicalData_ItsConsentRecord) HasFullCardNumber() bool {
 	if x == nil {
 		return false
 	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 0)
+	return x.xxx_hidden_FullCardNumber != nil
 }
 
 func (x *TechnicalData_ItsConsentRecord) HasConsentStatus() bool {
@@ -1849,7 +1700,6 @@ func (x *TechnicalData_ItsConsentRecord) HasConsentStatus() bool {
 }
 
 func (x *TechnicalData_ItsConsentRecord) ClearFullCardNumber() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 0)
 	x.xxx_hidden_FullCardNumber = nil
 }
 
@@ -1861,9 +1711,9 @@ func (x *TechnicalData_ItsConsentRecord) ClearConsentStatus() {
 type TechnicalData_ItsConsentRecord_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
-	// See Data Dictionary, Section 2.73 for `FullCardNumber`.
-	FullCardNumber *string
-	// Consent status for ITS data provision.
+	// The full card number.
+	FullCardNumber *v1.FullCardNumber
+	// The consent status for ITS data provision.
 	ConsentStatus *int32
 }
 
@@ -1871,10 +1721,7 @@ func (b0 TechnicalData_ItsConsentRecord_builder) Build() *TechnicalData_ItsConse
 	m0 := &TechnicalData_ItsConsentRecord{}
 	b, x := &b0, m0
 	_, _ = b, x
-	if b.FullCardNumber != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 2)
-		x.xxx_hidden_FullCardNumber = b.FullCardNumber
-	}
+	x.xxx_hidden_FullCardNumber = b.FullCardNumber
 	if b.ConsentStatus != nil {
 		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 2)
 		x.xxx_hidden_ConsentStatus = *b.ConsentStatus
@@ -1997,9 +1844,9 @@ func (x *TechnicalData_PowerSupplyInterruptionRecord) ClearUnrecognizedCardSlotN
 type TechnicalData_PowerSupplyInterruptionRecord_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
-	// Timestamp of the interruption. See DD Section 2.162 for `TimeReal`.
+	// The timestamp of the interruption.
 	Timestamp *timestamppb.Timestamp
-	// Slot number of the card affected. See DD Section 2.33 for `CardSlotNumber`.
+	// The slot number of the card affected.
 	CardSlotNumber             *v1.CardSlotNumber
 	UnrecognizedCardSlotNumber *int32
 }
@@ -2020,14 +1867,123 @@ func (b0 TechnicalData_PowerSupplyInterruptionRecord_builder) Build() *Technical
 	return m0
 }
 
+// Represents the software identification of the vehicle unit.
+//
+// Corresponds to the `VuSoftwareIdentification` data type.
+// See Data Dictionary, Section 2.225.
+type TechnicalData_VuIdentification_VuSoftwareIdentification struct {
+	state                               protoimpl.MessageState `protogen:"opaque.v1"`
+	xxx_hidden_SoftwareVersion          *string                `protobuf:"bytes,1,opt,name=software_version,json=softwareVersion"`
+	xxx_hidden_SoftwareInstallationDate *timestamppb.Timestamp `protobuf:"bytes,2,opt,name=software_installation_date,json=softwareInstallationDate"`
+	XXX_raceDetectHookData              protoimpl.RaceDetectHookData
+	XXX_presence                        [1]uint32
+	unknownFields                       protoimpl.UnknownFields
+	sizeCache                           protoimpl.SizeCache
+}
+
+func (x *TechnicalData_VuIdentification_VuSoftwareIdentification) Reset() {
+	*x = TechnicalData_VuIdentification_VuSoftwareIdentification{}
+	mi := &file_wayplatform_connect_tachograph_vu_v1_technical_data_proto_msgTypes[8]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *TechnicalData_VuIdentification_VuSoftwareIdentification) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*TechnicalData_VuIdentification_VuSoftwareIdentification) ProtoMessage() {}
+
+func (x *TechnicalData_VuIdentification_VuSoftwareIdentification) ProtoReflect() protoreflect.Message {
+	mi := &file_wayplatform_connect_tachograph_vu_v1_technical_data_proto_msgTypes[8]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+func (x *TechnicalData_VuIdentification_VuSoftwareIdentification) GetSoftwareVersion() string {
+	if x != nil {
+		if x.xxx_hidden_SoftwareVersion != nil {
+			return *x.xxx_hidden_SoftwareVersion
+		}
+		return ""
+	}
+	return ""
+}
+
+func (x *TechnicalData_VuIdentification_VuSoftwareIdentification) GetSoftwareInstallationDate() *timestamppb.Timestamp {
+	if x != nil {
+		return x.xxx_hidden_SoftwareInstallationDate
+	}
+	return nil
+}
+
+func (x *TechnicalData_VuIdentification_VuSoftwareIdentification) SetSoftwareVersion(v string) {
+	x.xxx_hidden_SoftwareVersion = &v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 2)
+}
+
+func (x *TechnicalData_VuIdentification_VuSoftwareIdentification) SetSoftwareInstallationDate(v *timestamppb.Timestamp) {
+	x.xxx_hidden_SoftwareInstallationDate = v
+}
+
+func (x *TechnicalData_VuIdentification_VuSoftwareIdentification) HasSoftwareVersion() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 0)
+}
+
+func (x *TechnicalData_VuIdentification_VuSoftwareIdentification) HasSoftwareInstallationDate() bool {
+	if x == nil {
+		return false
+	}
+	return x.xxx_hidden_SoftwareInstallationDate != nil
+}
+
+func (x *TechnicalData_VuIdentification_VuSoftwareIdentification) ClearSoftwareVersion() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 0)
+	x.xxx_hidden_SoftwareVersion = nil
+}
+
+func (x *TechnicalData_VuIdentification_VuSoftwareIdentification) ClearSoftwareInstallationDate() {
+	x.xxx_hidden_SoftwareInstallationDate = nil
+}
+
+type TechnicalData_VuIdentification_VuSoftwareIdentification_builder struct {
+	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
+
+	// The software version of the VU.
+	SoftwareVersion *string
+	// The installation date of the software.
+	SoftwareInstallationDate *timestamppb.Timestamp
+}
+
+func (b0 TechnicalData_VuIdentification_VuSoftwareIdentification_builder) Build() *TechnicalData_VuIdentification_VuSoftwareIdentification {
+	m0 := &TechnicalData_VuIdentification_VuSoftwareIdentification{}
+	b, x := &b0, m0
+	_, _ = b, x
+	if b.SoftwareVersion != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 2)
+		x.xxx_hidden_SoftwareVersion = b.SoftwareVersion
+	}
+	x.xxx_hidden_SoftwareInstallationDate = b.SoftwareInstallationDate
+	return m0
+}
+
 var File_wayplatform_connect_tachograph_vu_v1_technical_data_proto protoreflect.FileDescriptor
 
 const file_wayplatform_connect_tachograph_vu_v1_technical_data_proto_rawDesc = "" +
 	"\n" +
-	"9wayplatform/connect/tachograph/vu/v1/technical_data.proto\x12$wayplatform.connect.tachograph.vu.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1aJwayplatform/connect/tachograph/datadictionary/v1/calibration_purpose.proto\x1aGwayplatform/connect/tachograph/datadictionary/v1/card_slot_number.proto\x1aEwayplatform/connect/tachograph/datadictionary/v1/equipment_type.proto\x1aEwayplatform/connect/tachograph/datadictionary/v1/nation_numeric.proto\x1a5wayplatform/connect/tachograph/vu/v1/versioning.proto\"\xe5\x1c\n" +
-	"\rTechnicalData\x12P\n" +
+	"9wayplatform/connect/tachograph/vu/v1/technical_data.proto\x12$wayplatform.connect.tachograph.vu.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1aJwayplatform/connect/tachograph/datadictionary/v1/calibration_purpose.proto\x1aGwayplatform/connect/tachograph/datadictionary/v1/card_slot_number.proto\x1aEwayplatform/connect/tachograph/datadictionary/v1/equipment_type.proto\x1aMwayplatform/connect/tachograph/datadictionary/v1/extended_serial_number.proto\x1aGwayplatform/connect/tachograph/datadictionary/v1/full_card_number.proto\x1aEwayplatform/connect/tachograph/datadictionary/v1/nation_numeric.proto\x1aZwayplatform/connect/tachograph/datadictionary/v1/vehicle_registration_identification.proto\x1aAwayplatform/connect/tachograph/datadictionary/v1/generation.proto\x1a5wayplatform/connect/tachograph/vu/v1/versioning.proto\"\x85!\n" +
+	"\rTechnicalData\x12\\\n" +
 	"\n" +
-	"generation\x18\x01 \x01(\x0e20.wayplatform.connect.tachograph.vu.v1.GenerationR\n" +
+	"generation\x18\x01 \x01(\x0e2<.wayplatform.connect.tachograph.datadictionary.v1.GenerationR\n" +
 	"generation\x12q\n" +
 	"\x11vu_identification\x18\x02 \x01(\v2D.wayplatform.connect.tachograph.vu.v1.TechnicalData.VuIdentificationR\x10vuIdentification\x12v\n" +
 	"\x13calibration_records\x18\x03 \x03(\v2E.wayplatform.connect.tachograph.vu.v1.TechnicalData.CalibrationRecordR\x12calibrationRecords\x12e\n" +
@@ -2039,55 +1995,55 @@ const file_wayplatform_connect_tachograph_vu_v1_technical_data_proto_rawDesc = "
 	"\x1apower_supply_interruptions\x18\t \x03(\v2Q.wayplatform.connect.tachograph.vu.v1.TechnicalData.PowerSupplyInterruptionRecordR\x18powerSupplyInterruptions\x12%\n" +
 	"\x0esignature_gen1\x18\n" +
 	" \x01(\fR\rsignatureGen1\x12%\n" +
-	"\x0esignature_gen2\x18\v \x01(\fR\rsignatureGen2\x1a\xb1\x03\n" +
+	"\x0esignature_gen2\x18\v \x01(\fR\rsignatureGen2\x1a\xaf\x05\n" +
 	"\x10VuIdentification\x12+\n" +
 	"\x11manufacturer_name\x18\x01 \x01(\tR\x10manufacturerName\x121\n" +
 	"\x14manufacturer_address\x18\x02 \x01(\tR\x13manufacturerAddress\x12\x1f\n" +
 	"\vpart_number\x18\x03 \x01(\tR\n" +
-	"partNumber\x12#\n" +
-	"\rserial_number\x18\x04 \x01(\tR\fserialNumber\x12)\n" +
-	"\x10software_version\x18\x05 \x01(\tR\x0fsoftwareVersion\x12X\n" +
-	"\x1asoftware_installation_date\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampR\x18softwareInstallationDate\x12I\n" +
-	"\x12manufacturing_date\x18\a \x01(\v2\x1a.google.protobuf.TimestampR\x11manufacturingDate\x12'\n" +
-	"\x0fapproval_number\x18\b \x01(\tR\x0eapprovalNumber\x1a\x9b\x01\n" +
-	"\fPairedSensor\x12#\n" +
-	"\rserial_number\x18\x01 \x01(\tR\fserialNumber\x12'\n" +
+	"partNumber\x12k\n" +
+	"\rserial_number\x18\x04 \x01(\v2F.wayplatform.connect.tachograph.datadictionary.v1.ExtendedSerialNumberR\fserialNumber\x12\x96\x01\n" +
+	"\x17software_identification\x18\x05 \x01(\v2].wayplatform.connect.tachograph.vu.v1.TechnicalData.VuIdentification.VuSoftwareIdentificationR\x16softwareIdentification\x12I\n" +
+	"\x12manufacturing_date\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampR\x11manufacturingDate\x12'\n" +
+	"\x0fapproval_number\x18\a \x01(\tR\x0eapprovalNumber\x1a\x9f\x01\n" +
+	"\x18VuSoftwareIdentification\x12)\n" +
+	"\x10software_version\x18\x01 \x01(\tR\x0fsoftwareVersion\x12X\n" +
+	"\x1asoftware_installation_date\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\x18softwareInstallationDate\x1a\xe3\x01\n" +
+	"\fPairedSensor\x12k\n" +
+	"\rserial_number\x18\x01 \x01(\v2F.wayplatform.connect.tachograph.datadictionary.v1.ExtendedSerialNumberR\fserialNumber\x12'\n" +
 	"\x0fapproval_number\x18\x02 \x01(\tR\x0eapprovalNumber\x12=\n" +
-	"\fpairing_date\x18\x03 \x01(\v2\x1a.google.protobuf.TimestampR\vpairingDate\x1a\x9c\x01\n" +
-	"\vCoupledGnss\x12#\n" +
-	"\rserial_number\x18\x01 \x01(\tR\fserialNumber\x12'\n" +
+	"\fpairing_date\x18\x03 \x01(\v2\x1a.google.protobuf.TimestampR\vpairingDate\x1a\xe4\x01\n" +
+	"\vCoupledGnss\x12k\n" +
+	"\rserial_number\x18\x01 \x01(\v2F.wayplatform.connect.tachograph.datadictionary.v1.ExtendedSerialNumberR\fserialNumber\x12'\n" +
 	"\x0fapproval_number\x18\x02 \x01(\tR\x0eapprovalNumber\x12?\n" +
-	"\rcoupling_date\x18\x03 \x01(\v2\x1a.google.protobuf.TimestampR\fcouplingDate\x1a\xb0\t\n" +
+	"\rcoupling_date\x18\x03 \x01(\v2\x1a.google.protobuf.TimestampR\fcouplingDate\x1a\xb1\t\n" +
 	"\x11CalibrationRecord\x12^\n" +
 	"\apurpose\x18\x01 \x01(\x0e2D.wayplatform.connect.tachograph.datadictionary.v1.CalibrationPurposeR\apurpose\x121\n" +
 	"\x14unrecognized_purpose\x18\x02 \x01(\x05R\x13unrecognizedPurpose\x12#\n" +
 	"\rworkshop_name\x18\x03 \x01(\tR\fworkshopName\x12)\n" +
-	"\x10workshop_address\x18\x04 \x01(\tR\x0fworkshopAddress\x120\n" +
-	"\x14workshop_card_number\x18\x05 \x01(\tR\x12workshopCardNumber\x12U\n" +
+	"\x10workshop_address\x18\x04 \x01(\tR\x0fworkshopAddress\x12r\n" +
+	"\x14workshop_card_number\x18\x05 \x01(\v2@.wayplatform.connect.tachograph.datadictionary.v1.FullCardNumberR\x12workshopCardNumber\x12U\n" +
 	"\x19workshop_card_expiry_date\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampR\x16workshopCardExpiryDate\x12\x10\n" +
-	"\x03vin\x18\a \x01(\tR\x03vin\x12\x10\n" +
-	"\x03vrn\x18\b \x01(\tR\x03vrn\x12n\n" +
-	"\x12registering_nation\x18\t \x01(\x0e2?.wayplatform.connect.tachograph.datadictionary.v1.NationNumericR\x11registeringNation\x12F\n" +
-	"\x1funrecognized_registering_nation\x18\n" +
-	" \x01(\x05R\x1dunrecognizedRegisteringNation\x12I\n" +
-	"!w_vehicle_characteristic_constant\x18\v \x01(\x05R\x1ewVehicleCharacteristicConstant\x12H\n" +
-	"!k_constant_of_recording_equipment\x18\f \x01(\x05R\x1dkConstantOfRecordingEquipment\x125\n" +
-	"\x17l_tyre_circumference_mm\x18\r \x01(\x05R\x14lTyreCircumferenceMm\x12\x1b\n" +
-	"\ttyre_size\x18\x0e \x01(\tR\btyreSize\x120\n" +
-	"\x14authorised_speed_kmh\x18\x0f \x01(\x05R\x12authorisedSpeedKmh\x121\n" +
-	"\x15old_odometer_value_km\x18\x10 \x01(\x05R\x12oldOdometerValueKm\x121\n" +
-	"\x15new_odometer_value_km\x18\x11 \x01(\x05R\x12newOdometerValueKm\x12@\n" +
-	"\x0eold_time_value\x18\x12 \x01(\v2\x1a.google.protobuf.TimestampR\foldTimeValue\x12@\n" +
-	"\x0enew_time_value\x18\x13 \x01(\v2\x1a.google.protobuf.TimestampR\fnewTimeValue\x12N\n" +
-	"\x15next_calibration_date\x18\x14 \x01(\v2\x1a.google.protobuf.TimestampR\x13nextCalibrationDate\x1a\x80\x02\n" +
+	"\x03vin\x18\a \x01(\tR\x03vin\x12\x86\x01\n" +
+	"\x14vehicle_registration\x18\b \x01(\v2S.wayplatform.connect.tachograph.datadictionary.v1.VehicleRegistrationIdentificationR\x13vehicleRegistration\x12I\n" +
+	"!w_vehicle_characteristic_constant\x18\t \x01(\x05R\x1ewVehicleCharacteristicConstant\x12H\n" +
+	"!k_constant_of_recording_equipment\x18\n" +
+	" \x01(\x05R\x1dkConstantOfRecordingEquipment\x125\n" +
+	"\x17l_tyre_circumference_mm\x18\v \x01(\x05R\x14lTyreCircumferenceMm\x12\x1b\n" +
+	"\ttyre_size\x18\f \x01(\tR\btyreSize\x120\n" +
+	"\x14authorised_speed_kmh\x18\r \x01(\x05R\x12authorisedSpeedKmh\x121\n" +
+	"\x15old_odometer_value_km\x18\x0e \x01(\x05R\x12oldOdometerValueKm\x121\n" +
+	"\x15new_odometer_value_km\x18\x0f \x01(\x05R\x12newOdometerValueKm\x12@\n" +
+	"\x0eold_time_value\x18\x10 \x01(\v2\x1a.google.protobuf.TimestampR\foldTimeValue\x12@\n" +
+	"\x0enew_time_value\x18\x11 \x01(\v2\x1a.google.protobuf.TimestampR\fnewTimeValue\x12N\n" +
+	"\x15next_calibration_date\x18\x12 \x01(\v2\x1a.google.protobuf.TimestampR\x13nextCalibrationDate\x1a\xc2\x02\n" +
 	"\n" +
-	"CardRecord\x12(\n" +
-	"\x10full_card_number\x18\x01 \x01(\tR\x0efullCardNumber\x124\n" +
+	"CardRecord\x12j\n" +
+	"\x10full_card_number\x18\x01 \x01(\v2@.wayplatform.connect.tachograph.datadictionary.v1.FullCardNumberR\x0efullCardNumber\x124\n" +
 	"\x16card_structure_version\x18\x02 \x01(\fR\x14cardStructureVersion\x12\\\n" +
 	"\tcard_type\x18\x03 \x01(\x0e2?.wayplatform.connect.tachograph.datadictionary.v1.EquipmentTypeR\bcardType\x124\n" +
-	"\x16unrecognized_card_type\x18\x04 \x01(\x05R\x14unrecognizedCardType\x1ac\n" +
-	"\x10ItsConsentRecord\x12(\n" +
-	"\x10full_card_number\x18\x01 \x01(\tR\x0efullCardNumber\x12%\n" +
+	"\x16unrecognized_card_type\x18\x04 \x01(\x05R\x14unrecognizedCardType\x1a\xa5\x01\n" +
+	"\x10ItsConsentRecord\x12j\n" +
+	"\x10full_card_number\x18\x01 \x01(\v2@.wayplatform.connect.tachograph.datadictionary.v1.FullCardNumberR\x0efullCardNumber\x12%\n" +
 	"\x0econsent_status\x18\x02 \x01(\x05R\rconsentStatus\x1a\x88\x02\n" +
 	"\x1dPowerSupplyInterruptionRecord\x128\n" +
 	"\ttimestamp\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\ttimestamp\x12j\n" +
@@ -2095,25 +2051,28 @@ const file_wayplatform_connect_tachograph_vu_v1_technical_data_proto_rawDesc = "
 	"\x1dunrecognized_card_slot_number\x18\x03 \x01(\x05R\x1aunrecognizedCardSlotNumberB\xd1\x02\n" +
 	"(com.wayplatform.connect.tachograph.vu.v1B\x12TechnicalDataProtoP\x01Z\\github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/vu/v1;vuv1\xa2\x02\x04WCTV\xaa\x02$Wayplatform.Connect.Tachograph.Vu.V1\xca\x02$Wayplatform\\Connect\\Tachograph\\Vu\\V1\xe2\x020Wayplatform\\Connect\\Tachograph\\Vu\\V1\\GPBMetadata\xea\x02(Wayplatform::Connect::Tachograph::Vu::V1b\beditionsp\xe8\a"
 
-var file_wayplatform_connect_tachograph_vu_v1_technical_data_proto_msgTypes = make([]protoimpl.MessageInfo, 8)
+var file_wayplatform_connect_tachograph_vu_v1_technical_data_proto_msgTypes = make([]protoimpl.MessageInfo, 9)
 var file_wayplatform_connect_tachograph_vu_v1_technical_data_proto_goTypes = []any{
-	(*TechnicalData)(nil),                               // 0: wayplatform.connect.tachograph.vu.v1.TechnicalData
-	(*TechnicalData_VuIdentification)(nil),              // 1: wayplatform.connect.tachograph.vu.v1.TechnicalData.VuIdentification
-	(*TechnicalData_PairedSensor)(nil),                  // 2: wayplatform.connect.tachograph.vu.v1.TechnicalData.PairedSensor
-	(*TechnicalData_CoupledGnss)(nil),                   // 3: wayplatform.connect.tachograph.vu.v1.TechnicalData.CoupledGnss
-	(*TechnicalData_CalibrationRecord)(nil),             // 4: wayplatform.connect.tachograph.vu.v1.TechnicalData.CalibrationRecord
-	(*TechnicalData_CardRecord)(nil),                    // 5: wayplatform.connect.tachograph.vu.v1.TechnicalData.CardRecord
-	(*TechnicalData_ItsConsentRecord)(nil),              // 6: wayplatform.connect.tachograph.vu.v1.TechnicalData.ItsConsentRecord
-	(*TechnicalData_PowerSupplyInterruptionRecord)(nil), // 7: wayplatform.connect.tachograph.vu.v1.TechnicalData.PowerSupplyInterruptionRecord
-	(Generation)(0),                                     // 8: wayplatform.connect.tachograph.vu.v1.Generation
-	(*timestamppb.Timestamp)(nil),                       // 9: google.protobuf.Timestamp
-	(v1.CalibrationPurpose)(0),                          // 10: wayplatform.connect.tachograph.datadictionary.v1.CalibrationPurpose
-	(v1.NationNumeric)(0),                               // 11: wayplatform.connect.tachograph.datadictionary.v1.NationNumeric
-	(v1.EquipmentType)(0),                               // 12: wayplatform.connect.tachograph.datadictionary.v1.EquipmentType
-	(v1.CardSlotNumber)(0),                              // 13: wayplatform.connect.tachograph.datadictionary.v1.CardSlotNumber
+	(*TechnicalData)(nil),                                           // 0: wayplatform.connect.tachograph.vu.v1.TechnicalData
+	(*TechnicalData_VuIdentification)(nil),                          // 1: wayplatform.connect.tachograph.vu.v1.TechnicalData.VuIdentification
+	(*TechnicalData_PairedSensor)(nil),                              // 2: wayplatform.connect.tachograph.vu.v1.TechnicalData.PairedSensor
+	(*TechnicalData_CoupledGnss)(nil),                               // 3: wayplatform.connect.tachograph.vu.v1.TechnicalData.CoupledGnss
+	(*TechnicalData_CalibrationRecord)(nil),                         // 4: wayplatform.connect.tachograph.vu.v1.TechnicalData.CalibrationRecord
+	(*TechnicalData_CardRecord)(nil),                                // 5: wayplatform.connect.tachograph.vu.v1.TechnicalData.CardRecord
+	(*TechnicalData_ItsConsentRecord)(nil),                          // 6: wayplatform.connect.tachograph.vu.v1.TechnicalData.ItsConsentRecord
+	(*TechnicalData_PowerSupplyInterruptionRecord)(nil),             // 7: wayplatform.connect.tachograph.vu.v1.TechnicalData.PowerSupplyInterruptionRecord
+	(*TechnicalData_VuIdentification_VuSoftwareIdentification)(nil), // 8: wayplatform.connect.tachograph.vu.v1.TechnicalData.VuIdentification.VuSoftwareIdentification
+	(v1.Generation)(0),                                              // 9: wayplatform.connect.tachograph.datadictionary.v1.Generation
+	(*v1.ExtendedSerialNumber)(nil),                                 // 10: wayplatform.connect.tachograph.datadictionary.v1.ExtendedSerialNumber
+	(*timestamppb.Timestamp)(nil),                                   // 11: google.protobuf.Timestamp
+	(v1.CalibrationPurpose)(0),                                      // 12: wayplatform.connect.tachograph.datadictionary.v1.CalibrationPurpose
+	(*v1.FullCardNumber)(nil),                                       // 13: wayplatform.connect.tachograph.datadictionary.v1.FullCardNumber
+	(*v1.VehicleRegistrationIdentification)(nil),                    // 14: wayplatform.connect.tachograph.datadictionary.v1.VehicleRegistrationIdentification
+	(v1.EquipmentType)(0),                                           // 15: wayplatform.connect.tachograph.datadictionary.v1.EquipmentType
+	(v1.CardSlotNumber)(0),                                          // 16: wayplatform.connect.tachograph.datadictionary.v1.CardSlotNumber
 }
 var file_wayplatform_connect_tachograph_vu_v1_technical_data_proto_depIdxs = []int32{
-	8,  // 0: wayplatform.connect.tachograph.vu.v1.TechnicalData.generation:type_name -> wayplatform.connect.tachograph.vu.v1.Generation
+	9,  // 0: wayplatform.connect.tachograph.vu.v1.TechnicalData.generation:type_name -> wayplatform.connect.tachograph.datadictionary.v1.Generation
 	1,  // 1: wayplatform.connect.tachograph.vu.v1.TechnicalData.vu_identification:type_name -> wayplatform.connect.tachograph.vu.v1.TechnicalData.VuIdentification
 	4,  // 2: wayplatform.connect.tachograph.vu.v1.TechnicalData.calibration_records:type_name -> wayplatform.connect.tachograph.vu.v1.TechnicalData.CalibrationRecord
 	2,  // 3: wayplatform.connect.tachograph.vu.v1.TechnicalData.paired_sensor:type_name -> wayplatform.connect.tachograph.vu.v1.TechnicalData.PairedSensor
@@ -2122,24 +2081,31 @@ var file_wayplatform_connect_tachograph_vu_v1_technical_data_proto_depIdxs = []i
 	5,  // 6: wayplatform.connect.tachograph.vu.v1.TechnicalData.card_records:type_name -> wayplatform.connect.tachograph.vu.v1.TechnicalData.CardRecord
 	6,  // 7: wayplatform.connect.tachograph.vu.v1.TechnicalData.its_consent_records:type_name -> wayplatform.connect.tachograph.vu.v1.TechnicalData.ItsConsentRecord
 	7,  // 8: wayplatform.connect.tachograph.vu.v1.TechnicalData.power_supply_interruptions:type_name -> wayplatform.connect.tachograph.vu.v1.TechnicalData.PowerSupplyInterruptionRecord
-	9,  // 9: wayplatform.connect.tachograph.vu.v1.TechnicalData.VuIdentification.software_installation_date:type_name -> google.protobuf.Timestamp
-	9,  // 10: wayplatform.connect.tachograph.vu.v1.TechnicalData.VuIdentification.manufacturing_date:type_name -> google.protobuf.Timestamp
-	9,  // 11: wayplatform.connect.tachograph.vu.v1.TechnicalData.PairedSensor.pairing_date:type_name -> google.protobuf.Timestamp
-	9,  // 12: wayplatform.connect.tachograph.vu.v1.TechnicalData.CoupledGnss.coupling_date:type_name -> google.protobuf.Timestamp
-	10, // 13: wayplatform.connect.tachograph.vu.v1.TechnicalData.CalibrationRecord.purpose:type_name -> wayplatform.connect.tachograph.datadictionary.v1.CalibrationPurpose
-	9,  // 14: wayplatform.connect.tachograph.vu.v1.TechnicalData.CalibrationRecord.workshop_card_expiry_date:type_name -> google.protobuf.Timestamp
-	11, // 15: wayplatform.connect.tachograph.vu.v1.TechnicalData.CalibrationRecord.registering_nation:type_name -> wayplatform.connect.tachograph.datadictionary.v1.NationNumeric
-	9,  // 16: wayplatform.connect.tachograph.vu.v1.TechnicalData.CalibrationRecord.old_time_value:type_name -> google.protobuf.Timestamp
-	9,  // 17: wayplatform.connect.tachograph.vu.v1.TechnicalData.CalibrationRecord.new_time_value:type_name -> google.protobuf.Timestamp
-	9,  // 18: wayplatform.connect.tachograph.vu.v1.TechnicalData.CalibrationRecord.next_calibration_date:type_name -> google.protobuf.Timestamp
-	12, // 19: wayplatform.connect.tachograph.vu.v1.TechnicalData.CardRecord.card_type:type_name -> wayplatform.connect.tachograph.datadictionary.v1.EquipmentType
-	9,  // 20: wayplatform.connect.tachograph.vu.v1.TechnicalData.PowerSupplyInterruptionRecord.timestamp:type_name -> google.protobuf.Timestamp
-	13, // 21: wayplatform.connect.tachograph.vu.v1.TechnicalData.PowerSupplyInterruptionRecord.card_slot_number:type_name -> wayplatform.connect.tachograph.datadictionary.v1.CardSlotNumber
-	22, // [22:22] is the sub-list for method output_type
-	22, // [22:22] is the sub-list for method input_type
-	22, // [22:22] is the sub-list for extension type_name
-	22, // [22:22] is the sub-list for extension extendee
-	0,  // [0:22] is the sub-list for field type_name
+	10, // 9: wayplatform.connect.tachograph.vu.v1.TechnicalData.VuIdentification.serial_number:type_name -> wayplatform.connect.tachograph.datadictionary.v1.ExtendedSerialNumber
+	8,  // 10: wayplatform.connect.tachograph.vu.v1.TechnicalData.VuIdentification.software_identification:type_name -> wayplatform.connect.tachograph.vu.v1.TechnicalData.VuIdentification.VuSoftwareIdentification
+	11, // 11: wayplatform.connect.tachograph.vu.v1.TechnicalData.VuIdentification.manufacturing_date:type_name -> google.protobuf.Timestamp
+	10, // 12: wayplatform.connect.tachograph.vu.v1.TechnicalData.PairedSensor.serial_number:type_name -> wayplatform.connect.tachograph.datadictionary.v1.ExtendedSerialNumber
+	11, // 13: wayplatform.connect.tachograph.vu.v1.TechnicalData.PairedSensor.pairing_date:type_name -> google.protobuf.Timestamp
+	10, // 14: wayplatform.connect.tachograph.vu.v1.TechnicalData.CoupledGnss.serial_number:type_name -> wayplatform.connect.tachograph.datadictionary.v1.ExtendedSerialNumber
+	11, // 15: wayplatform.connect.tachograph.vu.v1.TechnicalData.CoupledGnss.coupling_date:type_name -> google.protobuf.Timestamp
+	12, // 16: wayplatform.connect.tachograph.vu.v1.TechnicalData.CalibrationRecord.purpose:type_name -> wayplatform.connect.tachograph.datadictionary.v1.CalibrationPurpose
+	13, // 17: wayplatform.connect.tachograph.vu.v1.TechnicalData.CalibrationRecord.workshop_card_number:type_name -> wayplatform.connect.tachograph.datadictionary.v1.FullCardNumber
+	11, // 18: wayplatform.connect.tachograph.vu.v1.TechnicalData.CalibrationRecord.workshop_card_expiry_date:type_name -> google.protobuf.Timestamp
+	14, // 19: wayplatform.connect.tachograph.vu.v1.TechnicalData.CalibrationRecord.vehicle_registration:type_name -> wayplatform.connect.tachograph.datadictionary.v1.VehicleRegistrationIdentification
+	11, // 20: wayplatform.connect.tachograph.vu.v1.TechnicalData.CalibrationRecord.old_time_value:type_name -> google.protobuf.Timestamp
+	11, // 21: wayplatform.connect.tachograph.vu.v1.TechnicalData.CalibrationRecord.new_time_value:type_name -> google.protobuf.Timestamp
+	11, // 22: wayplatform.connect.tachograph.vu.v1.TechnicalData.CalibrationRecord.next_calibration_date:type_name -> google.protobuf.Timestamp
+	13, // 23: wayplatform.connect.tachograph.vu.v1.TechnicalData.CardRecord.full_card_number:type_name -> wayplatform.connect.tachograph.datadictionary.v1.FullCardNumber
+	15, // 24: wayplatform.connect.tachograph.vu.v1.TechnicalData.CardRecord.card_type:type_name -> wayplatform.connect.tachograph.datadictionary.v1.EquipmentType
+	13, // 25: wayplatform.connect.tachograph.vu.v1.TechnicalData.ItsConsentRecord.full_card_number:type_name -> wayplatform.connect.tachograph.datadictionary.v1.FullCardNumber
+	11, // 26: wayplatform.connect.tachograph.vu.v1.TechnicalData.PowerSupplyInterruptionRecord.timestamp:type_name -> google.protobuf.Timestamp
+	16, // 27: wayplatform.connect.tachograph.vu.v1.TechnicalData.PowerSupplyInterruptionRecord.card_slot_number:type_name -> wayplatform.connect.tachograph.datadictionary.v1.CardSlotNumber
+	11, // 28: wayplatform.connect.tachograph.vu.v1.TechnicalData.VuIdentification.VuSoftwareIdentification.software_installation_date:type_name -> google.protobuf.Timestamp
+	29, // [29:29] is the sub-list for method output_type
+	29, // [29:29] is the sub-list for method input_type
+	29, // [29:29] is the sub-list for extension type_name
+	29, // [29:29] is the sub-list for extension extendee
+	0,  // [0:29] is the sub-list for field type_name
 }
 
 func init() { file_wayplatform_connect_tachograph_vu_v1_technical_data_proto_init() }
@@ -2154,7 +2120,7 @@ func file_wayplatform_connect_tachograph_vu_v1_technical_data_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_wayplatform_connect_tachograph_vu_v1_technical_data_proto_rawDesc), len(file_wayplatform_connect_tachograph_vu_v1_technical_data_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   8,
+			NumMessages:   9,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

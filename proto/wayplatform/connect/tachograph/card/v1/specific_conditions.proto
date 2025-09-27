@@ -9,19 +9,43 @@ import "wayplatform/connect/tachograph/datadictionary/v1/specific_condition_type
 // of specific conditions (e.g., Ferry/Train crossing).
 //
 // The file structure is specified in Appendix 2, Section 4.2.1.
+//
+//     EF Specific_Conditions
+//     └─SpecificConditions (a set of SpecificConditionRecord)
+//
 // The data type `SpecificConditions` is specified in the Data Dictionary, Section 2.153.
+//
+// ASN.1 Specification:
+//
+//     SpecificConditions ::= SET SIZE(NoOfSpecificConditionRecords) OF SpecificConditionRecord
+//
 message SpecificConditions {
   // Represents a single specific condition record.
   //
-  // Corresponds to the `SpecificConditionRecord` data type.
-  // See Data Dictionary, Section 2.152.
+  // The data type `SpecificConditionRecord` is specified in the Data Dictionary, Section 2.152.
+  //
+  // ASN.1 Specification:
+  //
+  //     SpecificConditionRecord ::= SEQUENCE {
+  //         entryTime TimeReal,
+  //         specificConditionType SpecificConditionType
+  //     }
   message Record {
-    // Time of the entry. See DD Section 2.162 for `TimeReal`.
+    // ASN.1 Type: TimeReal (see DD 2.162)
+    //
+    //     TimeReal ::= INTEGER (0..2^32-1)
     google.protobuf.Timestamp entry_time = 1;
 
-    // Type of specific condition. See DD Section 2.154 for `SpecificConditionType`.
+    // ASN.1 Type: SpecificConditionType (see DD 2.154)
+    //
+    //     SpecificConditionType ::= INTEGER {
+    //         rfu(0),
+    //         out-of-scope-begin(1),
+    //         out-of-scope-end(2),
+    //         ferry-train-crossing(3)
+    //     } (0..255)
     datadictionary.v1.SpecificConditionType specific_condition_type = 2;
-    int32 unrecognized_specific_condition_type = 3;
+    
   }
 
   repeated Record records = 1;

@@ -7,6 +7,7 @@
 package cardv1
 
 import (
+	v1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/datadictionary/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
@@ -21,10 +22,29 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// Represents control activity data from EF_Controller_Activity_Data.
+// Represents the content of the EF_Controller_Activity_Data file.
 //
-// Corresponds to the `ControlCardControlActivityData` data type.
-// See Data Dictionary, Section 2.51.
+// The file structure is specified in Appendix 2, Section 4.4.1.
+//
+//	EF Controller_Activity_Data
+//	└─ControlCardControlActivityData
+//
+// The data type `ControlCardControlActivityData` is specified in the Data Dictionary, Section 2.51.
+//
+// ASN.1 Specification:
+//
+//	ControlCardControlActivityData ::= SEQUENCE {
+//	    controlPointerNewestRecord INTEGER(0..NoOfControlActivityRecords-1),
+//	    controlActivityRecords SET SIZE(NoOfControlActivityRecords) OF
+//	    controlActivityRecord SEQUENCE {
+//	        controlType ControlType,
+//	        controlTime TimeReal,
+//	        controlledCardNumber FullCardNumber,
+//	        controlledVehicleRegistration VehicleRegistrationIdentification,
+//	        controlDownloadPeriodBegin TimeReal,
+//	        controlDownloadPeriodEnd TimeReal
+//	    }
+//	}
 type ControllerActivityData struct {
 	state                        protoimpl.MessageState            `protogen:"opaque.v1"`
 	xxx_hidden_NewestRecordIndex int32                             `protobuf:"varint,1,opt,name=newest_record_index,json=newestRecordIndex"`
@@ -121,18 +141,17 @@ func (b0 ControllerActivityData_builder) Build() *ControllerActivityData {
 // Represents a single control activity record.
 // See Data Dictionary, Section 2.51.
 type ControllerActivityData_Record struct {
-	state                                          protoimpl.MessageState `protogen:"opaque.v1"`
-	xxx_hidden_ControlType                         []byte                 `protobuf:"bytes,1,opt,name=control_type,json=controlType"`
-	xxx_hidden_ControlTime                         *timestamppb.Timestamp `protobuf:"bytes,2,opt,name=control_time,json=controlTime"`
-	xxx_hidden_ControlledCardNumber                *string                `protobuf:"bytes,3,opt,name=controlled_card_number,json=controlledCardNumber"`
-	xxx_hidden_ControlledVehicleRegistrationNation *string                `protobuf:"bytes,4,opt,name=controlled_vehicle_registration_nation,json=controlledVehicleRegistrationNation"`
-	xxx_hidden_ControlledVehicleRegistrationNumber *string                `protobuf:"bytes,5,opt,name=controlled_vehicle_registration_number,json=controlledVehicleRegistrationNumber"`
-	xxx_hidden_ControlDownloadPeriodBegin          *timestamppb.Timestamp `protobuf:"bytes,6,opt,name=control_download_period_begin,json=controlDownloadPeriodBegin"`
-	xxx_hidden_ControlDownloadPeriodEnd            *timestamppb.Timestamp `protobuf:"bytes,7,opt,name=control_download_period_end,json=controlDownloadPeriodEnd"`
-	XXX_raceDetectHookData                         protoimpl.RaceDetectHookData
-	XXX_presence                                   [1]uint32
-	unknownFields                                  protoimpl.UnknownFields
-	sizeCache                                      protoimpl.SizeCache
+	state                                    protoimpl.MessageState                `protogen:"opaque.v1"`
+	xxx_hidden_ControlType                   []byte                                `protobuf:"bytes,1,opt,name=control_type,json=controlType"`
+	xxx_hidden_ControlTime                   *timestamppb.Timestamp                `protobuf:"bytes,2,opt,name=control_time,json=controlTime"`
+	xxx_hidden_ControlledCardNumber          *v1.FullCardNumber                    `protobuf:"bytes,3,opt,name=controlled_card_number,json=controlledCardNumber"`
+	xxx_hidden_ControlledVehicleRegistration *v1.VehicleRegistrationIdentification `protobuf:"bytes,4,opt,name=controlled_vehicle_registration,json=controlledVehicleRegistration"`
+	xxx_hidden_ControlDownloadPeriodBegin    *timestamppb.Timestamp                `protobuf:"bytes,5,opt,name=control_download_period_begin,json=controlDownloadPeriodBegin"`
+	xxx_hidden_ControlDownloadPeriodEnd      *timestamppb.Timestamp                `protobuf:"bytes,6,opt,name=control_download_period_end,json=controlDownloadPeriodEnd"`
+	XXX_raceDetectHookData                   protoimpl.RaceDetectHookData
+	XXX_presence                             [1]uint32
+	unknownFields                            protoimpl.UnknownFields
+	sizeCache                                protoimpl.SizeCache
 }
 
 func (x *ControllerActivityData_Record) Reset() {
@@ -174,34 +193,18 @@ func (x *ControllerActivityData_Record) GetControlTime() *timestamppb.Timestamp 
 	return nil
 }
 
-func (x *ControllerActivityData_Record) GetControlledCardNumber() string {
+func (x *ControllerActivityData_Record) GetControlledCardNumber() *v1.FullCardNumber {
 	if x != nil {
-		if x.xxx_hidden_ControlledCardNumber != nil {
-			return *x.xxx_hidden_ControlledCardNumber
-		}
-		return ""
+		return x.xxx_hidden_ControlledCardNumber
 	}
-	return ""
+	return nil
 }
 
-func (x *ControllerActivityData_Record) GetControlledVehicleRegistrationNation() string {
+func (x *ControllerActivityData_Record) GetControlledVehicleRegistration() *v1.VehicleRegistrationIdentification {
 	if x != nil {
-		if x.xxx_hidden_ControlledVehicleRegistrationNation != nil {
-			return *x.xxx_hidden_ControlledVehicleRegistrationNation
-		}
-		return ""
+		return x.xxx_hidden_ControlledVehicleRegistration
 	}
-	return ""
-}
-
-func (x *ControllerActivityData_Record) GetControlledVehicleRegistrationNumber() string {
-	if x != nil {
-		if x.xxx_hidden_ControlledVehicleRegistrationNumber != nil {
-			return *x.xxx_hidden_ControlledVehicleRegistrationNumber
-		}
-		return ""
-	}
-	return ""
+	return nil
 }
 
 func (x *ControllerActivityData_Record) GetControlDownloadPeriodBegin() *timestamppb.Timestamp {
@@ -223,26 +226,19 @@ func (x *ControllerActivityData_Record) SetControlType(v []byte) {
 		v = []byte{}
 	}
 	x.xxx_hidden_ControlType = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 7)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 6)
 }
 
 func (x *ControllerActivityData_Record) SetControlTime(v *timestamppb.Timestamp) {
 	x.xxx_hidden_ControlTime = v
 }
 
-func (x *ControllerActivityData_Record) SetControlledCardNumber(v string) {
-	x.xxx_hidden_ControlledCardNumber = &v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 7)
+func (x *ControllerActivityData_Record) SetControlledCardNumber(v *v1.FullCardNumber) {
+	x.xxx_hidden_ControlledCardNumber = v
 }
 
-func (x *ControllerActivityData_Record) SetControlledVehicleRegistrationNation(v string) {
-	x.xxx_hidden_ControlledVehicleRegistrationNation = &v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 3, 7)
-}
-
-func (x *ControllerActivityData_Record) SetControlledVehicleRegistrationNumber(v string) {
-	x.xxx_hidden_ControlledVehicleRegistrationNumber = &v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 4, 7)
+func (x *ControllerActivityData_Record) SetControlledVehicleRegistration(v *v1.VehicleRegistrationIdentification) {
+	x.xxx_hidden_ControlledVehicleRegistration = v
 }
 
 func (x *ControllerActivityData_Record) SetControlDownloadPeriodBegin(v *timestamppb.Timestamp) {
@@ -271,21 +267,14 @@ func (x *ControllerActivityData_Record) HasControlledCardNumber() bool {
 	if x == nil {
 		return false
 	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 2)
+	return x.xxx_hidden_ControlledCardNumber != nil
 }
 
-func (x *ControllerActivityData_Record) HasControlledVehicleRegistrationNation() bool {
+func (x *ControllerActivityData_Record) HasControlledVehicleRegistration() bool {
 	if x == nil {
 		return false
 	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 3)
-}
-
-func (x *ControllerActivityData_Record) HasControlledVehicleRegistrationNumber() bool {
-	if x == nil {
-		return false
-	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 4)
+	return x.xxx_hidden_ControlledVehicleRegistration != nil
 }
 
 func (x *ControllerActivityData_Record) HasControlDownloadPeriodBegin() bool {
@@ -312,18 +301,11 @@ func (x *ControllerActivityData_Record) ClearControlTime() {
 }
 
 func (x *ControllerActivityData_Record) ClearControlledCardNumber() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 2)
 	x.xxx_hidden_ControlledCardNumber = nil
 }
 
-func (x *ControllerActivityData_Record) ClearControlledVehicleRegistrationNation() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 3)
-	x.xxx_hidden_ControlledVehicleRegistrationNation = nil
-}
-
-func (x *ControllerActivityData_Record) ClearControlledVehicleRegistrationNumber() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 4)
-	x.xxx_hidden_ControlledVehicleRegistrationNumber = nil
+func (x *ControllerActivityData_Record) ClearControlledVehicleRegistration() {
+	x.xxx_hidden_ControlledVehicleRegistration = nil
 }
 
 func (x *ControllerActivityData_Record) ClearControlDownloadPeriodBegin() {
@@ -337,19 +319,41 @@ func (x *ControllerActivityData_Record) ClearControlDownloadPeriodEnd() {
 type ControllerActivityData_Record_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
-	// See Data Dictionary, Section 2.53 for `ControlType`.
+	// The type of the control.
+	//
+	// ASN.1 Specification:
+	//
+	//	ControlType ::= OCTET STRING (SIZE(1))
 	ControlType []byte
-	// Timestamp of the control activity. See DD Section 2.162 for `TimeReal`.
+	// The date and time of the control.
+	//
+	// ASN.1 Specification:
+	//
+	//	TimeReal ::= INTEGER (0..2^32-1)
 	ControlTime *timestamppb.Timestamp
-	// Card number of the card that was controlled (if applicable).
-	ControlledCardNumber *string
-	// Nation of the vehicle's registration.
-	ControlledVehicleRegistrationNation *string
-	// Vehicle's registration number.
-	ControlledVehicleRegistrationNumber *string
-	// Start of the downloaded period from a VU (if applicable).
+	// The full card number of the card that was controlled.
+	//
+	// ASN.1 Specification:
+	//
+	//	FullCardNumber ::= SEQUENCE { ... }
+	ControlledCardNumber *v1.FullCardNumber
+	// The vehicle registration of the vehicle in which the control happened.
+	//
+	// ASN.1 Specification:
+	//
+	//	VehicleRegistrationIdentification ::= SEQUENCE { ... }
+	ControlledVehicleRegistration *v1.VehicleRegistrationIdentification
+	// The beginning of the downloaded period, if any.
+	//
+	// ASN.1 Specification:
+	//
+	//	TimeReal ::= INTEGER (0..2^32-1)
 	ControlDownloadPeriodBegin *timestamppb.Timestamp
-	// End of the downloaded period from a VU (if applicable).
+	// The end of the downloaded period, if any.
+	//
+	// ASN.1 Specification:
+	//
+	//	TimeReal ::= INTEGER (0..2^32-1)
 	ControlDownloadPeriodEnd *timestamppb.Timestamp
 }
 
@@ -358,22 +362,12 @@ func (b0 ControllerActivityData_Record_builder) Build() *ControllerActivityData_
 	b, x := &b0, m0
 	_, _ = b, x
 	if b.ControlType != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 7)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 6)
 		x.xxx_hidden_ControlType = b.ControlType
 	}
 	x.xxx_hidden_ControlTime = b.ControlTime
-	if b.ControlledCardNumber != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 7)
-		x.xxx_hidden_ControlledCardNumber = b.ControlledCardNumber
-	}
-	if b.ControlledVehicleRegistrationNation != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 3, 7)
-		x.xxx_hidden_ControlledVehicleRegistrationNation = b.ControlledVehicleRegistrationNation
-	}
-	if b.ControlledVehicleRegistrationNumber != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 4, 7)
-		x.xxx_hidden_ControlledVehicleRegistrationNumber = b.ControlledVehicleRegistrationNumber
-	}
+	x.xxx_hidden_ControlledCardNumber = b.ControlledCardNumber
+	x.xxx_hidden_ControlledVehicleRegistration = b.ControlledVehicleRegistration
 	x.xxx_hidden_ControlDownloadPeriodBegin = b.ControlDownloadPeriodBegin
 	x.xxx_hidden_ControlDownloadPeriodEnd = b.ControlDownloadPeriodEnd
 	return m0
@@ -383,36 +377,39 @@ var File_wayplatform_connect_tachograph_card_v1_controller_activity_data_proto p
 
 const file_wayplatform_connect_tachograph_card_v1_controller_activity_data_proto_rawDesc = "" +
 	"\n" +
-	"Ewayplatform/connect/tachograph/card/v1/controller_activity_data.proto\x12&wayplatform.connect.tachograph.card.v1\x1a\x1fgoogle/protobuf/timestamp.proto\"\xb0\x05\n" +
+	"Ewayplatform/connect/tachograph/card/v1/controller_activity_data.proto\x12&wayplatform.connect.tachograph.card.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1aGwayplatform/connect/tachograph/datadictionary/v1/full_card_number.proto\x1aZwayplatform/connect/tachograph/datadictionary/v1/vehicle_registration_identification.proto\"\xe6\x05\n" +
 	"\x16ControllerActivityData\x12.\n" +
 	"\x13newest_record_index\x18\x01 \x01(\x05R\x11newestRecordIndex\x12_\n" +
-	"\arecords\x18\x02 \x03(\v2E.wayplatform.connect.tachograph.card.v1.ControllerActivityData.RecordR\arecords\x1a\x84\x04\n" +
+	"\arecords\x18\x02 \x03(\v2E.wayplatform.connect.tachograph.card.v1.ControllerActivityData.RecordR\arecords\x1a\xba\x04\n" +
 	"\x06Record\x12!\n" +
 	"\fcontrol_type\x18\x01 \x01(\fR\vcontrolType\x12=\n" +
-	"\fcontrol_time\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\vcontrolTime\x124\n" +
-	"\x16controlled_card_number\x18\x03 \x01(\tR\x14controlledCardNumber\x12S\n" +
-	"&controlled_vehicle_registration_nation\x18\x04 \x01(\tR#controlledVehicleRegistrationNation\x12S\n" +
-	"&controlled_vehicle_registration_number\x18\x05 \x01(\tR#controlledVehicleRegistrationNumber\x12]\n" +
-	"\x1dcontrol_download_period_begin\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampR\x1acontrolDownloadPeriodBegin\x12Y\n" +
-	"\x1bcontrol_download_period_end\x18\a \x01(\v2\x1a.google.protobuf.TimestampR\x18controlDownloadPeriodEndB\xe8\x02\n" +
+	"\fcontrol_time\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\vcontrolTime\x12v\n" +
+	"\x16controlled_card_number\x18\x03 \x01(\v2@.wayplatform.connect.tachograph.datadictionary.v1.FullCardNumberR\x14controlledCardNumber\x12\x9b\x01\n" +
+	"\x1fcontrolled_vehicle_registration\x18\x04 \x01(\v2S.wayplatform.connect.tachograph.datadictionary.v1.VehicleRegistrationIdentificationR\x1dcontrolledVehicleRegistration\x12]\n" +
+	"\x1dcontrol_download_period_begin\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampR\x1acontrolDownloadPeriodBegin\x12Y\n" +
+	"\x1bcontrol_download_period_end\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampR\x18controlDownloadPeriodEndB\xe8\x02\n" +
 	"*com.wayplatform.connect.tachograph.card.v1B\x1bControllerActivityDataProtoP\x01Z`github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1;cardv1\xa2\x02\x04WCTC\xaa\x02&Wayplatform.Connect.Tachograph.Card.V1\xca\x02&Wayplatform\\Connect\\Tachograph\\Card\\V1\xe2\x022Wayplatform\\Connect\\Tachograph\\Card\\V1\\GPBMetadata\xea\x02*Wayplatform::Connect::Tachograph::Card::V1b\beditionsp\xe8\a"
 
 var file_wayplatform_connect_tachograph_card_v1_controller_activity_data_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_wayplatform_connect_tachograph_card_v1_controller_activity_data_proto_goTypes = []any{
-	(*ControllerActivityData)(nil),        // 0: wayplatform.connect.tachograph.card.v1.ControllerActivityData
-	(*ControllerActivityData_Record)(nil), // 1: wayplatform.connect.tachograph.card.v1.ControllerActivityData.Record
-	(*timestamppb.Timestamp)(nil),         // 2: google.protobuf.Timestamp
+	(*ControllerActivityData)(nil),               // 0: wayplatform.connect.tachograph.card.v1.ControllerActivityData
+	(*ControllerActivityData_Record)(nil),        // 1: wayplatform.connect.tachograph.card.v1.ControllerActivityData.Record
+	(*timestamppb.Timestamp)(nil),                // 2: google.protobuf.Timestamp
+	(*v1.FullCardNumber)(nil),                    // 3: wayplatform.connect.tachograph.datadictionary.v1.FullCardNumber
+	(*v1.VehicleRegistrationIdentification)(nil), // 4: wayplatform.connect.tachograph.datadictionary.v1.VehicleRegistrationIdentification
 }
 var file_wayplatform_connect_tachograph_card_v1_controller_activity_data_proto_depIdxs = []int32{
 	1, // 0: wayplatform.connect.tachograph.card.v1.ControllerActivityData.records:type_name -> wayplatform.connect.tachograph.card.v1.ControllerActivityData.Record
 	2, // 1: wayplatform.connect.tachograph.card.v1.ControllerActivityData.Record.control_time:type_name -> google.protobuf.Timestamp
-	2, // 2: wayplatform.connect.tachograph.card.v1.ControllerActivityData.Record.control_download_period_begin:type_name -> google.protobuf.Timestamp
-	2, // 3: wayplatform.connect.tachograph.card.v1.ControllerActivityData.Record.control_download_period_end:type_name -> google.protobuf.Timestamp
-	4, // [4:4] is the sub-list for method output_type
-	4, // [4:4] is the sub-list for method input_type
-	4, // [4:4] is the sub-list for extension type_name
-	4, // [4:4] is the sub-list for extension extendee
-	0, // [0:4] is the sub-list for field type_name
+	3, // 2: wayplatform.connect.tachograph.card.v1.ControllerActivityData.Record.controlled_card_number:type_name -> wayplatform.connect.tachograph.datadictionary.v1.FullCardNumber
+	4, // 3: wayplatform.connect.tachograph.card.v1.ControllerActivityData.Record.controlled_vehicle_registration:type_name -> wayplatform.connect.tachograph.datadictionary.v1.VehicleRegistrationIdentification
+	2, // 4: wayplatform.connect.tachograph.card.v1.ControllerActivityData.Record.control_download_period_begin:type_name -> google.protobuf.Timestamp
+	2, // 5: wayplatform.connect.tachograph.card.v1.ControllerActivityData.Record.control_download_period_end:type_name -> google.protobuf.Timestamp
+	6, // [6:6] is the sub-list for method output_type
+	6, // [6:6] is the sub-list for method input_type
+	6, // [6:6] is the sub-list for extension type_name
+	6, // [6:6] is the sub-list for extension extendee
+	0, // [0:6] is the sub-list for field type_name
 }
 
 func init() { file_wayplatform_connect_tachograph_card_v1_controller_activity_data_proto_init() }

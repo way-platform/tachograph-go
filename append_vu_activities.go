@@ -3,6 +3,7 @@ package tachograph
 import (
 	"bytes"
 
+	datadictionaryv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/datadictionary/v1"
 	vuv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/vu/v1"
 )
 
@@ -15,7 +16,7 @@ func AppendVuActivities(buf *bytes.Buffer, activities *vuv1.Activities) error {
 	// For now, implement a simplified version that writes the signature data
 	// This ensures the interface is complete while allowing for future enhancement
 
-	if activities.GetGeneration() == vuv1.Generation_GENERATION_1 {
+	if activities.GetGeneration() == datadictionaryv1.Generation_GENERATION_1 {
 		signature := activities.GetSignatureGen1()
 		if len(signature) > 0 {
 			buf.Write(signature)
@@ -29,4 +30,3 @@ func AppendVuActivities(buf *bytes.Buffer, activities *vuv1.Activities) error {
 
 	return nil
 }
-

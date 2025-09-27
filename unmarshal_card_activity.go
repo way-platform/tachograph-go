@@ -183,10 +183,10 @@ func parseSingleActivityDailyRecord(data []byte) (*cardv1.DriverActivityData_Dai
 		activityChange := &cardv1.DriverActivityData_DailyRecord_ActivityChange{}
 
 		// Convert raw values to enums using protocol annotations
-		SetCardSlotNumber(slot, activityChange.SetSlot, activityChange.SetUnrecognizedSlot)
-		SetDrivingStatus(drivingStatus, activityChange.SetDrivingStatus, activityChange.SetUnrecognizedDrivingStatus)
-		SetCardStatus(cardStatus, activityChange.SetCardStatus, activityChange.SetUnrecognizedCardStatus)
-		SetDriverActivityValue(activity, activityChange.SetActivity, activityChange.SetUnrecognizedActivity)
+		SetCardSlotNumber(slot, activityChange.SetSlot, nil)
+		SetDrivingStatus(drivingStatus, activityChange.SetDrivingStatus, nil)
+		activityChange.SetInserted(SetCardInserted(cardStatus))
+		SetDriverActivityValue(activity, activityChange.SetActivity, nil)
 
 		activityChange.SetTimeOfChangeMinutes(timeOfChange)
 

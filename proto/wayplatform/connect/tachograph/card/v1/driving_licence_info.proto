@@ -5,8 +5,20 @@ package wayplatform.connect.tachograph.card.v1;
 // Represents the content of the EF_Driving_Licence_Info file, which contains the
 // card holder's driving licence information.
 //
-// Corresponds to the `CardDrivingLicenceInformation` data type.
-// See Data Dictionary, Section 2.18.
+// The file structure is specified in Appendix 2, Section 4.2.1.
+//
+//     EF Driving_Licence_Info
+//     └─CardDrivingLicenceInformation
+//
+// The data type `CardDrivingLicenceInformation` is specified in the Data Dictionary, Section 2.18.
+//
+// ASN.1 Specification:
+//
+//     CardDrivingLicenceInformation ::= SEQUENCE {
+//         drivingLicenceIssuingAuthority Name,
+//         drivingLicenceIssuingNation NationNumeric,
+//         drivingLicenceNumber IA5String(SIZE(16))
+//     }
 message DrivingLicenceInfo {
   // Authority that issued the driving licence.
   string driving_licence_issuing_authority = 1;

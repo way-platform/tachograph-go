@@ -2,7 +2,6 @@ package tachograph
 
 import (
 	"encoding/binary"
-	"encoding/hex"
 
 	cardv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1"
 )
@@ -33,17 +32,9 @@ func AppendVehicleRecord(dst []byte, rec *cardv1.VehiclesUsed_Record) ([]byte, e
 	dst = appendOdometer(dst, uint32(rec.GetVehicleOdometerEndKm()))
 	dst = appendTimeReal(dst, rec.GetVehicleFirstUse())
 	dst = appendTimeReal(dst, rec.GetVehicleLastUse())
-	// Convert hex string nation back to byte
-	nationByte := byte(0) // Default fallback
-	if nationStr := rec.GetVehicleRegistrationNation(); len(nationStr) > 0 {
-		if b, err := hex.DecodeString(nationStr); err == nil && len(b) > 0 {
-			nationByte = b[0]
-		}
-	}
-	dst = append(dst, nationByte)
-
+	// Vehicle registration (15 bytes total: 1 byte nation + 14 bytes number)
 	var err error
-	dst, err = appendString(dst, rec.GetVehicleRegistrationNumber(), 14)
+	dst, err = appendVehicleRegistration(dst, rec.GetVehicleRegistration())
 	if err != nil {
 		return nil, err
 	}

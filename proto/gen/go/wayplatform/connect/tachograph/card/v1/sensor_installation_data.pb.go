@@ -20,10 +20,18 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// Represents data from EF_Sensor_Installation_Data.
+// Represents the content of the EF_Sensor_Installation_Data file.
 //
-// Corresponds to the `SensorInstallationSecData` data type.
-// See Data Dictionary, Section 2.142.
+// The file structure is specified in Appendix 2, Section 4.3.1.
+//
+//	EF Sensor_Installation_Data
+//	└─SensorInstallationSecData
+//
+// The data type `SensorInstallationSecData` is specified in the Data Dictionary, Section 2.142.
+//
+// ASN.1 Specification:
+//
+//	SensorInstallationSecData ::= OCTET STRING (SIZE(16))
 type SensorInstallationData struct {
 	state                  protoimpl.MessageState `protogen:"opaque.v1"`
 	xxx_hidden_Data        []byte                 `protobuf:"bytes,1,opt,name=data"`

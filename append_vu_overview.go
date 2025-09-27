@@ -3,6 +3,7 @@ package tachograph
 import (
 	"bytes"
 
+	datadictionaryv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/datadictionary/v1"
 	vuv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/vu/v1"
 )
 
@@ -13,9 +14,9 @@ func AppendOverview(buf *bytes.Buffer, overview *vuv1.Overview) {
 	}
 
 	switch overview.GetGeneration() {
-	case vuv1.Generation_GENERATION_1:
+	case datadictionaryv1.Generation_GENERATION_1:
 		appendOverviewGen1(buf, overview)
-	case vuv1.Generation_GENERATION_2:
+	case datadictionaryv1.Generation_GENERATION_2:
 		appendOverviewGen2(buf, overview)
 	}
 }
@@ -93,9 +94,9 @@ func appendOverviewGen1(buf *bytes.Buffer, overview *vuv1.Overview) {
 	for _, lock := range companyLocks {
 		appendVuTimeReal(buf, lock.GetLockInTime())
 		appendVuTimeReal(buf, lock.GetLockOutTime())
-		appendVuString(buf, lock.GetCompanyName(), 36)       // Name field is typically 36 bytes
-		appendVuString(buf, lock.GetCompanyAddress(), 36)    // Address field
-		appendVuString(buf, lock.GetCompanyCardNumber(), 16) // Card number field
+		appendVuString(buf, lock.GetCompanyName(), 36)               // Name field is typically 36 bytes
+		appendVuString(buf, lock.GetCompanyAddress(), 36)            // Address field
+		appendVuFullCardNumber(buf, lock.GetCompanyCardNumber(), 16) // Card number field
 	}
 
 	// VuControlActivityData - variable length
@@ -108,7 +109,7 @@ func appendOverviewGen1(buf *bytes.Buffer, overview *vuv1.Overview) {
 			appendUint8(buf, 0)
 		}
 		appendVuTimeReal(buf, control.GetControlTime())
-		appendVuString(buf, control.GetControlCardNumber(), 16)
+		appendVuFullCardNumber(buf, control.GetControlCardNumber(), 16)
 		appendVuTimeReal(buf, control.GetDownloadPeriodBeginTime())
 		appendVuTimeReal(buf, control.GetDownloadPeriodEndTime())
 	}

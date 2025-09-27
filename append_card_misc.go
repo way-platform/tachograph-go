@@ -11,8 +11,7 @@ func AppendCurrentUsage(dst []byte, cu *cardv1.CurrentUsage) ([]byte, error) {
 	}
 	var err error
 	dst = appendTimeReal(dst, cu.GetSessionOpenTime())
-	dst = append(dst, byte(0)) // Placeholder for vehicleRegistrationNation
-	dst, err = appendString(dst, cu.GetVehicleRegistrationNumber(), 14)
+	dst, err = appendVehicleRegistration(dst, cu.GetSessionOpenVehicle())
 	if err != nil {
 		return nil, err
 	}
@@ -58,7 +57,7 @@ func AppendSpecificConditionRecord(dst []byte, rec *cardv1.SpecificConditions_Re
 }
 
 // AppendLastCardDownload appends the binary representation of LastCardDownload to dst.
-func AppendLastCardDownload(dst []byte, lcd *cardv1.LastCardDownload) ([]byte, error) {
+func AppendLastCardDownload(dst []byte, lcd *cardv1.CardDownloadDriver) ([]byte, error) {
 	if lcd == nil {
 		return dst, nil
 	}

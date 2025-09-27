@@ -21,10 +21,22 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// Represents authentication status for daily work period places.
+// Represents the content of the EF_Places_Authentication file, which contains
+// authentication statuses for daily work period places.
 //
-// Corresponds to the `CardPlaceAuthDailyWorkPeriod` data type from EF_Places_Authentication.
-// See Data Dictionary, Section 2.26a.
+// The file structure is specified in Appendix 2, Section 4.2.2.
+//
+//	EF Places_Authentication
+//	└─CardPlaceAuthDailyWorkPeriod
+//
+// The data type `CardPlaceAuthDailyWorkPeriod` is specified in the Data Dictionary, Section 2.26a.
+//
+// ASN.1 Specification:
+//
+//	CardPlaceAuthDailyWorkPeriod ::= SEQUENCE {
+//	    placeAuthPointerNewestRecord INTEGER(0..NoOfCardPlaceRecords -1),
+//	    placeAuthStatusRecords SET SIZE(NoOfCardPlaceRecords) OF PlaceAuthStatusRecord
+//	}
 type PlacesAuthentication struct {
 	state                        protoimpl.MessageState          `protogen:"opaque.v1"`
 	xxx_hidden_NewestRecordIndex int32                           `protobuf:"varint,1,opt,name=newest_record_index,json=newestRecordIndex"`
@@ -120,8 +132,14 @@ func (b0 PlacesAuthentication_builder) Build() *PlacesAuthentication {
 
 // Represents the authentication status for a single place record.
 //
-// Corresponds to the `PlaceAuthStatusRecord` data type.
-// See Data Dictionary, Section 2.116b.
+// The data type `PlaceAuthStatusRecord` is specified in the Data Dictionary, Section 2.116b.
+//
+// ASN.1 Specification:
+//
+//	PlaceAuthStatusRecord ::= SEQUENCE {
+//	    entryTime TimeReal,
+//	    authenticationStatus PositionAuthenticationStatus
+//	}
 type PlacesAuthentication_Record struct {
 	state                           protoimpl.MessageState `protogen:"opaque.v1"`
 	xxx_hidden_EntryTime            *timestamppb.Timestamp `protobuf:"bytes,1,opt,name=entry_time,json=entryTime"`
@@ -206,9 +224,18 @@ func (x *PlacesAuthentication_Record) ClearAuthenticationStatus() {
 type PlacesAuthentication_Record_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
-	// Time of the entry. See DD Section 2.162 for `TimeReal`.
+	// ASN.1 Type: TimeReal (see DD 2.162)
+	//
+	//	TimeReal ::= INTEGER (0..2^32-1)
 	EntryTime *timestamppb.Timestamp
-	// Authentication status of the position. See DD Section 2.117a.
+	// ASN.1 Type: PositionAuthenticationStatus (see DD 2.117a)
+	//
+	//	PositionAuthenticationStatus ::= INTEGER {
+	//	    notAvailable(0),
+	//	    authenticated(1),
+	//	    notAuthenticated(2),
+	//	    authenticationCorrupted(3)
+	//	} (0..255)
 	AuthenticationStatus *int32
 }
 

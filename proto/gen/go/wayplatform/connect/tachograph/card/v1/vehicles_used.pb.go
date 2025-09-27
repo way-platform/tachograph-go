@@ -7,6 +7,7 @@
 package cardv1
 
 import (
+	v1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/datadictionary/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
@@ -21,10 +22,21 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// Represents data from EF_Vehicles_Used.
+// Represents the content of the EF_Vehicles_Used file.
 //
-// Corresponds to the `CardVehiclesUsed` data type in the specification.
-// See Data Dictionary, Section 2.38.
+// The file structure is specified in Appendix 2, Section 4.2.1.
+//
+//	EF Vehicles_Used
+//	└─CardVehiclesUsed
+//
+// The data type `CardVehiclesUsed` is specified in the Data Dictionary, Section 2.38.
+//
+// ASN.1 Specification:
+//
+//	CardVehiclesUsed ::= SEQUENCE {
+//	    vehiclePointerNewestRecord INTEGER(0..NoOfCardVehicleRecords-1),
+//	    cardVehicleRecords SET SIZE(NoOfCardVehicleRecords) OF CardVehicleRecord
+//	}
 type VehiclesUsed struct {
 	state                        protoimpl.MessageState  `protogen:"opaque.v1"`
 	xxx_hidden_NewestRecordIndex int32                   `protobuf:"varint,1,opt,name=newest_record_index,json=newestRecordIndex"`
@@ -154,18 +166,28 @@ func (b0 VehiclesUsed_builder) Build() *VehiclesUsed {
 
 // Represents a record for a single period of use of a vehicle.
 //
-// Corresponds to the `CardVehicleRecord` data type.
-// See Data Dictionary, Section 2.37.
+// The data type `CardVehicleRecord` is specified in the Data Dictionary, Section 2.37.
+//
+// ASN.1 Specification:
+//
+//	CardVehicleRecord ::= SEQUENCE {
+//	    vehicleOdometerBegin OdometerShort,
+//	    vehicleOdometerEnd OdometerShort,
+//	    vehicleFirstUse TimeReal,
+//	    vehicleLastUse TimeReal,
+//	    vehicleRegistration VehicleRegistrationIdentification,
+//	    vuDataBlockCounter VuDataBlockCounter,
+//	    vehicleIdentificationNumber VehicleIdentificationNumber
+//	}
 type VehiclesUsed_Record struct {
-	state                                  protoimpl.MessageState `protogen:"opaque.v1"`
-	xxx_hidden_VehicleOdometerBeginKm      int32                  `protobuf:"varint,1,opt,name=vehicle_odometer_begin_km,json=vehicleOdometerBeginKm"`
-	xxx_hidden_VehicleOdometerEndKm        int32                  `protobuf:"varint,2,opt,name=vehicle_odometer_end_km,json=vehicleOdometerEndKm"`
-	xxx_hidden_VehicleFirstUse             *timestamppb.Timestamp `protobuf:"bytes,3,opt,name=vehicle_first_use,json=vehicleFirstUse"`
-	xxx_hidden_VehicleLastUse              *timestamppb.Timestamp `protobuf:"bytes,4,opt,name=vehicle_last_use,json=vehicleLastUse"`
-	xxx_hidden_VehicleRegistrationNation   *string                `protobuf:"bytes,5,opt,name=vehicle_registration_nation,json=vehicleRegistrationNation"`
-	xxx_hidden_VehicleRegistrationNumber   *string                `protobuf:"bytes,6,opt,name=vehicle_registration_number,json=vehicleRegistrationNumber"`
-	xxx_hidden_VuDataBlockCounter          int32                  `protobuf:"varint,7,opt,name=vu_data_block_counter,json=vuDataBlockCounter"`
-	xxx_hidden_VehicleIdentificationNumber *string                `protobuf:"bytes,8,opt,name=vehicle_identification_number,json=vehicleIdentificationNumber"`
+	state                                  protoimpl.MessageState                `protogen:"opaque.v1"`
+	xxx_hidden_VehicleOdometerBeginKm      int32                                 `protobuf:"varint,1,opt,name=vehicle_odometer_begin_km,json=vehicleOdometerBeginKm"`
+	xxx_hidden_VehicleOdometerEndKm        int32                                 `protobuf:"varint,2,opt,name=vehicle_odometer_end_km,json=vehicleOdometerEndKm"`
+	xxx_hidden_VehicleFirstUse             *timestamppb.Timestamp                `protobuf:"bytes,3,opt,name=vehicle_first_use,json=vehicleFirstUse"`
+	xxx_hidden_VehicleLastUse              *timestamppb.Timestamp                `protobuf:"bytes,4,opt,name=vehicle_last_use,json=vehicleLastUse"`
+	xxx_hidden_VehicleRegistration         *v1.VehicleRegistrationIdentification `protobuf:"bytes,5,opt,name=vehicle_registration,json=vehicleRegistration"`
+	xxx_hidden_VuDataBlockCounter          int32                                 `protobuf:"varint,6,opt,name=vu_data_block_counter,json=vuDataBlockCounter"`
+	xxx_hidden_VehicleIdentificationNumber *string                               `protobuf:"bytes,7,opt,name=vehicle_identification_number,json=vehicleIdentificationNumber"`
 	XXX_raceDetectHookData                 protoimpl.RaceDetectHookData
 	XXX_presence                           [1]uint32
 	unknownFields                          protoimpl.UnknownFields
@@ -225,24 +247,11 @@ func (x *VehiclesUsed_Record) GetVehicleLastUse() *timestamppb.Timestamp {
 	return nil
 }
 
-func (x *VehiclesUsed_Record) GetVehicleRegistrationNation() string {
+func (x *VehiclesUsed_Record) GetVehicleRegistration() *v1.VehicleRegistrationIdentification {
 	if x != nil {
-		if x.xxx_hidden_VehicleRegistrationNation != nil {
-			return *x.xxx_hidden_VehicleRegistrationNation
-		}
-		return ""
+		return x.xxx_hidden_VehicleRegistration
 	}
-	return ""
-}
-
-func (x *VehiclesUsed_Record) GetVehicleRegistrationNumber() string {
-	if x != nil {
-		if x.xxx_hidden_VehicleRegistrationNumber != nil {
-			return *x.xxx_hidden_VehicleRegistrationNumber
-		}
-		return ""
-	}
-	return ""
+	return nil
 }
 
 func (x *VehiclesUsed_Record) GetVuDataBlockCounter() int32 {
@@ -264,12 +273,12 @@ func (x *VehiclesUsed_Record) GetVehicleIdentificationNumber() string {
 
 func (x *VehiclesUsed_Record) SetVehicleOdometerBeginKm(v int32) {
 	x.xxx_hidden_VehicleOdometerBeginKm = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 8)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 7)
 }
 
 func (x *VehiclesUsed_Record) SetVehicleOdometerEndKm(v int32) {
 	x.xxx_hidden_VehicleOdometerEndKm = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 8)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 7)
 }
 
 func (x *VehiclesUsed_Record) SetVehicleFirstUse(v *timestamppb.Timestamp) {
@@ -280,24 +289,18 @@ func (x *VehiclesUsed_Record) SetVehicleLastUse(v *timestamppb.Timestamp) {
 	x.xxx_hidden_VehicleLastUse = v
 }
 
-func (x *VehiclesUsed_Record) SetVehicleRegistrationNation(v string) {
-	x.xxx_hidden_VehicleRegistrationNation = &v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 4, 8)
-}
-
-func (x *VehiclesUsed_Record) SetVehicleRegistrationNumber(v string) {
-	x.xxx_hidden_VehicleRegistrationNumber = &v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 5, 8)
+func (x *VehiclesUsed_Record) SetVehicleRegistration(v *v1.VehicleRegistrationIdentification) {
+	x.xxx_hidden_VehicleRegistration = v
 }
 
 func (x *VehiclesUsed_Record) SetVuDataBlockCounter(v int32) {
 	x.xxx_hidden_VuDataBlockCounter = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 6, 8)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 5, 7)
 }
 
 func (x *VehiclesUsed_Record) SetVehicleIdentificationNumber(v string) {
 	x.xxx_hidden_VehicleIdentificationNumber = &v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 7, 8)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 6, 7)
 }
 
 func (x *VehiclesUsed_Record) HasVehicleOdometerBeginKm() bool {
@@ -328,32 +331,25 @@ func (x *VehiclesUsed_Record) HasVehicleLastUse() bool {
 	return x.xxx_hidden_VehicleLastUse != nil
 }
 
-func (x *VehiclesUsed_Record) HasVehicleRegistrationNation() bool {
+func (x *VehiclesUsed_Record) HasVehicleRegistration() bool {
 	if x == nil {
 		return false
 	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 4)
-}
-
-func (x *VehiclesUsed_Record) HasVehicleRegistrationNumber() bool {
-	if x == nil {
-		return false
-	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 5)
+	return x.xxx_hidden_VehicleRegistration != nil
 }
 
 func (x *VehiclesUsed_Record) HasVuDataBlockCounter() bool {
 	if x == nil {
 		return false
 	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 6)
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 5)
 }
 
 func (x *VehiclesUsed_Record) HasVehicleIdentificationNumber() bool {
 	if x == nil {
 		return false
 	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 7)
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 6)
 }
 
 func (x *VehiclesUsed_Record) ClearVehicleOdometerBeginKm() {
@@ -374,44 +370,48 @@ func (x *VehiclesUsed_Record) ClearVehicleLastUse() {
 	x.xxx_hidden_VehicleLastUse = nil
 }
 
-func (x *VehiclesUsed_Record) ClearVehicleRegistrationNation() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 4)
-	x.xxx_hidden_VehicleRegistrationNation = nil
-}
-
-func (x *VehiclesUsed_Record) ClearVehicleRegistrationNumber() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 5)
-	x.xxx_hidden_VehicleRegistrationNumber = nil
+func (x *VehiclesUsed_Record) ClearVehicleRegistration() {
+	x.xxx_hidden_VehicleRegistration = nil
 }
 
 func (x *VehiclesUsed_Record) ClearVuDataBlockCounter() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 6)
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 5)
 	x.xxx_hidden_VuDataBlockCounter = 0
 }
 
 func (x *VehiclesUsed_Record) ClearVehicleIdentificationNumber() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 7)
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 6)
 	x.xxx_hidden_VehicleIdentificationNumber = nil
 }
 
 type VehiclesUsed_Record_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
-	// Odometer value at the beginning of the period. See DD Section 2.113.
+	// ASN.1 Type: OdometerShort (see DD 2.113)
+	//
+	//	OdometerShort ::= INTEGER(0..999999)
 	VehicleOdometerBeginKm *int32
-	// Odometer value at the end of the period. See DD Section 2.113.
+	// ASN.1 Type: OdometerShort (see DD 2.113)
+	//
+	//	OdometerShort ::= INTEGER(0..999999)
 	VehicleOdometerEndKm *int32
-	// Timestamp for the beginning of the period. See DD Section 2.162.
+	// ASN.1 Type: TimeReal (see DD 2.162)
+	//
+	//	TimeReal ::= INTEGER (0..2^32-1)
 	VehicleFirstUse *timestamppb.Timestamp
-	// Timestamp for the end of the period. See DD Section 2.162.
+	// ASN.1 Type: TimeReal (see DD 2.162)
+	//
+	//	TimeReal ::= INTEGER (0..2^32-1)
 	VehicleLastUse *timestamppb.Timestamp
-	// Nation of the vehicle's registration. See DD Section 2.166.
-	VehicleRegistrationNation *string
-	// Vehicle's registration number. See DD Section 2.166.
-	VehicleRegistrationNumber *string
-	// VU data block counter at last extraction. See DD Section 2.189.
+	// ASN.1 Type: VehicleRegistrationIdentification (see DD 2.166)
+	VehicleRegistration *v1.VehicleRegistrationIdentification
+	// ASN.1 Type: VuDataBlockCounter (see DD 2.189)
+	//
+	//	VuDataBlockCounter ::= INTEGER(0..65535)
 	VuDataBlockCounter *int32
-	// Gen2+ field: Vehicle Identification Number. See DD Section 2.164.
+	// ASN.1 Type: VehicleIdentificationNumber (see DD 2.164)
+	//
+	//	VehicleIdentificationNumber ::= IA5String(SIZE(17))
 	VehicleIdentificationNumber *string
 }
 
@@ -420,29 +420,22 @@ func (b0 VehiclesUsed_Record_builder) Build() *VehiclesUsed_Record {
 	b, x := &b0, m0
 	_, _ = b, x
 	if b.VehicleOdometerBeginKm != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 8)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 7)
 		x.xxx_hidden_VehicleOdometerBeginKm = *b.VehicleOdometerBeginKm
 	}
 	if b.VehicleOdometerEndKm != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 8)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 7)
 		x.xxx_hidden_VehicleOdometerEndKm = *b.VehicleOdometerEndKm
 	}
 	x.xxx_hidden_VehicleFirstUse = b.VehicleFirstUse
 	x.xxx_hidden_VehicleLastUse = b.VehicleLastUse
-	if b.VehicleRegistrationNation != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 4, 8)
-		x.xxx_hidden_VehicleRegistrationNation = b.VehicleRegistrationNation
-	}
-	if b.VehicleRegistrationNumber != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 5, 8)
-		x.xxx_hidden_VehicleRegistrationNumber = b.VehicleRegistrationNumber
-	}
+	x.xxx_hidden_VehicleRegistration = b.VehicleRegistration
 	if b.VuDataBlockCounter != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 6, 8)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 5, 7)
 		x.xxx_hidden_VuDataBlockCounter = *b.VuDataBlockCounter
 	}
 	if b.VehicleIdentificationNumber != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 7, 8)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 6, 7)
 		x.xxx_hidden_VehicleIdentificationNumber = b.VehicleIdentificationNumber
 	}
 	return m0
@@ -452,37 +445,38 @@ var File_wayplatform_connect_tachograph_card_v1_vehicles_used_proto protoreflect
 
 const file_wayplatform_connect_tachograph_card_v1_vehicles_used_proto_rawDesc = "" +
 	"\n" +
-	":wayplatform/connect/tachograph/card/v1/vehicles_used.proto\x12&wayplatform.connect.tachograph.card.v1\x1a\x1fgoogle/protobuf/timestamp.proto\"\xb5\x05\n" +
+	":wayplatform/connect/tachograph/card/v1/vehicles_used.proto\x12&wayplatform.connect.tachograph.card.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1aZwayplatform/connect/tachograph/datadictionary/v1/vehicle_registration_identification.proto\"\xbe\x05\n" +
 	"\fVehiclesUsed\x12.\n" +
 	"\x13newest_record_index\x18\x01 \x01(\x05R\x11newestRecordIndex\x12U\n" +
 	"\arecords\x18\x02 \x03(\v2;.wayplatform.connect.tachograph.card.v1.VehiclesUsed.RecordR\arecords\x12\x1c\n" +
-	"\tsignature\x18\x03 \x01(\fR\tsignature\x1a\xff\x03\n" +
+	"\tsignature\x18\x03 \x01(\fR\tsignature\x1a\x88\x04\n" +
 	"\x06Record\x129\n" +
 	"\x19vehicle_odometer_begin_km\x18\x01 \x01(\x05R\x16vehicleOdometerBeginKm\x125\n" +
 	"\x17vehicle_odometer_end_km\x18\x02 \x01(\x05R\x14vehicleOdometerEndKm\x12F\n" +
 	"\x11vehicle_first_use\x18\x03 \x01(\v2\x1a.google.protobuf.TimestampR\x0fvehicleFirstUse\x12D\n" +
-	"\x10vehicle_last_use\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampR\x0evehicleLastUse\x12>\n" +
-	"\x1bvehicle_registration_nation\x18\x05 \x01(\tR\x19vehicleRegistrationNation\x12>\n" +
-	"\x1bvehicle_registration_number\x18\x06 \x01(\tR\x19vehicleRegistrationNumber\x121\n" +
-	"\x15vu_data_block_counter\x18\a \x01(\x05R\x12vuDataBlockCounter\x12B\n" +
-	"\x1dvehicle_identification_number\x18\b \x01(\tR\x1bvehicleIdentificationNumberB\xde\x02\n" +
+	"\x10vehicle_last_use\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampR\x0evehicleLastUse\x12\x86\x01\n" +
+	"\x14vehicle_registration\x18\x05 \x01(\v2S.wayplatform.connect.tachograph.datadictionary.v1.VehicleRegistrationIdentificationR\x13vehicleRegistration\x121\n" +
+	"\x15vu_data_block_counter\x18\x06 \x01(\x05R\x12vuDataBlockCounter\x12B\n" +
+	"\x1dvehicle_identification_number\x18\a \x01(\tR\x1bvehicleIdentificationNumberB\xde\x02\n" +
 	"*com.wayplatform.connect.tachograph.card.v1B\x11VehiclesUsedProtoP\x01Z`github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1;cardv1\xa2\x02\x04WCTC\xaa\x02&Wayplatform.Connect.Tachograph.Card.V1\xca\x02&Wayplatform\\Connect\\Tachograph\\Card\\V1\xe2\x022Wayplatform\\Connect\\Tachograph\\Card\\V1\\GPBMetadata\xea\x02*Wayplatform::Connect::Tachograph::Card::V1b\beditionsp\xe8\a"
 
 var file_wayplatform_connect_tachograph_card_v1_vehicles_used_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_wayplatform_connect_tachograph_card_v1_vehicles_used_proto_goTypes = []any{
-	(*VehiclesUsed)(nil),          // 0: wayplatform.connect.tachograph.card.v1.VehiclesUsed
-	(*VehiclesUsed_Record)(nil),   // 1: wayplatform.connect.tachograph.card.v1.VehiclesUsed.Record
-	(*timestamppb.Timestamp)(nil), // 2: google.protobuf.Timestamp
+	(*VehiclesUsed)(nil),                         // 0: wayplatform.connect.tachograph.card.v1.VehiclesUsed
+	(*VehiclesUsed_Record)(nil),                  // 1: wayplatform.connect.tachograph.card.v1.VehiclesUsed.Record
+	(*timestamppb.Timestamp)(nil),                // 2: google.protobuf.Timestamp
+	(*v1.VehicleRegistrationIdentification)(nil), // 3: wayplatform.connect.tachograph.datadictionary.v1.VehicleRegistrationIdentification
 }
 var file_wayplatform_connect_tachograph_card_v1_vehicles_used_proto_depIdxs = []int32{
 	1, // 0: wayplatform.connect.tachograph.card.v1.VehiclesUsed.records:type_name -> wayplatform.connect.tachograph.card.v1.VehiclesUsed.Record
 	2, // 1: wayplatform.connect.tachograph.card.v1.VehiclesUsed.Record.vehicle_first_use:type_name -> google.protobuf.Timestamp
 	2, // 2: wayplatform.connect.tachograph.card.v1.VehiclesUsed.Record.vehicle_last_use:type_name -> google.protobuf.Timestamp
-	3, // [3:3] is the sub-list for method output_type
-	3, // [3:3] is the sub-list for method input_type
-	3, // [3:3] is the sub-list for extension type_name
-	3, // [3:3] is the sub-list for extension extendee
-	0, // [0:3] is the sub-list for field type_name
+	3, // 3: wayplatform.connect.tachograph.card.v1.VehiclesUsed.Record.vehicle_registration:type_name -> wayplatform.connect.tachograph.datadictionary.v1.VehicleRegistrationIdentification
+	4, // [4:4] is the sub-list for method output_type
+	4, // [4:4] is the sub-list for method input_type
+	4, // [4:4] is the sub-list for extension type_name
+	4, // [4:4] is the sub-list for extension extendee
+	0, // [0:4] is the sub-list for field type_name
 }
 
 func init() { file_wayplatform_connect_tachograph_card_v1_vehicles_used_proto_init() }

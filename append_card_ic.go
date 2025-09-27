@@ -7,7 +7,7 @@ import (
 )
 
 // AppendCardIc appends IC identification data to a byte slice.
-func AppendCardIc(data []byte, ic *cardv1.ChipIdentification) ([]byte, error) {
+func AppendCardIc(data []byte, ic *cardv1.Ic) ([]byte, error) {
 	if ic == nil {
 		return data, nil
 	}

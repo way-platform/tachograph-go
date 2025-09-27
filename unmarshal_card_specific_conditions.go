@@ -64,7 +64,7 @@ func parseSpecificConditionRecord(r *bytes.Reader) (*cardv1.SpecificConditions_R
 		return nil, fmt.Errorf("failed to read condition type: %w", err)
 	}
 	// Convert raw condition type to enum using protocol annotations
-	SetSpecificConditionType(int32(conditionType), record.SetSpecificConditionType, record.SetUnrecognizedSpecificConditionType)
+	SetSpecificConditionType(int32(conditionType), record.SetSpecificConditionType, nil)
 
 	return record, nil
 }

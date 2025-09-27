@@ -62,7 +62,7 @@ func getElementaryFileTypeFromTag(fid int32) cardv1.ElementaryFileType {
 }
 
 // appendEventsDataToBytes marshals events data using the tagged union approach
-func appendEventsDataToBytes(dst []byte, card *cardv1.DriverCardFile, eventsData *cardv1.EventData) ([]byte, error) {
+func appendEventsDataToBytes(dst []byte, card *cardv1.DriverCardFile, eventsData *cardv1.EventsData) ([]byte, error) {
 	eventsValBuf := make([]byte, 0, 1728) // Max size for Gen1
 
 	// With the tagged union approach, we simply iterate through all records in order
@@ -79,7 +79,7 @@ func appendEventsDataToBytes(dst []byte, card *cardv1.DriverCardFile, eventsData
 }
 
 // appendFaultsDataToBytes marshals faults data using the tagged union approach
-func appendFaultsDataToBytes(dst []byte, card *cardv1.DriverCardFile, faultsData *cardv1.FaultData) ([]byte, error) {
+func appendFaultsDataToBytes(dst []byte, card *cardv1.DriverCardFile, faultsData *cardv1.FaultsData) ([]byte, error) {
 	faultsValBuf := make([]byte, 0, 1152) // Max size for Gen1
 
 	// With the tagged union approach, we simply iterate through all records in order

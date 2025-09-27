@@ -22,7 +22,6 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// See Data Dictionary, Section 2.114a for `OperationType`.
 type Activities_LoadUnloadRecord_OperationType int32
 
 const (
@@ -76,7 +75,7 @@ func (x Activities_LoadUnloadRecord_OperationType) Number() protoreflect.EnumNum
 // Appendix 7, Section 2.2.6.3: "Positive Response Transfer Data Activities".
 type Activities struct {
 	state                             protoimpl.MessageState                 `protogen:"opaque.v1"`
-	xxx_hidden_Generation             Generation                             `protobuf:"varint,1,opt,name=generation,enum=wayplatform.connect.tachograph.vu.v1.Generation"`
+	xxx_hidden_Generation             v1.Generation                          `protobuf:"varint,1,opt,name=generation,enum=wayplatform.connect.tachograph.datadictionary.v1.Generation"`
 	xxx_hidden_Version                Version                                `protobuf:"varint,2,opt,name=version,enum=wayplatform.connect.tachograph.vu.v1.Version"`
 	xxx_hidden_DateOfDay              *timestamppb.Timestamp                 `protobuf:"bytes,3,opt,name=date_of_day,json=dateOfDay"`
 	xxx_hidden_OdometerMidnightKm     int32                                  `protobuf:"varint,4,opt,name=odometer_midnight_km,json=odometerMidnightKm"`
@@ -120,13 +119,13 @@ func (x *Activities) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-func (x *Activities) GetGeneration() Generation {
+func (x *Activities) GetGeneration() v1.Generation {
 	if x != nil {
 		if protoimpl.X.Present(&(x.XXX_presence[0]), 0) {
 			return x.xxx_hidden_Generation
 		}
 	}
-	return Generation_GENERATION_UNSPECIFIED
+	return v1.Generation(0)
 }
 
 func (x *Activities) GetVersion() Version {
@@ -229,7 +228,7 @@ func (x *Activities) GetSignatureGen2() []byte {
 	return nil
 }
 
-func (x *Activities) SetGeneration(v Generation) {
+func (x *Activities) SetGeneration(v v1.Generation) {
 	x.xxx_hidden_Generation = v
 	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 13)
 }
@@ -336,7 +335,7 @@ func (x *Activities) HasSignatureGen2() bool {
 
 func (x *Activities) ClearGeneration() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 0)
-	x.xxx_hidden_Generation = Generation_GENERATION_UNSPECIFIED
+	x.xxx_hidden_Generation = v1.Generation_GENERATION_UNSPECIFIED
 }
 
 func (x *Activities) ClearVersion() {
@@ -366,35 +365,35 @@ func (x *Activities) ClearSignatureGen2() {
 type Activities_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
-	// Discriminator fields indicating the generation and version of the data.
-	Generation *Generation
-	Version    *Version
-	// Date of the downloaded day. See DD Section 2.58 for `DateOfDayDownloaded`.
+	// The generation of the vehicle unit, parsed from the raw transfer data.
+	//
+	// Discriminator field.
+	Generation *v1.Generation
+	// The version of the interface, parsed from the raw transfer data.
+	//
+	// Discriminator field.
+	Version *Version
+	// Date of the downloaded day.
 	DateOfDay *timestamppb.Timestamp
-	// Odometer value at midnight. See DD Section 2.114 for `OdometerValueMidnight`.
+	// Odometer value at midnight.
 	OdometerMidnightKm *int32
-	// Card insertion and withdrawal data. See DD Section 2.176 for `VuCardIWData`.
+	// Card insertion and withdrawal data.
 	CardIwData []*Activities_CardIWRecord
-	// Driver activity changes. See DD Section 2.170 for `VuActivityDailyData`.
+	// Driver activity changes.
 	ActivityChanges []*Activities_ActivityChange
-	// Daily work period place entries. See DD Section 2.218 for `VuPlaceDailyWorkPeriodData`.
+	// Daily work period place entries.
 	Places []*Activities_PlaceRecord
-	// Specific conditions data. See DD Section 2.227 for `VuSpecificConditionData`.
+	// Specific conditions data.
 	SpecificConditions []*Activities_SpecificConditionRecord
 	// Gen2+ Fields: GNSS positions recorded at 3-hour accumulated driving time intervals.
-	// See Data Dictionary, Section 2.204 for `VuGNSSADRecordArray`.
 	GnssAccumulatedDriving []*Activities_GnssRecord
 	// Gen2v2+ Fields: Border crossing records.
-	// See Data Dictionary, Section 2.203b for `VuBorderCrossingRecordArray`.
 	BorderCrossings []*Activities_BorderCrossingRecord
 	// Gen2v2+ Fields: Load/unload operation records.
-	// See Data Dictionary, Section 2.208b for `VuLoadUnloadRecordArray`.
 	LoadUnloadOperations []*Activities_LoadUnloadRecord
 	// Signature for Gen1 data (RSA, 128 bytes).
-	// See Data Dictionary, Section 2.149.
 	SignatureGen1 []byte
 	// Signature for Gen2 data (ECC).
-	// See Data Dictionary, Section 2.149.
 	SignatureGen2 []byte
 }
 
@@ -438,24 +437,21 @@ func (b0 Activities_builder) Build() *Activities {
 // Corresponds to the `VuCardIWRecord` data type.
 // See Data Dictionary, Section 2.177.
 type Activities_CardIWRecord struct {
-	state                                  protoimpl.MessageState `protogen:"opaque.v1"`
-	xxx_hidden_CardHolderName              *string                `protobuf:"bytes,1,opt,name=card_holder_name,json=cardHolderName"`
-	xxx_hidden_FullCardNumber              *string                `protobuf:"bytes,2,opt,name=full_card_number,json=fullCardNumber"`
-	xxx_hidden_CardExpiryDate              *timestamppb.Timestamp `protobuf:"bytes,3,opt,name=card_expiry_date,json=cardExpiryDate"`
-	xxx_hidden_CardInsertionTime           *timestamppb.Timestamp `protobuf:"bytes,4,opt,name=card_insertion_time,json=cardInsertionTime"`
-	xxx_hidden_OdometerAtInsertionKm       int32                  `protobuf:"varint,5,opt,name=odometer_at_insertion_km,json=odometerAtInsertionKm"`
-	xxx_hidden_CardSlotNumber              v1.CardSlotNumber      `protobuf:"varint,6,opt,name=card_slot_number,json=cardSlotNumber,enum=wayplatform.connect.tachograph.datadictionary.v1.CardSlotNumber"`
-	xxx_hidden_UnrecognizedCardSlotNumber  int32                  `protobuf:"varint,7,opt,name=unrecognized_card_slot_number,json=unrecognizedCardSlotNumber"`
-	xxx_hidden_CardWithdrawalTime          *timestamppb.Timestamp `protobuf:"bytes,8,opt,name=card_withdrawal_time,json=cardWithdrawalTime"`
-	xxx_hidden_OdometerAtWithdrawalKm      int32                  `protobuf:"varint,9,opt,name=odometer_at_withdrawal_km,json=odometerAtWithdrawalKm"`
-	xxx_hidden_PreviousVrn                 *string                `protobuf:"bytes,10,opt,name=previous_vrn,json=previousVrn"`
-	xxx_hidden_PreviousCardWithdrawalTime  *timestamppb.Timestamp `protobuf:"bytes,11,opt,name=previous_card_withdrawal_time,json=previousCardWithdrawalTime"`
-	xxx_hidden_ManualInputFlag             v1.ManualInputFlag     `protobuf:"varint,12,opt,name=manual_input_flag,json=manualInputFlag,enum=wayplatform.connect.tachograph.datadictionary.v1.ManualInputFlag"`
-	xxx_hidden_UnrecognizedManualInputFlag int32                  `protobuf:"varint,13,opt,name=unrecognized_manual_input_flag,json=unrecognizedManualInputFlag"`
-	XXX_raceDetectHookData                 protoimpl.RaceDetectHookData
-	XXX_presence                           [1]uint32
-	unknownFields                          protoimpl.UnknownFields
-	sizeCache                              protoimpl.SizeCache
+	state                             protoimpl.MessageState                       `protogen:"opaque.v1"`
+	xxx_hidden_CardHolderName         *string                                      `protobuf:"bytes,1,opt,name=card_holder_name,json=cardHolderName"`
+	xxx_hidden_FullCardNumber         *v1.FullCardNumber                           `protobuf:"bytes,2,opt,name=full_card_number,json=fullCardNumber"`
+	xxx_hidden_CardExpiryDate         *timestamppb.Timestamp                       `protobuf:"bytes,3,opt,name=card_expiry_date,json=cardExpiryDate"`
+	xxx_hidden_CardInsertionTime      *timestamppb.Timestamp                       `protobuf:"bytes,4,opt,name=card_insertion_time,json=cardInsertionTime"`
+	xxx_hidden_OdometerAtInsertionKm  int32                                        `protobuf:"varint,5,opt,name=odometer_at_insertion_km,json=odometerAtInsertionKm"`
+	xxx_hidden_CardSlotNumber         v1.CardSlotNumber                            `protobuf:"varint,6,opt,name=card_slot_number,json=cardSlotNumber,enum=wayplatform.connect.tachograph.datadictionary.v1.CardSlotNumber"`
+	xxx_hidden_CardWithdrawalTime     *timestamppb.Timestamp                       `protobuf:"bytes,8,opt,name=card_withdrawal_time,json=cardWithdrawalTime"`
+	xxx_hidden_OdometerAtWithdrawalKm int32                                        `protobuf:"varint,9,opt,name=odometer_at_withdrawal_km,json=odometerAtWithdrawalKm"`
+	xxx_hidden_PreviousVehicleInfo    *Activities_CardIWRecord_PreviousVehicleInfo `protobuf:"bytes,10,opt,name=previous_vehicle_info,json=previousVehicleInfo"`
+	xxx_hidden_ManualInputFlag        bool                                         `protobuf:"varint,11,opt,name=manual_input_flag,json=manualInputFlag"`
+	XXX_raceDetectHookData            protoimpl.RaceDetectHookData
+	XXX_presence                      [1]uint32
+	unknownFields                     protoimpl.UnknownFields
+	sizeCache                         protoimpl.SizeCache
 }
 
 func (x *Activities_CardIWRecord) Reset() {
@@ -493,14 +489,11 @@ func (x *Activities_CardIWRecord) GetCardHolderName() string {
 	return ""
 }
 
-func (x *Activities_CardIWRecord) GetFullCardNumber() string {
+func (x *Activities_CardIWRecord) GetFullCardNumber() *v1.FullCardNumber {
 	if x != nil {
-		if x.xxx_hidden_FullCardNumber != nil {
-			return *x.xxx_hidden_FullCardNumber
-		}
-		return ""
+		return x.xxx_hidden_FullCardNumber
 	}
-	return ""
+	return nil
 }
 
 func (x *Activities_CardIWRecord) GetCardExpiryDate() *timestamppb.Timestamp {
@@ -533,13 +526,6 @@ func (x *Activities_CardIWRecord) GetCardSlotNumber() v1.CardSlotNumber {
 	return v1.CardSlotNumber(0)
 }
 
-func (x *Activities_CardIWRecord) GetUnrecognizedCardSlotNumber() int32 {
-	if x != nil {
-		return x.xxx_hidden_UnrecognizedCardSlotNumber
-	}
-	return 0
-}
-
 func (x *Activities_CardIWRecord) GetCardWithdrawalTime() *timestamppb.Timestamp {
 	if x != nil {
 		return x.xxx_hidden_CardWithdrawalTime
@@ -554,47 +540,27 @@ func (x *Activities_CardIWRecord) GetOdometerAtWithdrawalKm() int32 {
 	return 0
 }
 
-func (x *Activities_CardIWRecord) GetPreviousVrn() string {
+func (x *Activities_CardIWRecord) GetPreviousVehicleInfo() *Activities_CardIWRecord_PreviousVehicleInfo {
 	if x != nil {
-		if x.xxx_hidden_PreviousVrn != nil {
-			return *x.xxx_hidden_PreviousVrn
-		}
-		return ""
-	}
-	return ""
-}
-
-func (x *Activities_CardIWRecord) GetPreviousCardWithdrawalTime() *timestamppb.Timestamp {
-	if x != nil {
-		return x.xxx_hidden_PreviousCardWithdrawalTime
+		return x.xxx_hidden_PreviousVehicleInfo
 	}
 	return nil
 }
 
-func (x *Activities_CardIWRecord) GetManualInputFlag() v1.ManualInputFlag {
+func (x *Activities_CardIWRecord) GetManualInputFlag() bool {
 	if x != nil {
-		if protoimpl.X.Present(&(x.XXX_presence[0]), 11) {
-			return x.xxx_hidden_ManualInputFlag
-		}
+		return x.xxx_hidden_ManualInputFlag
 	}
-	return v1.ManualInputFlag(0)
-}
-
-func (x *Activities_CardIWRecord) GetUnrecognizedManualInputFlag() int32 {
-	if x != nil {
-		return x.xxx_hidden_UnrecognizedManualInputFlag
-	}
-	return 0
+	return false
 }
 
 func (x *Activities_CardIWRecord) SetCardHolderName(v string) {
 	x.xxx_hidden_CardHolderName = &v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 13)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 10)
 }
 
-func (x *Activities_CardIWRecord) SetFullCardNumber(v string) {
-	x.xxx_hidden_FullCardNumber = &v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 13)
+func (x *Activities_CardIWRecord) SetFullCardNumber(v *v1.FullCardNumber) {
+	x.xxx_hidden_FullCardNumber = v
 }
 
 func (x *Activities_CardIWRecord) SetCardExpiryDate(v *timestamppb.Timestamp) {
@@ -607,17 +573,12 @@ func (x *Activities_CardIWRecord) SetCardInsertionTime(v *timestamppb.Timestamp)
 
 func (x *Activities_CardIWRecord) SetOdometerAtInsertionKm(v int32) {
 	x.xxx_hidden_OdometerAtInsertionKm = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 4, 13)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 4, 10)
 }
 
 func (x *Activities_CardIWRecord) SetCardSlotNumber(v v1.CardSlotNumber) {
 	x.xxx_hidden_CardSlotNumber = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 5, 13)
-}
-
-func (x *Activities_CardIWRecord) SetUnrecognizedCardSlotNumber(v int32) {
-	x.xxx_hidden_UnrecognizedCardSlotNumber = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 6, 13)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 5, 10)
 }
 
 func (x *Activities_CardIWRecord) SetCardWithdrawalTime(v *timestamppb.Timestamp) {
@@ -626,26 +587,16 @@ func (x *Activities_CardIWRecord) SetCardWithdrawalTime(v *timestamppb.Timestamp
 
 func (x *Activities_CardIWRecord) SetOdometerAtWithdrawalKm(v int32) {
 	x.xxx_hidden_OdometerAtWithdrawalKm = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 8, 13)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 7, 10)
 }
 
-func (x *Activities_CardIWRecord) SetPreviousVrn(v string) {
-	x.xxx_hidden_PreviousVrn = &v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 9, 13)
+func (x *Activities_CardIWRecord) SetPreviousVehicleInfo(v *Activities_CardIWRecord_PreviousVehicleInfo) {
+	x.xxx_hidden_PreviousVehicleInfo = v
 }
 
-func (x *Activities_CardIWRecord) SetPreviousCardWithdrawalTime(v *timestamppb.Timestamp) {
-	x.xxx_hidden_PreviousCardWithdrawalTime = v
-}
-
-func (x *Activities_CardIWRecord) SetManualInputFlag(v v1.ManualInputFlag) {
+func (x *Activities_CardIWRecord) SetManualInputFlag(v bool) {
 	x.xxx_hidden_ManualInputFlag = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 11, 13)
-}
-
-func (x *Activities_CardIWRecord) SetUnrecognizedManualInputFlag(v int32) {
-	x.xxx_hidden_UnrecognizedManualInputFlag = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 12, 13)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 9, 10)
 }
 
 func (x *Activities_CardIWRecord) HasCardHolderName() bool {
@@ -659,7 +610,7 @@ func (x *Activities_CardIWRecord) HasFullCardNumber() bool {
 	if x == nil {
 		return false
 	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 1)
+	return x.xxx_hidden_FullCardNumber != nil
 }
 
 func (x *Activities_CardIWRecord) HasCardExpiryDate() bool {
@@ -690,13 +641,6 @@ func (x *Activities_CardIWRecord) HasCardSlotNumber() bool {
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 5)
 }
 
-func (x *Activities_CardIWRecord) HasUnrecognizedCardSlotNumber() bool {
-	if x == nil {
-		return false
-	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 6)
-}
-
 func (x *Activities_CardIWRecord) HasCardWithdrawalTime() bool {
 	if x == nil {
 		return false
@@ -708,35 +652,21 @@ func (x *Activities_CardIWRecord) HasOdometerAtWithdrawalKm() bool {
 	if x == nil {
 		return false
 	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 8)
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 7)
 }
 
-func (x *Activities_CardIWRecord) HasPreviousVrn() bool {
+func (x *Activities_CardIWRecord) HasPreviousVehicleInfo() bool {
 	if x == nil {
 		return false
 	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 9)
-}
-
-func (x *Activities_CardIWRecord) HasPreviousCardWithdrawalTime() bool {
-	if x == nil {
-		return false
-	}
-	return x.xxx_hidden_PreviousCardWithdrawalTime != nil
+	return x.xxx_hidden_PreviousVehicleInfo != nil
 }
 
 func (x *Activities_CardIWRecord) HasManualInputFlag() bool {
 	if x == nil {
 		return false
 	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 11)
-}
-
-func (x *Activities_CardIWRecord) HasUnrecognizedManualInputFlag() bool {
-	if x == nil {
-		return false
-	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 12)
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 9)
 }
 
 func (x *Activities_CardIWRecord) ClearCardHolderName() {
@@ -745,7 +675,6 @@ func (x *Activities_CardIWRecord) ClearCardHolderName() {
 }
 
 func (x *Activities_CardIWRecord) ClearFullCardNumber() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 1)
 	x.xxx_hidden_FullCardNumber = nil
 }
 
@@ -767,66 +696,47 @@ func (x *Activities_CardIWRecord) ClearCardSlotNumber() {
 	x.xxx_hidden_CardSlotNumber = v1.CardSlotNumber_CARD_SLOT_NUMBER_UNSPECIFIED
 }
 
-func (x *Activities_CardIWRecord) ClearUnrecognizedCardSlotNumber() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 6)
-	x.xxx_hidden_UnrecognizedCardSlotNumber = 0
-}
-
 func (x *Activities_CardIWRecord) ClearCardWithdrawalTime() {
 	x.xxx_hidden_CardWithdrawalTime = nil
 }
 
 func (x *Activities_CardIWRecord) ClearOdometerAtWithdrawalKm() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 8)
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 7)
 	x.xxx_hidden_OdometerAtWithdrawalKm = 0
 }
 
-func (x *Activities_CardIWRecord) ClearPreviousVrn() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 9)
-	x.xxx_hidden_PreviousVrn = nil
-}
-
-func (x *Activities_CardIWRecord) ClearPreviousCardWithdrawalTime() {
-	x.xxx_hidden_PreviousCardWithdrawalTime = nil
+func (x *Activities_CardIWRecord) ClearPreviousVehicleInfo() {
+	x.xxx_hidden_PreviousVehicleInfo = nil
 }
 
 func (x *Activities_CardIWRecord) ClearManualInputFlag() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 11)
-	x.xxx_hidden_ManualInputFlag = v1.ManualInputFlag_MANUAL_INPUT_FLAG_UNSPECIFIED
-}
-
-func (x *Activities_CardIWRecord) ClearUnrecognizedManualInputFlag() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 12)
-	x.xxx_hidden_UnrecognizedManualInputFlag = 0
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 9)
+	x.xxx_hidden_ManualInputFlag = false
 }
 
 type Activities_CardIWRecord_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
-	// See Data Dictionary, Section 2.83 for `HolderName`.
+	// The name of the card holder.
 	CardHolderName *string
-	// See Data Dictionary, Section 2.73 for `FullCardNumber`.
-	FullCardNumber *string
-	// See Data Dictionary, Section 2.24 for `cardExpiryDate`.
+	// The full card number of the inserted card.
+	FullCardNumber *v1.FullCardNumber
+	// The expiry date of the card.
 	CardExpiryDate *timestamppb.Timestamp
-	// See Data Dictionary, Section 2.162 for `TimeReal`.
+	// The time the card was inserted.
 	CardInsertionTime *timestamppb.Timestamp
-	// See Data Dictionary, Section 2.113 for `OdometerShort`.
+	// The odometer value at the time of card insertion.
 	OdometerAtInsertionKm *int32
-	// See Data Dictionary, Section 2.33 for `CardSlotNumber`.
-	CardSlotNumber             *v1.CardSlotNumber
-	UnrecognizedCardSlotNumber *int32
-	// See Data Dictionary, Section 2.162 for `TimeReal`.
+	// The slot the card was inserted into.
+	CardSlotNumber *v1.CardSlotNumber
+	// The time the card was withdrawn.
 	CardWithdrawalTime *timestamppb.Timestamp
-	// See Data Dictionary, Section 2.113 for `OdometerShort`.
+	// The odometer value at the time of card withdrawal.
 	OdometerAtWithdrawalKm *int32
-	// Part of `PreviousVehicleInfo`. See Data Dictionary, Section 2.118.
-	PreviousVrn *string
-	// Part of `PreviousVehicleInfo`. See Data Dictionary, Section 2.118.
-	PreviousCardWithdrawalTime *timestamppb.Timestamp
-	// See Data Dictionary, Section 2.93 for `ManualInputFlag`.
-	ManualInputFlag             *v1.ManualInputFlag
-	UnrecognizedManualInputFlag *int32
+	// Information about the previous vehicle used.
+	PreviousVehicleInfo *Activities_CardIWRecord_PreviousVehicleInfo
+	// Indicates if manual entries were made.
+	ManualInputFlag *bool
 }
 
 func (b0 Activities_CardIWRecord_builder) Build() *Activities_CardIWRecord {
@@ -834,44 +744,29 @@ func (b0 Activities_CardIWRecord_builder) Build() *Activities_CardIWRecord {
 	b, x := &b0, m0
 	_, _ = b, x
 	if b.CardHolderName != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 13)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 10)
 		x.xxx_hidden_CardHolderName = b.CardHolderName
 	}
-	if b.FullCardNumber != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 13)
-		x.xxx_hidden_FullCardNumber = b.FullCardNumber
-	}
+	x.xxx_hidden_FullCardNumber = b.FullCardNumber
 	x.xxx_hidden_CardExpiryDate = b.CardExpiryDate
 	x.xxx_hidden_CardInsertionTime = b.CardInsertionTime
 	if b.OdometerAtInsertionKm != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 4, 13)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 4, 10)
 		x.xxx_hidden_OdometerAtInsertionKm = *b.OdometerAtInsertionKm
 	}
 	if b.CardSlotNumber != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 5, 13)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 5, 10)
 		x.xxx_hidden_CardSlotNumber = *b.CardSlotNumber
-	}
-	if b.UnrecognizedCardSlotNumber != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 6, 13)
-		x.xxx_hidden_UnrecognizedCardSlotNumber = *b.UnrecognizedCardSlotNumber
 	}
 	x.xxx_hidden_CardWithdrawalTime = b.CardWithdrawalTime
 	if b.OdometerAtWithdrawalKm != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 8, 13)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 7, 10)
 		x.xxx_hidden_OdometerAtWithdrawalKm = *b.OdometerAtWithdrawalKm
 	}
-	if b.PreviousVrn != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 9, 13)
-		x.xxx_hidden_PreviousVrn = b.PreviousVrn
-	}
-	x.xxx_hidden_PreviousCardWithdrawalTime = b.PreviousCardWithdrawalTime
+	x.xxx_hidden_PreviousVehicleInfo = b.PreviousVehicleInfo
 	if b.ManualInputFlag != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 11, 13)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 9, 10)
 		x.xxx_hidden_ManualInputFlag = *b.ManualInputFlag
-	}
-	if b.UnrecognizedManualInputFlag != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 12, 13)
-		x.xxx_hidden_UnrecognizedManualInputFlag = *b.UnrecognizedManualInputFlag
 	}
 	return m0
 }
@@ -881,20 +776,16 @@ func (b0 Activities_CardIWRecord_builder) Build() *Activities_CardIWRecord {
 // Corresponds to the `ActivityChangeInfo` data type.
 // See Data Dictionary, Section 2.1.
 type Activities_ActivityChange struct {
-	state                                protoimpl.MessageState `protogen:"opaque.v1"`
-	xxx_hidden_Slot                      v1.CardSlotNumber      `protobuf:"varint,1,opt,name=slot,enum=wayplatform.connect.tachograph.datadictionary.v1.CardSlotNumber"`
-	xxx_hidden_UnrecognizedSlot          int32                  `protobuf:"varint,2,opt,name=unrecognized_slot,json=unrecognizedSlot"`
-	xxx_hidden_DrivingStatus             v1.DrivingStatus       `protobuf:"varint,3,opt,name=driving_status,json=drivingStatus,enum=wayplatform.connect.tachograph.datadictionary.v1.DrivingStatus"`
-	xxx_hidden_UnrecognizedDrivingStatus int32                  `protobuf:"varint,4,opt,name=unrecognized_driving_status,json=unrecognizedDrivingStatus"`
-	xxx_hidden_CardStatus                v1.CardStatus          `protobuf:"varint,5,opt,name=card_status,json=cardStatus,enum=wayplatform.connect.tachograph.datadictionary.v1.CardStatus"`
-	xxx_hidden_UnrecognizedCardStatus    int32                  `protobuf:"varint,6,opt,name=unrecognized_card_status,json=unrecognizedCardStatus"`
-	xxx_hidden_Activity                  v1.DriverActivityValue `protobuf:"varint,7,opt,name=activity,enum=wayplatform.connect.tachograph.datadictionary.v1.DriverActivityValue"`
-	xxx_hidden_UnrecognizedActivity      int32                  `protobuf:"varint,8,opt,name=unrecognized_activity,json=unrecognizedActivity"`
-	xxx_hidden_TimeOfChangeMinutes       int32                  `protobuf:"varint,9,opt,name=time_of_change_minutes,json=timeOfChangeMinutes"`
-	XXX_raceDetectHookData               protoimpl.RaceDetectHookData
-	XXX_presence                         [1]uint32
-	unknownFields                        protoimpl.UnknownFields
-	sizeCache                            protoimpl.SizeCache
+	state                          protoimpl.MessageState `protogen:"opaque.v1"`
+	xxx_hidden_Slot                v1.CardSlotNumber      `protobuf:"varint,1,opt,name=slot,enum=wayplatform.connect.tachograph.datadictionary.v1.CardSlotNumber"`
+	xxx_hidden_DrivingStatus       v1.DrivingStatus       `protobuf:"varint,3,opt,name=driving_status,json=drivingStatus,enum=wayplatform.connect.tachograph.datadictionary.v1.DrivingStatus"`
+	xxx_hidden_Inserted            bool                   `protobuf:"varint,5,opt,name=inserted"`
+	xxx_hidden_Activity            v1.DriverActivityValue `protobuf:"varint,7,opt,name=activity,enum=wayplatform.connect.tachograph.datadictionary.v1.DriverActivityValue"`
+	xxx_hidden_TimeOfChangeMinutes int32                  `protobuf:"varint,9,opt,name=time_of_change_minutes,json=timeOfChangeMinutes"`
+	XXX_raceDetectHookData         protoimpl.RaceDetectHookData
+	XXX_presence                   [1]uint32
+	unknownFields                  protoimpl.UnknownFields
+	sizeCache                      protoimpl.SizeCache
 }
 
 func (x *Activities_ActivityChange) Reset() {
@@ -931,59 +822,29 @@ func (x *Activities_ActivityChange) GetSlot() v1.CardSlotNumber {
 	return v1.CardSlotNumber(0)
 }
 
-func (x *Activities_ActivityChange) GetUnrecognizedSlot() int32 {
-	if x != nil {
-		return x.xxx_hidden_UnrecognizedSlot
-	}
-	return 0
-}
-
 func (x *Activities_ActivityChange) GetDrivingStatus() v1.DrivingStatus {
 	if x != nil {
-		if protoimpl.X.Present(&(x.XXX_presence[0]), 2) {
+		if protoimpl.X.Present(&(x.XXX_presence[0]), 1) {
 			return x.xxx_hidden_DrivingStatus
 		}
 	}
 	return v1.DrivingStatus(0)
 }
 
-func (x *Activities_ActivityChange) GetUnrecognizedDrivingStatus() int32 {
+func (x *Activities_ActivityChange) GetInserted() bool {
 	if x != nil {
-		return x.xxx_hidden_UnrecognizedDrivingStatus
+		return x.xxx_hidden_Inserted
 	}
-	return 0
-}
-
-func (x *Activities_ActivityChange) GetCardStatus() v1.CardStatus {
-	if x != nil {
-		if protoimpl.X.Present(&(x.XXX_presence[0]), 4) {
-			return x.xxx_hidden_CardStatus
-		}
-	}
-	return v1.CardStatus(0)
-}
-
-func (x *Activities_ActivityChange) GetUnrecognizedCardStatus() int32 {
-	if x != nil {
-		return x.xxx_hidden_UnrecognizedCardStatus
-	}
-	return 0
+	return false
 }
 
 func (x *Activities_ActivityChange) GetActivity() v1.DriverActivityValue {
 	if x != nil {
-		if protoimpl.X.Present(&(x.XXX_presence[0]), 6) {
+		if protoimpl.X.Present(&(x.XXX_presence[0]), 3) {
 			return x.xxx_hidden_Activity
 		}
 	}
 	return v1.DriverActivityValue(0)
-}
-
-func (x *Activities_ActivityChange) GetUnrecognizedActivity() int32 {
-	if x != nil {
-		return x.xxx_hidden_UnrecognizedActivity
-	}
-	return 0
 }
 
 func (x *Activities_ActivityChange) GetTimeOfChangeMinutes() int32 {
@@ -995,47 +856,27 @@ func (x *Activities_ActivityChange) GetTimeOfChangeMinutes() int32 {
 
 func (x *Activities_ActivityChange) SetSlot(v v1.CardSlotNumber) {
 	x.xxx_hidden_Slot = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 9)
-}
-
-func (x *Activities_ActivityChange) SetUnrecognizedSlot(v int32) {
-	x.xxx_hidden_UnrecognizedSlot = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 9)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 5)
 }
 
 func (x *Activities_ActivityChange) SetDrivingStatus(v v1.DrivingStatus) {
 	x.xxx_hidden_DrivingStatus = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 9)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 5)
 }
 
-func (x *Activities_ActivityChange) SetUnrecognizedDrivingStatus(v int32) {
-	x.xxx_hidden_UnrecognizedDrivingStatus = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 3, 9)
-}
-
-func (x *Activities_ActivityChange) SetCardStatus(v v1.CardStatus) {
-	x.xxx_hidden_CardStatus = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 4, 9)
-}
-
-func (x *Activities_ActivityChange) SetUnrecognizedCardStatus(v int32) {
-	x.xxx_hidden_UnrecognizedCardStatus = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 5, 9)
+func (x *Activities_ActivityChange) SetInserted(v bool) {
+	x.xxx_hidden_Inserted = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 5)
 }
 
 func (x *Activities_ActivityChange) SetActivity(v v1.DriverActivityValue) {
 	x.xxx_hidden_Activity = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 6, 9)
-}
-
-func (x *Activities_ActivityChange) SetUnrecognizedActivity(v int32) {
-	x.xxx_hidden_UnrecognizedActivity = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 7, 9)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 3, 5)
 }
 
 func (x *Activities_ActivityChange) SetTimeOfChangeMinutes(v int32) {
 	x.xxx_hidden_TimeOfChangeMinutes = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 8, 9)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 4, 5)
 }
 
 func (x *Activities_ActivityChange) HasSlot() bool {
@@ -1045,60 +886,32 @@ func (x *Activities_ActivityChange) HasSlot() bool {
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 0)
 }
 
-func (x *Activities_ActivityChange) HasUnrecognizedSlot() bool {
+func (x *Activities_ActivityChange) HasDrivingStatus() bool {
 	if x == nil {
 		return false
 	}
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 1)
 }
 
-func (x *Activities_ActivityChange) HasDrivingStatus() bool {
+func (x *Activities_ActivityChange) HasInserted() bool {
 	if x == nil {
 		return false
 	}
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 2)
 }
 
-func (x *Activities_ActivityChange) HasUnrecognizedDrivingStatus() bool {
+func (x *Activities_ActivityChange) HasActivity() bool {
 	if x == nil {
 		return false
 	}
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 3)
 }
 
-func (x *Activities_ActivityChange) HasCardStatus() bool {
-	if x == nil {
-		return false
-	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 4)
-}
-
-func (x *Activities_ActivityChange) HasUnrecognizedCardStatus() bool {
-	if x == nil {
-		return false
-	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 5)
-}
-
-func (x *Activities_ActivityChange) HasActivity() bool {
-	if x == nil {
-		return false
-	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 6)
-}
-
-func (x *Activities_ActivityChange) HasUnrecognizedActivity() bool {
-	if x == nil {
-		return false
-	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 7)
-}
-
 func (x *Activities_ActivityChange) HasTimeOfChangeMinutes() bool {
 	if x == nil {
 		return false
 	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 8)
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 4)
 }
 
 func (x *Activities_ActivityChange) ClearSlot() {
@@ -1106,43 +919,23 @@ func (x *Activities_ActivityChange) ClearSlot() {
 	x.xxx_hidden_Slot = v1.CardSlotNumber_CARD_SLOT_NUMBER_UNSPECIFIED
 }
 
-func (x *Activities_ActivityChange) ClearUnrecognizedSlot() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 1)
-	x.xxx_hidden_UnrecognizedSlot = 0
-}
-
 func (x *Activities_ActivityChange) ClearDrivingStatus() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 2)
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 1)
 	x.xxx_hidden_DrivingStatus = v1.DrivingStatus_DRIVING_STATUS_UNSPECIFIED
 }
 
-func (x *Activities_ActivityChange) ClearUnrecognizedDrivingStatus() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 3)
-	x.xxx_hidden_UnrecognizedDrivingStatus = 0
-}
-
-func (x *Activities_ActivityChange) ClearCardStatus() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 4)
-	x.xxx_hidden_CardStatus = v1.CardStatus_CARD_STATUS_UNSPECIFIED
-}
-
-func (x *Activities_ActivityChange) ClearUnrecognizedCardStatus() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 5)
-	x.xxx_hidden_UnrecognizedCardStatus = 0
+func (x *Activities_ActivityChange) ClearInserted() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 2)
+	x.xxx_hidden_Inserted = false
 }
 
 func (x *Activities_ActivityChange) ClearActivity() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 6)
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 3)
 	x.xxx_hidden_Activity = v1.DriverActivityValue_DRIVER_ACTIVITY_UNSPECIFIED
 }
 
-func (x *Activities_ActivityChange) ClearUnrecognizedActivity() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 7)
-	x.xxx_hidden_UnrecognizedActivity = 0
-}
-
 func (x *Activities_ActivityChange) ClearTimeOfChangeMinutes() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 8)
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 4)
 	x.xxx_hidden_TimeOfChangeMinutes = 0
 }
 
@@ -1150,17 +943,13 @@ type Activities_ActivityChange_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
 	// Slot of the driver/co-driver.
-	Slot             *v1.CardSlotNumber
-	UnrecognizedSlot *int32
+	Slot *v1.CardSlotNumber
 	// Driving status (single or crew).
-	DrivingStatus             *v1.DrivingStatus
-	UnrecognizedDrivingStatus *int32
-	// Card status (inserted or not inserted).
-	CardStatus             *v1.CardStatus
-	UnrecognizedCardStatus *int32
+	DrivingStatus *v1.DrivingStatus
+	// Indicates if a card is inserted.
+	Inserted *bool
 	// Driver's activity (break/rest, availability, work, driving).
-	Activity             *v1.DriverActivityValue
-	UnrecognizedActivity *int32
+	Activity *v1.DriverActivityValue
 	// Time of the change in minutes since 00:00.
 	TimeOfChangeMinutes *int32
 }
@@ -1170,39 +959,23 @@ func (b0 Activities_ActivityChange_builder) Build() *Activities_ActivityChange {
 	b, x := &b0, m0
 	_, _ = b, x
 	if b.Slot != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 9)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 5)
 		x.xxx_hidden_Slot = *b.Slot
 	}
-	if b.UnrecognizedSlot != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 9)
-		x.xxx_hidden_UnrecognizedSlot = *b.UnrecognizedSlot
-	}
 	if b.DrivingStatus != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 9)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 5)
 		x.xxx_hidden_DrivingStatus = *b.DrivingStatus
 	}
-	if b.UnrecognizedDrivingStatus != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 3, 9)
-		x.xxx_hidden_UnrecognizedDrivingStatus = *b.UnrecognizedDrivingStatus
-	}
-	if b.CardStatus != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 4, 9)
-		x.xxx_hidden_CardStatus = *b.CardStatus
-	}
-	if b.UnrecognizedCardStatus != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 5, 9)
-		x.xxx_hidden_UnrecognizedCardStatus = *b.UnrecognizedCardStatus
+	if b.Inserted != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 5)
+		x.xxx_hidden_Inserted = *b.Inserted
 	}
 	if b.Activity != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 6, 9)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 3, 5)
 		x.xxx_hidden_Activity = *b.Activity
 	}
-	if b.UnrecognizedActivity != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 7, 9)
-		x.xxx_hidden_UnrecognizedActivity = *b.UnrecognizedActivity
-	}
 	if b.TimeOfChangeMinutes != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 8, 9)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 4, 5)
 		x.xxx_hidden_TimeOfChangeMinutes = *b.TimeOfChangeMinutes
 	}
 	return m0
@@ -1213,18 +986,16 @@ func (b0 Activities_ActivityChange_builder) Build() *Activities_ActivityChange {
 // Corresponds to the `PlaceRecord` data type.
 // See Data Dictionary, Section 2.117.
 type Activities_PlaceRecord struct {
-	state                            protoimpl.MessageState      `protogen:"opaque.v1"`
-	xxx_hidden_EntryTime             *timestamppb.Timestamp      `protobuf:"bytes,1,opt,name=entry_time,json=entryTime"`
-	xxx_hidden_EntryType             v1.EntryTypeDailyWorkPeriod `protobuf:"varint,2,opt,name=entry_type,json=entryType,enum=wayplatform.connect.tachograph.datadictionary.v1.EntryTypeDailyWorkPeriod"`
-	xxx_hidden_UnrecognizedEntryType int32                       `protobuf:"varint,3,opt,name=unrecognized_entry_type,json=unrecognizedEntryType"`
-	xxx_hidden_Country               v1.NationNumeric            `protobuf:"varint,4,opt,name=country,enum=wayplatform.connect.tachograph.datadictionary.v1.NationNumeric"`
-	xxx_hidden_UnrecognizedCountry   int32                       `protobuf:"varint,5,opt,name=unrecognized_country,json=unrecognizedCountry"`
-	xxx_hidden_Region                int32                       `protobuf:"varint,6,opt,name=region"`
-	xxx_hidden_OdometerKm            int32                       `protobuf:"varint,7,opt,name=odometer_km,json=odometerKm"`
-	XXX_raceDetectHookData           protoimpl.RaceDetectHookData
-	XXX_presence                     [1]uint32
-	unknownFields                    protoimpl.UnknownFields
-	sizeCache                        protoimpl.SizeCache
+	state                  protoimpl.MessageState      `protogen:"opaque.v1"`
+	xxx_hidden_EntryTime   *timestamppb.Timestamp      `protobuf:"bytes,1,opt,name=entry_time,json=entryTime"`
+	xxx_hidden_EntryType   v1.EntryTypeDailyWorkPeriod `protobuf:"varint,2,opt,name=entry_type,json=entryType,enum=wayplatform.connect.tachograph.datadictionary.v1.EntryTypeDailyWorkPeriod"`
+	xxx_hidden_Country     v1.NationNumeric            `protobuf:"varint,4,opt,name=country,enum=wayplatform.connect.tachograph.datadictionary.v1.NationNumeric"`
+	xxx_hidden_Region      int32                       `protobuf:"varint,6,opt,name=region"`
+	xxx_hidden_OdometerKm  int32                       `protobuf:"varint,7,opt,name=odometer_km,json=odometerKm"`
+	XXX_raceDetectHookData protoimpl.RaceDetectHookData
+	XXX_presence           [1]uint32
+	unknownFields          protoimpl.UnknownFields
+	sizeCache              protoimpl.SizeCache
 }
 
 func (x *Activities_PlaceRecord) Reset() {
@@ -1268,27 +1039,13 @@ func (x *Activities_PlaceRecord) GetEntryType() v1.EntryTypeDailyWorkPeriod {
 	return v1.EntryTypeDailyWorkPeriod(0)
 }
 
-func (x *Activities_PlaceRecord) GetUnrecognizedEntryType() int32 {
-	if x != nil {
-		return x.xxx_hidden_UnrecognizedEntryType
-	}
-	return 0
-}
-
 func (x *Activities_PlaceRecord) GetCountry() v1.NationNumeric {
 	if x != nil {
-		if protoimpl.X.Present(&(x.XXX_presence[0]), 3) {
+		if protoimpl.X.Present(&(x.XXX_presence[0]), 2) {
 			return x.xxx_hidden_Country
 		}
 	}
 	return v1.NationNumeric(0)
-}
-
-func (x *Activities_PlaceRecord) GetUnrecognizedCountry() int32 {
-	if x != nil {
-		return x.xxx_hidden_UnrecognizedCountry
-	}
-	return 0
 }
 
 func (x *Activities_PlaceRecord) GetRegion() int32 {
@@ -1311,32 +1068,22 @@ func (x *Activities_PlaceRecord) SetEntryTime(v *timestamppb.Timestamp) {
 
 func (x *Activities_PlaceRecord) SetEntryType(v v1.EntryTypeDailyWorkPeriod) {
 	x.xxx_hidden_EntryType = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 7)
-}
-
-func (x *Activities_PlaceRecord) SetUnrecognizedEntryType(v int32) {
-	x.xxx_hidden_UnrecognizedEntryType = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 7)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 5)
 }
 
 func (x *Activities_PlaceRecord) SetCountry(v v1.NationNumeric) {
 	x.xxx_hidden_Country = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 3, 7)
-}
-
-func (x *Activities_PlaceRecord) SetUnrecognizedCountry(v int32) {
-	x.xxx_hidden_UnrecognizedCountry = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 4, 7)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 5)
 }
 
 func (x *Activities_PlaceRecord) SetRegion(v int32) {
 	x.xxx_hidden_Region = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 5, 7)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 3, 5)
 }
 
 func (x *Activities_PlaceRecord) SetOdometerKm(v int32) {
 	x.xxx_hidden_OdometerKm = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 6, 7)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 4, 5)
 }
 
 func (x *Activities_PlaceRecord) HasEntryTime() bool {
@@ -1353,39 +1100,25 @@ func (x *Activities_PlaceRecord) HasEntryType() bool {
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 1)
 }
 
-func (x *Activities_PlaceRecord) HasUnrecognizedEntryType() bool {
+func (x *Activities_PlaceRecord) HasCountry() bool {
 	if x == nil {
 		return false
 	}
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 2)
 }
 
-func (x *Activities_PlaceRecord) HasCountry() bool {
+func (x *Activities_PlaceRecord) HasRegion() bool {
 	if x == nil {
 		return false
 	}
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 3)
 }
 
-func (x *Activities_PlaceRecord) HasUnrecognizedCountry() bool {
-	if x == nil {
-		return false
-	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 4)
-}
-
-func (x *Activities_PlaceRecord) HasRegion() bool {
-	if x == nil {
-		return false
-	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 5)
-}
-
 func (x *Activities_PlaceRecord) HasOdometerKm() bool {
 	if x == nil {
 		return false
 	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 6)
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 4)
 }
 
 func (x *Activities_PlaceRecord) ClearEntryTime() {
@@ -1397,45 +1130,33 @@ func (x *Activities_PlaceRecord) ClearEntryType() {
 	x.xxx_hidden_EntryType = v1.EntryTypeDailyWorkPeriod_ENTRY_TYPE_DAILY_WORK_PERIOD_UNSPECIFIED
 }
 
-func (x *Activities_PlaceRecord) ClearUnrecognizedEntryType() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 2)
-	x.xxx_hidden_UnrecognizedEntryType = 0
-}
-
 func (x *Activities_PlaceRecord) ClearCountry() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 3)
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 2)
 	x.xxx_hidden_Country = v1.NationNumeric_NATION_NUMERIC_UNSPECIFIED
 }
 
-func (x *Activities_PlaceRecord) ClearUnrecognizedCountry() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 4)
-	x.xxx_hidden_UnrecognizedCountry = 0
-}
-
 func (x *Activities_PlaceRecord) ClearRegion() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 5)
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 3)
 	x.xxx_hidden_Region = 0
 }
 
 func (x *Activities_PlaceRecord) ClearOdometerKm() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 6)
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 4)
 	x.xxx_hidden_OdometerKm = 0
 }
 
 type Activities_PlaceRecord_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
-	// Time of the entry. See DD Section 2.162 for `TimeReal`.
+	// Time of the entry.
 	EntryTime *timestamppb.Timestamp
-	// Type of entry (begin or end). See DD Section 2.66 for `EntryTypeDailyWorkPeriod`.
-	EntryType             *v1.EntryTypeDailyWorkPeriod
-	UnrecognizedEntryType *int32
-	// Country code. See DD Section 2.101 for `NationNumeric`.
-	Country             *v1.NationNumeric
-	UnrecognizedCountry *int32
-	// Region code. See DD Section 2.122 for `RegionNumeric`.
+	// Type of entry (begin or end).
+	EntryType *v1.EntryTypeDailyWorkPeriod
+	// Country code.
+	Country *v1.NationNumeric
+	// Region code.
 	Region *int32
-	// Odometer value at the time of entry. See DD Section 2.113 for `OdometerShort`.
+	// Odometer value at the time of entry.
 	OdometerKm *int32
 }
 
@@ -1445,27 +1166,19 @@ func (b0 Activities_PlaceRecord_builder) Build() *Activities_PlaceRecord {
 	_, _ = b, x
 	x.xxx_hidden_EntryTime = b.EntryTime
 	if b.EntryType != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 7)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 5)
 		x.xxx_hidden_EntryType = *b.EntryType
 	}
-	if b.UnrecognizedEntryType != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 7)
-		x.xxx_hidden_UnrecognizedEntryType = *b.UnrecognizedEntryType
-	}
 	if b.Country != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 3, 7)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 5)
 		x.xxx_hidden_Country = *b.Country
 	}
-	if b.UnrecognizedCountry != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 4, 7)
-		x.xxx_hidden_UnrecognizedCountry = *b.UnrecognizedCountry
-	}
 	if b.Region != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 5, 7)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 3, 5)
 		x.xxx_hidden_Region = *b.Region
 	}
 	if b.OdometerKm != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 6, 7)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 4, 5)
 		x.xxx_hidden_OdometerKm = *b.OdometerKm
 	}
 	return m0
@@ -1475,17 +1188,16 @@ func (b0 Activities_PlaceRecord_builder) Build() *Activities_PlaceRecord {
 //
 // Corresponds to `GNSSPlaceRecord` (DD 2.80) or `GNSSPlaceAuthRecord` (DD 2.79c).
 type Activities_GnssRecord struct {
-	state                                       protoimpl.MessageState          `protogen:"opaque.v1"`
-	xxx_hidden_Timestamp                        *timestamppb.Timestamp          `protobuf:"bytes,1,opt,name=timestamp"`
-	xxx_hidden_GnssAccuracy                     int32                           `protobuf:"varint,2,opt,name=gnss_accuracy,json=gnssAccuracy"`
-	xxx_hidden_Longitude                        int32                           `protobuf:"zigzag32,3,opt,name=longitude"`
-	xxx_hidden_Latitude                         int32                           `protobuf:"zigzag32,4,opt,name=latitude"`
-	xxx_hidden_AuthenticationStatus             v1.PositionAuthenticationStatus `protobuf:"varint,5,opt,name=authentication_status,json=authenticationStatus,enum=wayplatform.connect.tachograph.datadictionary.v1.PositionAuthenticationStatus"`
-	xxx_hidden_UnrecognizedAuthenticationStatus int32                           `protobuf:"varint,6,opt,name=unrecognized_authentication_status,json=unrecognizedAuthenticationStatus"`
-	XXX_raceDetectHookData                      protoimpl.RaceDetectHookData
-	XXX_presence                                [1]uint32
-	unknownFields                               protoimpl.UnknownFields
-	sizeCache                                   protoimpl.SizeCache
+	state                           protoimpl.MessageState          `protogen:"opaque.v1"`
+	xxx_hidden_Timestamp            *timestamppb.Timestamp          `protobuf:"bytes,1,opt,name=timestamp"`
+	xxx_hidden_GnssAccuracy         int32                           `protobuf:"varint,2,opt,name=gnss_accuracy,json=gnssAccuracy"`
+	xxx_hidden_Longitude            int32                           `protobuf:"zigzag32,3,opt,name=longitude"`
+	xxx_hidden_Latitude             int32                           `protobuf:"zigzag32,4,opt,name=latitude"`
+	xxx_hidden_AuthenticationStatus v1.PositionAuthenticationStatus `protobuf:"varint,5,opt,name=authentication_status,json=authenticationStatus,enum=wayplatform.connect.tachograph.datadictionary.v1.PositionAuthenticationStatus"`
+	XXX_raceDetectHookData          protoimpl.RaceDetectHookData
+	XXX_presence                    [1]uint32
+	unknownFields                   protoimpl.UnknownFields
+	sizeCache                       protoimpl.SizeCache
 }
 
 func (x *Activities_GnssRecord) Reset() {
@@ -1550,40 +1262,28 @@ func (x *Activities_GnssRecord) GetAuthenticationStatus() v1.PositionAuthenticat
 	return v1.PositionAuthenticationStatus(0)
 }
 
-func (x *Activities_GnssRecord) GetUnrecognizedAuthenticationStatus() int32 {
-	if x != nil {
-		return x.xxx_hidden_UnrecognizedAuthenticationStatus
-	}
-	return 0
-}
-
 func (x *Activities_GnssRecord) SetTimestamp(v *timestamppb.Timestamp) {
 	x.xxx_hidden_Timestamp = v
 }
 
 func (x *Activities_GnssRecord) SetGnssAccuracy(v int32) {
 	x.xxx_hidden_GnssAccuracy = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 6)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 5)
 }
 
 func (x *Activities_GnssRecord) SetLongitude(v int32) {
 	x.xxx_hidden_Longitude = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 6)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 5)
 }
 
 func (x *Activities_GnssRecord) SetLatitude(v int32) {
 	x.xxx_hidden_Latitude = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 3, 6)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 3, 5)
 }
 
 func (x *Activities_GnssRecord) SetAuthenticationStatus(v v1.PositionAuthenticationStatus) {
 	x.xxx_hidden_AuthenticationStatus = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 4, 6)
-}
-
-func (x *Activities_GnssRecord) SetUnrecognizedAuthenticationStatus(v int32) {
-	x.xxx_hidden_UnrecognizedAuthenticationStatus = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 5, 6)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 4, 5)
 }
 
 func (x *Activities_GnssRecord) HasTimestamp() bool {
@@ -1621,13 +1321,6 @@ func (x *Activities_GnssRecord) HasAuthenticationStatus() bool {
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 4)
 }
 
-func (x *Activities_GnssRecord) HasUnrecognizedAuthenticationStatus() bool {
-	if x == nil {
-		return false
-	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 5)
-}
-
 func (x *Activities_GnssRecord) ClearTimestamp() {
 	x.xxx_hidden_Timestamp = nil
 }
@@ -1652,26 +1345,19 @@ func (x *Activities_GnssRecord) ClearAuthenticationStatus() {
 	x.xxx_hidden_AuthenticationStatus = v1.PositionAuthenticationStatus_POSITION_AUTHENTICATION_STATUS_UNSPECIFIED
 }
 
-func (x *Activities_GnssRecord) ClearUnrecognizedAuthenticationStatus() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 5)
-	x.xxx_hidden_UnrecognizedAuthenticationStatus = 0
-}
-
 type Activities_GnssRecord_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
-	// Timestamp of the position fix. See DD Section 2.162 for `TimeReal`.
+	// Timestamp of the position fix.
 	Timestamp *timestamppb.Timestamp
-	// Accuracy of the GNSS fix. See DD Section 2.77 for `GNSSAccuracy`.
+	// Accuracy of the GNSS fix.
 	GnssAccuracy *int32
-	// See Data Dictionary, Section 2.76 for `GeoCoordinates`.
+	// Longitude.
 	Longitude *int32
-	// See Data Dictionary, Section 2.76 for `GeoCoordinates`.
+	// Latitude.
 	Latitude *int32
 	// For Gen2v2+, indicates the authentication status of the position.
-	// See Data Dictionary, Section 2.117a for `PositionAuthenticationStatus`.
-	AuthenticationStatus             *v1.PositionAuthenticationStatus
-	UnrecognizedAuthenticationStatus *int32
+	AuthenticationStatus *v1.PositionAuthenticationStatus
 }
 
 func (b0 Activities_GnssRecord_builder) Build() *Activities_GnssRecord {
@@ -1680,24 +1366,20 @@ func (b0 Activities_GnssRecord_builder) Build() *Activities_GnssRecord {
 	_, _ = b, x
 	x.xxx_hidden_Timestamp = b.Timestamp
 	if b.GnssAccuracy != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 6)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 5)
 		x.xxx_hidden_GnssAccuracy = *b.GnssAccuracy
 	}
 	if b.Longitude != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 6)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 5)
 		x.xxx_hidden_Longitude = *b.Longitude
 	}
 	if b.Latitude != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 3, 6)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 3, 5)
 		x.xxx_hidden_Latitude = *b.Latitude
 	}
 	if b.AuthenticationStatus != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 4, 6)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 4, 5)
 		x.xxx_hidden_AuthenticationStatus = *b.AuthenticationStatus
-	}
-	if b.UnrecognizedAuthenticationStatus != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 5, 6)
-		x.xxx_hidden_UnrecognizedAuthenticationStatus = *b.UnrecognizedAuthenticationStatus
 	}
 	return m0
 }
@@ -1707,14 +1389,13 @@ func (b0 Activities_GnssRecord_builder) Build() *Activities_GnssRecord {
 // Corresponds to the `SpecificConditionRecord` data type.
 // See Data Dictionary, Section 2.152.
 type Activities_SpecificConditionRecord struct {
-	state                                        protoimpl.MessageState   `protogen:"opaque.v1"`
-	xxx_hidden_EntryTime                         *timestamppb.Timestamp   `protobuf:"bytes,1,opt,name=entry_time,json=entryTime"`
-	xxx_hidden_SpecificConditionType             v1.SpecificConditionType `protobuf:"varint,2,opt,name=specific_condition_type,json=specificConditionType,enum=wayplatform.connect.tachograph.datadictionary.v1.SpecificConditionType"`
-	xxx_hidden_UnrecognizedSpecificConditionType int32                    `protobuf:"varint,3,opt,name=unrecognized_specific_condition_type,json=unrecognizedSpecificConditionType"`
-	XXX_raceDetectHookData                       protoimpl.RaceDetectHookData
-	XXX_presence                                 [1]uint32
-	unknownFields                                protoimpl.UnknownFields
-	sizeCache                                    protoimpl.SizeCache
+	state                            protoimpl.MessageState   `protogen:"opaque.v1"`
+	xxx_hidden_EntryTime             *timestamppb.Timestamp   `protobuf:"bytes,1,opt,name=entry_time,json=entryTime"`
+	xxx_hidden_SpecificConditionType v1.SpecificConditionType `protobuf:"varint,2,opt,name=specific_condition_type,json=specificConditionType,enum=wayplatform.connect.tachograph.datadictionary.v1.SpecificConditionType"`
+	XXX_raceDetectHookData           protoimpl.RaceDetectHookData
+	XXX_presence                     [1]uint32
+	unknownFields                    protoimpl.UnknownFields
+	sizeCache                        protoimpl.SizeCache
 }
 
 func (x *Activities_SpecificConditionRecord) Reset() {
@@ -1758,25 +1439,13 @@ func (x *Activities_SpecificConditionRecord) GetSpecificConditionType() v1.Speci
 	return v1.SpecificConditionType(0)
 }
 
-func (x *Activities_SpecificConditionRecord) GetUnrecognizedSpecificConditionType() int32 {
-	if x != nil {
-		return x.xxx_hidden_UnrecognizedSpecificConditionType
-	}
-	return 0
-}
-
 func (x *Activities_SpecificConditionRecord) SetEntryTime(v *timestamppb.Timestamp) {
 	x.xxx_hidden_EntryTime = v
 }
 
 func (x *Activities_SpecificConditionRecord) SetSpecificConditionType(v v1.SpecificConditionType) {
 	x.xxx_hidden_SpecificConditionType = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 3)
-}
-
-func (x *Activities_SpecificConditionRecord) SetUnrecognizedSpecificConditionType(v int32) {
-	x.xxx_hidden_UnrecognizedSpecificConditionType = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 3)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 2)
 }
 
 func (x *Activities_SpecificConditionRecord) HasEntryTime() bool {
@@ -1793,13 +1462,6 @@ func (x *Activities_SpecificConditionRecord) HasSpecificConditionType() bool {
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 1)
 }
 
-func (x *Activities_SpecificConditionRecord) HasUnrecognizedSpecificConditionType() bool {
-	if x == nil {
-		return false
-	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 2)
-}
-
 func (x *Activities_SpecificConditionRecord) ClearEntryTime() {
 	x.xxx_hidden_EntryTime = nil
 }
@@ -1809,19 +1471,13 @@ func (x *Activities_SpecificConditionRecord) ClearSpecificConditionType() {
 	x.xxx_hidden_SpecificConditionType = v1.SpecificConditionType_SPECIFIC_CONDITION_TYPE_UNSPECIFIED
 }
 
-func (x *Activities_SpecificConditionRecord) ClearUnrecognizedSpecificConditionType() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 2)
-	x.xxx_hidden_UnrecognizedSpecificConditionType = 0
-}
-
 type Activities_SpecificConditionRecord_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
-	// Time of the entry. See DD Section 2.162 for `TimeReal`.
+	// Time of the entry.
 	EntryTime *timestamppb.Timestamp
-	// Type of specific condition. See DD Section 2.154 for `SpecificConditionType`.
-	SpecificConditionType             *v1.SpecificConditionType
-	UnrecognizedSpecificConditionType *int32
+	// Type of specific condition.
+	SpecificConditionType *v1.SpecificConditionType
 }
 
 func (b0 Activities_SpecificConditionRecord_builder) Build() *Activities_SpecificConditionRecord {
@@ -1830,12 +1486,8 @@ func (b0 Activities_SpecificConditionRecord_builder) Build() *Activities_Specifi
 	_, _ = b, x
 	x.xxx_hidden_EntryTime = b.EntryTime
 	if b.SpecificConditionType != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 3)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 2)
 		x.xxx_hidden_SpecificConditionType = *b.SpecificConditionType
-	}
-	if b.UnrecognizedSpecificConditionType != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 3)
-		x.xxx_hidden_UnrecognizedSpecificConditionType = *b.UnrecognizedSpecificConditionType
 	}
 	return m0
 }
@@ -1845,19 +1497,17 @@ func (b0 Activities_SpecificConditionRecord_builder) Build() *Activities_Specifi
 // Corresponds to the `VuBorderCrossingRecord` data type.
 // See Data Dictionary, Section 2.203a.
 type Activities_BorderCrossingRecord struct {
-	state                                 protoimpl.MessageState `protogen:"opaque.v1"`
-	xxx_hidden_FullCardNumber             *string                `protobuf:"bytes,1,opt,name=full_card_number,json=fullCardNumber"`
-	xxx_hidden_CardGeneration             Generation             `protobuf:"varint,2,opt,name=card_generation,json=cardGeneration,enum=wayplatform.connect.tachograph.vu.v1.Generation"`
-	xxx_hidden_CountryLeft                v1.NationNumeric       `protobuf:"varint,3,opt,name=country_left,json=countryLeft,enum=wayplatform.connect.tachograph.datadictionary.v1.NationNumeric"`
-	xxx_hidden_UnrecognizedCountryLeft    int32                  `protobuf:"varint,4,opt,name=unrecognized_country_left,json=unrecognizedCountryLeft"`
-	xxx_hidden_CountryEntered             v1.NationNumeric       `protobuf:"varint,5,opt,name=country_entered,json=countryEntered,enum=wayplatform.connect.tachograph.datadictionary.v1.NationNumeric"`
-	xxx_hidden_UnrecognizedCountryEntered int32                  `protobuf:"varint,6,opt,name=unrecognized_country_entered,json=unrecognizedCountryEntered"`
-	xxx_hidden_PlaceRecord                *Activities_GnssRecord `protobuf:"bytes,7,opt,name=place_record,json=placeRecord"`
-	xxx_hidden_OdometerKm                 int32                  `protobuf:"varint,8,opt,name=odometer_km,json=odometerKm"`
-	XXX_raceDetectHookData                protoimpl.RaceDetectHookData
-	XXX_presence                          [1]uint32
-	unknownFields                         protoimpl.UnknownFields
-	sizeCache                             protoimpl.SizeCache
+	state                     protoimpl.MessageState `protogen:"opaque.v1"`
+	xxx_hidden_FullCardNumber *v1.FullCardNumber     `protobuf:"bytes,1,opt,name=full_card_number,json=fullCardNumber"`
+	xxx_hidden_CardGeneration v1.Generation          `protobuf:"varint,2,opt,name=card_generation,json=cardGeneration,enum=wayplatform.connect.tachograph.datadictionary.v1.Generation"`
+	xxx_hidden_CountryLeft    v1.NationNumeric       `protobuf:"varint,3,opt,name=country_left,json=countryLeft,enum=wayplatform.connect.tachograph.datadictionary.v1.NationNumeric"`
+	xxx_hidden_CountryEntered v1.NationNumeric       `protobuf:"varint,5,opt,name=country_entered,json=countryEntered,enum=wayplatform.connect.tachograph.datadictionary.v1.NationNumeric"`
+	xxx_hidden_PlaceRecord    *Activities_GnssRecord `protobuf:"bytes,7,opt,name=place_record,json=placeRecord"`
+	xxx_hidden_OdometerKm     int32                  `protobuf:"varint,8,opt,name=odometer_km,json=odometerKm"`
+	XXX_raceDetectHookData    protoimpl.RaceDetectHookData
+	XXX_presence              [1]uint32
+	unknownFields             protoimpl.UnknownFields
+	sizeCache                 protoimpl.SizeCache
 }
 
 func (x *Activities_BorderCrossingRecord) Reset() {
@@ -1885,23 +1535,20 @@ func (x *Activities_BorderCrossingRecord) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-func (x *Activities_BorderCrossingRecord) GetFullCardNumber() string {
+func (x *Activities_BorderCrossingRecord) GetFullCardNumber() *v1.FullCardNumber {
 	if x != nil {
-		if x.xxx_hidden_FullCardNumber != nil {
-			return *x.xxx_hidden_FullCardNumber
-		}
-		return ""
+		return x.xxx_hidden_FullCardNumber
 	}
-	return ""
+	return nil
 }
 
-func (x *Activities_BorderCrossingRecord) GetCardGeneration() Generation {
+func (x *Activities_BorderCrossingRecord) GetCardGeneration() v1.Generation {
 	if x != nil {
 		if protoimpl.X.Present(&(x.XXX_presence[0]), 1) {
 			return x.xxx_hidden_CardGeneration
 		}
 	}
-	return Generation_GENERATION_UNSPECIFIED
+	return v1.Generation(0)
 }
 
 func (x *Activities_BorderCrossingRecord) GetCountryLeft() v1.NationNumeric {
@@ -1913,27 +1560,13 @@ func (x *Activities_BorderCrossingRecord) GetCountryLeft() v1.NationNumeric {
 	return v1.NationNumeric(0)
 }
 
-func (x *Activities_BorderCrossingRecord) GetUnrecognizedCountryLeft() int32 {
-	if x != nil {
-		return x.xxx_hidden_UnrecognizedCountryLeft
-	}
-	return 0
-}
-
 func (x *Activities_BorderCrossingRecord) GetCountryEntered() v1.NationNumeric {
 	if x != nil {
-		if protoimpl.X.Present(&(x.XXX_presence[0]), 4) {
+		if protoimpl.X.Present(&(x.XXX_presence[0]), 3) {
 			return x.xxx_hidden_CountryEntered
 		}
 	}
 	return v1.NationNumeric(0)
-}
-
-func (x *Activities_BorderCrossingRecord) GetUnrecognizedCountryEntered() int32 {
-	if x != nil {
-		return x.xxx_hidden_UnrecognizedCountryEntered
-	}
-	return 0
 }
 
 func (x *Activities_BorderCrossingRecord) GetPlaceRecord() *Activities_GnssRecord {
@@ -1950,34 +1583,23 @@ func (x *Activities_BorderCrossingRecord) GetOdometerKm() int32 {
 	return 0
 }
 
-func (x *Activities_BorderCrossingRecord) SetFullCardNumber(v string) {
-	x.xxx_hidden_FullCardNumber = &v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 8)
+func (x *Activities_BorderCrossingRecord) SetFullCardNumber(v *v1.FullCardNumber) {
+	x.xxx_hidden_FullCardNumber = v
 }
 
-func (x *Activities_BorderCrossingRecord) SetCardGeneration(v Generation) {
+func (x *Activities_BorderCrossingRecord) SetCardGeneration(v v1.Generation) {
 	x.xxx_hidden_CardGeneration = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 8)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 6)
 }
 
 func (x *Activities_BorderCrossingRecord) SetCountryLeft(v v1.NationNumeric) {
 	x.xxx_hidden_CountryLeft = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 8)
-}
-
-func (x *Activities_BorderCrossingRecord) SetUnrecognizedCountryLeft(v int32) {
-	x.xxx_hidden_UnrecognizedCountryLeft = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 3, 8)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 6)
 }
 
 func (x *Activities_BorderCrossingRecord) SetCountryEntered(v v1.NationNumeric) {
 	x.xxx_hidden_CountryEntered = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 4, 8)
-}
-
-func (x *Activities_BorderCrossingRecord) SetUnrecognizedCountryEntered(v int32) {
-	x.xxx_hidden_UnrecognizedCountryEntered = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 5, 8)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 3, 6)
 }
 
 func (x *Activities_BorderCrossingRecord) SetPlaceRecord(v *Activities_GnssRecord) {
@@ -1986,14 +1608,14 @@ func (x *Activities_BorderCrossingRecord) SetPlaceRecord(v *Activities_GnssRecor
 
 func (x *Activities_BorderCrossingRecord) SetOdometerKm(v int32) {
 	x.xxx_hidden_OdometerKm = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 7, 8)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 5, 6)
 }
 
 func (x *Activities_BorderCrossingRecord) HasFullCardNumber() bool {
 	if x == nil {
 		return false
 	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 0)
+	return x.xxx_hidden_FullCardNumber != nil
 }
 
 func (x *Activities_BorderCrossingRecord) HasCardGeneration() bool {
@@ -2010,25 +1632,11 @@ func (x *Activities_BorderCrossingRecord) HasCountryLeft() bool {
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 2)
 }
 
-func (x *Activities_BorderCrossingRecord) HasUnrecognizedCountryLeft() bool {
-	if x == nil {
-		return false
-	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 3)
-}
-
 func (x *Activities_BorderCrossingRecord) HasCountryEntered() bool {
 	if x == nil {
 		return false
 	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 4)
-}
-
-func (x *Activities_BorderCrossingRecord) HasUnrecognizedCountryEntered() bool {
-	if x == nil {
-		return false
-	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 5)
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 3)
 }
 
 func (x *Activities_BorderCrossingRecord) HasPlaceRecord() bool {
@@ -2042,17 +1650,16 @@ func (x *Activities_BorderCrossingRecord) HasOdometerKm() bool {
 	if x == nil {
 		return false
 	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 7)
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 5)
 }
 
 func (x *Activities_BorderCrossingRecord) ClearFullCardNumber() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 0)
 	x.xxx_hidden_FullCardNumber = nil
 }
 
 func (x *Activities_BorderCrossingRecord) ClearCardGeneration() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 1)
-	x.xxx_hidden_CardGeneration = Generation_GENERATION_UNSPECIFIED
+	x.xxx_hidden_CardGeneration = v1.Generation_GENERATION_UNSPECIFIED
 }
 
 func (x *Activities_BorderCrossingRecord) ClearCountryLeft() {
@@ -2060,19 +1667,9 @@ func (x *Activities_BorderCrossingRecord) ClearCountryLeft() {
 	x.xxx_hidden_CountryLeft = v1.NationNumeric_NATION_NUMERIC_UNSPECIFIED
 }
 
-func (x *Activities_BorderCrossingRecord) ClearUnrecognizedCountryLeft() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 3)
-	x.xxx_hidden_UnrecognizedCountryLeft = 0
-}
-
 func (x *Activities_BorderCrossingRecord) ClearCountryEntered() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 4)
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 3)
 	x.xxx_hidden_CountryEntered = v1.NationNumeric_NATION_NUMERIC_UNSPECIFIED
-}
-
-func (x *Activities_BorderCrossingRecord) ClearUnrecognizedCountryEntered() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 5)
-	x.xxx_hidden_UnrecognizedCountryEntered = 0
 }
 
 func (x *Activities_BorderCrossingRecord) ClearPlaceRecord() {
@@ -2080,26 +1677,24 @@ func (x *Activities_BorderCrossingRecord) ClearPlaceRecord() {
 }
 
 func (x *Activities_BorderCrossingRecord) ClearOdometerKm() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 7)
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 5)
 	x.xxx_hidden_OdometerKm = 0
 }
 
 type Activities_BorderCrossingRecord_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
-	// Card number of the driver. See DD Section 2.73 for `FullCardNumber`.
-	FullCardNumber *string
-	// Generation of the driver's card. See DD Section 2.75 for `Generation`.
-	CardGeneration *Generation
-	// Country the vehicle is leaving. See DD Section 2.101 for `NationNumeric`.
-	CountryLeft             *v1.NationNumeric
-	UnrecognizedCountryLeft *int32
-	// Country the vehicle is entering. See DD Section 2.101 for `NationNumeric`.
-	CountryEntered             *v1.NationNumeric
-	UnrecognizedCountryEntered *int32
+	// Card number of the driver.
+	FullCardNumber *v1.FullCardNumber
+	// datadictionary.v1.Generation of the driver's card.
+	CardGeneration *v1.Generation
+	// Country the vehicle is leaving.
+	CountryLeft *v1.NationNumeric
+	// Country the vehicle is entering.
+	CountryEntered *v1.NationNumeric
 	// Position of the vehicle at the time of crossing.
 	PlaceRecord *Activities_GnssRecord
-	// Odometer value at the time of crossing. See DD Section 2.113 for `OdometerShort`.
+	// Odometer value at the time of crossing.
 	OdometerKm *int32
 }
 
@@ -2107,33 +1702,22 @@ func (b0 Activities_BorderCrossingRecord_builder) Build() *Activities_BorderCros
 	m0 := &Activities_BorderCrossingRecord{}
 	b, x := &b0, m0
 	_, _ = b, x
-	if b.FullCardNumber != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 8)
-		x.xxx_hidden_FullCardNumber = b.FullCardNumber
-	}
+	x.xxx_hidden_FullCardNumber = b.FullCardNumber
 	if b.CardGeneration != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 8)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 6)
 		x.xxx_hidden_CardGeneration = *b.CardGeneration
 	}
 	if b.CountryLeft != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 8)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 6)
 		x.xxx_hidden_CountryLeft = *b.CountryLeft
 	}
-	if b.UnrecognizedCountryLeft != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 3, 8)
-		x.xxx_hidden_UnrecognizedCountryLeft = *b.UnrecognizedCountryLeft
-	}
 	if b.CountryEntered != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 4, 8)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 3, 6)
 		x.xxx_hidden_CountryEntered = *b.CountryEntered
-	}
-	if b.UnrecognizedCountryEntered != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 5, 8)
-		x.xxx_hidden_UnrecognizedCountryEntered = *b.UnrecognizedCountryEntered
 	}
 	x.xxx_hidden_PlaceRecord = b.PlaceRecord
 	if b.OdometerKm != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 7, 8)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 5, 6)
 		x.xxx_hidden_OdometerKm = *b.OdometerKm
 	}
 	return m0
@@ -2145,8 +1729,8 @@ func (b0 Activities_BorderCrossingRecord_builder) Build() *Activities_BorderCros
 // See Data Dictionary, Section 2.208a.
 type Activities_LoadUnloadRecord struct {
 	state                     protoimpl.MessageState                    `protogen:"opaque.v1"`
-	xxx_hidden_FullCardNumber *string                                   `protobuf:"bytes,1,opt,name=full_card_number,json=fullCardNumber"`
-	xxx_hidden_CardGeneration Generation                                `protobuf:"varint,2,opt,name=card_generation,json=cardGeneration,enum=wayplatform.connect.tachograph.vu.v1.Generation"`
+	xxx_hidden_FullCardNumber *v1.FullCardNumber                        `protobuf:"bytes,1,opt,name=full_card_number,json=fullCardNumber"`
+	xxx_hidden_CardGeneration v1.Generation                             `protobuf:"varint,2,opt,name=card_generation,json=cardGeneration,enum=wayplatform.connect.tachograph.datadictionary.v1.Generation"`
 	xxx_hidden_OperationType  Activities_LoadUnloadRecord_OperationType `protobuf:"varint,3,opt,name=operation_type,json=operationType,enum=wayplatform.connect.tachograph.vu.v1.Activities_LoadUnloadRecord_OperationType"`
 	xxx_hidden_PlaceRecord    *Activities_GnssRecord                    `protobuf:"bytes,4,opt,name=place_record,json=placeRecord"`
 	xxx_hidden_OdometerKm     int32                                     `protobuf:"varint,5,opt,name=odometer_km,json=odometerKm"`
@@ -2181,23 +1765,20 @@ func (x *Activities_LoadUnloadRecord) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-func (x *Activities_LoadUnloadRecord) GetFullCardNumber() string {
+func (x *Activities_LoadUnloadRecord) GetFullCardNumber() *v1.FullCardNumber {
 	if x != nil {
-		if x.xxx_hidden_FullCardNumber != nil {
-			return *x.xxx_hidden_FullCardNumber
-		}
-		return ""
+		return x.xxx_hidden_FullCardNumber
 	}
-	return ""
+	return nil
 }
 
-func (x *Activities_LoadUnloadRecord) GetCardGeneration() Generation {
+func (x *Activities_LoadUnloadRecord) GetCardGeneration() v1.Generation {
 	if x != nil {
 		if protoimpl.X.Present(&(x.XXX_presence[0]), 1) {
 			return x.xxx_hidden_CardGeneration
 		}
 	}
-	return Generation_GENERATION_UNSPECIFIED
+	return v1.Generation(0)
 }
 
 func (x *Activities_LoadUnloadRecord) GetOperationType() Activities_LoadUnloadRecord_OperationType {
@@ -2223,12 +1804,11 @@ func (x *Activities_LoadUnloadRecord) GetOdometerKm() int32 {
 	return 0
 }
 
-func (x *Activities_LoadUnloadRecord) SetFullCardNumber(v string) {
-	x.xxx_hidden_FullCardNumber = &v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 5)
+func (x *Activities_LoadUnloadRecord) SetFullCardNumber(v *v1.FullCardNumber) {
+	x.xxx_hidden_FullCardNumber = v
 }
 
-func (x *Activities_LoadUnloadRecord) SetCardGeneration(v Generation) {
+func (x *Activities_LoadUnloadRecord) SetCardGeneration(v v1.Generation) {
 	x.xxx_hidden_CardGeneration = v
 	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 5)
 }
@@ -2251,7 +1831,7 @@ func (x *Activities_LoadUnloadRecord) HasFullCardNumber() bool {
 	if x == nil {
 		return false
 	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 0)
+	return x.xxx_hidden_FullCardNumber != nil
 }
 
 func (x *Activities_LoadUnloadRecord) HasCardGeneration() bool {
@@ -2283,13 +1863,12 @@ func (x *Activities_LoadUnloadRecord) HasOdometerKm() bool {
 }
 
 func (x *Activities_LoadUnloadRecord) ClearFullCardNumber() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 0)
 	x.xxx_hidden_FullCardNumber = nil
 }
 
 func (x *Activities_LoadUnloadRecord) ClearCardGeneration() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 1)
-	x.xxx_hidden_CardGeneration = Generation_GENERATION_UNSPECIFIED
+	x.xxx_hidden_CardGeneration = v1.Generation_GENERATION_UNSPECIFIED
 }
 
 func (x *Activities_LoadUnloadRecord) ClearOperationType() {
@@ -2309,15 +1888,15 @@ func (x *Activities_LoadUnloadRecord) ClearOdometerKm() {
 type Activities_LoadUnloadRecord_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
-	// Card number of the driver. See DD Section 2.73 for `FullCardNumber`.
-	FullCardNumber *string
-	// Generation of the driver's card. See DD Section 2.75 for `Generation`.
-	CardGeneration *Generation
+	// Card number of the driver.
+	FullCardNumber *v1.FullCardNumber
+	// datadictionary.v1.Generation of the driver's card.
+	CardGeneration *v1.Generation
 	// Type of operation (load, unload, or both).
 	OperationType *Activities_LoadUnloadRecord_OperationType
 	// Position of the vehicle at the time of the operation.
 	PlaceRecord *Activities_GnssRecord
-	// Odometer value at the time of the operation. See DD Section 2.113 for `OdometerShort`.
+	// Odometer value at the time of the operation.
 	OdometerKm *int32
 }
 
@@ -2325,10 +1904,7 @@ func (b0 Activities_LoadUnloadRecord_builder) Build() *Activities_LoadUnloadReco
 	m0 := &Activities_LoadUnloadRecord{}
 	b, x := &b0, m0
 	_, _ = b, x
-	if b.FullCardNumber != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 5)
-		x.xxx_hidden_FullCardNumber = b.FullCardNumber
-	}
+	x.xxx_hidden_FullCardNumber = b.FullCardNumber
 	if b.CardGeneration != nil {
 		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 5)
 		x.xxx_hidden_CardGeneration = *b.CardGeneration
@@ -2345,15 +1921,114 @@ func (b0 Activities_LoadUnloadRecord_builder) Build() *Activities_LoadUnloadReco
 	return m0
 }
 
+// Represents information about the previous vehicle used by the driver.
+//
+// Corresponds to the `PreviousVehicleInfo` data type.
+// See Data Dictionary, Section 2.118.
+type Activities_CardIWRecord_PreviousVehicleInfo struct {
+	state                          protoimpl.MessageState                `protogen:"opaque.v1"`
+	xxx_hidden_VehicleRegistration *v1.VehicleRegistrationIdentification `protobuf:"bytes,1,opt,name=vehicle_registration,json=vehicleRegistration"`
+	xxx_hidden_CardWithdrawalTime  *timestamppb.Timestamp                `protobuf:"bytes,2,opt,name=card_withdrawal_time,json=cardWithdrawalTime"`
+	unknownFields                  protoimpl.UnknownFields
+	sizeCache                      protoimpl.SizeCache
+}
+
+func (x *Activities_CardIWRecord_PreviousVehicleInfo) Reset() {
+	*x = Activities_CardIWRecord_PreviousVehicleInfo{}
+	mi := &file_wayplatform_connect_tachograph_vu_v1_activities_proto_msgTypes[8]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *Activities_CardIWRecord_PreviousVehicleInfo) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Activities_CardIWRecord_PreviousVehicleInfo) ProtoMessage() {}
+
+func (x *Activities_CardIWRecord_PreviousVehicleInfo) ProtoReflect() protoreflect.Message {
+	mi := &file_wayplatform_connect_tachograph_vu_v1_activities_proto_msgTypes[8]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+func (x *Activities_CardIWRecord_PreviousVehicleInfo) GetVehicleRegistration() *v1.VehicleRegistrationIdentification {
+	if x != nil {
+		return x.xxx_hidden_VehicleRegistration
+	}
+	return nil
+}
+
+func (x *Activities_CardIWRecord_PreviousVehicleInfo) GetCardWithdrawalTime() *timestamppb.Timestamp {
+	if x != nil {
+		return x.xxx_hidden_CardWithdrawalTime
+	}
+	return nil
+}
+
+func (x *Activities_CardIWRecord_PreviousVehicleInfo) SetVehicleRegistration(v *v1.VehicleRegistrationIdentification) {
+	x.xxx_hidden_VehicleRegistration = v
+}
+
+func (x *Activities_CardIWRecord_PreviousVehicleInfo) SetCardWithdrawalTime(v *timestamppb.Timestamp) {
+	x.xxx_hidden_CardWithdrawalTime = v
+}
+
+func (x *Activities_CardIWRecord_PreviousVehicleInfo) HasVehicleRegistration() bool {
+	if x == nil {
+		return false
+	}
+	return x.xxx_hidden_VehicleRegistration != nil
+}
+
+func (x *Activities_CardIWRecord_PreviousVehicleInfo) HasCardWithdrawalTime() bool {
+	if x == nil {
+		return false
+	}
+	return x.xxx_hidden_CardWithdrawalTime != nil
+}
+
+func (x *Activities_CardIWRecord_PreviousVehicleInfo) ClearVehicleRegistration() {
+	x.xxx_hidden_VehicleRegistration = nil
+}
+
+func (x *Activities_CardIWRecord_PreviousVehicleInfo) ClearCardWithdrawalTime() {
+	x.xxx_hidden_CardWithdrawalTime = nil
+}
+
+type Activities_CardIWRecord_PreviousVehicleInfo_builder struct {
+	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
+
+	// The registration of the previous vehicle.
+	VehicleRegistration *v1.VehicleRegistrationIdentification
+	// The time the card was withdrawn from the previous vehicle.
+	CardWithdrawalTime *timestamppb.Timestamp
+}
+
+func (b0 Activities_CardIWRecord_PreviousVehicleInfo_builder) Build() *Activities_CardIWRecord_PreviousVehicleInfo {
+	m0 := &Activities_CardIWRecord_PreviousVehicleInfo{}
+	b, x := &b0, m0
+	_, _ = b, x
+	x.xxx_hidden_VehicleRegistration = b.VehicleRegistration
+	x.xxx_hidden_CardWithdrawalTime = b.CardWithdrawalTime
+	return m0
+}
+
 var File_wayplatform_connect_tachograph_vu_v1_activities_proto protoreflect.FileDescriptor
 
 const file_wayplatform_connect_tachograph_vu_v1_activities_proto_rawDesc = "" +
 	"\n" +
-	"5wayplatform/connect/tachograph/vu/v1/activities.proto\x12$wayplatform.connect.tachograph.vu.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1aGwayplatform/connect/tachograph/datadictionary/v1/card_slot_number.proto\x1aBwayplatform/connect/tachograph/datadictionary/v1/card_status.proto\x1aLwayplatform/connect/tachograph/datadictionary/v1/driver_activity_value.proto\x1aEwayplatform/connect/tachograph/datadictionary/v1/driving_status.proto\x1aSwayplatform/connect/tachograph/datadictionary/v1/entry_type_daily_work_period.proto\x1aHwayplatform/connect/tachograph/datadictionary/v1/manual_input_flag.proto\x1aEwayplatform/connect/tachograph/datadictionary/v1/nation_numeric.proto\x1aUwayplatform/connect/tachograph/datadictionary/v1/position_authentication_status.proto\x1aNwayplatform/connect/tachograph/datadictionary/v1/specific_condition_type.proto\x1a5wayplatform/connect/tachograph/vu/v1/versioning.proto\"\xd6&\n" +
+	"5wayplatform/connect/tachograph/vu/v1/activities.proto\x12$wayplatform.connect.tachograph.vu.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1aGwayplatform/connect/tachograph/datadictionary/v1/card_slot_number.proto\x1aLwayplatform/connect/tachograph/datadictionary/v1/driver_activity_value.proto\x1aEwayplatform/connect/tachograph/datadictionary/v1/driving_status.proto\x1aSwayplatform/connect/tachograph/datadictionary/v1/entry_type_daily_work_period.proto\x1aGwayplatform/connect/tachograph/datadictionary/v1/full_card_number.proto\x1aEwayplatform/connect/tachograph/datadictionary/v1/nation_numeric.proto\x1aUwayplatform/connect/tachograph/datadictionary/v1/position_authentication_status.proto\x1aNwayplatform/connect/tachograph/datadictionary/v1/specific_condition_type.proto\x1aZwayplatform/connect/tachograph/datadictionary/v1/vehicle_registration_identification.proto\x1aAwayplatform/connect/tachograph/datadictionary/v1/generation.proto\x1a5wayplatform/connect/tachograph/vu/v1/versioning.proto\"\xc3#\n" +
 	"\n" +
-	"Activities\x12P\n" +
+	"Activities\x12\\\n" +
 	"\n" +
-	"generation\x18\x01 \x01(\x0e20.wayplatform.connect.tachograph.vu.v1.GenerationR\n" +
+	"generation\x18\x01 \x01(\x0e2<.wayplatform.connect.tachograph.datadictionary.v1.GenerationR\n" +
 	"generation\x12G\n" +
 	"\aversion\x18\x02 \x01(\x0e2-.wayplatform.connect.tachograph.vu.v1.VersionR\aversion\x12:\n" +
 	"\vdate_of_day\x18\x03 \x01(\v2\x1a.google.protobuf.TimestampR\tdateOfDay\x120\n" +
@@ -2368,70 +2043,59 @@ const file_wayplatform_connect_tachograph_vu_v1_activities_proto_rawDesc = "" +
 	" \x03(\v2E.wayplatform.connect.tachograph.vu.v1.Activities.BorderCrossingRecordR\x0fborderCrossings\x12w\n" +
 	"\x16load_unload_operations\x18\v \x03(\v2A.wayplatform.connect.tachograph.vu.v1.Activities.LoadUnloadRecordR\x14loadUnloadOperations\x12%\n" +
 	"\x0esignature_gen1\x18\f \x01(\fR\rsignatureGen1\x12%\n" +
-	"\x0esignature_gen2\x18\r \x01(\fR\rsignatureGen2\x1a\x9b\a\n" +
+	"\x0esignature_gen2\x18\r \x01(\fR\rsignatureGen2\x1a\x87\b\n" +
 	"\fCardIWRecord\x12(\n" +
-	"\x10card_holder_name\x18\x01 \x01(\tR\x0ecardHolderName\x12(\n" +
-	"\x10full_card_number\x18\x02 \x01(\tR\x0efullCardNumber\x12D\n" +
+	"\x10card_holder_name\x18\x01 \x01(\tR\x0ecardHolderName\x12j\n" +
+	"\x10full_card_number\x18\x02 \x01(\v2@.wayplatform.connect.tachograph.datadictionary.v1.FullCardNumberR\x0efullCardNumber\x12D\n" +
 	"\x10card_expiry_date\x18\x03 \x01(\v2\x1a.google.protobuf.TimestampR\x0ecardExpiryDate\x12J\n" +
 	"\x13card_insertion_time\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampR\x11cardInsertionTime\x127\n" +
 	"\x18odometer_at_insertion_km\x18\x05 \x01(\x05R\x15odometerAtInsertionKm\x12j\n" +
-	"\x10card_slot_number\x18\x06 \x01(\x0e2@.wayplatform.connect.tachograph.datadictionary.v1.CardSlotNumberR\x0ecardSlotNumber\x12A\n" +
-	"\x1dunrecognized_card_slot_number\x18\a \x01(\x05R\x1aunrecognizedCardSlotNumber\x12L\n" +
+	"\x10card_slot_number\x18\x06 \x01(\x0e2@.wayplatform.connect.tachograph.datadictionary.v1.CardSlotNumberR\x0ecardSlotNumber\x12L\n" +
 	"\x14card_withdrawal_time\x18\b \x01(\v2\x1a.google.protobuf.TimestampR\x12cardWithdrawalTime\x129\n" +
-	"\x19odometer_at_withdrawal_km\x18\t \x01(\x05R\x16odometerAtWithdrawalKm\x12!\n" +
-	"\fprevious_vrn\x18\n" +
-	" \x01(\tR\vpreviousVrn\x12]\n" +
-	"\x1dprevious_card_withdrawal_time\x18\v \x01(\v2\x1a.google.protobuf.TimestampR\x1apreviousCardWithdrawalTime\x12m\n" +
-	"\x11manual_input_flag\x18\f \x01(\x0e2A.wayplatform.connect.tachograph.datadictionary.v1.ManualInputFlagR\x0fmanualInputFlag\x12C\n" +
-	"\x1eunrecognized_manual_input_flag\x18\r \x01(\x05R\x1bunrecognizedManualInputFlag\x1a\xa1\x05\n" +
+	"\x19odometer_at_withdrawal_km\x18\t \x01(\x05R\x16odometerAtWithdrawalKm\x12\x85\x01\n" +
+	"\x15previous_vehicle_info\x18\n" +
+	" \x01(\v2Q.wayplatform.connect.tachograph.vu.v1.Activities.CardIWRecord.PreviousVehicleInfoR\x13previousVehicleInfo\x12*\n" +
+	"\x11manual_input_flag\x18\v \x01(\bR\x0fmanualInputFlag\x1a\xec\x01\n" +
+	"\x13PreviousVehicleInfo\x12\x86\x01\n" +
+	"\x14vehicle_registration\x18\x01 \x01(\v2S.wayplatform.connect.tachograph.datadictionary.v1.VehicleRegistrationIdentificationR\x13vehicleRegistration\x12L\n" +
+	"\x14card_withdrawal_time\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\x12cardWithdrawalTime\x1a\x82\x03\n" +
 	"\x0eActivityChange\x12T\n" +
-	"\x04slot\x18\x01 \x01(\x0e2@.wayplatform.connect.tachograph.datadictionary.v1.CardSlotNumberR\x04slot\x12+\n" +
-	"\x11unrecognized_slot\x18\x02 \x01(\x05R\x10unrecognizedSlot\x12f\n" +
-	"\x0edriving_status\x18\x03 \x01(\x0e2?.wayplatform.connect.tachograph.datadictionary.v1.DrivingStatusR\rdrivingStatus\x12>\n" +
-	"\x1bunrecognized_driving_status\x18\x04 \x01(\x05R\x19unrecognizedDrivingStatus\x12]\n" +
-	"\vcard_status\x18\x05 \x01(\x0e2<.wayplatform.connect.tachograph.datadictionary.v1.CardStatusR\n" +
-	"cardStatus\x128\n" +
-	"\x18unrecognized_card_status\x18\x06 \x01(\x05R\x16unrecognizedCardStatus\x12a\n" +
+	"\x04slot\x18\x01 \x01(\x0e2@.wayplatform.connect.tachograph.datadictionary.v1.CardSlotNumberR\x04slot\x12f\n" +
+	"\x0edriving_status\x18\x03 \x01(\x0e2?.wayplatform.connect.tachograph.datadictionary.v1.DrivingStatusR\rdrivingStatus\x12\x1a\n" +
+	"\binserted\x18\x05 \x01(\bR\binserted\x12a\n" +
 	"\bactivity\x18\a \x01(\x0e2E.wayplatform.connect.tachograph.datadictionary.v1.DriverActivityValueR\bactivity\x123\n" +
-	"\x15unrecognized_activity\x18\b \x01(\x05R\x14unrecognizedActivity\x123\n" +
-	"\x16time_of_change_minutes\x18\t \x01(\x05R\x13timeOfChangeMinutes\x1a\xb2\x03\n" +
+	"\x16time_of_change_minutes\x18\t \x01(\x05R\x13timeOfChangeMinutes\x1a\xc7\x02\n" +
 	"\vPlaceRecord\x129\n" +
 	"\n" +
 	"entry_time\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\tentryTime\x12i\n" +
 	"\n" +
-	"entry_type\x18\x02 \x01(\x0e2J.wayplatform.connect.tachograph.datadictionary.v1.EntryTypeDailyWorkPeriodR\tentryType\x126\n" +
-	"\x17unrecognized_entry_type\x18\x03 \x01(\x05R\x15unrecognizedEntryType\x12Y\n" +
-	"\acountry\x18\x04 \x01(\x0e2?.wayplatform.connect.tachograph.datadictionary.v1.NationNumericR\acountry\x121\n" +
-	"\x14unrecognized_country\x18\x05 \x01(\x05R\x13unrecognizedCountry\x12\x16\n" +
+	"entry_type\x18\x02 \x01(\x0e2J.wayplatform.connect.tachograph.datadictionary.v1.EntryTypeDailyWorkPeriodR\tentryType\x12Y\n" +
+	"\acountry\x18\x04 \x01(\x0e2?.wayplatform.connect.tachograph.datadictionary.v1.NationNumericR\acountry\x12\x16\n" +
 	"\x06region\x18\x06 \x01(\x05R\x06region\x12\x1f\n" +
 	"\vodometer_km\x18\a \x01(\x05R\n" +
-	"odometerKm\x1a\xf9\x02\n" +
+	"odometerKm\x1a\xab\x02\n" +
 	"\n" +
 	"GnssRecord\x128\n" +
 	"\ttimestamp\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\ttimestamp\x12#\n" +
 	"\rgnss_accuracy\x18\x02 \x01(\x05R\fgnssAccuracy\x12\x1c\n" +
 	"\tlongitude\x18\x03 \x01(\x11R\tlongitude\x12\x1a\n" +
 	"\blatitude\x18\x04 \x01(\x11R\blatitude\x12\x83\x01\n" +
-	"\x15authentication_status\x18\x05 \x01(\x0e2N.wayplatform.connect.tachograph.datadictionary.v1.PositionAuthenticationStatusR\x14authenticationStatus\x12L\n" +
-	"\"unrecognized_authentication_status\x18\x06 \x01(\x05R unrecognizedAuthenticationStatus\x1a\xa6\x02\n" +
+	"\x15authentication_status\x18\x05 \x01(\x0e2N.wayplatform.connect.tachograph.datadictionary.v1.PositionAuthenticationStatusR\x14authenticationStatus\x1a\xd5\x01\n" +
 	"\x17SpecificConditionRecord\x129\n" +
 	"\n" +
 	"entry_time\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\tentryTime\x12\x7f\n" +
-	"\x17specific_condition_type\x18\x02 \x01(\x0e2G.wayplatform.connect.tachograph.datadictionary.v1.SpecificConditionTypeR\x15specificConditionType\x12O\n" +
-	"$unrecognized_specific_condition_type\x18\x03 \x01(\x05R!unrecognizedSpecificConditionType\x1a\xe8\x04\n" +
-	"\x14BorderCrossingRecord\x12(\n" +
-	"\x10full_card_number\x18\x01 \x01(\tR\x0efullCardNumber\x12Y\n" +
-	"\x0fcard_generation\x18\x02 \x01(\x0e20.wayplatform.connect.tachograph.vu.v1.GenerationR\x0ecardGeneration\x12b\n" +
-	"\fcountry_left\x18\x03 \x01(\x0e2?.wayplatform.connect.tachograph.datadictionary.v1.NationNumericR\vcountryLeft\x12:\n" +
-	"\x19unrecognized_country_left\x18\x04 \x01(\x05R\x17unrecognizedCountryLeft\x12h\n" +
-	"\x0fcountry_entered\x18\x05 \x01(\x0e2?.wayplatform.connect.tachograph.datadictionary.v1.NationNumericR\x0ecountryEntered\x12@\n" +
-	"\x1cunrecognized_country_entered\x18\x06 \x01(\x05R\x1aunrecognizedCountryEntered\x12^\n" +
+	"\x17specific_condition_type\x18\x02 \x01(\x0e2G.wayplatform.connect.tachograph.datadictionary.v1.SpecificConditionTypeR\x15specificConditionType\x1a\xb8\x04\n" +
+	"\x14BorderCrossingRecord\x12j\n" +
+	"\x10full_card_number\x18\x01 \x01(\v2@.wayplatform.connect.tachograph.datadictionary.v1.FullCardNumberR\x0efullCardNumber\x12e\n" +
+	"\x0fcard_generation\x18\x02 \x01(\x0e2<.wayplatform.connect.tachograph.datadictionary.v1.GenerationR\x0ecardGeneration\x12b\n" +
+	"\fcountry_left\x18\x03 \x01(\x0e2?.wayplatform.connect.tachograph.datadictionary.v1.NationNumericR\vcountryLeft\x12h\n" +
+	"\x0fcountry_entered\x18\x05 \x01(\x0e2?.wayplatform.connect.tachograph.datadictionary.v1.NationNumericR\x0ecountryEntered\x12^\n" +
 	"\fplace_record\x18\a \x01(\v2;.wayplatform.connect.tachograph.vu.v1.Activities.GnssRecordR\vplaceRecord\x12\x1f\n" +
 	"\vodometer_km\x18\b \x01(\x05R\n" +
-	"odometerKm\x1a\xe9\x03\n" +
-	"\x10LoadUnloadRecord\x12(\n" +
-	"\x10full_card_number\x18\x01 \x01(\tR\x0efullCardNumber\x12Y\n" +
-	"\x0fcard_generation\x18\x02 \x01(\x0e20.wayplatform.connect.tachograph.vu.v1.GenerationR\x0ecardGeneration\x12v\n" +
+	"odometerKm\x1a\xb7\x04\n" +
+	"\x10LoadUnloadRecord\x12j\n" +
+	"\x10full_card_number\x18\x01 \x01(\v2@.wayplatform.connect.tachograph.datadictionary.v1.FullCardNumberR\x0efullCardNumber\x12e\n" +
+	"\x0fcard_generation\x18\x02 \x01(\x0e2<.wayplatform.connect.tachograph.datadictionary.v1.GenerationR\x0ecardGeneration\x12v\n" +
 	"\x0eoperation_type\x18\x03 \x01(\x0e2O.wayplatform.connect.tachograph.vu.v1.Activities.LoadUnloadRecord.OperationTypeR\roperationType\x12^\n" +
 	"\fplace_record\x18\x04 \x01(\v2;.wayplatform.connect.tachograph.vu.v1.Activities.GnssRecordR\vplaceRecord\x12\x1f\n" +
 	"\vodometer_km\x18\x05 \x01(\x05R\n" +
@@ -2445,34 +2109,35 @@ const file_wayplatform_connect_tachograph_vu_v1_activities_proto_rawDesc = "" +
 	"(com.wayplatform.connect.tachograph.vu.v1B\x0fActivitiesProtoP\x01Z\\github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/vu/v1;vuv1\xa2\x02\x04WCTV\xaa\x02$Wayplatform.Connect.Tachograph.Vu.V1\xca\x02$Wayplatform\\Connect\\Tachograph\\Vu\\V1\xe2\x020Wayplatform\\Connect\\Tachograph\\Vu\\V1\\GPBMetadata\xea\x02(Wayplatform::Connect::Tachograph::Vu::V1b\beditionsp\xe8\a"
 
 var file_wayplatform_connect_tachograph_vu_v1_activities_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_wayplatform_connect_tachograph_vu_v1_activities_proto_msgTypes = make([]protoimpl.MessageInfo, 8)
+var file_wayplatform_connect_tachograph_vu_v1_activities_proto_msgTypes = make([]protoimpl.MessageInfo, 9)
 var file_wayplatform_connect_tachograph_vu_v1_activities_proto_goTypes = []any{
 	(Activities_LoadUnloadRecord_OperationType)(0), // 0: wayplatform.connect.tachograph.vu.v1.Activities.LoadUnloadRecord.OperationType
-	(*Activities)(nil),                         // 1: wayplatform.connect.tachograph.vu.v1.Activities
-	(*Activities_CardIWRecord)(nil),            // 2: wayplatform.connect.tachograph.vu.v1.Activities.CardIWRecord
-	(*Activities_ActivityChange)(nil),          // 3: wayplatform.connect.tachograph.vu.v1.Activities.ActivityChange
-	(*Activities_PlaceRecord)(nil),             // 4: wayplatform.connect.tachograph.vu.v1.Activities.PlaceRecord
-	(*Activities_GnssRecord)(nil),              // 5: wayplatform.connect.tachograph.vu.v1.Activities.GnssRecord
-	(*Activities_SpecificConditionRecord)(nil), // 6: wayplatform.connect.tachograph.vu.v1.Activities.SpecificConditionRecord
-	(*Activities_BorderCrossingRecord)(nil),    // 7: wayplatform.connect.tachograph.vu.v1.Activities.BorderCrossingRecord
-	(*Activities_LoadUnloadRecord)(nil),        // 8: wayplatform.connect.tachograph.vu.v1.Activities.LoadUnloadRecord
-	(Generation)(0),                            // 9: wayplatform.connect.tachograph.vu.v1.Generation
-	(Version)(0),                               // 10: wayplatform.connect.tachograph.vu.v1.Version
-	(*timestamppb.Timestamp)(nil),              // 11: google.protobuf.Timestamp
-	(v1.CardSlotNumber)(0),                     // 12: wayplatform.connect.tachograph.datadictionary.v1.CardSlotNumber
-	(v1.ManualInputFlag)(0),                    // 13: wayplatform.connect.tachograph.datadictionary.v1.ManualInputFlag
-	(v1.DrivingStatus)(0),                      // 14: wayplatform.connect.tachograph.datadictionary.v1.DrivingStatus
-	(v1.CardStatus)(0),                         // 15: wayplatform.connect.tachograph.datadictionary.v1.CardStatus
-	(v1.DriverActivityValue)(0),                // 16: wayplatform.connect.tachograph.datadictionary.v1.DriverActivityValue
-	(v1.EntryTypeDailyWorkPeriod)(0),           // 17: wayplatform.connect.tachograph.datadictionary.v1.EntryTypeDailyWorkPeriod
-	(v1.NationNumeric)(0),                      // 18: wayplatform.connect.tachograph.datadictionary.v1.NationNumeric
-	(v1.PositionAuthenticationStatus)(0),       // 19: wayplatform.connect.tachograph.datadictionary.v1.PositionAuthenticationStatus
-	(v1.SpecificConditionType)(0),              // 20: wayplatform.connect.tachograph.datadictionary.v1.SpecificConditionType
+	(*Activities)(nil),                                  // 1: wayplatform.connect.tachograph.vu.v1.Activities
+	(*Activities_CardIWRecord)(nil),                     // 2: wayplatform.connect.tachograph.vu.v1.Activities.CardIWRecord
+	(*Activities_ActivityChange)(nil),                   // 3: wayplatform.connect.tachograph.vu.v1.Activities.ActivityChange
+	(*Activities_PlaceRecord)(nil),                      // 4: wayplatform.connect.tachograph.vu.v1.Activities.PlaceRecord
+	(*Activities_GnssRecord)(nil),                       // 5: wayplatform.connect.tachograph.vu.v1.Activities.GnssRecord
+	(*Activities_SpecificConditionRecord)(nil),          // 6: wayplatform.connect.tachograph.vu.v1.Activities.SpecificConditionRecord
+	(*Activities_BorderCrossingRecord)(nil),             // 7: wayplatform.connect.tachograph.vu.v1.Activities.BorderCrossingRecord
+	(*Activities_LoadUnloadRecord)(nil),                 // 8: wayplatform.connect.tachograph.vu.v1.Activities.LoadUnloadRecord
+	(*Activities_CardIWRecord_PreviousVehicleInfo)(nil), // 9: wayplatform.connect.tachograph.vu.v1.Activities.CardIWRecord.PreviousVehicleInfo
+	(v1.Generation)(0),                                  // 10: wayplatform.connect.tachograph.datadictionary.v1.Generation
+	(Version)(0),                                        // 11: wayplatform.connect.tachograph.vu.v1.Version
+	(*timestamppb.Timestamp)(nil),                       // 12: google.protobuf.Timestamp
+	(*v1.FullCardNumber)(nil),                           // 13: wayplatform.connect.tachograph.datadictionary.v1.FullCardNumber
+	(v1.CardSlotNumber)(0),                              // 14: wayplatform.connect.tachograph.datadictionary.v1.CardSlotNumber
+	(v1.DrivingStatus)(0),                               // 15: wayplatform.connect.tachograph.datadictionary.v1.DrivingStatus
+	(v1.DriverActivityValue)(0),                         // 16: wayplatform.connect.tachograph.datadictionary.v1.DriverActivityValue
+	(v1.EntryTypeDailyWorkPeriod)(0),                    // 17: wayplatform.connect.tachograph.datadictionary.v1.EntryTypeDailyWorkPeriod
+	(v1.NationNumeric)(0),                               // 18: wayplatform.connect.tachograph.datadictionary.v1.NationNumeric
+	(v1.PositionAuthenticationStatus)(0),                // 19: wayplatform.connect.tachograph.datadictionary.v1.PositionAuthenticationStatus
+	(v1.SpecificConditionType)(0),                       // 20: wayplatform.connect.tachograph.datadictionary.v1.SpecificConditionType
+	(*v1.VehicleRegistrationIdentification)(nil),        // 21: wayplatform.connect.tachograph.datadictionary.v1.VehicleRegistrationIdentification
 }
 var file_wayplatform_connect_tachograph_vu_v1_activities_proto_depIdxs = []int32{
-	9,  // 0: wayplatform.connect.tachograph.vu.v1.Activities.generation:type_name -> wayplatform.connect.tachograph.vu.v1.Generation
-	10, // 1: wayplatform.connect.tachograph.vu.v1.Activities.version:type_name -> wayplatform.connect.tachograph.vu.v1.Version
-	11, // 2: wayplatform.connect.tachograph.vu.v1.Activities.date_of_day:type_name -> google.protobuf.Timestamp
+	10, // 0: wayplatform.connect.tachograph.vu.v1.Activities.generation:type_name -> wayplatform.connect.tachograph.datadictionary.v1.Generation
+	11, // 1: wayplatform.connect.tachograph.vu.v1.Activities.version:type_name -> wayplatform.connect.tachograph.vu.v1.Version
+	12, // 2: wayplatform.connect.tachograph.vu.v1.Activities.date_of_day:type_name -> google.protobuf.Timestamp
 	2,  // 3: wayplatform.connect.tachograph.vu.v1.Activities.card_iw_data:type_name -> wayplatform.connect.tachograph.vu.v1.Activities.CardIWRecord
 	3,  // 4: wayplatform.connect.tachograph.vu.v1.Activities.activity_changes:type_name -> wayplatform.connect.tachograph.vu.v1.Activities.ActivityChange
 	4,  // 5: wayplatform.connect.tachograph.vu.v1.Activities.places:type_name -> wayplatform.connect.tachograph.vu.v1.Activities.PlaceRecord
@@ -2480,35 +2145,38 @@ var file_wayplatform_connect_tachograph_vu_v1_activities_proto_depIdxs = []int32
 	5,  // 7: wayplatform.connect.tachograph.vu.v1.Activities.gnss_accumulated_driving:type_name -> wayplatform.connect.tachograph.vu.v1.Activities.GnssRecord
 	7,  // 8: wayplatform.connect.tachograph.vu.v1.Activities.border_crossings:type_name -> wayplatform.connect.tachograph.vu.v1.Activities.BorderCrossingRecord
 	8,  // 9: wayplatform.connect.tachograph.vu.v1.Activities.load_unload_operations:type_name -> wayplatform.connect.tachograph.vu.v1.Activities.LoadUnloadRecord
-	11, // 10: wayplatform.connect.tachograph.vu.v1.Activities.CardIWRecord.card_expiry_date:type_name -> google.protobuf.Timestamp
-	11, // 11: wayplatform.connect.tachograph.vu.v1.Activities.CardIWRecord.card_insertion_time:type_name -> google.protobuf.Timestamp
-	12, // 12: wayplatform.connect.tachograph.vu.v1.Activities.CardIWRecord.card_slot_number:type_name -> wayplatform.connect.tachograph.datadictionary.v1.CardSlotNumber
-	11, // 13: wayplatform.connect.tachograph.vu.v1.Activities.CardIWRecord.card_withdrawal_time:type_name -> google.protobuf.Timestamp
-	11, // 14: wayplatform.connect.tachograph.vu.v1.Activities.CardIWRecord.previous_card_withdrawal_time:type_name -> google.protobuf.Timestamp
-	13, // 15: wayplatform.connect.tachograph.vu.v1.Activities.CardIWRecord.manual_input_flag:type_name -> wayplatform.connect.tachograph.datadictionary.v1.ManualInputFlag
-	12, // 16: wayplatform.connect.tachograph.vu.v1.Activities.ActivityChange.slot:type_name -> wayplatform.connect.tachograph.datadictionary.v1.CardSlotNumber
-	14, // 17: wayplatform.connect.tachograph.vu.v1.Activities.ActivityChange.driving_status:type_name -> wayplatform.connect.tachograph.datadictionary.v1.DrivingStatus
-	15, // 18: wayplatform.connect.tachograph.vu.v1.Activities.ActivityChange.card_status:type_name -> wayplatform.connect.tachograph.datadictionary.v1.CardStatus
-	16, // 19: wayplatform.connect.tachograph.vu.v1.Activities.ActivityChange.activity:type_name -> wayplatform.connect.tachograph.datadictionary.v1.DriverActivityValue
-	11, // 20: wayplatform.connect.tachograph.vu.v1.Activities.PlaceRecord.entry_time:type_name -> google.protobuf.Timestamp
-	17, // 21: wayplatform.connect.tachograph.vu.v1.Activities.PlaceRecord.entry_type:type_name -> wayplatform.connect.tachograph.datadictionary.v1.EntryTypeDailyWorkPeriod
-	18, // 22: wayplatform.connect.tachograph.vu.v1.Activities.PlaceRecord.country:type_name -> wayplatform.connect.tachograph.datadictionary.v1.NationNumeric
-	11, // 23: wayplatform.connect.tachograph.vu.v1.Activities.GnssRecord.timestamp:type_name -> google.protobuf.Timestamp
-	19, // 24: wayplatform.connect.tachograph.vu.v1.Activities.GnssRecord.authentication_status:type_name -> wayplatform.connect.tachograph.datadictionary.v1.PositionAuthenticationStatus
-	11, // 25: wayplatform.connect.tachograph.vu.v1.Activities.SpecificConditionRecord.entry_time:type_name -> google.protobuf.Timestamp
-	20, // 26: wayplatform.connect.tachograph.vu.v1.Activities.SpecificConditionRecord.specific_condition_type:type_name -> wayplatform.connect.tachograph.datadictionary.v1.SpecificConditionType
-	9,  // 27: wayplatform.connect.tachograph.vu.v1.Activities.BorderCrossingRecord.card_generation:type_name -> wayplatform.connect.tachograph.vu.v1.Generation
+	13, // 10: wayplatform.connect.tachograph.vu.v1.Activities.CardIWRecord.full_card_number:type_name -> wayplatform.connect.tachograph.datadictionary.v1.FullCardNumber
+	12, // 11: wayplatform.connect.tachograph.vu.v1.Activities.CardIWRecord.card_expiry_date:type_name -> google.protobuf.Timestamp
+	12, // 12: wayplatform.connect.tachograph.vu.v1.Activities.CardIWRecord.card_insertion_time:type_name -> google.protobuf.Timestamp
+	14, // 13: wayplatform.connect.tachograph.vu.v1.Activities.CardIWRecord.card_slot_number:type_name -> wayplatform.connect.tachograph.datadictionary.v1.CardSlotNumber
+	12, // 14: wayplatform.connect.tachograph.vu.v1.Activities.CardIWRecord.card_withdrawal_time:type_name -> google.protobuf.Timestamp
+	9,  // 15: wayplatform.connect.tachograph.vu.v1.Activities.CardIWRecord.previous_vehicle_info:type_name -> wayplatform.connect.tachograph.vu.v1.Activities.CardIWRecord.PreviousVehicleInfo
+	14, // 16: wayplatform.connect.tachograph.vu.v1.Activities.ActivityChange.slot:type_name -> wayplatform.connect.tachograph.datadictionary.v1.CardSlotNumber
+	15, // 17: wayplatform.connect.tachograph.vu.v1.Activities.ActivityChange.driving_status:type_name -> wayplatform.connect.tachograph.datadictionary.v1.DrivingStatus
+	16, // 18: wayplatform.connect.tachograph.vu.v1.Activities.ActivityChange.activity:type_name -> wayplatform.connect.tachograph.datadictionary.v1.DriverActivityValue
+	12, // 19: wayplatform.connect.tachograph.vu.v1.Activities.PlaceRecord.entry_time:type_name -> google.protobuf.Timestamp
+	17, // 20: wayplatform.connect.tachograph.vu.v1.Activities.PlaceRecord.entry_type:type_name -> wayplatform.connect.tachograph.datadictionary.v1.EntryTypeDailyWorkPeriod
+	18, // 21: wayplatform.connect.tachograph.vu.v1.Activities.PlaceRecord.country:type_name -> wayplatform.connect.tachograph.datadictionary.v1.NationNumeric
+	12, // 22: wayplatform.connect.tachograph.vu.v1.Activities.GnssRecord.timestamp:type_name -> google.protobuf.Timestamp
+	19, // 23: wayplatform.connect.tachograph.vu.v1.Activities.GnssRecord.authentication_status:type_name -> wayplatform.connect.tachograph.datadictionary.v1.PositionAuthenticationStatus
+	12, // 24: wayplatform.connect.tachograph.vu.v1.Activities.SpecificConditionRecord.entry_time:type_name -> google.protobuf.Timestamp
+	20, // 25: wayplatform.connect.tachograph.vu.v1.Activities.SpecificConditionRecord.specific_condition_type:type_name -> wayplatform.connect.tachograph.datadictionary.v1.SpecificConditionType
+	13, // 26: wayplatform.connect.tachograph.vu.v1.Activities.BorderCrossingRecord.full_card_number:type_name -> wayplatform.connect.tachograph.datadictionary.v1.FullCardNumber
+	10, // 27: wayplatform.connect.tachograph.vu.v1.Activities.BorderCrossingRecord.card_generation:type_name -> wayplatform.connect.tachograph.datadictionary.v1.Generation
 	18, // 28: wayplatform.connect.tachograph.vu.v1.Activities.BorderCrossingRecord.country_left:type_name -> wayplatform.connect.tachograph.datadictionary.v1.NationNumeric
 	18, // 29: wayplatform.connect.tachograph.vu.v1.Activities.BorderCrossingRecord.country_entered:type_name -> wayplatform.connect.tachograph.datadictionary.v1.NationNumeric
 	5,  // 30: wayplatform.connect.tachograph.vu.v1.Activities.BorderCrossingRecord.place_record:type_name -> wayplatform.connect.tachograph.vu.v1.Activities.GnssRecord
-	9,  // 31: wayplatform.connect.tachograph.vu.v1.Activities.LoadUnloadRecord.card_generation:type_name -> wayplatform.connect.tachograph.vu.v1.Generation
-	0,  // 32: wayplatform.connect.tachograph.vu.v1.Activities.LoadUnloadRecord.operation_type:type_name -> wayplatform.connect.tachograph.vu.v1.Activities.LoadUnloadRecord.OperationType
-	5,  // 33: wayplatform.connect.tachograph.vu.v1.Activities.LoadUnloadRecord.place_record:type_name -> wayplatform.connect.tachograph.vu.v1.Activities.GnssRecord
-	34, // [34:34] is the sub-list for method output_type
-	34, // [34:34] is the sub-list for method input_type
-	34, // [34:34] is the sub-list for extension type_name
-	34, // [34:34] is the sub-list for extension extendee
-	0,  // [0:34] is the sub-list for field type_name
+	13, // 31: wayplatform.connect.tachograph.vu.v1.Activities.LoadUnloadRecord.full_card_number:type_name -> wayplatform.connect.tachograph.datadictionary.v1.FullCardNumber
+	10, // 32: wayplatform.connect.tachograph.vu.v1.Activities.LoadUnloadRecord.card_generation:type_name -> wayplatform.connect.tachograph.datadictionary.v1.Generation
+	0,  // 33: wayplatform.connect.tachograph.vu.v1.Activities.LoadUnloadRecord.operation_type:type_name -> wayplatform.connect.tachograph.vu.v1.Activities.LoadUnloadRecord.OperationType
+	5,  // 34: wayplatform.connect.tachograph.vu.v1.Activities.LoadUnloadRecord.place_record:type_name -> wayplatform.connect.tachograph.vu.v1.Activities.GnssRecord
+	21, // 35: wayplatform.connect.tachograph.vu.v1.Activities.CardIWRecord.PreviousVehicleInfo.vehicle_registration:type_name -> wayplatform.connect.tachograph.datadictionary.v1.VehicleRegistrationIdentification
+	12, // 36: wayplatform.connect.tachograph.vu.v1.Activities.CardIWRecord.PreviousVehicleInfo.card_withdrawal_time:type_name -> google.protobuf.Timestamp
+	37, // [37:37] is the sub-list for method output_type
+	37, // [37:37] is the sub-list for method input_type
+	37, // [37:37] is the sub-list for extension type_name
+	37, // [37:37] is the sub-list for extension extendee
+	0,  // [0:37] is the sub-list for field type_name
 }
 
 func init() { file_wayplatform_connect_tachograph_vu_v1_activities_proto_init() }
@@ -2523,7 +2191,7 @@ func file_wayplatform_connect_tachograph_vu_v1_activities_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_wayplatform_connect_tachograph_vu_v1_activities_proto_rawDesc), len(file_wayplatform_connect_tachograph_vu_v1_activities_proto_rawDesc)),
 			NumEnums:      1,
-			NumMessages:   8,
+			NumMessages:   9,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

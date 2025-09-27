@@ -37,15 +37,15 @@ func AppendPlaceRecord(dst []byte, rec *cardv1.Places_Record) ([]byte, error) {
 	dst = appendTimeReal(dst, rec.GetEntryTime()) // 4 bytes
 
 	// Entry type with protocol value conversion
-	entryTypeProtocol := GetEntryTypeDailyWorkPeriodProtocolValue(rec.GetEntryType(), rec.GetUnrecognizedEntryType())
+	entryTypeProtocol := GetEntryTypeDailyWorkPeriodProtocolValue(rec.GetEntryType(), 0)
 	dst = append(dst, byte(entryTypeProtocol)) // 1 byte
 
 	// Country with protocol value conversion
-	countryProtocol := GetNationNumericProtocolValue(rec.GetDailyWorkPeriodCountry(), rec.GetUnrecognizedDailyWorkPeriodCountry())
+	countryProtocol := GetNationNumericProtocolValue(rec.GetDailyWorkPeriodCountry(), 0)
 	dst = append(dst, byte(countryProtocol)) // 1 byte
 
 	dst = binary.BigEndian.AppendUint16(dst, uint16(rec.GetDailyWorkPeriodRegion())) // 2 bytes
-	dst = appendOdometer(dst, uint32(rec.GetVehicleOdometerKm()))                            // 3 bytes
+	dst = appendOdometer(dst, uint32(rec.GetVehicleOdometerKm()))                    // 3 bytes
 	dst = append(dst, byte(rec.GetReservedByte()))                                   // 1 byte reserved (preserved)
 	return dst, nil
 }

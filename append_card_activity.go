@@ -93,14 +93,14 @@ func AppendActivityChange(dst []byte, ac *cardv1.DriverActivityData_DailyRecord_
 	var aci uint16
 
 	// Reconstruct the bitfield from enum values
-	slot := GetCardSlotNumber(ac.GetSlot(), ac.GetUnrecognizedSlot())
-	drivingStatus := GetDrivingStatus(ac.GetDrivingStatus(), ac.GetUnrecognizedDrivingStatus())
-	cardStatus := GetCardStatus(ac.GetCardStatus(), ac.GetUnrecognizedCardStatus())
-	activity := GetDriverActivityValue(ac.GetActivity(), ac.GetUnrecognizedActivity())
+	slot := GetCardSlotNumber(ac.GetSlot(), 0)
+	drivingStatus := GetDrivingStatus(ac.GetDrivingStatus(), 0)
+	cardInserted := GetCardInserted(ac.GetInserted())
+	activity := GetDriverActivityValue(ac.GetActivity(), 0)
 
 	aci |= (uint16(slot) & 0x1) << 15
 	aci |= (uint16(drivingStatus) & 0x1) << 14
-	aci |= (uint16(cardStatus) & 0x1) << 13
+	aci |= (uint16(cardInserted) & 0x1) << 13
 	aci |= (uint16(activity) & 0x3) << 11
 	aci |= (uint16(ac.GetTimeOfChangeMinutes()) & 0x7FF)
 

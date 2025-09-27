@@ -77,7 +77,7 @@ func parsePlaceRecord(r *bytes.Reader) (*cardv1.Places_Record, error) {
 		return nil, fmt.Errorf("failed to read entry type: %w", err)
 	}
 	// Convert raw entry type to enum using protocol annotations
-	SetEntryTypeDailyWorkPeriod(int32(entryType), record.SetEntryType, record.SetUnrecognizedEntryType)
+	SetEntryTypeDailyWorkPeriod(int32(entryType), record.SetEntryType, nil)
 
 	// Read daily work period country (1 byte)
 	var country byte
@@ -85,7 +85,7 @@ func parsePlaceRecord(r *bytes.Reader) (*cardv1.Places_Record, error) {
 		return nil, fmt.Errorf("failed to read country: %w", err)
 	}
 	// Convert raw country to enum using protocol annotations
-	SetNationNumeric(int32(country), record.SetDailyWorkPeriodCountry, record.SetUnrecognizedDailyWorkPeriodCountry)
+	SetNationNumeric(int32(country), record.SetDailyWorkPeriodCountry, nil)
 
 	// Read daily work period region (2 bytes)
 	var region uint16

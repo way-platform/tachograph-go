@@ -5,7 +5,7 @@ import (
 )
 
 // AppendCardLastDownload appends last card download data to a byte slice.
-func AppendCardLastDownload(data []byte, lastDownload *cardv1.LastCardDownload) ([]byte, error) {
+func AppendCardLastDownload(data []byte, lastDownload *cardv1.CardDownloadDriver) ([]byte, error) {
 	if lastDownload == nil {
 		return data, nil
 	}

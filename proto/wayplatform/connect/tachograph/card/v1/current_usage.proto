@@ -3,23 +3,33 @@ edition = "2023";
 package wayplatform.connect.tachograph.card.v1;
 
 import "google/protobuf/timestamp.proto";
+import "wayplatform/connect/tachograph/datadictionary/v1/vehicle_registration_identification.proto";
 
 // Represents the content of the EF_Current_Usage file, which contains data
 // about the actual usage of the card.
 //
-// Corresponds to the `CardCurrentUse` data type.
-// See Data Dictionary, Section 2.16.
+// The file structure is specified in Appendix 2, Section 4.2.1.
+//
+//     EF Current_Usage
+//     └─CardCurrentUse
+//
+// The data type `CardCurrentUse` is specified in the Data Dictionary, Section 2.16.
+//
+// ASN.1 Specification:
+//
+//     CardCurrentUse ::= SEQUENCE {
+//         sessionOpenTime TimeReal,
+//         sessionOpenVehicle VehicleRegistrationIdentification
+//     }
 message CurrentUsage {
-  // Time when the card was inserted for the current session.
-  // See Data Dictionary, Section 2.162 for `TimeReal`.
+  // ASN.1 Type: TimeReal (see DD 2.162)
+  //
+  //     TimeReal ::= INTEGER (0..2^32-1)
   google.protobuf.Timestamp session_open_time = 1;
 
-  // Nation of the vehicle's registration. See DD Section 2.166.
-  string vehicle_registration_nation = 2;
-
-  // Vehicle's registration number. See DD Section 2.166.
-  string vehicle_registration_number = 3;
+  // ASN.1 Type: VehicleRegistrationIdentification (see DD 2.166)
+  datadictionary.v1.VehicleRegistrationIdentification session_open_vehicle = 2;
 
   // Digital signature for the EF_Current_Usage file content.
-  bytes signature = 4;
+  bytes signature = 3;
 }

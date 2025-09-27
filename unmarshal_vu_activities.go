@@ -7,6 +7,7 @@ import (
 
 	"google.golang.org/protobuf/types/known/timestamppb"
 
+	datadictionaryv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/datadictionary/v1"
 	vuv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/vu/v1"
 )
 
@@ -25,7 +26,7 @@ func UnmarshalVuActivities(r *bytes.Reader, target *vuv1.Activities, generation 
 // unmarshalVuActivitiesGen1 unmarshals Generation 1 VU activities
 func unmarshalVuActivitiesGen1(r *bytes.Reader, target *vuv1.Activities) (int, error) {
 	initialLen := r.Len()
-	target.SetGeneration(vuv1.Generation_GENERATION_1)
+	target.SetGeneration(datadictionaryv1.Generation_GENERATION_1)
 
 	// Read TimeReal (4 bytes) - this is the date of the day
 	target.SetDateOfDay(readTimeReal(r))
@@ -78,7 +79,7 @@ func unmarshalVuActivitiesGen1(r *bytes.Reader, target *vuv1.Activities) (int, e
 // unmarshalVuActivitiesGen2 unmarshals Generation 2 VU activities
 func unmarshalVuActivitiesGen2(r *bytes.Reader, target *vuv1.Activities) (int, error) {
 	initialLen := r.Len()
-	target.SetGeneration(vuv1.Generation_GENERATION_2)
+	target.SetGeneration(datadictionaryv1.Generation_GENERATION_2)
 
 	// Gen2 format uses record arrays, each with a header
 	// Parse DateOfDayDownloadedRecordArray

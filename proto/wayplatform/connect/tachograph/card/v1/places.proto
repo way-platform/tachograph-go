@@ -6,26 +6,44 @@ import "google/protobuf/timestamp.proto";
 import "wayplatform/connect/tachograph/datadictionary/v1/entry_type_daily_work_period.proto";
 import "wayplatform/connect/tachograph/datadictionary/v1/nation_numeric.proto";
 
-// Represents data from EF_Places, where daily work periods begin and/or end.
+// Represents the content of the EF_Places file, where daily work periods begin and/or end.
 //
-// Corresponds to the `CardPlaceDailyWorkPeriod` data type.
-// See Data Dictionary, Section 2.27.
+// The file structure is specified in Appendix 2, Section 4.2.1.
+//
+//     EF Places
+//     └─CardPlaceDailyWorkPeriod
+//
+// The data type `CardPlaceDailyWorkPeriod` is specified in the Data Dictionary, Section 2.27.
+//
+// ASN.1 Specification:
+//
+//     CardPlaceDailyWorkPeriod ::= SEQUENCE {
+//         placePointerNewestRecord INTEGER(0..NoOfCardPlaceRecords-1),
+//         placeRecords SET SIZE(NoOfCardPlaceRecords) OF PlaceRecord
+//     }
 message Places {
   // Represents a single place record.
   //
-  // Corresponds to the `PlaceRecord` data type.
-  // See Data Dictionary, Section 2.117.
+  // The data type `PlaceRecord` is specified in the Data Dictionary, Section 2.117.
+  //
+  // ASN.1 Specification:
+  //
+  //     PlaceRecord ::= SEQUENCE {
+  //         entryTime TimeReal,
+  //         entryTypeDailyWorkPeriod EntryTypeDailyWorkPeriod,
+  //         dailyWorkPeriodCountry NationNumeric,
+  //         dailyWorkPeriodRegion RegionNumeric,
+  //         vehicleOdometerValue OdometerShort
+  //     }
   message Record {
     // Time of the entry. See DD Section 2.162 for `TimeReal`.
     google.protobuf.Timestamp entry_time = 1;
 
     // Type of entry (begin or end). See DD Section 2.66 for `EntryTypeDailyWorkPeriod`.
     datadictionary.v1.EntryTypeDailyWorkPeriod entry_type = 2;
-    int32 unrecognized_entry_type = 3;
 
     // Country code. See DD Section 2.101 for `NationNumeric`.
     datadictionary.v1.NationNumeric daily_work_period_country = 4;
-    int32 unrecognized_daily_work_period_country = 5;
 
     // Region code. See DD Section 2.122 for `RegionNumeric`.
     int32 daily_work_period_region = 6;

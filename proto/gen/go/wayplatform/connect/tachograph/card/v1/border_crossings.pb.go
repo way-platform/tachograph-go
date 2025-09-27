@@ -21,10 +21,22 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// Represents border crossing data from EF_Border_Crossings.
+// Represents the content of the EF_Border_Crossings file.
 //
-// Corresponds to the `CardBorderCrossings` data type.
-// See Data Dictionary, Section 2.11a.
+// The file structure is specified in Appendix 2, Section 4.2.2.
+//
+//	EF Border_Crossings
+//	└─CardBorderCrossings
+//
+// The data type `CardBorderCrossings` is specified in the Data Dictionary, Section 2.11a.
+//
+// ASN.1 Specification:
+//
+//	CardBorderCrossings ::= SEQUENCE {
+//	    borderCrossingPointerNewestRecord INTEGER (0..NoOfBorderCrossingRecords -1),
+//	    cardBorderCrossingRecords SET SIZE (NoOfBorderCrossingRecords)
+//	OF CardBorderCrossingRecord
+//	}
 type BorderCrossings struct {
 	state                        protoimpl.MessageState     `protogen:"opaque.v1"`
 	xxx_hidden_NewestRecordIndex int32                      `protobuf:"varint,1,opt,name=newest_record_index,json=newestRecordIndex"`
@@ -120,8 +132,16 @@ func (b0 BorderCrossings_builder) Build() *BorderCrossings {
 
 // Represents a single border crossing record.
 //
-// Corresponds to the `CardBorderCrossingRecord` data type.
-// See Data Dictionary, Section 2.11b.
+// The data type `CardBorderCrossingRecord` is specified in the Data Dictionary, Section 2.11b.
+//
+// ASN.1 Specification:
+//
+//	CardBorderCrossingRecord ::= SEQUENCE {
+//	    countryLeft NationNumeric,
+//	    countryEntered NationNumeric,
+//	    gnssPlaceAuthRecord GNSSPlaceAuthRecord,
+//	    vehicleOdometerValue OdometerShort
+//	}
 type BorderCrossings_Record struct {
 	state                          protoimpl.MessageState `protogen:"opaque.v1"`
 	xxx_hidden_CountryLeft         int32                  `protobuf:"varint,1,opt,name=country_left,json=countryLeft"`

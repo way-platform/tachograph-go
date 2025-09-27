@@ -1,0 +1,15 @@
+edition = "2023";
+
+package wayplatform.connect.tachograph.datadictionary.v1;
+
+import "google/protobuf/descriptor.proto";
+
+enum Generation {
+  GENERATION_UNSPECIFIED = 0;
+  GENERATION_1 = 1;
+  GENERATION_2 = 2;
+}
+
+extend google.protobuf.EnumValueOptions {
+  Generation generation = 50304;
+}

@@ -5,6 +5,7 @@ import (
 	"encoding/binary"
 	"time"
 
+	datadictionaryv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/datadictionary/v1"
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
@@ -87,4 +88,23 @@ func appendVuOdometer(buf *bytes.Buffer, value uint32) {
 // appendVuTag appends a 2-byte VU tag
 func appendVuTag(buf *bytes.Buffer, tag uint16) {
 	appendUint16(buf, tag)
+}
+
+// appendVuFullCardNumber appends a FullCardNumber structure for VU data
+func appendVuFullCardNumber(buf *bytes.Buffer, cardNumber *datadictionaryv1.FullCardNumber, maxLen int) {
+	if cardNumber == nil {
+		// Append maxLen bytes of zeros
+		buf.Write(make([]byte, maxLen))
+		return
+	}
+	// For VU data, use the card_number field and pad/truncate to maxLen
+	cardStr := cardNumber.GetCardNumber()
+	if len(cardStr) > maxLen {
+		cardStr = cardStr[:maxLen]
+	}
+	buf.WriteString(cardStr)
+	// Pad with zeros if needed
+	if len(cardStr) < maxLen {
+		buf.Write(make([]byte, maxLen-len(cardStr)))
+	}
 }

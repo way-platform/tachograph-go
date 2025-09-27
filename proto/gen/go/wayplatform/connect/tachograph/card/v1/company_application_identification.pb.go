@@ -26,15 +26,14 @@ const (
 // Corresponds to the `CompanyCardApplicationIdentification` data type.
 // See Data Dictionary, Section 2.48.
 type CompanyApplicationIdentification struct {
-	state                                         protoimpl.MessageState `protogen:"opaque.v1"`
-	xxx_hidden_TypeOfTachographCardId             v1.EquipmentType       `protobuf:"varint,1,opt,name=type_of_tachograph_card_id,json=typeOfTachographCardId,enum=wayplatform.connect.tachograph.datadictionary.v1.EquipmentType"`
-	xxx_hidden_UnrecognizedTypeOfTachographCardId int32                  `protobuf:"varint,2,opt,name=unrecognized_type_of_tachograph_card_id,json=unrecognizedTypeOfTachographCardId"`
-	xxx_hidden_CardStructureVersion               []byte                 `protobuf:"bytes,3,opt,name=card_structure_version,json=cardStructureVersion"`
-	xxx_hidden_CompanyActivityRecordsCount        int32                  `protobuf:"varint,4,opt,name=company_activity_records_count,json=companyActivityRecordsCount"`
-	XXX_raceDetectHookData                        protoimpl.RaceDetectHookData
-	XXX_presence                                  [1]uint32
-	unknownFields                                 protoimpl.UnknownFields
-	sizeCache                                     protoimpl.SizeCache
+	state                                  protoimpl.MessageState `protogen:"opaque.v1"`
+	xxx_hidden_TypeOfTachographCardId      v1.EquipmentType       `protobuf:"varint,1,opt,name=type_of_tachograph_card_id,json=typeOfTachographCardId,enum=wayplatform.connect.tachograph.datadictionary.v1.EquipmentType"`
+	xxx_hidden_CardStructureVersion        []byte                 `protobuf:"bytes,3,opt,name=card_structure_version,json=cardStructureVersion"`
+	xxx_hidden_CompanyActivityRecordsCount int32                  `protobuf:"varint,4,opt,name=company_activity_records_count,json=companyActivityRecordsCount"`
+	XXX_raceDetectHookData                 protoimpl.RaceDetectHookData
+	XXX_presence                           [1]uint32
+	unknownFields                          protoimpl.UnknownFields
+	sizeCache                              protoimpl.SizeCache
 }
 
 func (x *CompanyApplicationIdentification) Reset() {
@@ -71,13 +70,6 @@ func (x *CompanyApplicationIdentification) GetTypeOfTachographCardId() v1.Equipm
 	return v1.EquipmentType(0)
 }
 
-func (x *CompanyApplicationIdentification) GetUnrecognizedTypeOfTachographCardId() int32 {
-	if x != nil {
-		return x.xxx_hidden_UnrecognizedTypeOfTachographCardId
-	}
-	return 0
-}
-
 func (x *CompanyApplicationIdentification) GetCardStructureVersion() []byte {
 	if x != nil {
 		return x.xxx_hidden_CardStructureVersion
@@ -94,12 +86,7 @@ func (x *CompanyApplicationIdentification) GetCompanyActivityRecordsCount() int3
 
 func (x *CompanyApplicationIdentification) SetTypeOfTachographCardId(v v1.EquipmentType) {
 	x.xxx_hidden_TypeOfTachographCardId = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 4)
-}
-
-func (x *CompanyApplicationIdentification) SetUnrecognizedTypeOfTachographCardId(v int32) {
-	x.xxx_hidden_UnrecognizedTypeOfTachographCardId = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 4)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 3)
 }
 
 func (x *CompanyApplicationIdentification) SetCardStructureVersion(v []byte) {
@@ -107,12 +94,12 @@ func (x *CompanyApplicationIdentification) SetCardStructureVersion(v []byte) {
 		v = []byte{}
 	}
 	x.xxx_hidden_CardStructureVersion = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 4)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 3)
 }
 
 func (x *CompanyApplicationIdentification) SetCompanyActivityRecordsCount(v int32) {
 	x.xxx_hidden_CompanyActivityRecordsCount = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 3, 4)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 3)
 }
 
 func (x *CompanyApplicationIdentification) HasTypeOfTachographCardId() bool {
@@ -122,25 +109,18 @@ func (x *CompanyApplicationIdentification) HasTypeOfTachographCardId() bool {
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 0)
 }
 
-func (x *CompanyApplicationIdentification) HasUnrecognizedTypeOfTachographCardId() bool {
+func (x *CompanyApplicationIdentification) HasCardStructureVersion() bool {
 	if x == nil {
 		return false
 	}
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 1)
 }
 
-func (x *CompanyApplicationIdentification) HasCardStructureVersion() bool {
-	if x == nil {
-		return false
-	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 2)
-}
-
 func (x *CompanyApplicationIdentification) HasCompanyActivityRecordsCount() bool {
 	if x == nil {
 		return false
 	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 3)
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 2)
 }
 
 func (x *CompanyApplicationIdentification) ClearTypeOfTachographCardId() {
@@ -148,18 +128,13 @@ func (x *CompanyApplicationIdentification) ClearTypeOfTachographCardId() {
 	x.xxx_hidden_TypeOfTachographCardId = v1.EquipmentType_EQUIPMENT_TYPE_UNSPECIFIED
 }
 
-func (x *CompanyApplicationIdentification) ClearUnrecognizedTypeOfTachographCardId() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 1)
-	x.xxx_hidden_UnrecognizedTypeOfTachographCardId = 0
-}
-
 func (x *CompanyApplicationIdentification) ClearCardStructureVersion() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 2)
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 1)
 	x.xxx_hidden_CardStructureVersion = nil
 }
 
 func (x *CompanyApplicationIdentification) ClearCompanyActivityRecordsCount() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 3)
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 2)
 	x.xxx_hidden_CompanyActivityRecordsCount = 0
 }
 
@@ -167,8 +142,7 @@ type CompanyApplicationIdentification_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
 	// See Data Dictionary, Section 2.48, `typeOfTachographCardId`.
-	TypeOfTachographCardId             *v1.EquipmentType
-	UnrecognizedTypeOfTachographCardId *int32
+	TypeOfTachographCardId *v1.EquipmentType
 	// See Data Dictionary, Section 2.48, `cardStructureVersion`.
 	CardStructureVersion []byte
 	// See Data Dictionary, Section 2.48, `noOfCompanyActivityRecords`.
@@ -180,19 +154,15 @@ func (b0 CompanyApplicationIdentification_builder) Build() *CompanyApplicationId
 	b, x := &b0, m0
 	_, _ = b, x
 	if b.TypeOfTachographCardId != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 4)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 3)
 		x.xxx_hidden_TypeOfTachographCardId = *b.TypeOfTachographCardId
 	}
-	if b.UnrecognizedTypeOfTachographCardId != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 4)
-		x.xxx_hidden_UnrecognizedTypeOfTachographCardId = *b.UnrecognizedTypeOfTachographCardId
-	}
 	if b.CardStructureVersion != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 4)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 3)
 		x.xxx_hidden_CardStructureVersion = b.CardStructureVersion
 	}
 	if b.CompanyActivityRecordsCount != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 3, 4)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 3)
 		x.xxx_hidden_CompanyActivityRecordsCount = *b.CompanyActivityRecordsCount
 	}
 	return m0
@@ -202,10 +172,9 @@ var File_wayplatform_connect_tachograph_card_v1_company_application_identificati
 
 const file_wayplatform_connect_tachograph_card_v1_company_application_identification_proto_rawDesc = "" +
 	"\n" +
-	"Owayplatform/connect/tachograph/card/v1/company_application_identification.proto\x12&wayplatform.connect.tachograph.card.v1\x1aEwayplatform/connect/tachograph/datadictionary/v1/equipment_type.proto\"\xef\x02\n" +
+	"Owayplatform/connect/tachograph/card/v1/company_application_identification.proto\x12&wayplatform.connect.tachograph.card.v1\x1aEwayplatform/connect/tachograph/datadictionary/v1/equipment_type.proto\"\x9a\x02\n" +
 	" CompanyApplicationIdentification\x12{\n" +
-	"\x1atype_of_tachograph_card_id\x18\x01 \x01(\x0e2?.wayplatform.connect.tachograph.datadictionary.v1.EquipmentTypeR\x16typeOfTachographCardId\x12S\n" +
-	"'unrecognized_type_of_tachograph_card_id\x18\x02 \x01(\x05R\"unrecognizedTypeOfTachographCardId\x124\n" +
+	"\x1atype_of_tachograph_card_id\x18\x01 \x01(\x0e2?.wayplatform.connect.tachograph.datadictionary.v1.EquipmentTypeR\x16typeOfTachographCardId\x124\n" +
 	"\x16card_structure_version\x18\x03 \x01(\fR\x14cardStructureVersion\x12C\n" +
 	"\x1ecompany_activity_records_count\x18\x04 \x01(\x05R\x1bcompanyActivityRecordsCountB\xf2\x02\n" +
 	"*com.wayplatform.connect.tachograph.card.v1B%CompanyApplicationIdentificationProtoP\x01Z`github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1;cardv1\xa2\x02\x04WCTC\xaa\x02&Wayplatform.Connect.Tachograph.Card.V1\xca\x02&Wayplatform\\Connect\\Tachograph\\Card\\V1\xe2\x022Wayplatform\\Connect\\Tachograph\\Card\\V1\\GPBMetadata\xea\x02*Wayplatform::Connect::Tachograph::Card::V1b\beditionsp\xe8\a"

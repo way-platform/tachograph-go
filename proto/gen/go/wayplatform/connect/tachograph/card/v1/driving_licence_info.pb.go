@@ -20,10 +20,23 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// Represents the card holder's driving licence information.
+// Represents the content of the EF_Driving_Licence_Info file, which contains the
+// card holder's driving licence information.
 //
-// Corresponds to the `CardDrivingLicenceInformation` data type from EF_Driving_Licence_Info.
-// See Data Dictionary, Section 2.18.
+// The file structure is specified in Appendix 2, Section 4.2.1.
+//
+//	EF Driving_Licence_Info
+//	└─CardDrivingLicenceInformation
+//
+// The data type `CardDrivingLicenceInformation` is specified in the Data Dictionary, Section 2.18.
+//
+// ASN.1 Specification:
+//
+//	CardDrivingLicenceInformation ::= SEQUENCE {
+//	    drivingLicenceIssuingAuthority Name,
+//	    drivingLicenceIssuingNation NationNumeric,
+//	    drivingLicenceNumber IA5String(SIZE(16))
+//	}
 type DrivingLicenceInfo struct {
 	state                                     protoimpl.MessageState `protogen:"opaque.v1"`
 	xxx_hidden_DrivingLicenceIssuingAuthority *string                `protobuf:"bytes,1,opt,name=driving_licence_issuing_authority,json=drivingLicenceIssuingAuthority"`

@@ -6,6 +6,7 @@ import (
 
 	"google.golang.org/protobuf/types/known/timestamppb"
 
+	datadictionaryv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/datadictionary/v1"
 	vuv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/vu/v1"
 )
 
@@ -15,10 +16,10 @@ func UnmarshalOverview(r *bytes.Reader, overview *vuv1.Overview, generation int)
 
 	switch generation {
 	case 1:
-		overview.SetGeneration(vuv1.Generation_GENERATION_1)
+		overview.SetGeneration(datadictionaryv1.Generation_GENERATION_1)
 		return unmarshalOverviewGen1(r, overview, startPos)
 	case 2:
-		overview.SetGeneration(vuv1.Generation_GENERATION_2)
+		overview.SetGeneration(datadictionaryv1.Generation_GENERATION_2)
 		// For now, assume version 1 - we can add version detection later
 		overview.SetVersion(vuv1.Version_VERSION_1)
 		return unmarshalOverviewGen2(r, overview, startPos)
@@ -69,7 +70,7 @@ func unmarshalOverviewGen1(r *bytes.Reader, overview *vuv1.Overview, startPos in
 		regNum = readString(bytes.NewReader(regNumBytes[1:]), 13)
 	}
 
-	vehicleReg := &vuv1.Overview_VehicleRegistration{}
+	vehicleReg := &datadictionaryv1.VehicleRegistrationIdentification{}
 	vehicleReg.SetNation(int32(nation))
 	vehicleReg.SetNumber(regNum)
 	overview.SetVehicleRegistrationWithNation(vehicleReg)

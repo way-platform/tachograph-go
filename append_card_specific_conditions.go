@@ -20,7 +20,7 @@ func AppendCardSpecificConditions(data []byte, conditions *cardv1.SpecificCondit
 		data = appendTimeReal(data, record.GetEntryTime())
 
 		// Specific condition type (1 byte) - convert enum to protocol value
-		conditionTypeProtocol := GetSpecificConditionTypeProtocolValue(record.GetSpecificConditionType(), record.GetUnrecognizedSpecificConditionType())
+		conditionTypeProtocol := GetSpecificConditionTypeProtocolValue(record.GetSpecificConditionType(), 0)
 		data = append(data, byte(conditionTypeProtocol))
 	}
 

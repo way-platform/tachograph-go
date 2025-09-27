@@ -163,7 +163,7 @@ func unmarshalDriverCardFile(input *cardv1.RawCardFile) (*cardv1.DriverCardFile,
 			if signature != nil {
 				lastDownload.SetSignature(signature)
 			}
-			output.SetLastCardDownload(lastDownload)
+			output.SetCardDownloadDriver(lastDownload)
 
 		case cardv1.ElementaryFileType_EF_VEHICLE_UNITS_USED:
 			vehicleUnits, err := unmarshalCardVehicleUnitsUsed(record.GetValue())

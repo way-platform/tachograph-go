@@ -1,0 +1,26 @@
+edition = "2023";
+
+package wayplatform.connect.tachograph.datadictionary.v1;
+
+// Corresponds to the `VehicleRegistrationIdentification` data type in the Data Dictionary, Section 2.166.
+//
+// ASN.1 Specification:
+//
+//     VehicleRegistrationIdentification ::= SEQUENCE {
+//         vehicleRegistrationNation NationNumeric,
+//         vehicleRegistrationNumber VehicleRegistrationNumber
+//     }
+message VehicleRegistrationIdentification {
+  // ASN.1 Type: NationNumeric (see DD 2.101)
+  //
+  //     NationNumeric ::= INTEGER(0..255)
+  int32 nation = 1;
+
+  // ASN.1 Type: VehicleRegistrationNumber (see DD 2.167)
+  //
+  //     VehicleRegistrationNumber ::= CHOICE {
+  //         codePage INTEGER(0..255),
+  //         vehicleRegNumber OCTET STRING(SIZE(13))
+  //     }
+  string number = 2;
+}

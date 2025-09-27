@@ -6,7 +6,11 @@ import "google/protobuf/timestamp.proto";
 import "wayplatform/connect/tachograph/datadictionary/v1/calibration_purpose.proto";
 import "wayplatform/connect/tachograph/datadictionary/v1/card_slot_number.proto";
 import "wayplatform/connect/tachograph/datadictionary/v1/equipment_type.proto";
+import "wayplatform/connect/tachograph/datadictionary/v1/extended_serial_number.proto";
+import "wayplatform/connect/tachograph/datadictionary/v1/full_card_number.proto";
 import "wayplatform/connect/tachograph/datadictionary/v1/nation_numeric.proto";
+import "wayplatform/connect/tachograph/datadictionary/v1/vehicle_registration_identification.proto";
+import "wayplatform/connect/tachograph/datadictionary/v1/generation.proto";
 import "wayplatform/connect/tachograph/vu/v1/versioning.proto";
 
 // Represents the consolidated data structure for a Technical Data transfer.
@@ -14,30 +18,41 @@ import "wayplatform/connect/tachograph/vu/v1/versioning.proto";
 // This message corresponds to the data defined in the regulation document:
 // Appendix 7, Section 2.2.6.6: "Positive Response Transfer Data Technical Data".
 message TechnicalData {
-  // Discriminator field indicating the generation of the data.
-  Generation generation = 1;
+  // The generation of the vehicle unit, parsed from the raw transfer data.
+  //
+  // Discriminator field.
+  datadictionary.v1.Generation generation = 1;
 
   // Represents the identification data of the vehicle unit.
   //
   // Corresponds to the `VuIdentification` data type.
   // See Data Dictionary, Section 2.205.
   message VuIdentification {
-    // See Data Dictionary, Section 2.210 for `VuManufacturerName`.
+    // Represents the software identification of the vehicle unit.
+    //
+    // Corresponds to the `VuSoftwareIdentification` data type.
+    // See Data Dictionary, Section 2.225.
+    message VuSoftwareIdentification {
+      // The software version of the VU.
+      string software_version = 1;
+      // The installation date of the software.
+      google.protobuf.Timestamp software_installation_date = 2;
+    }
+
+    // The name of the VU manufacturer.
     string manufacturer_name = 1;
-    // See Data Dictionary, Section 2.209 for `VuManufacturerAddress`.
+    // The address of the VU manufacturer.
     string manufacturer_address = 2;
-    // See Data Dictionary, Section 2.217 for `VuPartNumber`.
+    // The part number of the VU.
     string part_number = 3;
-    // Part of `ExtendedSerialNumber`. See Data Dictionary, Section 2.72.
-    string serial_number = 4;
-    // Part of `VuSoftwareIdentification`. See Data Dictionary, Section 2.225.
-    string software_version = 5;
-    // See Data Dictionary, Section 2.224 for `VuSoftInstallationDate`.
-    google.protobuf.Timestamp software_installation_date = 6;
-    // See Data Dictionary, Section 2.211 for `VuManufacturingDate`.
-    google.protobuf.Timestamp manufacturing_date = 7;
-    // See Data Dictionary, Section 2.172 for `VuApprovalNumber`.
-    string approval_number = 8;
+    // The serial number of the VU.
+    datadictionary.v1.ExtendedSerialNumber serial_number = 4;
+    // The software identification of the VU.
+    VuSoftwareIdentification software_identification = 5;
+    // The manufacturing date of the VU.
+    google.protobuf.Timestamp manufacturing_date = 6;
+    // The approval number of the VU.
+    string approval_number = 7;
   }
 
   // Represents a paired motion sensor record.
@@ -45,11 +60,11 @@ message TechnicalData {
   // Corresponds to the `SensorPairedRecord` data type.
   // See Data Dictionary, Section 2.145.
   message PairedSensor {
-    // See Data Dictionary, Section 2.148 for `SensorSerialNumber`.
-    string serial_number = 1;
-    // See Data Dictionary, Section 2.131 for `SensorApprovalNumber`.
+    // The serial number of the motion sensor.
+    datadictionary.v1.ExtendedSerialNumber serial_number = 1;
+    // The approval number of the motion sensor.
     string approval_number = 2;
-    // See Data Dictionary, Section 2.146 for `SensorPairingDate`.
+    // The date the sensor was paired.
     google.protobuf.Timestamp pairing_date = 3;
   }
 
@@ -58,11 +73,11 @@ message TechnicalData {
   // Corresponds to the `SensorExternalGNSSCoupledRecord` data type.
   // See Data Dictionary, Section 2.133.
   message CoupledGnss {
-    // See Data Dictionary, Section 2.139 for `SensorGNSSSerialNumber`.
-    string serial_number = 1;
-    // See Data Dictionary, Section 2.132 for `SensorExternalGNSSApprovalNumber`.
+    // The serial number of the external GNSS.
+    datadictionary.v1.ExtendedSerialNumber serial_number = 1;
+    // The approval number of the external GNSS.
     string approval_number = 2;
-    // See Data Dictionary, Section 2.138 for `SensorGNSSCouplingDate`.
+    // The date the GNSS was coupled.
     google.protobuf.Timestamp coupling_date = 3;
   }
 
@@ -71,44 +86,41 @@ message TechnicalData {
   // Corresponds to the `VuCalibrationRecord` data type.
   // See Data Dictionary, Section 2.174.
   message CalibrationRecord {
-    // See Data Dictionary, Section 2.8 for `CalibrationPurpose`.
+    // The purpose of the calibration.
     datadictionary.v1.CalibrationPurpose purpose = 1;
     int32 unrecognized_purpose = 2;
-    // See Data Dictionary, Section 2.99 for `Name`.
+    // The name of the workshop.
     string workshop_name = 3;
-    // See Data Dictionary, Section 2.2 for `Address`.
+    // The address of the workshop.
     string workshop_address = 4;
-    // Part of `FullCardNumber`. See Data Dictionary, Section 2.73.
-    string workshop_card_number = 5;
-    // See Data Dictionary, Section 2.24 for `cardExpiryDate`.
+    // The card number of the workshop.
+    datadictionary.v1.FullCardNumber workshop_card_number = 5;
+    // The expiry date of the workshop card.
     google.protobuf.Timestamp workshop_card_expiry_date = 6;
-    // See Data Dictionary, Section 2.164 for `VehicleIdentificationNumber`.
+    // The Vehicle Identification Number.
     string vin = 7;
-    // Part of `VehicleRegistrationIdentification`. See DD Sections 2.166 & 2.167.
-    string vrn = 8;
-    // Part of `VehicleRegistrationIdentification`. See DD Sections 2.166 & 2.101.
-    datadictionary.v1.NationNumeric registering_nation = 9;
-    int32 unrecognized_registering_nation = 10;
-    // See Data Dictionary, Section 2.239 for `W-VehicleCharacteristicConstant`.
-    int32 w_vehicle_characteristic_constant = 11;
-    // See Data Dictionary, Section 2.85 for `K-ConstantOfRecordingEquipment`.
-    int32 k_constant_of_recording_equipment = 12;
-    // See Data Dictionary, Section 2.91 for `L-TyreCircumference`.
-    int32 l_tyre_circumference_mm = 13;
-    // See Data Dictionary, Section 2.163 for `TyreSize`.
-    string tyre_size = 14;
-    // See Data Dictionary, Section 2.156 for `SpeedAuthorised`.
-    int32 authorised_speed_kmh = 15;
-    // Odometer value before calibration. See DD Section 2.113 for `OdometerShort`.
-    int32 old_odometer_value_km = 16;
-    // Odometer value after calibration. See DD Section 2.113 for `OdometerShort`.
-    int32 new_odometer_value_km = 17;
-    // Time value before calibration. See DD Section 2.162 for `TimeReal`.
-    google.protobuf.Timestamp old_time_value = 18;
-    // Time value after calibration. See DD Section 2.162 for `TimeReal`.
-    google.protobuf.Timestamp new_time_value = 19;
-    // Date of next calibration. See DD Section 2.57 for `Datef`.
-    google.protobuf.Timestamp next_calibration_date = 20;
+    // The vehicle registration identifier.
+    datadictionary.v1.VehicleRegistrationIdentification vehicle_registration = 8;
+    // The vehicle characteristic constant.
+    int32 w_vehicle_characteristic_constant = 9;
+    // The constant of the recording equipment.
+    int32 k_constant_of_recording_equipment = 10;
+    // The tyre circumference in mm.
+    int32 l_tyre_circumference_mm = 11;
+    // The tyre size designation.
+    string tyre_size = 12;
+    // The authorised speed in km/h.
+    int32 authorised_speed_kmh = 13;
+    // The odometer value before calibration in km.
+    int32 old_odometer_value_km = 14;
+    // The odometer value after calibration in km.
+    int32 new_odometer_value_km = 15;
+    // The time value before calibration.
+    google.protobuf.Timestamp old_time_value = 16;
+    // The time value after calibration.
+    google.protobuf.Timestamp new_time_value = 17;
+    // The date of the next calibration.
+    google.protobuf.Timestamp next_calibration_date = 18;
   }
 
   // Represents a record of a card used in the VU.
@@ -116,11 +128,11 @@ message TechnicalData {
   // Corresponds to the `VuCardRecord` data type.
   // See Data Dictionary, Section 2.179.
   message CardRecord {
-    // See Data Dictionary, Section 2.73 for `FullCardNumber`.
-    string full_card_number = 1;
-    // See Data Dictionary, Section 2.36 for `CardStructureVersion`.
+    // The full card number.
+    datadictionary.v1.FullCardNumber full_card_number = 1;
+    // The structure version of the card.
     bytes card_structure_version = 2;
-    // Part of `FullCardNumber`. See Data Dictionary, Section 2.73.
+    // The type of the card.
     datadictionary.v1.EquipmentType card_type = 3;
     int32 unrecognized_card_type = 4;
   }
@@ -130,9 +142,9 @@ message TechnicalData {
   // Corresponds to the `VuITSConsentRecord` data type.
   // See Data Dictionary, Section 2.207.
   message ItsConsentRecord {
-    // See Data Dictionary, Section 2.73 for `FullCardNumber`.
-    string full_card_number = 1;
-    // Consent status for ITS data provision.
+    // The full card number.
+    datadictionary.v1.FullCardNumber full_card_number = 1;
+    // The consent status for ITS data provision.
     int32 consent_status = 2;
   }
 
@@ -141,9 +153,9 @@ message TechnicalData {
   // Corresponds to the `VuPowerSupplyInterruptionRecord` data type.
   // See Data Dictionary, Section 2.240.
   message PowerSupplyInterruptionRecord {
-    // Timestamp of the interruption. See DD Section 2.162 for `TimeReal`.
+    // The timestamp of the interruption.
     google.protobuf.Timestamp timestamp = 1;
-    // Slot number of the card affected. See DD Section 2.33 for `CardSlotNumber`.
+    // The slot number of the card affected.
     datadictionary.v1.CardSlotNumber card_slot_number = 2;
     int32 unrecognized_card_slot_number = 3;
   }
@@ -168,10 +180,8 @@ message TechnicalData {
   repeated PowerSupplyInterruptionRecord power_supply_interruptions = 9;
 
   // Signature for Gen1 data (RSA, 128 bytes).
-  // See Data Dictionary, Section 2.149.
   bytes signature_gen1 = 10;
 
   // Signature for Gen2 data (ECC).
-  // See Data Dictionary, Section 2.149.
   bytes signature_gen2 = 11;
 }

@@ -1,8 +1,6 @@
 package tachograph
 
 import (
-	"strconv"
-
 	cardv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1"
 )
 
@@ -36,25 +34,13 @@ func AppendCardControlActivityData(data []byte, controlData *cardv1.ControlActiv
 
 	var err error
 	// Control card number (18 bytes)
-	cardNumber := controlData.GetControlCardNumber()
-	data, err = appendString(data, cardNumber, 18)
+	data, err = appendFullCardNumber(data, controlData.GetControlCardNumber(), 18)
 	if err != nil {
 		return nil, err
 	}
 
-	// Vehicle registration nation (1 byte)
-	nationStr := controlData.GetVehicleRegistrationNation()
-	var nationByte byte = 0x00
-	if len(nationStr) >= 2 {
-		if val, err := strconv.ParseUint(nationStr, 16, 8); err == nil {
-			nationByte = byte(val)
-		}
-	}
-	data = append(data, nationByte)
-
-	// Vehicle registration number (14 bytes)
-	regNumber := controlData.GetVehicleRegistrationNumber()
-	data, err = appendString(data, regNumber, 14)
+	// Vehicle registration (15 bytes total: 1 byte nation + 14 bytes number)
+	data, err = appendVehicleRegistration(data, controlData.GetControlVehicleRegistration())
 	if err != nil {
 		return nil, err
 	}

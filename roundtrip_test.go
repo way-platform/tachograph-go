@@ -9,8 +9,8 @@ import (
 	"google.golang.org/protobuf/testing/protocmp"
 )
 
-// TestRawCardFileRoundtrip tests that RawCardFile → Binary → RawCardFile conversion is 100% perfect
-func TestRawCardFileRoundtrip(t *testing.T) {
+// Test_roundTrip_rawCardFile tests that RawCardFile → Binary → RawCardFile conversion is 100% perfect
+func Test_roundTrip_rawCardFile(t *testing.T) {
 	// Dynamically discover test files
 	files, err := os.ReadDir("testdata/card/driver")
 	if err != nil {
@@ -102,93 +102,5 @@ func TestRawCardFileRoundtrip(t *testing.T) {
 				t.Logf("✅ Perfect structure roundtrip: %d records", len(originalRawFile.GetRecords()))
 			}
 		})
-	}
-}
-
-// TestRawCardFileStructureConsistency tests that all card files have consistent RawCardFile structure
-func TestRawCardFileStructureConsistency(t *testing.T) {
-	testFiles := []string{
-		"testdata/card/driver/proprietary-Nuutti_Nestori_Sahala_2025-09-11_08-38-24.DDD",
-		"testdata/card/driver/proprietary-Omar_Khyam_Khawaja_2025-09-12_12-02-20.DDD",
-		"testdata/card/driver/proprietary-Teemu_Samuli_Hyvärinen_2025-09-12_12-03-47.DDD",
-		"testdata/card/driver/proprietary-Ville_Petteri_Kalske_2025-09-12_11-41-51.DDD",
-	}
-
-	type RecordSummary struct {
-		Tag         int32
-		File        string
-		ContentType string
-		Length      int32
-	}
-
-	var fileStructures []struct {
-		path    string
-		records []*RecordSummary
-	}
-
-	// Analyze each file structure
-	for _, filePath := range testFiles {
-		originalData, err := os.ReadFile(filePath)
-		if err != nil {
-			t.Fatalf("Failed to read file %s: %v", filePath, err)
-		}
-
-		rawFile, err := unmarshalRawCardFile(originalData)
-		if err != nil {
-			t.Fatalf("Failed to unmarshal file %s: %v", filePath, err)
-		}
-
-		var records []*RecordSummary
-		for _, record := range rawFile.GetRecords() {
-			records = append(records, &RecordSummary{
-				Tag:         record.GetTag(),
-				File:        record.GetFile().String(),
-				ContentType: record.GetContentType().String(),
-				Length:      record.GetLength(),
-			})
-		}
-
-		fileStructures = append(fileStructures, struct {
-			path    string
-			records []*RecordSummary
-		}{filePath, records})
-
-		t.Logf("File: %s", filePath)
-		t.Logf("  Records: %d", len(records))
-		for i, record := range records {
-			t.Logf("  [%2d] Tag=0x%06X, File=%s, Type=%s, Length=%d",
-				i, record.Tag, record.File, record.ContentType, record.Length)
-		}
-		t.Logf("")
-	}
-
-	// Compare structures (they should be very similar for same card type)
-	if len(fileStructures) > 1 {
-		baseStructure := fileStructures[0]
-		for i := 1; i < len(fileStructures); i++ {
-			compareStructure := fileStructures[i]
-
-			if len(baseStructure.records) != len(compareStructure.records) {
-				t.Logf("Structure difference: %s has %d records, %s has %d records",
-					baseStructure.path, len(baseStructure.records),
-					compareStructure.path, len(compareStructure.records))
-			}
-
-			minLen := len(baseStructure.records)
-			if len(compareStructure.records) < minLen {
-				minLen = len(compareStructure.records)
-			}
-
-			for j := 0; j < minLen; j++ {
-				base := baseStructure.records[j]
-				comp := compareStructure.records[j]
-
-				if base.Tag != comp.Tag || base.File != comp.File || base.ContentType != comp.ContentType {
-					t.Logf("Structure difference at record %d:", j)
-					t.Logf("  %s: Tag=0x%06X, File=%s, Type=%s", baseStructure.path, base.Tag, base.File, base.ContentType)
-					t.Logf("  %s: Tag=0x%06X, File=%s, Type=%s", compareStructure.path, comp.Tag, comp.File, comp.ContentType)
-				}
-			}
-		}
 	}
 }

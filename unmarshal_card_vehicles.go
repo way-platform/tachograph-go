@@ -6,6 +6,7 @@ import (
 	"fmt"
 
 	cardv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1"
+	datadictionaryv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/datadictionary/v1"
 )
 
 // unmarshalCardVehiclesUsed unmarshals vehicles used data from a card EF.
@@ -97,13 +98,11 @@ func parseVehicleRecord(r *bytes.Reader, recordSize int) (*cardv1.VehiclesUsed_R
 	if err := binary.Read(r, binary.BigEndian, &nation); err != nil {
 		return nil, fmt.Errorf("failed to read vehicle registration nation: %w", err)
 	}
-	record.SetVehicleRegistrationNation(fmt.Sprintf("%02X", nation))
-
-	registrationBytes := make([]byte, 14)
-	if _, err := r.Read(registrationBytes); err != nil {
-		return nil, fmt.Errorf("failed to read vehicle registration number: %w", err)
-	}
-	record.SetVehicleRegistrationNumber(readString(bytes.NewReader(registrationBytes), 14))
+	// Create VehicleRegistrationIdentification structure
+	vehicleReg := &datadictionaryv1.VehicleRegistrationIdentification{}
+	vehicleReg.SetNation(int32(nation))
+	vehicleReg.SetNumber(readString(r, 14))
+	record.SetVehicleRegistration(vehicleReg)
 
 	// Read VU data block counter (2 bytes)
 	var vuDataBlockCounter uint16

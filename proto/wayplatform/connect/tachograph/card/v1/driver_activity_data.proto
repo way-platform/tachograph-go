@@ -4,43 +4,63 @@ package wayplatform.connect.tachograph.card.v1;
 
 import "google/protobuf/timestamp.proto";
 import "wayplatform/connect/tachograph/datadictionary/v1/card_slot_number.proto";
-import "wayplatform/connect/tachograph/datadictionary/v1/card_status.proto";
 import "wayplatform/connect/tachograph/datadictionary/v1/driver_activity_value.proto";
 import "wayplatform/connect/tachograph/datadictionary/v1/driving_status.proto";
 
-// Represents the EF_Driver_Activity_Data file from a tachograph card.
+// Represents the content of the EF_Driver_Activity_Data file.
 //
-// Corresponds to the `CardDriverActivity` data type.
-// See Data Dictionary, Section 2.17.
+// The file structure is specified in Appendix 2, Section 4.2.1.
+//
+//     EF Driver_Activity_Data
+//     └─CardDriverActivity
+//
+// The data type `CardDriverActivity` is specified in the Data Dictionary, Section 2.17.
+//
+// ASN.1 Specification:
+//
+//     CardDriverActivity ::= SEQUENCE {
+//         activityPointerOldestDayRecord INTEGER(0..CardActivityLengthRange),
+//         activityPointerNewestRecord INTEGER(0..CardActivityLengthRange),
+//         activityDailyRecords OCTET STRING (SIZE(CardActivityLengthRange))
+//     }
 message DriverActivityData {
   // Represents a single daily activity record, which can either be fully parsed
   // or stored as raw bytes, indicated by the `valid` flag.
-  // Corresponds to the `CardActivityDailyRecord` data type.
+  //
+  // The data type `CardActivityDailyRecord` is specified in the Data Dictionary, Section 2.9.
+  //
+  // ASN.1 Specification:
+  //
+  //     CardActivityDailyRecord ::= SEQUENCE {
+  //         activityPreviousRecordLength INTEGER(0..CardActivityLengthRange),
+  //         activityRecordLength INTEGER(0..CardActivityLengthRange),
+  //         activityRecordDate TimeReal,
+  //         activityDailyPresenceCounter DailyPresenceCounter,
+  //         activityDayDistance Distance,
+  //         activityChangeInfo SET SIZE (1..1440) OF ActivityChangeInfo
+  //     }
   message DailyRecord {
     // Represents a change in driver activity, driving status, or card status.
     //
-    // Corresponds to the `ActivityChangeInfo` data type.
-    // See Data Dictionary, Section 2.1.
+    // The data type `ActivityChangeInfo` is specified in the Data Dictionary, Section 2.1.
+    //
+    // ASN.1 Specification:
+    //
+    //     ActivityChangeInfo ::= OCTET STRING (SIZE (2))
     message ActivityChange {
       // Slot of the driver/co-driver.
       datadictionary.v1.CardSlotNumber slot = 1;
-      // Populated only when slot is CARD_SLOT_NUMBER_UNRECOGNIZED.
-      int32 unrecognized_slot = 2;
 
       // Driving status (single or crew).
       datadictionary.v1.DrivingStatus driving_status = 3;
-      // Populated only when driving_status is DRIVING_STATUS_UNRECOGNIZED.
-      int32 unrecognized_driving_status = 4;
 
-      // Card status (inserted or not inserted).
-      datadictionary.v1.CardStatus card_status = 5;
-      // Populated only when card_status is CARD_STATUS_UNRECOGNIZED.
-      int32 unrecognized_card_status = 6;
+      // Indicates if a card is inserted.
+      //
+      // ASN.1 value `0` maps to `true`, `1` to `false`.
+      bool inserted = 5;
 
       // Driver's activity (break/rest, availability, work, driving).
       datadictionary.v1.DriverActivityValue activity = 7;
-      // Populated only when activity is DRIVER_ACTIVITY_UNRECOGNIZED.
-      int32 unrecognized_activity = 8;
 
       // Time of the change in minutes since 00:00.
       int32 time_of_change_minutes = 9;

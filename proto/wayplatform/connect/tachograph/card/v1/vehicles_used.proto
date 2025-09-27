@@ -3,40 +3,72 @@ edition = "2023";
 package wayplatform.connect.tachograph.card.v1;
 
 import "google/protobuf/timestamp.proto";
+import "wayplatform/connect/tachograph/datadictionary/v1/vehicle_registration_identification.proto";
 
-// Represents data from EF_Vehicles_Used.
+// Represents the content of the EF_Vehicles_Used file.
 //
-// Corresponds to the `CardVehiclesUsed` data type in the specification.
-// See Data Dictionary, Section 2.38.
+// The file structure is specified in Appendix 2, Section 4.2.1.
+//
+//     EF Vehicles_Used
+//     └─CardVehiclesUsed
+//
+// The data type `CardVehiclesUsed` is specified in the Data Dictionary, Section 2.38.
+//
+// ASN.1 Specification:
+//
+//     CardVehiclesUsed ::= SEQUENCE {
+//         vehiclePointerNewestRecord INTEGER(0..NoOfCardVehicleRecords-1),
+//         cardVehicleRecords SET SIZE(NoOfCardVehicleRecords) OF CardVehicleRecord
+//     }
 message VehiclesUsed {
   // Represents a record for a single period of use of a vehicle.
   //
-  // Corresponds to the `CardVehicleRecord` data type.
-  // See Data Dictionary, Section 2.37.
+  // The data type `CardVehicleRecord` is specified in the Data Dictionary, Section 2.37.
+  //
+  // ASN.1 Specification:
+  //
+  //     CardVehicleRecord ::= SEQUENCE {
+  //         vehicleOdometerBegin OdometerShort,
+  //         vehicleOdometerEnd OdometerShort,
+  //         vehicleFirstUse TimeReal,
+  //         vehicleLastUse TimeReal,
+  //         vehicleRegistration VehicleRegistrationIdentification,
+  //         vuDataBlockCounter VuDataBlockCounter,
+  //         vehicleIdentificationNumber VehicleIdentificationNumber
+  //     }
   message Record {
-    // Odometer value at the beginning of the period. See DD Section 2.113.
+    // ASN.1 Type: OdometerShort (see DD 2.113)
+    //
+    //     OdometerShort ::= INTEGER(0..999999)
     int32 vehicle_odometer_begin_km = 1;
 
-    // Odometer value at the end of the period. See DD Section 2.113.
+    // ASN.1 Type: OdometerShort (see DD 2.113)
+    //
+    //     OdometerShort ::= INTEGER(0..999999)
     int32 vehicle_odometer_end_km = 2;
 
-    // Timestamp for the beginning of the period. See DD Section 2.162.
+    // ASN.1 Type: TimeReal (see DD 2.162)
+    //
+    //     TimeReal ::= INTEGER (0..2^32-1)
     google.protobuf.Timestamp vehicle_first_use = 3;
 
-    // Timestamp for the end of the period. See DD Section 2.162.
+    // ASN.1 Type: TimeReal (see DD 2.162)
+    //
+    //     TimeReal ::= INTEGER (0..2^32-1)
     google.protobuf.Timestamp vehicle_last_use = 4;
 
-    // Nation of the vehicle's registration. See DD Section 2.166.
-    string vehicle_registration_nation = 5;
+    // ASN.1 Type: VehicleRegistrationIdentification (see DD 2.166)
+    datadictionary.v1.VehicleRegistrationIdentification vehicle_registration = 5;
 
-    // Vehicle's registration number. See DD Section 2.166.
-    string vehicle_registration_number = 6;
+    // ASN.1 Type: VuDataBlockCounter (see DD 2.189)
+    //
+    //     VuDataBlockCounter ::= INTEGER(0..65535)
+    int32 vu_data_block_counter = 6;
 
-    // VU data block counter at last extraction. See DD Section 2.189.
-    int32 vu_data_block_counter = 7;
-
-    // Gen2+ field: Vehicle Identification Number. See DD Section 2.164.
-    string vehicle_identification_number = 8;
+    // ASN.1 Type: VehicleIdentificationNumber (see DD 2.164)
+    //
+    //     VehicleIdentificationNumber ::= IA5String(SIZE(17))
+    string vehicle_identification_number = 7;
   }
 
   // Index of the last updated vehicle record.

@@ -4,67 +4,163 @@ package wayplatform.connect.tachograph.card.v1;
 
 import "google/protobuf/timestamp.proto";
 import "wayplatform/connect/tachograph/datadictionary/v1/calibration_purpose.proto";
+import "wayplatform/connect/tachograph/datadictionary/v1/extended_serial_number.proto";
+import "wayplatform/connect/tachograph/datadictionary/v1/vehicle_registration_identification.proto";
 
-// Represents calibration data from EF_Calibration.
+// Represents the content of the EF_Calibration file.
 //
-// Corresponds to the `WorkshopCardCalibrationData` data type.
-// See Data Dictionary, Section 2.235.
+// The file structure is specified in Appendix 2, Section 4.3.1.
+//
+//     EF Calibration
+//     └─WorkshopCardCalibrationData
+//
+// The data type `WorkshopCardCalibrationData` is specified in the Data Dictionary, Section 2.235.
+//
+// ASN.1 Specification:
+//
+//     WorkshopCardCalibrationData ::= SEQUENCE {
+//         calibrationTotalNumber INTEGER(0..NoOfCalibrationRecords),
+//         calibrationPointerNewestRecord INTEGER(0..NoOfCalibrationRecords-1),
+//         calibrationRecords SET SIZE(NoOfCalibrationRecords) OF WorkshopCardCalibrationRecord
+//     }
 message Calibration {
   // Represents a single calibration record.
   //
-  // Corresponds to the `WorkshopCardCalibrationRecord` data type.
-  // See Data Dictionary, Section 2.236.
+  // The data type `WorkshopCardCalibrationRecord` is specified in the Data Dictionary, Section 2.236.
+  //
+  // ASN.1 Specification:
+  //
+  //     WorkshopCardCalibrationRecord ::= SEQUENCE {
+  //         calibrationPurpose CalibrationPurpose,
+  //         vehicleIdentificationNumber VehicleIdentificationNumber,
+  //         vehicleRegistration VehicleRegistrationIdentification,
+  //         wVehicleCharacteristicConstant W-VehicleCharacteristicConstant,
+  //         kConstantOfRecordingEquipment K-ConstantOfRecordingEquipment,
+  //         lTyreCircumference L-TyreCircumference,
+  //         tyreSize TyreSize,
+  //         authorisedSpeed SpeedAuthorised,
+  //         oldOdometerValue OdometerShort,
+  //         newOdometerValue OdometerShort,
+  //         oldTimeValue TimeReal,
+  //         newTimeValue TimeReal,
+  //         nextCalibrationDate TimeReal,
+  //         vuPartNumber VuPartNumber,
+  //         vuSerialNumber ExtendedSerialNumber,
+  //         sensorSerialNumber SensorSerialNumber
+  //     }
   message Record {
-    // See Data Dictionary, Section 2.8 for `CalibrationPurpose`.
+    // The purpose of the calibration.
+    //
+    // ASN.1 Specification:
+    //
+    //     CalibrationPurpose ::= OCTET STRING (SIZE(1))
     datadictionary.v1.CalibrationPurpose calibration_purpose = 1;
-    // Populated only when calibration_purpose is CALIBRATION_PURPOSE_UNRECOGNIZED.
-    int32 unrecognized_calibration_purpose = 2;
+    
 
-    // See Data Dictionary, Section 2.164 for `VehicleIdentificationNumber`.
+    // The Vehicle Identification Number.
+    //
+    // ASN.1 Specification:
+    //
+    //     VehicleIdentificationNumber ::= IA5String(SIZE(17))
     string vehicle_identification_number = 3;
 
-    // See Data Dictionary, Section 2.166.
-    string vehicle_registration_nation = 4;
-    string vehicle_registration_number = 5;
+    // The vehicle registration identifier.
+    //
+    // ASN.1 Specification:
+    //
+    //     VehicleRegistrationIdentification ::= SEQUENCE { ... }
+    datadictionary.v1.VehicleRegistrationIdentification vehicle_registration = 4;
 
-    // See Data Dictionary, Section 2.239 for `W-VehicleCharacteristicConstant`.
-    int32 w_vehicle_characteristic_constant = 6;
+    // The vehicle characteristic constant.
+    //
+    // ASN.1 Specification:
+    //
+    //     W-VehicleCharacteristicConstant ::= INTEGER(0..65535)
+    int32 w_vehicle_characteristic_constant = 5;
 
-    // See Data Dictionary, Section 2.85 for `K-ConstantOfRecordingEquipment`.
-    int32 k_constant_of_recording_equipment = 7;
+    // The constant of the recording equipment.
+    //
+    // ASN.1 Specification:
+    //
+    //     K-ConstantOfRecordingEquipment ::= INTEGER(0..65535)
+    int32 k_constant_of_recording_equipment = 6;
 
-    // See Data Dictionary, Section 2.91 for `L-TyreCircumference`.
-    int32 l_tyre_circumference_mm = 8;
+    // The tyre circumference in mm.
+    //
+    // ASN.1 Specification:
+    //
+    //     L-TyreCircumference ::= INTEGER(0..65535)
+    int32 l_tyre_circumference_mm = 7;
 
-    // See Data Dictionary, Section 2.163 for `TyreSize`.
-    string tyre_size = 9;
+    // The tyre size designation.
+    //
+    // ASN.1 Specification:
+    //
+    //     TyreSize ::= IA5String(SIZE(15))
+    string tyre_size = 8;
 
-    // See Data Dictionary, Section 2.156 for `SpeedAuthorised`.
-    int32 authorised_speed_kmh = 10;
+    // The authorised speed in km/h.
+    //
+    // ASN.1 Specification:
+    //
+    //     SpeedAuthorised ::= INTEGER(0..255)
+    int32 authorised_speed_kmh = 9;
 
-    // Odometer value before calibration. See DD Section 2.113.
-    int32 old_odometer_km = 11;
+    // The odometer value before calibration in km.
+    //
+    // ASN.1 Specification:
+    //
+    //     OdometerShort ::= INTEGER(0..999999)
+    int32 old_odometer_km = 10;
 
-    // Odometer value after calibration. See DD Section 2.113.
-    int32 new_odometer_km = 12;
+    // The odometer value after calibration in km.
+    //
+    // ASN.1 Specification:
+    //
+    //     OdometerShort ::= INTEGER(0..999999)
+    int32 new_odometer_km = 11;
 
-    // Time before calibration. See DD Section 2.162.
-    google.protobuf.Timestamp old_time = 13;
+    // The time value before calibration.
+    //
+    // ASN.1 Specification:
+    //
+    //     TimeReal ::= INTEGER (0..2^32-1)
+    google.protobuf.Timestamp old_time = 12;
 
-    // Time after calibration. See DD Section 2.162.
-    google.protobuf.Timestamp new_time = 14;
+    // The time value after calibration.
+    //
+    // ASN.1 Specification:
+    //
+    //     TimeReal ::= INTEGER (0..2^32-1)
+    google.protobuf.Timestamp new_time = 13;
 
-    // Date of next calibration. See DD Section 2.57.
-    google.protobuf.Timestamp next_calibration_date = 15;
+    // The date of the next calibration.
+    //
+    // ASN.1 Specification:
+    //
+    //     TimeReal ::= INTEGER (0..2^32-1)
+    google.protobuf.Timestamp next_calibration_date = 14;
 
-    // See Data Dictionary, Section 2.217 for `VuPartNumber`.
-    string vu_part_number = 16;
+    // The part number of the Vehicle Unit.
+    //
+    // ASN.1 Specification:
+    //
+    //     VuPartNumber ::= IA5String(SIZE(16))
+    string vu_part_number = 15;
 
-    // See Data Dictionary, Section 2.72 for `ExtendedSerialNumber`.
-    string vu_serial_number = 17;
+    // The serial number of the Vehicle Unit.
+    //
+    // ASN.1 Specification:
+    //
+    //     ExtendedSerialNumber ::= SEQUENCE { ... }
+    datadictionary.v1.ExtendedSerialNumber vu_serial_number = 16;
 
-    // See Data Dictionary, Section 2.148 for `SensorSerialNumber`.
-    string sensor_serial_number = 18;
+    // The serial number of the motion sensor.
+    //
+    // ASN.1 Specification:
+    //
+    //     SensorSerialNumber ::= ExtendedSerialNumber
+    datadictionary.v1.ExtendedSerialNumber sensor_serial_number = 17;
   }
 
   // Total number of calibrations performed with the card.

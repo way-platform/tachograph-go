@@ -5,13 +5,14 @@ import (
 	"encoding/binary"
 
 	cardv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1"
+	datadictionaryv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/datadictionary/v1"
 )
 
 // unmarshalFaultsData parses the binary data for an EF_Faults_Data record.
-func unmarshalFaultsData(data []byte) (*cardv1.FaultData, error) {
+func unmarshalFaultsData(data []byte) (*cardv1.FaultsData, error) {
 	const recordSize = 24
 	r := bytes.NewReader(data)
-	var records []*cardv1.FaultData_Record
+	var records []*cardv1.FaultsData_Record
 
 	for r.Len() >= recordSize {
 		recordData := make([]byte, recordSize)
@@ -21,7 +22,7 @@ func unmarshalFaultsData(data []byte) (*cardv1.FaultData, error) {
 		// Fault type is 1 byte, so fault begin time starts at byte 1
 		faultBeginTime := binary.BigEndian.Uint32(recordData[1:5])
 
-		rec := &cardv1.FaultData_Record{}
+		rec := &cardv1.FaultsData_Record{}
 
 		if faultBeginTime == 0 {
 			// Non-valid record: preserve original bytes
@@ -38,14 +39,14 @@ func unmarshalFaultsData(data []byte) (*cardv1.FaultData, error) {
 		records = append(records, rec)
 	}
 
-	var fd cardv1.FaultData
+	var fd cardv1.FaultsData
 	fd.SetRecords(records)
 	return &fd, nil
 }
 
 // UnmarshalFaultsData parses the binary data for an EF_Faults_Data record (legacy function).
 // Deprecated: Use unmarshalFaultsData instead.
-func UnmarshalFaultsData(data []byte, fd *cardv1.FaultData) error {
+func UnmarshalFaultsData(data []byte, fd *cardv1.FaultsData) error {
 	result, err := unmarshalFaultsData(data)
 	if err != nil {
 		return err
@@ -55,17 +56,22 @@ func UnmarshalFaultsData(data []byte, fd *cardv1.FaultData) error {
 }
 
 // UnmarshalFaultRecord parses a single 24-byte fault record.
-func UnmarshalFaultRecord(data []byte, rec *cardv1.FaultData_Record) error {
+func UnmarshalFaultRecord(data []byte, rec *cardv1.FaultsData_Record) error {
 	r := bytes.NewReader(data)
 	faultType, _ := r.ReadByte()
 
 	// Convert raw fault type to enum using protocol annotations
-	SetEventFaultType(int32(faultType), rec.SetFaultType, rec.SetUnrecognizedFaultType)
+	SetEventFaultType(int32(faultType), rec.SetFaultType, nil)
 
 	rec.SetFaultBeginTime(readTimeReal(r))
 	rec.SetFaultEndTime(readTimeReal(r))
-	// TODO: Read BCD nation code
-	r.ReadByte()
-	rec.SetVehicleRegistrationNumber(readString(r, 14))
+	// Read vehicle registration
+	var nation byte
+	binary.Read(r, binary.BigEndian, &nation)
+	// Create VehicleRegistrationIdentification structure
+	vehicleReg := &datadictionaryv1.VehicleRegistrationIdentification{}
+	vehicleReg.SetNation(int32(nation))
+	vehicleReg.SetNumber(readString(r, 14))
+	rec.SetFaultVehicleRegistration(vehicleReg)
 	return nil
 }

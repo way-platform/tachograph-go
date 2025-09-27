@@ -7,6 +7,7 @@
 package vuv1
 
 import (
+	v1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/datadictionary/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
@@ -27,7 +28,7 @@ const (
 // Appendix 7, Section 2.2.6.5: "Positive Response Transfer Data Detailed Speed".
 type DetailedSpeed struct {
 	state                    protoimpl.MessageState               `protogen:"opaque.v1"`
-	xxx_hidden_Generation    Generation                           `protobuf:"varint,1,opt,name=generation,enum=wayplatform.connect.tachograph.vu.v1.Generation"`
+	xxx_hidden_Generation    v1.Generation                        `protobuf:"varint,1,opt,name=generation,enum=wayplatform.connect.tachograph.datadictionary.v1.Generation"`
 	xxx_hidden_SpeedBlocks   *[]*DetailedSpeed_DetailedSpeedBlock `protobuf:"bytes,2,rep,name=speed_blocks,json=speedBlocks"`
 	xxx_hidden_SignatureGen1 []byte                               `protobuf:"bytes,3,opt,name=signature_gen1,json=signatureGen1"`
 	xxx_hidden_SignatureGen2 []byte                               `protobuf:"bytes,4,opt,name=signature_gen2,json=signatureGen2"`
@@ -62,13 +63,13 @@ func (x *DetailedSpeed) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-func (x *DetailedSpeed) GetGeneration() Generation {
+func (x *DetailedSpeed) GetGeneration() v1.Generation {
 	if x != nil {
 		if protoimpl.X.Present(&(x.XXX_presence[0]), 0) {
 			return x.xxx_hidden_Generation
 		}
 	}
-	return Generation_GENERATION_UNSPECIFIED
+	return v1.Generation(0)
 }
 
 func (x *DetailedSpeed) GetSpeedBlocks() []*DetailedSpeed_DetailedSpeedBlock {
@@ -94,7 +95,7 @@ func (x *DetailedSpeed) GetSignatureGen2() []byte {
 	return nil
 }
 
-func (x *DetailedSpeed) SetGeneration(v Generation) {
+func (x *DetailedSpeed) SetGeneration(v v1.Generation) {
 	x.xxx_hidden_Generation = v
 	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 4)
 }
@@ -142,7 +143,7 @@ func (x *DetailedSpeed) HasSignatureGen2() bool {
 
 func (x *DetailedSpeed) ClearGeneration() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 0)
-	x.xxx_hidden_Generation = Generation_GENERATION_UNSPECIFIED
+	x.xxx_hidden_Generation = v1.Generation_GENERATION_UNSPECIFIED
 }
 
 func (x *DetailedSpeed) ClearSignatureGen1() {
@@ -158,8 +159,10 @@ func (x *DetailedSpeed) ClearSignatureGen2() {
 type DetailedSpeed_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
-	// Discriminator field indicating the generation of the data.
-	Generation *Generation
+	// The generation of the vehicle unit, parsed from the raw transfer data.
+	//
+	// Discriminator field.
+	Generation *v1.Generation
 	// All detailed speed stored in the VU.
 	// Corresponds to `VuDetailedSpeedData` (Gen1) or `VuDetailedSpeedBlockRecordArray` (Gen2).
 	// See Data Dictionary, Sections 2.192 and 2.191.
@@ -196,6 +199,13 @@ func (b0 DetailedSpeed_builder) Build() *DetailedSpeed {
 //
 // Corresponds to the `VuDetailedSpeedBlock` data type.
 // See Data Dictionary, Section 2.190.
+//
+// ASN.1 Specification:
+//
+//	VuDetailedSpeedBlock ::= SEQUENCE {
+//	    speedBlockBeginDate TimeReal,
+//	    speedsPerSecond SET SIZE(60) OF Speed
+//	}
 type DetailedSpeed_DetailedSpeedBlock struct {
 	state                protoimpl.MessageState `protogen:"opaque.v1"`
 	xxx_hidden_BeginDate *timestamppb.Timestamp `protobuf:"bytes,1,opt,name=begin_date,json=beginDate"`
@@ -266,10 +276,16 @@ type DetailedSpeed_DetailedSpeedBlock_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
 	// Timestamp for the beginning of the minute.
-	// See Data Dictionary, Section 2.162 for `TimeReal`.
+	//
+	// ASN.1 Specification:
+	//
+	//	TimeReal ::= INTEGER (0..2^32-1)
 	BeginDate *timestamppb.Timestamp
 	// 60 speed values (in km/h), one for each second of the minute.
-	// See Data Dictionary, Section 2.155 for `Speed`.
+	//
+	// ASN.1 Specification:
+	//
+	//	Speed ::= INTEGER(0..255)
 	SpeedsKmh []int32
 }
 
@@ -286,10 +302,10 @@ var File_wayplatform_connect_tachograph_vu_v1_detailed_speed_proto protoreflect.
 
 const file_wayplatform_connect_tachograph_vu_v1_detailed_speed_proto_rawDesc = "" +
 	"\n" +
-	"9wayplatform/connect/tachograph/vu/v1/detailed_speed.proto\x12$wayplatform.connect.tachograph.vu.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a5wayplatform/connect/tachograph/vu/v1/versioning.proto\"\x8a\x03\n" +
-	"\rDetailedSpeed\x12P\n" +
+	"9wayplatform/connect/tachograph/vu/v1/detailed_speed.proto\x12$wayplatform.connect.tachograph.vu.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1aAwayplatform/connect/tachograph/datadictionary/v1/generation.proto\"\x96\x03\n" +
+	"\rDetailedSpeed\x12\\\n" +
 	"\n" +
-	"generation\x18\x01 \x01(\x0e20.wayplatform.connect.tachograph.vu.v1.GenerationR\n" +
+	"generation\x18\x01 \x01(\x0e2<.wayplatform.connect.tachograph.datadictionary.v1.GenerationR\n" +
 	"generation\x12i\n" +
 	"\fspeed_blocks\x18\x02 \x03(\v2F.wayplatform.connect.tachograph.vu.v1.DetailedSpeed.DetailedSpeedBlockR\vspeedBlocks\x12%\n" +
 	"\x0esignature_gen1\x18\x03 \x01(\fR\rsignatureGen1\x12%\n" +
@@ -305,11 +321,11 @@ var file_wayplatform_connect_tachograph_vu_v1_detailed_speed_proto_msgTypes = ma
 var file_wayplatform_connect_tachograph_vu_v1_detailed_speed_proto_goTypes = []any{
 	(*DetailedSpeed)(nil),                    // 0: wayplatform.connect.tachograph.vu.v1.DetailedSpeed
 	(*DetailedSpeed_DetailedSpeedBlock)(nil), // 1: wayplatform.connect.tachograph.vu.v1.DetailedSpeed.DetailedSpeedBlock
-	(Generation)(0),                          // 2: wayplatform.connect.tachograph.vu.v1.Generation
+	(v1.Generation)(0),                       // 2: wayplatform.connect.tachograph.datadictionary.v1.Generation
 	(*timestamppb.Timestamp)(nil),            // 3: google.protobuf.Timestamp
 }
 var file_wayplatform_connect_tachograph_vu_v1_detailed_speed_proto_depIdxs = []int32{
-	2, // 0: wayplatform.connect.tachograph.vu.v1.DetailedSpeed.generation:type_name -> wayplatform.connect.tachograph.vu.v1.Generation
+	2, // 0: wayplatform.connect.tachograph.vu.v1.DetailedSpeed.generation:type_name -> wayplatform.connect.tachograph.datadictionary.v1.Generation
 	1, // 1: wayplatform.connect.tachograph.vu.v1.DetailedSpeed.speed_blocks:type_name -> wayplatform.connect.tachograph.vu.v1.DetailedSpeed.DetailedSpeedBlock
 	3, // 2: wayplatform.connect.tachograph.vu.v1.DetailedSpeed.DetailedSpeedBlock.begin_date:type_name -> google.protobuf.Timestamp
 	3, // [3:3] is the sub-list for method output_type
@@ -324,7 +340,6 @@ func file_wayplatform_connect_tachograph_vu_v1_detailed_speed_proto_init() {
 	if File_wayplatform_connect_tachograph_vu_v1_detailed_speed_proto != nil {
 		return
 	}
-	file_wayplatform_connect_tachograph_vu_v1_versioning_proto_init()
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

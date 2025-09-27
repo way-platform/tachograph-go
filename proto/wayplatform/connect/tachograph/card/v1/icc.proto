@@ -2,6 +2,8 @@ edition = "2023";
 
 package wayplatform.connect.tachograph.card.v1;
 
+import "wayplatform/connect/tachograph/datadictionary/v1/extended_serial_number.proto";
+
 // Represents the content of the EF_ICC file, which contains identification data
 // for the Integrated Circuit Card.
 //
@@ -23,21 +25,61 @@ package wayplatform.connect.tachograph.card.v1;
 //         icIdentifier OCTET STRING (SIZE(2))
 //     }
 message Icc {
-  // See Data Dictionary, Section 2.23, `clockStop`.
+  // Represents information about the IC embedder.
+  //
+  // The data type `EmbedderIcAssemblerId` is specified in the Data Dictionary, Section 2.65.
+  //
+  // ASN.1 Specification:
+  //
+  //     EmbedderIcAssemblerId ::= SEQUENCE {
+  //         countryCode IA5String(SIZE(2)),
+  //         moduleEmbedder IA5String(SIZE(2)),
+  //         manufacturerInformation INTEGER(0..255)
+  //     }
+  message EmbedderIcAssemblerId {
+    // 2-letter country code of the module embedder.
+    string country_code = 1;
+    // 2-character code identifying the module embedder.
+    string module_embedder = 2;
+    // Manufacturer-specific information.
+    int32 manufacturer_information = 3;
+  }
+
+  // The Clockstop mode.
+  //
+  // ASN.1 Specification:
+  //
+  //     clockStop OCTET STRING (SIZE(1))
   int32 clock_stop = 1;
 
-  // See Data Dictionary, Section 2.23, `cardExtendedSerialNumber`.
-  string card_extended_serial_number = 2;
+  // The unique serial number of the IC card.
+  //
+  // ASN.1 Specification:
+  //
+  //     ExtendedSerialNumber ::= SEQUENCE { ... }
+  datadictionary.v1.ExtendedSerialNumber card_extended_serial_number = 2;
 
-  // See Data Dictionary, Section 2.23, `cardApprovalNumber`.
+  // The type approval number of the card.
+  //
+  // ASN.1 Specification:
+  //
+  //     CardApprovalNumber ::= IA5String (SIZE (8))
   string card_approval_number = 3;
 
-  // See Data Dictionary, Section 2.23, `cardPersonaliserID`.
+  // The ID of the card personaliser.
+  //
+  // ASN.1 Specification:
+  //
+  //     ManufacturerCode ::= INTEGER(0..255)
   int32 card_personaliser_id = 4;
 
-  // See Data Dictionary, Section 2.23, `embedderIcAssemblerId`.
-  bytes embedder_ic_assembler_id = 5;
+  // Information about the IC embedder and assembler.
+  EmbedderIcAssemblerId embedder_ic_assembler_id = 5;
 
-  // See Data Dictionary, Section 2.23, `icIdentifier`.
+  // The Identifier of the IC on the card and its manufacturer.
+  //
+  // ASN.1 Specification:
+  //
+  //     icIdentifier OCTET STRING (SIZE(2))
   bytes ic_identifier = 6;
 }

@@ -11,7 +11,7 @@ import "wayplatform/connect/tachograph/card/v1/control_activity_data.proto";
 import "wayplatform/connect/tachograph/card/v1/current_usage.proto";
 import "wayplatform/connect/tachograph/card/v1/driver_activity_data.proto";
 import "wayplatform/connect/tachograph/card/v1/driver_card_application_identification.proto";
-import "wayplatform/connect/tachograph/card/v1/driver_card_holder_identification.proto";
+
 import "wayplatform/connect/tachograph/card/v1/driving_licence_info.proto";
 import "wayplatform/connect/tachograph/card/v1/events_data.proto";
 import "wayplatform/connect/tachograph/card/v1/faults_data.proto";

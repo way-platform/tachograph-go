@@ -21,10 +21,22 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// Represents data about the vehicle units used by the card holder.
+// Represents the content of the EF_VehicleUnits_Used file, which contains data
+// about the vehicle units used by the card holder.
 //
-// Corresponds to the `CardVehicleUnitsUsed` data type from EF_VehicleUnits_Used.
-// See Data Dictionary, Section 2.40.
+// The file structure is specified in Appendix 2, Section 4.2.2.
+//
+//	EF VehicleUnits_Used
+//	└─CardVehicleUnitsUsed
+//
+// The data type `CardVehicleUnitsUsed` is specified in the Data Dictionary, Section 2.40.
+//
+// ASN.1 Specification:
+//
+//	CardVehicleUnitsUsed ::= SEQUENCE {
+//	    vehicleUnitPointerNewestRecord INTEGER(0..NoOfCardVehicleUnitRecords-1),
+//	    cardVehicleUnitRecords SET SIZE(NoOfCardVehicleUnitRecords) OF CardVehicleUnitRecord
+//	}
 type VehicleUnitsUsed struct {
 	state                                     protoimpl.MessageState      `protogen:"opaque.v1"`
 	xxx_hidden_VehicleUnitPointerNewestRecord int32                       `protobuf:"varint,1,opt,name=vehicle_unit_pointer_newest_record,json=vehicleUnitPointerNewestRecord"`
@@ -154,8 +166,16 @@ func (b0 VehicleUnitsUsed_builder) Build() *VehicleUnitsUsed {
 
 // Represents a record for a single vehicle unit that was used.
 //
-// Corresponds to the `CardVehicleUnitRecord` data type.
-// See Data Dictionary, Section 2.39.
+// The data type `CardVehicleUnitRecord` is specified in the Data Dictionary, Section 2.39.
+//
+// ASN.1 Specification:
+//
+//	CardVehicleUnitRecord ::= SEQUENCE {
+//	    timeStamp TimeReal,
+//	    manufacturerCode ManufacturerCode,
+//	    deviceID OCTET STRING(SIZE(1)),
+//	    vuSoftwareVersion VuSoftwareVersion
+//	}
 type VehicleUnitsUsed_Record struct {
 	state                        protoimpl.MessageState `protogen:"opaque.v1"`
 	xxx_hidden_Timestamp         *timestamppb.Timestamp `protobuf:"bytes,1,opt,name=timestamp"`
@@ -293,13 +313,19 @@ func (x *VehicleUnitsUsed_Record) ClearVuSoftwareVersion() {
 type VehicleUnitsUsed_Record_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
-	// Timestamp of the beginning of the period of use. See DD Section 2.162.
+	// ASN.1 Type: TimeReal (see DD 2.162)
+	//
+	//	TimeReal ::= INTEGER (0..2^32-1)
 	Timestamp *timestamppb.Timestamp
-	// Manufacturer code of the Vehicle Unit. See DD Section 2.94.
+	// ASN.1 Type: ManufacturerCode (see DD 2.94)
+	//
+	//	ManufacturerCode ::= INTEGER(0..255)
 	ManufacturerCode *int32
-	// Manufacturer-specific device ID. See DD Section 2.39.
+	// ASN.1 Type: OCTET STRING(SIZE(1))
 	DeviceId *int32
-	// Software version of the Vehicle Unit. See DD Section 2.226.
+	// ASN.1 Type: VuSoftwareVersion (see DD 2.226)
+	//
+	//	VuSoftwareVersion ::= OCTET STRING (SIZE(4))
 	VuSoftwareVersion []byte
 }
 

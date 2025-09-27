@@ -23,8 +23,16 @@ const (
 
 // Represents an authenticated GNSS position record.
 //
-// Corresponds to the `GNSSPlaceAuthRecord` data type.
-// See Data Dictionary, Section 2.79c.
+// The data type `GNSSPlaceAuthRecord` is specified in the Data Dictionary, Section 2.79c.
+//
+// ASN.1 Specification:
+//
+//	GNSSPlaceAuthRecord ::= SEQUENCE {
+//	    timeStamp TimeReal,
+//	    gnssAccuracy GNSSAccuracy,
+//	    geoCoordinates GeoCoordinates,
+//	    authenticationStatus PositionAuthenticationStatus
+//	}
 type GnssPlaceAuthRecord struct {
 	state                           protoimpl.MessageState `protogen:"opaque.v1"`
 	xxx_hidden_Timestamp            *timestamppb.Timestamp `protobuf:"bytes,1,opt,name=timestamp"`
@@ -184,15 +192,30 @@ func (x *GnssPlaceAuthRecord) ClearAuthenticationStatus() {
 type GnssPlaceAuthRecord_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
-	// Timestamp of the position fix. See DD Section 2.162.
+	// ASN.1 Type: TimeReal (see DD 2.162)
+	//
+	//	TimeReal ::= INTEGER (0..2^32-1)
 	Timestamp *timestamppb.Timestamp
-	// Accuracy of the GNSS fix. See DD Section 2.77.
+	// ASN.1 Type: GNSSAccuracy (see DD 2.77)
+	//
+	//	GNSSAccuracy ::= OCTET STRING(SIZE(1))
 	GnssAccuracy *int32
-	// Longitude in millionths of a degree. See DD Section 2.76.
+	// ASN.1 Type: GeoCoordinates (see DD 2.76)
+	//
+	//	GeoCoordinates ::= SEQUENCE {
+	//	    latitude INTEGER(-90*3600*1000..90*3600*1000),
+	//	    longitude INTEGER(-180*3600*1000+1..180*3600*1000)
+	//	}
 	Longitude *int32
-	// Latitude in millionths of a degree. See DD Section 2.76.
-	Latitude *int32
-	// Authentication status of the position. See DD Section 2.117a.
+	Latitude  *int32
+	// ASN.1 Type: PositionAuthenticationStatus (see DD 2.117a)
+	//
+	//	PositionAuthenticationStatus ::= INTEGER {
+	//	    notAvailable(0),
+	//	    authenticated(1),
+	//	    notAuthenticated(2),
+	//	    authenticationCorrupted(3)
+	//	} (0..255)
 	AuthenticationStatus *int32
 }
 

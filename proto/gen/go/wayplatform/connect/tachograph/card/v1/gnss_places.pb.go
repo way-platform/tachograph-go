@@ -21,11 +21,22 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// Represents data from EF_GNSS_Places, containing GNSS position records for
+// Represents the content of the EF_GNSS_Places file, containing GNSS position records for
 // accumulated driving periods.
 //
-// Corresponds to the `GNSSAccumulatedDriving` data type.
-// See Data Dictionary, Section 2.78.
+// The file structure is specified in Appendix 2, Section 4.2.2.
+//
+//	EF GNSS_Places
+//	└─GNSSAccumulatedDriving
+//
+// The data type `GNSSAccumulatedDriving` is specified in the Data Dictionary, Section 2.78.
+//
+// ASN.1 Specification:
+//
+//	GNSSAccumulatedDriving ::= SEQUENCE {
+//	    gnssADPointerNewestRecord INTEGER(0..NoOfGNSSADRecords-1),
+//	    gnssAccumulatedDrivingRecords SET SIZE(NoOfGNSSADRecords) OF GNSSAccumulatedDrivingRecord
+//	}
 type GnssPlaces struct {
 	state                        protoimpl.MessageState `protogen:"opaque.v1"`
 	xxx_hidden_NewestRecordIndex int32                  `protobuf:"varint,1,opt,name=newest_record_index,json=newestRecordIndex"`
@@ -155,8 +166,15 @@ func (b0 GnssPlaces_builder) Build() *GnssPlaces {
 
 // Represents a single record of accumulated driving and GNSS position.
 //
-// Corresponds to the `GNSSAccumulatedDrivingRecord` data type.
-// See Data Dictionary, Section 2.79.
+// The data type `GNSSAccumulatedDrivingRecord` is specified in the Data Dictionary, Section 2.79.
+//
+// ASN.1 Specification:
+//
+//	GNSSAccumulatedDrivingRecord ::= SEQUENCE {
+//	    timeStamp TimeReal,
+//	    gnssPlaceRecord GNSSPlaceRecord,
+//	    vehicleOdometerValue OdometerShort
+//	}
 type GnssPlaces_Record struct {
 	state                        protoimpl.MessageState       `protogen:"opaque.v1"`
 	xxx_hidden_Timestamp         *timestamppb.Timestamp       `protobuf:"bytes,1,opt,name=timestamp"`
@@ -288,8 +306,15 @@ func (b0 GnssPlaces_Record_builder) Build() *GnssPlaces_Record {
 
 // Represents the nested GNSS position record.
 //
-// Corresponds to the `GNSSPlaceRecord` data type.
-// See Data Dictionary, Section 2.80.
+// The data type `GNSSPlaceRecord` is specified in the Data Dictionary, Section 2.80.
+//
+// ASN.1 Specification:
+//
+//	GNSSPlaceRecord ::= SEQUENCE {
+//	    timeStamp TimeReal,
+//	    gnssAccuracy GNSSAccuracy,
+//	    geoCoordinates GeoCoordinates
+//	}
 type GnssPlaces_Record_GnssPlace struct {
 	state                   protoimpl.MessageState `protogen:"opaque.v1"`
 	xxx_hidden_Timestamp    *timestamppb.Timestamp `protobuf:"bytes,1,opt,name=timestamp"`

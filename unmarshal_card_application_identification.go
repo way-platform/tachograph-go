@@ -20,7 +20,7 @@ func unmarshalCardApplicationIdentification(data []byte) (*cardv1.DriverCardAppl
 		return nil, fmt.Errorf("failed to read card type: %w", err)
 	}
 	// Convert raw card type to enum using protocol annotations
-	SetEquipmentType(int32(cardType), target.SetTypeOfTachographCardId, target.SetUnrecognizedTypeOfTachographCardId)
+	SetEquipmentType(int32(cardType), target.SetTypeOfTachographCardId, nil)
 	// Read card structure version (2 bytes)
 	structureVersionBytes := make([]byte, 2)
 	if _, err := r.Read(structureVersionBytes); err != nil {

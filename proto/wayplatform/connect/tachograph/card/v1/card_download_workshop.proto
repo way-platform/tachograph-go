@@ -2,11 +2,19 @@ edition = "2023";
 
 package wayplatform.connect.tachograph.card.v1;
 
-// Represents the number of calibrations since the last download from EF_Card_Download
-// on a workshop card.
+// Represents the content of the EF_Card_Download file for a workshop card.
 //
-// Corresponds to the `NoOfCalibrationsSinceDownload` data type.
-// See Data Dictionary, Section 2.103.
+// The file structure is specified in Appendix 2, Section 4.3.1.
+//
+//     EF Card_Download
+//     └─NoOfCalibrationsSinceDownload
+//
+// The data type `NoOfCalibrationsSinceDownload` is specified in the Data Dictionary, Section 2.103.
+//
+// ASN.1 Specification:
+//
+//     NoOfCalibrationsSinceDownload ::= INTEGER(0..255)
+//
 message CardDownloadWorkshop {
   int32 count = 1;
 }

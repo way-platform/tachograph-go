@@ -8,12 +8,12 @@ import (
 )
 
 // unmarshalCardIc unmarshals IC identification data from EF_IC.
-func unmarshalCardIc(data []byte) (*cardv1.ChipIdentification, error) {
+func unmarshalCardIc(data []byte) (*cardv1.Ic, error) {
 	if len(data) < 8 {
 		return nil, fmt.Errorf("insufficient data for IC identification: got %d bytes, need 8", len(data))
 	}
 
-	var target cardv1.ChipIdentification
+	var target cardv1.Ic
 	r := bytes.NewReader(data)
 
 	// According to Data Dictionary Section 2.13, EF_IC contains:
@@ -39,7 +39,7 @@ func unmarshalCardIc(data []byte) (*cardv1.ChipIdentification, error) {
 
 // UnmarshalCardIc unmarshals IC identification data from EF_IC (legacy function).
 // Deprecated: Use unmarshalCardIc instead.
-func UnmarshalCardIc(data []byte, target *cardv1.ChipIdentification) error {
+func UnmarshalCardIc(data []byte, target *cardv1.Ic) error {
 	result, err := unmarshalCardIc(data)
 	if err != nil {
 		return err

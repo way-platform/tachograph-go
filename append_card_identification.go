@@ -5,7 +5,7 @@ import (
 )
 
 // AppendCardIdentification appends the binary representation of CardIdentification to dst.
-func AppendCardIdentification(dst []byte, id *cardv1.CardIdentification) ([]byte, error) {
+func AppendCardIdentification(dst []byte, id *cardv1.Identification_Card) ([]byte, error) {
 	if id == nil {
 		return dst, nil
 	}
@@ -29,7 +29,7 @@ func AppendCardIdentification(dst []byte, id *cardv1.CardIdentification) ([]byte
 }
 
 // AppendDriverCardHolderIdentification appends the binary representation of DriverCardHolderIdentification to dst.
-func AppendDriverCardHolderIdentification(dst []byte, h *cardv1.DriverCardHolderIdentification) ([]byte, error) {
+func AppendDriverCardHolderIdentification(dst []byte, h *cardv1.Identification_DriverCardHolder) ([]byte, error) {
 	if h == nil {
 		return dst, nil
 	}

@@ -21,7 +21,11 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// See Data Dictionary, Section 2.114a for `OperationType`.
+// ASN.1 Type: OperationType (see DD 2.114a)
+//
+//	OperationType ::= INTEGER {
+//	    load(1), unload(2), simultaneous(3)
+//	} (0..255)
 type LoadUnloadOperations_Record_OperationType int32
 
 const (
@@ -69,10 +73,21 @@ func (x LoadUnloadOperations_Record_OperationType) Number() protoreflect.EnumNum
 	return protoreflect.EnumNumber(x)
 }
 
-// Represents load and unload operations data from EF_Load_Unload_Operations.
+// Represents the content of the EF_Load_Unload_Operations file.
 //
-// Corresponds to the `CardLoadUnloadOperations` data type.
-// See Data Dictionary, Section 2.24c.
+// The file structure is specified in Appendix 2, Section 4.2.2.
+//
+//	EF Load_Unload_Operations
+//	└─CardLoadUnloadOperations
+//
+// The data type `CardLoadUnloadOperations` is specified in the Data Dictionary, Section 2.24c.
+//
+// ASN.1 Specification:
+//
+//	CardLoadUnloadOperations ::= SEQUENCE {
+//	    loadUnloadPointerNewestRecord INTEGER(0..NoOfLoadUnloadRecords -1),
+//	    cardLoadUnloadRecords SET SIZE (NoOfLoadUnloadRecords) OF CardLoadUnloadRecord
+//	}
 type LoadUnloadOperations struct {
 	state                        protoimpl.MessageState          `protogen:"opaque.v1"`
 	xxx_hidden_NewestRecordIndex int32                           `protobuf:"varint,1,opt,name=newest_record_index,json=newestRecordIndex"`
@@ -168,8 +183,16 @@ func (b0 LoadUnloadOperations_builder) Build() *LoadUnloadOperations {
 
 // Represents a single load/unload operation record.
 //
-// Corresponds to the `CardLoadUnloadRecord` data type.
-// See Data Dictionary, Section 2.24d.
+// The data type `CardLoadUnloadRecord` is specified in the Data Dictionary, Section 2.24d.
+//
+// ASN.1 Specification:
+//
+//	CardLoadUnloadRecord ::= SEQUENCE {
+//	    timeStamp TimeReal,
+//	    operationType OperationType,
+//	    gnssPlaceAuthRecord GNSSPlaceAuthRecord,
+//	    vehicleOdometerValue OdometerShort
+//	}
 type LoadUnloadOperations_Record struct {
 	state                          protoimpl.MessageState                    `protogen:"opaque.v1"`
 	xxx_hidden_Timestamp           *timestamppb.Timestamp                    `protobuf:"bytes,1,opt,name=timestamp"`
@@ -304,13 +327,17 @@ func (x *LoadUnloadOperations_Record) ClearVehicleOdometerKm() {
 type LoadUnloadOperations_Record_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
-	// Timestamp of the operation. See DD Section 2.162 for `TimeReal`.
+	// ASN.1 Type: TimeReal (see DD 2.162)
+	//
+	//	TimeReal ::= INTEGER (0..2^32-1)
 	Timestamp *timestamppb.Timestamp
 	// Type of operation.
 	OperationType *LoadUnloadOperations_Record_OperationType
 	// Authenticated position of the vehicle at the time of the operation.
 	GnssPlaceAuthRecord *GnssPlaceAuthRecord
-	// Odometer at the time of the operation. See DD Section 2.113 for `OdometerShort`.
+	// ASN.1 Type: OdometerShort (see DD 2.113)
+	//
+	//	OdometerShort ::= INTEGER(0..999999)
 	VehicleOdometerKm *int32
 }
 

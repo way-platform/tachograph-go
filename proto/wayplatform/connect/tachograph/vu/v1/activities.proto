@@ -4,14 +4,15 @@ package wayplatform.connect.tachograph.vu.v1;
 
 import "google/protobuf/timestamp.proto";
 import "wayplatform/connect/tachograph/datadictionary/v1/card_slot_number.proto";
-import "wayplatform/connect/tachograph/datadictionary/v1/card_status.proto";
 import "wayplatform/connect/tachograph/datadictionary/v1/driver_activity_value.proto";
 import "wayplatform/connect/tachograph/datadictionary/v1/driving_status.proto";
 import "wayplatform/connect/tachograph/datadictionary/v1/entry_type_daily_work_period.proto";
-import "wayplatform/connect/tachograph/datadictionary/v1/manual_input_flag.proto";
+import "wayplatform/connect/tachograph/datadictionary/v1/full_card_number.proto";
 import "wayplatform/connect/tachograph/datadictionary/v1/nation_numeric.proto";
 import "wayplatform/connect/tachograph/datadictionary/v1/position_authentication_status.proto";
 import "wayplatform/connect/tachograph/datadictionary/v1/specific_condition_type.proto";
+import "wayplatform/connect/tachograph/datadictionary/v1/vehicle_registration_identification.proto";
+import "wayplatform/connect/tachograph/datadictionary/v1/generation.proto";
 import "wayplatform/connect/tachograph/vu/v1/versioning.proto";
 
 // Represents the consolidated data structure for an Activities transfer.
@@ -19,39 +20,52 @@ import "wayplatform/connect/tachograph/vu/v1/versioning.proto";
 // This message corresponds to the data defined in the regulation document:
 // Appendix 7, Section 2.2.6.3: "Positive Response Transfer Data Activities".
 message Activities {
-  // Discriminator fields indicating the generation and version of the data.
-  Generation generation = 1;
-  Version version = 2;
-
   // Represents a card insertion and withdrawal record.
   //
   // Corresponds to the `VuCardIWRecord` data type.
   // See Data Dictionary, Section 2.177.
   message CardIWRecord {
-    // See Data Dictionary, Section 2.83 for `HolderName`.
+    // Represents information about the previous vehicle used by the driver.
+    //
+    // Corresponds to the `PreviousVehicleInfo` data type.
+    // See Data Dictionary, Section 2.118.
+    message PreviousVehicleInfo {
+      // The registration of the previous vehicle.
+      datadictionary.v1.VehicleRegistrationIdentification vehicle_registration = 1;
+
+      // The time the card was withdrawn from the previous vehicle.
+      google.protobuf.Timestamp card_withdrawal_time = 2;
+    }
+
+    // The name of the card holder.
     string card_holder_name = 1;
-    // See Data Dictionary, Section 2.73 for `FullCardNumber`.
-    string full_card_number = 2;
-    // See Data Dictionary, Section 2.24 for `cardExpiryDate`.
+
+    // The full card number of the inserted card.
+    datadictionary.v1.FullCardNumber full_card_number = 2;
+
+    // The expiry date of the card.
     google.protobuf.Timestamp card_expiry_date = 3;
-    // See Data Dictionary, Section 2.162 for `TimeReal`.
+
+    // The time the card was inserted.
     google.protobuf.Timestamp card_insertion_time = 4;
-    // See Data Dictionary, Section 2.113 for `OdometerShort`.
+
+    // The odometer value at the time of card insertion.
     int32 odometer_at_insertion_km = 5;
-    // See Data Dictionary, Section 2.33 for `CardSlotNumber`.
+
+    // The slot the card was inserted into.
     datadictionary.v1.CardSlotNumber card_slot_number = 6;
-    int32 unrecognized_card_slot_number = 7;
-    // See Data Dictionary, Section 2.162 for `TimeReal`.
+
+    // The time the card was withdrawn.
     google.protobuf.Timestamp card_withdrawal_time = 8;
-    // See Data Dictionary, Section 2.113 for `OdometerShort`.
+
+    // The odometer value at the time of card withdrawal.
     int32 odometer_at_withdrawal_km = 9;
-    // Part of `PreviousVehicleInfo`. See Data Dictionary, Section 2.118.
-    string previous_vrn = 10;
-    // Part of `PreviousVehicleInfo`. See Data Dictionary, Section 2.118.
-    google.protobuf.Timestamp previous_card_withdrawal_time = 11;
-    // See Data Dictionary, Section 2.93 for `ManualInputFlag`.
-    datadictionary.v1.ManualInputFlag manual_input_flag = 12;
-    int32 unrecognized_manual_input_flag = 13;
+
+    // Information about the previous vehicle used.
+    PreviousVehicleInfo previous_vehicle_info = 10;
+
+    // Indicates if manual entries were made.
+    bool manual_input_flag = 11;
   }
 
   // Represents a change in driver activity, driving status, or card status.
@@ -61,16 +75,12 @@ message Activities {
   message ActivityChange {
     // Slot of the driver/co-driver.
     datadictionary.v1.CardSlotNumber slot = 1;
-    int32 unrecognized_slot = 2;
     // Driving status (single or crew).
     datadictionary.v1.DrivingStatus driving_status = 3;
-    int32 unrecognized_driving_status = 4;
-    // Card status (inserted or not inserted).
-    datadictionary.v1.CardStatus card_status = 5;
-    int32 unrecognized_card_status = 6;
+    // Indicates if a card is inserted.
+    bool inserted = 5;
     // Driver's activity (break/rest, availability, work, driving).
     datadictionary.v1.DriverActivityValue activity = 7;
-    int32 unrecognized_activity = 8;
     // Time of the change in minutes since 00:00.
     int32 time_of_change_minutes = 9;
   }
@@ -80,17 +90,15 @@ message Activities {
   // Corresponds to the `PlaceRecord` data type.
   // See Data Dictionary, Section 2.117.
   message PlaceRecord {
-    // Time of the entry. See DD Section 2.162 for `TimeReal`.
+    // Time of the entry.
     google.protobuf.Timestamp entry_time = 1;
-    // Type of entry (begin or end). See DD Section 2.66 for `EntryTypeDailyWorkPeriod`.
+    // Type of entry (begin or end).
     datadictionary.v1.EntryTypeDailyWorkPeriod entry_type = 2;
-    int32 unrecognized_entry_type = 3;
-    // Country code. See DD Section 2.101 for `NationNumeric`.
+    // Country code.
     datadictionary.v1.NationNumeric country = 4;
-    int32 unrecognized_country = 5;
-    // Region code. See DD Section 2.122 for `RegionNumeric`.
+    // Region code.
     int32 region = 6;
-    // Odometer value at the time of entry. See DD Section 2.113 for `OdometerShort`.
+    // Odometer value at the time of entry.
     int32 odometer_km = 7;
   }
 
@@ -98,18 +106,16 @@ message Activities {
   //
   // Corresponds to `GNSSPlaceRecord` (DD 2.80) or `GNSSPlaceAuthRecord` (DD 2.79c).
   message GnssRecord {
-    // Timestamp of the position fix. See DD Section 2.162 for `TimeReal`.
+    // Timestamp of the position fix.
     google.protobuf.Timestamp timestamp = 1;
-    // Accuracy of the GNSS fix. See DD Section 2.77 for `GNSSAccuracy`.
+    // Accuracy of the GNSS fix.
     int32 gnss_accuracy = 2;
-    // See Data Dictionary, Section 2.76 for `GeoCoordinates`.
+    // Longitude.
     sint32 longitude = 3;
-    // See Data Dictionary, Section 2.76 for `GeoCoordinates`.
+    // Latitude.
     sint32 latitude = 4;
     // For Gen2v2+, indicates the authentication status of the position.
-    // See Data Dictionary, Section 2.117a for `PositionAuthenticationStatus`.
     datadictionary.v1.PositionAuthenticationStatus authentication_status = 5;
-    int32 unrecognized_authentication_status = 6;
   }
 
   // Represents a specific condition record (e.g., Ferry/Train crossing).
@@ -117,11 +123,10 @@ message Activities {
   // Corresponds to the `SpecificConditionRecord` data type.
   // See Data Dictionary, Section 2.152.
   message SpecificConditionRecord {
-    // Time of the entry. See DD Section 2.162 for `TimeReal`.
+    // Time of the entry.
     google.protobuf.Timestamp entry_time = 1;
-    // Type of specific condition. See DD Section 2.154 for `SpecificConditionType`.
+    // Type of specific condition.
     datadictionary.v1.SpecificConditionType specific_condition_type = 2;
-    int32 unrecognized_specific_condition_type = 3;
   }
 
   // Represents a border crossing record (Gen2v2+).
@@ -129,19 +134,17 @@ message Activities {
   // Corresponds to the `VuBorderCrossingRecord` data type.
   // See Data Dictionary, Section 2.203a.
   message BorderCrossingRecord {
-    // Card number of the driver. See DD Section 2.73 for `FullCardNumber`.
-    string full_card_number = 1;
-    // Generation of the driver's card. See DD Section 2.75 for `Generation`.
-    Generation card_generation = 2;
-    // Country the vehicle is leaving. See DD Section 2.101 for `NationNumeric`.
+    // Card number of the driver.
+    datadictionary.v1.FullCardNumber full_card_number = 1;
+    // datadictionary.v1.Generation of the driver's card.
+    datadictionary.v1.Generation card_generation = 2;
+    // Country the vehicle is leaving.
     datadictionary.v1.NationNumeric country_left = 3;
-    int32 unrecognized_country_left = 4;
-    // Country the vehicle is entering. See DD Section 2.101 for `NationNumeric`.
+    // Country the vehicle is entering.
     datadictionary.v1.NationNumeric country_entered = 5;
-    int32 unrecognized_country_entered = 6;
     // Position of the vehicle at the time of crossing.
     GnssRecord place_record = 7;
-    // Odometer value at the time of crossing. See DD Section 2.113 for `OdometerShort`.
+    // Odometer value at the time of crossing.
     int32 odometer_km = 8;
   }
 
@@ -150,53 +153,57 @@ message Activities {
   // Corresponds to the `VuLoadUnloadRecord` data type.
   // See Data Dictionary, Section 2.208a.
   message LoadUnloadRecord {
-    // See Data Dictionary, Section 2.114a for `OperationType`.
     enum OperationType {
       OPERATION_TYPE_UNSPECIFIED = 0;
       LOAD = 1;
       UNLOAD = 2;
       SIMULTANEOUS = 3;
     }
-    // Card number of the driver. See DD Section 2.73 for `FullCardNumber`.
-    string full_card_number = 1;
-    // Generation of the driver's card. See DD Section 2.75 for `Generation`.
-    Generation card_generation = 2;
+    // Card number of the driver.
+    datadictionary.v1.FullCardNumber full_card_number = 1;
+    // datadictionary.v1.Generation of the driver's card.
+    datadictionary.v1.Generation card_generation = 2;
     // Type of operation (load, unload, or both).
     OperationType operation_type = 3;
     // Position of the vehicle at the time of the operation.
     GnssRecord place_record = 4;
-    // Odometer value at the time of the operation. See DD Section 2.113 for `OdometerShort`.
+    // Odometer value at the time of the operation.
     int32 odometer_km = 5;
   }
 
-  // Date of the downloaded day. See DD Section 2.58 for `DateOfDayDownloaded`.
+  // The generation of the vehicle unit, parsed from the raw transfer data.
+  //
+  // Discriminator field.
+  datadictionary.v1.Generation generation = 1;
+
+  // The version of the interface, parsed from the raw transfer data.
+  //
+  // Discriminator field.
+  Version version = 2;
+
+  // Date of the downloaded day.
   google.protobuf.Timestamp date_of_day = 3;
-  // Odometer value at midnight. See DD Section 2.114 for `OdometerValueMidnight`.
+  // Odometer value at midnight.
   int32 odometer_midnight_km = 4;
-  // Card insertion and withdrawal data. See DD Section 2.176 for `VuCardIWData`.
+  // Card insertion and withdrawal data.
   repeated CardIWRecord card_iw_data = 5;
-  // Driver activity changes. See DD Section 2.170 for `VuActivityDailyData`.
+  // Driver activity changes.
   repeated ActivityChange activity_changes = 6;
-  // Daily work period place entries. See DD Section 2.218 for `VuPlaceDailyWorkPeriodData`.
+  // Daily work period place entries.
   repeated PlaceRecord places = 7;
-  // Specific conditions data. See DD Section 2.227 for `VuSpecificConditionData`.
+  // Specific conditions data.
   repeated SpecificConditionRecord specific_conditions = 8;
 
   // Gen2+ Fields: GNSS positions recorded at 3-hour accumulated driving time intervals.
-  // See Data Dictionary, Section 2.204 for `VuGNSSADRecordArray`.
   repeated GnssRecord gnss_accumulated_driving = 9;
 
   // Gen2v2+ Fields: Border crossing records.
-  // See Data Dictionary, Section 2.203b for `VuBorderCrossingRecordArray`.
   repeated BorderCrossingRecord border_crossings = 10;
   // Gen2v2+ Fields: Load/unload operation records.
-  // See Data Dictionary, Section 2.208b for `VuLoadUnloadRecordArray`.
   repeated LoadUnloadRecord load_unload_operations = 11;
 
   // Signature for Gen1 data (RSA, 128 bytes).
-  // See Data Dictionary, Section 2.149.
   bytes signature_gen1 = 12;
   // Signature for Gen2 data (ECC).
-  // See Data Dictionary, Section 2.149.
   bytes signature_gen2 = 13;
 }

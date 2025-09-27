@@ -22,10 +22,19 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// Represents specific conditions data (e.g., Ferry/Train crossing).
+// Represents the content of the EF_Specific_Conditions file, which contains a log
+// of specific conditions (e.g., Ferry/Train crossing).
 //
-// Corresponds to the `SpecificConditions` data type from EF_Specific_Conditions.
-// See Data Dictionary, Section 2.153.
+// The file structure is specified in Appendix 2, Section 4.2.1.
+//
+//	EF Specific_Conditions
+//	└─SpecificConditions (a set of SpecificConditionRecord)
+//
+// The data type `SpecificConditions` is specified in the Data Dictionary, Section 2.153.
+//
+// ASN.1 Specification:
+//
+//	SpecificConditions ::= SET SIZE(NoOfSpecificConditionRecords) OF SpecificConditionRecord
 type SpecificConditions struct {
 	state                  protoimpl.MessageState        `protogen:"opaque.v1"`
 	xxx_hidden_Records     *[]*SpecificConditions_Record `protobuf:"bytes,1,rep,name=records"`
@@ -123,17 +132,22 @@ func (b0 SpecificConditions_builder) Build() *SpecificConditions {
 
 // Represents a single specific condition record.
 //
-// Corresponds to the `SpecificConditionRecord` data type.
-// See Data Dictionary, Section 2.152.
+// The data type `SpecificConditionRecord` is specified in the Data Dictionary, Section 2.152.
+//
+// ASN.1 Specification:
+//
+//	SpecificConditionRecord ::= SEQUENCE {
+//	    entryTime TimeReal,
+//	    specificConditionType SpecificConditionType
+//	}
 type SpecificConditions_Record struct {
-	state                                        protoimpl.MessageState   `protogen:"opaque.v1"`
-	xxx_hidden_EntryTime                         *timestamppb.Timestamp   `protobuf:"bytes,1,opt,name=entry_time,json=entryTime"`
-	xxx_hidden_SpecificConditionType             v1.SpecificConditionType `protobuf:"varint,2,opt,name=specific_condition_type,json=specificConditionType,enum=wayplatform.connect.tachograph.datadictionary.v1.SpecificConditionType"`
-	xxx_hidden_UnrecognizedSpecificConditionType int32                    `protobuf:"varint,3,opt,name=unrecognized_specific_condition_type,json=unrecognizedSpecificConditionType"`
-	XXX_raceDetectHookData                       protoimpl.RaceDetectHookData
-	XXX_presence                                 [1]uint32
-	unknownFields                                protoimpl.UnknownFields
-	sizeCache                                    protoimpl.SizeCache
+	state                            protoimpl.MessageState   `protogen:"opaque.v1"`
+	xxx_hidden_EntryTime             *timestamppb.Timestamp   `protobuf:"bytes,1,opt,name=entry_time,json=entryTime"`
+	xxx_hidden_SpecificConditionType v1.SpecificConditionType `protobuf:"varint,2,opt,name=specific_condition_type,json=specificConditionType,enum=wayplatform.connect.tachograph.datadictionary.v1.SpecificConditionType"`
+	XXX_raceDetectHookData           protoimpl.RaceDetectHookData
+	XXX_presence                     [1]uint32
+	unknownFields                    protoimpl.UnknownFields
+	sizeCache                        protoimpl.SizeCache
 }
 
 func (x *SpecificConditions_Record) Reset() {
@@ -177,25 +191,13 @@ func (x *SpecificConditions_Record) GetSpecificConditionType() v1.SpecificCondit
 	return v1.SpecificConditionType(0)
 }
 
-func (x *SpecificConditions_Record) GetUnrecognizedSpecificConditionType() int32 {
-	if x != nil {
-		return x.xxx_hidden_UnrecognizedSpecificConditionType
-	}
-	return 0
-}
-
 func (x *SpecificConditions_Record) SetEntryTime(v *timestamppb.Timestamp) {
 	x.xxx_hidden_EntryTime = v
 }
 
 func (x *SpecificConditions_Record) SetSpecificConditionType(v v1.SpecificConditionType) {
 	x.xxx_hidden_SpecificConditionType = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 3)
-}
-
-func (x *SpecificConditions_Record) SetUnrecognizedSpecificConditionType(v int32) {
-	x.xxx_hidden_UnrecognizedSpecificConditionType = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 3)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 2)
 }
 
 func (x *SpecificConditions_Record) HasEntryTime() bool {
@@ -212,13 +214,6 @@ func (x *SpecificConditions_Record) HasSpecificConditionType() bool {
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 1)
 }
 
-func (x *SpecificConditions_Record) HasUnrecognizedSpecificConditionType() bool {
-	if x == nil {
-		return false
-	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 2)
-}
-
 func (x *SpecificConditions_Record) ClearEntryTime() {
 	x.xxx_hidden_EntryTime = nil
 }
@@ -228,19 +223,22 @@ func (x *SpecificConditions_Record) ClearSpecificConditionType() {
 	x.xxx_hidden_SpecificConditionType = v1.SpecificConditionType_SPECIFIC_CONDITION_TYPE_UNSPECIFIED
 }
 
-func (x *SpecificConditions_Record) ClearUnrecognizedSpecificConditionType() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 2)
-	x.xxx_hidden_UnrecognizedSpecificConditionType = 0
-}
-
 type SpecificConditions_Record_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
-	// Time of the entry. See DD Section 2.162 for `TimeReal`.
+	// ASN.1 Type: TimeReal (see DD 2.162)
+	//
+	//	TimeReal ::= INTEGER (0..2^32-1)
 	EntryTime *timestamppb.Timestamp
-	// Type of specific condition. See DD Section 2.154 for `SpecificConditionType`.
-	SpecificConditionType             *v1.SpecificConditionType
-	UnrecognizedSpecificConditionType *int32
+	// ASN.1 Type: SpecificConditionType (see DD 2.154)
+	//
+	//	SpecificConditionType ::= INTEGER {
+	//	    rfu(0),
+	//	    out-of-scope-begin(1),
+	//	    out-of-scope-end(2),
+	//	    ferry-train-crossing(3)
+	//	} (0..255)
+	SpecificConditionType *v1.SpecificConditionType
 }
 
 func (b0 SpecificConditions_Record_builder) Build() *SpecificConditions_Record {
@@ -249,12 +247,8 @@ func (b0 SpecificConditions_Record_builder) Build() *SpecificConditions_Record {
 	_, _ = b, x
 	x.xxx_hidden_EntryTime = b.EntryTime
 	if b.SpecificConditionType != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 3)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 2)
 		x.xxx_hidden_SpecificConditionType = *b.SpecificConditionType
-	}
-	if b.UnrecognizedSpecificConditionType != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 3)
-		x.xxx_hidden_UnrecognizedSpecificConditionType = *b.UnrecognizedSpecificConditionType
 	}
 	return m0
 }
@@ -263,15 +257,14 @@ var File_wayplatform_connect_tachograph_card_v1_specific_conditions_proto protor
 
 const file_wayplatform_connect_tachograph_card_v1_specific_conditions_proto_rawDesc = "" +
 	"\n" +
-	"@wayplatform/connect/tachograph/card/v1/specific_conditions.proto\x12&wayplatform.connect.tachograph.card.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1aNwayplatform/connect/tachograph/datadictionary/v1/specific_condition_type.proto\"\xa7\x03\n" +
+	"@wayplatform/connect/tachograph/card/v1/specific_conditions.proto\x12&wayplatform.connect.tachograph.card.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1aNwayplatform/connect/tachograph/datadictionary/v1/specific_condition_type.proto\"\xd6\x02\n" +
 	"\x12SpecificConditions\x12[\n" +
 	"\arecords\x18\x01 \x03(\v2A.wayplatform.connect.tachograph.card.v1.SpecificConditions.RecordR\arecords\x12\x1c\n" +
-	"\tsignature\x18\x02 \x01(\fR\tsignature\x1a\x95\x02\n" +
+	"\tsignature\x18\x02 \x01(\fR\tsignature\x1a\xc4\x01\n" +
 	"\x06Record\x129\n" +
 	"\n" +
 	"entry_time\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\tentryTime\x12\x7f\n" +
-	"\x17specific_condition_type\x18\x02 \x01(\x0e2G.wayplatform.connect.tachograph.datadictionary.v1.SpecificConditionTypeR\x15specificConditionType\x12O\n" +
-	"$unrecognized_specific_condition_type\x18\x03 \x01(\x05R!unrecognizedSpecificConditionTypeB\xe4\x02\n" +
+	"\x17specific_condition_type\x18\x02 \x01(\x0e2G.wayplatform.connect.tachograph.datadictionary.v1.SpecificConditionTypeR\x15specificConditionTypeB\xe4\x02\n" +
 	"*com.wayplatform.connect.tachograph.card.v1B\x17SpecificConditionsProtoP\x01Z`github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1;cardv1\xa2\x02\x04WCTC\xaa\x02&Wayplatform.Connect.Tachograph.Card.V1\xca\x02&Wayplatform\\Connect\\Tachograph\\Card\\V1\xe2\x022Wayplatform\\Connect\\Tachograph\\Card\\V1\\GPBMetadata\xea\x02*Wayplatform::Connect::Tachograph::Card::V1b\beditionsp\xe8\a"
 
 var file_wayplatform_connect_tachograph_card_v1_specific_conditions_proto_msgTypes = make([]protoimpl.MessageInfo, 2)

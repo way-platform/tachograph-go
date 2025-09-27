@@ -6,6 +6,7 @@ import (
 	"fmt"
 
 	cardv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1"
+	datadictionaryv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/datadictionary/v1"
 )
 
 func unmarshalCardControlActivityData(data []byte) (*cardv1.ControlActivityData, error) {
@@ -34,18 +35,20 @@ func unmarshalCardControlActivityData(data []byte) (*cardv1.ControlActivityData,
 	if _, err := r.Read(controlCardBytes); err != nil {
 		return nil, fmt.Errorf("failed to read control card number: %w", err)
 	}
-	target.SetControlCardNumber(readString(bytes.NewReader(controlCardBytes), 18))
+	// Create FullCardNumber structure
+	fullCardNumber := &datadictionaryv1.FullCardNumber{}
+	fullCardNumber.SetCardNumber(readString(bytes.NewReader(controlCardBytes), 18))
+	target.SetControlCardNumber(fullCardNumber)
 	// Read vehicle registration (15 bytes: 1 byte nation + 14 bytes number)
 	var nation byte
 	if err := binary.Read(r, binary.BigEndian, &nation); err != nil {
 		return nil, fmt.Errorf("failed to read vehicle registration nation: %w", err)
 	}
-	target.SetVehicleRegistrationNation(fmt.Sprintf("%02X", nation))
-	registrationBytes := make([]byte, 14)
-	if _, err := r.Read(registrationBytes); err != nil {
-		return nil, fmt.Errorf("failed to read vehicle registration number: %w", err)
-	}
-	target.SetVehicleRegistrationNumber(readString(bytes.NewReader(registrationBytes), 14))
+	// Create VehicleRegistrationIdentification structure
+	vehicleReg := &datadictionaryv1.VehicleRegistrationIdentification{}
+	vehicleReg.SetNation(int32(nation))
+	vehicleReg.SetNumber(readString(r, 14))
+	target.SetControlVehicleRegistration(vehicleReg)
 	// Read control download period begin (4 bytes)
 	target.SetControlDownloadPeriodBegin(readTimeReal(r))
 	// Read control download period end (4 bytes)

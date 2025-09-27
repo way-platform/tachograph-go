@@ -7,6 +7,7 @@
 package cardv1
 
 import (
+	v1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/datadictionary/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
@@ -21,20 +22,31 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// Represents data about the actual usage of the card.
+// Represents the content of the EF_Current_Usage file, which contains data
+// about the actual usage of the card.
 //
-// Corresponds to the `CardCurrentUse` data type from EF_Current_Usage.
-// See Data Dictionary, Section 2.16.
+// The file structure is specified in Appendix 2, Section 4.2.1.
+//
+//	EF Current_Usage
+//	└─CardCurrentUse
+//
+// The data type `CardCurrentUse` is specified in the Data Dictionary, Section 2.16.
+//
+// ASN.1 Specification:
+//
+//	CardCurrentUse ::= SEQUENCE {
+//	    sessionOpenTime TimeReal,
+//	    sessionOpenVehicle VehicleRegistrationIdentification
+//	}
 type CurrentUsage struct {
-	state                                protoimpl.MessageState `protogen:"opaque.v1"`
-	xxx_hidden_SessionOpenTime           *timestamppb.Timestamp `protobuf:"bytes,1,opt,name=session_open_time,json=sessionOpenTime"`
-	xxx_hidden_VehicleRegistrationNation *string                `protobuf:"bytes,2,opt,name=vehicle_registration_nation,json=vehicleRegistrationNation"`
-	xxx_hidden_VehicleRegistrationNumber *string                `protobuf:"bytes,3,opt,name=vehicle_registration_number,json=vehicleRegistrationNumber"`
-	xxx_hidden_Signature                 []byte                 `protobuf:"bytes,4,opt,name=signature"`
-	XXX_raceDetectHookData               protoimpl.RaceDetectHookData
-	XXX_presence                         [1]uint32
-	unknownFields                        protoimpl.UnknownFields
-	sizeCache                            protoimpl.SizeCache
+	state                         protoimpl.MessageState                `protogen:"opaque.v1"`
+	xxx_hidden_SessionOpenTime    *timestamppb.Timestamp                `protobuf:"bytes,1,opt,name=session_open_time,json=sessionOpenTime"`
+	xxx_hidden_SessionOpenVehicle *v1.VehicleRegistrationIdentification `protobuf:"bytes,2,opt,name=session_open_vehicle,json=sessionOpenVehicle"`
+	xxx_hidden_Signature          []byte                                `protobuf:"bytes,3,opt,name=signature"`
+	XXX_raceDetectHookData        protoimpl.RaceDetectHookData
+	XXX_presence                  [1]uint32
+	unknownFields                 protoimpl.UnknownFields
+	sizeCache                     protoimpl.SizeCache
 }
 
 func (x *CurrentUsage) Reset() {
@@ -69,24 +81,11 @@ func (x *CurrentUsage) GetSessionOpenTime() *timestamppb.Timestamp {
 	return nil
 }
 
-func (x *CurrentUsage) GetVehicleRegistrationNation() string {
+func (x *CurrentUsage) GetSessionOpenVehicle() *v1.VehicleRegistrationIdentification {
 	if x != nil {
-		if x.xxx_hidden_VehicleRegistrationNation != nil {
-			return *x.xxx_hidden_VehicleRegistrationNation
-		}
-		return ""
+		return x.xxx_hidden_SessionOpenVehicle
 	}
-	return ""
-}
-
-func (x *CurrentUsage) GetVehicleRegistrationNumber() string {
-	if x != nil {
-		if x.xxx_hidden_VehicleRegistrationNumber != nil {
-			return *x.xxx_hidden_VehicleRegistrationNumber
-		}
-		return ""
-	}
-	return ""
+	return nil
 }
 
 func (x *CurrentUsage) GetSignature() []byte {
@@ -100,14 +99,8 @@ func (x *CurrentUsage) SetSessionOpenTime(v *timestamppb.Timestamp) {
 	x.xxx_hidden_SessionOpenTime = v
 }
 
-func (x *CurrentUsage) SetVehicleRegistrationNation(v string) {
-	x.xxx_hidden_VehicleRegistrationNation = &v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 4)
-}
-
-func (x *CurrentUsage) SetVehicleRegistrationNumber(v string) {
-	x.xxx_hidden_VehicleRegistrationNumber = &v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 4)
+func (x *CurrentUsage) SetSessionOpenVehicle(v *v1.VehicleRegistrationIdentification) {
+	x.xxx_hidden_SessionOpenVehicle = v
 }
 
 func (x *CurrentUsage) SetSignature(v []byte) {
@@ -115,7 +108,7 @@ func (x *CurrentUsage) SetSignature(v []byte) {
 		v = []byte{}
 	}
 	x.xxx_hidden_Signature = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 3, 4)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 3)
 }
 
 func (x *CurrentUsage) HasSessionOpenTime() bool {
@@ -125,56 +118,42 @@ func (x *CurrentUsage) HasSessionOpenTime() bool {
 	return x.xxx_hidden_SessionOpenTime != nil
 }
 
-func (x *CurrentUsage) HasVehicleRegistrationNation() bool {
+func (x *CurrentUsage) HasSessionOpenVehicle() bool {
 	if x == nil {
 		return false
 	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 1)
-}
-
-func (x *CurrentUsage) HasVehicleRegistrationNumber() bool {
-	if x == nil {
-		return false
-	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 2)
+	return x.xxx_hidden_SessionOpenVehicle != nil
 }
 
 func (x *CurrentUsage) HasSignature() bool {
 	if x == nil {
 		return false
 	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 3)
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 2)
 }
 
 func (x *CurrentUsage) ClearSessionOpenTime() {
 	x.xxx_hidden_SessionOpenTime = nil
 }
 
-func (x *CurrentUsage) ClearVehicleRegistrationNation() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 1)
-	x.xxx_hidden_VehicleRegistrationNation = nil
-}
-
-func (x *CurrentUsage) ClearVehicleRegistrationNumber() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 2)
-	x.xxx_hidden_VehicleRegistrationNumber = nil
+func (x *CurrentUsage) ClearSessionOpenVehicle() {
+	x.xxx_hidden_SessionOpenVehicle = nil
 }
 
 func (x *CurrentUsage) ClearSignature() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 3)
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 2)
 	x.xxx_hidden_Signature = nil
 }
 
 type CurrentUsage_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
-	// Time when the card was inserted for the current session.
-	// See Data Dictionary, Section 2.162 for `TimeReal`.
+	// ASN.1 Type: TimeReal (see DD 2.162)
+	//
+	//	TimeReal ::= INTEGER (0..2^32-1)
 	SessionOpenTime *timestamppb.Timestamp
-	// Nation of the vehicle's registration. See DD Section 2.166.
-	VehicleRegistrationNation *string
-	// Vehicle's registration number. See DD Section 2.166.
-	VehicleRegistrationNumber *string
+	// ASN.1 Type: VehicleRegistrationIdentification (see DD 2.166)
+	SessionOpenVehicle *v1.VehicleRegistrationIdentification
 	// Digital signature for the EF_Current_Usage file content.
 	Signature []byte
 }
@@ -184,16 +163,9 @@ func (b0 CurrentUsage_builder) Build() *CurrentUsage {
 	b, x := &b0, m0
 	_, _ = b, x
 	x.xxx_hidden_SessionOpenTime = b.SessionOpenTime
-	if b.VehicleRegistrationNation != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 4)
-		x.xxx_hidden_VehicleRegistrationNation = b.VehicleRegistrationNation
-	}
-	if b.VehicleRegistrationNumber != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 4)
-		x.xxx_hidden_VehicleRegistrationNumber = b.VehicleRegistrationNumber
-	}
+	x.xxx_hidden_SessionOpenVehicle = b.SessionOpenVehicle
 	if b.Signature != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 3, 4)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 3)
 		x.xxx_hidden_Signature = b.Signature
 	}
 	return m0
@@ -203,26 +175,27 @@ var File_wayplatform_connect_tachograph_card_v1_current_usage_proto protoreflect
 
 const file_wayplatform_connect_tachograph_card_v1_current_usage_proto_rawDesc = "" +
 	"\n" +
-	":wayplatform/connect/tachograph/card/v1/current_usage.proto\x12&wayplatform.connect.tachograph.card.v1\x1a\x1fgoogle/protobuf/timestamp.proto\"\xf4\x01\n" +
+	":wayplatform/connect/tachograph/card/v1/current_usage.proto\x12&wayplatform.connect.tachograph.card.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1aZwayplatform/connect/tachograph/datadictionary/v1/vehicle_registration_identification.proto\"\xfc\x01\n" +
 	"\fCurrentUsage\x12F\n" +
-	"\x11session_open_time\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\x0fsessionOpenTime\x12>\n" +
-	"\x1bvehicle_registration_nation\x18\x02 \x01(\tR\x19vehicleRegistrationNation\x12>\n" +
-	"\x1bvehicle_registration_number\x18\x03 \x01(\tR\x19vehicleRegistrationNumber\x12\x1c\n" +
-	"\tsignature\x18\x04 \x01(\fR\tsignatureB\xde\x02\n" +
+	"\x11session_open_time\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\x0fsessionOpenTime\x12\x85\x01\n" +
+	"\x14session_open_vehicle\x18\x02 \x01(\v2S.wayplatform.connect.tachograph.datadictionary.v1.VehicleRegistrationIdentificationR\x12sessionOpenVehicle\x12\x1c\n" +
+	"\tsignature\x18\x03 \x01(\fR\tsignatureB\xde\x02\n" +
 	"*com.wayplatform.connect.tachograph.card.v1B\x11CurrentUsageProtoP\x01Z`github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1;cardv1\xa2\x02\x04WCTC\xaa\x02&Wayplatform.Connect.Tachograph.Card.V1\xca\x02&Wayplatform\\Connect\\Tachograph\\Card\\V1\xe2\x022Wayplatform\\Connect\\Tachograph\\Card\\V1\\GPBMetadata\xea\x02*Wayplatform::Connect::Tachograph::Card::V1b\beditionsp\xe8\a"
 
 var file_wayplatform_connect_tachograph_card_v1_current_usage_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_wayplatform_connect_tachograph_card_v1_current_usage_proto_goTypes = []any{
-	(*CurrentUsage)(nil),          // 0: wayplatform.connect.tachograph.card.v1.CurrentUsage
-	(*timestamppb.Timestamp)(nil), // 1: google.protobuf.Timestamp
+	(*CurrentUsage)(nil),                         // 0: wayplatform.connect.tachograph.card.v1.CurrentUsage
+	(*timestamppb.Timestamp)(nil),                // 1: google.protobuf.Timestamp
+	(*v1.VehicleRegistrationIdentification)(nil), // 2: wayplatform.connect.tachograph.datadictionary.v1.VehicleRegistrationIdentification
 }
 var file_wayplatform_connect_tachograph_card_v1_current_usage_proto_depIdxs = []int32{
 	1, // 0: wayplatform.connect.tachograph.card.v1.CurrentUsage.session_open_time:type_name -> google.protobuf.Timestamp
-	1, // [1:1] is the sub-list for method output_type
-	1, // [1:1] is the sub-list for method input_type
-	1, // [1:1] is the sub-list for extension type_name
-	1, // [1:1] is the sub-list for extension extendee
-	0, // [0:1] is the sub-list for field type_name
+	2, // 1: wayplatform.connect.tachograph.card.v1.CurrentUsage.session_open_vehicle:type_name -> wayplatform.connect.tachograph.datadictionary.v1.VehicleRegistrationIdentification
+	2, // [2:2] is the sub-list for method output_type
+	2, // [2:2] is the sub-list for method input_type
+	2, // [2:2] is the sub-list for extension type_name
+	2, // [2:2] is the sub-list for extension extendee
+	0, // [0:2] is the sub-list for field type_name
 }
 
 func init() { file_wayplatform_connect_tachograph_card_v1_current_usage_proto_init() }

@@ -7,6 +7,7 @@
 package cardv1
 
 import (
+	v1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/datadictionary/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
@@ -21,22 +22,37 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// Represents data about the last control the driver was subject to.
+// Represents the content of the EF_Control_Activity_Data file, which logs details
+// about the last control session performed on the driver.
 //
-// Corresponds to the `CardControlActivityDataRecord` data type from EF_Control_Activity_Data.
-// See Data Dictionary, Section 2.15.
+// The file structure is specified in Appendix 2, Section 4.2.1.
+//
+//	EF Control_Activity_Data
+//	└─CardControlActivityDataRecord
+//
+// The data type `CardControlActivityDataRecord` is specified in the Data Dictionary, Section 2.15.
+//
+// ASN.1 Specification:
+//
+//	CardControlActivityDataRecord ::= SEQUENCE {
+//	    controlType ControlType,
+//	    controlTime TimeReal,
+//	    controlCardNumber FullCardNumber,
+//	    controlVehicleRegistration VehicleRegistrationIdentification,
+//	    controlDownloadPeriodBegin TimeReal,
+//	    controlDownloadPeriodEnd TimeReal
+//	}
 type ControlActivityData struct {
-	state                                 protoimpl.MessageState `protogen:"opaque.v1"`
-	xxx_hidden_Valid                      bool                   `protobuf:"varint,1,opt,name=valid"`
-	xxx_hidden_ControlType                []byte                 `protobuf:"bytes,2,opt,name=control_type,json=controlType"`
-	xxx_hidden_ControlTime                *timestamppb.Timestamp `protobuf:"bytes,3,opt,name=control_time,json=controlTime"`
-	xxx_hidden_ControlCardNumber          *string                `protobuf:"bytes,4,opt,name=control_card_number,json=controlCardNumber"`
-	xxx_hidden_VehicleRegistrationNation  *string                `protobuf:"bytes,5,opt,name=vehicle_registration_nation,json=vehicleRegistrationNation"`
-	xxx_hidden_VehicleRegistrationNumber  *string                `protobuf:"bytes,6,opt,name=vehicle_registration_number,json=vehicleRegistrationNumber"`
-	xxx_hidden_ControlDownloadPeriodBegin *timestamppb.Timestamp `protobuf:"bytes,7,opt,name=control_download_period_begin,json=controlDownloadPeriodBegin"`
-	xxx_hidden_ControlDownloadPeriodEnd   *timestamppb.Timestamp `protobuf:"bytes,8,opt,name=control_download_period_end,json=controlDownloadPeriodEnd"`
-	xxx_hidden_RawData                    []byte                 `protobuf:"bytes,9,opt,name=raw_data,json=rawData"`
-	xxx_hidden_Signature                  []byte                 `protobuf:"bytes,10,opt,name=signature"`
+	state                                 protoimpl.MessageState                `protogen:"opaque.v1"`
+	xxx_hidden_Valid                      bool                                  `protobuf:"varint,1,opt,name=valid"`
+	xxx_hidden_ControlType                []byte                                `protobuf:"bytes,2,opt,name=control_type,json=controlType"`
+	xxx_hidden_ControlTime                *timestamppb.Timestamp                `protobuf:"bytes,3,opt,name=control_time,json=controlTime"`
+	xxx_hidden_ControlCardNumber          *v1.FullCardNumber                    `protobuf:"bytes,4,opt,name=control_card_number,json=controlCardNumber"`
+	xxx_hidden_ControlVehicleRegistration *v1.VehicleRegistrationIdentification `protobuf:"bytes,5,opt,name=control_vehicle_registration,json=controlVehicleRegistration"`
+	xxx_hidden_ControlDownloadPeriodBegin *timestamppb.Timestamp                `protobuf:"bytes,6,opt,name=control_download_period_begin,json=controlDownloadPeriodBegin"`
+	xxx_hidden_ControlDownloadPeriodEnd   *timestamppb.Timestamp                `protobuf:"bytes,7,opt,name=control_download_period_end,json=controlDownloadPeriodEnd"`
+	xxx_hidden_RawData                    []byte                                `protobuf:"bytes,8,opt,name=raw_data,json=rawData"`
+	xxx_hidden_Signature                  []byte                                `protobuf:"bytes,9,opt,name=signature"`
 	XXX_raceDetectHookData                protoimpl.RaceDetectHookData
 	XXX_presence                          [1]uint32
 	unknownFields                         protoimpl.UnknownFields
@@ -89,34 +105,18 @@ func (x *ControlActivityData) GetControlTime() *timestamppb.Timestamp {
 	return nil
 }
 
-func (x *ControlActivityData) GetControlCardNumber() string {
+func (x *ControlActivityData) GetControlCardNumber() *v1.FullCardNumber {
 	if x != nil {
-		if x.xxx_hidden_ControlCardNumber != nil {
-			return *x.xxx_hidden_ControlCardNumber
-		}
-		return ""
+		return x.xxx_hidden_ControlCardNumber
 	}
-	return ""
+	return nil
 }
 
-func (x *ControlActivityData) GetVehicleRegistrationNation() string {
+func (x *ControlActivityData) GetControlVehicleRegistration() *v1.VehicleRegistrationIdentification {
 	if x != nil {
-		if x.xxx_hidden_VehicleRegistrationNation != nil {
-			return *x.xxx_hidden_VehicleRegistrationNation
-		}
-		return ""
+		return x.xxx_hidden_ControlVehicleRegistration
 	}
-	return ""
-}
-
-func (x *ControlActivityData) GetVehicleRegistrationNumber() string {
-	if x != nil {
-		if x.xxx_hidden_VehicleRegistrationNumber != nil {
-			return *x.xxx_hidden_VehicleRegistrationNumber
-		}
-		return ""
-	}
-	return ""
+	return nil
 }
 
 func (x *ControlActivityData) GetControlDownloadPeriodBegin() *timestamppb.Timestamp {
@@ -149,7 +149,7 @@ func (x *ControlActivityData) GetSignature() []byte {
 
 func (x *ControlActivityData) SetValid(v bool) {
 	x.xxx_hidden_Valid = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 10)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 9)
 }
 
 func (x *ControlActivityData) SetControlType(v []byte) {
@@ -157,26 +157,19 @@ func (x *ControlActivityData) SetControlType(v []byte) {
 		v = []byte{}
 	}
 	x.xxx_hidden_ControlType = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 10)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 9)
 }
 
 func (x *ControlActivityData) SetControlTime(v *timestamppb.Timestamp) {
 	x.xxx_hidden_ControlTime = v
 }
 
-func (x *ControlActivityData) SetControlCardNumber(v string) {
-	x.xxx_hidden_ControlCardNumber = &v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 3, 10)
+func (x *ControlActivityData) SetControlCardNumber(v *v1.FullCardNumber) {
+	x.xxx_hidden_ControlCardNumber = v
 }
 
-func (x *ControlActivityData) SetVehicleRegistrationNation(v string) {
-	x.xxx_hidden_VehicleRegistrationNation = &v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 4, 10)
-}
-
-func (x *ControlActivityData) SetVehicleRegistrationNumber(v string) {
-	x.xxx_hidden_VehicleRegistrationNumber = &v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 5, 10)
+func (x *ControlActivityData) SetControlVehicleRegistration(v *v1.VehicleRegistrationIdentification) {
+	x.xxx_hidden_ControlVehicleRegistration = v
 }
 
 func (x *ControlActivityData) SetControlDownloadPeriodBegin(v *timestamppb.Timestamp) {
@@ -192,7 +185,7 @@ func (x *ControlActivityData) SetRawData(v []byte) {
 		v = []byte{}
 	}
 	x.xxx_hidden_RawData = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 8, 10)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 7, 9)
 }
 
 func (x *ControlActivityData) SetSignature(v []byte) {
@@ -200,7 +193,7 @@ func (x *ControlActivityData) SetSignature(v []byte) {
 		v = []byte{}
 	}
 	x.xxx_hidden_Signature = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 9, 10)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 8, 9)
 }
 
 func (x *ControlActivityData) HasValid() bool {
@@ -228,21 +221,14 @@ func (x *ControlActivityData) HasControlCardNumber() bool {
 	if x == nil {
 		return false
 	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 3)
+	return x.xxx_hidden_ControlCardNumber != nil
 }
 
-func (x *ControlActivityData) HasVehicleRegistrationNation() bool {
+func (x *ControlActivityData) HasControlVehicleRegistration() bool {
 	if x == nil {
 		return false
 	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 4)
-}
-
-func (x *ControlActivityData) HasVehicleRegistrationNumber() bool {
-	if x == nil {
-		return false
-	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 5)
+	return x.xxx_hidden_ControlVehicleRegistration != nil
 }
 
 func (x *ControlActivityData) HasControlDownloadPeriodBegin() bool {
@@ -263,14 +249,14 @@ func (x *ControlActivityData) HasRawData() bool {
 	if x == nil {
 		return false
 	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 8)
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 7)
 }
 
 func (x *ControlActivityData) HasSignature() bool {
 	if x == nil {
 		return false
 	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 9)
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 8)
 }
 
 func (x *ControlActivityData) ClearValid() {
@@ -288,18 +274,11 @@ func (x *ControlActivityData) ClearControlTime() {
 }
 
 func (x *ControlActivityData) ClearControlCardNumber() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 3)
 	x.xxx_hidden_ControlCardNumber = nil
 }
 
-func (x *ControlActivityData) ClearVehicleRegistrationNation() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 4)
-	x.xxx_hidden_VehicleRegistrationNation = nil
-}
-
-func (x *ControlActivityData) ClearVehicleRegistrationNumber() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 5)
-	x.xxx_hidden_VehicleRegistrationNumber = nil
+func (x *ControlActivityData) ClearControlVehicleRegistration() {
+	x.xxx_hidden_ControlVehicleRegistration = nil
 }
 
 func (x *ControlActivityData) ClearControlDownloadPeriodBegin() {
@@ -311,12 +290,12 @@ func (x *ControlActivityData) ClearControlDownloadPeriodEnd() {
 }
 
 func (x *ControlActivityData) ClearRawData() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 8)
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 7)
 	x.xxx_hidden_RawData = nil
 }
 
 func (x *ControlActivityData) ClearSignature() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 9)
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 8)
 	x.xxx_hidden_Signature = nil
 }
 
@@ -327,19 +306,41 @@ type ControlActivityData_builder struct {
 	// If false, the 'raw_data' field contains the original, unprocessed record
 	// bytes for perfect roundtrip accuracy.
 	Valid *bool
-	// See Data Dictionary, Section 2.53 for `ControlType`.
+	// The type of the control.
+	//
+	// ASN.1 Specification:
+	//
+	//	ControlType ::= OCTET STRING (SIZE(1))
 	ControlType []byte
-	// Date and time of the control. See DD Section 2.162 for `TimeReal`.
+	// The date and time of the control.
+	//
+	// ASN.1 Specification:
+	//
+	//	TimeReal ::= INTEGER (0..2^32-1)
 	ControlTime *timestamppb.Timestamp
-	// Card number of the control officer. See DD Section 2.73 for `FullCardNumber`.
-	ControlCardNumber *string
-	// Nation of the vehicle's registration. See DD Section 2.166.
-	VehicleRegistrationNation *string
-	// Vehicle's registration number. See DD Section 2.166.
-	VehicleRegistrationNumber *string
-	// Start of the downloaded period. See DD Section 2.162 for `TimeReal`.
+	// The full card number of the control officer who performed the control.
+	//
+	// ASN.1 Specification:
+	//
+	//	FullCardNumber ::= SEQUENCE { ... }
+	ControlCardNumber *v1.FullCardNumber
+	// The vehicle registration of the vehicle in which the control happened.
+	//
+	// ASN.1 Specification:
+	//
+	//	VehicleRegistrationIdentification ::= SEQUENCE { ... }
+	ControlVehicleRegistration *v1.VehicleRegistrationIdentification
+	// The beginning of the downloaded period, in case of downloading.
+	//
+	// ASN.1 Specification:
+	//
+	//	TimeReal ::= INTEGER (0..2^32-1)
 	ControlDownloadPeriodBegin *timestamppb.Timestamp
-	// End of the downloaded period. See DD Section 2.162 for `TimeReal`.
+	// The end of the downloaded period, in case of downloading.
+	//
+	// ASN.1 Specification:
+	//
+	//	TimeReal ::= INTEGER (0..2^32-1)
 	ControlDownloadPeriodEnd *timestamppb.Timestamp
 	// --- Field for raw data preservation (when valid = false) ---
 	// Holds the raw 46 bytes of the original record for perfect roundtrip.
@@ -353,34 +354,24 @@ func (b0 ControlActivityData_builder) Build() *ControlActivityData {
 	b, x := &b0, m0
 	_, _ = b, x
 	if b.Valid != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 10)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 9)
 		x.xxx_hidden_Valid = *b.Valid
 	}
 	if b.ControlType != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 10)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 9)
 		x.xxx_hidden_ControlType = b.ControlType
 	}
 	x.xxx_hidden_ControlTime = b.ControlTime
-	if b.ControlCardNumber != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 3, 10)
-		x.xxx_hidden_ControlCardNumber = b.ControlCardNumber
-	}
-	if b.VehicleRegistrationNation != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 4, 10)
-		x.xxx_hidden_VehicleRegistrationNation = b.VehicleRegistrationNation
-	}
-	if b.VehicleRegistrationNumber != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 5, 10)
-		x.xxx_hidden_VehicleRegistrationNumber = b.VehicleRegistrationNumber
-	}
+	x.xxx_hidden_ControlCardNumber = b.ControlCardNumber
+	x.xxx_hidden_ControlVehicleRegistration = b.ControlVehicleRegistration
 	x.xxx_hidden_ControlDownloadPeriodBegin = b.ControlDownloadPeriodBegin
 	x.xxx_hidden_ControlDownloadPeriodEnd = b.ControlDownloadPeriodEnd
 	if b.RawData != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 8, 10)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 7, 9)
 		x.xxx_hidden_RawData = b.RawData
 	}
 	if b.Signature != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 9, 10)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 8, 9)
 		x.xxx_hidden_Signature = b.Signature
 	}
 	return m0
@@ -390,35 +381,37 @@ var File_wayplatform_connect_tachograph_card_v1_control_activity_data_proto prot
 
 const file_wayplatform_connect_tachograph_card_v1_control_activity_data_proto_rawDesc = "" +
 	"\n" +
-	"Bwayplatform/connect/tachograph/card/v1/control_activity_data.proto\x12&wayplatform.connect.tachograph.card.v1\x1a\x1fgoogle/protobuf/timestamp.proto\"\xb0\x04\n" +
+	"Bwayplatform/connect/tachograph/card/v1/control_activity_data.proto\x12&wayplatform.connect.tachograph.card.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1aGwayplatform/connect/tachograph/datadictionary/v1/full_card_number.proto\x1aZwayplatform/connect/tachograph/datadictionary/v1/vehicle_registration_identification.proto\"\x8a\x05\n" +
 	"\x13ControlActivityData\x12\x14\n" +
 	"\x05valid\x18\x01 \x01(\bR\x05valid\x12!\n" +
 	"\fcontrol_type\x18\x02 \x01(\fR\vcontrolType\x12=\n" +
-	"\fcontrol_time\x18\x03 \x01(\v2\x1a.google.protobuf.TimestampR\vcontrolTime\x12.\n" +
-	"\x13control_card_number\x18\x04 \x01(\tR\x11controlCardNumber\x12>\n" +
-	"\x1bvehicle_registration_nation\x18\x05 \x01(\tR\x19vehicleRegistrationNation\x12>\n" +
-	"\x1bvehicle_registration_number\x18\x06 \x01(\tR\x19vehicleRegistrationNumber\x12]\n" +
-	"\x1dcontrol_download_period_begin\x18\a \x01(\v2\x1a.google.protobuf.TimestampR\x1acontrolDownloadPeriodBegin\x12Y\n" +
-	"\x1bcontrol_download_period_end\x18\b \x01(\v2\x1a.google.protobuf.TimestampR\x18controlDownloadPeriodEnd\x12\x19\n" +
-	"\braw_data\x18\t \x01(\fR\arawData\x12\x1c\n" +
-	"\tsignature\x18\n" +
-	" \x01(\fR\tsignatureB\xe5\x02\n" +
+	"\fcontrol_time\x18\x03 \x01(\v2\x1a.google.protobuf.TimestampR\vcontrolTime\x12p\n" +
+	"\x13control_card_number\x18\x04 \x01(\v2@.wayplatform.connect.tachograph.datadictionary.v1.FullCardNumberR\x11controlCardNumber\x12\x95\x01\n" +
+	"\x1ccontrol_vehicle_registration\x18\x05 \x01(\v2S.wayplatform.connect.tachograph.datadictionary.v1.VehicleRegistrationIdentificationR\x1acontrolVehicleRegistration\x12]\n" +
+	"\x1dcontrol_download_period_begin\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampR\x1acontrolDownloadPeriodBegin\x12Y\n" +
+	"\x1bcontrol_download_period_end\x18\a \x01(\v2\x1a.google.protobuf.TimestampR\x18controlDownloadPeriodEnd\x12\x19\n" +
+	"\braw_data\x18\b \x01(\fR\arawData\x12\x1c\n" +
+	"\tsignature\x18\t \x01(\fR\tsignatureB\xe5\x02\n" +
 	"*com.wayplatform.connect.tachograph.card.v1B\x18ControlActivityDataProtoP\x01Z`github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1;cardv1\xa2\x02\x04WCTC\xaa\x02&Wayplatform.Connect.Tachograph.Card.V1\xca\x02&Wayplatform\\Connect\\Tachograph\\Card\\V1\xe2\x022Wayplatform\\Connect\\Tachograph\\Card\\V1\\GPBMetadata\xea\x02*Wayplatform::Connect::Tachograph::Card::V1b\beditionsp\xe8\a"
 
 var file_wayplatform_connect_tachograph_card_v1_control_activity_data_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_wayplatform_connect_tachograph_card_v1_control_activity_data_proto_goTypes = []any{
-	(*ControlActivityData)(nil),   // 0: wayplatform.connect.tachograph.card.v1.ControlActivityData
-	(*timestamppb.Timestamp)(nil), // 1: google.protobuf.Timestamp
+	(*ControlActivityData)(nil),                  // 0: wayplatform.connect.tachograph.card.v1.ControlActivityData
+	(*timestamppb.Timestamp)(nil),                // 1: google.protobuf.Timestamp
+	(*v1.FullCardNumber)(nil),                    // 2: wayplatform.connect.tachograph.datadictionary.v1.FullCardNumber
+	(*v1.VehicleRegistrationIdentification)(nil), // 3: wayplatform.connect.tachograph.datadictionary.v1.VehicleRegistrationIdentification
 }
 var file_wayplatform_connect_tachograph_card_v1_control_activity_data_proto_depIdxs = []int32{
 	1, // 0: wayplatform.connect.tachograph.card.v1.ControlActivityData.control_time:type_name -> google.protobuf.Timestamp
-	1, // 1: wayplatform.connect.tachograph.card.v1.ControlActivityData.control_download_period_begin:type_name -> google.protobuf.Timestamp
-	1, // 2: wayplatform.connect.tachograph.card.v1.ControlActivityData.control_download_period_end:type_name -> google.protobuf.Timestamp
-	3, // [3:3] is the sub-list for method output_type
-	3, // [3:3] is the sub-list for method input_type
-	3, // [3:3] is the sub-list for extension type_name
-	3, // [3:3] is the sub-list for extension extendee
-	0, // [0:3] is the sub-list for field type_name
+	2, // 1: wayplatform.connect.tachograph.card.v1.ControlActivityData.control_card_number:type_name -> wayplatform.connect.tachograph.datadictionary.v1.FullCardNumber
+	3, // 2: wayplatform.connect.tachograph.card.v1.ControlActivityData.control_vehicle_registration:type_name -> wayplatform.connect.tachograph.datadictionary.v1.VehicleRegistrationIdentification
+	1, // 3: wayplatform.connect.tachograph.card.v1.ControlActivityData.control_download_period_begin:type_name -> google.protobuf.Timestamp
+	1, // 4: wayplatform.connect.tachograph.card.v1.ControlActivityData.control_download_period_end:type_name -> google.protobuf.Timestamp
+	5, // [5:5] is the sub-list for method output_type
+	5, // [5:5] is the sub-list for method input_type
+	5, // [5:5] is the sub-list for extension type_name
+	5, // [5:5] is the sub-list for extension extendee
+	0, // [0:5] is the sub-list for field type_name
 }
 
 func init() { file_wayplatform_connect_tachograph_card_v1_control_activity_data_proto_init() }

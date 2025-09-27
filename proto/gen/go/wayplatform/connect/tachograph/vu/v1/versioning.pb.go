@@ -21,50 +21,6 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-type Generation int32
-
-const (
-	Generation_GENERATION_UNSPECIFIED Generation = 0
-	Generation_GENERATION_1           Generation = 1
-	Generation_GENERATION_2           Generation = 2
-)
-
-// Enum value maps for Generation.
-var (
-	Generation_name = map[int32]string{
-		0: "GENERATION_UNSPECIFIED",
-		1: "GENERATION_1",
-		2: "GENERATION_2",
-	}
-	Generation_value = map[string]int32{
-		"GENERATION_UNSPECIFIED": 0,
-		"GENERATION_1":           1,
-		"GENERATION_2":           2,
-	}
-)
-
-func (x Generation) Enum() *Generation {
-	p := new(Generation)
-	*p = x
-	return p
-}
-
-func (x Generation) String() string {
-	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
-}
-
-func (Generation) Descriptor() protoreflect.EnumDescriptor {
-	return file_wayplatform_connect_tachograph_vu_v1_versioning_proto_enumTypes[0].Descriptor()
-}
-
-func (Generation) Type() protoreflect.EnumType {
-	return &file_wayplatform_connect_tachograph_vu_v1_versioning_proto_enumTypes[0]
-}
-
-func (x Generation) Number() protoreflect.EnumNumber {
-	return protoreflect.EnumNumber(x)
-}
-
 type Version int32
 
 const (
@@ -98,11 +54,11 @@ func (x Version) String() string {
 }
 
 func (Version) Descriptor() protoreflect.EnumDescriptor {
-	return file_wayplatform_connect_tachograph_vu_v1_versioning_proto_enumTypes[1].Descriptor()
+	return file_wayplatform_connect_tachograph_vu_v1_versioning_proto_enumTypes[0].Descriptor()
 }
 
 func (Version) Type() protoreflect.EnumType {
-	return &file_wayplatform_connect_tachograph_vu_v1_versioning_proto_enumTypes[1]
+	return &file_wayplatform_connect_tachograph_vu_v1_versioning_proto_enumTypes[0]
 }
 
 func (x Version) Number() protoreflect.EnumNumber {
@@ -110,14 +66,6 @@ func (x Version) Number() protoreflect.EnumNumber {
 }
 
 var file_wayplatform_connect_tachograph_vu_v1_versioning_proto_extTypes = []protoimpl.ExtensionInfo{
-	{
-		ExtendedType:  (*descriptorpb.EnumValueOptions)(nil),
-		ExtensionType: (*Generation)(nil),
-		Field:         50304,
-		Name:          "wayplatform.connect.tachograph.vu.v1.generation",
-		Tag:           "varint,50304,opt,name=generation,enum=wayplatform.connect.tachograph.vu.v1.Generation",
-		Filename:      "wayplatform/connect/tachograph/vu/v1/versioning.proto",
-	},
 	{
 		ExtendedType:  (*descriptorpb.EnumValueOptions)(nil),
 		ExtensionType: (*Version)(nil),
@@ -130,47 +78,34 @@ var file_wayplatform_connect_tachograph_vu_v1_versioning_proto_extTypes = []prot
 
 // Extension fields to descriptorpb.EnumValueOptions.
 var (
-	// optional wayplatform.connect.tachograph.vu.v1.Generation generation = 50304;
-	E_Generation = &file_wayplatform_connect_tachograph_vu_v1_versioning_proto_extTypes[0]
 	// optional wayplatform.connect.tachograph.vu.v1.Version version = 50305;
-	E_Version = &file_wayplatform_connect_tachograph_vu_v1_versioning_proto_extTypes[1]
+	E_Version = &file_wayplatform_connect_tachograph_vu_v1_versioning_proto_extTypes[0]
 )
 
 var File_wayplatform_connect_tachograph_vu_v1_versioning_proto protoreflect.FileDescriptor
 
 const file_wayplatform_connect_tachograph_vu_v1_versioning_proto_rawDesc = "" +
 	"\n" +
-	"5wayplatform/connect/tachograph/vu/v1/versioning.proto\x12$wayplatform.connect.tachograph.vu.v1\x1a google/protobuf/descriptor.proto*L\n" +
-	"\n" +
-	"Generation\x12\x1a\n" +
-	"\x16GENERATION_UNSPECIFIED\x10\x00\x12\x10\n" +
-	"\fGENERATION_1\x10\x01\x12\x10\n" +
-	"\fGENERATION_2\x10\x02*@\n" +
+	"5wayplatform/connect/tachograph/vu/v1/versioning.proto\x12$wayplatform.connect.tachograph.vu.v1\x1a google/protobuf/descriptor.proto*@\n" +
 	"\aVersion\x12\x17\n" +
 	"\x13VERSION_UNSPECIFIED\x10\x00\x12\r\n" +
 	"\tVERSION_1\x10\x01\x12\r\n" +
-	"\tVERSION_2\x10\x02:u\n" +
-	"\n" +
-	"generation\x12!.google.protobuf.EnumValueOptions\x18\x80\x89\x03 \x01(\x0e20.wayplatform.connect.tachograph.vu.v1.GenerationR\n" +
-	"generation:l\n" +
+	"\tVERSION_2\x10\x02:l\n" +
 	"\aversion\x12!.google.protobuf.EnumValueOptions\x18\x81\x89\x03 \x01(\x0e2-.wayplatform.connect.tachograph.vu.v1.VersionR\aversionB\xce\x02\n" +
 	"(com.wayplatform.connect.tachograph.vu.v1B\x0fVersioningProtoP\x01Z\\github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/vu/v1;vuv1\xa2\x02\x04WCTV\xaa\x02$Wayplatform.Connect.Tachograph.Vu.V1\xca\x02$Wayplatform\\Connect\\Tachograph\\Vu\\V1\xe2\x020Wayplatform\\Connect\\Tachograph\\Vu\\V1\\GPBMetadata\xea\x02(Wayplatform::Connect::Tachograph::Vu::V1b\beditionsp\xe8\a"
 
-var file_wayplatform_connect_tachograph_vu_v1_versioning_proto_enumTypes = make([]protoimpl.EnumInfo, 2)
+var file_wayplatform_connect_tachograph_vu_v1_versioning_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
 var file_wayplatform_connect_tachograph_vu_v1_versioning_proto_goTypes = []any{
-	(Generation)(0),                       // 0: wayplatform.connect.tachograph.vu.v1.Generation
-	(Version)(0),                          // 1: wayplatform.connect.tachograph.vu.v1.Version
-	(*descriptorpb.EnumValueOptions)(nil), // 2: google.protobuf.EnumValueOptions
+	(Version)(0),                          // 0: wayplatform.connect.tachograph.vu.v1.Version
+	(*descriptorpb.EnumValueOptions)(nil), // 1: google.protobuf.EnumValueOptions
 }
 var file_wayplatform_connect_tachograph_vu_v1_versioning_proto_depIdxs = []int32{
-	2, // 0: wayplatform.connect.tachograph.vu.v1.generation:extendee -> google.protobuf.EnumValueOptions
-	2, // 1: wayplatform.connect.tachograph.vu.v1.version:extendee -> google.protobuf.EnumValueOptions
-	0, // 2: wayplatform.connect.tachograph.vu.v1.generation:type_name -> wayplatform.connect.tachograph.vu.v1.Generation
-	1, // 3: wayplatform.connect.tachograph.vu.v1.version:type_name -> wayplatform.connect.tachograph.vu.v1.Version
-	4, // [4:4] is the sub-list for method output_type
-	4, // [4:4] is the sub-list for method input_type
-	2, // [2:4] is the sub-list for extension type_name
-	0, // [0:2] is the sub-list for extension extendee
+	1, // 0: wayplatform.connect.tachograph.vu.v1.version:extendee -> google.protobuf.EnumValueOptions
+	0, // 1: wayplatform.connect.tachograph.vu.v1.version:type_name -> wayplatform.connect.tachograph.vu.v1.Version
+	2, // [2:2] is the sub-list for method output_type
+	2, // [2:2] is the sub-list for method input_type
+	1, // [1:2] is the sub-list for extension type_name
+	0, // [0:1] is the sub-list for extension extendee
 	0, // [0:0] is the sub-list for field type_name
 }
 
@@ -184,9 +119,9 @@ func file_wayplatform_connect_tachograph_vu_v1_versioning_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_wayplatform_connect_tachograph_vu_v1_versioning_proto_rawDesc), len(file_wayplatform_connect_tachograph_vu_v1_versioning_proto_rawDesc)),
-			NumEnums:      2,
+			NumEnums:      1,
 			NumMessages:   0,
-			NumExtensions: 2,
+			NumExtensions: 1,
 			NumServices:   0,
 		},
 		GoTypes:           file_wayplatform_connect_tachograph_vu_v1_versioning_proto_goTypes,

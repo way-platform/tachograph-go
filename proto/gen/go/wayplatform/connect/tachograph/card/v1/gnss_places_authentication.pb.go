@@ -21,10 +21,22 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// Represents authentication status for GNSS accumulated driving places.
+// Represents the content of the EF_GNSS_Places_Authentication file, which contains
+// authentication statuses for GNSS accumulated driving places.
 //
-// Corresponds to the `GNSSAuthAccumulatedDriving` data type from EF_GNSS_Places_Authentication.
-// See Data Dictionary, Section 2.79a.
+// The file structure is specified in Appendix 2, Section 4.2.2.
+//
+//	EF GNSS_Places_Authentication
+//	└─GNSSAuthAccumulatedDriving
+//
+// The data type `GNSSAuthAccumulatedDriving` is specified in the Data Dictionary, Section 2.79a.
+//
+// ASN.1 Specification:
+//
+//	GNSSAuthAccumulatedDriving ::= SEQUENCE {
+//	    gnssAuthADPointerNewestRecord INTEGER(0..NoOfGNSSADRecords -1),
+//	    gnssAuthStatusADRecords SET SIZE(NoOfGNSSADRecords) OF GNSSAuthStatusADRecord
+//	}
 type GnssPlacesAuthentication struct {
 	state                        protoimpl.MessageState              `protogen:"opaque.v1"`
 	xxx_hidden_NewestRecordIndex int32                               `protobuf:"varint,1,opt,name=newest_record_index,json=newestRecordIndex"`
@@ -120,8 +132,14 @@ func (b0 GnssPlacesAuthentication_builder) Build() *GnssPlacesAuthentication {
 
 // Represents the authentication status for a single GNSS record.
 //
-// Corresponds to the `GNSSAuthStatusADRecord` data type.
-// See Data Dictionary, Section 2.79b.
+// The data type `GNSSAuthStatusADRecord` is specified in the Data Dictionary, Section 2.79b.
+//
+// ASN.1 Specification:
+//
+//	GNSSAuthStatusADRecord ::= SEQUENCE {
+//	    timeStamp TimeReal,
+//	    authenticationStatus PositionAuthenticationStatus
+//	}
 type GnssPlacesAuthentication_Record struct {
 	state                           protoimpl.MessageState `protogen:"opaque.v1"`
 	xxx_hidden_Timestamp            *timestamppb.Timestamp `protobuf:"bytes,1,opt,name=timestamp"`
