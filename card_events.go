@@ -24,11 +24,16 @@ import (
 //	    eventEndTime                TimeReal,                         -- 4 bytes
 //	    eventVehicleRegistration    VehicleRegistrationIdentification -- 15 bytes
 //	}
+const (
+	// CardEventRecord size (24 bytes total)
+	cardEventRecordSize = 24
+)
+
 func unmarshalEventsData(data []byte) (*cardv1.EventsData, error) {
 	r := bytes.NewReader(data)
 	var records []*cardv1.EventsData_Record
-	for r.Len() >= cardEventFaultRecordSize {
-		recordData := make([]byte, cardEventFaultRecordSize)
+	for r.Len() >= cardEventRecordSize {
+		recordData := make([]byte, cardEventRecordSize)
 		_, _ = r.Read(recordData) // ignore error as we're reading from in-memory buffer
 		// Check if this is a valid record by examining the event begin time (first 4 bytes after event type)
 		// Event type is 1 byte, so event begin time starts at byte 1

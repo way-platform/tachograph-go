@@ -209,3 +209,19 @@ func appendIcc(dst []byte, icc *cardv1.Icc) ([]byte, error) {
 	dst = append(dst, icc.GetIcIdentifier()...)
 	return dst, nil
 }
+
+// appendEmbedderIcAssemblerId appends an EmbedderIcAssemblerId structure
+func appendEmbedderIcAssemblerId(dst []byte, eia *cardv1.Icc_EmbedderIcAssemblerId) ([]byte, error) {
+	if eia == nil {
+		// Append default values: 1 byte manufacturer code + 1 byte year
+		return append(dst, 0x00, 0x00), nil
+	}
+
+	// Append manufacturer code (1 byte)
+	dst = append(dst, byte(eia.GetManufacturerInformation()))
+
+	// Append year (1 byte) - this is a placeholder since the structure doesn't have a year field
+	dst = append(dst, 0x00)
+
+	return dst, nil
+}

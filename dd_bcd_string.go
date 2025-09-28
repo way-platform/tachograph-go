@@ -1,7 +1,9 @@
 package tachograph
 
 import (
+	"encoding/hex"
 	"fmt"
+	"strconv"
 
 	ddv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
 )
@@ -21,7 +23,7 @@ func unmarshalBcdString(data []byte) (*ddv1.BcdString, error) {
 		return nil, fmt.Errorf("insufficient data for BcdString: got %d, want at least 1", len(data))
 	}
 
-	// Use the existing helper function
+	// Convert BCD-encoded bytes to BcdString
 	return createBcdString(data)
 }
 
@@ -48,4 +50,30 @@ func appendBcdString(dst []byte, bcdString *ddv1.BcdString) ([]byte, error) {
 	}
 
 	return dst, nil
+}
+
+// bcdBytesToInt converts BCD-encoded bytes to an integer
+func bcdBytesToInt(b []byte) (int, error) {
+	if len(b) == 0 {
+		return 0, nil
+	}
+	s := hex.EncodeToString(b)
+	i, err := strconv.ParseInt(s, 10, 64)
+	if err != nil {
+		return 0, fmt.Errorf("invalid BCD value: %s", s)
+	}
+	return int(i), nil
+}
+
+// createBcdString creates a BcdString message from BCD-encoded bytes
+func createBcdString(bcdBytes []byte) (*ddv1.BcdString, error) {
+	decoded, err := bcdBytesToInt(bcdBytes)
+	if err != nil {
+		return nil, err
+	}
+
+	bcdString := &ddv1.BcdString{}
+	bcdString.SetEncoded(bcdBytes)
+	bcdString.SetDecoded(int32(decoded))
+	return bcdString, nil
 }

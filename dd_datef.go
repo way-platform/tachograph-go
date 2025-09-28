@@ -2,23 +2,19 @@ package tachograph
 
 import (
 	"bytes"
-	"encoding/binary"
-	"time"
 
 	"google.golang.org/protobuf/types/known/timestamppb"
 
 	ddv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
 )
 
-// appendTimeReal appends a 4-byte TimeReal value.
-func appendTimeReal(dst []byte, ts *timestamppb.Timestamp) []byte {
-	if ts == nil {
-		return append(dst, 0, 0, 0, 0)
-	}
-	return binary.BigEndian.AppendUint32(dst, uint32(ts.GetSeconds()))
-}
-
 // appendDatef appends a 4-byte BCD-encoded date.
+//
+// The data type `Datef` is specified in the Data Dictionary, Section 2.57.
+//
+// ASN.1 Definition:
+//
+//	Datef ::= OCTET STRING (SIZE(4))
 func appendDatef(dst []byte, ts *timestamppb.Timestamp) []byte {
 	if ts == nil {
 		return append(dst, 0, 0, 0, 0)
@@ -34,33 +30,13 @@ func appendDatef(dst []byte, ts *timestamppb.Timestamp) []byte {
 	return dst
 }
 
-// appendDate appends a 4-byte BCD-encoded date from the new Date type.
-func appendDate(dst []byte, date *ddv1.Date) []byte {
-	if date == nil {
-		return append(dst, 0, 0, 0, 0)
-	}
-	year := int(date.GetYear())
-	month := int(date.GetMonth())
-	day := int(date.GetDay())
-
-	dst = append(dst, byte((year/1000)%10<<4|(year/100)%10))
-	dst = append(dst, byte((year/10)%10<<4|year%10))
-	dst = append(dst, byte((month/10)%10<<4|month%10))
-	dst = append(dst, byte((day/10)%10<<4|day%10))
-	return dst
-}
-
-// readTimeReal reads a TimeReal value (4 bytes) from a bytes.Reader and converts to Timestamp
-func readTimeReal(r *bytes.Reader) *timestamppb.Timestamp {
-	var timeVal uint32
-	_ = binary.Read(r, binary.BigEndian, &timeVal) // ignore error as we're reading from in-memory buffer
-	if timeVal == 0 {
-		return nil
-	}
-	return timestamppb.New(time.Unix(int64(timeVal), 0))
-}
-
 // readDatef reads a Datef value (4 bytes BCD) from a bytes.Reader and converts to Date
+//
+// The data type `Datef` is specified in the Data Dictionary, Section 2.57.
+//
+// ASN.1 Definition:
+//
+//	Datef ::= OCTET STRING (SIZE(4))
 func readDatef(r *bytes.Reader) (*ddv1.Date, error) {
 	b := make([]byte, 4)
 	_, _ = r.Read(b) // ignore error as we're reading from in-memory buffer

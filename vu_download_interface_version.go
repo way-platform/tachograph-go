@@ -84,7 +84,7 @@ func appendDownloadInterfaceVersion(buf *bytes.Buffer, version *vuv1.DownloadInt
 	default:
 		generationByte = 0
 	}
-	buf.Write(appendUint8(nil, generationByte))
+	buf.WriteByte(generationByte)
 
 	// Map version enum to byte
 	var versionByte uint8
@@ -96,5 +96,5 @@ func appendDownloadInterfaceVersion(buf *bytes.Buffer, version *vuv1.DownloadInt
 	default:
 		versionByte = 0
 	}
-	buf.Write(appendUint8(nil, versionByte))
+	buf.WriteByte(versionByte)
 }

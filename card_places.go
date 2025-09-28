@@ -23,6 +23,11 @@ import (
 //	    dailyWorkPeriodRegion        RegionNumeric,
 //	    vehicleOdometerValue         OdometerShort
 //	}
+const (
+	// PlaceRecord size (12 bytes total)
+	placeRecordSize = 12
+)
+
 func unmarshalCardPlaces(data []byte) (*cardv1.Places, error) {
 	const (
 		lenMinEfPlaces = 2 // Minimum EF_Places record size

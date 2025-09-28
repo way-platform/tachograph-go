@@ -25,12 +25,17 @@ import (
 //	    faultEndTime                TimeReal,                         -- 4 bytes
 //	    faultVehicleRegistration    VehicleRegistrationIdentification -- 15 bytes
 //	}
+const (
+	// CardFaultRecord size (24 bytes total)
+	cardFaultRecordSize = 24
+)
+
 func unmarshalFaultsData(data []byte) (*cardv1.FaultsData, error) {
 	r := bytes.NewReader(data)
 	var records []*cardv1.FaultsData_Record
 
-	for r.Len() >= cardEventFaultRecordSize {
-		recordData := make([]byte, cardEventFaultRecordSize)
+	for r.Len() >= cardFaultRecordSize {
+		recordData := make([]byte, cardFaultRecordSize)
 		_, _ = r.Read(recordData) // ignore error as we're reading from in-memory buffer
 
 		// Check if this is a valid record by examining the fault begin time (first 4 bytes after fault type)

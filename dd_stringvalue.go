@@ -187,3 +187,10 @@ func decodeWithCodePage(codePage byte, data []byte) (string, error) {
 
 	return trimmed, nil
 }
+
+// createStringValue creates a StringValue message from a string
+func createStringValue(s string) *ddv1.StringValue {
+	stringValue := &ddv1.StringValue{}
+	stringValue.SetDecoded(s)
+	return stringValue
+}

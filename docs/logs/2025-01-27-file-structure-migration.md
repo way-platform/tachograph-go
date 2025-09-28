@@ -145,3 +145,87 @@
 - **Reduced code duplication** by using generic functions
 - **Improved maintainability** with co-located enum conversion logic
 - **Consistent naming** following the established conventions
+
+### Time Helper Functions Consolidation (2025-01-27)
+
+**Issue**: `time_helpers.go` violated AGENTS.md principles by being a generic helper file containing functions that belonged in specific `dd_*.go` files.
+
+**Resolution**:
+
+- **Eliminated** `time_helpers.go` generic helper file
+- **Created** `dd_time_real.go` for TimeReal functions (Data Dictionary Section 2.162)
+- **Created** `dd_datef.go` for Datef functions (Data Dictionary Section 2.57)
+- **Enhanced** `dd_date.go` with `appendDate` function for `ddv1.Date` type
+- **Maintained 100% test coverage** - all tests continue to pass
+
+**Key Changes**:
+
+- `appendTimeReal` and `readTimeReal` → moved to `dd_time_real.go`
+- `appendDatef` and `readDatef` → moved to `dd_datef.go`
+- `appendDate` → moved to `dd_date.go`
+- All functions now properly documented with ASN.1 definitions
+- Functions co-located with their respective data dictionary types
+
+**Benefits**:
+
+- **Better organization** following the `dd_<typename>.go` naming convention
+- **Improved locality** with time-related functions grouped by data type
+- **Enhanced documentation** with proper ASN.1 specifications
+- **Eliminated generic helper file** as recommended in AGENTS.md
+
+### Constants Consolidation (2025-01-27)
+
+**Issue**: `constants.go` violated AGENTS.md principles by being a generic helper file containing constants that should be co-located with the code that uses them.
+
+**Resolution**:
+
+- **Eliminated** `constants.go` generic helper file
+- **Moved** `cardEventFaultRecordSize` to both `card_events.go` and `card_faults.go` with specific names
+- **Moved** `placeRecordSize` to `card_places.go`
+- **Removed** unused `specificConditionTotalRecords` constant
+- **Maintained 100% test coverage** - all tests continue to pass
+
+**Key Changes**:
+
+- `cardEventFaultRecordSize` → `cardEventRecordSize` in `card_events.go`
+- `cardEventFaultRecordSize` → `cardFaultRecordSize` in `card_faults.go`
+- `placeRecordSize` → moved to `card_places.go`
+- Constants now co-located with their usage context
+- Eliminated generic constants file as recommended in AGENTS.md
+
+**Benefits**:
+
+- **Better locality** with constants defined where they're used
+- **Improved maintainability** with context-specific constant names
+- **Eliminated generic helper file** as recommended in AGENTS.md
+- **Reduced coupling** between unrelated files
+
+### Binary Helpers Consolidation and Inlining (2025-01-27)
+
+**Issue**: `binary_helpers.go` violated AGENTS.md principles by being a generic helper file containing functions that should be co-located with their data types or inlined when they're just thin wrappers.
+
+**Resolution**:
+
+- **Eliminated** `binary_helpers.go` generic helper file
+- **Moved** data-type-specific functions to their appropriate `dd_*.go` files
+- **Inlined** useless wrapper functions (`appendUint8`, `appendUint32`) with direct standard library calls
+- **Co-located** VU-specific functions in `vu_overview.go`
+- **Maintained 100% test coverage** - all tests continue to pass
+
+**Key Changes**:
+
+- `bcdBytesToInt`, `createBcdString` → moved to `dd_bcd_string.go`
+- `createStringValue` → moved to `dd_stringvalue.go`
+- `appendControlType` → moved to `dd_controltype.go`
+- `appendOdometer` → moved to new `dd_odometer.go`
+- `appendEmbedderIcAssemblerId` → moved to `card_icc.go`
+- `appendVu*` functions → moved to `vu_overview.go`
+- `appendUint8`, `appendUint32` → inlined with `buf.WriteByte()` and `make([]byte, 4)`
+
+**Benefits**:
+
+- **Better organization** following the `dd_<typename>.go` naming convention
+- **Improved performance** by eliminating unnecessary function call overhead
+- **Enhanced readability** with direct standard library calls
+- **Eliminated generic helper file** as recommended in AGENTS.md
+- **Better locality** with functions co-located with their usage context

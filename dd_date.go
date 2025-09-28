@@ -12,7 +12,7 @@ import (
 //
 // ASN.1 Definition:
 //
-//     Datef ::= OCTET STRING (SIZE(4))
+//	Datef ::= OCTET STRING (SIZE(4))
 func unmarshalDate(data []byte) (*ddv1.Date, error) {
 	const (
 		lenDatef = 4
@@ -33,6 +33,28 @@ func unmarshalDate(data []byte) (*ddv1.Date, error) {
 	date.SetDay(int32(day))
 
 	return date, nil
+}
+
+// appendDate appends a 4-byte BCD-encoded date from the new Date type.
+//
+// The data type `Datef` is specified in the Data Dictionary, Section 2.57.
+//
+// ASN.1 Definition:
+//
+//	Datef ::= OCTET STRING (SIZE(4))
+func appendDate(dst []byte, date *ddv1.Date) []byte {
+	if date == nil {
+		return append(dst, 0, 0, 0, 0)
+	}
+	year := int(date.GetYear())
+	month := int(date.GetMonth())
+	day := int(date.GetDay())
+
+	dst = append(dst, byte((year/1000)%10<<4|(year/100)%10))
+	dst = append(dst, byte((year/10)%10<<4|year%10))
+	dst = append(dst, byte((month/10)%10<<4|month%10))
+	dst = append(dst, byte((day/10)%10<<4|day%10))
+	return dst
 }
 
 // bcdToInt converts a BCD-encoded byte to an integer

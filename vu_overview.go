@@ -2,6 +2,7 @@ package tachograph
 
 import (
 	"bytes"
+	"encoding/binary"
 	"fmt"
 	"time"
 
@@ -238,9 +239,9 @@ func appendOverviewGen1(buf *bytes.Buffer, overview *vuv1.Overview) {
 	// VehicleRegistrationIdentification (15 bytes: nation(1) + regnum(14))
 	vehicleReg := overview.GetVehicleRegistrationWithNation()
 	if vehicleReg != nil {
-		buf.Write(appendUint8(nil, uint8(vehicleReg.GetNation())))
+		buf.WriteByte(uint8(vehicleReg.GetNation()))
 		// First byte of registration is codepage (assume codepage 1 = ISO-8859-1)
-		buf.Write(appendUint8(nil, 1))
+		buf.WriteByte(1)
 		// Registration number (13 bytes)
 		number := vehicleReg.GetNumber()
 		if number != nil {
@@ -250,8 +251,8 @@ func appendOverviewGen1(buf *bytes.Buffer, overview *vuv1.Overview) {
 		}
 	} else {
 		// Default values
-		buf.Write(appendUint8(nil, 0))         // nation
-		buf.Write(appendUint8(nil, 1))         // codepage
+		buf.WriteByte(0)                       // nation
+		buf.WriteByte(1)                       // codepage
 		buf.Write(appendVuString(nil, "", 13)) // empty registration
 	}
 
@@ -264,15 +265,15 @@ func appendOverviewGen1(buf *bytes.Buffer, overview *vuv1.Overview) {
 		buf.Write(appendVuTimeReal(nil, downloadablePeriod.GetMinTime()))
 		buf.Write(appendVuTimeReal(nil, downloadablePeriod.GetMaxTime()))
 	} else {
-		buf.Write(appendUint32(nil, 0))
-		buf.Write(appendUint32(nil, 0))
+		buf.Write(make([]byte, 4)) // 4 zero bytes
+		buf.Write(make([]byte, 4)) // 4 zero bytes
 	}
 
 	// CardSlotsStatus (1 byte - driver and co-driver slots)
 	driverSlot := mapSlotCardTypeToUint8(overview.GetDriverSlotCard())
 	coDriverSlot := mapSlotCardTypeToUint8(overview.GetCoDriverSlotCard())
 	slotsStatus := (driverSlot << 4) | (coDriverSlot & 0x0F)
-	buf.Write(appendUint8(nil, slotsStatus))
+	buf.WriteByte(slotsStatus)
 
 	// VuDownloadActivityData (4 bytes - last download time)
 	downloadActivities := overview.GetDownloadActivities()
@@ -325,9 +326,9 @@ func appendOverviewGen1(buf *bytes.Buffer, overview *vuv1.Overview) {
 			if controlType.GetCalibrationChecking() {
 				b |= 0x08 // bit 'e'
 			}
-			buf.Write(appendUint8(nil, b))
+			buf.WriteByte(b)
 		} else {
-			buf.Write(appendUint8(nil, 0))
+			buf.WriteByte(0)
 		}
 		buf.Write(appendVuTimeReal(nil, control.GetControlTime()))
 		buf.Write(appendVuFullCardNumber(nil, control.GetControlCardNumber(), 16))
@@ -371,4 +372,39 @@ func mapSlotCardTypeToUint8(cardType ddv1.SlotCardType) uint8 {
 	default:
 		return 0
 	}
+}
+
+// VU-specific helper functions for binary operations
+
+// appendVuBytes appends a byte slice to dst
+func appendVuBytes(dst []byte, data []byte) []byte {
+	return append(dst, data...)
+}
+
+// appendVuString appends a string to dst with a fixed length, padding with null bytes
+func appendVuString(dst []byte, s string, length int) []byte {
+	result := make([]byte, length)
+	copy(result, []byte(s))
+	// Pad with null bytes
+	for i := len(s); i < length; i++ {
+		result[i] = 0
+	}
+	return append(dst, result...)
+}
+
+// appendVuTimeReal appends a TimeReal value (4 bytes) to dst
+func appendVuTimeReal(dst []byte, ts *timestamppb.Timestamp) []byte {
+	if ts == nil {
+		return append(dst, 0, 0, 0, 0)
+	}
+	return binary.BigEndian.AppendUint32(dst, uint32(ts.GetSeconds()))
+}
+
+// appendVuFullCardNumber appends a FullCardNumber to dst with a fixed length
+func appendVuFullCardNumber(dst []byte, cardNumber *ddv1.FullCardNumber, length int) []byte {
+	if cardNumber == nil {
+		return append(dst, make([]byte, length)...)
+	}
+	// TODO: Implement proper FullCardNumber serialization
+	return append(dst, make([]byte, length)...)
 }
