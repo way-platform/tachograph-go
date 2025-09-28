@@ -1,0 +1,45 @@
+edition = "2023";
+
+package wayplatform.connect.tachograph.datadictionary.v1;
+
+import "wayplatform/connect/tachograph/datadictionary/v1/annotations.proto";
+
+// Defines the type of card that can be in a slot, as derived from the
+// `CardSlotsStatus` data type.
+//
+// See Data Dictionary, Section 2.34, `CardSlotsStatus`.
+//
+// The `CardSlotsStatus` is a 1-byte bitfield ('ccccdddd'B) where 'dddd'
+// represents the driver slot and 'cccc' the co-driver slot. This enum
+// defines the possible values for each 4-bit nibble.
+//
+// ASN.1 Definition for the source data type:
+//
+//     CardSlotsStatus ::= OCTET STRING (SIZE(1))
+enum SlotCardType {
+  // The card type is not specified.
+  SLOT_CARD_TYPE_UNSPECIFIED = 0;
+
+  // The card type was present but not recognized.
+  SLOT_CARD_TYPE_UNRECOGNIZED = 1;
+
+  // No card is inserted in the slot.
+  // Corresponds to value '0000'B.
+  NO_CARD = 2 [(protocol_enum_value) = 0];
+
+  // A driver card is inserted in the slot.
+  // Corresponds to value '0001'B.
+  DRIVER_CARD_INSERTED = 3 [(protocol_enum_value) = 1];
+
+  // A workshop card is inserted in the slot.
+  // Corresponds to value '0010'B.
+  WORKSHOP_CARD_INSERTED = 4 [(protocol_enum_value) = 2];
+
+  // A control card is inserted in the slot.
+  // Corresponds to value '0011'B.
+  CONTROL_CARD_INSERTED = 5 [(protocol_enum_value) = 3];
+
+  // A company card is inserted in the slot.
+  // Corresponds to value '0100'B.
+  COMPANY_CARD_INSERTED = 6 [(protocol_enum_value) = 4];
+}

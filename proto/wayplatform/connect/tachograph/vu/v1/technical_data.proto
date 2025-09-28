@@ -4,6 +4,7 @@ package wayplatform.connect.tachograph.vu.v1;
 
 import "wayplatform/connect/tachograph/datadictionary/v1/string_value.proto";
 import "google/protobuf/timestamp.proto";
+import "wayplatform/connect/tachograph/datadictionary/v1/card_structure_version.proto";
 import "wayplatform/connect/tachograph/datadictionary/v1/date.proto";
 import "wayplatform/connect/tachograph/datadictionary/v1/calibration_purpose.proto";
 import "wayplatform/connect/tachograph/datadictionary/v1/card_slot_number.proto";
@@ -12,6 +13,7 @@ import "wayplatform/connect/tachograph/datadictionary/v1/extended_serial_number.
 import "wayplatform/connect/tachograph/datadictionary/v1/full_card_number.proto";
 import "wayplatform/connect/tachograph/datadictionary/v1/generation.proto";
 import "wayplatform/connect/tachograph/datadictionary/v1/nation_numeric.proto";
+import "wayplatform/connect/tachograph/datadictionary/v1/software_identification.proto";
 import "wayplatform/connect/tachograph/datadictionary/v1/vehicle_registration_identification.proto";
 import "wayplatform/connect/tachograph/vu/v1/versioning.proto";
 
@@ -40,35 +42,6 @@ message TechnicalData {
   //         vuApprovalNumber VuApprovalNumber
   //     }
   message VuIdentification {
-    // Represents the software identification of the vehicle unit.
-    //
-    // See Data Dictionary, Section 2.225, `VuSoftwareIdentification`.
-    //
-    // ASN.1 Definition:
-    //
-    //     VuSoftwareIdentification ::= SEQUENCE {
-    //         vuSoftwareVersion VuSoftwareVersion,
-    //         vuSoftInstallationDate VuSoftInstallationDate
-    //     }
-    message VuSoftwareIdentification {
-      // The software version of the VU.
-      //
-      // See Data Dictionary, Section 2.226, `VuSoftwareVersion`.
-      //
-      // ASN.1 Definition:
-      //
-      //     VuSoftwareVersion ::= IA5String(SIZE(4))
-      wayplatform.connect.tachograph.datadictionary.v1.StringValue software_version = 1;
-
-      // The installation date of the software.
-      //
-      // See Data Dictionary, Section 2.224, `VuSoftInstallationDate`.
-      // ASN.1 Definition:
-      //
-      //     VuSoftInstallationDate ::= TimeReal ::= INTEGER (0..2^32-1)
-      google.protobuf.Timestamp software_installation_date = 2;
-    }
-
     // The name of the VU manufacturer.
     //
     // See Data Dictionary, Section 2.210, `VuManufacturerName`.
@@ -100,7 +73,7 @@ message TechnicalData {
     datadictionary.v1.ExtendedSerialNumber serial_number = 4;
 
     // The software identification of the VU.
-    VuSoftwareIdentification software_identification = 5;
+    datadictionary.v1.SoftwareIdentification software_identification = 5;
 
     // The manufacturing date of the VU.
     //
@@ -342,28 +315,13 @@ message TechnicalData {
   //         cardNumber CardNumber
   //     }
   message CardRecord {
-    // Represents the BCD-encoded card structure version.
-    //
-    // See Data Dictionary, Section 2.36, `CardStructureVersion`.
-    //
-    // ASN.1 Definition:
-    //
-    //     CardStructureVersion ::= OCTET STRING (SIZE (2))
-    //
-    // The two bytes are BCD-encoded, representing major and minor versions,
-    // e.g., version '01.02' is coded as '0102'H.
-    message CardStructureVersion {
-      int32 major = 1;
-      int32 minor = 2;
-    }
-
     // The full card number.
     //
     // See Data Dictionary, Section 2.74, `FullCardNumberAndGeneration`.
     datadictionary.v1.FullCardNumber full_card_number = 1;
 
     // The structure version of the card.
-    CardStructureVersion card_structure_version = 2;
+    datadictionary.v1.CardStructureVersion card_structure_version = 2;
 
     // The type of the card.
     //

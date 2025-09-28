@@ -7,6 +7,7 @@
 package cardv1
 
 import (
+	v1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/datadictionary/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
@@ -20,61 +21,6 @@ const (
 	// Verify that runtime/protoimpl is sufficiently up-to-date.
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
-
-// The type of load/unload operation.
-//
-// See Data Dictionary, Section 2.114a, `OperationType`.
-// ASN.1 Definition:
-//
-//	OperationType ::= INTEGER {
-//	    load(1), unload(2), simultaneous(3)
-//	} (0..255)
-type LoadUnloadOperations_Record_OperationType int32
-
-const (
-	LoadUnloadOperations_Record_OPERATION_TYPE_UNSPECIFIED LoadUnloadOperations_Record_OperationType = 0
-	LoadUnloadOperations_Record_LOAD                       LoadUnloadOperations_Record_OperationType = 1
-	LoadUnloadOperations_Record_UNLOAD                     LoadUnloadOperations_Record_OperationType = 2
-	LoadUnloadOperations_Record_SIMULTANEOUS               LoadUnloadOperations_Record_OperationType = 3
-)
-
-// Enum value maps for LoadUnloadOperations_Record_OperationType.
-var (
-	LoadUnloadOperations_Record_OperationType_name = map[int32]string{
-		0: "OPERATION_TYPE_UNSPECIFIED",
-		1: "LOAD",
-		2: "UNLOAD",
-		3: "SIMULTANEOUS",
-	}
-	LoadUnloadOperations_Record_OperationType_value = map[string]int32{
-		"OPERATION_TYPE_UNSPECIFIED": 0,
-		"LOAD":                       1,
-		"UNLOAD":                     2,
-		"SIMULTANEOUS":               3,
-	}
-)
-
-func (x LoadUnloadOperations_Record_OperationType) Enum() *LoadUnloadOperations_Record_OperationType {
-	p := new(LoadUnloadOperations_Record_OperationType)
-	*p = x
-	return p
-}
-
-func (x LoadUnloadOperations_Record_OperationType) String() string {
-	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
-}
-
-func (LoadUnloadOperations_Record_OperationType) Descriptor() protoreflect.EnumDescriptor {
-	return file_wayplatform_connect_tachograph_card_v1_load_unload_operations_proto_enumTypes[0].Descriptor()
-}
-
-func (LoadUnloadOperations_Record_OperationType) Type() protoreflect.EnumType {
-	return &file_wayplatform_connect_tachograph_card_v1_load_unload_operations_proto_enumTypes[0]
-}
-
-func (x LoadUnloadOperations_Record_OperationType) Number() protoreflect.EnumNumber {
-	return protoreflect.EnumNumber(x)
-}
 
 // Represents the content of the EF_Load_Unload_Operations file.
 //
@@ -204,11 +150,11 @@ func (b0 LoadUnloadOperations_builder) Build() *LoadUnloadOperations {
 //	    vehicleOdometerValue OdometerShort
 //	}
 type LoadUnloadOperations_Record struct {
-	state                          protoimpl.MessageState                    `protogen:"opaque.v1"`
-	xxx_hidden_Timestamp           *timestamppb.Timestamp                    `protobuf:"bytes,1,opt,name=timestamp"`
-	xxx_hidden_OperationType       LoadUnloadOperations_Record_OperationType `protobuf:"varint,2,opt,name=operation_type,json=operationType,enum=wayplatform.connect.tachograph.card.v1.LoadUnloadOperations_Record_OperationType"`
-	xxx_hidden_GnssPlaceAuthRecord *GnssPlaceAuthRecord                      `protobuf:"bytes,3,opt,name=gnss_place_auth_record,json=gnssPlaceAuthRecord"`
-	xxx_hidden_VehicleOdometerKm   int32                                     `protobuf:"varint,4,opt,name=vehicle_odometer_km,json=vehicleOdometerKm"`
+	state                          protoimpl.MessageState `protogen:"opaque.v1"`
+	xxx_hidden_Timestamp           *timestamppb.Timestamp `protobuf:"bytes,1,opt,name=timestamp"`
+	xxx_hidden_OperationType       v1.OperationType       `protobuf:"varint,2,opt,name=operation_type,json=operationType,enum=wayplatform.connect.tachograph.datadictionary.v1.OperationType"`
+	xxx_hidden_GnssPlaceAuthRecord *GnssPlaceAuthRecord   `protobuf:"bytes,3,opt,name=gnss_place_auth_record,json=gnssPlaceAuthRecord"`
+	xxx_hidden_VehicleOdometerKm   int32                  `protobuf:"varint,4,opt,name=vehicle_odometer_km,json=vehicleOdometerKm"`
 	XXX_raceDetectHookData         protoimpl.RaceDetectHookData
 	XXX_presence                   [1]uint32
 	unknownFields                  protoimpl.UnknownFields
@@ -247,13 +193,13 @@ func (x *LoadUnloadOperations_Record) GetTimestamp() *timestamppb.Timestamp {
 	return nil
 }
 
-func (x *LoadUnloadOperations_Record) GetOperationType() LoadUnloadOperations_Record_OperationType {
+func (x *LoadUnloadOperations_Record) GetOperationType() v1.OperationType {
 	if x != nil {
 		if protoimpl.X.Present(&(x.XXX_presence[0]), 1) {
 			return x.xxx_hidden_OperationType
 		}
 	}
-	return LoadUnloadOperations_Record_OPERATION_TYPE_UNSPECIFIED
+	return v1.OperationType(0)
 }
 
 func (x *LoadUnloadOperations_Record) GetGnssPlaceAuthRecord() *GnssPlaceAuthRecord {
@@ -274,7 +220,7 @@ func (x *LoadUnloadOperations_Record) SetTimestamp(v *timestamppb.Timestamp) {
 	x.xxx_hidden_Timestamp = v
 }
 
-func (x *LoadUnloadOperations_Record) SetOperationType(v LoadUnloadOperations_Record_OperationType) {
+func (x *LoadUnloadOperations_Record) SetOperationType(v v1.OperationType) {
 	x.xxx_hidden_OperationType = v
 	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 4)
 }
@@ -322,7 +268,7 @@ func (x *LoadUnloadOperations_Record) ClearTimestamp() {
 
 func (x *LoadUnloadOperations_Record) ClearOperationType() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 1)
-	x.xxx_hidden_OperationType = LoadUnloadOperations_Record_OPERATION_TYPE_UNSPECIFIED
+	x.xxx_hidden_OperationType = v1.OperationType_OPERATION_TYPE_UNSPECIFIED
 }
 
 func (x *LoadUnloadOperations_Record) ClearGnssPlaceAuthRecord() {
@@ -345,7 +291,7 @@ type LoadUnloadOperations_Record_builder struct {
 	//	TimeReal ::= INTEGER (0..2^32-1)
 	Timestamp *timestamppb.Timestamp
 	// The type of operation performed.
-	OperationType *LoadUnloadOperations_Record_OperationType
+	OperationType *v1.OperationType
 	// The authenticated position of the vehicle.
 	//
 	// See Data Dictionary, Section 2.79c, `GNSSPlaceAuthRecord`.
@@ -380,36 +326,29 @@ var File_wayplatform_connect_tachograph_card_v1_load_unload_operations_proto pro
 
 const file_wayplatform_connect_tachograph_card_v1_load_unload_operations_proto_rawDesc = "" +
 	"\n" +
-	"Cwayplatform/connect/tachograph/card/v1/load_unload_operations.proto\x12&wayplatform.connect.tachograph.card.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1aCwayplatform/connect/tachograph/card/v1/gnss_place_auth_record.proto\"\xdf\x04\n" +
+	"Cwayplatform/connect/tachograph/card/v1/load_unload_operations.proto\x12&wayplatform.connect.tachograph.card.v1\x1aEwayplatform/connect/tachograph/datadictionary/v1/operation_type.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1aCwayplatform/connect/tachograph/card/v1/gnss_place_auth_record.proto\"\xf4\x03\n" +
 	"\x14LoadUnloadOperations\x12.\n" +
 	"\x13newest_record_index\x18\x01 \x01(\x05R\x11newestRecordIndex\x12]\n" +
-	"\arecords\x18\x02 \x03(\v2C.wayplatform.connect.tachograph.card.v1.LoadUnloadOperations.RecordR\arecords\x1a\xb7\x03\n" +
+	"\arecords\x18\x02 \x03(\v2C.wayplatform.connect.tachograph.card.v1.LoadUnloadOperations.RecordR\arecords\x1a\xcc\x02\n" +
 	"\x06Record\x128\n" +
-	"\ttimestamp\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\ttimestamp\x12x\n" +
-	"\x0eoperation_type\x18\x02 \x01(\x0e2Q.wayplatform.connect.tachograph.card.v1.LoadUnloadOperations.Record.OperationTypeR\roperationType\x12p\n" +
+	"\ttimestamp\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\ttimestamp\x12f\n" +
+	"\x0eoperation_type\x18\x02 \x01(\x0e2?.wayplatform.connect.tachograph.datadictionary.v1.OperationTypeR\roperationType\x12p\n" +
 	"\x16gnss_place_auth_record\x18\x03 \x01(\v2;.wayplatform.connect.tachograph.card.v1.GnssPlaceAuthRecordR\x13gnssPlaceAuthRecord\x12.\n" +
-	"\x13vehicle_odometer_km\x18\x04 \x01(\x05R\x11vehicleOdometerKm\"W\n" +
-	"\rOperationType\x12\x1e\n" +
-	"\x1aOPERATION_TYPE_UNSPECIFIED\x10\x00\x12\b\n" +
-	"\x04LOAD\x10\x01\x12\n" +
-	"\n" +
-	"\x06UNLOAD\x10\x02\x12\x10\n" +
-	"\fSIMULTANEOUS\x10\x03B\xe6\x02\n" +
+	"\x13vehicle_odometer_km\x18\x04 \x01(\x05R\x11vehicleOdometerKmB\xe6\x02\n" +
 	"*com.wayplatform.connect.tachograph.card.v1B\x19LoadUnloadOperationsProtoP\x01Z`github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1;cardv1\xa2\x02\x04WCTC\xaa\x02&Wayplatform.Connect.Tachograph.Card.V1\xca\x02&Wayplatform\\Connect\\Tachograph\\Card\\V1\xe2\x022Wayplatform\\Connect\\Tachograph\\Card\\V1\\GPBMetadata\xea\x02*Wayplatform::Connect::Tachograph::Card::V1b\beditionsp\xe8\a"
 
-var file_wayplatform_connect_tachograph_card_v1_load_unload_operations_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
 var file_wayplatform_connect_tachograph_card_v1_load_unload_operations_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_wayplatform_connect_tachograph_card_v1_load_unload_operations_proto_goTypes = []any{
-	(LoadUnloadOperations_Record_OperationType)(0), // 0: wayplatform.connect.tachograph.card.v1.LoadUnloadOperations.Record.OperationType
-	(*LoadUnloadOperations)(nil),                   // 1: wayplatform.connect.tachograph.card.v1.LoadUnloadOperations
-	(*LoadUnloadOperations_Record)(nil),            // 2: wayplatform.connect.tachograph.card.v1.LoadUnloadOperations.Record
-	(*timestamppb.Timestamp)(nil),                  // 3: google.protobuf.Timestamp
-	(*GnssPlaceAuthRecord)(nil),                    // 4: wayplatform.connect.tachograph.card.v1.GnssPlaceAuthRecord
+	(*LoadUnloadOperations)(nil),        // 0: wayplatform.connect.tachograph.card.v1.LoadUnloadOperations
+	(*LoadUnloadOperations_Record)(nil), // 1: wayplatform.connect.tachograph.card.v1.LoadUnloadOperations.Record
+	(*timestamppb.Timestamp)(nil),       // 2: google.protobuf.Timestamp
+	(v1.OperationType)(0),               // 3: wayplatform.connect.tachograph.datadictionary.v1.OperationType
+	(*GnssPlaceAuthRecord)(nil),         // 4: wayplatform.connect.tachograph.card.v1.GnssPlaceAuthRecord
 }
 var file_wayplatform_connect_tachograph_card_v1_load_unload_operations_proto_depIdxs = []int32{
-	2, // 0: wayplatform.connect.tachograph.card.v1.LoadUnloadOperations.records:type_name -> wayplatform.connect.tachograph.card.v1.LoadUnloadOperations.Record
-	3, // 1: wayplatform.connect.tachograph.card.v1.LoadUnloadOperations.Record.timestamp:type_name -> google.protobuf.Timestamp
-	0, // 2: wayplatform.connect.tachograph.card.v1.LoadUnloadOperations.Record.operation_type:type_name -> wayplatform.connect.tachograph.card.v1.LoadUnloadOperations.Record.OperationType
+	1, // 0: wayplatform.connect.tachograph.card.v1.LoadUnloadOperations.records:type_name -> wayplatform.connect.tachograph.card.v1.LoadUnloadOperations.Record
+	2, // 1: wayplatform.connect.tachograph.card.v1.LoadUnloadOperations.Record.timestamp:type_name -> google.protobuf.Timestamp
+	3, // 2: wayplatform.connect.tachograph.card.v1.LoadUnloadOperations.Record.operation_type:type_name -> wayplatform.connect.tachograph.datadictionary.v1.OperationType
 	4, // 3: wayplatform.connect.tachograph.card.v1.LoadUnloadOperations.Record.gnss_place_auth_record:type_name -> wayplatform.connect.tachograph.card.v1.GnssPlaceAuthRecord
 	4, // [4:4] is the sub-list for method output_type
 	4, // [4:4] is the sub-list for method input_type
@@ -429,14 +368,13 @@ func file_wayplatform_connect_tachograph_card_v1_load_unload_operations_proto_in
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_wayplatform_connect_tachograph_card_v1_load_unload_operations_proto_rawDesc), len(file_wayplatform_connect_tachograph_card_v1_load_unload_operations_proto_rawDesc)),
-			NumEnums:      1,
+			NumEnums:      0,
 			NumMessages:   2,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
 		GoTypes:           file_wayplatform_connect_tachograph_card_v1_load_unload_operations_proto_goTypes,
 		DependencyIndexes: file_wayplatform_connect_tachograph_card_v1_load_unload_operations_proto_depIdxs,
-		EnumInfos:         file_wayplatform_connect_tachograph_card_v1_load_unload_operations_proto_enumTypes,
 		MessageInfos:      file_wayplatform_connect_tachograph_card_v1_load_unload_operations_proto_msgTypes,
 	}.Build()
 	File_wayplatform_connect_tachograph_card_v1_load_unload_operations_proto = out.File

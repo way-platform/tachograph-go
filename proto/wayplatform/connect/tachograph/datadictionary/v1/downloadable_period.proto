@@ -1,0 +1,33 @@
+edition = "2023";
+
+package wayplatform.connect.tachograph.datadictionary.v1;
+
+import "google/protobuf/timestamp.proto";
+
+// Represents the downloadable period for the VU data.
+//
+// See Data Dictionary, Section 2.193, `VuDownloadablePeriod`.
+//
+// ASN.1 Definition:
+//
+//     VuDownloadablePeriod ::= SEQUENCE {
+//         minDownloadableTime TimeReal,
+//         maxDownloadableTime TimeReal
+//     }
+message DownloadablePeriod {
+  // Earliest downloadable date.
+  //
+  // See Data Dictionary, Section 2.162, `TimeReal`.
+  // ASN.1 Definition:
+  //
+  //     TimeReal ::= INTEGER (0..2^32-1)
+  google.protobuf.Timestamp min_time = 1;
+
+  // Latest downloadable date.
+  //
+  // See Data Dictionary, Section 2.162, `TimeReal`.
+  // ASN.1 Definition:
+  //
+  //     TimeReal ::= INTEGER (0..2^32-1)
+  google.protobuf.Timestamp max_time = 2;
+}

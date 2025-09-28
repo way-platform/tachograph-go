@@ -7,6 +7,7 @@
 package cardv1
 
 import (
+	v1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/datadictionary/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
@@ -149,7 +150,7 @@ func (b0 LoadTypeEntries_builder) Build() *LoadTypeEntries {
 type LoadTypeEntries_Record struct {
 	state                      protoimpl.MessageState `protogen:"opaque.v1"`
 	xxx_hidden_Timestamp       *timestamppb.Timestamp `protobuf:"bytes,1,opt,name=timestamp"`
-	xxx_hidden_LoadTypeEntered int32                  `protobuf:"varint,2,opt,name=load_type_entered,json=loadTypeEntered"`
+	xxx_hidden_LoadTypeEntered v1.LoadType            `protobuf:"varint,2,opt,name=load_type_entered,json=loadTypeEntered,enum=wayplatform.connect.tachograph.datadictionary.v1.LoadType"`
 	XXX_raceDetectHookData     protoimpl.RaceDetectHookData
 	XXX_presence               [1]uint32
 	unknownFields              protoimpl.UnknownFields
@@ -188,18 +189,20 @@ func (x *LoadTypeEntries_Record) GetTimestamp() *timestamppb.Timestamp {
 	return nil
 }
 
-func (x *LoadTypeEntries_Record) GetLoadTypeEntered() int32 {
+func (x *LoadTypeEntries_Record) GetLoadTypeEntered() v1.LoadType {
 	if x != nil {
-		return x.xxx_hidden_LoadTypeEntered
+		if protoimpl.X.Present(&(x.XXX_presence[0]), 1) {
+			return x.xxx_hidden_LoadTypeEntered
+		}
 	}
-	return 0
+	return v1.LoadType(0)
 }
 
 func (x *LoadTypeEntries_Record) SetTimestamp(v *timestamppb.Timestamp) {
 	x.xxx_hidden_Timestamp = v
 }
 
-func (x *LoadTypeEntries_Record) SetLoadTypeEntered(v int32) {
+func (x *LoadTypeEntries_Record) SetLoadTypeEntered(v v1.LoadType) {
 	x.xxx_hidden_LoadTypeEntered = v
 	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 2)
 }
@@ -224,7 +227,7 @@ func (x *LoadTypeEntries_Record) ClearTimestamp() {
 
 func (x *LoadTypeEntries_Record) ClearLoadTypeEntered() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 1)
-	x.xxx_hidden_LoadTypeEntered = 0
+	x.xxx_hidden_LoadTypeEntered = v1.LoadType_LOAD_TYPE_UNSPECIFIED
 }
 
 type LoadTypeEntries_Record_builder struct {
@@ -245,7 +248,7 @@ type LoadTypeEntries_Record_builder struct {
 	//	LoadType ::= INTEGER {
 	//	    not-defined(0), passengers(1), goods(2)
 	//	} (0..255)
-	LoadTypeEntered *int32
+	LoadTypeEntered *v1.LoadType
 }
 
 func (b0 LoadTypeEntries_Record_builder) Build() *LoadTypeEntries_Record {
@@ -264,13 +267,13 @@ var File_wayplatform_connect_tachograph_card_v1_load_type_entries_proto protoref
 
 const file_wayplatform_connect_tachograph_card_v1_load_type_entries_proto_rawDesc = "" +
 	"\n" +
-	">wayplatform/connect/tachograph/card/v1/load_type_entries.proto\x12&wayplatform.connect.tachograph.card.v1\x1a\x1fgoogle/protobuf/timestamp.proto\"\x8b\x02\n" +
+	">wayplatform/connect/tachograph/card/v1/load_type_entries.proto\x12&wayplatform.connect.tachograph.card.v1\x1a@wayplatform/connect/tachograph/datadictionary/v1/load_type.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\xc8\x02\n" +
 	"\x0fLoadTypeEntries\x12.\n" +
 	"\x13newest_record_index\x18\x01 \x01(\x05R\x11newestRecordIndex\x12X\n" +
-	"\arecords\x18\x02 \x03(\v2>.wayplatform.connect.tachograph.card.v1.LoadTypeEntries.RecordR\arecords\x1an\n" +
+	"\arecords\x18\x02 \x03(\v2>.wayplatform.connect.tachograph.card.v1.LoadTypeEntries.RecordR\arecords\x1a\xaa\x01\n" +
 	"\x06Record\x128\n" +
-	"\ttimestamp\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\ttimestamp\x12*\n" +
-	"\x11load_type_entered\x18\x02 \x01(\x05R\x0floadTypeEnteredB\xe1\x02\n" +
+	"\ttimestamp\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\ttimestamp\x12f\n" +
+	"\x11load_type_entered\x18\x02 \x01(\x0e2:.wayplatform.connect.tachograph.datadictionary.v1.LoadTypeR\x0floadTypeEnteredB\xe1\x02\n" +
 	"*com.wayplatform.connect.tachograph.card.v1B\x14LoadTypeEntriesProtoP\x01Z`github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1;cardv1\xa2\x02\x04WCTC\xaa\x02&Wayplatform.Connect.Tachograph.Card.V1\xca\x02&Wayplatform\\Connect\\Tachograph\\Card\\V1\xe2\x022Wayplatform\\Connect\\Tachograph\\Card\\V1\\GPBMetadata\xea\x02*Wayplatform::Connect::Tachograph::Card::V1b\beditionsp\xe8\a"
 
 var file_wayplatform_connect_tachograph_card_v1_load_type_entries_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
@@ -278,15 +281,17 @@ var file_wayplatform_connect_tachograph_card_v1_load_type_entries_proto_goTypes 
 	(*LoadTypeEntries)(nil),        // 0: wayplatform.connect.tachograph.card.v1.LoadTypeEntries
 	(*LoadTypeEntries_Record)(nil), // 1: wayplatform.connect.tachograph.card.v1.LoadTypeEntries.Record
 	(*timestamppb.Timestamp)(nil),  // 2: google.protobuf.Timestamp
+	(v1.LoadType)(0),               // 3: wayplatform.connect.tachograph.datadictionary.v1.LoadType
 }
 var file_wayplatform_connect_tachograph_card_v1_load_type_entries_proto_depIdxs = []int32{
 	1, // 0: wayplatform.connect.tachograph.card.v1.LoadTypeEntries.records:type_name -> wayplatform.connect.tachograph.card.v1.LoadTypeEntries.Record
 	2, // 1: wayplatform.connect.tachograph.card.v1.LoadTypeEntries.Record.timestamp:type_name -> google.protobuf.Timestamp
-	2, // [2:2] is the sub-list for method output_type
-	2, // [2:2] is the sub-list for method input_type
-	2, // [2:2] is the sub-list for extension type_name
-	2, // [2:2] is the sub-list for extension extendee
-	0, // [0:2] is the sub-list for field type_name
+	3, // 2: wayplatform.connect.tachograph.card.v1.LoadTypeEntries.Record.load_type_entered:type_name -> wayplatform.connect.tachograph.datadictionary.v1.LoadType
+	3, // [3:3] is the sub-list for method output_type
+	3, // [3:3] is the sub-list for method input_type
+	3, // [3:3] is the sub-list for extension type_name
+	3, // [3:3] is the sub-list for extension extendee
+	0, // [0:3] is the sub-list for field type_name
 }
 
 func init() { file_wayplatform_connect_tachograph_card_v1_load_type_entries_proto_init() }

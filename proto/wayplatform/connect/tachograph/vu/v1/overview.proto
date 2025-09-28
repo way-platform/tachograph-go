@@ -2,11 +2,13 @@ edition = "2023";
 
 package wayplatform.connect.tachograph.vu.v1;
 
-import "wayplatform/connect/tachograph/datadictionary/v1/control_type.proto";
-import "wayplatform/connect/tachograph/datadictionary/v1/string_value.proto";
 import "google/protobuf/timestamp.proto";
+import "wayplatform/connect/tachograph/datadictionary/v1/control_type.proto";
+import "wayplatform/connect/tachograph/datadictionary/v1/downloadable_period.proto";
 import "wayplatform/connect/tachograph/datadictionary/v1/full_card_number.proto";
 import "wayplatform/connect/tachograph/datadictionary/v1/generation.proto";
+import "wayplatform/connect/tachograph/datadictionary/v1/slot_card_type.proto";
+import "wayplatform/connect/tachograph/datadictionary/v1/string_value.proto";
 import "wayplatform/connect/tachograph/datadictionary/v1/vehicle_registration_identification.proto";
 import "wayplatform/connect/tachograph/vu/v1/versioning.proto";
 
@@ -15,45 +17,9 @@ import "wayplatform/connect/tachograph/vu/v1/versioning.proto";
 // This message corresponds to the data defined in the regulation document:
 // Appendix 7, Section 2.2.6.2: "Positive Response Transfer Data Overview".
 message Overview {
-  // Represents the downloadable period for the VU data.
-  //
-  // See Data Dictionary, Section 2.193, `VuDownloadablePeriod`.
-  //
-  // ASN.1 Definition:
-  //
-  //     VuDownloadablePeriod ::= SEQUENCE {
-  //         minDownloadableTime TimeReal,
-  //         maxDownloadableTime TimeReal
-  //     }
-  message DownloadablePeriod {
-    // Earliest downloadable date.
-    //
-    // See Data Dictionary, Section 2.162, `TimeReal`.
-    // ASN.1 Definition:
-    //
-    //     TimeReal ::= INTEGER (0..2^32-1)
-    google.protobuf.Timestamp min_time = 1;
 
-    // Latest downloadable date.
-    //
-    // See Data Dictionary, Section 2.162, `TimeReal`.
-    // ASN.1 Definition:
-    //
-    //     TimeReal ::= INTEGER (0..2^32-1)
-    google.protobuf.Timestamp max_time = 2;
-  }
 
-  // Defines the type of card that can be in a slot.
-  //
-  // See Data Dictionary, Section 2.34, `CardSlotsStatus`.
-  enum SlotCardType {
-    SLOT_CARD_TYPE_UNSPECIFIED = 0;
-    NO_CARD = 1;
-    DRIVER_CARD = 2;
-    WORKSHOP_CARD = 3;
-    CONTROL_CARD = 4;
-    COMPANY_CARD = 5;
-  }
+
 
   // Represents a company lock record.
   //
@@ -201,13 +167,13 @@ message Overview {
   google.protobuf.Timestamp current_date_time = 6;
 
   // The range of dates for which data can be downloaded.
-  DownloadablePeriod downloadable_period = 7;
+  datadictionary.v1.DownloadablePeriod downloadable_period = 7;
 
   // Type of card in the driver slot.
-  SlotCardType driver_slot_card = 8;
+  datadictionary.v1.SlotCardType driver_slot_card = 8;
 
   // Type of card in the co-driver slot.
-  SlotCardType co_driver_slot_card = 9;
+  datadictionary.v1.SlotCardType co_driver_slot_card = 9;
 
   // Time of the last VU download.
   //

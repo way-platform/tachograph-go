@@ -45,7 +45,7 @@ const (
 type ControlActivityData struct {
 	state                                 protoimpl.MessageState                `protogen:"opaque.v1"`
 	xxx_hidden_Valid                      bool                                  `protobuf:"varint,1,opt,name=valid"`
-	xxx_hidden_ControlType                []byte                                `protobuf:"bytes,2,opt,name=control_type,json=controlType"`
+	xxx_hidden_ControlType                *v1.ControlType                       `protobuf:"bytes,2,opt,name=control_type,json=controlType"`
 	xxx_hidden_ControlTime                *timestamppb.Timestamp                `protobuf:"bytes,3,opt,name=control_time,json=controlTime"`
 	xxx_hidden_ControlCardNumber          *v1.FullCardNumber                    `protobuf:"bytes,4,opt,name=control_card_number,json=controlCardNumber"`
 	xxx_hidden_ControlVehicleRegistration *v1.VehicleRegistrationIdentification `protobuf:"bytes,5,opt,name=control_vehicle_registration,json=controlVehicleRegistration"`
@@ -91,7 +91,7 @@ func (x *ControlActivityData) GetValid() bool {
 	return false
 }
 
-func (x *ControlActivityData) GetControlType() []byte {
+func (x *ControlActivityData) GetControlType() *v1.ControlType {
 	if x != nil {
 		return x.xxx_hidden_ControlType
 	}
@@ -152,12 +152,8 @@ func (x *ControlActivityData) SetValid(v bool) {
 	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 9)
 }
 
-func (x *ControlActivityData) SetControlType(v []byte) {
-	if v == nil {
-		v = []byte{}
-	}
+func (x *ControlActivityData) SetControlType(v *v1.ControlType) {
 	x.xxx_hidden_ControlType = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 9)
 }
 
 func (x *ControlActivityData) SetControlTime(v *timestamppb.Timestamp) {
@@ -207,7 +203,7 @@ func (x *ControlActivityData) HasControlType() bool {
 	if x == nil {
 		return false
 	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 1)
+	return x.xxx_hidden_ControlType != nil
 }
 
 func (x *ControlActivityData) HasControlTime() bool {
@@ -265,7 +261,6 @@ func (x *ControlActivityData) ClearValid() {
 }
 
 func (x *ControlActivityData) ClearControlType() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 1)
 	x.xxx_hidden_ControlType = nil
 }
 
@@ -312,7 +307,7 @@ type ControlActivityData_builder struct {
 	// ASN.1 Specification:
 	//
 	//	ControlType ::= OCTET STRING (SIZE(1))
-	ControlType []byte
+	ControlType *v1.ControlType
 	// The date and time of the control.
 	//
 	// See Data Dictionary, Section 2.162, `TimeReal`.
@@ -368,10 +363,7 @@ func (b0 ControlActivityData_builder) Build() *ControlActivityData {
 		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 9)
 		x.xxx_hidden_Valid = *b.Valid
 	}
-	if b.ControlType != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 9)
-		x.xxx_hidden_ControlType = b.ControlType
-	}
+	x.xxx_hidden_ControlType = b.ControlType
 	x.xxx_hidden_ControlTime = b.ControlTime
 	x.xxx_hidden_ControlCardNumber = b.ControlCardNumber
 	x.xxx_hidden_ControlVehicleRegistration = b.ControlVehicleRegistration
@@ -392,10 +384,10 @@ var File_wayplatform_connect_tachograph_card_v1_control_activity_data_proto prot
 
 const file_wayplatform_connect_tachograph_card_v1_control_activity_data_proto_rawDesc = "" +
 	"\n" +
-	"Bwayplatform/connect/tachograph/card/v1/control_activity_data.proto\x12&wayplatform.connect.tachograph.card.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1aGwayplatform/connect/tachograph/datadictionary/v1/full_card_number.proto\x1aZwayplatform/connect/tachograph/datadictionary/v1/vehicle_registration_identification.proto\"\x8a\x05\n" +
+	"Bwayplatform/connect/tachograph/card/v1/control_activity_data.proto\x12&wayplatform.connect.tachograph.card.v1\x1aCwayplatform/connect/tachograph/datadictionary/v1/control_type.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1aGwayplatform/connect/tachograph/datadictionary/v1/full_card_number.proto\x1aZwayplatform/connect/tachograph/datadictionary/v1/vehicle_registration_identification.proto\"\xc9\x05\n" +
 	"\x13ControlActivityData\x12\x14\n" +
-	"\x05valid\x18\x01 \x01(\bR\x05valid\x12!\n" +
-	"\fcontrol_type\x18\x02 \x01(\fR\vcontrolType\x12=\n" +
+	"\x05valid\x18\x01 \x01(\bR\x05valid\x12`\n" +
+	"\fcontrol_type\x18\x02 \x01(\v2=.wayplatform.connect.tachograph.datadictionary.v1.ControlTypeR\vcontrolType\x12=\n" +
 	"\fcontrol_time\x18\x03 \x01(\v2\x1a.google.protobuf.TimestampR\vcontrolTime\x12p\n" +
 	"\x13control_card_number\x18\x04 \x01(\v2@.wayplatform.connect.tachograph.datadictionary.v1.FullCardNumberR\x11controlCardNumber\x12\x95\x01\n" +
 	"\x1ccontrol_vehicle_registration\x18\x05 \x01(\v2S.wayplatform.connect.tachograph.datadictionary.v1.VehicleRegistrationIdentificationR\x1acontrolVehicleRegistration\x12]\n" +
@@ -408,21 +400,23 @@ const file_wayplatform_connect_tachograph_card_v1_control_activity_data_proto_ra
 var file_wayplatform_connect_tachograph_card_v1_control_activity_data_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_wayplatform_connect_tachograph_card_v1_control_activity_data_proto_goTypes = []any{
 	(*ControlActivityData)(nil),                  // 0: wayplatform.connect.tachograph.card.v1.ControlActivityData
-	(*timestamppb.Timestamp)(nil),                // 1: google.protobuf.Timestamp
-	(*v1.FullCardNumber)(nil),                    // 2: wayplatform.connect.tachograph.datadictionary.v1.FullCardNumber
-	(*v1.VehicleRegistrationIdentification)(nil), // 3: wayplatform.connect.tachograph.datadictionary.v1.VehicleRegistrationIdentification
+	(*v1.ControlType)(nil),                       // 1: wayplatform.connect.tachograph.datadictionary.v1.ControlType
+	(*timestamppb.Timestamp)(nil),                // 2: google.protobuf.Timestamp
+	(*v1.FullCardNumber)(nil),                    // 3: wayplatform.connect.tachograph.datadictionary.v1.FullCardNumber
+	(*v1.VehicleRegistrationIdentification)(nil), // 4: wayplatform.connect.tachograph.datadictionary.v1.VehicleRegistrationIdentification
 }
 var file_wayplatform_connect_tachograph_card_v1_control_activity_data_proto_depIdxs = []int32{
-	1, // 0: wayplatform.connect.tachograph.card.v1.ControlActivityData.control_time:type_name -> google.protobuf.Timestamp
-	2, // 1: wayplatform.connect.tachograph.card.v1.ControlActivityData.control_card_number:type_name -> wayplatform.connect.tachograph.datadictionary.v1.FullCardNumber
-	3, // 2: wayplatform.connect.tachograph.card.v1.ControlActivityData.control_vehicle_registration:type_name -> wayplatform.connect.tachograph.datadictionary.v1.VehicleRegistrationIdentification
-	1, // 3: wayplatform.connect.tachograph.card.v1.ControlActivityData.control_download_period_begin:type_name -> google.protobuf.Timestamp
-	1, // 4: wayplatform.connect.tachograph.card.v1.ControlActivityData.control_download_period_end:type_name -> google.protobuf.Timestamp
-	5, // [5:5] is the sub-list for method output_type
-	5, // [5:5] is the sub-list for method input_type
-	5, // [5:5] is the sub-list for extension type_name
-	5, // [5:5] is the sub-list for extension extendee
-	0, // [0:5] is the sub-list for field type_name
+	1, // 0: wayplatform.connect.tachograph.card.v1.ControlActivityData.control_type:type_name -> wayplatform.connect.tachograph.datadictionary.v1.ControlType
+	2, // 1: wayplatform.connect.tachograph.card.v1.ControlActivityData.control_time:type_name -> google.protobuf.Timestamp
+	3, // 2: wayplatform.connect.tachograph.card.v1.ControlActivityData.control_card_number:type_name -> wayplatform.connect.tachograph.datadictionary.v1.FullCardNumber
+	4, // 3: wayplatform.connect.tachograph.card.v1.ControlActivityData.control_vehicle_registration:type_name -> wayplatform.connect.tachograph.datadictionary.v1.VehicleRegistrationIdentification
+	2, // 4: wayplatform.connect.tachograph.card.v1.ControlActivityData.control_download_period_begin:type_name -> google.protobuf.Timestamp
+	2, // 5: wayplatform.connect.tachograph.card.v1.ControlActivityData.control_download_period_end:type_name -> google.protobuf.Timestamp
+	6, // [6:6] is the sub-list for method output_type
+	6, // [6:6] is the sub-list for method input_type
+	6, // [6:6] is the sub-list for extension type_name
+	6, // [6:6] is the sub-list for extension extendee
+	0, // [0:6] is the sub-list for field type_name
 }
 
 func init() { file_wayplatform_connect_tachograph_card_v1_control_activity_data_proto_init() }

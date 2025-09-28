@@ -30,8 +30,8 @@ const (
 //	}
 type VehicleRegistrationIdentification struct {
 	state                  protoimpl.MessageState `protogen:"opaque.v1"`
-	xxx_hidden_Nation      int32                  `protobuf:"varint,1,opt,name=nation"`
-	xxx_hidden_Number      *string                `protobuf:"bytes,2,opt,name=number"`
+	xxx_hidden_Nation      NationNumeric          `protobuf:"varint,1,opt,name=nation,enum=wayplatform.connect.tachograph.datadictionary.v1.NationNumeric"`
+	xxx_hidden_Number      *StringValue           `protobuf:"bytes,2,opt,name=number"`
 	XXX_raceDetectHookData protoimpl.RaceDetectHookData
 	XXX_presence           [1]uint32
 	unknownFields          protoimpl.UnknownFields
@@ -63,31 +63,29 @@ func (x *VehicleRegistrationIdentification) ProtoReflect() protoreflect.Message 
 	return mi.MessageOf(x)
 }
 
-func (x *VehicleRegistrationIdentification) GetNation() int32 {
+func (x *VehicleRegistrationIdentification) GetNation() NationNumeric {
 	if x != nil {
-		return x.xxx_hidden_Nation
-	}
-	return 0
-}
-
-func (x *VehicleRegistrationIdentification) GetNumber() string {
-	if x != nil {
-		if x.xxx_hidden_Number != nil {
-			return *x.xxx_hidden_Number
+		if protoimpl.X.Present(&(x.XXX_presence[0]), 0) {
+			return x.xxx_hidden_Nation
 		}
-		return ""
 	}
-	return ""
+	return NationNumeric_NATION_NUMERIC_UNSPECIFIED
 }
 
-func (x *VehicleRegistrationIdentification) SetNation(v int32) {
+func (x *VehicleRegistrationIdentification) GetNumber() *StringValue {
+	if x != nil {
+		return x.xxx_hidden_Number
+	}
+	return nil
+}
+
+func (x *VehicleRegistrationIdentification) SetNation(v NationNumeric) {
 	x.xxx_hidden_Nation = v
 	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 2)
 }
 
-func (x *VehicleRegistrationIdentification) SetNumber(v string) {
-	x.xxx_hidden_Number = &v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 2)
+func (x *VehicleRegistrationIdentification) SetNumber(v *StringValue) {
+	x.xxx_hidden_Number = v
 }
 
 func (x *VehicleRegistrationIdentification) HasNation() bool {
@@ -101,16 +99,15 @@ func (x *VehicleRegistrationIdentification) HasNumber() bool {
 	if x == nil {
 		return false
 	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 1)
+	return x.xxx_hidden_Number != nil
 }
 
 func (x *VehicleRegistrationIdentification) ClearNation() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 0)
-	x.xxx_hidden_Nation = 0
+	x.xxx_hidden_Nation = NationNumeric_NATION_NUMERIC_UNSPECIFIED
 }
 
 func (x *VehicleRegistrationIdentification) ClearNumber() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 1)
 	x.xxx_hidden_Number = nil
 }
 
@@ -123,17 +120,19 @@ type VehicleRegistrationIdentification_builder struct {
 	// ASN.1 Definition:
 	//
 	//	NationNumeric ::= INTEGER(0..255)
-	Nation *int32
-	// The vehicle registration number.
+	Nation *NationNumeric
+	// The vehicle registration number. This is modeled as a StringValue because the
+	// underlying ASN.1 type is a SEQUENCE containing the string and its encoding.
 	//
 	// See Data Dictionary, Section 2.167, `VehicleRegistrationNumber`.
+	//
 	// ASN.1 Definition:
 	//
-	//	VehicleRegistrationNumber ::= CHOICE {
+	//	VehicleRegistrationNumber ::= SEQUENCE {
 	//	    codePage INTEGER(0..255),
 	//	    vehicleRegNumber OCTET STRING(SIZE(13))
 	//	}
-	Number *string
+	Number *StringValue
 }
 
 func (b0 VehicleRegistrationIdentification_builder) Build() *VehicleRegistrationIdentification {
@@ -144,10 +143,7 @@ func (b0 VehicleRegistrationIdentification_builder) Build() *VehicleRegistration
 		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 2)
 		x.xxx_hidden_Nation = *b.Nation
 	}
-	if b.Number != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 2)
-		x.xxx_hidden_Number = b.Number
-	}
+	x.xxx_hidden_Number = b.Number
 	return m0
 }
 
@@ -155,22 +151,26 @@ var File_wayplatform_connect_tachograph_datadictionary_v1_vehicle_registration_i
 
 const file_wayplatform_connect_tachograph_datadictionary_v1_vehicle_registration_identification_proto_rawDesc = "" +
 	"\n" +
-	"Zwayplatform/connect/tachograph/datadictionary/v1/vehicle_registration_identification.proto\x120wayplatform.connect.tachograph.datadictionary.v1\"S\n" +
-	"!VehicleRegistrationIdentification\x12\x16\n" +
-	"\x06nation\x18\x01 \x01(\x05R\x06nation\x12\x16\n" +
-	"\x06number\x18\x02 \x01(\tR\x06numberB\xb9\x03\n" +
+	"Zwayplatform/connect/tachograph/datadictionary/v1/vehicle_registration_identification.proto\x120wayplatform.connect.tachograph.datadictionary.v1\x1aEwayplatform/connect/tachograph/datadictionary/v1/nation_numeric.proto\x1aCwayplatform/connect/tachograph/datadictionary/v1/string_value.proto\"\xd3\x01\n" +
+	"!VehicleRegistrationIdentification\x12W\n" +
+	"\x06nation\x18\x01 \x01(\x0e2?.wayplatform.connect.tachograph.datadictionary.v1.NationNumericR\x06nation\x12U\n" +
+	"\x06number\x18\x02 \x01(\v2=.wayplatform.connect.tachograph.datadictionary.v1.StringValueR\x06numberB\xb9\x03\n" +
 	"4com.wayplatform.connect.tachograph.datadictionary.v1B&VehicleRegistrationIdentificationProtoP\x01Ztgithub.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/datadictionary/v1;datadictionaryv1\xa2\x02\x04WCTD\xaa\x020Wayplatform.Connect.Tachograph.Datadictionary.V1\xca\x020Wayplatform\\Connect\\Tachograph\\Datadictionary\\V1\xe2\x02<Wayplatform\\Connect\\Tachograph\\Datadictionary\\V1\\GPBMetadata\xea\x024Wayplatform::Connect::Tachograph::Datadictionary::V1b\beditionsp\xe8\a"
 
 var file_wayplatform_connect_tachograph_datadictionary_v1_vehicle_registration_identification_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_wayplatform_connect_tachograph_datadictionary_v1_vehicle_registration_identification_proto_goTypes = []any{
 	(*VehicleRegistrationIdentification)(nil), // 0: wayplatform.connect.tachograph.datadictionary.v1.VehicleRegistrationIdentification
+	(NationNumeric)(0),                        // 1: wayplatform.connect.tachograph.datadictionary.v1.NationNumeric
+	(*StringValue)(nil),                       // 2: wayplatform.connect.tachograph.datadictionary.v1.StringValue
 }
 var file_wayplatform_connect_tachograph_datadictionary_v1_vehicle_registration_identification_proto_depIdxs = []int32{
-	0, // [0:0] is the sub-list for method output_type
-	0, // [0:0] is the sub-list for method input_type
-	0, // [0:0] is the sub-list for extension type_name
-	0, // [0:0] is the sub-list for extension extendee
-	0, // [0:0] is the sub-list for field type_name
+	1, // 0: wayplatform.connect.tachograph.datadictionary.v1.VehicleRegistrationIdentification.nation:type_name -> wayplatform.connect.tachograph.datadictionary.v1.NationNumeric
+	2, // 1: wayplatform.connect.tachograph.datadictionary.v1.VehicleRegistrationIdentification.number:type_name -> wayplatform.connect.tachograph.datadictionary.v1.StringValue
+	2, // [2:2] is the sub-list for method output_type
+	2, // [2:2] is the sub-list for method input_type
+	2, // [2:2] is the sub-list for extension type_name
+	2, // [2:2] is the sub-list for extension extendee
+	0, // [0:2] is the sub-list for field type_name
 }
 
 func init() {
@@ -180,6 +180,8 @@ func file_wayplatform_connect_tachograph_datadictionary_v1_vehicle_registration_
 	if File_wayplatform_connect_tachograph_datadictionary_v1_vehicle_registration_identification_proto != nil {
 		return
 	}
+	file_wayplatform_connect_tachograph_datadictionary_v1_nation_numeric_proto_init()
+	file_wayplatform_connect_tachograph_datadictionary_v1_string_value_proto_init()
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

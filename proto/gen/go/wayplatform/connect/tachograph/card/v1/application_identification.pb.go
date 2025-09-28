@@ -27,14 +27,14 @@ const (
 // tagged union pattern to represent this, where the `card_type` field indicates
 // which of the nested messages is populated.
 type ApplicationIdentification struct {
-	state                             protoimpl.MessageState                          `protogen:"opaque.v1"`
-	xxx_hidden_CardType               CardType                                        `protobuf:"varint,1,opt,name=card_type,json=cardType,enum=wayplatform.connect.tachograph.card.v1.CardType"`
-	xxx_hidden_TypeOfTachographCardId v1.EquipmentType                                `protobuf:"varint,2,opt,name=type_of_tachograph_card_id,json=typeOfTachographCardId,enum=wayplatform.connect.tachograph.datadictionary.v1.EquipmentType"`
-	xxx_hidden_CardStructureVersion   *ApplicationIdentification_CardStructureVersion `protobuf:"bytes,3,opt,name=card_structure_version,json=cardStructureVersion"`
-	xxx_hidden_Driver                 *ApplicationIdentification_Driver               `protobuf:"bytes,4,opt,name=driver"`
-	xxx_hidden_Workshop               *ApplicationIdentification_Workshop             `protobuf:"bytes,5,opt,name=workshop"`
-	xxx_hidden_Company                *ApplicationIdentification_Company              `protobuf:"bytes,6,opt,name=company"`
-	xxx_hidden_Control                *ApplicationIdentification_Control              `protobuf:"bytes,7,opt,name=control"`
+	state                             protoimpl.MessageState              `protogen:"opaque.v1"`
+	xxx_hidden_CardType               CardType                            `protobuf:"varint,1,opt,name=card_type,json=cardType,enum=wayplatform.connect.tachograph.card.v1.CardType"`
+	xxx_hidden_TypeOfTachographCardId v1.EquipmentType                    `protobuf:"varint,2,opt,name=type_of_tachograph_card_id,json=typeOfTachographCardId,enum=wayplatform.connect.tachograph.datadictionary.v1.EquipmentType"`
+	xxx_hidden_CardStructureVersion   *v1.CardStructureVersion            `protobuf:"bytes,3,opt,name=card_structure_version,json=cardStructureVersion"`
+	xxx_hidden_Driver                 *ApplicationIdentification_Driver   `protobuf:"bytes,4,opt,name=driver"`
+	xxx_hidden_Workshop               *ApplicationIdentification_Workshop `protobuf:"bytes,5,opt,name=workshop"`
+	xxx_hidden_Company                *ApplicationIdentification_Company  `protobuf:"bytes,6,opt,name=company"`
+	xxx_hidden_Control                *ApplicationIdentification_Control  `protobuf:"bytes,7,opt,name=control"`
 	XXX_raceDetectHookData            protoimpl.RaceDetectHookData
 	XXX_presence                      [1]uint32
 	unknownFields                     protoimpl.UnknownFields
@@ -84,7 +84,7 @@ func (x *ApplicationIdentification) GetTypeOfTachographCardId() v1.EquipmentType
 	return v1.EquipmentType(0)
 }
 
-func (x *ApplicationIdentification) GetCardStructureVersion() *ApplicationIdentification_CardStructureVersion {
+func (x *ApplicationIdentification) GetCardStructureVersion() *v1.CardStructureVersion {
 	if x != nil {
 		return x.xxx_hidden_CardStructureVersion
 	}
@@ -129,7 +129,7 @@ func (x *ApplicationIdentification) SetTypeOfTachographCardId(v v1.EquipmentType
 	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 7)
 }
 
-func (x *ApplicationIdentification) SetCardStructureVersion(v *ApplicationIdentification_CardStructureVersion) {
+func (x *ApplicationIdentification) SetCardStructureVersion(v *v1.CardStructureVersion) {
 	x.xxx_hidden_CardStructureVersion = v
 }
 
@@ -240,7 +240,13 @@ type ApplicationIdentification_builder struct {
 	//
 	//	EquipmentType ::= INTEGER (0..255)
 	TypeOfTachographCardId *v1.EquipmentType
-	CardStructureVersion   *ApplicationIdentification_CardStructureVersion
+	// The version of the card structure.
+	//
+	// See Data Dictionary, Section 2.36, `CardStructureVersion`.
+	// ASN.1 definition:
+	//
+	//	CardStructureVersion ::= OCTET STRING (SIZE (2))
+	CardStructureVersion *v1.CardStructureVersion
 	// Populated if `card_type` is `DRIVER_CARD`.
 	Driver *ApplicationIdentification_Driver
 	// Populated if `card_type` is `WORKSHOP_CARD`.
@@ -271,117 +277,6 @@ func (b0 ApplicationIdentification_builder) Build() *ApplicationIdentification {
 	return m0
 }
 
-// The version of the card structure.
-//
-// See Data Dictionary, Section 2.36, `CardStructureVersion`.
-// ASN.1 definition:
-//
-//	CardStructureVersion ::= OCTET STRING (SIZE (2))
-type ApplicationIdentification_CardStructureVersion struct {
-	state                  protoimpl.MessageState `protogen:"opaque.v1"`
-	xxx_hidden_Major       int32                  `protobuf:"varint,1,opt,name=major"`
-	xxx_hidden_Minor       int32                  `protobuf:"varint,2,opt,name=minor"`
-	XXX_raceDetectHookData protoimpl.RaceDetectHookData
-	XXX_presence           [1]uint32
-	unknownFields          protoimpl.UnknownFields
-	sizeCache              protoimpl.SizeCache
-}
-
-func (x *ApplicationIdentification_CardStructureVersion) Reset() {
-	*x = ApplicationIdentification_CardStructureVersion{}
-	mi := &file_wayplatform_connect_tachograph_card_v1_application_identification_proto_msgTypes[1]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ApplicationIdentification_CardStructureVersion) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ApplicationIdentification_CardStructureVersion) ProtoMessage() {}
-
-func (x *ApplicationIdentification_CardStructureVersion) ProtoReflect() protoreflect.Message {
-	mi := &file_wayplatform_connect_tachograph_card_v1_application_identification_proto_msgTypes[1]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-func (x *ApplicationIdentification_CardStructureVersion) GetMajor() int32 {
-	if x != nil {
-		return x.xxx_hidden_Major
-	}
-	return 0
-}
-
-func (x *ApplicationIdentification_CardStructureVersion) GetMinor() int32 {
-	if x != nil {
-		return x.xxx_hidden_Minor
-	}
-	return 0
-}
-
-func (x *ApplicationIdentification_CardStructureVersion) SetMajor(v int32) {
-	x.xxx_hidden_Major = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 2)
-}
-
-func (x *ApplicationIdentification_CardStructureVersion) SetMinor(v int32) {
-	x.xxx_hidden_Minor = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 2)
-}
-
-func (x *ApplicationIdentification_CardStructureVersion) HasMajor() bool {
-	if x == nil {
-		return false
-	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 0)
-}
-
-func (x *ApplicationIdentification_CardStructureVersion) HasMinor() bool {
-	if x == nil {
-		return false
-	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 1)
-}
-
-func (x *ApplicationIdentification_CardStructureVersion) ClearMajor() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 0)
-	x.xxx_hidden_Major = 0
-}
-
-func (x *ApplicationIdentification_CardStructureVersion) ClearMinor() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 1)
-	x.xxx_hidden_Minor = 0
-}
-
-type ApplicationIdentification_CardStructureVersion_builder struct {
-	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
-
-	Major *int32
-	Minor *int32
-}
-
-func (b0 ApplicationIdentification_CardStructureVersion_builder) Build() *ApplicationIdentification_CardStructureVersion {
-	m0 := &ApplicationIdentification_CardStructureVersion{}
-	b, x := &b0, m0
-	_, _ = b, x
-	if b.Major != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 2)
-		x.xxx_hidden_Major = *b.Major
-	}
-	if b.Minor != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 2)
-		x.xxx_hidden_Minor = *b.Minor
-	}
-	return m0
-}
-
 // Data for a driver card. Populated if `card_type` is `DRIVER_CARD`.
 // See Data Dictionary, Section 2.61, `DriverCardApplicationIdentification`.
 type ApplicationIdentification_Driver struct {
@@ -403,7 +298,7 @@ type ApplicationIdentification_Driver struct {
 
 func (x *ApplicationIdentification_Driver) Reset() {
 	*x = ApplicationIdentification_Driver{}
-	mi := &file_wayplatform_connect_tachograph_card_v1_application_identification_proto_msgTypes[2]
+	mi := &file_wayplatform_connect_tachograph_card_v1_application_identification_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -415,7 +310,7 @@ func (x *ApplicationIdentification_Driver) String() string {
 func (*ApplicationIdentification_Driver) ProtoMessage() {}
 
 func (x *ApplicationIdentification_Driver) ProtoReflect() protoreflect.Message {
-	mi := &file_wayplatform_connect_tachograph_card_v1_application_identification_proto_msgTypes[2]
+	mi := &file_wayplatform_connect_tachograph_card_v1_application_identification_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -774,7 +669,7 @@ type ApplicationIdentification_Workshop struct {
 
 func (x *ApplicationIdentification_Workshop) Reset() {
 	*x = ApplicationIdentification_Workshop{}
-	mi := &file_wayplatform_connect_tachograph_card_v1_application_identification_proto_msgTypes[3]
+	mi := &file_wayplatform_connect_tachograph_card_v1_application_identification_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -786,7 +681,7 @@ func (x *ApplicationIdentification_Workshop) String() string {
 func (*ApplicationIdentification_Workshop) ProtoMessage() {}
 
 func (x *ApplicationIdentification_Workshop) ProtoReflect() protoreflect.Message {
-	mi := &file_wayplatform_connect_tachograph_card_v1_application_identification_proto_msgTypes[3]
+	mi := &file_wayplatform_connect_tachograph_card_v1_application_identification_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1032,7 +927,7 @@ type ApplicationIdentification_Company struct {
 
 func (x *ApplicationIdentification_Company) Reset() {
 	*x = ApplicationIdentification_Company{}
-	mi := &file_wayplatform_connect_tachograph_card_v1_application_identification_proto_msgTypes[4]
+	mi := &file_wayplatform_connect_tachograph_card_v1_application_identification_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1044,7 +939,7 @@ func (x *ApplicationIdentification_Company) String() string {
 func (*ApplicationIdentification_Company) ProtoMessage() {}
 
 func (x *ApplicationIdentification_Company) ProtoReflect() protoreflect.Message {
-	mi := &file_wayplatform_connect_tachograph_card_v1_application_identification_proto_msgTypes[4]
+	mi := &file_wayplatform_connect_tachograph_card_v1_application_identification_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1115,7 +1010,7 @@ type ApplicationIdentification_Control struct {
 
 func (x *ApplicationIdentification_Control) Reset() {
 	*x = ApplicationIdentification_Control{}
-	mi := &file_wayplatform_connect_tachograph_card_v1_application_identification_proto_msgTypes[5]
+	mi := &file_wayplatform_connect_tachograph_card_v1_application_identification_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1127,7 +1022,7 @@ func (x *ApplicationIdentification_Control) String() string {
 func (*ApplicationIdentification_Control) ProtoMessage() {}
 
 func (x *ApplicationIdentification_Control) ProtoReflect() protoreflect.Message {
-	mi := &file_wayplatform_connect_tachograph_card_v1_application_identification_proto_msgTypes[5]
+	mi := &file_wayplatform_connect_tachograph_card_v1_application_identification_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1189,18 +1084,15 @@ var File_wayplatform_connect_tachograph_card_v1_application_identification_proto
 
 const file_wayplatform_connect_tachograph_card_v1_application_identification_proto_rawDesc = "" +
 	"\n" +
-	"Gwayplatform/connect/tachograph/card/v1/application_identification.proto\x12&wayplatform.connect.tachograph.card.v1\x1a6wayplatform/connect/tachograph/card/v1/card_type.proto\x1aEwayplatform/connect/tachograph/datadictionary/v1/equipment_type.proto\"\xd2\x0e\n" +
+	"Gwayplatform/connect/tachograph/card/v1/application_identification.proto\x12&wayplatform.connect.tachograph.card.v1\x1a6wayplatform/connect/tachograph/card/v1/card_type.proto\x1aMwayplatform/connect/tachograph/datadictionary/v1/card_structure_version.proto\x1aEwayplatform/connect/tachograph/datadictionary/v1/equipment_type.proto\"\xfd\r\n" +
 	"\x19ApplicationIdentification\x12M\n" +
 	"\tcard_type\x18\x01 \x01(\x0e20.wayplatform.connect.tachograph.card.v1.CardTypeR\bcardType\x12{\n" +
-	"\x1atype_of_tachograph_card_id\x18\x02 \x01(\x0e2?.wayplatform.connect.tachograph.datadictionary.v1.EquipmentTypeR\x16typeOfTachographCardId\x12\x8c\x01\n" +
-	"\x16card_structure_version\x18\x03 \x01(\v2V.wayplatform.connect.tachograph.card.v1.ApplicationIdentification.CardStructureVersionR\x14cardStructureVersion\x12`\n" +
+	"\x1atype_of_tachograph_card_id\x18\x02 \x01(\x0e2?.wayplatform.connect.tachograph.datadictionary.v1.EquipmentTypeR\x16typeOfTachographCardId\x12|\n" +
+	"\x16card_structure_version\x18\x03 \x01(\v2F.wayplatform.connect.tachograph.datadictionary.v1.CardStructureVersionR\x14cardStructureVersion\x12`\n" +
 	"\x06driver\x18\x04 \x01(\v2H.wayplatform.connect.tachograph.card.v1.ApplicationIdentification.DriverR\x06driver\x12f\n" +
 	"\bworkshop\x18\x05 \x01(\v2J.wayplatform.connect.tachograph.card.v1.ApplicationIdentification.WorkshopR\bworkshop\x12c\n" +
 	"\acompany\x18\x06 \x01(\v2I.wayplatform.connect.tachograph.card.v1.ApplicationIdentification.CompanyR\acompany\x12c\n" +
-	"\acontrol\x18\a \x01(\v2I.wayplatform.connect.tachograph.card.v1.ApplicationIdentification.ControlR\acontrol\x1aB\n" +
-	"\x14CardStructureVersion\x12\x14\n" +
-	"\x05major\x18\x01 \x01(\x05R\x05major\x12\x14\n" +
-	"\x05minor\x18\x02 \x01(\x05R\x05minor\x1a\x80\x04\n" +
+	"\acontrol\x18\a \x01(\v2I.wayplatform.connect.tachograph.card.v1.ApplicationIdentification.ControlR\acontrol\x1a\x80\x04\n" +
 	"\x06Driver\x121\n" +
 	"\x15events_per_type_count\x18\x01 \x01(\x05R\x12eventsPerTypeCount\x121\n" +
 	"\x15faults_per_type_count\x18\x02 \x01(\x05R\x12faultsPerTypeCount\x12:\n" +
@@ -1224,25 +1116,25 @@ const file_wayplatform_connect_tachograph_card_v1_application_identification_pro
 	"\x1econtrol_activity_records_count\x18\x01 \x01(\x05R\x1bcontrolActivityRecordsCountB\xeb\x02\n" +
 	"*com.wayplatform.connect.tachograph.card.v1B\x1eApplicationIdentificationProtoP\x01Z`github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1;cardv1\xa2\x02\x04WCTC\xaa\x02&Wayplatform.Connect.Tachograph.Card.V1\xca\x02&Wayplatform\\Connect\\Tachograph\\Card\\V1\xe2\x022Wayplatform\\Connect\\Tachograph\\Card\\V1\\GPBMetadata\xea\x02*Wayplatform::Connect::Tachograph::Card::V1b\beditionsp\xe8\a"
 
-var file_wayplatform_connect_tachograph_card_v1_application_identification_proto_msgTypes = make([]protoimpl.MessageInfo, 6)
+var file_wayplatform_connect_tachograph_card_v1_application_identification_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
 var file_wayplatform_connect_tachograph_card_v1_application_identification_proto_goTypes = []any{
-	(*ApplicationIdentification)(nil),                      // 0: wayplatform.connect.tachograph.card.v1.ApplicationIdentification
-	(*ApplicationIdentification_CardStructureVersion)(nil), // 1: wayplatform.connect.tachograph.card.v1.ApplicationIdentification.CardStructureVersion
-	(*ApplicationIdentification_Driver)(nil),               // 2: wayplatform.connect.tachograph.card.v1.ApplicationIdentification.Driver
-	(*ApplicationIdentification_Workshop)(nil),             // 3: wayplatform.connect.tachograph.card.v1.ApplicationIdentification.Workshop
-	(*ApplicationIdentification_Company)(nil),              // 4: wayplatform.connect.tachograph.card.v1.ApplicationIdentification.Company
-	(*ApplicationIdentification_Control)(nil),              // 5: wayplatform.connect.tachograph.card.v1.ApplicationIdentification.Control
-	(CardType)(0),         // 6: wayplatform.connect.tachograph.card.v1.CardType
-	(v1.EquipmentType)(0), // 7: wayplatform.connect.tachograph.datadictionary.v1.EquipmentType
+	(*ApplicationIdentification)(nil),          // 0: wayplatform.connect.tachograph.card.v1.ApplicationIdentification
+	(*ApplicationIdentification_Driver)(nil),   // 1: wayplatform.connect.tachograph.card.v1.ApplicationIdentification.Driver
+	(*ApplicationIdentification_Workshop)(nil), // 2: wayplatform.connect.tachograph.card.v1.ApplicationIdentification.Workshop
+	(*ApplicationIdentification_Company)(nil),  // 3: wayplatform.connect.tachograph.card.v1.ApplicationIdentification.Company
+	(*ApplicationIdentification_Control)(nil),  // 4: wayplatform.connect.tachograph.card.v1.ApplicationIdentification.Control
+	(CardType)(0),                   // 5: wayplatform.connect.tachograph.card.v1.CardType
+	(v1.EquipmentType)(0),           // 6: wayplatform.connect.tachograph.datadictionary.v1.EquipmentType
+	(*v1.CardStructureVersion)(nil), // 7: wayplatform.connect.tachograph.datadictionary.v1.CardStructureVersion
 }
 var file_wayplatform_connect_tachograph_card_v1_application_identification_proto_depIdxs = []int32{
-	6, // 0: wayplatform.connect.tachograph.card.v1.ApplicationIdentification.card_type:type_name -> wayplatform.connect.tachograph.card.v1.CardType
-	7, // 1: wayplatform.connect.tachograph.card.v1.ApplicationIdentification.type_of_tachograph_card_id:type_name -> wayplatform.connect.tachograph.datadictionary.v1.EquipmentType
-	1, // 2: wayplatform.connect.tachograph.card.v1.ApplicationIdentification.card_structure_version:type_name -> wayplatform.connect.tachograph.card.v1.ApplicationIdentification.CardStructureVersion
-	2, // 3: wayplatform.connect.tachograph.card.v1.ApplicationIdentification.driver:type_name -> wayplatform.connect.tachograph.card.v1.ApplicationIdentification.Driver
-	3, // 4: wayplatform.connect.tachograph.card.v1.ApplicationIdentification.workshop:type_name -> wayplatform.connect.tachograph.card.v1.ApplicationIdentification.Workshop
-	4, // 5: wayplatform.connect.tachograph.card.v1.ApplicationIdentification.company:type_name -> wayplatform.connect.tachograph.card.v1.ApplicationIdentification.Company
-	5, // 6: wayplatform.connect.tachograph.card.v1.ApplicationIdentification.control:type_name -> wayplatform.connect.tachograph.card.v1.ApplicationIdentification.Control
+	5, // 0: wayplatform.connect.tachograph.card.v1.ApplicationIdentification.card_type:type_name -> wayplatform.connect.tachograph.card.v1.CardType
+	6, // 1: wayplatform.connect.tachograph.card.v1.ApplicationIdentification.type_of_tachograph_card_id:type_name -> wayplatform.connect.tachograph.datadictionary.v1.EquipmentType
+	7, // 2: wayplatform.connect.tachograph.card.v1.ApplicationIdentification.card_structure_version:type_name -> wayplatform.connect.tachograph.datadictionary.v1.CardStructureVersion
+	1, // 3: wayplatform.connect.tachograph.card.v1.ApplicationIdentification.driver:type_name -> wayplatform.connect.tachograph.card.v1.ApplicationIdentification.Driver
+	2, // 4: wayplatform.connect.tachograph.card.v1.ApplicationIdentification.workshop:type_name -> wayplatform.connect.tachograph.card.v1.ApplicationIdentification.Workshop
+	3, // 5: wayplatform.connect.tachograph.card.v1.ApplicationIdentification.company:type_name -> wayplatform.connect.tachograph.card.v1.ApplicationIdentification.Company
+	4, // 6: wayplatform.connect.tachograph.card.v1.ApplicationIdentification.control:type_name -> wayplatform.connect.tachograph.card.v1.ApplicationIdentification.Control
 	7, // [7:7] is the sub-list for method output_type
 	7, // [7:7] is the sub-list for method input_type
 	7, // [7:7] is the sub-list for extension type_name
@@ -1262,7 +1154,7 @@ func file_wayplatform_connect_tachograph_card_v1_application_identification_prot
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_wayplatform_connect_tachograph_card_v1_application_identification_proto_rawDesc), len(file_wayplatform_connect_tachograph_card_v1_application_identification_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   6,
+			NumMessages:   5,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

@@ -32,7 +32,7 @@ const (
 //	}
 type ExtendedSerialNumber struct {
 	state                       protoimpl.MessageState `protogen:"opaque.v1"`
-	xxx_hidden_SerialNumber     uint32                 `protobuf:"varint,1,opt,name=serial_number,json=serialNumber"`
+	xxx_hidden_SerialNumber     int64                  `protobuf:"varint,1,opt,name=serial_number,json=serialNumber"`
 	xxx_hidden_Month            int32                  `protobuf:"varint,2,opt,name=month"`
 	xxx_hidden_Year             int32                  `protobuf:"varint,3,opt,name=year"`
 	xxx_hidden_Type             EquipmentType          `protobuf:"varint,4,opt,name=type,enum=wayplatform.connect.tachograph.datadictionary.v1.EquipmentType"`
@@ -68,7 +68,7 @@ func (x *ExtendedSerialNumber) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-func (x *ExtendedSerialNumber) GetSerialNumber() uint32 {
+func (x *ExtendedSerialNumber) GetSerialNumber() int64 {
 	if x != nil {
 		return x.xxx_hidden_SerialNumber
 	}
@@ -105,7 +105,7 @@ func (x *ExtendedSerialNumber) GetManufacturerCode() int32 {
 	return 0
 }
 
-func (x *ExtendedSerialNumber) SetSerialNumber(v uint32) {
+func (x *ExtendedSerialNumber) SetSerialNumber(v int64) {
 	x.xxx_hidden_SerialNumber = v
 	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 5)
 }
@@ -198,7 +198,7 @@ type ExtendedSerialNumber_builder struct {
 	// ASN.1 Specification:
 	//
 	//	serialNumber INTEGER(0..2^32-1)
-	SerialNumber *uint32
+	SerialNumber *int64
 	// The month of manufacturing (1-12).
 	// Parsed from the BCD-encoded `monthYear` field.
 	//
@@ -262,7 +262,7 @@ const file_wayplatform_connect_tachograph_datadictionary_v1_extended_serial_numb
 	"\n" +
 	"Mwayplatform/connect/tachograph/datadictionary/v1/extended_serial_number.proto\x120wayplatform.connect.tachograph.datadictionary.v1\x1aEwayplatform/connect/tachograph/datadictionary/v1/equipment_type.proto\"\xe7\x01\n" +
 	"\x14ExtendedSerialNumber\x12#\n" +
-	"\rserial_number\x18\x01 \x01(\rR\fserialNumber\x12\x14\n" +
+	"\rserial_number\x18\x01 \x01(\x03R\fserialNumber\x12\x14\n" +
 	"\x05month\x18\x02 \x01(\x05R\x05month\x12\x12\n" +
 	"\x04year\x18\x03 \x01(\x05R\x04year\x12S\n" +
 	"\x04type\x18\x04 \x01(\x0e2?.wayplatform.connect.tachograph.datadictionary.v1.EquipmentTypeR\x04type\x12+\n" +

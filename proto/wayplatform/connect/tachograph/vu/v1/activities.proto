@@ -2,18 +2,16 @@ edition = "2023";
 
 package wayplatform.connect.tachograph.vu.v1;
 
-import "wayplatform/connect/tachograph/datadictionary/v1/operation_type.proto";
 import "google/protobuf/timestamp.proto";
-import "wayplatform/connect/tachograph/datadictionary/v1/date.proto";
-import "wayplatform/connect/tachograph/datadictionary/v1/geo_coordinates.proto";
-import "wayplatform/connect/tachograph/datadictionary/v1/geo_coordinates.proto";
+import "wayplatform/connect/tachograph/datadictionary/v1/activity_change_info.proto";
 import "wayplatform/connect/tachograph/datadictionary/v1/card_slot_number.proto";
-import "wayplatform/connect/tachograph/datadictionary/v1/driver_activity_value.proto";
-import "wayplatform/connect/tachograph/datadictionary/v1/driving_status.proto";
+import "wayplatform/connect/tachograph/datadictionary/v1/date.proto";
 import "wayplatform/connect/tachograph/datadictionary/v1/entry_type_daily_work_period.proto";
 import "wayplatform/connect/tachograph/datadictionary/v1/full_card_number.proto";
 import "wayplatform/connect/tachograph/datadictionary/v1/generation.proto";
+import "wayplatform/connect/tachograph/datadictionary/v1/geo_coordinates.proto";
 import "wayplatform/connect/tachograph/datadictionary/v1/nation_numeric.proto";
+import "wayplatform/connect/tachograph/datadictionary/v1/operation_type.proto";
 import "wayplatform/connect/tachograph/datadictionary/v1/position_authentication_status.proto";
 import "wayplatform/connect/tachograph/datadictionary/v1/specific_condition_type.proto";
 import "wayplatform/connect/tachograph/datadictionary/v1/vehicle_registration_identification.proto";
@@ -135,27 +133,6 @@ message Activities {
     //
     // See Data Dictionary, Section 2.93, `ManualInputFlag`.
     bool manual_input_flag = 11;
-  }
-
-  // Represents a change in driver activity, driving status, or card status.
-  // This is a parsed representation of the `ActivityChangeInfo` bitfield.
-  //
-  // See Data Dictionary, Section 2.1, `ActivityChangeInfo`.
-  //
-  // ASN.1 Definition:
-  //
-  //     ActivityChangeInfo ::= OCTET STRING (SIZE (2))
-  message ActivityChange {
-    // Slot of the driver/co-driver.
-    datadictionary.v1.CardSlotNumber slot = 1;
-    // Driving status (single or crew).
-    datadictionary.v1.DrivingStatus driving_status = 3;
-    // Indicates if a card is inserted.
-    bool inserted = 5;
-    // Driver's activity (break/rest, availability, work, driving).
-    datadictionary.v1.DriverActivityValue activity = 7;
-    // Time of the change in minutes since 00:00.
-    int32 time_of_change_minutes = 9;
   }
 
   // Represents a place record for the beginning or end of a daily work period.
@@ -388,7 +365,7 @@ message Activities {
 
   // Driver activity changes.
   // Corresponds to `VuActivityDailyData` (DD 2.170) or `VuActivityDailyRecordArray` (DD 2.171).
-  repeated ActivityChange activity_changes = 6;
+  repeated datadictionary.v1.ActivityChangeInfo activity_changes = 6;
 
   // Daily work period place entries.
   // Corresponds to `VuPlaceDailyWorkPeriodData` (DD 2.218) or `VuPlaceDailyWorkPeriodRecordArray` (DD 2.220).

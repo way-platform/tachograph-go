@@ -436,6 +436,10 @@ type Places_Record_builder struct {
 	DailyWorkPeriodCountry *v1.NationNumeric
 	// Region code.
 	//
+	// The meaning of this code is country-specific. For Gen1, the data
+	// dictionary provides values for Spain. For Gen2, codes are maintained
+	// on the JRC website: https://dtlab.jrc.ec.europa.eu/
+	//
 	// See Data Dictionary, Section 2.122, `RegionNumeric`.
 	// ASN.1 Definition:
 	//

@@ -30,10 +30,11 @@ const (
 //	    cardNumber CardNumber
 //	}
 type FullCardNumber struct {
-	state                             protoimpl.MessageState `protogen:"opaque.v1"`
-	xxx_hidden_CardType               EquipmentType          `protobuf:"varint,1,opt,name=card_type,json=cardType,enum=wayplatform.connect.tachograph.datadictionary.v1.EquipmentType"`
-	xxx_hidden_CardIssuingMemberState int32                  `protobuf:"varint,2,opt,name=card_issuing_member_state,json=cardIssuingMemberState"`
-	xxx_hidden_CardNumber             *string                `protobuf:"bytes,3,opt,name=card_number,json=cardNumber"`
+	state                             protoimpl.MessageState               `protogen:"opaque.v1"`
+	xxx_hidden_CardType               EquipmentType                        `protobuf:"varint,1,opt,name=card_type,json=cardType,enum=wayplatform.connect.tachograph.datadictionary.v1.EquipmentType"`
+	xxx_hidden_CardIssuingMemberState NationNumeric                        `protobuf:"varint,2,opt,name=card_issuing_member_state,json=cardIssuingMemberState,enum=wayplatform.connect.tachograph.datadictionary.v1.NationNumeric"`
+	xxx_hidden_DriverIdentification   *FullCardNumber_DriverIdentification `protobuf:"bytes,3,opt,name=driver_identification,json=driverIdentification"`
+	xxx_hidden_OwnerIdentification    *FullCardNumber_OwnerIdentification  `protobuf:"bytes,4,opt,name=owner_identification,json=ownerIdentification"`
 	XXX_raceDetectHookData            protoimpl.RaceDetectHookData
 	XXX_presence                      [1]uint32
 	unknownFields                     protoimpl.UnknownFields
@@ -74,36 +75,45 @@ func (x *FullCardNumber) GetCardType() EquipmentType {
 	return EquipmentType_EQUIPMENT_TYPE_UNSPECIFIED
 }
 
-func (x *FullCardNumber) GetCardIssuingMemberState() int32 {
+func (x *FullCardNumber) GetCardIssuingMemberState() NationNumeric {
 	if x != nil {
-		return x.xxx_hidden_CardIssuingMemberState
+		if protoimpl.X.Present(&(x.XXX_presence[0]), 1) {
+			return x.xxx_hidden_CardIssuingMemberState
+		}
 	}
-	return 0
+	return NationNumeric_NATION_NUMERIC_UNSPECIFIED
 }
 
-func (x *FullCardNumber) GetCardNumber() string {
+func (x *FullCardNumber) GetDriverIdentification() *FullCardNumber_DriverIdentification {
 	if x != nil {
-		if x.xxx_hidden_CardNumber != nil {
-			return *x.xxx_hidden_CardNumber
-		}
-		return ""
+		return x.xxx_hidden_DriverIdentification
 	}
-	return ""
+	return nil
+}
+
+func (x *FullCardNumber) GetOwnerIdentification() *FullCardNumber_OwnerIdentification {
+	if x != nil {
+		return x.xxx_hidden_OwnerIdentification
+	}
+	return nil
 }
 
 func (x *FullCardNumber) SetCardType(v EquipmentType) {
 	x.xxx_hidden_CardType = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 3)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 4)
 }
 
-func (x *FullCardNumber) SetCardIssuingMemberState(v int32) {
+func (x *FullCardNumber) SetCardIssuingMemberState(v NationNumeric) {
 	x.xxx_hidden_CardIssuingMemberState = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 3)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 4)
 }
 
-func (x *FullCardNumber) SetCardNumber(v string) {
-	x.xxx_hidden_CardNumber = &v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 3)
+func (x *FullCardNumber) SetDriverIdentification(v *FullCardNumber_DriverIdentification) {
+	x.xxx_hidden_DriverIdentification = v
+}
+
+func (x *FullCardNumber) SetOwnerIdentification(v *FullCardNumber_OwnerIdentification) {
+	x.xxx_hidden_OwnerIdentification = v
 }
 
 func (x *FullCardNumber) HasCardType() bool {
@@ -120,11 +130,18 @@ func (x *FullCardNumber) HasCardIssuingMemberState() bool {
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 1)
 }
 
-func (x *FullCardNumber) HasCardNumber() bool {
+func (x *FullCardNumber) HasDriverIdentification() bool {
 	if x == nil {
 		return false
 	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 2)
+	return x.xxx_hidden_DriverIdentification != nil
+}
+
+func (x *FullCardNumber) HasOwnerIdentification() bool {
+	if x == nil {
+		return false
+	}
+	return x.xxx_hidden_OwnerIdentification != nil
 }
 
 func (x *FullCardNumber) ClearCardType() {
@@ -134,18 +151,22 @@ func (x *FullCardNumber) ClearCardType() {
 
 func (x *FullCardNumber) ClearCardIssuingMemberState() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 1)
-	x.xxx_hidden_CardIssuingMemberState = 0
+	x.xxx_hidden_CardIssuingMemberState = NationNumeric_NATION_NUMERIC_UNSPECIFIED
 }
 
-func (x *FullCardNumber) ClearCardNumber() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 2)
-	x.xxx_hidden_CardNumber = nil
+func (x *FullCardNumber) ClearDriverIdentification() {
+	x.xxx_hidden_DriverIdentification = nil
+}
+
+func (x *FullCardNumber) ClearOwnerIdentification() {
+	x.xxx_hidden_OwnerIdentification = nil
 }
 
 type FullCardNumber_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
-	// The type of the tachograph card.
+	// The type of the tachograph card. This field acts as the discriminant for the
+	// `CardNumber` CHOICE, determining which of the fields below is populated.
 	//
 	// ASN.1 Specification:
 	//
@@ -156,20 +177,13 @@ type FullCardNumber_builder struct {
 	// ASN.1 Specification:
 	//
 	//	NationNumeric ::= INTEGER(0..255)
-	CardIssuingMemberState *int32
-	// The card number.
-	//
-	// See Data Dictionary, Section 2.26, `CardNumber`.
-	// ASN.1 Definition:
-	//
-	//	CardNumber ::= CHOICE {
-	//	    driverIdentification IA5String(SIZE(14)),
-	//	    ownerIdentification IA5String(SIZE(13)),
-	//	    cardConsecutiveIndex IA5String(SIZE(1)),
-	//	    cardReplacementIndex IA5String(SIZE(1)),
-	//	    cardRenewalIndex IA5String(SIZE(1))
-	//	}
-	CardNumber *string
+	CardIssuingMemberState *NationNumeric
+	// This field is part of the `CardNumber` CHOICE.
+	// It is populated when `card_type` is `DRIVER_CARD`.
+	DriverIdentification *FullCardNumber_DriverIdentification
+	// This field is part of the `CardNumber` CHOICE.
+	// It is populated when `card_type` is `WORKSHOP_CARD` or `COMPANY_CARD`.
+	OwnerIdentification *FullCardNumber_OwnerIdentification
 }
 
 func (b0 FullCardNumber_builder) Build() *FullCardNumber {
@@ -177,17 +191,248 @@ func (b0 FullCardNumber_builder) Build() *FullCardNumber {
 	b, x := &b0, m0
 	_, _ = b, x
 	if b.CardType != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 3)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 4)
 		x.xxx_hidden_CardType = *b.CardType
 	}
 	if b.CardIssuingMemberState != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 3)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 4)
 		x.xxx_hidden_CardIssuingMemberState = *b.CardIssuingMemberState
 	}
-	if b.CardNumber != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 3)
-		x.xxx_hidden_CardNumber = b.CardNumber
+	x.xxx_hidden_DriverIdentification = b.DriverIdentification
+	x.xxx_hidden_OwnerIdentification = b.OwnerIdentification
+	return m0
+}
+
+// Represents the `driverIdentification` sequence from the `CardNumber` CHOICE.
+//
+// ASN.1 Definition:
+//
+//	driverIdentification SEQUENCE {
+//	    driverIdentification   IA5String(SIZE(14)),
+//	    cardConsecutiveIndex   IA5String(SIZE(1)),
+//	    cardReplacementIndex   IA5String(SIZE(1)),
+//	    cardRenewalIndex       IA5String(SIZE(1))
+//	}
+type FullCardNumber_DriverIdentification struct {
+	state                       protoimpl.MessageState `protogen:"opaque.v1"`
+	xxx_hidden_Identification   *StringValue           `protobuf:"bytes,1,opt,name=identification"`
+	xxx_hidden_ConsecutiveIndex *StringValue           `protobuf:"bytes,2,opt,name=consecutive_index,json=consecutiveIndex"`
+	xxx_hidden_ReplacementIndex *StringValue           `protobuf:"bytes,3,opt,name=replacement_index,json=replacementIndex"`
+	xxx_hidden_RenewalIndex     *StringValue           `protobuf:"bytes,4,opt,name=renewal_index,json=renewalIndex"`
+	unknownFields               protoimpl.UnknownFields
+	sizeCache                   protoimpl.SizeCache
+}
+
+func (x *FullCardNumber_DriverIdentification) Reset() {
+	*x = FullCardNumber_DriverIdentification{}
+	mi := &file_wayplatform_connect_tachograph_datadictionary_v1_full_card_number_proto_msgTypes[1]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *FullCardNumber_DriverIdentification) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*FullCardNumber_DriverIdentification) ProtoMessage() {}
+
+func (x *FullCardNumber_DriverIdentification) ProtoReflect() protoreflect.Message {
+	mi := &file_wayplatform_connect_tachograph_datadictionary_v1_full_card_number_proto_msgTypes[1]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
 	}
+	return mi.MessageOf(x)
+}
+
+func (x *FullCardNumber_DriverIdentification) GetIdentification() *StringValue {
+	if x != nil {
+		return x.xxx_hidden_Identification
+	}
+	return nil
+}
+
+func (x *FullCardNumber_DriverIdentification) GetConsecutiveIndex() *StringValue {
+	if x != nil {
+		return x.xxx_hidden_ConsecutiveIndex
+	}
+	return nil
+}
+
+func (x *FullCardNumber_DriverIdentification) GetReplacementIndex() *StringValue {
+	if x != nil {
+		return x.xxx_hidden_ReplacementIndex
+	}
+	return nil
+}
+
+func (x *FullCardNumber_DriverIdentification) GetRenewalIndex() *StringValue {
+	if x != nil {
+		return x.xxx_hidden_RenewalIndex
+	}
+	return nil
+}
+
+func (x *FullCardNumber_DriverIdentification) SetIdentification(v *StringValue) {
+	x.xxx_hidden_Identification = v
+}
+
+func (x *FullCardNumber_DriverIdentification) SetConsecutiveIndex(v *StringValue) {
+	x.xxx_hidden_ConsecutiveIndex = v
+}
+
+func (x *FullCardNumber_DriverIdentification) SetReplacementIndex(v *StringValue) {
+	x.xxx_hidden_ReplacementIndex = v
+}
+
+func (x *FullCardNumber_DriverIdentification) SetRenewalIndex(v *StringValue) {
+	x.xxx_hidden_RenewalIndex = v
+}
+
+func (x *FullCardNumber_DriverIdentification) HasIdentification() bool {
+	if x == nil {
+		return false
+	}
+	return x.xxx_hidden_Identification != nil
+}
+
+func (x *FullCardNumber_DriverIdentification) HasConsecutiveIndex() bool {
+	if x == nil {
+		return false
+	}
+	return x.xxx_hidden_ConsecutiveIndex != nil
+}
+
+func (x *FullCardNumber_DriverIdentification) HasReplacementIndex() bool {
+	if x == nil {
+		return false
+	}
+	return x.xxx_hidden_ReplacementIndex != nil
+}
+
+func (x *FullCardNumber_DriverIdentification) HasRenewalIndex() bool {
+	if x == nil {
+		return false
+	}
+	return x.xxx_hidden_RenewalIndex != nil
+}
+
+func (x *FullCardNumber_DriverIdentification) ClearIdentification() {
+	x.xxx_hidden_Identification = nil
+}
+
+func (x *FullCardNumber_DriverIdentification) ClearConsecutiveIndex() {
+	x.xxx_hidden_ConsecutiveIndex = nil
+}
+
+func (x *FullCardNumber_DriverIdentification) ClearReplacementIndex() {
+	x.xxx_hidden_ReplacementIndex = nil
+}
+
+func (x *FullCardNumber_DriverIdentification) ClearRenewalIndex() {
+	x.xxx_hidden_RenewalIndex = nil
+}
+
+type FullCardNumber_DriverIdentification_builder struct {
+	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
+
+	// The core driver identification number string.
+	Identification *StringValue
+	// A single-digit index for the card.
+	ConsecutiveIndex *StringValue
+	// A single-digit index for card replacement.
+	ReplacementIndex *StringValue
+	// A single-digit index for card renewal.
+	RenewalIndex *StringValue
+}
+
+func (b0 FullCardNumber_DriverIdentification_builder) Build() *FullCardNumber_DriverIdentification {
+	m0 := &FullCardNumber_DriverIdentification{}
+	b, x := &b0, m0
+	_, _ = b, x
+	x.xxx_hidden_Identification = b.Identification
+	x.xxx_hidden_ConsecutiveIndex = b.ConsecutiveIndex
+	x.xxx_hidden_ReplacementIndex = b.ReplacementIndex
+	x.xxx_hidden_RenewalIndex = b.RenewalIndex
+	return m0
+}
+
+// Represents the `ownerIdentification` sequence from the `CardNumber` CHOICE.
+//
+// ASN.1 Definition:
+//
+//	ownerIdentification SEQUENCE {
+//	    ownerIdentification    IA5String(SIZE(13))
+//	}
+type FullCardNumber_OwnerIdentification struct {
+	state                     protoimpl.MessageState `protogen:"opaque.v1"`
+	xxx_hidden_Identification *StringValue           `protobuf:"bytes,1,opt,name=identification"`
+	unknownFields             protoimpl.UnknownFields
+	sizeCache                 protoimpl.SizeCache
+}
+
+func (x *FullCardNumber_OwnerIdentification) Reset() {
+	*x = FullCardNumber_OwnerIdentification{}
+	mi := &file_wayplatform_connect_tachograph_datadictionary_v1_full_card_number_proto_msgTypes[2]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *FullCardNumber_OwnerIdentification) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*FullCardNumber_OwnerIdentification) ProtoMessage() {}
+
+func (x *FullCardNumber_OwnerIdentification) ProtoReflect() protoreflect.Message {
+	mi := &file_wayplatform_connect_tachograph_datadictionary_v1_full_card_number_proto_msgTypes[2]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+func (x *FullCardNumber_OwnerIdentification) GetIdentification() *StringValue {
+	if x != nil {
+		return x.xxx_hidden_Identification
+	}
+	return nil
+}
+
+func (x *FullCardNumber_OwnerIdentification) SetIdentification(v *StringValue) {
+	x.xxx_hidden_Identification = v
+}
+
+func (x *FullCardNumber_OwnerIdentification) HasIdentification() bool {
+	if x == nil {
+		return false
+	}
+	return x.xxx_hidden_Identification != nil
+}
+
+func (x *FullCardNumber_OwnerIdentification) ClearIdentification() {
+	x.xxx_hidden_Identification = nil
+}
+
+type FullCardNumber_OwnerIdentification_builder struct {
+	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
+
+	// The unique identification for the owner.
+	Identification *StringValue
+}
+
+func (b0 FullCardNumber_OwnerIdentification_builder) Build() *FullCardNumber_OwnerIdentification {
+	m0 := &FullCardNumber_OwnerIdentification{}
+	b, x := &b0, m0
+	_, _ = b, x
+	x.xxx_hidden_Identification = b.Identification
 	return m0
 }
 
@@ -195,26 +440,45 @@ var File_wayplatform_connect_tachograph_datadictionary_v1_full_card_number_proto
 
 const file_wayplatform_connect_tachograph_datadictionary_v1_full_card_number_proto_rawDesc = "" +
 	"\n" +
-	"Gwayplatform/connect/tachograph/datadictionary/v1/full_card_number.proto\x120wayplatform.connect.tachograph.datadictionary.v1\x1aEwayplatform/connect/tachograph/datadictionary/v1/equipment_type.proto\"\xca\x01\n" +
+	"Gwayplatform/connect/tachograph/datadictionary/v1/full_card_number.proto\x120wayplatform.connect.tachograph.datadictionary.v1\x1aEwayplatform/connect/tachograph/datadictionary/v1/equipment_type.proto\x1aEwayplatform/connect/tachograph/datadictionary/v1/nation_numeric.proto\x1aCwayplatform/connect/tachograph/datadictionary/v1/string_value.proto\"\xbb\b\n" +
 	"\x0eFullCardNumber\x12\\\n" +
-	"\tcard_type\x18\x01 \x01(\x0e2?.wayplatform.connect.tachograph.datadictionary.v1.EquipmentTypeR\bcardType\x129\n" +
-	"\x19card_issuing_member_state\x18\x02 \x01(\x05R\x16cardIssuingMemberState\x12\x1f\n" +
-	"\vcard_number\x18\x03 \x01(\tR\n" +
-	"cardNumberB\xa6\x03\n" +
+	"\tcard_type\x18\x01 \x01(\x0e2?.wayplatform.connect.tachograph.datadictionary.v1.EquipmentTypeR\bcardType\x12z\n" +
+	"\x19card_issuing_member_state\x18\x02 \x01(\x0e2?.wayplatform.connect.tachograph.datadictionary.v1.NationNumericR\x16cardIssuingMemberState\x12\x8a\x01\n" +
+	"\x15driver_identification\x18\x03 \x01(\v2U.wayplatform.connect.tachograph.datadictionary.v1.FullCardNumber.DriverIdentificationR\x14driverIdentification\x12\x87\x01\n" +
+	"\x14owner_identification\x18\x04 \x01(\v2T.wayplatform.connect.tachograph.datadictionary.v1.FullCardNumber.OwnerIdentificationR\x13ownerIdentification\x1a\xb9\x03\n" +
+	"\x14DriverIdentification\x12e\n" +
+	"\x0eidentification\x18\x01 \x01(\v2=.wayplatform.connect.tachograph.datadictionary.v1.StringValueR\x0eidentification\x12j\n" +
+	"\x11consecutive_index\x18\x02 \x01(\v2=.wayplatform.connect.tachograph.datadictionary.v1.StringValueR\x10consecutiveIndex\x12j\n" +
+	"\x11replacement_index\x18\x03 \x01(\v2=.wayplatform.connect.tachograph.datadictionary.v1.StringValueR\x10replacementIndex\x12b\n" +
+	"\rrenewal_index\x18\x04 \x01(\v2=.wayplatform.connect.tachograph.datadictionary.v1.StringValueR\frenewalIndex\x1a|\n" +
+	"\x13OwnerIdentification\x12e\n" +
+	"\x0eidentification\x18\x01 \x01(\v2=.wayplatform.connect.tachograph.datadictionary.v1.StringValueR\x0eidentificationB\xa6\x03\n" +
 	"4com.wayplatform.connect.tachograph.datadictionary.v1B\x13FullCardNumberProtoP\x01Ztgithub.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/datadictionary/v1;datadictionaryv1\xa2\x02\x04WCTD\xaa\x020Wayplatform.Connect.Tachograph.Datadictionary.V1\xca\x020Wayplatform\\Connect\\Tachograph\\Datadictionary\\V1\xe2\x02<Wayplatform\\Connect\\Tachograph\\Datadictionary\\V1\\GPBMetadata\xea\x024Wayplatform::Connect::Tachograph::Datadictionary::V1b\beditionsp\xe8\a"
 
-var file_wayplatform_connect_tachograph_datadictionary_v1_full_card_number_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
+var file_wayplatform_connect_tachograph_datadictionary_v1_full_card_number_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
 var file_wayplatform_connect_tachograph_datadictionary_v1_full_card_number_proto_goTypes = []any{
-	(*FullCardNumber)(nil), // 0: wayplatform.connect.tachograph.datadictionary.v1.FullCardNumber
-	(EquipmentType)(0),     // 1: wayplatform.connect.tachograph.datadictionary.v1.EquipmentType
+	(*FullCardNumber)(nil),                      // 0: wayplatform.connect.tachograph.datadictionary.v1.FullCardNumber
+	(*FullCardNumber_DriverIdentification)(nil), // 1: wayplatform.connect.tachograph.datadictionary.v1.FullCardNumber.DriverIdentification
+	(*FullCardNumber_OwnerIdentification)(nil),  // 2: wayplatform.connect.tachograph.datadictionary.v1.FullCardNumber.OwnerIdentification
+	(EquipmentType)(0),                          // 3: wayplatform.connect.tachograph.datadictionary.v1.EquipmentType
+	(NationNumeric)(0),                          // 4: wayplatform.connect.tachograph.datadictionary.v1.NationNumeric
+	(*StringValue)(nil),                         // 5: wayplatform.connect.tachograph.datadictionary.v1.StringValue
 }
 var file_wayplatform_connect_tachograph_datadictionary_v1_full_card_number_proto_depIdxs = []int32{
-	1, // 0: wayplatform.connect.tachograph.datadictionary.v1.FullCardNumber.card_type:type_name -> wayplatform.connect.tachograph.datadictionary.v1.EquipmentType
-	1, // [1:1] is the sub-list for method output_type
-	1, // [1:1] is the sub-list for method input_type
-	1, // [1:1] is the sub-list for extension type_name
-	1, // [1:1] is the sub-list for extension extendee
-	0, // [0:1] is the sub-list for field type_name
+	3, // 0: wayplatform.connect.tachograph.datadictionary.v1.FullCardNumber.card_type:type_name -> wayplatform.connect.tachograph.datadictionary.v1.EquipmentType
+	4, // 1: wayplatform.connect.tachograph.datadictionary.v1.FullCardNumber.card_issuing_member_state:type_name -> wayplatform.connect.tachograph.datadictionary.v1.NationNumeric
+	1, // 2: wayplatform.connect.tachograph.datadictionary.v1.FullCardNumber.driver_identification:type_name -> wayplatform.connect.tachograph.datadictionary.v1.FullCardNumber.DriverIdentification
+	2, // 3: wayplatform.connect.tachograph.datadictionary.v1.FullCardNumber.owner_identification:type_name -> wayplatform.connect.tachograph.datadictionary.v1.FullCardNumber.OwnerIdentification
+	5, // 4: wayplatform.connect.tachograph.datadictionary.v1.FullCardNumber.DriverIdentification.identification:type_name -> wayplatform.connect.tachograph.datadictionary.v1.StringValue
+	5, // 5: wayplatform.connect.tachograph.datadictionary.v1.FullCardNumber.DriverIdentification.consecutive_index:type_name -> wayplatform.connect.tachograph.datadictionary.v1.StringValue
+	5, // 6: wayplatform.connect.tachograph.datadictionary.v1.FullCardNumber.DriverIdentification.replacement_index:type_name -> wayplatform.connect.tachograph.datadictionary.v1.StringValue
+	5, // 7: wayplatform.connect.tachograph.datadictionary.v1.FullCardNumber.DriverIdentification.renewal_index:type_name -> wayplatform.connect.tachograph.datadictionary.v1.StringValue
+	5, // 8: wayplatform.connect.tachograph.datadictionary.v1.FullCardNumber.OwnerIdentification.identification:type_name -> wayplatform.connect.tachograph.datadictionary.v1.StringValue
+	9, // [9:9] is the sub-list for method output_type
+	9, // [9:9] is the sub-list for method input_type
+	9, // [9:9] is the sub-list for extension type_name
+	9, // [9:9] is the sub-list for extension extendee
+	0, // [0:9] is the sub-list for field type_name
 }
 
 func init() { file_wayplatform_connect_tachograph_datadictionary_v1_full_card_number_proto_init() }
@@ -223,13 +487,15 @@ func file_wayplatform_connect_tachograph_datadictionary_v1_full_card_number_prot
 		return
 	}
 	file_wayplatform_connect_tachograph_datadictionary_v1_equipment_type_proto_init()
+	file_wayplatform_connect_tachograph_datadictionary_v1_nation_numeric_proto_init()
+	file_wayplatform_connect_tachograph_datadictionary_v1_string_value_proto_init()
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_wayplatform_connect_tachograph_datadictionary_v1_full_card_number_proto_rawDesc), len(file_wayplatform_connect_tachograph_datadictionary_v1_full_card_number_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   1,
+			NumMessages:   3,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

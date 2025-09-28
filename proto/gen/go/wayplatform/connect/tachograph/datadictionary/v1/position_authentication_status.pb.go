@@ -20,17 +20,31 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// PositionAuthenticationStatus indicates the authentication status of a GNSS fix.
+// Defines the authentication status of a GNSS position.
+//
 // See Data Dictionary, Section 2.117a.
+//
+// ASN.1 Definition:
+//
+//	PositionAuthenticationStatus ::= INTEGER {
+//	    notAvailable(0), authenticated(1), notAuthenticated(2),
+//	    authenticationCorrupted(3)
+//	} (0..255)
 type PositionAuthenticationStatus int32
 
 const (
-	PositionAuthenticationStatus_POSITION_AUTHENTICATION_STATUS_UNSPECIFIED  PositionAuthenticationStatus = 0
+	// The authentication status is not specified.
+	PositionAuthenticationStatus_POSITION_AUTHENTICATION_STATUS_UNSPECIFIED PositionAuthenticationStatus = 0
+	// The authentication status was present but not recognized.
 	PositionAuthenticationStatus_POSITION_AUTHENTICATION_STATUS_UNRECOGNIZED PositionAuthenticationStatus = 1
-	PositionAuthenticationStatus_NOT_AVAILABLE                               PositionAuthenticationStatus = 2
-	PositionAuthenticationStatus_AUTHENTICATED                               PositionAuthenticationStatus = 3
-	PositionAuthenticationStatus_NOT_AUTHENTICATED                           PositionAuthenticationStatus = 4
-	PositionAuthenticationStatus_AUTHENTICATION_CORRUPTED                    PositionAuthenticationStatus = 5
+	// Authentication information is not available.
+	PositionAuthenticationStatus_POSITION_AUTHENTICATION_STATUS_NOT_AVAILABLE PositionAuthenticationStatus = 2
+	// The position has been authenticated.
+	PositionAuthenticationStatus_POSITION_AUTHENTICATED PositionAuthenticationStatus = 3
+	// The position has not been authenticated.
+	PositionAuthenticationStatus_POSITION_NOT_AUTHENTICATED PositionAuthenticationStatus = 4
+	// The authentication information is corrupted.
+	PositionAuthenticationStatus_POSITION_AUTHENTICATION_CORRUPTED PositionAuthenticationStatus = 5
 )
 
 // Enum value maps for PositionAuthenticationStatus.
@@ -38,18 +52,18 @@ var (
 	PositionAuthenticationStatus_name = map[int32]string{
 		0: "POSITION_AUTHENTICATION_STATUS_UNSPECIFIED",
 		1: "POSITION_AUTHENTICATION_STATUS_UNRECOGNIZED",
-		2: "NOT_AVAILABLE",
-		3: "AUTHENTICATED",
-		4: "NOT_AUTHENTICATED",
-		5: "AUTHENTICATION_CORRUPTED",
+		2: "POSITION_AUTHENTICATION_STATUS_NOT_AVAILABLE",
+		3: "POSITION_AUTHENTICATED",
+		4: "POSITION_NOT_AUTHENTICATED",
+		5: "POSITION_AUTHENTICATION_CORRUPTED",
 	}
 	PositionAuthenticationStatus_value = map[string]int32{
-		"POSITION_AUTHENTICATION_STATUS_UNSPECIFIED":  0,
-		"POSITION_AUTHENTICATION_STATUS_UNRECOGNIZED": 1,
-		"NOT_AVAILABLE":            2,
-		"AUTHENTICATED":            3,
-		"NOT_AUTHENTICATED":        4,
-		"AUTHENTICATION_CORRUPTED": 5,
+		"POSITION_AUTHENTICATION_STATUS_UNSPECIFIED":   0,
+		"POSITION_AUTHENTICATION_STATUS_UNRECOGNIZED":  1,
+		"POSITION_AUTHENTICATION_STATUS_NOT_AVAILABLE": 2,
+		"POSITION_AUTHENTICATED":                       3,
+		"POSITION_NOT_AUTHENTICATED":                   4,
+		"POSITION_AUTHENTICATION_CORRUPTED":            5,
 	}
 )
 
@@ -79,15 +93,15 @@ var File_wayplatform_connect_tachograph_datadictionary_v1_position_authenticatio
 
 const file_wayplatform_connect_tachograph_datadictionary_v1_position_authentication_status_proto_rawDesc = "" +
 	"\n" +
-	"Uwayplatform/connect/tachograph/datadictionary/v1/position_authentication_status.proto\x120wayplatform.connect.tachograph.datadictionary.v1\x1aBwayplatform/connect/tachograph/datadictionary/v1/annotations.proto*\xf6\x01\n" +
+	"Uwayplatform/connect/tachograph/datadictionary/v1/position_authentication_status.proto\x120wayplatform.connect.tachograph.datadictionary.v1\x1aBwayplatform/connect/tachograph/datadictionary/v1/annotations.proto*\xb0\x02\n" +
 	"\x1cPositionAuthenticationStatus\x12.\n" +
 	"*POSITION_AUTHENTICATION_STATUS_UNSPECIFIED\x10\x00\x12/\n" +
-	"+POSITION_AUTHENTICATION_STATUS_UNRECOGNIZED\x10\x01\x12\x18\n" +
-	"\rNOT_AVAILABLE\x10\x02\x1a\x05\x98\xaf\x9c\x02\x00\x12\x18\n" +
-	"\rAUTHENTICATED\x10\x03\x1a\x05\x98\xaf\x9c\x02\x01\x12\x1c\n" +
-	"\x11NOT_AUTHENTICATED\x10\x04\x1a\x05\x98\xaf\x9c\x02\x02\x12#\n" +
-	"\x18AUTHENTICATION_CORRUPTED\x10\x05\x1a\x05\x98\xaf\x9c\x02\x03B\xb4\x03\n" +
-	"4com.wayplatform.connect.tachograph.datadictionary.v1B!PositionAuthenticationStatusProtoP\x01Ztgithub.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/datadictionary/v1;datadictionaryv1\xa2\x02\x04WCTD\xaa\x020Wayplatform.Connect.Tachograph.Datadictionary.V1\xca\x020Wayplatform\\Connect\\Tachograph\\Datadictionary\\V1\xe2\x02<Wayplatform\\Connect\\Tachograph\\Datadictionary\\V1\\GPBMetadata\xea\x024Wayplatform::Connect::Tachograph::Datadictionary::V1b\beditionsp\xe8\a"
+	"+POSITION_AUTHENTICATION_STATUS_UNRECOGNIZED\x10\x01\x127\n" +
+	",POSITION_AUTHENTICATION_STATUS_NOT_AVAILABLE\x10\x02\x1a\x05\x98\xaf\x9c\x02\x00\x12!\n" +
+	"\x16POSITION_AUTHENTICATED\x10\x03\x1a\x05\x98\xaf\x9c\x02\x01\x12%\n" +
+	"\x1aPOSITION_NOT_AUTHENTICATED\x10\x04\x1a\x05\x98\xaf\x9c\x02\x02\x12,\n" +
+	"!POSITION_AUTHENTICATION_CORRUPTED\x10\x05\x1a\x05\x98\xaf\x9c\x02\x03B\xb4\x03\n" +
+	"4com.wayplatform.connect.tachograph.datadictionary.v1B!PositionAuthenticationStatusProtoP\x01Ztgithub.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/datadictionary/v1;datadictionaryv1\xa2\x02\x04WCTD\xaa\x020Wayplatform.Connect.Tachograph.Datadictionary.V1\xca\x020Wayplatform\\Connect\\Tachograph\\Datadictionary\\V1\xe2\x02<Wayplatform\\Connect\\Tachograph\\Datadictionary\\V1\\GPBMetadata\xea\x024Wayplatform::Connect::Tachograph::Datadictionary::V1b\x06proto3"
 
 var file_wayplatform_connect_tachograph_datadictionary_v1_position_authentication_status_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
 var file_wayplatform_connect_tachograph_datadictionary_v1_position_authentication_status_proto_goTypes = []any{

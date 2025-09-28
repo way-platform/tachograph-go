@@ -7,6 +7,7 @@
 package cardv1
 
 import (
+	v1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/datadictionary/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
@@ -339,15 +340,14 @@ func (b0 GnssPlaces_Record_builder) Build() *GnssPlaces_Record {
 //	    geoCoordinates GeoCoordinates
 //	}
 type GnssPlaces_Record_GnssPlace struct {
-	state                   protoimpl.MessageState `protogen:"opaque.v1"`
-	xxx_hidden_Timestamp    *timestamppb.Timestamp `protobuf:"bytes,1,opt,name=timestamp"`
-	xxx_hidden_GnssAccuracy int32                  `protobuf:"varint,2,opt,name=gnss_accuracy,json=gnssAccuracy"`
-	xxx_hidden_Longitude    int32                  `protobuf:"zigzag32,3,opt,name=longitude"`
-	xxx_hidden_Latitude     int32                  `protobuf:"zigzag32,4,opt,name=latitude"`
-	XXX_raceDetectHookData  protoimpl.RaceDetectHookData
-	XXX_presence            [1]uint32
-	unknownFields           protoimpl.UnknownFields
-	sizeCache               protoimpl.SizeCache
+	state                     protoimpl.MessageState `protogen:"opaque.v1"`
+	xxx_hidden_Timestamp      *timestamppb.Timestamp `protobuf:"bytes,1,opt,name=timestamp"`
+	xxx_hidden_GnssAccuracy   int32                  `protobuf:"varint,2,opt,name=gnss_accuracy,json=gnssAccuracy"`
+	xxx_hidden_GeoCoordinates *v1.GeoCoordinates     `protobuf:"bytes,3,opt,name=geo_coordinates,json=geoCoordinates"`
+	XXX_raceDetectHookData    protoimpl.RaceDetectHookData
+	XXX_presence              [1]uint32
+	unknownFields             protoimpl.UnknownFields
+	sizeCache                 protoimpl.SizeCache
 }
 
 func (x *GnssPlaces_Record_GnssPlace) Reset() {
@@ -389,18 +389,11 @@ func (x *GnssPlaces_Record_GnssPlace) GetGnssAccuracy() int32 {
 	return 0
 }
 
-func (x *GnssPlaces_Record_GnssPlace) GetLongitude() int32 {
+func (x *GnssPlaces_Record_GnssPlace) GetGeoCoordinates() *v1.GeoCoordinates {
 	if x != nil {
-		return x.xxx_hidden_Longitude
+		return x.xxx_hidden_GeoCoordinates
 	}
-	return 0
-}
-
-func (x *GnssPlaces_Record_GnssPlace) GetLatitude() int32 {
-	if x != nil {
-		return x.xxx_hidden_Latitude
-	}
-	return 0
+	return nil
 }
 
 func (x *GnssPlaces_Record_GnssPlace) SetTimestamp(v *timestamppb.Timestamp) {
@@ -409,17 +402,11 @@ func (x *GnssPlaces_Record_GnssPlace) SetTimestamp(v *timestamppb.Timestamp) {
 
 func (x *GnssPlaces_Record_GnssPlace) SetGnssAccuracy(v int32) {
 	x.xxx_hidden_GnssAccuracy = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 4)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 3)
 }
 
-func (x *GnssPlaces_Record_GnssPlace) SetLongitude(v int32) {
-	x.xxx_hidden_Longitude = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 4)
-}
-
-func (x *GnssPlaces_Record_GnssPlace) SetLatitude(v int32) {
-	x.xxx_hidden_Latitude = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 3, 4)
+func (x *GnssPlaces_Record_GnssPlace) SetGeoCoordinates(v *v1.GeoCoordinates) {
+	x.xxx_hidden_GeoCoordinates = v
 }
 
 func (x *GnssPlaces_Record_GnssPlace) HasTimestamp() bool {
@@ -436,18 +423,11 @@ func (x *GnssPlaces_Record_GnssPlace) HasGnssAccuracy() bool {
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 1)
 }
 
-func (x *GnssPlaces_Record_GnssPlace) HasLongitude() bool {
+func (x *GnssPlaces_Record_GnssPlace) HasGeoCoordinates() bool {
 	if x == nil {
 		return false
 	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 2)
-}
-
-func (x *GnssPlaces_Record_GnssPlace) HasLatitude() bool {
-	if x == nil {
-		return false
-	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 3)
+	return x.xxx_hidden_GeoCoordinates != nil
 }
 
 func (x *GnssPlaces_Record_GnssPlace) ClearTimestamp() {
@@ -459,14 +439,8 @@ func (x *GnssPlaces_Record_GnssPlace) ClearGnssAccuracy() {
 	x.xxx_hidden_GnssAccuracy = 0
 }
 
-func (x *GnssPlaces_Record_GnssPlace) ClearLongitude() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 2)
-	x.xxx_hidden_Longitude = 0
-}
-
-func (x *GnssPlaces_Record_GnssPlace) ClearLatitude() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 3)
-	x.xxx_hidden_Latitude = 0
+func (x *GnssPlaces_Record_GnssPlace) ClearGeoCoordinates() {
+	x.xxx_hidden_GeoCoordinates = nil
 }
 
 type GnssPlaces_Record_GnssPlace_builder struct {
@@ -484,19 +458,19 @@ type GnssPlaces_Record_GnssPlace_builder struct {
 	// See Data Dictionary, Section 2.77, `GNSSAccuracy`.
 	// ASN.1 Definition:
 	//
-	//	GNSSAccuracy ::= OCTET STRING(SIZE(1))
+	//	GNSSAccuracy ::= INTEGER (1..100)
 	GnssAccuracy *int32
 	// Geographic coordinates of the position.
 	//
 	// See Data Dictionary, Section 2.76, `GeoCoordinates`.
+	//
 	// ASN.1 Definition:
 	//
 	//	GeoCoordinates ::= SEQUENCE {
 	//	    latitude INTEGER(-90*3600*1000..90*3600*1000),
 	//	    longitude INTEGER(-180*3600*1000+1..180*3600*1000)
 	//	}
-	Longitude *int32
-	Latitude  *int32
+	GeoCoordinates *v1.GeoCoordinates
 }
 
 func (b0 GnssPlaces_Record_GnssPlace_builder) Build() *GnssPlaces_Record_GnssPlace {
@@ -505,17 +479,10 @@ func (b0 GnssPlaces_Record_GnssPlace_builder) Build() *GnssPlaces_Record_GnssPla
 	_, _ = b, x
 	x.xxx_hidden_Timestamp = b.Timestamp
 	if b.GnssAccuracy != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 4)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 3)
 		x.xxx_hidden_GnssAccuracy = *b.GnssAccuracy
 	}
-	if b.Longitude != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 4)
-		x.xxx_hidden_Longitude = *b.Longitude
-	}
-	if b.Latitude != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 3, 4)
-		x.xxx_hidden_Latitude = *b.Latitude
-	}
+	x.xxx_hidden_GeoCoordinates = b.GeoCoordinates
 	return m0
 }
 
@@ -523,22 +490,21 @@ var File_wayplatform_connect_tachograph_card_v1_gnss_places_proto protoreflect.F
 
 const file_wayplatform_connect_tachograph_card_v1_gnss_places_proto_rawDesc = "" +
 	"\n" +
-	"8wayplatform/connect/tachograph/card/v1/gnss_places.proto\x12&wayplatform.connect.tachograph.card.v1\x1a\x1fgoogle/protobuf/timestamp.proto\"\xaf\x04\n" +
+	"8wayplatform/connect/tachograph/card/v1/gnss_places.proto\x12&wayplatform.connect.tachograph.card.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1aFwayplatform/connect/tachograph/datadictionary/v1/geo_coordinates.proto\"\xe0\x04\n" +
 	"\n" +
 	"GnssPlaces\x12.\n" +
 	"\x13newest_record_index\x18\x01 \x01(\x05R\x11newestRecordIndex\x12S\n" +
 	"\arecords\x18\x02 \x03(\v29.wayplatform.connect.tachograph.card.v1.GnssPlaces.RecordR\arecords\x12\x1c\n" +
-	"\tsignature\x18\x03 \x01(\fR\tsignature\x1a\xfd\x02\n" +
+	"\tsignature\x18\x03 \x01(\fR\tsignature\x1a\xae\x03\n" +
 	"\x06Record\x128\n" +
 	"\ttimestamp\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\ttimestamp\x12b\n" +
 	"\n" +
 	"gnss_place\x18\x02 \x01(\v2C.wayplatform.connect.tachograph.card.v1.GnssPlaces.Record.GnssPlaceR\tgnssPlace\x12.\n" +
-	"\x13vehicle_odometer_km\x18\x03 \x01(\x05R\x11vehicleOdometerKm\x1a\xa4\x01\n" +
+	"\x13vehicle_odometer_km\x18\x03 \x01(\x05R\x11vehicleOdometerKm\x1a\xd5\x01\n" +
 	"\tGnssPlace\x128\n" +
 	"\ttimestamp\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\ttimestamp\x12#\n" +
-	"\rgnss_accuracy\x18\x02 \x01(\x05R\fgnssAccuracy\x12\x1c\n" +
-	"\tlongitude\x18\x03 \x01(\x11R\tlongitude\x12\x1a\n" +
-	"\blatitude\x18\x04 \x01(\x11R\blatitudeB\xdc\x02\n" +
+	"\rgnss_accuracy\x18\x02 \x01(\x05R\fgnssAccuracy\x12i\n" +
+	"\x0fgeo_coordinates\x18\x03 \x01(\v2@.wayplatform.connect.tachograph.datadictionary.v1.GeoCoordinatesR\x0egeoCoordinatesB\xdc\x02\n" +
 	"*com.wayplatform.connect.tachograph.card.v1B\x0fGnssPlacesProtoP\x01Z`github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1;cardv1\xa2\x02\x04WCTC\xaa\x02&Wayplatform.Connect.Tachograph.Card.V1\xca\x02&Wayplatform\\Connect\\Tachograph\\Card\\V1\xe2\x022Wayplatform\\Connect\\Tachograph\\Card\\V1\\GPBMetadata\xea\x02*Wayplatform::Connect::Tachograph::Card::V1b\beditionsp\xe8\a"
 
 var file_wayplatform_connect_tachograph_card_v1_gnss_places_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
@@ -547,17 +513,19 @@ var file_wayplatform_connect_tachograph_card_v1_gnss_places_proto_goTypes = []an
 	(*GnssPlaces_Record)(nil),           // 1: wayplatform.connect.tachograph.card.v1.GnssPlaces.Record
 	(*GnssPlaces_Record_GnssPlace)(nil), // 2: wayplatform.connect.tachograph.card.v1.GnssPlaces.Record.GnssPlace
 	(*timestamppb.Timestamp)(nil),       // 3: google.protobuf.Timestamp
+	(*v1.GeoCoordinates)(nil),           // 4: wayplatform.connect.tachograph.datadictionary.v1.GeoCoordinates
 }
 var file_wayplatform_connect_tachograph_card_v1_gnss_places_proto_depIdxs = []int32{
 	1, // 0: wayplatform.connect.tachograph.card.v1.GnssPlaces.records:type_name -> wayplatform.connect.tachograph.card.v1.GnssPlaces.Record
 	3, // 1: wayplatform.connect.tachograph.card.v1.GnssPlaces.Record.timestamp:type_name -> google.protobuf.Timestamp
 	2, // 2: wayplatform.connect.tachograph.card.v1.GnssPlaces.Record.gnss_place:type_name -> wayplatform.connect.tachograph.card.v1.GnssPlaces.Record.GnssPlace
 	3, // 3: wayplatform.connect.tachograph.card.v1.GnssPlaces.Record.GnssPlace.timestamp:type_name -> google.protobuf.Timestamp
-	4, // [4:4] is the sub-list for method output_type
-	4, // [4:4] is the sub-list for method input_type
-	4, // [4:4] is the sub-list for extension type_name
-	4, // [4:4] is the sub-list for extension extendee
-	0, // [0:4] is the sub-list for field type_name
+	4, // 4: wayplatform.connect.tachograph.card.v1.GnssPlaces.Record.GnssPlace.geo_coordinates:type_name -> wayplatform.connect.tachograph.datadictionary.v1.GeoCoordinates
+	5, // [5:5] is the sub-list for method output_type
+	5, // [5:5] is the sub-list for method input_type
+	5, // [5:5] is the sub-list for extension type_name
+	5, // [5:5] is the sub-list for extension extendee
+	0, // [0:5] is the sub-list for field type_name
 }
 
 func init() { file_wayplatform_connect_tachograph_card_v1_gnss_places_proto_init() }

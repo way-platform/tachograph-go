@@ -3,6 +3,7 @@ edition = "2023";
 package wayplatform.connect.tachograph.card.v1;
 
 import "wayplatform/connect/tachograph/card/v1/card_type.proto";
+import "wayplatform/connect/tachograph/datadictionary/v1/card_structure_version.proto";
 import "wayplatform/connect/tachograph/datadictionary/v1/equipment_type.proto";
 
 // Represents data from EF_Application_Identification.
@@ -28,11 +29,7 @@ message ApplicationIdentification {
   // ASN.1 definition:
   //
   //     CardStructureVersion ::= OCTET STRING (SIZE (2))
-  message CardStructureVersion {
-    int32 major = 1;
-    int32 minor = 2;
-  }
-  CardStructureVersion card_structure_version = 3;
+  datadictionary.v1.CardStructureVersion card_structure_version = 3;
 
   // Data for a driver card. Populated if `card_type` is `DRIVER_CARD`.
   // See Data Dictionary, Section 2.61, `DriverCardApplicationIdentification`.

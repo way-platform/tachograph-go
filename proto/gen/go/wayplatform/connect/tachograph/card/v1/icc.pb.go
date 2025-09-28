@@ -43,7 +43,7 @@ const (
 //	}
 type Icc struct {
 	state                               protoimpl.MessageState     `protogen:"opaque.v1"`
-	xxx_hidden_ClockStop                int32                      `protobuf:"varint,1,opt,name=clock_stop,json=clockStop"`
+	xxx_hidden_ClockStop                v1.ClockStopMode           `protobuf:"varint,1,opt,name=clock_stop,json=clockStop,enum=wayplatform.connect.tachograph.datadictionary.v1.ClockStopMode"`
 	xxx_hidden_CardExtendedSerialNumber *v1.ExtendedSerialNumber   `protobuf:"bytes,2,opt,name=card_extended_serial_number,json=cardExtendedSerialNumber"`
 	xxx_hidden_CardApprovalNumber       *v1.StringValue            `protobuf:"bytes,3,opt,name=card_approval_number,json=cardApprovalNumber"`
 	xxx_hidden_CardPersonaliserId       int32                      `protobuf:"varint,4,opt,name=card_personaliser_id,json=cardPersonaliserId"`
@@ -80,11 +80,13 @@ func (x *Icc) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-func (x *Icc) GetClockStop() int32 {
+func (x *Icc) GetClockStop() v1.ClockStopMode {
 	if x != nil {
-		return x.xxx_hidden_ClockStop
+		if protoimpl.X.Present(&(x.XXX_presence[0]), 0) {
+			return x.xxx_hidden_ClockStop
+		}
 	}
-	return 0
+	return v1.ClockStopMode(0)
 }
 
 func (x *Icc) GetCardExtendedSerialNumber() *v1.ExtendedSerialNumber {
@@ -122,7 +124,7 @@ func (x *Icc) GetIcIdentifier() []byte {
 	return nil
 }
 
-func (x *Icc) SetClockStop(v int32) {
+func (x *Icc) SetClockStop(v v1.ClockStopMode) {
 	x.xxx_hidden_ClockStop = v
 	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 6)
 }
@@ -196,7 +198,7 @@ func (x *Icc) HasIcIdentifier() bool {
 
 func (x *Icc) ClearClockStop() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 0)
-	x.xxx_hidden_ClockStop = 0
+	x.xxx_hidden_ClockStop = v1.ClockStopMode_CLOCK_STOP_MODE_UNSPECIFIED
 }
 
 func (x *Icc) ClearCardExtendedSerialNumber() {
@@ -230,7 +232,7 @@ type Icc_builder struct {
 	// ASN.1 Definition:
 	//
 	//	OCTET STRING (SIZE(1))
-	ClockStop *int32
+	ClockStop *v1.ClockStopMode
 	// The unique serial number of the IC card.
 	//
 	// See Data Dictionary, Section 2.72, `ExtendedSerialNumber`.
@@ -442,10 +444,10 @@ var File_wayplatform_connect_tachograph_card_v1_icc_proto protoreflect.FileDescr
 
 const file_wayplatform_connect_tachograph_card_v1_icc_proto_rawDesc = "" +
 	"\n" +
-	"0wayplatform/connect/tachograph/card/v1/icc.proto\x12&wayplatform.connect.tachograph.card.v1\x1aCwayplatform/connect/tachograph/datadictionary/v1/string_value.proto\x1aMwayplatform/connect/tachograph/datadictionary/v1/extended_serial_number.proto\"\x8f\x06\n" +
-	"\x03Icc\x12\x1d\n" +
+	"0wayplatform/connect/tachograph/card/v1/icc.proto\x12&wayplatform.connect.tachograph.card.v1\x1aFwayplatform/connect/tachograph/datadictionary/v1/clock_stop_mode.proto\x1aCwayplatform/connect/tachograph/datadictionary/v1/string_value.proto\x1aMwayplatform/connect/tachograph/datadictionary/v1/extended_serial_number.proto\"\xd0\x06\n" +
+	"\x03Icc\x12^\n" +
 	"\n" +
-	"clock_stop\x18\x01 \x01(\x05R\tclockStop\x12\x85\x01\n" +
+	"clock_stop\x18\x01 \x01(\x0e2?.wayplatform.connect.tachograph.datadictionary.v1.ClockStopModeR\tclockStop\x12\x85\x01\n" +
 	"\x1bcard_extended_serial_number\x18\x02 \x01(\v2F.wayplatform.connect.tachograph.datadictionary.v1.ExtendedSerialNumberR\x18cardExtendedSerialNumber\x12o\n" +
 	"\x14card_approval_number\x18\x03 \x01(\v2=.wayplatform.connect.tachograph.datadictionary.v1.StringValueR\x12cardApprovalNumber\x120\n" +
 	"\x14card_personaliser_id\x18\x04 \x01(\x05R\x12cardPersonaliserId\x12z\n" +
@@ -461,20 +463,22 @@ var file_wayplatform_connect_tachograph_card_v1_icc_proto_msgTypes = make([]prot
 var file_wayplatform_connect_tachograph_card_v1_icc_proto_goTypes = []any{
 	(*Icc)(nil),                       // 0: wayplatform.connect.tachograph.card.v1.Icc
 	(*Icc_EmbedderIcAssemblerId)(nil), // 1: wayplatform.connect.tachograph.card.v1.Icc.EmbedderIcAssemblerId
-	(*v1.ExtendedSerialNumber)(nil),   // 2: wayplatform.connect.tachograph.datadictionary.v1.ExtendedSerialNumber
-	(*v1.StringValue)(nil),            // 3: wayplatform.connect.tachograph.datadictionary.v1.StringValue
+	(v1.ClockStopMode)(0),             // 2: wayplatform.connect.tachograph.datadictionary.v1.ClockStopMode
+	(*v1.ExtendedSerialNumber)(nil),   // 3: wayplatform.connect.tachograph.datadictionary.v1.ExtendedSerialNumber
+	(*v1.StringValue)(nil),            // 4: wayplatform.connect.tachograph.datadictionary.v1.StringValue
 }
 var file_wayplatform_connect_tachograph_card_v1_icc_proto_depIdxs = []int32{
-	2, // 0: wayplatform.connect.tachograph.card.v1.Icc.card_extended_serial_number:type_name -> wayplatform.connect.tachograph.datadictionary.v1.ExtendedSerialNumber
-	3, // 1: wayplatform.connect.tachograph.card.v1.Icc.card_approval_number:type_name -> wayplatform.connect.tachograph.datadictionary.v1.StringValue
-	1, // 2: wayplatform.connect.tachograph.card.v1.Icc.embedder_ic_assembler_id:type_name -> wayplatform.connect.tachograph.card.v1.Icc.EmbedderIcAssemblerId
-	3, // 3: wayplatform.connect.tachograph.card.v1.Icc.EmbedderIcAssemblerId.country_code:type_name -> wayplatform.connect.tachograph.datadictionary.v1.StringValue
-	3, // 4: wayplatform.connect.tachograph.card.v1.Icc.EmbedderIcAssemblerId.module_embedder:type_name -> wayplatform.connect.tachograph.datadictionary.v1.StringValue
-	5, // [5:5] is the sub-list for method output_type
-	5, // [5:5] is the sub-list for method input_type
-	5, // [5:5] is the sub-list for extension type_name
-	5, // [5:5] is the sub-list for extension extendee
-	0, // [0:5] is the sub-list for field type_name
+	2, // 0: wayplatform.connect.tachograph.card.v1.Icc.clock_stop:type_name -> wayplatform.connect.tachograph.datadictionary.v1.ClockStopMode
+	3, // 1: wayplatform.connect.tachograph.card.v1.Icc.card_extended_serial_number:type_name -> wayplatform.connect.tachograph.datadictionary.v1.ExtendedSerialNumber
+	4, // 2: wayplatform.connect.tachograph.card.v1.Icc.card_approval_number:type_name -> wayplatform.connect.tachograph.datadictionary.v1.StringValue
+	1, // 3: wayplatform.connect.tachograph.card.v1.Icc.embedder_ic_assembler_id:type_name -> wayplatform.connect.tachograph.card.v1.Icc.EmbedderIcAssemblerId
+	4, // 4: wayplatform.connect.tachograph.card.v1.Icc.EmbedderIcAssemblerId.country_code:type_name -> wayplatform.connect.tachograph.datadictionary.v1.StringValue
+	4, // 5: wayplatform.connect.tachograph.card.v1.Icc.EmbedderIcAssemblerId.module_embedder:type_name -> wayplatform.connect.tachograph.datadictionary.v1.StringValue
+	6, // [6:6] is the sub-list for method output_type
+	6, // [6:6] is the sub-list for method input_type
+	6, // [6:6] is the sub-list for extension type_name
+	6, // [6:6] is the sub-list for extension extendee
+	0, // [0:6] is the sub-list for field type_name
 }
 
 func init() { file_wayplatform_connect_tachograph_card_v1_icc_proto_init() }

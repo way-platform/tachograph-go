@@ -3,9 +3,7 @@ edition = "2023";
 package wayplatform.connect.tachograph.card.v1;
 
 import "google/protobuf/timestamp.proto";
-import "wayplatform/connect/tachograph/datadictionary/v1/card_slot_number.proto";
-import "wayplatform/connect/tachograph/datadictionary/v1/driver_activity_value.proto";
-import "wayplatform/connect/tachograph/datadictionary/v1/driving_status.proto";
+import "wayplatform/connect/tachograph/datadictionary/v1/activity_change_info.proto";
 
 // Represents the content of the EF_Driver_Activity_Data file.
 //
@@ -40,37 +38,6 @@ message DriverActivityData {
   //         activityChangeInfo SET SIZE (1..1440) OF ActivityChangeInfo
   //     }
   message DailyRecord {
-    // Represents a change in driver activity, driving status, or card status.
-    // This is a parsed representation of the `ActivityChangeInfo` bitfield.
-    //
-    // See Data Dictionary, Section 2.1, `ActivityChangeInfo`.
-    //
-    // ASN.1 Specification:
-    //
-    //     ActivityChangeInfo ::= OCTET STRING (SIZE (2))
-    message ActivityChange {
-      // Slot of the driver/co-driver.
-      // Corresponds to bit 's' in `ActivityChangeInfo`.
-      datadictionary.v1.CardSlotNumber slot = 1;
-
-      // Driving status (single or crew).
-      // Corresponds to bit 'c' in `ActivityChangeInfo`.
-      datadictionary.v1.DrivingStatus driving_status = 3;
-
-      // Indicates if a card is inserted.
-      // Corresponds to bit 'p' in `ActivityChangeInfo`.
-      // ASN.1 value `0` maps to `true`, `1` to `false`.
-      bool inserted = 5;
-
-      // Driver's activity (break/rest, availability, work, driving).
-      // Corresponds to bits 'aa' in `ActivityChangeInfo`.
-      datadictionary.v1.DriverActivityValue activity = 7;
-
-      // Time of the change in minutes since 00:00.
-      // Corresponds to bits 'ttttttttttt' in `ActivityChangeInfo`.
-      int32 time_of_change_minutes = 9;
-    }
-
     // If true, the fields below are populated with semantic data.
     // If false, the `raw` field contains the original, unprocessed record bytes.
     bool valid = 1;
@@ -120,7 +87,7 @@ message DriverActivityData {
     // The set of activity changes for the driver on this day.
     //
     // See Data Dictionary, Section 2.9, `activityChangeInfo`.
-    repeated ActivityChange activity_change_info = 7;
+    repeated datadictionary.v1.ActivityChangeInfo activity_change_info = 7;
 
     // --- Field for raw data (when valid = false) ---
 

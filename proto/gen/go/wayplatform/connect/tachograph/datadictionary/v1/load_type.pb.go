@@ -20,16 +20,28 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// LoadType indicates the type of load being transported.
+// Defines the type of load carried by the vehicle.
+//
 // See Data Dictionary, Section 2.90a.
+//
+// ASN.1 Definition:
+//
+//	LoadType ::= INTEGER {
+//	    not-defined(0), passengers(1), goods(2)
+//	} (0..255)
 type LoadType int32
 
 const (
-	LoadType_LOAD_TYPE_UNSPECIFIED  LoadType = 0
+	// The load type is not specified.
+	LoadType_LOAD_TYPE_UNSPECIFIED LoadType = 0
+	// The load type was present but not recognized.
 	LoadType_LOAD_TYPE_UNRECOGNIZED LoadType = 1
-	LoadType_NOT_DEFINED            LoadType = 2
-	LoadType_PASSENGERS             LoadType = 3
-	LoadType_GOODS                  LoadType = 4
+	// The load type is not defined.
+	LoadType_NOT_DEFINED LoadType = 2
+	// The vehicle is carrying passengers.
+	LoadType_PASSENGERS LoadType = 3
+	// The vehicle is carrying goods.
+	LoadType_GOODS LoadType = 4
 )
 
 // Enum value maps for LoadType.
@@ -84,7 +96,7 @@ const file_wayplatform_connect_tachograph_datadictionary_v1_load_type_proto_rawD
 	"\n" +
 	"PASSENGERS\x10\x03\x1a\x05\x98\xaf\x9c\x02\x01\x12\x10\n" +
 	"\x05GOODS\x10\x04\x1a\x05\x98\xaf\x9c\x02\x02B\xa0\x03\n" +
-	"4com.wayplatform.connect.tachograph.datadictionary.v1B\rLoadTypeProtoP\x01Ztgithub.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/datadictionary/v1;datadictionaryv1\xa2\x02\x04WCTD\xaa\x020Wayplatform.Connect.Tachograph.Datadictionary.V1\xca\x020Wayplatform\\Connect\\Tachograph\\Datadictionary\\V1\xe2\x02<Wayplatform\\Connect\\Tachograph\\Datadictionary\\V1\\GPBMetadata\xea\x024Wayplatform::Connect::Tachograph::Datadictionary::V1b\beditionsp\xe8\a"
+	"4com.wayplatform.connect.tachograph.datadictionary.v1B\rLoadTypeProtoP\x01Ztgithub.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/datadictionary/v1;datadictionaryv1\xa2\x02\x04WCTD\xaa\x020Wayplatform.Connect.Tachograph.Datadictionary.V1\xca\x020Wayplatform\\Connect\\Tachograph\\Datadictionary\\V1\xe2\x02<Wayplatform\\Connect\\Tachograph\\Datadictionary\\V1\\GPBMetadata\xea\x024Wayplatform::Connect::Tachograph::Datadictionary::V1b\x06proto3"
 
 var file_wayplatform_connect_tachograph_datadictionary_v1_load_type_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
 var file_wayplatform_connect_tachograph_datadictionary_v1_load_type_proto_goTypes = []any{

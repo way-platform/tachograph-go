@@ -20,66 +20,75 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// NationNumeric represents a country.
-// See Data Dictionary, Section 2.101 and ISO 3166. This is a partial list.
+// NationNumeric defines the numeric code for a country as specified in the
+// tachograph regulations (DD 2.101).
+//
+// The full list of numeric codes is maintained externally by the laboratory
+// appointed to carry out interoperability testing (see Annex 1C, req. 440).
 type NationNumeric int32
 
 const (
 	NationNumeric_NATION_NUMERIC_UNSPECIFIED  NationNumeric = 0
 	NationNumeric_NATION_NUMERIC_UNRECOGNIZED NationNumeric = 1
-	NationNumeric_NO_INFORMATION_AVAILABLE    NationNumeric = 2
-	NationNumeric_AUSTRIA                     NationNumeric = 3
-	NationNumeric_ALBANIA                     NationNumeric = 4
-	NationNumeric_ANDORRA                     NationNumeric = 5
-	NationNumeric_ARMENIA                     NationNumeric = 6
-	NationNumeric_AZERBAIJAN                  NationNumeric = 7
-	NationNumeric_BELGIUM                     NationNumeric = 8
-	NationNumeric_BULGARIA                    NationNumeric = 9
-	NationNumeric_BOSNIA_HERZEGOVINA          NationNumeric = 10
-	NationNumeric_BELARUS                     NationNumeric = 11
-	NationNumeric_SWITZERLAND                 NationNumeric = 12
-	NationNumeric_CYPRUS                      NationNumeric = 13
-	NationNumeric_CZECH_REPUBLIC              NationNumeric = 14
-	NationNumeric_GERMANY                     NationNumeric = 15
-	NationNumeric_DENMARK                     NationNumeric = 16
-	NationNumeric_SPAIN                       NationNumeric = 17
-	NationNumeric_ESTONIA                     NationNumeric = 18
-	NationNumeric_FRANCE                      NationNumeric = 19
-	NationNumeric_FINLAND                     NationNumeric = 20
-	NationNumeric_LIECHTENSTEIN               NationNumeric = 21
-	NationNumeric_FAROE_ISLANDS               NationNumeric = 22
-	NationNumeric_UNITED_KINGDOM              NationNumeric = 23
-	NationNumeric_GEORGIA                     NationNumeric = 24
-	NationNumeric_GREECE                      NationNumeric = 25
-	NationNumeric_HUNGARY                     NationNumeric = 26
-	NationNumeric_CROATIA                     NationNumeric = 27
-	NationNumeric_ITALY                       NationNumeric = 28
-	NationNumeric_IRELAND                     NationNumeric = 29
-	NationNumeric_ICELAND                     NationNumeric = 30
-	NationNumeric_KAZAKHSTAN                  NationNumeric = 31
-	NationNumeric_LUXEMBOURG                  NationNumeric = 32
-	NationNumeric_LITHUANIA                   NationNumeric = 33
-	NationNumeric_LATVIA                      NationNumeric = 34
-	NationNumeric_MALTA                       NationNumeric = 35
-	NationNumeric_MONACO                      NationNumeric = 36
-	NationNumeric_REPUBLIC_OF_MOLDOVA         NationNumeric = 37
-	NationNumeric_NORTH_MACEDONIA             NationNumeric = 38
-	NationNumeric_NORWAY                      NationNumeric = 39
-	NationNumeric_NETHERLANDS                 NationNumeric = 40
-	NationNumeric_PORTUGAL                    NationNumeric = 41
-	NationNumeric_POLAND                      NationNumeric = 42
-	NationNumeric_ROMANIA                     NationNumeric = 43
-	NationNumeric_RUSSIAN_FEDERATION          NationNumeric = 44
+	NationNumeric_NATION_NUMERIC_DEFAULT      NationNumeric = 2 // Reserved
+	NationNumeric_NATION_NUMERIC_EMPTY        NationNumeric = 3 // No information available
+	NationNumeric_AUSTRIA                     NationNumeric = 4
+	NationNumeric_ALBANIA                     NationNumeric = 5
+	NationNumeric_ANDORRA                     NationNumeric = 6
+	NationNumeric_ARMENIA                     NationNumeric = 7
+	NationNumeric_AZERBAIJAN                  NationNumeric = 8
+	NationNumeric_BELGIUM                     NationNumeric = 9
+	NationNumeric_BULGARIA                    NationNumeric = 10
+	NationNumeric_BOSNIA_HERZEGOVINA          NationNumeric = 11
+	NationNumeric_BELARUS                     NationNumeric = 12
+	NationNumeric_SWITZERLAND                 NationNumeric = 13
+	NationNumeric_CYPRUS                      NationNumeric = 14
+	NationNumeric_CZECH_REPUBLIC              NationNumeric = 15
+	NationNumeric_GERMANY                     NationNumeric = 16
+	NationNumeric_DENMARK                     NationNumeric = 17
+	NationNumeric_SPAIN                       NationNumeric = 18
+	NationNumeric_ESTONIA                     NationNumeric = 19
+	NationNumeric_FRANCE                      NationNumeric = 20
+	NationNumeric_FINLAND                     NationNumeric = 21
+	NationNumeric_LIECHTENSTEIN               NationNumeric = 22
+	NationNumeric_FAROE_ISLANDS               NationNumeric = 23
+	NationNumeric_UNITED_KINGDOM              NationNumeric = 24
+	NationNumeric_GEORGIA                     NationNumeric = 25
+	NationNumeric_GREECE                      NationNumeric = 26
+	NationNumeric_HUNGARY                     NationNumeric = 27
+	NationNumeric_CROATIA                     NationNumeric = 28
+	NationNumeric_ITALY                       NationNumeric = 29
+	NationNumeric_IRELAND                     NationNumeric = 30
+	NationNumeric_ICELAND                     NationNumeric = 31
+	NationNumeric_KAZAKHSTAN                  NationNumeric = 32
+	NationNumeric_LUXEMBOURG                  NationNumeric = 33
+	NationNumeric_LITHUANIA                   NationNumeric = 34
+	NationNumeric_LATVIA                      NationNumeric = 35
+	NationNumeric_MALTA                       NationNumeric = 36
+	NationNumeric_MONACO                      NationNumeric = 37
+	NationNumeric_MOLDOVA                     NationNumeric = 38
+	NationNumeric_NORTH_MACEDONIA             NationNumeric = 39
+	NationNumeric_NORWAY                      NationNumeric = 40
+	NationNumeric_NETHERLANDS                 NationNumeric = 41
+	NationNumeric_PORTUGAL                    NationNumeric = 42
+	NationNumeric_POLAND                      NationNumeric = 43
+	NationNumeric_ROMANIA                     NationNumeric = 44
 	NationNumeric_SAN_MARINO                  NationNumeric = 45
-	NationNumeric_SWEDEN                      NationNumeric = 46
-	NationNumeric_SLOVAKIA                    NationNumeric = 47
-	NationNumeric_SLOVENIA                    NationNumeric = 48
-	NationNumeric_TURKMENISTAN                NationNumeric = 49
-	NationNumeric_TURKEY                      NationNumeric = 50
-	NationNumeric_UKRAINE                     NationNumeric = 51
-	NationNumeric_VATICAN_CITY                NationNumeric = 52
-	NationNumeric_REST_OF_EUROPE              NationNumeric = 53
-	NationNumeric_REST_OF_THE_WORLD           NationNumeric = 54
+	NationNumeric_RUSSIA                      NationNumeric = 46
+	NationNumeric_SWEDEN                      NationNumeric = 47
+	NationNumeric_SLOVAKIA                    NationNumeric = 48
+	NationNumeric_SLOVENIA                    NationNumeric = 49
+	NationNumeric_TURKMENISTAN                NationNumeric = 50
+	NationNumeric_TURKEY                      NationNumeric = 51
+	NationNumeric_UKRAINE                     NationNumeric = 52
+	NationNumeric_VATICAN_CITY                NationNumeric = 53
+	NationNumeric_SERBIA                      NationNumeric = 54
+	NationNumeric_MONTENEGRO                  NationNumeric = 55
+	NationNumeric_KYRGYZ_REPUBLIC             NationNumeric = 56
+	// EUROPEAN_COMMUNITY is a special value, not a country
+	NationNumeric_EUROPEAN_COMMUNITY NationNumeric = 57
+	// REST_OF_WORLD is a special value
+	NationNumeric_REST_OF_WORLD NationNumeric = 58
 )
 
 // Enum value maps for NationNumeric.
@@ -87,116 +96,124 @@ var (
 	NationNumeric_name = map[int32]string{
 		0:  "NATION_NUMERIC_UNSPECIFIED",
 		1:  "NATION_NUMERIC_UNRECOGNIZED",
-		2:  "NO_INFORMATION_AVAILABLE",
-		3:  "AUSTRIA",
-		4:  "ALBANIA",
-		5:  "ANDORRA",
-		6:  "ARMENIA",
-		7:  "AZERBAIJAN",
-		8:  "BELGIUM",
-		9:  "BULGARIA",
-		10: "BOSNIA_HERZEGOVINA",
-		11: "BELARUS",
-		12: "SWITZERLAND",
-		13: "CYPRUS",
-		14: "CZECH_REPUBLIC",
-		15: "GERMANY",
-		16: "DENMARK",
-		17: "SPAIN",
-		18: "ESTONIA",
-		19: "FRANCE",
-		20: "FINLAND",
-		21: "LIECHTENSTEIN",
-		22: "FAROE_ISLANDS",
-		23: "UNITED_KINGDOM",
-		24: "GEORGIA",
-		25: "GREECE",
-		26: "HUNGARY",
-		27: "CROATIA",
-		28: "ITALY",
-		29: "IRELAND",
-		30: "ICELAND",
-		31: "KAZAKHSTAN",
-		32: "LUXEMBOURG",
-		33: "LITHUANIA",
-		34: "LATVIA",
-		35: "MALTA",
-		36: "MONACO",
-		37: "REPUBLIC_OF_MOLDOVA",
-		38: "NORTH_MACEDONIA",
-		39: "NORWAY",
-		40: "NETHERLANDS",
-		41: "PORTUGAL",
-		42: "POLAND",
-		43: "ROMANIA",
-		44: "RUSSIAN_FEDERATION",
+		2:  "NATION_NUMERIC_DEFAULT",
+		3:  "NATION_NUMERIC_EMPTY",
+		4:  "AUSTRIA",
+		5:  "ALBANIA",
+		6:  "ANDORRA",
+		7:  "ARMENIA",
+		8:  "AZERBAIJAN",
+		9:  "BELGIUM",
+		10: "BULGARIA",
+		11: "BOSNIA_HERZEGOVINA",
+		12: "BELARUS",
+		13: "SWITZERLAND",
+		14: "CYPRUS",
+		15: "CZECH_REPUBLIC",
+		16: "GERMANY",
+		17: "DENMARK",
+		18: "SPAIN",
+		19: "ESTONIA",
+		20: "FRANCE",
+		21: "FINLAND",
+		22: "LIECHTENSTEIN",
+		23: "FAROE_ISLANDS",
+		24: "UNITED_KINGDOM",
+		25: "GEORGIA",
+		26: "GREECE",
+		27: "HUNGARY",
+		28: "CROATIA",
+		29: "ITALY",
+		30: "IRELAND",
+		31: "ICELAND",
+		32: "KAZAKHSTAN",
+		33: "LUXEMBOURG",
+		34: "LITHUANIA",
+		35: "LATVIA",
+		36: "MALTA",
+		37: "MONACO",
+		38: "MOLDOVA",
+		39: "NORTH_MACEDONIA",
+		40: "NORWAY",
+		41: "NETHERLANDS",
+		42: "PORTUGAL",
+		43: "POLAND",
+		44: "ROMANIA",
 		45: "SAN_MARINO",
-		46: "SWEDEN",
-		47: "SLOVAKIA",
-		48: "SLOVENIA",
-		49: "TURKMENISTAN",
-		50: "TURKEY",
-		51: "UKRAINE",
-		52: "VATICAN_CITY",
-		53: "REST_OF_EUROPE",
-		54: "REST_OF_THE_WORLD",
+		46: "RUSSIA",
+		47: "SWEDEN",
+		48: "SLOVAKIA",
+		49: "SLOVENIA",
+		50: "TURKMENISTAN",
+		51: "TURKEY",
+		52: "UKRAINE",
+		53: "VATICAN_CITY",
+		54: "SERBIA",
+		55: "MONTENEGRO",
+		56: "KYRGYZ_REPUBLIC",
+		57: "EUROPEAN_COMMUNITY",
+		58: "REST_OF_WORLD",
 	}
 	NationNumeric_value = map[string]int32{
 		"NATION_NUMERIC_UNSPECIFIED":  0,
 		"NATION_NUMERIC_UNRECOGNIZED": 1,
-		"NO_INFORMATION_AVAILABLE":    2,
-		"AUSTRIA":                     3,
-		"ALBANIA":                     4,
-		"ANDORRA":                     5,
-		"ARMENIA":                     6,
-		"AZERBAIJAN":                  7,
-		"BELGIUM":                     8,
-		"BULGARIA":                    9,
-		"BOSNIA_HERZEGOVINA":          10,
-		"BELARUS":                     11,
-		"SWITZERLAND":                 12,
-		"CYPRUS":                      13,
-		"CZECH_REPUBLIC":              14,
-		"GERMANY":                     15,
-		"DENMARK":                     16,
-		"SPAIN":                       17,
-		"ESTONIA":                     18,
-		"FRANCE":                      19,
-		"FINLAND":                     20,
-		"LIECHTENSTEIN":               21,
-		"FAROE_ISLANDS":               22,
-		"UNITED_KINGDOM":              23,
-		"GEORGIA":                     24,
-		"GREECE":                      25,
-		"HUNGARY":                     26,
-		"CROATIA":                     27,
-		"ITALY":                       28,
-		"IRELAND":                     29,
-		"ICELAND":                     30,
-		"KAZAKHSTAN":                  31,
-		"LUXEMBOURG":                  32,
-		"LITHUANIA":                   33,
-		"LATVIA":                      34,
-		"MALTA":                       35,
-		"MONACO":                      36,
-		"REPUBLIC_OF_MOLDOVA":         37,
-		"NORTH_MACEDONIA":             38,
-		"NORWAY":                      39,
-		"NETHERLANDS":                 40,
-		"PORTUGAL":                    41,
-		"POLAND":                      42,
-		"ROMANIA":                     43,
-		"RUSSIAN_FEDERATION":          44,
+		"NATION_NUMERIC_DEFAULT":      2,
+		"NATION_NUMERIC_EMPTY":        3,
+		"AUSTRIA":                     4,
+		"ALBANIA":                     5,
+		"ANDORRA":                     6,
+		"ARMENIA":                     7,
+		"AZERBAIJAN":                  8,
+		"BELGIUM":                     9,
+		"BULGARIA":                    10,
+		"BOSNIA_HERZEGOVINA":          11,
+		"BELARUS":                     12,
+		"SWITZERLAND":                 13,
+		"CYPRUS":                      14,
+		"CZECH_REPUBLIC":              15,
+		"GERMANY":                     16,
+		"DENMARK":                     17,
+		"SPAIN":                       18,
+		"ESTONIA":                     19,
+		"FRANCE":                      20,
+		"FINLAND":                     21,
+		"LIECHTENSTEIN":               22,
+		"FAROE_ISLANDS":               23,
+		"UNITED_KINGDOM":              24,
+		"GEORGIA":                     25,
+		"GREECE":                      26,
+		"HUNGARY":                     27,
+		"CROATIA":                     28,
+		"ITALY":                       29,
+		"IRELAND":                     30,
+		"ICELAND":                     31,
+		"KAZAKHSTAN":                  32,
+		"LUXEMBOURG":                  33,
+		"LITHUANIA":                   34,
+		"LATVIA":                      35,
+		"MALTA":                       36,
+		"MONACO":                      37,
+		"MOLDOVA":                     38,
+		"NORTH_MACEDONIA":             39,
+		"NORWAY":                      40,
+		"NETHERLANDS":                 41,
+		"PORTUGAL":                    42,
+		"POLAND":                      43,
+		"ROMANIA":                     44,
 		"SAN_MARINO":                  45,
-		"SWEDEN":                      46,
-		"SLOVAKIA":                    47,
-		"SLOVENIA":                    48,
-		"TURKMENISTAN":                49,
-		"TURKEY":                      50,
-		"UKRAINE":                     51,
-		"VATICAN_CITY":                52,
-		"REST_OF_EUROPE":              53,
-		"REST_OF_THE_WORLD":           54,
+		"RUSSIA":                      46,
+		"SWEDEN":                      47,
+		"SLOVAKIA":                    48,
+		"SLOVENIA":                    49,
+		"TURKMENISTAN":                50,
+		"TURKEY":                      51,
+		"UKRAINE":                     52,
+		"VATICAN_CITY":                53,
+		"SERBIA":                      54,
+		"MONTENEGRO":                  55,
+		"KYRGYZ_REPUBLIC":             56,
+		"EUROPEAN_COMMUNITY":          57,
+		"REST_OF_WORLD":               58,
 	}
 )
 
@@ -226,70 +243,76 @@ var File_wayplatform_connect_tachograph_datadictionary_v1_nation_numeric_proto p
 
 const file_wayplatform_connect_tachograph_datadictionary_v1_nation_numeric_proto_rawDesc = "" +
 	"\n" +
-	"Ewayplatform/connect/tachograph/datadictionary/v1/nation_numeric.proto\x120wayplatform.connect.tachograph.datadictionary.v1\x1aBwayplatform/connect/tachograph/datadictionary/v1/annotations.proto*\xf1\t\n" +
+	"Ewayplatform/connect/tachograph/datadictionary/v1/nation_numeric.proto\x120wayplatform.connect.tachograph.datadictionary.v1\x1aBwayplatform/connect/tachograph/datadictionary/v1/annotations.proto*\xbf\n" +
+	"\n" +
 	"\rNationNumeric\x12\x1e\n" +
 	"\x1aNATION_NUMERIC_UNSPECIFIED\x10\x00\x12\x1f\n" +
-	"\x1bNATION_NUMERIC_UNRECOGNIZED\x10\x01\x12#\n" +
-	"\x18NO_INFORMATION_AVAILABLE\x10\x02\x1a\x05\x98\xaf\x9c\x02\x00\x12\x12\n" +
-	"\aAUSTRIA\x10\x03\x1a\x05\x98\xaf\x9c\x02\x01\x12\x12\n" +
-	"\aALBANIA\x10\x04\x1a\x05\x98\xaf\x9c\x02\x02\x12\x12\n" +
-	"\aANDORRA\x10\x05\x1a\x05\x98\xaf\x9c\x02\x03\x12\x12\n" +
-	"\aARMENIA\x10\x06\x1a\x05\x98\xaf\x9c\x02\x04\x12\x15\n" +
+	"\x1bNATION_NUMERIC_UNRECOGNIZED\x10\x01\x12!\n" +
+	"\x16NATION_NUMERIC_DEFAULT\x10\x02\x1a\x05\x98\xaf\x9c\x02\x00\x12 \n" +
+	"\x14NATION_NUMERIC_EMPTY\x10\x03\x1a\x06\x98\xaf\x9c\x02\xff\x01\x12\x12\n" +
+	"\aAUSTRIA\x10\x04\x1a\x05\x98\xaf\x9c\x02\x01\x12\x12\n" +
+	"\aALBANIA\x10\x05\x1a\x05\x98\xaf\x9c\x02\x02\x12\x12\n" +
+	"\aANDORRA\x10\x06\x1a\x05\x98\xaf\x9c\x02\x03\x12\x12\n" +
+	"\aARMENIA\x10\a\x1a\x05\x98\xaf\x9c\x02\x04\x12\x15\n" +
 	"\n" +
-	"AZERBAIJAN\x10\a\x1a\x05\x98\xaf\x9c\x02\x05\x12\x12\n" +
-	"\aBELGIUM\x10\b\x1a\x05\x98\xaf\x9c\x02\x06\x12\x13\n" +
-	"\bBULGARIA\x10\t\x1a\x05\x98\xaf\x9c\x02\a\x12\x1d\n" +
-	"\x12BOSNIA_HERZEGOVINA\x10\n" +
-	"\x1a\x05\x98\xaf\x9c\x02\b\x12\x12\n" +
-	"\aBELARUS\x10\v\x1a\x05\x98\xaf\x9c\x02\t\x12\x16\n" +
-	"\vSWITZERLAND\x10\f\x1a\x05\x98\xaf\x9c\x02\n" +
+	"AZERBAIJAN\x10\b\x1a\x05\x98\xaf\x9c\x02\x05\x12\x12\n" +
+	"\aBELGIUM\x10\t\x1a\x05\x98\xaf\x9c\x02\x06\x12\x13\n" +
+	"\bBULGARIA\x10\n" +
+	"\x1a\x05\x98\xaf\x9c\x02\a\x12\x1d\n" +
+	"\x12BOSNIA_HERZEGOVINA\x10\v\x1a\x05\x98\xaf\x9c\x02\b\x12\x12\n" +
+	"\aBELARUS\x10\f\x1a\x05\x98\xaf\x9c\x02\t\x12\x16\n" +
+	"\vSWITZERLAND\x10\r\x1a\x05\x98\xaf\x9c\x02\n" +
 	"\x12\x11\n" +
-	"\x06CYPRUS\x10\r\x1a\x05\x98\xaf\x9c\x02\v\x12\x19\n" +
-	"\x0eCZECH_REPUBLIC\x10\x0e\x1a\x05\x98\xaf\x9c\x02\f\x12\x12\n" +
-	"\aGERMANY\x10\x0f\x1a\x05\x98\xaf\x9c\x02\r\x12\x12\n" +
-	"\aDENMARK\x10\x10\x1a\x05\x98\xaf\x9c\x02\x0e\x12\x10\n" +
-	"\x05SPAIN\x10\x11\x1a\x05\x98\xaf\x9c\x02\x0f\x12\x12\n" +
-	"\aESTONIA\x10\x12\x1a\x05\x98\xaf\x9c\x02\x10\x12\x11\n" +
-	"\x06FRANCE\x10\x13\x1a\x05\x98\xaf\x9c\x02\x11\x12\x12\n" +
-	"\aFINLAND\x10\x14\x1a\x05\x98\xaf\x9c\x02\x12\x12\x18\n" +
-	"\rLIECHTENSTEIN\x10\x15\x1a\x05\x98\xaf\x9c\x02\x13\x12\x18\n" +
-	"\rFAROE_ISLANDS\x10\x16\x1a\x05\x98\xaf\x9c\x02\x14\x12\x19\n" +
-	"\x0eUNITED_KINGDOM\x10\x17\x1a\x05\x98\xaf\x9c\x02\x15\x12\x12\n" +
-	"\aGEORGIA\x10\x18\x1a\x05\x98\xaf\x9c\x02\x16\x12\x11\n" +
-	"\x06GREECE\x10\x19\x1a\x05\x98\xaf\x9c\x02\x17\x12\x12\n" +
-	"\aHUNGARY\x10\x1a\x1a\x05\x98\xaf\x9c\x02\x18\x12\x12\n" +
-	"\aCROATIA\x10\x1b\x1a\x05\x98\xaf\x9c\x02\x19\x12\x10\n" +
-	"\x05ITALY\x10\x1c\x1a\x05\x98\xaf\x9c\x02\x1a\x12\x12\n" +
-	"\aIRELAND\x10\x1d\x1a\x05\x98\xaf\x9c\x02\x1b\x12\x12\n" +
-	"\aICELAND\x10\x1e\x1a\x05\x98\xaf\x9c\x02\x1c\x12\x15\n" +
+	"\x06CYPRUS\x10\x0e\x1a\x05\x98\xaf\x9c\x02\v\x12\x19\n" +
+	"\x0eCZECH_REPUBLIC\x10\x0f\x1a\x05\x98\xaf\x9c\x02\f\x12\x12\n" +
+	"\aGERMANY\x10\x10\x1a\x05\x98\xaf\x9c\x02\r\x12\x12\n" +
+	"\aDENMARK\x10\x11\x1a\x05\x98\xaf\x9c\x02\x0e\x12\x10\n" +
+	"\x05SPAIN\x10\x12\x1a\x05\x98\xaf\x9c\x02\x0f\x12\x12\n" +
+	"\aESTONIA\x10\x13\x1a\x05\x98\xaf\x9c\x02\x10\x12\x11\n" +
+	"\x06FRANCE\x10\x14\x1a\x05\x98\xaf\x9c\x02\x11\x12\x12\n" +
+	"\aFINLAND\x10\x15\x1a\x05\x98\xaf\x9c\x02\x12\x12\x18\n" +
+	"\rLIECHTENSTEIN\x10\x16\x1a\x05\x98\xaf\x9c\x02\x13\x12\x18\n" +
+	"\rFAROE_ISLANDS\x10\x17\x1a\x05\x98\xaf\x9c\x02\x14\x12\x19\n" +
+	"\x0eUNITED_KINGDOM\x10\x18\x1a\x05\x98\xaf\x9c\x02\x15\x12\x12\n" +
+	"\aGEORGIA\x10\x19\x1a\x05\x98\xaf\x9c\x02\x16\x12\x11\n" +
+	"\x06GREECE\x10\x1a\x1a\x05\x98\xaf\x9c\x02\x17\x12\x12\n" +
+	"\aHUNGARY\x10\x1b\x1a\x05\x98\xaf\x9c\x02\x18\x12\x12\n" +
+	"\aCROATIA\x10\x1c\x1a\x05\x98\xaf\x9c\x02\x19\x12\x10\n" +
+	"\x05ITALY\x10\x1d\x1a\x05\x98\xaf\x9c\x02\x1a\x12\x12\n" +
+	"\aIRELAND\x10\x1e\x1a\x05\x98\xaf\x9c\x02\x1b\x12\x12\n" +
+	"\aICELAND\x10\x1f\x1a\x05\x98\xaf\x9c\x02\x1c\x12\x15\n" +
 	"\n" +
-	"KAZAKHSTAN\x10\x1f\x1a\x05\x98\xaf\x9c\x02\x1d\x12\x15\n" +
+	"KAZAKHSTAN\x10 \x1a\x05\x98\xaf\x9c\x02\x1d\x12\x15\n" +
 	"\n" +
-	"LUXEMBOURG\x10 \x1a\x05\x98\xaf\x9c\x02\x1e\x12\x14\n" +
-	"\tLITHUANIA\x10!\x1a\x05\x98\xaf\x9c\x02\x1f\x12\x11\n" +
-	"\x06LATVIA\x10\"\x1a\x05\x98\xaf\x9c\x02 \x12\x10\n" +
-	"\x05MALTA\x10#\x1a\x05\x98\xaf\x9c\x02!\x12\x11\n" +
-	"\x06MONACO\x10$\x1a\x05\x98\xaf\x9c\x02\"\x12\x1e\n" +
-	"\x13REPUBLIC_OF_MOLDOVA\x10%\x1a\x05\x98\xaf\x9c\x02#\x12\x1a\n" +
-	"\x0fNORTH_MACEDONIA\x10&\x1a\x05\x98\xaf\x9c\x02$\x12\x11\n" +
-	"\x06NORWAY\x10'\x1a\x05\x98\xaf\x9c\x02%\x12\x16\n" +
-	"\vNETHERLANDS\x10(\x1a\x05\x98\xaf\x9c\x02&\x12\x13\n" +
-	"\bPORTUGAL\x10)\x1a\x05\x98\xaf\x9c\x02'\x12\x11\n" +
-	"\x06POLAND\x10*\x1a\x05\x98\xaf\x9c\x02(\x12\x12\n" +
-	"\aROMANIA\x10+\x1a\x05\x98\xaf\x9c\x02)\x12\x1d\n" +
-	"\x12RUSSIAN_FEDERATION\x10,\x1a\x05\x98\xaf\x9c\x02*\x12\x15\n" +
+	"LUXEMBOURG\x10!\x1a\x05\x98\xaf\x9c\x02\x1e\x12\x14\n" +
+	"\tLITHUANIA\x10\"\x1a\x05\x98\xaf\x9c\x02\x1f\x12\x11\n" +
+	"\x06LATVIA\x10#\x1a\x05\x98\xaf\x9c\x02 \x12\x10\n" +
+	"\x05MALTA\x10$\x1a\x05\x98\xaf\x9c\x02!\x12\x11\n" +
+	"\x06MONACO\x10%\x1a\x05\x98\xaf\x9c\x02\"\x12\x12\n" +
+	"\aMOLDOVA\x10&\x1a\x05\x98\xaf\x9c\x02#\x12\x1a\n" +
+	"\x0fNORTH_MACEDONIA\x10'\x1a\x05\x98\xaf\x9c\x02$\x12\x11\n" +
+	"\x06NORWAY\x10(\x1a\x05\x98\xaf\x9c\x02%\x12\x16\n" +
+	"\vNETHERLANDS\x10)\x1a\x05\x98\xaf\x9c\x02&\x12\x13\n" +
+	"\bPORTUGAL\x10*\x1a\x05\x98\xaf\x9c\x02'\x12\x11\n" +
+	"\x06POLAND\x10+\x1a\x05\x98\xaf\x9c\x02(\x12\x12\n" +
+	"\aROMANIA\x10,\x1a\x05\x98\xaf\x9c\x02)\x12\x15\n" +
 	"\n" +
-	"SAN_MARINO\x10-\x1a\x05\x98\xaf\x9c\x02+\x12\x11\n" +
-	"\x06SWEDEN\x10.\x1a\x05\x98\xaf\x9c\x02,\x12\x13\n" +
-	"\bSLOVAKIA\x10/\x1a\x05\x98\xaf\x9c\x02-\x12\x13\n" +
-	"\bSLOVENIA\x100\x1a\x05\x98\xaf\x9c\x02.\x12\x17\n" +
-	"\fTURKMENISTAN\x101\x1a\x05\x98\xaf\x9c\x02/\x12\x11\n" +
-	"\x06TURKEY\x102\x1a\x05\x98\xaf\x9c\x020\x12\x12\n" +
-	"\aUKRAINE\x103\x1a\x05\x98\xaf\x9c\x021\x12\x17\n" +
-	"\fVATICAN_CITY\x104\x1a\x05\x98\xaf\x9c\x022\x12\x1a\n" +
-	"\x0eREST_OF_EUROPE\x105\x1a\x06\x98\xaf\x9c\x02\xfa\x01\x12\x1d\n" +
-	"\x11REST_OF_THE_WORLD\x106\x1a\x06\x98\xaf\x9c\x02\xfb\x01B\xa5\x03\n" +
-	"4com.wayplatform.connect.tachograph.datadictionary.v1B\x12NationNumericProtoP\x01Ztgithub.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/datadictionary/v1;datadictionaryv1\xa2\x02\x04WCTD\xaa\x020Wayplatform.Connect.Tachograph.Datadictionary.V1\xca\x020Wayplatform\\Connect\\Tachograph\\Datadictionary\\V1\xe2\x02<Wayplatform\\Connect\\Tachograph\\Datadictionary\\V1\\GPBMetadata\xea\x024Wayplatform::Connect::Tachograph::Datadictionary::V1b\beditionsp\xe8\a"
+	"SAN_MARINO\x10-\x1a\x05\x98\xaf\x9c\x02*\x12\x11\n" +
+	"\x06RUSSIA\x10.\x1a\x05\x98\xaf\x9c\x02+\x12\x11\n" +
+	"\x06SWEDEN\x10/\x1a\x05\x98\xaf\x9c\x02,\x12\x13\n" +
+	"\bSLOVAKIA\x100\x1a\x05\x98\xaf\x9c\x02-\x12\x13\n" +
+	"\bSLOVENIA\x101\x1a\x05\x98\xaf\x9c\x02.\x12\x17\n" +
+	"\fTURKMENISTAN\x102\x1a\x05\x98\xaf\x9c\x02/\x12\x11\n" +
+	"\x06TURKEY\x103\x1a\x05\x98\xaf\x9c\x020\x12\x12\n" +
+	"\aUKRAINE\x104\x1a\x05\x98\xaf\x9c\x021\x12\x17\n" +
+	"\fVATICAN_CITY\x105\x1a\x05\x98\xaf\x9c\x022\x12\x11\n" +
+	"\x06SERBIA\x106\x1a\x05\x98\xaf\x9c\x025\x12\x15\n" +
+	"\n" +
+	"MONTENEGRO\x107\x1a\x05\x98\xaf\x9c\x026\x12\x1a\n" +
+	"\x0fKYRGYZ_REPUBLIC\x108\x1a\x05\x98\xaf\x9c\x028\x12\x1e\n" +
+	"\x12EUROPEAN_COMMUNITY\x109\x1a\x06\x98\xaf\x9c\x02\xfd\x01\x12\x19\n" +
+	"\rREST_OF_WORLD\x10:\x1a\x06\x98\xaf\x9c\x02\xfe\x01B\xa5\x03\n" +
+	"4com.wayplatform.connect.tachograph.datadictionary.v1B\x12NationNumericProtoP\x01Ztgithub.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/datadictionary/v1;datadictionaryv1\xa2\x02\x04WCTD\xaa\x020Wayplatform.Connect.Tachograph.Datadictionary.V1\xca\x020Wayplatform\\Connect\\Tachograph\\Datadictionary\\V1\xe2\x02<Wayplatform\\Connect\\Tachograph\\Datadictionary\\V1\\GPBMetadata\xea\x024Wayplatform::Connect::Tachograph::Datadictionary::V1b\x06proto3"
 
 var file_wayplatform_connect_tachograph_datadictionary_v1_nation_numeric_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
 var file_wayplatform_connect_tachograph_datadictionary_v1_nation_numeric_proto_goTypes = []any{

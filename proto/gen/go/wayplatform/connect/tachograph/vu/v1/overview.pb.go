@@ -22,62 +22,6 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// Defines the type of card that can be in a slot.
-//
-// See Data Dictionary, Section 2.34, `CardSlotsStatus`.
-type Overview_SlotCardType int32
-
-const (
-	Overview_SLOT_CARD_TYPE_UNSPECIFIED Overview_SlotCardType = 0
-	Overview_NO_CARD                    Overview_SlotCardType = 1
-	Overview_DRIVER_CARD                Overview_SlotCardType = 2
-	Overview_WORKSHOP_CARD              Overview_SlotCardType = 3
-	Overview_CONTROL_CARD               Overview_SlotCardType = 4
-	Overview_COMPANY_CARD               Overview_SlotCardType = 5
-)
-
-// Enum value maps for Overview_SlotCardType.
-var (
-	Overview_SlotCardType_name = map[int32]string{
-		0: "SLOT_CARD_TYPE_UNSPECIFIED",
-		1: "NO_CARD",
-		2: "DRIVER_CARD",
-		3: "WORKSHOP_CARD",
-		4: "CONTROL_CARD",
-		5: "COMPANY_CARD",
-	}
-	Overview_SlotCardType_value = map[string]int32{
-		"SLOT_CARD_TYPE_UNSPECIFIED": 0,
-		"NO_CARD":                    1,
-		"DRIVER_CARD":                2,
-		"WORKSHOP_CARD":              3,
-		"CONTROL_CARD":               4,
-		"COMPANY_CARD":               5,
-	}
-)
-
-func (x Overview_SlotCardType) Enum() *Overview_SlotCardType {
-	p := new(Overview_SlotCardType)
-	*p = x
-	return p
-}
-
-func (x Overview_SlotCardType) String() string {
-	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
-}
-
-func (Overview_SlotCardType) Descriptor() protoreflect.EnumDescriptor {
-	return file_wayplatform_connect_tachograph_vu_v1_overview_proto_enumTypes[0].Descriptor()
-}
-
-func (Overview_SlotCardType) Type() protoreflect.EnumType {
-	return &file_wayplatform_connect_tachograph_vu_v1_overview_proto_enumTypes[0]
-}
-
-func (x Overview_SlotCardType) Number() protoreflect.EnumNumber {
-	return protoreflect.EnumNumber(x)
-}
-
 // Represents the consolidated data structure for an Overview transfer.
 //
 // This message corresponds to the data defined in the regulation document:
@@ -90,9 +34,9 @@ type Overview struct {
 	xxx_hidden_VuCertificate                 []byte                                `protobuf:"bytes,4,opt,name=vu_certificate,json=vuCertificate"`
 	xxx_hidden_VehicleIdentificationNumber   *v1.StringValue                       `protobuf:"bytes,5,opt,name=vehicle_identification_number,json=vehicleIdentificationNumber"`
 	xxx_hidden_CurrentDateTime               *timestamppb.Timestamp                `protobuf:"bytes,6,opt,name=current_date_time,json=currentDateTime"`
-	xxx_hidden_DownloadablePeriod            *Overview_DownloadablePeriod          `protobuf:"bytes,7,opt,name=downloadable_period,json=downloadablePeriod"`
-	xxx_hidden_DriverSlotCard                Overview_SlotCardType                 `protobuf:"varint,8,opt,name=driver_slot_card,json=driverSlotCard,enum=wayplatform.connect.tachograph.vu.v1.Overview_SlotCardType"`
-	xxx_hidden_CoDriverSlotCard              Overview_SlotCardType                 `protobuf:"varint,9,opt,name=co_driver_slot_card,json=coDriverSlotCard,enum=wayplatform.connect.tachograph.vu.v1.Overview_SlotCardType"`
+	xxx_hidden_DownloadablePeriod            *v1.DownloadablePeriod                `protobuf:"bytes,7,opt,name=downloadable_period,json=downloadablePeriod"`
+	xxx_hidden_DriverSlotCard                v1.SlotCardType                       `protobuf:"varint,8,opt,name=driver_slot_card,json=driverSlotCard,enum=wayplatform.connect.tachograph.datadictionary.v1.SlotCardType"`
+	xxx_hidden_CoDriverSlotCard              v1.SlotCardType                       `protobuf:"varint,9,opt,name=co_driver_slot_card,json=coDriverSlotCard,enum=wayplatform.connect.tachograph.datadictionary.v1.SlotCardType"`
 	xxx_hidden_LastDownloadTime              *timestamppb.Timestamp                `protobuf:"bytes,10,opt,name=last_download_time,json=lastDownloadTime"`
 	xxx_hidden_CompanyLocks                  *[]*Overview_CompanyLock              `protobuf:"bytes,11,rep,name=company_locks,json=companyLocks"`
 	xxx_hidden_ControlActivities             *[]*Overview_ControlActivity          `protobuf:"bytes,12,rep,name=control_activities,json=controlActivities"`
@@ -177,29 +121,29 @@ func (x *Overview) GetCurrentDateTime() *timestamppb.Timestamp {
 	return nil
 }
 
-func (x *Overview) GetDownloadablePeriod() *Overview_DownloadablePeriod {
+func (x *Overview) GetDownloadablePeriod() *v1.DownloadablePeriod {
 	if x != nil {
 		return x.xxx_hidden_DownloadablePeriod
 	}
 	return nil
 }
 
-func (x *Overview) GetDriverSlotCard() Overview_SlotCardType {
+func (x *Overview) GetDriverSlotCard() v1.SlotCardType {
 	if x != nil {
 		if protoimpl.X.Present(&(x.XXX_presence[0]), 7) {
 			return x.xxx_hidden_DriverSlotCard
 		}
 	}
-	return Overview_SLOT_CARD_TYPE_UNSPECIFIED
+	return v1.SlotCardType(0)
 }
 
-func (x *Overview) GetCoDriverSlotCard() Overview_SlotCardType {
+func (x *Overview) GetCoDriverSlotCard() v1.SlotCardType {
 	if x != nil {
 		if protoimpl.X.Present(&(x.XXX_presence[0]), 8) {
 			return x.xxx_hidden_CoDriverSlotCard
 		}
 	}
-	return Overview_SLOT_CARD_TYPE_UNSPECIFIED
+	return v1.SlotCardType(0)
 }
 
 func (x *Overview) GetLastDownloadTime() *timestamppb.Timestamp {
@@ -292,16 +236,16 @@ func (x *Overview) SetCurrentDateTime(v *timestamppb.Timestamp) {
 	x.xxx_hidden_CurrentDateTime = v
 }
 
-func (x *Overview) SetDownloadablePeriod(v *Overview_DownloadablePeriod) {
+func (x *Overview) SetDownloadablePeriod(v *v1.DownloadablePeriod) {
 	x.xxx_hidden_DownloadablePeriod = v
 }
 
-func (x *Overview) SetDriverSlotCard(v Overview_SlotCardType) {
+func (x *Overview) SetDriverSlotCard(v v1.SlotCardType) {
 	x.xxx_hidden_DriverSlotCard = v
 	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 7, 16)
 }
 
-func (x *Overview) SetCoDriverSlotCard(v Overview_SlotCardType) {
+func (x *Overview) SetCoDriverSlotCard(v v1.SlotCardType) {
 	x.xxx_hidden_CoDriverSlotCard = v
 	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 8, 16)
 }
@@ -475,12 +419,12 @@ func (x *Overview) ClearDownloadablePeriod() {
 
 func (x *Overview) ClearDriverSlotCard() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 7)
-	x.xxx_hidden_DriverSlotCard = Overview_SLOT_CARD_TYPE_UNSPECIFIED
+	x.xxx_hidden_DriverSlotCard = v1.SlotCardType_SLOT_CARD_TYPE_UNSPECIFIED
 }
 
 func (x *Overview) ClearCoDriverSlotCard() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 8)
-	x.xxx_hidden_CoDriverSlotCard = Overview_SLOT_CARD_TYPE_UNSPECIFIED
+	x.xxx_hidden_CoDriverSlotCard = v1.SlotCardType_SLOT_CARD_TYPE_UNSPECIFIED
 }
 
 func (x *Overview) ClearLastDownloadTime() {
@@ -545,11 +489,11 @@ type Overview_builder struct {
 	//	CurrentDateTime ::= TimeReal
 	CurrentDateTime *timestamppb.Timestamp
 	// The range of dates for which data can be downloaded.
-	DownloadablePeriod *Overview_DownloadablePeriod
+	DownloadablePeriod *v1.DownloadablePeriod
 	// Type of card in the driver slot.
-	DriverSlotCard *Overview_SlotCardType
+	DriverSlotCard *v1.SlotCardType
 	// Type of card in the co-driver slot.
-	CoDriverSlotCard *Overview_SlotCardType
+	CoDriverSlotCard *v1.SlotCardType
 	// Time of the last VU download.
 	//
 	// See Data Dictionary, Section 2.195, `VuDownloadActivityData`.
@@ -643,121 +587,6 @@ func (b0 Overview_builder) Build() *Overview {
 	return m0
 }
 
-// Represents the downloadable period for the VU data.
-//
-// See Data Dictionary, Section 2.193, `VuDownloadablePeriod`.
-//
-// ASN.1 Definition:
-//
-//	VuDownloadablePeriod ::= SEQUENCE {
-//	    minDownloadableTime TimeReal,
-//	    maxDownloadableTime TimeReal
-//	}
-type Overview_DownloadablePeriod struct {
-	state              protoimpl.MessageState `protogen:"opaque.v1"`
-	xxx_hidden_MinTime *timestamppb.Timestamp `protobuf:"bytes,1,opt,name=min_time,json=minTime"`
-	xxx_hidden_MaxTime *timestamppb.Timestamp `protobuf:"bytes,2,opt,name=max_time,json=maxTime"`
-	unknownFields      protoimpl.UnknownFields
-	sizeCache          protoimpl.SizeCache
-}
-
-func (x *Overview_DownloadablePeriod) Reset() {
-	*x = Overview_DownloadablePeriod{}
-	mi := &file_wayplatform_connect_tachograph_vu_v1_overview_proto_msgTypes[1]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *Overview_DownloadablePeriod) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*Overview_DownloadablePeriod) ProtoMessage() {}
-
-func (x *Overview_DownloadablePeriod) ProtoReflect() protoreflect.Message {
-	mi := &file_wayplatform_connect_tachograph_vu_v1_overview_proto_msgTypes[1]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-func (x *Overview_DownloadablePeriod) GetMinTime() *timestamppb.Timestamp {
-	if x != nil {
-		return x.xxx_hidden_MinTime
-	}
-	return nil
-}
-
-func (x *Overview_DownloadablePeriod) GetMaxTime() *timestamppb.Timestamp {
-	if x != nil {
-		return x.xxx_hidden_MaxTime
-	}
-	return nil
-}
-
-func (x *Overview_DownloadablePeriod) SetMinTime(v *timestamppb.Timestamp) {
-	x.xxx_hidden_MinTime = v
-}
-
-func (x *Overview_DownloadablePeriod) SetMaxTime(v *timestamppb.Timestamp) {
-	x.xxx_hidden_MaxTime = v
-}
-
-func (x *Overview_DownloadablePeriod) HasMinTime() bool {
-	if x == nil {
-		return false
-	}
-	return x.xxx_hidden_MinTime != nil
-}
-
-func (x *Overview_DownloadablePeriod) HasMaxTime() bool {
-	if x == nil {
-		return false
-	}
-	return x.xxx_hidden_MaxTime != nil
-}
-
-func (x *Overview_DownloadablePeriod) ClearMinTime() {
-	x.xxx_hidden_MinTime = nil
-}
-
-func (x *Overview_DownloadablePeriod) ClearMaxTime() {
-	x.xxx_hidden_MaxTime = nil
-}
-
-type Overview_DownloadablePeriod_builder struct {
-	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
-
-	// Earliest downloadable date.
-	//
-	// See Data Dictionary, Section 2.162, `TimeReal`.
-	// ASN.1 Definition:
-	//
-	//	TimeReal ::= INTEGER (0..2^32-1)
-	MinTime *timestamppb.Timestamp
-	// Latest downloadable date.
-	//
-	// See Data Dictionary, Section 2.162, `TimeReal`.
-	// ASN.1 Definition:
-	//
-	//	TimeReal ::= INTEGER (0..2^32-1)
-	MaxTime *timestamppb.Timestamp
-}
-
-func (b0 Overview_DownloadablePeriod_builder) Build() *Overview_DownloadablePeriod {
-	m0 := &Overview_DownloadablePeriod{}
-	b, x := &b0, m0
-	_, _ = b, x
-	x.xxx_hidden_MinTime = b.MinTime
-	x.xxx_hidden_MaxTime = b.MaxTime
-	return m0
-}
-
 // Represents a company lock record.
 //
 // See Data Dictionary, Section 2.184, `VuCompanyLocksRecord`.
@@ -784,7 +613,7 @@ type Overview_CompanyLock struct {
 
 func (x *Overview_CompanyLock) Reset() {
 	*x = Overview_CompanyLock{}
-	mi := &file_wayplatform_connect_tachograph_vu_v1_overview_proto_msgTypes[2]
+	mi := &file_wayplatform_connect_tachograph_vu_v1_overview_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -796,7 +625,7 @@ func (x *Overview_CompanyLock) String() string {
 func (*Overview_CompanyLock) ProtoMessage() {}
 
 func (x *Overview_CompanyLock) ProtoReflect() protoreflect.Message {
-	mi := &file_wayplatform_connect_tachograph_vu_v1_overview_proto_msgTypes[2]
+	mi := &file_wayplatform_connect_tachograph_vu_v1_overview_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -981,20 +810,18 @@ func (b0 Overview_CompanyLock_builder) Build() *Overview_CompanyLock {
 //	}
 type Overview_ControlActivity struct {
 	state                              protoimpl.MessageState `protogen:"opaque.v1"`
-	xxx_hidden_ControlType             []byte                 `protobuf:"bytes,1,opt,name=control_type,json=controlType"`
+	xxx_hidden_ControlType             *v1.ControlType        `protobuf:"bytes,1,opt,name=control_type,json=controlType"`
 	xxx_hidden_ControlTime             *timestamppb.Timestamp `protobuf:"bytes,2,opt,name=control_time,json=controlTime"`
 	xxx_hidden_ControlCardNumber       *v1.FullCardNumber     `protobuf:"bytes,3,opt,name=control_card_number,json=controlCardNumber"`
 	xxx_hidden_DownloadPeriodBeginTime *timestamppb.Timestamp `protobuf:"bytes,4,opt,name=download_period_begin_time,json=downloadPeriodBeginTime"`
 	xxx_hidden_DownloadPeriodEndTime   *timestamppb.Timestamp `protobuf:"bytes,5,opt,name=download_period_end_time,json=downloadPeriodEndTime"`
-	XXX_raceDetectHookData             protoimpl.RaceDetectHookData
-	XXX_presence                       [1]uint32
 	unknownFields                      protoimpl.UnknownFields
 	sizeCache                          protoimpl.SizeCache
 }
 
 func (x *Overview_ControlActivity) Reset() {
 	*x = Overview_ControlActivity{}
-	mi := &file_wayplatform_connect_tachograph_vu_v1_overview_proto_msgTypes[3]
+	mi := &file_wayplatform_connect_tachograph_vu_v1_overview_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1006,7 +833,7 @@ func (x *Overview_ControlActivity) String() string {
 func (*Overview_ControlActivity) ProtoMessage() {}
 
 func (x *Overview_ControlActivity) ProtoReflect() protoreflect.Message {
-	mi := &file_wayplatform_connect_tachograph_vu_v1_overview_proto_msgTypes[3]
+	mi := &file_wayplatform_connect_tachograph_vu_v1_overview_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1017,7 +844,7 @@ func (x *Overview_ControlActivity) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-func (x *Overview_ControlActivity) GetControlType() []byte {
+func (x *Overview_ControlActivity) GetControlType() *v1.ControlType {
 	if x != nil {
 		return x.xxx_hidden_ControlType
 	}
@@ -1052,12 +879,8 @@ func (x *Overview_ControlActivity) GetDownloadPeriodEndTime() *timestamppb.Times
 	return nil
 }
 
-func (x *Overview_ControlActivity) SetControlType(v []byte) {
-	if v == nil {
-		v = []byte{}
-	}
+func (x *Overview_ControlActivity) SetControlType(v *v1.ControlType) {
 	x.xxx_hidden_ControlType = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 5)
 }
 
 func (x *Overview_ControlActivity) SetControlTime(v *timestamppb.Timestamp) {
@@ -1080,7 +903,7 @@ func (x *Overview_ControlActivity) HasControlType() bool {
 	if x == nil {
 		return false
 	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 0)
+	return x.xxx_hidden_ControlType != nil
 }
 
 func (x *Overview_ControlActivity) HasControlTime() bool {
@@ -1112,7 +935,6 @@ func (x *Overview_ControlActivity) HasDownloadPeriodEndTime() bool {
 }
 
 func (x *Overview_ControlActivity) ClearControlType() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 0)
 	x.xxx_hidden_ControlType = nil
 }
 
@@ -1141,7 +963,7 @@ type Overview_ControlActivity_builder struct {
 	// ASN.1 Definition:
 	//
 	//	ControlType ::= OCTET STRING (SIZE(1))
-	ControlType []byte
+	ControlType *v1.ControlType
 	// The time of the control.
 	//
 	// See Data Dictionary, Section 2.162, `TimeReal`.
@@ -1173,10 +995,7 @@ func (b0 Overview_ControlActivity_builder) Build() *Overview_ControlActivity {
 	m0 := &Overview_ControlActivity{}
 	b, x := &b0, m0
 	_, _ = b, x
-	if b.ControlType != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 5)
-		x.xxx_hidden_ControlType = b.ControlType
-	}
+	x.xxx_hidden_ControlType = b.ControlType
 	x.xxx_hidden_ControlTime = b.ControlTime
 	x.xxx_hidden_ControlCardNumber = b.ControlCardNumber
 	x.xxx_hidden_DownloadPeriodBeginTime = b.DownloadPeriodBeginTime
@@ -1188,7 +1007,7 @@ var File_wayplatform_connect_tachograph_vu_v1_overview_proto protoreflect.FileDe
 
 const file_wayplatform_connect_tachograph_vu_v1_overview_proto_rawDesc = "" +
 	"\n" +
-	"3wayplatform/connect/tachograph/vu/v1/overview.proto\x12$wayplatform.connect.tachograph.vu.v1\x1aCwayplatform/connect/tachograph/datadictionary/v1/string_value.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1aGwayplatform/connect/tachograph/datadictionary/v1/full_card_number.proto\x1aAwayplatform/connect/tachograph/datadictionary/v1/generation.proto\x1aZwayplatform/connect/tachograph/datadictionary/v1/vehicle_registration_identification.proto\x1a5wayplatform/connect/tachograph/vu/v1/versioning.proto\"\xe0\x13\n" +
+	"3wayplatform/connect/tachograph/vu/v1/overview.proto\x12$wayplatform.connect.tachograph.vu.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1aCwayplatform/connect/tachograph/datadictionary/v1/control_type.proto\x1aJwayplatform/connect/tachograph/datadictionary/v1/downloadable_period.proto\x1aGwayplatform/connect/tachograph/datadictionary/v1/full_card_number.proto\x1aAwayplatform/connect/tachograph/datadictionary/v1/generation.proto\x1aEwayplatform/connect/tachograph/datadictionary/v1/slot_card_type.proto\x1aCwayplatform/connect/tachograph/datadictionary/v1/string_value.proto\x1aZwayplatform/connect/tachograph/datadictionary/v1/vehicle_registration_identification.proto\x1a5wayplatform/connect/tachograph/vu/v1/versioning.proto\"\x9d\x12\n" +
 	"\bOverview\x12\\\n" +
 	"\n" +
 	"generation\x18\x01 \x01(\x0e2<.wayplatform.connect.tachograph.datadictionary.v1.GenerationR\n" +
@@ -1197,10 +1016,10 @@ const file_wayplatform_connect_tachograph_vu_v1_overview_proto_rawDesc = "" +
 	"\x18member_state_certificate\x18\x03 \x01(\fR\x16memberStateCertificate\x12%\n" +
 	"\x0evu_certificate\x18\x04 \x01(\fR\rvuCertificate\x12\x81\x01\n" +
 	"\x1dvehicle_identification_number\x18\x05 \x01(\v2=.wayplatform.connect.tachograph.datadictionary.v1.StringValueR\x1bvehicleIdentificationNumber\x12F\n" +
-	"\x11current_date_time\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampR\x0fcurrentDateTime\x12r\n" +
-	"\x13downloadable_period\x18\a \x01(\v2A.wayplatform.connect.tachograph.vu.v1.Overview.DownloadablePeriodR\x12downloadablePeriod\x12e\n" +
-	"\x10driver_slot_card\x18\b \x01(\x0e2;.wayplatform.connect.tachograph.vu.v1.Overview.SlotCardTypeR\x0edriverSlotCard\x12j\n" +
-	"\x13co_driver_slot_card\x18\t \x01(\x0e2;.wayplatform.connect.tachograph.vu.v1.Overview.SlotCardTypeR\x10coDriverSlotCard\x12H\n" +
+	"\x11current_date_time\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampR\x0fcurrentDateTime\x12u\n" +
+	"\x13downloadable_period\x18\a \x01(\v2D.wayplatform.connect.tachograph.datadictionary.v1.DownloadablePeriodR\x12downloadablePeriod\x12h\n" +
+	"\x10driver_slot_card\x18\b \x01(\x0e2>.wayplatform.connect.tachograph.datadictionary.v1.SlotCardTypeR\x0edriverSlotCard\x12m\n" +
+	"\x13co_driver_slot_card\x18\t \x01(\x0e2>.wayplatform.connect.tachograph.datadictionary.v1.SlotCardTypeR\x10coDriverSlotCard\x12H\n" +
 	"\x12last_download_time\x18\n" +
 	" \x01(\v2\x1a.google.protobuf.TimestampR\x10lastDownloadTime\x12_\n" +
 	"\rcompany_locks\x18\v \x03(\v2:.wayplatform.connect.tachograph.vu.v1.Overview.CompanyLockR\fcompanyLocks\x12m\n" +
@@ -1208,75 +1027,64 @@ const file_wayplatform_connect_tachograph_vu_v1_overview_proto_rawDesc = "" +
 	" vehicle_registration_with_nation\x18\r \x01(\v2S.wayplatform.connect.tachograph.datadictionary.v1.VehicleRegistrationIdentificationR\x1dvehicleRegistrationWithNation\x12G\n" +
 	" vehicle_registration_number_only\x18\x0e \x01(\tR\x1dvehicleRegistrationNumberOnly\x12%\n" +
 	"\x0esignature_gen1\x18\x0f \x01(\fR\rsignatureGen1\x12%\n" +
-	"\x0esignature_gen2\x18\x10 \x01(\fR\rsignatureGen2\x1a\x82\x01\n" +
-	"\x12DownloadablePeriod\x125\n" +
-	"\bmin_time\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\aminTime\x125\n" +
-	"\bmax_time\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\amaxTime\x1a\xc7\x03\n" +
+	"\x0esignature_gen2\x18\x10 \x01(\fR\rsignatureGen2\x1a\xc7\x03\n" +
 	"\vCompanyLock\x12<\n" +
 	"\flock_in_time\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\n" +
 	"lockInTime\x12>\n" +
 	"\rlock_out_time\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\vlockOutTime\x12`\n" +
 	"\fcompany_name\x18\x03 \x01(\v2=.wayplatform.connect.tachograph.datadictionary.v1.StringValueR\vcompanyName\x12f\n" +
 	"\x0fcompany_address\x18\x04 \x01(\v2=.wayplatform.connect.tachograph.datadictionary.v1.StringValueR\x0ecompanyAddress\x12p\n" +
-	"\x13company_card_number\x18\x05 \x01(\v2@.wayplatform.connect.tachograph.datadictionary.v1.FullCardNumberR\x11companyCardNumber\x1a\x93\x03\n" +
-	"\x0fControlActivity\x12!\n" +
-	"\fcontrol_type\x18\x01 \x01(\fR\vcontrolType\x12=\n" +
+	"\x13company_card_number\x18\x05 \x01(\v2@.wayplatform.connect.tachograph.datadictionary.v1.FullCardNumberR\x11companyCardNumber\x1a\xd2\x03\n" +
+	"\x0fControlActivity\x12`\n" +
+	"\fcontrol_type\x18\x01 \x01(\v2=.wayplatform.connect.tachograph.datadictionary.v1.ControlTypeR\vcontrolType\x12=\n" +
 	"\fcontrol_time\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\vcontrolTime\x12p\n" +
 	"\x13control_card_number\x18\x03 \x01(\v2@.wayplatform.connect.tachograph.datadictionary.v1.FullCardNumberR\x11controlCardNumber\x12W\n" +
 	"\x1adownload_period_begin_time\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampR\x17downloadPeriodBeginTime\x12S\n" +
-	"\x18download_period_end_time\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampR\x15downloadPeriodEndTime\"\x83\x01\n" +
-	"\fSlotCardType\x12\x1e\n" +
-	"\x1aSLOT_CARD_TYPE_UNSPECIFIED\x10\x00\x12\v\n" +
-	"\aNO_CARD\x10\x01\x12\x0f\n" +
-	"\vDRIVER_CARD\x10\x02\x12\x11\n" +
-	"\rWORKSHOP_CARD\x10\x03\x12\x10\n" +
-	"\fCONTROL_CARD\x10\x04\x12\x10\n" +
-	"\fCOMPANY_CARD\x10\x05B\xcc\x02\n" +
+	"\x18download_period_end_time\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampR\x15downloadPeriodEndTimeB\xcc\x02\n" +
 	"(com.wayplatform.connect.tachograph.vu.v1B\rOverviewProtoP\x01Z\\github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/vu/v1;vuv1\xa2\x02\x04WCTV\xaa\x02$Wayplatform.Connect.Tachograph.Vu.V1\xca\x02$Wayplatform\\Connect\\Tachograph\\Vu\\V1\xe2\x020Wayplatform\\Connect\\Tachograph\\Vu\\V1\\GPBMetadata\xea\x02(Wayplatform::Connect::Tachograph::Vu::V1b\beditionsp\xe8\a"
 
-var file_wayplatform_connect_tachograph_vu_v1_overview_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_wayplatform_connect_tachograph_vu_v1_overview_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
+var file_wayplatform_connect_tachograph_vu_v1_overview_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
 var file_wayplatform_connect_tachograph_vu_v1_overview_proto_goTypes = []any{
-	(Overview_SlotCardType)(0),                   // 0: wayplatform.connect.tachograph.vu.v1.Overview.SlotCardType
-	(*Overview)(nil),                             // 1: wayplatform.connect.tachograph.vu.v1.Overview
-	(*Overview_DownloadablePeriod)(nil),          // 2: wayplatform.connect.tachograph.vu.v1.Overview.DownloadablePeriod
-	(*Overview_CompanyLock)(nil),                 // 3: wayplatform.connect.tachograph.vu.v1.Overview.CompanyLock
-	(*Overview_ControlActivity)(nil),             // 4: wayplatform.connect.tachograph.vu.v1.Overview.ControlActivity
-	(v1.Generation)(0),                           // 5: wayplatform.connect.tachograph.datadictionary.v1.Generation
-	(Version)(0),                                 // 6: wayplatform.connect.tachograph.vu.v1.Version
-	(*v1.StringValue)(nil),                       // 7: wayplatform.connect.tachograph.datadictionary.v1.StringValue
-	(*timestamppb.Timestamp)(nil),                // 8: google.protobuf.Timestamp
+	(*Overview)(nil),                             // 0: wayplatform.connect.tachograph.vu.v1.Overview
+	(*Overview_CompanyLock)(nil),                 // 1: wayplatform.connect.tachograph.vu.v1.Overview.CompanyLock
+	(*Overview_ControlActivity)(nil),             // 2: wayplatform.connect.tachograph.vu.v1.Overview.ControlActivity
+	(v1.Generation)(0),                           // 3: wayplatform.connect.tachograph.datadictionary.v1.Generation
+	(Version)(0),                                 // 4: wayplatform.connect.tachograph.vu.v1.Version
+	(*v1.StringValue)(nil),                       // 5: wayplatform.connect.tachograph.datadictionary.v1.StringValue
+	(*timestamppb.Timestamp)(nil),                // 6: google.protobuf.Timestamp
+	(*v1.DownloadablePeriod)(nil),                // 7: wayplatform.connect.tachograph.datadictionary.v1.DownloadablePeriod
+	(v1.SlotCardType)(0),                         // 8: wayplatform.connect.tachograph.datadictionary.v1.SlotCardType
 	(*v1.VehicleRegistrationIdentification)(nil), // 9: wayplatform.connect.tachograph.datadictionary.v1.VehicleRegistrationIdentification
 	(*v1.FullCardNumber)(nil),                    // 10: wayplatform.connect.tachograph.datadictionary.v1.FullCardNumber
+	(*v1.ControlType)(nil),                       // 11: wayplatform.connect.tachograph.datadictionary.v1.ControlType
 }
 var file_wayplatform_connect_tachograph_vu_v1_overview_proto_depIdxs = []int32{
-	5,  // 0: wayplatform.connect.tachograph.vu.v1.Overview.generation:type_name -> wayplatform.connect.tachograph.datadictionary.v1.Generation
-	6,  // 1: wayplatform.connect.tachograph.vu.v1.Overview.version:type_name -> wayplatform.connect.tachograph.vu.v1.Version
-	7,  // 2: wayplatform.connect.tachograph.vu.v1.Overview.vehicle_identification_number:type_name -> wayplatform.connect.tachograph.datadictionary.v1.StringValue
-	8,  // 3: wayplatform.connect.tachograph.vu.v1.Overview.current_date_time:type_name -> google.protobuf.Timestamp
-	2,  // 4: wayplatform.connect.tachograph.vu.v1.Overview.downloadable_period:type_name -> wayplatform.connect.tachograph.vu.v1.Overview.DownloadablePeriod
-	0,  // 5: wayplatform.connect.tachograph.vu.v1.Overview.driver_slot_card:type_name -> wayplatform.connect.tachograph.vu.v1.Overview.SlotCardType
-	0,  // 6: wayplatform.connect.tachograph.vu.v1.Overview.co_driver_slot_card:type_name -> wayplatform.connect.tachograph.vu.v1.Overview.SlotCardType
-	8,  // 7: wayplatform.connect.tachograph.vu.v1.Overview.last_download_time:type_name -> google.protobuf.Timestamp
-	3,  // 8: wayplatform.connect.tachograph.vu.v1.Overview.company_locks:type_name -> wayplatform.connect.tachograph.vu.v1.Overview.CompanyLock
-	4,  // 9: wayplatform.connect.tachograph.vu.v1.Overview.control_activities:type_name -> wayplatform.connect.tachograph.vu.v1.Overview.ControlActivity
+	3,  // 0: wayplatform.connect.tachograph.vu.v1.Overview.generation:type_name -> wayplatform.connect.tachograph.datadictionary.v1.Generation
+	4,  // 1: wayplatform.connect.tachograph.vu.v1.Overview.version:type_name -> wayplatform.connect.tachograph.vu.v1.Version
+	5,  // 2: wayplatform.connect.tachograph.vu.v1.Overview.vehicle_identification_number:type_name -> wayplatform.connect.tachograph.datadictionary.v1.StringValue
+	6,  // 3: wayplatform.connect.tachograph.vu.v1.Overview.current_date_time:type_name -> google.protobuf.Timestamp
+	7,  // 4: wayplatform.connect.tachograph.vu.v1.Overview.downloadable_period:type_name -> wayplatform.connect.tachograph.datadictionary.v1.DownloadablePeriod
+	8,  // 5: wayplatform.connect.tachograph.vu.v1.Overview.driver_slot_card:type_name -> wayplatform.connect.tachograph.datadictionary.v1.SlotCardType
+	8,  // 6: wayplatform.connect.tachograph.vu.v1.Overview.co_driver_slot_card:type_name -> wayplatform.connect.tachograph.datadictionary.v1.SlotCardType
+	6,  // 7: wayplatform.connect.tachograph.vu.v1.Overview.last_download_time:type_name -> google.protobuf.Timestamp
+	1,  // 8: wayplatform.connect.tachograph.vu.v1.Overview.company_locks:type_name -> wayplatform.connect.tachograph.vu.v1.Overview.CompanyLock
+	2,  // 9: wayplatform.connect.tachograph.vu.v1.Overview.control_activities:type_name -> wayplatform.connect.tachograph.vu.v1.Overview.ControlActivity
 	9,  // 10: wayplatform.connect.tachograph.vu.v1.Overview.vehicle_registration_with_nation:type_name -> wayplatform.connect.tachograph.datadictionary.v1.VehicleRegistrationIdentification
-	8,  // 11: wayplatform.connect.tachograph.vu.v1.Overview.DownloadablePeriod.min_time:type_name -> google.protobuf.Timestamp
-	8,  // 12: wayplatform.connect.tachograph.vu.v1.Overview.DownloadablePeriod.max_time:type_name -> google.protobuf.Timestamp
-	8,  // 13: wayplatform.connect.tachograph.vu.v1.Overview.CompanyLock.lock_in_time:type_name -> google.protobuf.Timestamp
-	8,  // 14: wayplatform.connect.tachograph.vu.v1.Overview.CompanyLock.lock_out_time:type_name -> google.protobuf.Timestamp
-	7,  // 15: wayplatform.connect.tachograph.vu.v1.Overview.CompanyLock.company_name:type_name -> wayplatform.connect.tachograph.datadictionary.v1.StringValue
-	7,  // 16: wayplatform.connect.tachograph.vu.v1.Overview.CompanyLock.company_address:type_name -> wayplatform.connect.tachograph.datadictionary.v1.StringValue
-	10, // 17: wayplatform.connect.tachograph.vu.v1.Overview.CompanyLock.company_card_number:type_name -> wayplatform.connect.tachograph.datadictionary.v1.FullCardNumber
-	8,  // 18: wayplatform.connect.tachograph.vu.v1.Overview.ControlActivity.control_time:type_name -> google.protobuf.Timestamp
-	10, // 19: wayplatform.connect.tachograph.vu.v1.Overview.ControlActivity.control_card_number:type_name -> wayplatform.connect.tachograph.datadictionary.v1.FullCardNumber
-	8,  // 20: wayplatform.connect.tachograph.vu.v1.Overview.ControlActivity.download_period_begin_time:type_name -> google.protobuf.Timestamp
-	8,  // 21: wayplatform.connect.tachograph.vu.v1.Overview.ControlActivity.download_period_end_time:type_name -> google.protobuf.Timestamp
-	22, // [22:22] is the sub-list for method output_type
-	22, // [22:22] is the sub-list for method input_type
-	22, // [22:22] is the sub-list for extension type_name
-	22, // [22:22] is the sub-list for extension extendee
-	0,  // [0:22] is the sub-list for field type_name
+	6,  // 11: wayplatform.connect.tachograph.vu.v1.Overview.CompanyLock.lock_in_time:type_name -> google.protobuf.Timestamp
+	6,  // 12: wayplatform.connect.tachograph.vu.v1.Overview.CompanyLock.lock_out_time:type_name -> google.protobuf.Timestamp
+	5,  // 13: wayplatform.connect.tachograph.vu.v1.Overview.CompanyLock.company_name:type_name -> wayplatform.connect.tachograph.datadictionary.v1.StringValue
+	5,  // 14: wayplatform.connect.tachograph.vu.v1.Overview.CompanyLock.company_address:type_name -> wayplatform.connect.tachograph.datadictionary.v1.StringValue
+	10, // 15: wayplatform.connect.tachograph.vu.v1.Overview.CompanyLock.company_card_number:type_name -> wayplatform.connect.tachograph.datadictionary.v1.FullCardNumber
+	11, // 16: wayplatform.connect.tachograph.vu.v1.Overview.ControlActivity.control_type:type_name -> wayplatform.connect.tachograph.datadictionary.v1.ControlType
+	6,  // 17: wayplatform.connect.tachograph.vu.v1.Overview.ControlActivity.control_time:type_name -> google.protobuf.Timestamp
+	10, // 18: wayplatform.connect.tachograph.vu.v1.Overview.ControlActivity.control_card_number:type_name -> wayplatform.connect.tachograph.datadictionary.v1.FullCardNumber
+	6,  // 19: wayplatform.connect.tachograph.vu.v1.Overview.ControlActivity.download_period_begin_time:type_name -> google.protobuf.Timestamp
+	6,  // 20: wayplatform.connect.tachograph.vu.v1.Overview.ControlActivity.download_period_end_time:type_name -> google.protobuf.Timestamp
+	21, // [21:21] is the sub-list for method output_type
+	21, // [21:21] is the sub-list for method input_type
+	21, // [21:21] is the sub-list for extension type_name
+	21, // [21:21] is the sub-list for extension extendee
+	0,  // [0:21] is the sub-list for field type_name
 }
 
 func init() { file_wayplatform_connect_tachograph_vu_v1_overview_proto_init() }
@@ -1290,14 +1098,13 @@ func file_wayplatform_connect_tachograph_vu_v1_overview_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_wayplatform_connect_tachograph_vu_v1_overview_proto_rawDesc), len(file_wayplatform_connect_tachograph_vu_v1_overview_proto_rawDesc)),
-			NumEnums:      1,
-			NumMessages:   4,
+			NumEnums:      0,
+			NumMessages:   3,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
 		GoTypes:           file_wayplatform_connect_tachograph_vu_v1_overview_proto_goTypes,
 		DependencyIndexes: file_wayplatform_connect_tachograph_vu_v1_overview_proto_depIdxs,
-		EnumInfos:         file_wayplatform_connect_tachograph_vu_v1_overview_proto_enumTypes,
 		MessageInfos:      file_wayplatform_connect_tachograph_vu_v1_overview_proto_msgTypes,
 	}.Build()
 	File_wayplatform_connect_tachograph_vu_v1_overview_proto = out.File
