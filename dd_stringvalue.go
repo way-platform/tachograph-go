@@ -19,10 +19,10 @@ import (
 //
 // ASN.1 Definition:
 //
-//     StringValue ::= SEQUENCE {
-//         codePage    OCTET STRING (SIZE(1)),
-//         stringData  OCTET STRING (SIZE(0..255))
-//     }
+//	StringValue ::= SEQUENCE {
+//	    codePage    OCTET STRING (SIZE(1)),
+//	    stringData  OCTET STRING (SIZE(0..255))
+//	}
 func unmarshalStringValue(input []byte) (*ddv1.StringValue, error) {
 	if len(input) < 2 {
 		return nil, fmt.Errorf("insufficient data for string value: %w", io.ErrUnexpectedEOF)
@@ -52,7 +52,7 @@ func unmarshalStringValue(input []byte) (*ddv1.StringValue, error) {
 //
 // ASN.1 Definition:
 //
-//     IA5String ::= OCTET STRING (SIZE(0..255))
+//	IA5String ::= OCTET STRING (SIZE(0..255))
 func unmarshalIA5StringValue(input []byte) (*ddv1.StringValue, error) {
 	if len(input) == 0 {
 		return nil, fmt.Errorf("insufficient data for string value: %w", io.ErrUnexpectedEOF)

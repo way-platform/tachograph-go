@@ -187,7 +187,7 @@ func appendCardControlActivityData(data []byte, controlData *cardv1.ControlActiv
 
 	var err error
 	// Control card number (18 bytes)
-	data, err = appendFullCardNumber(data, controlData.GetControlCardNumber(), 18)
+	data, err = appendFullCardNumberAsString(data, controlData.GetControlCardNumber(), 18)
 	if err != nil {
 		return nil, err
 	}

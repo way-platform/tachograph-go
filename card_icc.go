@@ -185,7 +185,7 @@ func appendIcc(dst []byte, icc *cardv1.Icc) ([]byte, error) {
 	dst = append(dst, byte(icc.GetClockStop()))
 
 	// Append extended serial number (8 bytes)
-	dst, err = appendExtendedSerialNumber(dst, icc.GetCardExtendedSerialNumber(), lenCardExtendedSerialNumber)
+	dst, err = appendExtendedSerialNumberAsString(dst, icc.GetCardExtendedSerialNumber(), lenCardExtendedSerialNumber)
 	if err != nil {
 		return nil, err
 	}

@@ -81,39 +81,6 @@ func appendBCDNation(dst []byte, nation string) ([]byte, error) {
 	return append(dst, 0), nil // Append a single zero byte for now
 }
 
-// appendFullCardNumber appends a FullCardNumber structure as a string
-func appendFullCardNumber(dst []byte, cardNumber *ddv1.FullCardNumber, maxLen int) ([]byte, error) {
-	if cardNumber == nil {
-		return appendString(dst, "", maxLen)
-	}
-
-	// Handle the CardNumber CHOICE based on card type
-	switch cardNumber.GetCardType() {
-	case ddv1.EquipmentType_DRIVER_CARD:
-		if driverID := cardNumber.GetDriverIdentification(); driverID != nil {
-			// Concatenate the driver identification components
-			identification := driverID.GetIdentificationNumber()
-
-			// Build the full driver identification string
-			driverStr := ""
-			if identification != nil {
-				driverStr += identification.GetDecoded()
-			}
-			return appendString(dst, driverStr, maxLen)
-		}
-	case ddv1.EquipmentType_WORKSHOP_CARD, ddv1.EquipmentType_COMPANY_CARD:
-		if ownerID := cardNumber.GetOwnerIdentification(); ownerID != nil {
-			identification := ownerID.GetIdentificationNumber()
-			if identification != nil {
-				return appendString(dst, identification.GetDecoded(), maxLen)
-			}
-		}
-	}
-
-	// Fallback to empty string
-	return appendString(dst, "", maxLen)
-}
-
 // appendVehicleRegistration appends vehicle registration from VehicleRegistrationIdentification
 func appendVehicleRegistration(dst []byte, vehicleReg *ddv1.VehicleRegistrationIdentification) ([]byte, error) {
 	if vehicleReg == nil {

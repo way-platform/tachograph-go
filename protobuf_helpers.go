@@ -153,3 +153,103 @@ func SetEquipmentType(enumDesc protoreflect.EnumDescriptor, rawValue int32, setE
 func SetSpecificConditionType(enumDesc protoreflect.EnumDescriptor, rawValue int32, setEnum func(protoreflect.EnumNumber), setUnrecognized func(int32)) {
 	SetEnumFromProtocolValue(enumDesc, rawValue, setEnum, setUnrecognized)
 }
+
+// SetSlotCardType sets a SlotCardType enum from a protocol value
+func SetSlotCardType(enumDesc protoreflect.EnumDescriptor, rawValue int32, setEnum func(protoreflect.EnumNumber), setUnrecognized func(int32)) {
+	SetEnumFromProtocolValue(enumDesc, rawValue, setEnum, setUnrecognized)
+}
+
+// SetClockStopMode sets a ClockStopMode enum from a protocol value
+func SetClockStopMode(enumDesc protoreflect.EnumDescriptor, rawValue int32, setEnum func(protoreflect.EnumNumber), setUnrecognized func(int32)) {
+	SetEnumFromProtocolValue(enumDesc, rawValue, setEnum, setUnrecognized)
+}
+
+// SetCompanyActivityType sets a CompanyActivityType enum from a protocol value
+func SetCompanyActivityType(enumDesc protoreflect.EnumDescriptor, rawValue int32, setEnum func(protoreflect.EnumNumber), setUnrecognized func(int32)) {
+	SetEnumFromProtocolValue(enumDesc, rawValue, setEnum, setUnrecognized)
+}
+
+// GetSlotCardTypeProtocolValue gets the protocol value for a SlotCardType enum
+func GetSlotCardTypeProtocolValue(enumValue protoreflect.Enum, unrecognizedValue int32) int32 {
+	return GetProtocolValueFromEnum(enumValue, unrecognizedValue)
+}
+
+// GetClockStopModeProtocolValue gets the protocol value for a ClockStopMode enum
+func GetClockStopModeProtocolValue(enumValue protoreflect.Enum, unrecognizedValue int32) int32 {
+	return GetProtocolValueFromEnum(enumValue, unrecognizedValue)
+}
+
+// GetCompanyActivityTypeProtocolValue gets the protocol value for a CompanyActivityType enum
+func GetCompanyActivityTypeProtocolValue(enumValue protoreflect.Enum, unrecognizedValue int32) int32 {
+	return GetProtocolValueFromEnum(enumValue, unrecognizedValue)
+}
+
+// SetOperationType sets an OperationType enum from a protocol value
+func SetOperationType(enumDesc protoreflect.EnumDescriptor, rawValue int32, setEnum func(protoreflect.EnumNumber), setUnrecognized func(int32)) {
+	SetEnumFromProtocolValue(enumDesc, rawValue, setEnum, setUnrecognized)
+}
+
+// SetLoadType sets a LoadType enum from a protocol value
+func SetLoadType(enumDesc protoreflect.EnumDescriptor, rawValue int32, setEnum func(protoreflect.EnumNumber), setUnrecognized func(int32)) {
+	SetEnumFromProtocolValue(enumDesc, rawValue, setEnum, setUnrecognized)
+}
+
+// SetPositionAuthenticationStatus sets a PositionAuthenticationStatus enum from a protocol value
+func SetPositionAuthenticationStatus(enumDesc protoreflect.EnumDescriptor, rawValue int32, setEnum func(protoreflect.EnumNumber), setUnrecognized func(int32)) {
+	SetEnumFromProtocolValue(enumDesc, rawValue, setEnum, setUnrecognized)
+}
+
+// GetOperationTypeProtocolValue gets the protocol value for an OperationType enum
+func GetOperationTypeProtocolValue(enumValue protoreflect.Enum, unrecognizedValue int32) int32 {
+	return GetProtocolValueFromEnum(enumValue, unrecognizedValue)
+}
+
+// GetLoadTypeProtocolValue gets the protocol value for a LoadType enum
+func GetLoadTypeProtocolValue(enumValue protoreflect.Enum, unrecognizedValue int32) int32 {
+	return GetProtocolValueFromEnum(enumValue, unrecognizedValue)
+}
+
+// GetPositionAuthenticationStatusProtocolValue gets the protocol value for a PositionAuthenticationStatus enum
+func GetPositionAuthenticationStatusProtocolValue(enumValue protoreflect.Enum, unrecognizedValue int32) int32 {
+	return GetProtocolValueFromEnum(enumValue, unrecognizedValue)
+}
+
+// SetEncoding sets an Encoding enum from a protocol value
+func SetEncoding(enumDesc protoreflect.EnumDescriptor, rawValue int32, setEnum func(protoreflect.EnumNumber), setUnrecognized func(int32)) {
+	SetEnumFromProtocolValue(enumDesc, rawValue, setEnum, setUnrecognized)
+}
+
+// SetCalibrationPurpose sets a CalibrationPurpose enum from a protocol value
+func SetCalibrationPurpose(enumDesc protoreflect.EnumDescriptor, rawValue int32, setEnum func(protoreflect.EnumNumber), setUnrecognized func(int32)) {
+	SetEnumFromProtocolValue(enumDesc, rawValue, setEnum, setUnrecognized)
+}
+
+// SetEventFaultRecordPurpose sets an EventFaultRecordPurpose enum from a protocol value
+func SetEventFaultRecordPurpose(enumDesc protoreflect.EnumDescriptor, rawValue int32, setEnum func(protoreflect.EnumNumber), setUnrecognized func(int32)) {
+	SetEnumFromProtocolValue(enumDesc, rawValue, setEnum, setUnrecognized)
+}
+
+// GetEncodingProtocolValue gets the protocol value for an Encoding enum
+func GetEncodingProtocolValue(enumValue protoreflect.Enum, unrecognizedValue int32) int32 {
+	return GetProtocolValueFromEnum(enumValue, unrecognizedValue)
+}
+
+// GetCalibrationPurposeProtocolValue gets the protocol value for a CalibrationPurpose enum
+func GetCalibrationPurposeProtocolValue(enumValue protoreflect.Enum, unrecognizedValue int32) int32 {
+	return GetProtocolValueFromEnum(enumValue, unrecognizedValue)
+}
+
+// GetEventFaultRecordPurposeProtocolValue gets the protocol value for an EventFaultRecordPurpose enum
+func GetEventFaultRecordPurposeProtocolValue(enumValue protoreflect.Enum, unrecognizedValue int32) int32 {
+	return GetProtocolValueFromEnum(enumValue, unrecognizedValue)
+}
+
+// SetEntryTypeDailyWorkPeriod sets an EntryTypeDailyWorkPeriod enum from a protocol value
+func SetEntryTypeDailyWorkPeriod(enumDesc protoreflect.EnumDescriptor, rawValue int32, setEnum func(protoreflect.EnumNumber), setUnrecognized func(int32)) {
+	SetEnumFromProtocolValue(enumDesc, rawValue, setEnum, setUnrecognized)
+}
+
+// GetEntryTypeDailyWorkPeriodProtocolValue gets the protocol value for an EntryTypeDailyWorkPeriod enum
+func GetEntryTypeDailyWorkPeriodProtocolValue(enumValue protoreflect.Enum, unrecognizedValue int32) int32 {
+	return GetProtocolValueFromEnum(enumValue, unrecognizedValue)
+}

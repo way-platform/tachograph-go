@@ -169,23 +169,6 @@ func unmarshalOverviewGen2(data []byte, offset int, overview *vuv1.Overview, sta
 	return bytesRead, nil
 }
 
-func mapSlotCardType(slotValue uint8) ddv1.SlotCardType {
-	switch slotValue {
-	case 0:
-		return ddv1.SlotCardType_NO_CARD
-	case 1:
-		return ddv1.SlotCardType_DRIVER_CARD_INSERTED
-	case 2:
-		return ddv1.SlotCardType_WORKSHOP_CARD_INSERTED
-	case 3:
-		return ddv1.SlotCardType_CONTROL_CARD_INSERTED
-	case 4:
-		return ddv1.SlotCardType_COMPANY_CARD_INSERTED
-	default:
-		return ddv1.SlotCardType_SLOT_CARD_TYPE_UNSPECIFIED
-	}
-}
-
 // AppendOverview marshals VU overview data for different generations
 //
 // The data type `VuOverview` is specified in the Data Dictionary, Section 2.2.6.

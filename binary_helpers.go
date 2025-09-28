@@ -78,55 +78,6 @@ func appendControlType(dst []byte, ct *ddv1.ControlType) []byte {
 	return append(dst, b)
 }
 
-// appendExtendedSerialNumber appends an ExtendedSerialNumber structure as string (legacy compatibility)
-func appendExtendedSerialNumber(dst []byte, esn *ddv1.ExtendedSerialNumber, maxLen int) ([]byte, error) {
-	if esn == nil {
-		return append(dst, make([]byte, maxLen)...), nil
-	}
-
-	// Create a byte slice for the extended serial number
-	serialBytes := make([]byte, 8)
-
-	// First 4 bytes: serial number (big-endian)
-	serialNumber := esn.GetSerialNumber()
-	if serialNumber != 0 {
-		binary.BigEndian.PutUint32(serialBytes[0:4], uint32(serialNumber))
-	}
-
-	// Next byte: month (BCD)
-	month := esn.GetMonth()
-	if month != 0 {
-		serialBytes[4] = byte(((month / 10) << 4) | (month % 10))
-	}
-
-	// Next byte: year (BCD)
-	year := esn.GetYear()
-	if year != 0 {
-		serialBytes[5] = byte(((year / 10) << 4) | (year % 10))
-	}
-
-	// Next byte: equipment type (converted to protocol value using generic helper)
-	if esn.GetType() != ddv1.EquipmentType_EQUIPMENT_TYPE_UNSPECIFIED {
-		serialBytes[6] = byte(GetProtocolValueFromEnum(esn.GetType(), 0))
-	}
-
-	// Last byte: manufacturer code
-	manufacturerCode := esn.GetManufacturerCode()
-	if manufacturerCode != 0 {
-		serialBytes[7] = byte(manufacturerCode)
-	}
-
-	// Truncate or pad to maxLen
-	if len(serialBytes) > maxLen {
-		serialBytes = serialBytes[:maxLen]
-	} else if len(serialBytes) < maxLen {
-		padding := make([]byte, maxLen-len(serialBytes))
-		serialBytes = append(serialBytes, padding...)
-	}
-
-	return append(dst, serialBytes...), nil
-}
-
 // appendEmbedderIcAssemblerId appends an EmbedderIcAssemblerId structure
 func appendEmbedderIcAssemblerId(dst []byte, eia *cardv1.Icc_EmbedderIcAssemblerId) ([]byte, error) {
 	if eia == nil {
