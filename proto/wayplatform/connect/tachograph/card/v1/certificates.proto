@@ -49,3 +49,4 @@ message Certificates {
   bytes link_certificate = 4;
 }
 
+
