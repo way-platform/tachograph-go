@@ -2,6 +2,7 @@ package tachograph
 
 import (
 	"bytes"
+	"fmt"
 	"time"
 
 	"google.golang.org/protobuf/types/known/timestamppb"
@@ -51,8 +52,11 @@ func unmarshalOverviewGen1(r *bytes.Reader, overview *vuv1.Overview, startPos in
 	if err != nil {
 		return 0, err
 	}
-	vin := readString(bytes.NewReader(vinBytes), 17)
-	overview.SetVehicleIdentificationNumber(vin)
+	vinStrValue, err := unmarshalIA5StringValueFromReader(bytes.NewReader(vinBytes), 17)
+	if err != nil {
+		return 0, fmt.Errorf("failed to read VIN: %w", err)
+	}
+	overview.SetVehicleIdentificationNumber(vinStrValue)
 
 	// VehicleRegistrationIdentification (15 bytes: nation(1) + regnum(14))
 	nation, err := readUint8(r)
@@ -65,14 +69,14 @@ func unmarshalOverviewGen1(r *bytes.Reader, overview *vuv1.Overview, startPos in
 	}
 
 	// First byte is codepage, rest is registration number
-	regNum := ""
-	if len(regNumBytes) > 1 {
-		regNum = readString(bytes.NewReader(regNumBytes[1:]), 13)
-	}
-
 	vehicleReg := &datadictionaryv1.VehicleRegistrationIdentification{}
-	vehicleReg.SetNation(int32(nation))
-	vehicleReg.SetNumber(regNum)
+	vehicleReg.SetNation(datadictionaryv1.NationNumeric(nation))
+
+	regNumStrValue, err := unmarshalIA5StringValueFromReader(bytes.NewReader(regNumBytes[1:]), 13)
+	if err != nil {
+		return 0, fmt.Errorf("failed to read vehicle registration number: %w", err)
+	}
+	vehicleReg.SetNumber(regNumStrValue)
 	overview.SetVehicleRegistrationWithNation(vehicleReg)
 
 	// CurrentDateTime (4 bytes)
@@ -92,7 +96,7 @@ func unmarshalOverviewGen1(r *bytes.Reader, overview *vuv1.Overview, startPos in
 		return 0, err
 	}
 
-	downloadablePeriod := &vuv1.Overview_DownloadablePeriod{}
+	downloadablePeriod := &datadictionaryv1.DownloadablePeriod{}
 	downloadablePeriod.SetMinTime(timestamppb.New(time.Unix(minTime, 0)))
 	downloadablePeriod.SetMaxTime(timestamppb.New(time.Unix(maxTime, 0)))
 	overview.SetDownloadablePeriod(downloadablePeriod)
@@ -144,19 +148,19 @@ func unmarshalOverviewGen2(r *bytes.Reader, overview *vuv1.Overview, startPos in
 	return bytesRead, nil
 }
 
-func mapSlotCardType(slotValue uint8) vuv1.Overview_SlotCardType {
+func mapSlotCardType(slotValue uint8) datadictionaryv1.SlotCardType {
 	switch slotValue {
 	case 0:
-		return vuv1.Overview_NO_CARD
+		return datadictionaryv1.SlotCardType_NO_CARD
 	case 1:
-		return vuv1.Overview_DRIVER_CARD
+		return datadictionaryv1.SlotCardType_DRIVER_CARD_INSERTED
 	case 2:
-		return vuv1.Overview_WORKSHOP_CARD
+		return datadictionaryv1.SlotCardType_WORKSHOP_CARD_INSERTED
 	case 3:
-		return vuv1.Overview_CONTROL_CARD
+		return datadictionaryv1.SlotCardType_CONTROL_CARD_INSERTED
 	case 4:
-		return vuv1.Overview_COMPANY_CARD
+		return datadictionaryv1.SlotCardType_COMPANY_CARD_INSERTED
 	default:
-		return vuv1.Overview_SLOT_CARD_TYPE_UNSPECIFIED
+		return datadictionaryv1.SlotCardType_SLOT_CARD_TYPE_UNSPECIFIED
 	}
 }

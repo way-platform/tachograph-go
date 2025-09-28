@@ -3,6 +3,7 @@ package tachograph
 import (
 	"bytes"
 	"errors"
+	"fmt"
 
 	cardv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1"
 )
@@ -14,9 +15,22 @@ func unmarshalDrivingLicenceInfo(data []byte) (*cardv1.DrivingLicenceInfo, error
 	}
 	var dli cardv1.DrivingLicenceInfo
 	r := bytes.NewReader(data)
-	dli.SetDrivingLicenceIssuingAuthority(readString(r, 36))
-	nation, _ := r.ReadByte()
+	authority, err := unmarshalStringValueFromReader(r, 36)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read driving licence issuing authority: %w", err)
+	}
+	dli.SetDrivingLicenceIssuingAuthority(authority)
+
+	nation, err := unmarshalNationNumericFromReader(r)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read driving licence issuing nation: %w", err)
+	}
 	dli.SetDrivingLicenceIssuingNation(int32(nation))
-	dli.SetDrivingLicenceNumber(readString(r, 16))
+
+	licenceNumber, err := unmarshalIA5StringValueFromReader(r, 16)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read driving licence number: %w", err)
+	}
+	dli.SetDrivingLicenceNumber(licenceNumber.GetDecoded())
 	return &dli, nil
 }

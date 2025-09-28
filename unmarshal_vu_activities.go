@@ -172,9 +172,9 @@ func parseVuCardIWData(r *bytes.Reader) ([]*vuv1.Activities_CardIWRecord, error)
 	return []*vuv1.Activities_CardIWRecord{}, nil
 }
 
-func parseVuActivityDailyData(r *bytes.Reader) ([]*vuv1.Activities_ActivityChange, error) {
+func parseVuActivityDailyData(r *bytes.Reader) ([]*datadictionaryv1.ActivityChangeInfo, error) {
 	// Simplified implementation - would need to parse the actual structure
-	return []*vuv1.Activities_ActivityChange{}, nil
+	return []*datadictionaryv1.ActivityChangeInfo{}, nil
 }
 
 func parseVuPlaceDailyWorkPeriodData(r *bytes.Reader) ([]*vuv1.Activities_PlaceRecord, error) {
@@ -203,9 +203,9 @@ func parseVuCardIWRecordArray(r *bytes.Reader) ([]*vuv1.Activities_CardIWRecord,
 	return []*vuv1.Activities_CardIWRecord{}, nil
 }
 
-func parseVuActivityDailyRecordArray(r *bytes.Reader) ([]*vuv1.Activities_ActivityChange, error) {
+func parseVuActivityDailyRecordArray(r *bytes.Reader) ([]*datadictionaryv1.ActivityChangeInfo, error) {
 	// Parse record array header and records
-	return []*vuv1.Activities_ActivityChange{}, nil
+	return []*datadictionaryv1.ActivityChangeInfo{}, nil
 }
 
 func parseVuPlaceDailyWorkPeriodRecordArray(r *bytes.Reader) ([]*vuv1.Activities_PlaceRecord, error) {

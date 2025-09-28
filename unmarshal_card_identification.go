@@ -3,6 +3,7 @@ package tachograph
 import (
 	"bytes"
 	"errors"
+	"fmt"
 
 	cardv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1"
 )
@@ -18,9 +19,47 @@ func unmarshalIdentification(data []byte) (*cardv1.Identification, error) {
 
 	// Create and populate CardIdentification part (65 bytes)
 	cardId := &cardv1.Identification_Card{}
-	cardId.SetCardIssuingMemberState(readString(r, 1))
-	cardId.SetCardNumber(readString(r, 16))
-	cardId.SetCardIssuingAuthorityName(readString(r, 36))
+	// Read nation as byte and convert to NationNumeric
+	nation, err := unmarshalNationNumericFromReader(r)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read card issuing member state: %w", err)
+	}
+	cardId.SetCardIssuingMemberState(nation)
+	// Handle the inlined CardNumber structure
+	// For now, assume this is a driver card and create driver identification
+	driverID := &cardv1.Identification_DriverIdentification{}
+
+	cardNumber, err := unmarshalIA5StringValueFromReader(r, 14)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read card number: %w", err)
+	}
+	driverID.SetIdentification(cardNumber)
+
+	consecutiveIndex, err := unmarshalIA5StringValueFromReader(r, 1)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read consecutive index: %w", err)
+	}
+	driverID.SetConsecutiveIndex(consecutiveIndex)
+
+	replacementIndex, err := unmarshalIA5StringValueFromReader(r, 1)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read replacement index: %w", err)
+	}
+	driverID.SetReplacementIndex(replacementIndex)
+
+	renewalIndex, err := unmarshalIA5StringValueFromReader(r, 1)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read renewal index: %w", err)
+	}
+	driverID.SetRenewalIndex(renewalIndex)
+
+	cardId.SetDriverIdentification(driverID)
+
+	authorityName, err := unmarshalStringValueFromReader(r, 36)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read card issuing authority name: %w", err)
+	}
+	cardId.SetCardIssuingAuthorityName(authorityName)
 	cardId.SetCardIssueDate(readTimeReal(r))
 	cardId.SetCardValidityBegin(readTimeReal(r))
 	cardId.SetCardExpiryDate(readTimeReal(r))
@@ -31,14 +70,30 @@ func unmarshalIdentification(data []byte) (*cardv1.Identification, error) {
 
 	// Create and populate DriverCardHolderIdentification part (78 bytes)
 	holderId := &cardv1.Identification_DriverCardHolder{}
-	holderId.SetCardHolderSurname(readString(r, 36))
-	holderId.SetCardHolderFirstNames(readString(r, 36))
+
+	surname, err := unmarshalStringValueFromReader(r, 36)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read card holder surname: %w", err)
+	}
+	holderId.SetCardHolderSurname(surname)
+
+	firstNames, err := unmarshalStringValueFromReader(r, 36)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read card holder first names: %w", err)
+	}
+	holderId.SetCardHolderFirstNames(firstNames)
+
 	birthDate, err := readDatef(r)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to read card holder birth date: %w", err)
 	}
 	holderId.SetCardHolderBirthDate(birthDate)
-	holderId.SetCardHolderPreferredLanguage(readString(r, 2))
+
+	preferredLanguage, err := unmarshalIA5StringValueFromReader(r, 2)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read card holder preferred language: %w", err)
+	}
+	holderId.SetCardHolderPreferredLanguage(preferredLanguage)
 	identification.SetDriverCardHolder(holderId)
 
 	return &identification, nil

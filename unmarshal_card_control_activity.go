@@ -23,31 +23,43 @@ func unmarshalCardControlActivityData(data []byte) (*cardv1.ControlActivityData,
 	target.SetValid(true)
 	r := bytes.NewReader(data)
 	// Read control type (1 byte)
-	var controlType byte
-	if err := binary.Read(r, binary.BigEndian, &controlType); err != nil {
+	controlType, err := unmarshalControlTypeFromReader(r)
+	if err != nil {
 		return nil, fmt.Errorf("failed to read control type: %w", err)
 	}
-	target.SetControlType([]byte{controlType})
+	target.SetControlType(controlType)
 	// Read control time (4 bytes)
 	target.SetControlTime(readTimeReal(r))
-	// Read control card number (18 bytes)
-	controlCardBytes := make([]byte, 18)
-	if _, err := r.Read(controlCardBytes); err != nil {
+	// Read control card number (18 bytes) - this should be parsed as a proper FullCardNumber
+	// For now, create a basic structure - this needs proper protocol parsing
+	fullCardNumber := &datadictionaryv1.FullCardNumber{}
+	fullCardNumber.SetCardType(datadictionaryv1.EquipmentType_DRIVER_CARD)
+
+	// Read the card number as IA5 string
+	cardNumberStr, err := unmarshalIA5StringValueFromReader(r, 18)
+	if err != nil {
 		return nil, fmt.Errorf("failed to read control card number: %w", err)
 	}
-	// Create FullCardNumber structure
-	fullCardNumber := &datadictionaryv1.FullCardNumber{}
-	fullCardNumber.SetCardNumber(readString(bytes.NewReader(controlCardBytes), 18))
+
+	// Create driver identification with the card number
+	driverID := &datadictionaryv1.FullCardNumber_DriverIdentification{}
+	driverID.SetIdentification(cardNumberStr)
+	fullCardNumber.SetDriverIdentification(driverID)
 	target.SetControlCardNumber(fullCardNumber)
 	// Read vehicle registration (15 bytes: 1 byte nation + 14 bytes number)
-	var nation byte
-	if err := binary.Read(r, binary.BigEndian, &nation); err != nil {
+	nation, err := unmarshalNationNumericFromReader(r)
+	if err != nil {
 		return nil, fmt.Errorf("failed to read vehicle registration nation: %w", err)
 	}
 	// Create VehicleRegistrationIdentification structure
 	vehicleReg := &datadictionaryv1.VehicleRegistrationIdentification{}
-	vehicleReg.SetNation(int32(nation))
-	vehicleReg.SetNumber(readString(r, 14))
+	vehicleReg.SetNation(nation)
+
+	regNumber, err := unmarshalIA5StringValueFromReader(r, 14)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read vehicle registration number: %w", err)
+	}
+	vehicleReg.SetNumber(regNumber)
 	target.SetControlVehicleRegistration(vehicleReg)
 	// Read control download period begin (4 bytes)
 	target.SetControlDownloadPeriodBegin(readTimeReal(r))

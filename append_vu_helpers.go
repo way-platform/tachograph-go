@@ -97,8 +97,33 @@ func appendVuFullCardNumber(buf *bytes.Buffer, cardNumber *datadictionaryv1.Full
 		buf.Write(make([]byte, maxLen))
 		return
 	}
-	// For VU data, use the card_number field and pad/truncate to maxLen
-	cardStr := cardNumber.GetCardNumber()
+	// For VU data, handle the CardNumber CHOICE based on card type
+	cardStr := ""
+	switch cardNumber.GetCardType() {
+	case datadictionaryv1.EquipmentType_DRIVER_CARD:
+		if driverID := cardNumber.GetDriverIdentification(); driverID != nil {
+			// Concatenate the driver identification components
+			if identification := driverID.GetIdentification(); identification != nil {
+				cardStr += identification.GetDecoded()
+			}
+			if consecutive := driverID.GetConsecutiveIndex(); consecutive != nil {
+				cardStr += consecutive.GetDecoded()
+			}
+			if replacement := driverID.GetReplacementIndex(); replacement != nil {
+				cardStr += replacement.GetDecoded()
+			}
+			if renewal := driverID.GetRenewalIndex(); renewal != nil {
+				cardStr += renewal.GetDecoded()
+			}
+		}
+	case datadictionaryv1.EquipmentType_WORKSHOP_CARD, datadictionaryv1.EquipmentType_COMPANY_CARD:
+		if ownerID := cardNumber.GetOwnerIdentification(); ownerID != nil {
+			if identification := ownerID.GetIdentification(); identification != nil {
+				cardStr = identification.GetDecoded()
+			}
+		}
+	}
+
 	if len(cardStr) > maxLen {
 		cardStr = cardStr[:maxLen]
 	}

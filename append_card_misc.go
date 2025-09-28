@@ -23,7 +23,7 @@ func AppendControlActivityData(dst []byte, cad *cardv1.ControlActivityData) ([]b
 	if cad == nil {
 		return dst, nil
 	}
-	dst = append(dst, cad.GetControlType()...)
+	dst = appendControlType(dst, cad.GetControlType())
 	dst = appendTimeReal(dst, cad.GetControlTime())
 	// TODO: Append FullCardNumber and VehicleRegistrationIdentification correctly
 	dst = append(dst, make([]byte, 18+15)...)

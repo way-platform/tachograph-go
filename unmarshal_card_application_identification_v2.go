@@ -14,29 +14,41 @@ func unmarshalCardApplicationIdentificationV2(data []byte) (*cardv1.ApplicationI
 	}
 	var target cardv1.ApplicationIdentificationV2
 	r := bytes.NewReader(data)
+
+	// For now, assume this is a driver card and create the driver data
+	driver := &cardv1.ApplicationIdentificationV2_Driver{}
+
 	// Read border crossing records count (1 byte)
 	var borderCrossingCount byte
 	if err := binary.Read(r, binary.BigEndian, &borderCrossingCount); err != nil {
 		return nil, fmt.Errorf("failed to read border crossing records count: %w", err)
 	}
-	target.SetBorderCrossingRecordsCount(int32(borderCrossingCount))
+	driver.SetBorderCrossingRecordsCount(int32(borderCrossingCount))
+
 	// Read load/unload records count (1 byte)
 	var loadUnloadCount byte
 	if err := binary.Read(r, binary.BigEndian, &loadUnloadCount); err != nil {
 		return nil, fmt.Errorf("failed to read load/unload records count: %w", err)
 	}
-	target.SetLoadUnloadRecordsCount(int32(loadUnloadCount))
+	driver.SetLoadUnloadRecordsCount(int32(loadUnloadCount))
+
 	// Read load type entry records count (1 byte)
 	var loadTypeCount byte
 	if err := binary.Read(r, binary.BigEndian, &loadTypeCount); err != nil {
 		return nil, fmt.Errorf("failed to read load type entry records count: %w", err)
 	}
-	target.SetLoadTypeEntryRecordsCount(int32(loadTypeCount))
+	driver.SetLoadTypeEntryRecordsCount(int32(loadTypeCount))
+
 	// Read VU configuration length range (1 byte)
 	var vuConfigRange byte
 	if err := binary.Read(r, binary.BigEndian, &vuConfigRange); err != nil {
 		return nil, fmt.Errorf("failed to read VU configuration length range: %w", err)
 	}
-	target.SetVuConfigurationLengthRange(int32(vuConfigRange))
+	driver.SetVuConfigurationLengthRange(int32(vuConfigRange))
+
+	// Set the driver data and card type
+	target.SetDriver(driver)
+	target.SetCardType(cardv1.CardType_DRIVER_CARD)
+
 	return &target, nil
 }

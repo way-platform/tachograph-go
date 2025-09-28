@@ -25,14 +25,14 @@ func unmarshalCardIc(data []byte) (*cardv1.Ic, error) {
 	if _, err := r.Read(serialBytes); err != nil {
 		return nil, fmt.Errorf("failed to read IC serial number: %w", err)
 	}
-	target.SetIcSerialNumber(fmt.Sprintf("%08X", serialBytes))
+	target.SetIcSerialNumber(serialBytes)
 
 	// Read IC Manufacturing References (4 bytes)
 	mfgBytes := make([]byte, 4)
 	if _, err := r.Read(mfgBytes); err != nil {
 		return nil, fmt.Errorf("failed to read IC manufacturing references: %w", err)
 	}
-	target.SetIcManufacturingReferences(fmt.Sprintf("%08X", mfgBytes))
+	target.SetIcManufacturingReferences(mfgBytes)
 
 	return &target, nil
 }

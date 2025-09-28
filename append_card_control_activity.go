@@ -23,11 +23,32 @@ func AppendCardControlActivityData(data []byte, controlData *cardv1.ControlActiv
 	// Valid record: serialize semantic data
 	// Control type (1 byte)
 	controlType := controlData.GetControlType()
-	if len(controlType) > 0 {
-		data = append(data, controlType[0])
-	} else {
-		data = append(data, 0x00)
+	var controlTypeByte byte
+	if controlType != nil {
+		// Build bitmask from boolean fields
+		// Structure: 'cvpdexxx'B
+		// - 'c': card downloading
+		// - 'v': VU downloading
+		// - 'p': printing
+		// - 'd': display
+		// - 'e': calibration checking
+		if controlType.GetCardDownloading() {
+			controlTypeByte |= 0x80 // bit 7
+		}
+		if controlType.GetVuDownloading() {
+			controlTypeByte |= 0x40 // bit 6
+		}
+		if controlType.GetPrinting() {
+			controlTypeByte |= 0x20 // bit 5
+		}
+		if controlType.GetDisplay() {
+			controlTypeByte |= 0x10 // bit 4
+		}
+		if controlType.GetCalibrationChecking() {
+			controlTypeByte |= 0x08 // bit 3
+		}
 	}
+	data = append(data, controlTypeByte)
 
 	// Control time (4 bytes)
 	data = appendTimeReal(data, controlData.GetControlTime())

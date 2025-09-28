@@ -100,8 +100,13 @@ func parseVehicleRecord(r *bytes.Reader, recordSize int) (*cardv1.VehiclesUsed_R
 	}
 	// Create VehicleRegistrationIdentification structure
 	vehicleReg := &datadictionaryv1.VehicleRegistrationIdentification{}
-	vehicleReg.SetNation(int32(nation))
-	vehicleReg.SetNumber(readString(r, 14))
+	vehicleReg.SetNation(datadictionaryv1.NationNumeric(nation))
+
+	regNumber, err := unmarshalIA5StringValueFromReader(r, 14)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read vehicle registration number: %w", err)
+	}
+	vehicleReg.SetNumber(regNumber)
 	record.SetVehicleRegistration(vehicleReg)
 
 	// Read VU data block counter (2 bytes)

@@ -9,6 +9,8 @@ import (
 	"time"
 
 	"google.golang.org/protobuf/types/known/timestamppb"
+
+	datadictionaryv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/datadictionary/v1"
 )
 
 func bcdBytesToInt(b []byte) (int, error) {
@@ -63,6 +65,8 @@ func bytesToHexString(b []byte) string {
 	return string(result)
 }
 
+// readTimeReal reads a TimeReal value (4 bytes) and converts to Timestamp
+// TimeReal is INTEGER (0..2^32-1) representing seconds since epoch
 func readTimeReal(r *bytes.Reader) *timestamppb.Timestamp {
 	var timeVal uint32
 	binary.Read(r, binary.BigEndian, &timeVal)
@@ -72,16 +76,25 @@ func readTimeReal(r *bytes.Reader) *timestamppb.Timestamp {
 	return timestamppb.New(time.Unix(int64(timeVal), 0))
 }
 
-func readDatef(r *bytes.Reader) (*timestamppb.Timestamp, error) {
+// readDatef reads a Datef value (4 bytes BCD) and converts to Date
+// Datef is OCTET STRING (SIZE(4)) with BCD-encoded YYYYMMDD format
+func readDatef(r *bytes.Reader) (*datadictionaryv1.Date, error) {
 	b := make([]byte, 4)
 	r.Read(b)
 
-	year, _ := bcdBytesToInt(b[0:2])
-	month, _ := bcdBytesToInt(b[2:3])
-	day, _ := bcdBytesToInt(b[3:4])
+	// Parse BCD format: YYYYMMDD
+	year := int32(int32((b[0]&0xF0)>>4)*1000 + int32(b[0]&0x0F)*100 + int32((b[1]&0xF0)>>4)*10 + int32(b[1]&0x0F))
+	month := int32(int32((b[2]&0xF0)>>4)*10 + int32(b[2]&0x0F))
+	day := int32(int32((b[3]&0xF0)>>4)*10 + int32(b[3]&0x0F))
 
+	// Validate the date
 	if year < 1900 || year > 9999 || month < 1 || month > 12 || day < 1 || day > 31 {
 		return nil, nil // Return nil for invalid or zero dates
 	}
-	return timestamppb.New(time.Date(year, time.Month(month), day, 0, 0, 0, 0, time.UTC)), nil
+
+	date := &datadictionaryv1.Date{}
+	date.SetYear(year)
+	date.SetMonth(month)
+	date.SetDay(day)
+	return date, nil
 }

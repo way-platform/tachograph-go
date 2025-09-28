@@ -2,7 +2,6 @@ package tachograph
 
 import (
 	"bytes"
-	"encoding/binary"
 	"fmt"
 
 	cardv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1"
@@ -18,14 +17,19 @@ func unmarshalCardCurrentUsage(data []byte) (*cardv1.CurrentUsage, error) {
 	// Read session open time (4 bytes)
 	target.SetSessionOpenTime(readTimeReal(r))
 	// Read session open vehicle registration (15 bytes: 1 byte nation + 14 bytes number)
-	var nation byte
-	if err := binary.Read(r, binary.BigEndian, &nation); err != nil {
+	nation, err := unmarshalNationNumericFromReader(r)
+	if err != nil {
 		return nil, fmt.Errorf("failed to read vehicle registration nation: %w", err)
 	}
 	// Create VehicleRegistrationIdentification structure
 	vehicleReg := &datadictionaryv1.VehicleRegistrationIdentification{}
-	vehicleReg.SetNation(int32(nation))
-	vehicleReg.SetNumber(readString(r, 14))
+	vehicleReg.SetNation(nation)
+
+	regNumber, err := unmarshalIA5StringValueFromReader(r, 14)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read vehicle registration number: %w", err)
+	}
+	vehicleReg.SetNumber(regNumber)
 	target.SetSessionOpenVehicle(vehicleReg)
 	return &target, nil
 }

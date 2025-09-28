@@ -6,6 +6,7 @@ import (
 	"fmt"
 
 	cardv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1"
+	datadictionaryv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/datadictionary/v1"
 )
 
 // unmarshalDriverActivityData unmarshals driver activity data from a card EF.
@@ -133,14 +134,11 @@ func parseSingleActivityDailyRecord(data []byte) (*cardv1.DriverActivityData_Dai
 	// Parse fixed-size content starting at offset 4
 	offset := 4
 
-	// Read activity record date (4 bytes BCD)
+	// Read activity record date (4 bytes TimeReal)
 	if offset+4 > len(data) {
 		return nil, fmt.Errorf("insufficient data for activity record date")
 	}
-	date, err := readDatef(bytes.NewReader(data[offset : offset+4]))
-	if err != nil {
-		return nil, fmt.Errorf("failed to read datef: %w", err)
-	}
+	date := readTimeReal(bytes.NewReader(data[offset : offset+4]))
 	record.SetActivityRecordDate(date)
 	offset += 4
 
@@ -161,7 +159,7 @@ func parseSingleActivityDailyRecord(data []byte) (*cardv1.DriverActivityData_Dai
 	offset += 2
 
 	// Parse activity change info - loop through remainder in 2-byte chunks
-	var activityChanges []*cardv1.DriverActivityData_DailyRecord_ActivityChange
+	var activityChanges []*datadictionaryv1.ActivityChangeInfo
 
 	for offset+2 <= len(data) {
 		// Parse 2-byte ActivityChangeInfo bitfield
@@ -180,7 +178,7 @@ func parseSingleActivityDailyRecord(data []byte) (*cardv1.DriverActivityData_Dai
 		activity := int32((changeData >> 11) & 0x3)
 		timeOfChange := int32(changeData & 0x7FF)
 
-		activityChange := &cardv1.DriverActivityData_DailyRecord_ActivityChange{}
+		activityChange := &datadictionaryv1.ActivityChangeInfo{}
 
 		// Convert raw values to enums using protocol annotations
 		SetCardSlotNumber(slot, activityChange.SetSlot, nil)

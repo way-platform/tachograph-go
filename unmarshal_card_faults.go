@@ -3,6 +3,7 @@ package tachograph
 import (
 	"bytes"
 	"encoding/binary"
+	"fmt"
 
 	cardv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1"
 	datadictionaryv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/datadictionary/v1"
@@ -66,12 +67,19 @@ func UnmarshalFaultRecord(data []byte, rec *cardv1.FaultsData_Record) error {
 	rec.SetFaultBeginTime(readTimeReal(r))
 	rec.SetFaultEndTime(readTimeReal(r))
 	// Read vehicle registration
-	var nation byte
-	binary.Read(r, binary.BigEndian, &nation)
+	nation, err := unmarshalNationNumericFromReader(r)
+	if err != nil {
+		return fmt.Errorf("failed to read vehicle registration nation: %w", err)
+	}
 	// Create VehicleRegistrationIdentification structure
 	vehicleReg := &datadictionaryv1.VehicleRegistrationIdentification{}
-	vehicleReg.SetNation(int32(nation))
-	vehicleReg.SetNumber(readString(r, 14))
+	vehicleReg.SetNation(nation)
+
+	regNumber, err := unmarshalIA5StringValueFromReader(r, 14)
+	if err != nil {
+		return fmt.Errorf("failed to read vehicle registration number: %w", err)
+	}
+	vehicleReg.SetNumber(regNumber)
 	rec.SetFaultVehicleRegistration(vehicleReg)
 	return nil
 }

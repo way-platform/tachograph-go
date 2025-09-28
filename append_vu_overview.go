@@ -49,7 +49,11 @@ func appendOverviewGen1(buf *bytes.Buffer, overview *vuv1.Overview) {
 
 	// VehicleIdentificationNumber (17 bytes)
 	vin := overview.GetVehicleIdentificationNumber()
-	appendVuString(buf, vin, 17)
+	if vin != nil {
+		appendVuString(buf, vin.GetDecoded(), 17)
+	} else {
+		appendVuString(buf, "", 17)
+	}
 
 	// VehicleRegistrationIdentification (15 bytes: nation(1) + regnum(14))
 	vehicleReg := overview.GetVehicleRegistrationWithNation()
@@ -58,7 +62,12 @@ func appendOverviewGen1(buf *bytes.Buffer, overview *vuv1.Overview) {
 		// First byte of registration is codepage (assume codepage 1 = ISO-8859-1)
 		appendUint8(buf, 1)
 		// Registration number (13 bytes)
-		appendVuString(buf, vehicleReg.GetNumber(), 13)
+		number := vehicleReg.GetNumber()
+		if number != nil {
+			appendVuString(buf, number.GetDecoded(), 13)
+		} else {
+			appendVuString(buf, "", 13)
+		}
 	} else {
 		// Default values
 		appendUint8(buf, 0)         // nation
@@ -94,8 +103,18 @@ func appendOverviewGen1(buf *bytes.Buffer, overview *vuv1.Overview) {
 	for _, lock := range companyLocks {
 		appendVuTimeReal(buf, lock.GetLockInTime())
 		appendVuTimeReal(buf, lock.GetLockOutTime())
-		appendVuString(buf, lock.GetCompanyName(), 36)               // Name field is typically 36 bytes
-		appendVuString(buf, lock.GetCompanyAddress(), 36)            // Address field
+		companyName := lock.GetCompanyName()
+		if companyName != nil {
+			appendVuString(buf, companyName.GetDecoded(), 36)
+		} else {
+			appendVuString(buf, "", 36)
+		}
+		companyAddress := lock.GetCompanyAddress()
+		if companyAddress != nil {
+			appendVuString(buf, companyAddress.GetDecoded(), 36)
+		} else {
+			appendVuString(buf, "", 36)
+		}
 		appendVuFullCardNumber(buf, lock.GetCompanyCardNumber(), 16) // Card number field
 	}
 
@@ -103,8 +122,25 @@ func appendOverviewGen1(buf *bytes.Buffer, overview *vuv1.Overview) {
 	controlActivities := overview.GetControlActivities()
 	for _, control := range controlActivities {
 		controlType := control.GetControlType()
-		if len(controlType) > 0 {
-			appendUint8(buf, controlType[0])
+		if controlType != nil {
+			// Convert ControlType to byte bitmask
+			var b byte
+			if controlType.GetCardDownloading() {
+				b |= 0x80 // bit 'c'
+			}
+			if controlType.GetVuDownloading() {
+				b |= 0x40 // bit 'v'
+			}
+			if controlType.GetPrinting() {
+				b |= 0x20 // bit 'p'
+			}
+			if controlType.GetDisplay() {
+				b |= 0x10 // bit 'd'
+			}
+			if controlType.GetCalibrationChecking() {
+				b |= 0x08 // bit 'e'
+			}
+			appendUint8(buf, b)
 		} else {
 			appendUint8(buf, 0)
 		}
@@ -135,17 +171,17 @@ func appendOverviewGen2(buf *bytes.Buffer, overview *vuv1.Overview) {
 	// This is a placeholder for future Gen2 implementation
 }
 
-func mapSlotCardTypeToUint8(cardType vuv1.Overview_SlotCardType) uint8 {
+func mapSlotCardTypeToUint8(cardType datadictionaryv1.SlotCardType) uint8 {
 	switch cardType {
-	case vuv1.Overview_NO_CARD:
+	case datadictionaryv1.SlotCardType_NO_CARD:
 		return 0
-	case vuv1.Overview_DRIVER_CARD:
+	case datadictionaryv1.SlotCardType_DRIVER_CARD_INSERTED:
 		return 1
-	case vuv1.Overview_WORKSHOP_CARD:
+	case datadictionaryv1.SlotCardType_WORKSHOP_CARD_INSERTED:
 		return 2
-	case vuv1.Overview_CONTROL_CARD:
+	case datadictionaryv1.SlotCardType_CONTROL_CARD_INSERTED:
 		return 3
-	case vuv1.Overview_COMPANY_CARD:
+	case datadictionaryv1.SlotCardType_COMPANY_CARD_INSERTED:
 		return 4
 	default:
 		return 0

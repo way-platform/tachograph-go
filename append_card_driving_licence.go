@@ -10,7 +10,7 @@ func AppendDrivingLicenceInfo(dst []byte, dli *cardv1.DrivingLicenceInfo) ([]byt
 		return dst, nil
 	}
 	var err error
-	dst, err = appendString(dst, dli.GetDrivingLicenceIssuingAuthority(), 36)
+	dst, err = appendStringValue(dst, dli.GetDrivingLicenceIssuingAuthority(), 36)
 	if err != nil {
 		return nil, err
 	}

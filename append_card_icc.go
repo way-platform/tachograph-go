@@ -12,7 +12,7 @@ func AppendIcc(dst []byte, icc *cardv1.Icc) ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
-	dst, err = appendString(dst, icc.GetCardApprovalNumber(), 8)
+	dst, err = appendStringValue(dst, icc.GetCardApprovalNumber(), 8)
 	if err != nil {
 		return nil, err
 	}
