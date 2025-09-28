@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	cardv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1"
+	"google.golang.org/protobuf/proto"
 )
 
 // unmarshalCardLastDownload unmarshals last card download data from a card EF.
@@ -44,6 +45,6 @@ func UnmarshalCardLastDownload(data []byte, target *cardv1.CardDownloadDriver) e
 	if err != nil {
 		return err
 	}
-	*target = *result
+	proto.Merge(target, result)
 	return nil
 }

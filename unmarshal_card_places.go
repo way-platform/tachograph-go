@@ -7,6 +7,7 @@ import (
 
 	cardv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1"
 	datadictionaryv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/datadictionary/v1"
+	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/reflect/protoreflect"
 )
 
@@ -36,22 +37,6 @@ func unmarshalCardPlaces(data []byte) (*cardv1.Places, error) {
 	const (
 		// Minimum EF_Places record size
 		MIN_EF_PLACES_SIZE = 2
-
-		// Field offsets within place record
-		ENTRY_TIME_OFFSET                = 0
-		ENTRY_TYPE_OFFSET                = 4
-		DAILY_WORK_PERIOD_COUNTRY_OFFSET = 5
-		DAILY_WORK_PERIOD_REGION_OFFSET  = 6
-		VEHICLE_ODOMETER_VALUE_OFFSET    = 8
-		RESERVED_OFFSET                  = 11
-
-		// Field sizes
-		ENTRY_TIME_SIZE                = 4
-		ENTRY_TYPE_SIZE                = 1
-		DAILY_WORK_PERIOD_COUNTRY_SIZE = 1
-		DAILY_WORK_PERIOD_REGION_SIZE  = 2
-		VEHICLE_ODOMETER_VALUE_SIZE    = 3
-		RESERVED_SIZE                  = 1
 	)
 
 	if len(data) < MIN_EF_PLACES_SIZE {
@@ -86,7 +71,7 @@ func unmarshalCardPlaces(data []byte) (*cardv1.Places, error) {
 	// Capture any remaining trailing bytes for roundtrip accuracy
 	if r.Len() > 0 {
 		trailingBytes := make([]byte, r.Len())
-		r.Read(trailingBytes)
+		_, _ = r.Read(trailingBytes) // ignore error as we're reading from in-memory buffer
 		target.SetTrailingBytes(trailingBytes)
 	}
 
@@ -100,7 +85,7 @@ func UnmarshalCardPlaces(data []byte, target *cardv1.Places) error {
 	if err != nil {
 		return err
 	}
-	*target = *result
+	proto.Merge(target, result)
 	return nil
 }
 
@@ -155,7 +140,7 @@ func parsePlaceRecord(r *bytes.Reader) (*cardv1.Places_Record, error) {
 
 	// Read reserved byte (1 byte) and store it for roundtrip accuracy
 	var reserved byte
-	binary.Read(r, binary.BigEndian, &reserved)
+	_ = binary.Read(r, binary.BigEndian, &reserved) // ignore error as we're reading from in-memory buffer
 	record.SetReservedByte(int32(reserved))
 
 	return record, nil

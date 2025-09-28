@@ -29,12 +29,6 @@ func unmarshalCardApplicationIdentificationV2(data []byte) (*cardv1.ApplicationI
 	const (
 		// EF_ApplicationIdentificationV2 record size
 		EF_APPLICATION_IDENTIFICATION_V2_SIZE = 4
-
-		// Field offsets
-		NO_OF_BORDER_CROSSING_RECORDS_OFFSET = 0
-		NO_OF_LOAD_UNLOAD_RECORDS_OFFSET     = 1
-		NO_OF_LOAD_TYPE_ENTRY_RECORDS_OFFSET = 2
-		VU_CONFIGURATION_LENGTH_RANGE_OFFSET = 3
 	)
 
 	if len(data) < EF_APPLICATION_IDENTIFICATION_V2_SIZE {

@@ -28,26 +28,6 @@ import (
 //	61-68: cardValidityBegin (8 bytes)
 //	69-76: cardExpiryDate (8 bytes)
 func AppendCardIdentification(dst []byte, id *cardv1.Identification_Card) ([]byte, error) {
-	const (
-		// CardIdentification record size
-		CARD_IDENTIFICATION_SIZE = 65
-
-		// Field offsets
-		CARD_ISSUING_MEMBER_STATE_OFFSET   = 0
-		CARD_NUMBER_OFFSET                 = 1
-		CARD_ISSUING_AUTHORITY_NAME_OFFSET = 17
-		CARD_ISSUE_DATE_OFFSET             = 53
-		CARD_VALIDITY_BEGIN_OFFSET         = 61
-		CARD_EXPIRY_DATE_OFFSET            = 69
-
-		// Field sizes
-		CARD_NUMBER_SIZE                 = 16
-		CARD_ISSUING_AUTHORITY_NAME_SIZE = 36
-		CARD_ISSUE_DATE_SIZE             = 8
-		CARD_VALIDITY_BEGIN_SIZE         = 8
-		CARD_EXPIRY_DATE_SIZE            = 8
-	)
-
 	if id == nil {
 		return dst, nil
 	}
@@ -115,23 +95,6 @@ func AppendCardIdentification(dst []byte, id *cardv1.Identification_Card) ([]byt
 //	72-75: cardHolderBirthDate (4 bytes)
 //	76-77: cardHolderPreferredLanguage (2 bytes, padded)
 func AppendDriverCardHolderIdentification(dst []byte, h *cardv1.Identification_DriverCardHolder) ([]byte, error) {
-	const (
-		// DriverCardHolderIdentification record size
-		DRIVER_CARD_HOLDER_IDENTIFICATION_SIZE = 78
-
-		// Field offsets
-		CARD_HOLDER_SURNAME_OFFSET            = 0
-		CARD_HOLDER_FIRST_NAMES_OFFSET        = 36
-		CARD_HOLDER_BIRTH_DATE_OFFSET         = 72
-		CARD_HOLDER_PREFERRED_LANGUAGE_OFFSET = 76
-
-		// Field sizes
-		CARD_HOLDER_SURNAME_SIZE            = 36
-		CARD_HOLDER_FIRST_NAMES_SIZE        = 36
-		CARD_HOLDER_BIRTH_DATE_SIZE         = 4
-		CARD_HOLDER_PREFERRED_LANGUAGE_SIZE = 2
-	)
-
 	if h == nil {
 		return dst, nil
 	}

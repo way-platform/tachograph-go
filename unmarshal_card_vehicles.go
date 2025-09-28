@@ -7,6 +7,7 @@ import (
 
 	cardv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1"
 	datadictionaryv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/datadictionary/v1"
+	"google.golang.org/protobuf/proto"
 )
 
 // unmarshalCardVehiclesUsed unmarshals vehicles used data from a card EF.
@@ -40,29 +41,6 @@ func unmarshalCardVehiclesUsed(data []byte) (*cardv1.VehiclesUsed, error) {
 	const (
 		// Minimum EF_VehiclesUsed record size
 		MIN_EF_VEHICLES_USED_SIZE = 2
-
-		// Vehicle record sizes
-		GEN1_VEHICLE_RECORD_SIZE = 31
-		GEN2_VEHICLE_RECORD_SIZE = 48
-
-		// Field offsets within vehicle record
-		VEHICLE_ODOMETER_BEGIN_OFFSET        = 0
-		VEHICLE_ODOMETER_END_OFFSET          = 3
-		VEHICLE_FIRST_USE_OFFSET             = 6
-		VEHICLE_LAST_USE_OFFSET              = 10
-		VEHICLE_REGISTRATION_OFFSET          = 14
-		VEHICLE_IDENTIFICATION_NUMBER_OFFSET = 29
-		VEHICLE_REGISTRATION_NATION_OFFSET   = 31
-		VEHICLE_REGISTRATION_NUMBER_OFFSET   = 32
-
-		// Field sizes
-		VEHICLE_ODOMETER_SIZE              = 3
-		VEHICLE_FIRST_USE_SIZE             = 4
-		VEHICLE_LAST_USE_SIZE              = 4
-		VEHICLE_REGISTRATION_SIZE          = 15
-		VEHICLE_IDENTIFICATION_NUMBER_SIZE = 2
-		VEHICLE_REGISTRATION_NATION_SIZE   = 1
-		VEHICLE_REGISTRATION_NUMBER_SIZE   = 16
 	)
 
 	if len(data) < MIN_EF_VEHICLES_USED_SIZE {
@@ -103,7 +81,7 @@ func UnmarshalCardVehiclesUsed(data []byte, target *cardv1.VehiclesUsed) error {
 	if err != nil {
 		return err
 	}
-	*target = *result
+	proto.Merge(target, result)
 	return nil
 }
 

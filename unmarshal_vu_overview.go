@@ -44,23 +44,7 @@ import (
 //
 // Constants:
 const (
-	// VuOverviewFirstGen fixed fields size
-	vuOverviewFirstGenFixedSize = 2*194 + 17 + 15 + 4 + 8 + 1 + 19 // 2*194 + 17 + 15 + 4 + 8 + 1 + 19 = 456 bytes
-
-	// Certificate sizes
-	memberStateCertificateSize = 194
-	vuCertificateSize          = 194
-
-	// Vehicle identification
-	vehicleIdentificationNumberSize       = 17
-	vehicleRegistrationIdentificationSize = 15
-
-	// Time fields
-	vuDownloadablePeriodSize = 8
-
-	// Status and activity
-	cardSlotsStatusSize                = 1
-	vuDownloadActivityDataFirstGenSize = 19
+// VuOverviewFirstGen fixed fields size
 )
 
 func UnmarshalOverview(data []byte, offset int, overview *vuv1.Overview, generation int) (int, error) {

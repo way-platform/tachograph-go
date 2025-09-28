@@ -134,9 +134,6 @@ func appendUint32(dst []byte, value uint32) []byte {
 }
 
 // appendVuTag appends a 2-byte VU tag to dst
-func appendVuTag(dst []byte, tag uint16) []byte {
-	return binary.BigEndian.AppendUint16(dst, tag)
-}
 
 // appendVuBytes appends a byte slice to dst
 func appendVuBytes(dst []byte, data []byte) []byte {
@@ -160,44 +157,6 @@ func appendVuTimeReal(dst []byte, ts *timestamppb.Timestamp) []byte {
 		return append(dst, 0, 0, 0, 0)
 	}
 	return binary.BigEndian.AppendUint32(dst, uint32(ts.GetSeconds()))
-}
-
-// appendVuDownloadablePeriod appends a VuDownloadablePeriod to dst
-func appendVuDownloadablePeriod(dst []byte, period *datadictionaryv1.DownloadablePeriod) []byte {
-	if period == nil {
-		return append(dst, 0, 0, 0, 0, 0, 0, 0, 0)
-	}
-	dst = appendVuTimeReal(dst, period.GetMinTime())
-	dst = appendVuTimeReal(dst, period.GetMaxTime())
-	return dst
-}
-
-// appendVuCardSlotsStatus appends card slots status to dst
-func appendVuCardSlotsStatus(dst []byte, driverSlot, coDriverSlot datadictionaryv1.SlotCardType) []byte {
-	// Pack both slots into a single byte
-	driverValue := GetProtocolValueFromEnum(driverSlot, 0)
-	coDriverValue := GetProtocolValueFromEnum(coDriverSlot, 0)
-	status := (driverValue << 4) | coDriverValue
-	return append(dst, byte(status))
-}
-
-// appendVuDownloadActivityData appends download activity data to dst
-func appendVuDownloadActivityData(dst []byte, data *timestamppb.Timestamp) []byte {
-	if data == nil {
-		return append(dst, 0, 0, 0, 0) // Empty time
-	}
-	return appendVuTimeReal(dst, data)
-}
-
-// appendVuSignature appends a signature to dst
-func appendVuSignature(dst []byte, signature []byte, size int) []byte {
-	if len(signature) >= size {
-		return append(dst, signature[:size]...)
-	}
-	// Pad with zeros
-	padded := make([]byte, size)
-	copy(padded, signature)
-	return append(dst, padded...)
 }
 
 // appendVuFullCardNumber appends a FullCardNumber to dst with a fixed length

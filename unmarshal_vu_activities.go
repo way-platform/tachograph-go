@@ -48,17 +48,7 @@ import (
 //	...:     signature (128 bytes)
 //
 // Constants:
-const (
-	// VuActivitiesFirstGen fixed fields size
-	vuActivitiesFirstGenFixedSize = 4 + 3 // dateOfDay + odometerValueMidnight = 7 bytes
-	
-	// Time and odometer
-	timeRealSize = 4
-	odometerValueMidnightSize = 3
-	
-	// Signature
-	signatureFirstGenSize = 128
-)
+const ()
 
 func UnmarshalVuActivities(data []byte, offset int, target *vuv1.Activities, generation int) (int, error) {
 	switch generation {

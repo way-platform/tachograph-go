@@ -48,14 +48,6 @@ const (
 	// CardDriverActivity header size
 	cardDriverActivityHeaderSize = 4 // 2 bytes oldest + 2 bytes newest pointer
 
-	// CardActivityDailyRecord fixed fields size
-	cardActivityDailyRecordFixedSize = 13 // 2+2+4+1+4 bytes
-
-	// ActivityChangeInfo size
-	activityChangeInfoSize = 2
-
-	// Maximum number of activity changes per day
-	maxActivityChangesPerDay = 1440
 )
 
 func unmarshalDriverActivityData(data []byte) (*cardv1.DriverActivityData, error) {

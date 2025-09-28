@@ -67,7 +67,7 @@ func unmarshalDrivingLicenceInfo(data []byte) (*cardv1.DrivingLicenceInfo, error
 		return nil, fmt.Errorf("failed to read driving licence number: %w", err)
 	}
 	dli.SetDrivingLicenceNumber(licenceNumber.GetDecoded())
-	offset += 16
+	// offset += 16 // Not needed as this is the last field
 
 	return &dli, nil
 }

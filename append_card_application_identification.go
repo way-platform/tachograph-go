@@ -36,27 +36,6 @@ import (
 //	10-10: noOfSpecificConditionRecords (1 byte, Gen2+)
 //	11-11: noOfCardVehicleUnitRecords (1 byte, Gen2v2+)
 func AppendCardApplicationIdentification(data []byte, appId *cardv1.ApplicationIdentification) ([]byte, error) {
-	const (
-		// Minimum EF_ApplicationIdentification record size
-		MIN_EF_APPLICATION_IDENTIFICATION_SIZE = 7
-
-		// Field offsets
-		TYPE_OF_TACHOGRAPH_CARD_ID_OFFSET       = 0
-		CARD_STRUCTURE_VERSION_OFFSET           = 1
-		NO_OF_EVENTS_PER_TYPE_OFFSET            = 3
-		NO_OF_FAULTS_PER_TYPE_OFFSET            = 4
-		ACTIVITY_STRUCTURE_LENGTH_OFFSET        = 5
-		NO_OF_CARD_VEHICLE_RECORDS_OFFSET       = 7
-		NO_OF_CARD_PLACE_RECORDS_OFFSET         = 8
-		NO_OF_GNSS_AD_RECORDS_OFFSET            = 9
-		NO_OF_SPECIFIC_CONDITION_RECORDS_OFFSET = 10
-		NO_OF_CARD_VEHICLE_UNIT_RECORDS_OFFSET  = 11
-
-		// Field sizes
-		CARD_STRUCTURE_VERSION_SIZE    = 2
-		ACTIVITY_STRUCTURE_LENGTH_SIZE = 2
-	)
-
 	if appId == nil {
 		return data, nil
 	}

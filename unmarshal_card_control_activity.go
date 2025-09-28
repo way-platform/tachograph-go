@@ -128,7 +128,7 @@ func unmarshalCardControlActivityData(data []byte) (*cardv1.ControlActivityData,
 		return nil, fmt.Errorf("insufficient data for control download period end")
 	}
 	target.SetControlDownloadPeriodEnd(readTimeReal(bytes.NewReader(data[offset : offset+4])))
-	offset += 4
+	// offset += 4 // Not needed as this is the last field
 
 	return &target, nil
 }

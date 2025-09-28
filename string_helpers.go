@@ -8,27 +8,10 @@ import (
 	datadictionaryv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/datadictionary/v1"
 )
 
-// readStringFromBytes reads a fixed-length string from a byte slice
-func readStringFromBytes(data []byte, length int) string {
-	if length > len(data) {
-		length = len(data)
-	}
-	b := data[:length]
-	// Trim trailing spaces and null bytes
-	b = bytes.TrimRight(b, " \x00")
-
-	// Check if the result is valid UTF-8, if not convert to hex representation
-	if !isValidUTF8(b) {
-		return bytesToHexString(b)
-	}
-
-	return string(b)
-}
-
 // readString reads a fixed-length string from a bytes.Reader
 func readString(r *bytes.Reader, len int) string {
 	b := make([]byte, len)
-	r.Read(b)
+	_, _ = r.Read(b) // ignore error as we're reading from in-memory buffer
 	// Trim trailing spaces and null bytes
 	b = bytes.TrimRight(b, " \x00")
 

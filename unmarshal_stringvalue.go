@@ -1,6 +1,7 @@
 package tachograph
 
 import (
+	"bytes"
 	"fmt"
 	"io"
 	"strings"
@@ -47,7 +48,8 @@ func unmarshalIA5StringValue(input []byte) (*datadictionaryv1.StringValue, error
 	output.SetEncoded(input)
 
 	// Decode and trim the input bytes
-	decoded := trimSpaceAndZero(string(input))
+	trimmed := trimSpaceAndZeroBytes(input)
+	decoded := string(trimmed)
 
 	// Ensure the result is valid UTF-8
 	if !utf8.ValidString(decoded) {
@@ -94,10 +96,11 @@ func getEncodingFromCodePage(codePage byte) datadictionaryv1.Encoding {
 	}
 }
 
-// trimSpaceAndZero trims spaces, 0x00 and 0xff values off a string
-func trimSpaceAndZero(s string) string {
-	w := "\t\n\v\f\r \x85\xA0\x00\xFF"
-	return strings.Trim(s, w)
+// trimSpaceAndZeroBytes trims spaces, 0x00 and 0xff values off a byte slice
+func trimSpaceAndZeroBytes(b []byte) []byte {
+	// Define cutset as string - bytes.Trim handles this properly
+	cutset := "\t\n\v\f\r \x85\xA0\x00\xFF"
+	return bytes.Trim(b, cutset)
 }
 
 // decodeWithCodePage decodes a byte slice with the given code page, returns the trimmed decoded string
@@ -159,7 +162,7 @@ func decodeWithCodePage(codePage byte, data []byte) (string, error) {
 	}
 
 	// The character map decoder should produce valid UTF-8, but let's be safe
-	trimmed := trimSpaceAndZero(res)
+	trimmed := string(trimSpaceAndZeroBytes([]byte(res)))
 
 	// If the result is not valid UTF-8, convert it to valid UTF-8
 	if !utf8.ValidString(trimmed) {

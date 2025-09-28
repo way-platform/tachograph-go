@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	cardv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1"
+	"google.golang.org/protobuf/proto"
 )
 
 // unmarshalCardIc unmarshals IC identification data from EF_IC.
@@ -54,6 +55,6 @@ func UnmarshalCardIc(data []byte, target *cardv1.Ic) error {
 	if err != nil {
 		return err
 	}
-	*target = *result
+	proto.Merge(target, result)
 	return nil
 }

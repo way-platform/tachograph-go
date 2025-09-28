@@ -5,9 +5,11 @@ import (
 	"encoding/binary"
 	"fmt"
 
+	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/reflect/protoreflect"
+
 	cardv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1"
 	datadictionaryv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/datadictionary/v1"
-	"google.golang.org/protobuf/reflect/protoreflect"
 )
 
 // unmarshalFaultsData parses the binary data for an EF_Faults_Data record.
@@ -17,7 +19,7 @@ func unmarshalFaultsData(data []byte) (*cardv1.FaultsData, error) {
 
 	for r.Len() >= cardEventFaultRecordSize {
 		recordData := make([]byte, cardEventFaultRecordSize)
-		r.Read(recordData)
+		_, _ = r.Read(recordData) // ignore error as we're reading from in-memory buffer
 
 		// Check if this is a valid record by examining the fault begin time (first 4 bytes after fault type)
 		// Fault type is 1 byte, so fault begin time starts at byte 1
@@ -52,7 +54,7 @@ func UnmarshalFaultsData(data []byte, fd *cardv1.FaultsData) error {
 	if err != nil {
 		return err
 	}
-	*fd = *result
+	proto.Merge(fd, result)
 	return nil
 }
 
@@ -130,7 +132,7 @@ func UnmarshalFaultRecord(data []byte, rec *cardv1.FaultsData_Record) error {
 	if err != nil {
 		return fmt.Errorf("failed to read vehicle registration number: %w", err)
 	}
-	offset += 14
+	// offset += 14 // Not needed as this is the last field
 	vehicleReg.SetNumber(regNumber)
 	rec.SetFaultVehicleRegistration(vehicleReg)
 	return nil

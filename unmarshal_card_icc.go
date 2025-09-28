@@ -150,7 +150,7 @@ func unmarshalIcc(data []byte) (*cardv1.Icc, error) {
 		return nil, fmt.Errorf("insufficient data for IC identifier")
 	}
 	icIdentifier := data[offset : offset+lenIcIdentifier]
-	offset += lenIcIdentifier
+	// offset += lenIcIdentifier // Not needed as this is the last field
 	icc.SetIcIdentifier(icIdentifier)
 	return &icc, nil
 }

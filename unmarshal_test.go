@@ -39,7 +39,7 @@ func TestUnmarshalFile_golden(t *testing.T) {
 					t.Fatalf("Failed to marshal file %s: %v", path, err)
 				}
 				var actualIndented bytes.Buffer
-				json.Indent(&actualIndented, actualBytes, "", "  ")
+				_ = json.Indent(&actualIndented, actualBytes, "", "  ") // ignore error as JSON marshaling already succeeded
 				actual = actualIndented.String()
 			}
 			if *update {

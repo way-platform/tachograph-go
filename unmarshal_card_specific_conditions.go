@@ -7,6 +7,7 @@ import (
 
 	cardv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1"
 	datadictionaryv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/datadictionary/v1"
+	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/reflect/protoreflect"
 )
 
@@ -58,7 +59,7 @@ func UnmarshalCardSpecificConditions(data []byte, target *cardv1.SpecificConditi
 	if err != nil {
 		return err
 	}
-	*target = *result
+	proto.Merge(target, result)
 	return nil
 }
 

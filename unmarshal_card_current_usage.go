@@ -63,7 +63,7 @@ func unmarshalCardCurrentUsage(data []byte) (*cardv1.CurrentUsage, error) {
 	if err != nil {
 		return nil, fmt.Errorf("failed to read vehicle registration number: %w", err)
 	}
-	offset += 14
+	// offset += 14 // Not needed as this is the last field
 	vehicleReg.SetNumber(regNumber)
 	target.SetSessionOpenVehicle(vehicleReg)
 	return &target, nil

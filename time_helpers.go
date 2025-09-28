@@ -53,7 +53,7 @@ func appendDate(dst []byte, date *datadictionaryv1.Date) []byte {
 // readTimeReal reads a TimeReal value (4 bytes) from a bytes.Reader and converts to Timestamp
 func readTimeReal(r *bytes.Reader) *timestamppb.Timestamp {
 	var timeVal uint32
-	binary.Read(r, binary.BigEndian, &timeVal)
+	_ = binary.Read(r, binary.BigEndian, &timeVal) // ignore error as we're reading from in-memory buffer
 	if timeVal == 0 {
 		return nil
 	}
@@ -63,7 +63,7 @@ func readTimeReal(r *bytes.Reader) *timestamppb.Timestamp {
 // readDatef reads a Datef value (4 bytes BCD) from a bytes.Reader and converts to Date
 func readDatef(r *bytes.Reader) (*datadictionaryv1.Date, error) {
 	b := make([]byte, 4)
-	r.Read(b)
+	_, _ = r.Read(b) // ignore error as we're reading from in-memory buffer
 
 	// Parse BCD format: YYYYMMDD
 	year := int32(int32((b[0]&0xF0)>>4)*1000 + int32(b[0]&0x0F)*100 + int32((b[1]&0xF0)>>4)*10 + int32(b[1]&0x0F))

@@ -163,7 +163,7 @@ func unmarshalIdentification(data []byte) (*cardv1.Identification, error) {
 		return nil, fmt.Errorf("failed to read card holder preferred language: %w", err)
 	}
 	holderId.SetCardHolderPreferredLanguage(preferredLanguage)
-	offset++
+	// offset++ // Not needed as this is the last field
 
 	identification.SetDriverCardHolder(holderId)
 

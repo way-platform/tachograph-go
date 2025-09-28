@@ -29,25 +29,6 @@ import (
 //	  - 8-10:  vehicleOdometerValue (3 bytes)
 //	  - 11-11: reserved (1 byte)
 func AppendPlaces(dst []byte, p *cardv1.Places) ([]byte, error) {
-	const (
-
-		// Field offsets within place record
-		ENTRY_TIME_OFFSET                = 0
-		ENTRY_TYPE_OFFSET                = 4
-		DAILY_WORK_PERIOD_COUNTRY_OFFSET = 5
-		DAILY_WORK_PERIOD_REGION_OFFSET  = 6
-		VEHICLE_ODOMETER_VALUE_OFFSET    = 8
-		RESERVED_OFFSET                  = 11
-
-		// Field sizes
-		ENTRY_TIME_SIZE                = 4
-		ENTRY_TYPE_SIZE                = 1
-		DAILY_WORK_PERIOD_COUNTRY_SIZE = 1
-		DAILY_WORK_PERIOD_REGION_SIZE  = 2
-		VEHICLE_ODOMETER_VALUE_SIZE    = 3
-		RESERVED_SIZE                  = 1
-	)
-
 	if p == nil {
 		return dst, nil
 	}

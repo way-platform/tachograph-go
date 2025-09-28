@@ -1,7 +1,6 @@
 package tachograph
 
 import (
-	"bytes"
 	"encoding/binary"
 	"errors"
 	"reflect"
@@ -11,7 +10,6 @@ import (
 
 	cardv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1"
 	tachographv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/v1"
-	vuv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/vu/v1"
 )
 
 // MarshalFile serializes a protobuf File message into the binary DDD file format.
@@ -265,59 +263,3 @@ func appendTlvUnsigned[T proto.Message](
 }
 
 // appendVU orchestrates writing a VU file in TV format
-func appendVU(dst []byte, file *tachographv1.File) ([]byte, error) {
-	vuFile := file.GetVehicleUnit()
-	if vuFile == nil {
-		return dst, nil
-	}
-
-	buf := bytes.NewBuffer(dst)
-
-	// Process each transfer in the VU file
-	for _, transfer := range vuFile.GetTransfers() {
-		// Get the tag for this transfer type
-		tag := getTrepValueForTransferType(transfer.GetType())
-		if tag == 0 {
-			continue // Skip unknown transfer types
-		}
-
-		// Append the 2-byte tag (0x76XX format)
-		vuTag := uint16(0x7600 | (uint16(tag) & 0xFF))
-		buf.Write(appendVuTag(nil, vuTag))
-
-		// Append the transfer data based on type
-		switch transfer.GetType() {
-		case vuv1.TransferType_DOWNLOAD_INTERFACE_VERSION:
-			AppendDownloadInterfaceVersion(buf, transfer.GetDownloadInterfaceVersion())
-		case vuv1.TransferType_OVERVIEW_GEN1, vuv1.TransferType_OVERVIEW_GEN2_V1, vuv1.TransferType_OVERVIEW_GEN2_V2:
-			AppendOverview(buf, transfer.GetOverview())
-		case vuv1.TransferType_ACTIVITIES_GEN1, vuv1.TransferType_ACTIVITIES_GEN2_V1, vuv1.TransferType_ACTIVITIES_GEN2_V2:
-			AppendVuActivities(buf, transfer.GetActivities())
-		case vuv1.TransferType_EVENTS_AND_FAULTS_GEN1, vuv1.TransferType_EVENTS_AND_FAULTS_GEN2_V1:
-			AppendVuEventsAndFaults(buf, transfer.GetEventsAndFaults())
-		case vuv1.TransferType_DETAILED_SPEED_GEN1, vuv1.TransferType_DETAILED_SPEED_GEN2:
-			AppendVuDetailedSpeed(buf, transfer.GetDetailedSpeed())
-		case vuv1.TransferType_TECHNICAL_DATA_GEN1, vuv1.TransferType_TECHNICAL_DATA_GEN2_V1:
-			AppendVuTechnicalData(buf, transfer.GetTechnicalData())
-		default:
-			// Skip unknown transfer types
-		}
-	}
-
-	return buf.Bytes(), nil
-}
-
-// getTrepValueForTransferType returns the TREP value for a given transfer type
-func getTrepValueForTransferType(transferType vuv1.TransferType) uint8 {
-	values := vuv1.TransferType_TRANSFER_TYPE_UNSPECIFIED.Descriptor().Values()
-	for i := 0; i < values.Len(); i++ {
-		valueDesc := values.Get(i)
-		if vuv1.TransferType(valueDesc.Number()) == transferType {
-			opts := valueDesc.Options()
-			if proto.HasExtension(opts, vuv1.E_TrepValue) {
-				return uint8(proto.GetExtension(opts, vuv1.E_TrepValue).(int32))
-			}
-		}
-	}
-	return 0
-}

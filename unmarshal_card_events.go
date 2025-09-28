@@ -15,7 +15,7 @@ func unmarshalEventsData(data []byte) (*cardv1.EventsData, error) {
 	var records []*cardv1.EventsData_Record
 	for r.Len() >= cardEventFaultRecordSize {
 		recordData := make([]byte, cardEventFaultRecordSize)
-		r.Read(recordData)
+		_, _ = r.Read(recordData) // ignore error as we're reading from in-memory buffer
 		// Check if this is a valid record by examining the event begin time (first 4 bytes after event type)
 		// Event type is 1 byte, so event begin time starts at byte 1
 		eventBeginTime := binary.BigEndian.Uint32(recordData[1:5])
@@ -115,7 +115,7 @@ func unmarshalEventRecord(data []byte) (*cardv1.EventsData_Record, error) {
 	if err != nil {
 		return nil, fmt.Errorf("failed to read vehicle registration number: %w", err)
 	}
-	offset += 14
+	// offset += 14 // Not needed as this is the last field
 	vehicleReg.SetNumber(regNumber)
 	rec.SetEventVehicleRegistration(vehicleReg)
 	return &rec, nil

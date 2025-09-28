@@ -21,8 +21,7 @@ import (
 //
 // Constants:
 const (
-	// DownloadInterfaceVersion total size
-	downloadInterfaceVersionSize = 2
+// DownloadInterfaceVersion total size
 )
 
 func UnmarshalDownloadInterfaceVersion(data []byte, offset int, version *vuv1.DownloadInterfaceVersion) (int, error) {
