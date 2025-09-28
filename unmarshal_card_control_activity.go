@@ -86,8 +86,8 @@ func unmarshalCardControlActivityData(data []byte) (*cardv1.ControlActivityData,
 	offset += 18
 
 	// Create driver identification with the card number
-	driverID := &datadictionaryv1.FullCardNumber_DriverIdentification{}
-	driverID.SetIdentification(cardNumberStr)
+	driverID := &datadictionaryv1.DriverIdentification{}
+	driverID.SetIdentificationNumber(cardNumberStr)
 	fullCardNumber.SetDriverIdentification(driverID)
 	target.SetControlCardNumber(fullCardNumber)
 

@@ -3,6 +3,8 @@ edition = "2023";
 package wayplatform.connect.tachograph.card.v1;
 
 import "google/protobuf/timestamp.proto";
+import "wayplatform/connect/tachograph/datadictionary/v1/bcd_string.proto";
+import "wayplatform/connect/tachograph/datadictionary/v1/string_value.proto";
 import "wayplatform/connect/tachograph/datadictionary/v1/vehicle_registration_identification.proto";
 
 // Represents the content of the EF_Vehicles_Used file.
@@ -79,8 +81,8 @@ message VehiclesUsed {
     // See Data Dictionary, Section 2.189, `VuDataBlockCounter`.
     // ASN.1 Definition:
     //
-    //     VuDataBlockCounter ::= INTEGER(0..65535)
-    int32 vu_data_block_counter = 6;
+    //     VuDataBlockCounter ::= BCDstring(SIZE(2))
+    datadictionary.v1.BcdString vu_data_block_counter = 6;
 
     // The Vehicle Identification Number (VIN). (Gen2 only)
     //
@@ -88,7 +90,7 @@ message VehiclesUsed {
     // ASN.1 Definition:
     //
     //     VehicleIdentificationNumber ::= IA5String(SIZE(17))
-    string vehicle_identification_number = 7;
+    wayplatform.connect.tachograph.datadictionary.v1.StringValue vehicle_identification_number = 7;
   }
 
   // Index of the last updated vehicle record.

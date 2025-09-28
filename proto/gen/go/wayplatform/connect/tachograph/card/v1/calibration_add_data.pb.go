@@ -153,9 +153,9 @@ func (b0 CalibrationAddData_builder) Build() *CalibrationAddData {
 type CalibrationAddData_Record struct {
 	state                                  protoimpl.MessageState `protogen:"opaque.v1"`
 	xxx_hidden_OldTime                     *timestamppb.Timestamp `protobuf:"bytes,1,opt,name=old_time,json=oldTime"`
-	xxx_hidden_VehicleIdentificationNumber *string                `protobuf:"bytes,2,opt,name=vehicle_identification_number,json=vehicleIdentificationNumber"`
+	xxx_hidden_VehicleIdentificationNumber *v1.StringValue        `protobuf:"bytes,2,opt,name=vehicle_identification_number,json=vehicleIdentificationNumber"`
 	xxx_hidden_ByDefaultLoadType           v1.LoadType            `protobuf:"varint,3,opt,name=by_default_load_type,json=byDefaultLoadType,enum=wayplatform.connect.tachograph.datadictionary.v1.LoadType"`
-	xxx_hidden_CalibrationCountry          int32                  `protobuf:"varint,4,opt,name=calibration_country,json=calibrationCountry"`
+	xxx_hidden_CalibrationCountry          v1.NationNumeric       `protobuf:"varint,4,opt,name=calibration_country,json=calibrationCountry,enum=wayplatform.connect.tachograph.datadictionary.v1.NationNumeric"`
 	xxx_hidden_CalibrationCountryTimestamp *timestamppb.Timestamp `protobuf:"bytes,5,opt,name=calibration_country_timestamp,json=calibrationCountryTimestamp"`
 	XXX_raceDetectHookData                 protoimpl.RaceDetectHookData
 	XXX_presence                           [1]uint32
@@ -195,14 +195,11 @@ func (x *CalibrationAddData_Record) GetOldTime() *timestamppb.Timestamp {
 	return nil
 }
 
-func (x *CalibrationAddData_Record) GetVehicleIdentificationNumber() string {
+func (x *CalibrationAddData_Record) GetVehicleIdentificationNumber() *v1.StringValue {
 	if x != nil {
-		if x.xxx_hidden_VehicleIdentificationNumber != nil {
-			return *x.xxx_hidden_VehicleIdentificationNumber
-		}
-		return ""
+		return x.xxx_hidden_VehicleIdentificationNumber
 	}
-	return ""
+	return nil
 }
 
 func (x *CalibrationAddData_Record) GetByDefaultLoadType() v1.LoadType {
@@ -214,11 +211,13 @@ func (x *CalibrationAddData_Record) GetByDefaultLoadType() v1.LoadType {
 	return v1.LoadType(0)
 }
 
-func (x *CalibrationAddData_Record) GetCalibrationCountry() int32 {
+func (x *CalibrationAddData_Record) GetCalibrationCountry() v1.NationNumeric {
 	if x != nil {
-		return x.xxx_hidden_CalibrationCountry
+		if protoimpl.X.Present(&(x.XXX_presence[0]), 3) {
+			return x.xxx_hidden_CalibrationCountry
+		}
 	}
-	return 0
+	return v1.NationNumeric(0)
 }
 
 func (x *CalibrationAddData_Record) GetCalibrationCountryTimestamp() *timestamppb.Timestamp {
@@ -232,9 +231,8 @@ func (x *CalibrationAddData_Record) SetOldTime(v *timestamppb.Timestamp) {
 	x.xxx_hidden_OldTime = v
 }
 
-func (x *CalibrationAddData_Record) SetVehicleIdentificationNumber(v string) {
-	x.xxx_hidden_VehicleIdentificationNumber = &v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 5)
+func (x *CalibrationAddData_Record) SetVehicleIdentificationNumber(v *v1.StringValue) {
+	x.xxx_hidden_VehicleIdentificationNumber = v
 }
 
 func (x *CalibrationAddData_Record) SetByDefaultLoadType(v v1.LoadType) {
@@ -242,7 +240,7 @@ func (x *CalibrationAddData_Record) SetByDefaultLoadType(v v1.LoadType) {
 	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 5)
 }
 
-func (x *CalibrationAddData_Record) SetCalibrationCountry(v int32) {
+func (x *CalibrationAddData_Record) SetCalibrationCountry(v v1.NationNumeric) {
 	x.xxx_hidden_CalibrationCountry = v
 	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 3, 5)
 }
@@ -262,7 +260,7 @@ func (x *CalibrationAddData_Record) HasVehicleIdentificationNumber() bool {
 	if x == nil {
 		return false
 	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 1)
+	return x.xxx_hidden_VehicleIdentificationNumber != nil
 }
 
 func (x *CalibrationAddData_Record) HasByDefaultLoadType() bool {
@@ -291,7 +289,6 @@ func (x *CalibrationAddData_Record) ClearOldTime() {
 }
 
 func (x *CalibrationAddData_Record) ClearVehicleIdentificationNumber() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 1)
 	x.xxx_hidden_VehicleIdentificationNumber = nil
 }
 
@@ -302,7 +299,7 @@ func (x *CalibrationAddData_Record) ClearByDefaultLoadType() {
 
 func (x *CalibrationAddData_Record) ClearCalibrationCountry() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 3)
-	x.xxx_hidden_CalibrationCountry = 0
+	x.xxx_hidden_CalibrationCountry = v1.NationNumeric_NATION_NUMERIC_UNSPECIFIED
 }
 
 func (x *CalibrationAddData_Record) ClearCalibrationCountryTimestamp() {
@@ -325,7 +322,7 @@ type CalibrationAddData_Record_builder struct {
 	// ASN.1 Specification:
 	//
 	//	VehicleIdentificationNumber ::= IA5String(SIZE(17))
-	VehicleIdentificationNumber *string
+	VehicleIdentificationNumber *v1.StringValue
 	// The default load type.
 	//
 	// See Data Dictionary, Section 2.90a, `LoadType`.
@@ -341,7 +338,7 @@ type CalibrationAddData_Record_builder struct {
 	// ASN.1 Specification:
 	//
 	//	NationNumeric ::= INTEGER(0..255)
-	CalibrationCountry *int32
+	CalibrationCountry *v1.NationNumeric
 	// The timestamp when the calibration country was recorded.
 	//
 	// See Data Dictionary, Section 2.162, `TimeReal`.
@@ -356,10 +353,7 @@ func (b0 CalibrationAddData_Record_builder) Build() *CalibrationAddData_Record {
 	b, x := &b0, m0
 	_, _ = b, x
 	x.xxx_hidden_OldTime = b.OldTime
-	if b.VehicleIdentificationNumber != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 5)
-		x.xxx_hidden_VehicleIdentificationNumber = b.VehicleIdentificationNumber
-	}
+	x.xxx_hidden_VehicleIdentificationNumber = b.VehicleIdentificationNumber
 	if b.ByDefaultLoadType != nil {
 		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 5)
 		x.xxx_hidden_ByDefaultLoadType = *b.ByDefaultLoadType
@@ -376,15 +370,15 @@ var File_wayplatform_connect_tachograph_card_v1_calibration_add_data_proto proto
 
 const file_wayplatform_connect_tachograph_card_v1_calibration_add_data_proto_rawDesc = "" +
 	"\n" +
-	"Awayplatform/connect/tachograph/card/v1/calibration_add_data.proto\x12&wayplatform.connect.tachograph.card.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a@wayplatform/connect/tachograph/datadictionary/v1/load_type.proto\"\xa5\x04\n" +
+	"Awayplatform/connect/tachograph/card/v1/calibration_add_data.proto\x12&wayplatform.connect.tachograph.card.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a@wayplatform/connect/tachograph/datadictionary/v1/load_type.proto\x1aCwayplatform/connect/tachograph/datadictionary/v1/string_value.proto\x1aEwayplatform/connect/tachograph/datadictionary/v1/nation_numeric.proto\"\xa6\x05\n" +
 	"\x12CalibrationAddData\x12.\n" +
 	"\x13newest_record_index\x18\x01 \x01(\x05R\x11newestRecordIndex\x12[\n" +
-	"\arecords\x18\x02 \x03(\v2A.wayplatform.connect.tachograph.card.v1.CalibrationAddData.RecordR\arecords\x1a\x81\x03\n" +
+	"\arecords\x18\x02 \x03(\v2A.wayplatform.connect.tachograph.card.v1.CalibrationAddData.RecordR\arecords\x1a\x82\x04\n" +
 	"\x06Record\x125\n" +
-	"\bold_time\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\aoldTime\x12B\n" +
-	"\x1dvehicle_identification_number\x18\x02 \x01(\tR\x1bvehicleIdentificationNumber\x12k\n" +
-	"\x14by_default_load_type\x18\x03 \x01(\x0e2:.wayplatform.connect.tachograph.datadictionary.v1.LoadTypeR\x11byDefaultLoadType\x12/\n" +
-	"\x13calibration_country\x18\x04 \x01(\x05R\x12calibrationCountry\x12^\n" +
+	"\bold_time\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\aoldTime\x12\x81\x01\n" +
+	"\x1dvehicle_identification_number\x18\x02 \x01(\v2=.wayplatform.connect.tachograph.datadictionary.v1.StringValueR\x1bvehicleIdentificationNumber\x12k\n" +
+	"\x14by_default_load_type\x18\x03 \x01(\x0e2:.wayplatform.connect.tachograph.datadictionary.v1.LoadTypeR\x11byDefaultLoadType\x12p\n" +
+	"\x13calibration_country\x18\x04 \x01(\x0e2?.wayplatform.connect.tachograph.datadictionary.v1.NationNumericR\x12calibrationCountry\x12^\n" +
 	"\x1dcalibration_country_timestamp\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampR\x1bcalibrationCountryTimestampB\xe4\x02\n" +
 	"*com.wayplatform.connect.tachograph.card.v1B\x17CalibrationAddDataProtoP\x01Z`github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1;cardv1\xa2\x02\x04WCTC\xaa\x02&Wayplatform.Connect.Tachograph.Card.V1\xca\x02&Wayplatform\\Connect\\Tachograph\\Card\\V1\xe2\x022Wayplatform\\Connect\\Tachograph\\Card\\V1\\GPBMetadata\xea\x02*Wayplatform::Connect::Tachograph::Card::V1b\beditionsp\xe8\a"
 
@@ -393,18 +387,22 @@ var file_wayplatform_connect_tachograph_card_v1_calibration_add_data_proto_goTyp
 	(*CalibrationAddData)(nil),        // 0: wayplatform.connect.tachograph.card.v1.CalibrationAddData
 	(*CalibrationAddData_Record)(nil), // 1: wayplatform.connect.tachograph.card.v1.CalibrationAddData.Record
 	(*timestamppb.Timestamp)(nil),     // 2: google.protobuf.Timestamp
-	(v1.LoadType)(0),                  // 3: wayplatform.connect.tachograph.datadictionary.v1.LoadType
+	(*v1.StringValue)(nil),            // 3: wayplatform.connect.tachograph.datadictionary.v1.StringValue
+	(v1.LoadType)(0),                  // 4: wayplatform.connect.tachograph.datadictionary.v1.LoadType
+	(v1.NationNumeric)(0),             // 5: wayplatform.connect.tachograph.datadictionary.v1.NationNumeric
 }
 var file_wayplatform_connect_tachograph_card_v1_calibration_add_data_proto_depIdxs = []int32{
 	1, // 0: wayplatform.connect.tachograph.card.v1.CalibrationAddData.records:type_name -> wayplatform.connect.tachograph.card.v1.CalibrationAddData.Record
 	2, // 1: wayplatform.connect.tachograph.card.v1.CalibrationAddData.Record.old_time:type_name -> google.protobuf.Timestamp
-	3, // 2: wayplatform.connect.tachograph.card.v1.CalibrationAddData.Record.by_default_load_type:type_name -> wayplatform.connect.tachograph.datadictionary.v1.LoadType
-	2, // 3: wayplatform.connect.tachograph.card.v1.CalibrationAddData.Record.calibration_country_timestamp:type_name -> google.protobuf.Timestamp
-	4, // [4:4] is the sub-list for method output_type
-	4, // [4:4] is the sub-list for method input_type
-	4, // [4:4] is the sub-list for extension type_name
-	4, // [4:4] is the sub-list for extension extendee
-	0, // [0:4] is the sub-list for field type_name
+	3, // 2: wayplatform.connect.tachograph.card.v1.CalibrationAddData.Record.vehicle_identification_number:type_name -> wayplatform.connect.tachograph.datadictionary.v1.StringValue
+	4, // 3: wayplatform.connect.tachograph.card.v1.CalibrationAddData.Record.by_default_load_type:type_name -> wayplatform.connect.tachograph.datadictionary.v1.LoadType
+	5, // 4: wayplatform.connect.tachograph.card.v1.CalibrationAddData.Record.calibration_country:type_name -> wayplatform.connect.tachograph.datadictionary.v1.NationNumeric
+	2, // 5: wayplatform.connect.tachograph.card.v1.CalibrationAddData.Record.calibration_country_timestamp:type_name -> google.protobuf.Timestamp
+	6, // [6:6] is the sub-list for method output_type
+	6, // [6:6] is the sub-list for method input_type
+	6, // [6:6] is the sub-list for extension type_name
+	6, // [6:6] is the sub-list for extension extendee
+	0, // [0:6] is the sub-list for field type_name
 }
 
 func init() { file_wayplatform_connect_tachograph_card_v1_calibration_add_data_proto_init() }

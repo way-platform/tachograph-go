@@ -202,19 +202,19 @@ func (b0 Calibration_builder) Build() *Calibration {
 type Calibration_Record struct {
 	state                                     protoimpl.MessageState                `protogen:"opaque.v1"`
 	xxx_hidden_CalibrationPurpose             v1.CalibrationPurpose                 `protobuf:"varint,1,opt,name=calibration_purpose,json=calibrationPurpose,enum=wayplatform.connect.tachograph.datadictionary.v1.CalibrationPurpose"`
-	xxx_hidden_VehicleIdentificationNumber    *string                               `protobuf:"bytes,3,opt,name=vehicle_identification_number,json=vehicleIdentificationNumber"`
+	xxx_hidden_VehicleIdentificationNumber    *v1.StringValue                       `protobuf:"bytes,3,opt,name=vehicle_identification_number,json=vehicleIdentificationNumber"`
 	xxx_hidden_VehicleRegistration            *v1.VehicleRegistrationIdentification `protobuf:"bytes,4,opt,name=vehicle_registration,json=vehicleRegistration"`
 	xxx_hidden_WVehicleCharacteristicConstant int32                                 `protobuf:"varint,5,opt,name=w_vehicle_characteristic_constant,json=wVehicleCharacteristicConstant"`
 	xxx_hidden_KConstantOfRecordingEquipment  int32                                 `protobuf:"varint,6,opt,name=k_constant_of_recording_equipment,json=kConstantOfRecordingEquipment"`
 	xxx_hidden_LTyreCircumferenceMm           int32                                 `protobuf:"varint,7,opt,name=l_tyre_circumference_mm,json=lTyreCircumferenceMm"`
-	xxx_hidden_TyreSize                       *string                               `protobuf:"bytes,8,opt,name=tyre_size,json=tyreSize"`
+	xxx_hidden_TyreSize                       *v1.StringValue                       `protobuf:"bytes,8,opt,name=tyre_size,json=tyreSize"`
 	xxx_hidden_AuthorisedSpeedKmh             int32                                 `protobuf:"varint,9,opt,name=authorised_speed_kmh,json=authorisedSpeedKmh"`
 	xxx_hidden_OldOdometerKm                  int32                                 `protobuf:"varint,10,opt,name=old_odometer_km,json=oldOdometerKm"`
 	xxx_hidden_NewOdometerKm                  int32                                 `protobuf:"varint,11,opt,name=new_odometer_km,json=newOdometerKm"`
 	xxx_hidden_OldTime                        *timestamppb.Timestamp                `protobuf:"bytes,12,opt,name=old_time,json=oldTime"`
 	xxx_hidden_NewTime                        *timestamppb.Timestamp                `protobuf:"bytes,13,opt,name=new_time,json=newTime"`
 	xxx_hidden_NextCalibrationDate            *timestamppb.Timestamp                `protobuf:"bytes,14,opt,name=next_calibration_date,json=nextCalibrationDate"`
-	xxx_hidden_VuPartNumber                   *string                               `protobuf:"bytes,15,opt,name=vu_part_number,json=vuPartNumber"`
+	xxx_hidden_VuPartNumber                   *v1.StringValue                       `protobuf:"bytes,15,opt,name=vu_part_number,json=vuPartNumber"`
 	xxx_hidden_VuSerialNumber                 *v1.ExtendedSerialNumber              `protobuf:"bytes,16,opt,name=vu_serial_number,json=vuSerialNumber"`
 	xxx_hidden_SensorSerialNumber             *v1.ExtendedSerialNumber              `protobuf:"bytes,17,opt,name=sensor_serial_number,json=sensorSerialNumber"`
 	XXX_raceDetectHookData                    protoimpl.RaceDetectHookData
@@ -257,14 +257,11 @@ func (x *Calibration_Record) GetCalibrationPurpose() v1.CalibrationPurpose {
 	return v1.CalibrationPurpose(0)
 }
 
-func (x *Calibration_Record) GetVehicleIdentificationNumber() string {
+func (x *Calibration_Record) GetVehicleIdentificationNumber() *v1.StringValue {
 	if x != nil {
-		if x.xxx_hidden_VehicleIdentificationNumber != nil {
-			return *x.xxx_hidden_VehicleIdentificationNumber
-		}
-		return ""
+		return x.xxx_hidden_VehicleIdentificationNumber
 	}
-	return ""
+	return nil
 }
 
 func (x *Calibration_Record) GetVehicleRegistration() *v1.VehicleRegistrationIdentification {
@@ -295,14 +292,11 @@ func (x *Calibration_Record) GetLTyreCircumferenceMm() int32 {
 	return 0
 }
 
-func (x *Calibration_Record) GetTyreSize() string {
+func (x *Calibration_Record) GetTyreSize() *v1.StringValue {
 	if x != nil {
-		if x.xxx_hidden_TyreSize != nil {
-			return *x.xxx_hidden_TyreSize
-		}
-		return ""
+		return x.xxx_hidden_TyreSize
 	}
-	return ""
+	return nil
 }
 
 func (x *Calibration_Record) GetAuthorisedSpeedKmh() int32 {
@@ -347,14 +341,11 @@ func (x *Calibration_Record) GetNextCalibrationDate() *timestamppb.Timestamp {
 	return nil
 }
 
-func (x *Calibration_Record) GetVuPartNumber() string {
+func (x *Calibration_Record) GetVuPartNumber() *v1.StringValue {
 	if x != nil {
-		if x.xxx_hidden_VuPartNumber != nil {
-			return *x.xxx_hidden_VuPartNumber
-		}
-		return ""
+		return x.xxx_hidden_VuPartNumber
 	}
-	return ""
+	return nil
 }
 
 func (x *Calibration_Record) GetVuSerialNumber() *v1.ExtendedSerialNumber {
@@ -376,9 +367,8 @@ func (x *Calibration_Record) SetCalibrationPurpose(v v1.CalibrationPurpose) {
 	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 16)
 }
 
-func (x *Calibration_Record) SetVehicleIdentificationNumber(v string) {
-	x.xxx_hidden_VehicleIdentificationNumber = &v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 16)
+func (x *Calibration_Record) SetVehicleIdentificationNumber(v *v1.StringValue) {
+	x.xxx_hidden_VehicleIdentificationNumber = v
 }
 
 func (x *Calibration_Record) SetVehicleRegistration(v *v1.VehicleRegistrationIdentification) {
@@ -400,9 +390,8 @@ func (x *Calibration_Record) SetLTyreCircumferenceMm(v int32) {
 	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 5, 16)
 }
 
-func (x *Calibration_Record) SetTyreSize(v string) {
-	x.xxx_hidden_TyreSize = &v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 6, 16)
+func (x *Calibration_Record) SetTyreSize(v *v1.StringValue) {
+	x.xxx_hidden_TyreSize = v
 }
 
 func (x *Calibration_Record) SetAuthorisedSpeedKmh(v int32) {
@@ -432,9 +421,8 @@ func (x *Calibration_Record) SetNextCalibrationDate(v *timestamppb.Timestamp) {
 	x.xxx_hidden_NextCalibrationDate = v
 }
 
-func (x *Calibration_Record) SetVuPartNumber(v string) {
-	x.xxx_hidden_VuPartNumber = &v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 13, 16)
+func (x *Calibration_Record) SetVuPartNumber(v *v1.StringValue) {
+	x.xxx_hidden_VuPartNumber = v
 }
 
 func (x *Calibration_Record) SetVuSerialNumber(v *v1.ExtendedSerialNumber) {
@@ -456,7 +444,7 @@ func (x *Calibration_Record) HasVehicleIdentificationNumber() bool {
 	if x == nil {
 		return false
 	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 1)
+	return x.xxx_hidden_VehicleIdentificationNumber != nil
 }
 
 func (x *Calibration_Record) HasVehicleRegistration() bool {
@@ -491,7 +479,7 @@ func (x *Calibration_Record) HasTyreSize() bool {
 	if x == nil {
 		return false
 	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 6)
+	return x.xxx_hidden_TyreSize != nil
 }
 
 func (x *Calibration_Record) HasAuthorisedSpeedKmh() bool {
@@ -540,7 +528,7 @@ func (x *Calibration_Record) HasVuPartNumber() bool {
 	if x == nil {
 		return false
 	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 13)
+	return x.xxx_hidden_VuPartNumber != nil
 }
 
 func (x *Calibration_Record) HasVuSerialNumber() bool {
@@ -563,7 +551,6 @@ func (x *Calibration_Record) ClearCalibrationPurpose() {
 }
 
 func (x *Calibration_Record) ClearVehicleIdentificationNumber() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 1)
 	x.xxx_hidden_VehicleIdentificationNumber = nil
 }
 
@@ -587,7 +574,6 @@ func (x *Calibration_Record) ClearLTyreCircumferenceMm() {
 }
 
 func (x *Calibration_Record) ClearTyreSize() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 6)
 	x.xxx_hidden_TyreSize = nil
 }
 
@@ -619,7 +605,6 @@ func (x *Calibration_Record) ClearNextCalibrationDate() {
 }
 
 func (x *Calibration_Record) ClearVuPartNumber() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 13)
 	x.xxx_hidden_VuPartNumber = nil
 }
 
@@ -644,94 +629,94 @@ type Calibration_Record_builder struct {
 	// The Vehicle Identification Number.
 	//
 	// See Data Dictionary, Section 2.164, `VehicleIdentificationNumber`.
-	// ASN.1 Specification:
+	// ASN.1 Definition:
 	//
 	//	VehicleIdentificationNumber ::= IA5String(SIZE(17))
-	VehicleIdentificationNumber *string
+	VehicleIdentificationNumber *v1.StringValue
 	// The vehicle registration identifier.
 	//
 	// See Data Dictionary, Section 2.166, `VehicleRegistrationIdentification`.
-	// ASN.1 Specification:
+	// ASN.1 Definition:
 	//
 	//	VehicleRegistrationIdentification ::= SEQUENCE { ... }
 	VehicleRegistration *v1.VehicleRegistrationIdentification
 	// The vehicle characteristic constant.
 	//
 	// See Data Dictionary, Section 2.239, `W-VehicleCharacteristicConstant`.
-	// ASN.1 Specification:
+	// ASN.1 Definition:
 	//
 	//	W-VehicleCharacteristicConstant ::= INTEGER(0..65535)
 	WVehicleCharacteristicConstant *int32
 	// The constant of the recording equipment.
 	//
 	// See Data Dictionary, Section 2.85, `K-ConstantOfRecordingEquipment`.
-	// ASN.1 Specification:
+	// ASN.1 Definition:
 	//
 	//	K-ConstantOfRecordingEquipment ::= INTEGER(0..65535)
 	KConstantOfRecordingEquipment *int32
 	// The tyre circumference in mm.
 	//
 	// See Data Dictionary, Section 2.91, `L-TyreCircumference`.
-	// ASN.1 Specification:
+	// ASN.1 Definition:
 	//
 	//	L-TyreCircumference ::= INTEGER(0..65535)
 	LTyreCircumferenceMm *int32
 	// The tyre size designation.
 	//
 	// See Data Dictionary, Section 2.163, `TyreSize`.
-	// ASN.1 Specification:
+	// ASN.1 Definition:
 	//
 	//	TyreSize ::= IA5String(SIZE(15))
-	TyreSize *string
+	TyreSize *v1.StringValue
 	// The authorised speed in km/h.
 	//
 	// See Data Dictionary, Section 2.156, `SpeedAuthorised`.
-	// ASN.1 Specification:
+	// ASN.1 Definition:
 	//
 	//	SpeedAuthorised ::= INTEGER(0..255)
 	AuthorisedSpeedKmh *int32
 	// The odometer value before calibration in km.
 	//
 	// See Data Dictionary, Section 2.113, `OdometerShort`.
-	// ASN.1 Specification:
+	// ASN.1 Definition:
 	//
 	//	OdometerShort ::= INTEGER(0..999999)
 	OldOdometerKm *int32
 	// The odometer value after calibration in km.
 	//
 	// See Data Dictionary, Section 2.113, `OdometerShort`.
-	// ASN.1 Specification:
+	// ASN.1 Definition:
 	//
 	//	OdometerShort ::= INTEGER(0..999999)
 	NewOdometerKm *int32
 	// The time value before calibration.
 	//
 	// See Data Dictionary, Section 2.162, `TimeReal`.
-	// ASN.1 Specification:
+	// ASN.1 Definition:
 	//
 	//	TimeReal ::= INTEGER (0..2^32-1)
 	OldTime *timestamppb.Timestamp
 	// The time value after calibration.
 	//
 	// See Data Dictionary, Section 2.162, `TimeReal`.
-	// ASN.1 Specification:
+	// ASN.1 Definition:
 	//
 	//	TimeReal ::= INTEGER (0..2^32-1)
 	NewTime *timestamppb.Timestamp
 	// The date of the next calibration.
 	//
 	// See Data Dictionary, Section 2.162, `TimeReal`.
-	// ASN.1 Specification:
+	// ASN.1 Definition:
 	//
 	//	TimeReal ::= INTEGER (0..2^32-1)
 	NextCalibrationDate *timestamppb.Timestamp
 	// The part number of the Vehicle Unit.
 	//
 	// See Data Dictionary, Section 2.217, `VuPartNumber`.
-	// ASN.1 Specification:
+	// ASN.1 Definition:
 	//
 	//	VuPartNumber ::= IA5String(SIZE(16))
-	VuPartNumber *string
+	VuPartNumber *v1.StringValue
 	// The serial number of the Vehicle Unit.
 	//
 	// See Data Dictionary, Section 2.72, `ExtendedSerialNumber`.
@@ -756,10 +741,7 @@ func (b0 Calibration_Record_builder) Build() *Calibration_Record {
 		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 16)
 		x.xxx_hidden_CalibrationPurpose = *b.CalibrationPurpose
 	}
-	if b.VehicleIdentificationNumber != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 16)
-		x.xxx_hidden_VehicleIdentificationNumber = b.VehicleIdentificationNumber
-	}
+	x.xxx_hidden_VehicleIdentificationNumber = b.VehicleIdentificationNumber
 	x.xxx_hidden_VehicleRegistration = b.VehicleRegistration
 	if b.WVehicleCharacteristicConstant != nil {
 		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 3, 16)
@@ -773,10 +755,7 @@ func (b0 Calibration_Record_builder) Build() *Calibration_Record {
 		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 5, 16)
 		x.xxx_hidden_LTyreCircumferenceMm = *b.LTyreCircumferenceMm
 	}
-	if b.TyreSize != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 6, 16)
-		x.xxx_hidden_TyreSize = b.TyreSize
-	}
+	x.xxx_hidden_TyreSize = b.TyreSize
 	if b.AuthorisedSpeedKmh != nil {
 		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 7, 16)
 		x.xxx_hidden_AuthorisedSpeedKmh = *b.AuthorisedSpeedKmh
@@ -792,10 +771,7 @@ func (b0 Calibration_Record_builder) Build() *Calibration_Record {
 	x.xxx_hidden_OldTime = b.OldTime
 	x.xxx_hidden_NewTime = b.NewTime
 	x.xxx_hidden_NextCalibrationDate = b.NextCalibrationDate
-	if b.VuPartNumber != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 13, 16)
-		x.xxx_hidden_VuPartNumber = b.VuPartNumber
-	}
+	x.xxx_hidden_VuPartNumber = b.VuPartNumber
 	x.xxx_hidden_VuSerialNumber = b.VuSerialNumber
 	x.xxx_hidden_SensorSerialNumber = b.SensorSerialNumber
 	return m0
@@ -805,28 +781,28 @@ var File_wayplatform_connect_tachograph_card_v1_calibration_proto protoreflect.F
 
 const file_wayplatform_connect_tachograph_card_v1_calibration_proto_rawDesc = "" +
 	"\n" +
-	"8wayplatform/connect/tachograph/card/v1/calibration.proto\x12&wayplatform.connect.tachograph.card.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1aJwayplatform/connect/tachograph/datadictionary/v1/calibration_purpose.proto\x1aMwayplatform/connect/tachograph/datadictionary/v1/extended_serial_number.proto\x1aZwayplatform/connect/tachograph/datadictionary/v1/vehicle_registration_identification.proto\"\xd5\n" +
-	"\n" +
+	"8wayplatform/connect/tachograph/card/v1/calibration.proto\x12&wayplatform.connect.tachograph.card.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1aJwayplatform/connect/tachograph/datadictionary/v1/calibration_purpose.proto\x1aMwayplatform/connect/tachograph/datadictionary/v1/extended_serial_number.proto\x1aCwayplatform/connect/tachograph/datadictionary/v1/string_value.proto\x1aZwayplatform/connect/tachograph/datadictionary/v1/vehicle_registration_identification.proto\"\x93\f\n" +
 	"\vCalibration\x126\n" +
 	"\x17calibration_total_count\x18\x01 \x01(\x05R\x15calibrationTotalCount\x12.\n" +
 	"\x13newest_record_index\x18\x02 \x01(\x05R\x11newestRecordIndex\x12T\n" +
-	"\arecords\x18\x03 \x03(\v2:.wayplatform.connect.tachograph.card.v1.Calibration.RecordR\arecords\x1a\x87\t\n" +
+	"\arecords\x18\x03 \x03(\v2:.wayplatform.connect.tachograph.card.v1.Calibration.RecordR\arecords\x1a\xc5\n" +
+	"\n" +
 	"\x06Record\x12u\n" +
-	"\x13calibration_purpose\x18\x01 \x01(\x0e2D.wayplatform.connect.tachograph.datadictionary.v1.CalibrationPurposeR\x12calibrationPurpose\x12B\n" +
-	"\x1dvehicle_identification_number\x18\x03 \x01(\tR\x1bvehicleIdentificationNumber\x12\x86\x01\n" +
+	"\x13calibration_purpose\x18\x01 \x01(\x0e2D.wayplatform.connect.tachograph.datadictionary.v1.CalibrationPurposeR\x12calibrationPurpose\x12\x81\x01\n" +
+	"\x1dvehicle_identification_number\x18\x03 \x01(\v2=.wayplatform.connect.tachograph.datadictionary.v1.StringValueR\x1bvehicleIdentificationNumber\x12\x86\x01\n" +
 	"\x14vehicle_registration\x18\x04 \x01(\v2S.wayplatform.connect.tachograph.datadictionary.v1.VehicleRegistrationIdentificationR\x13vehicleRegistration\x12I\n" +
 	"!w_vehicle_characteristic_constant\x18\x05 \x01(\x05R\x1ewVehicleCharacteristicConstant\x12H\n" +
 	"!k_constant_of_recording_equipment\x18\x06 \x01(\x05R\x1dkConstantOfRecordingEquipment\x125\n" +
-	"\x17l_tyre_circumference_mm\x18\a \x01(\x05R\x14lTyreCircumferenceMm\x12\x1b\n" +
-	"\ttyre_size\x18\b \x01(\tR\btyreSize\x120\n" +
+	"\x17l_tyre_circumference_mm\x18\a \x01(\x05R\x14lTyreCircumferenceMm\x12Z\n" +
+	"\ttyre_size\x18\b \x01(\v2=.wayplatform.connect.tachograph.datadictionary.v1.StringValueR\btyreSize\x120\n" +
 	"\x14authorised_speed_kmh\x18\t \x01(\x05R\x12authorisedSpeedKmh\x12&\n" +
 	"\x0fold_odometer_km\x18\n" +
 	" \x01(\x05R\roldOdometerKm\x12&\n" +
 	"\x0fnew_odometer_km\x18\v \x01(\x05R\rnewOdometerKm\x125\n" +
 	"\bold_time\x18\f \x01(\v2\x1a.google.protobuf.TimestampR\aoldTime\x125\n" +
 	"\bnew_time\x18\r \x01(\v2\x1a.google.protobuf.TimestampR\anewTime\x12N\n" +
-	"\x15next_calibration_date\x18\x0e \x01(\v2\x1a.google.protobuf.TimestampR\x13nextCalibrationDate\x12$\n" +
-	"\x0evu_part_number\x18\x0f \x01(\tR\fvuPartNumber\x12p\n" +
+	"\x15next_calibration_date\x18\x0e \x01(\v2\x1a.google.protobuf.TimestampR\x13nextCalibrationDate\x12c\n" +
+	"\x0evu_part_number\x18\x0f \x01(\v2=.wayplatform.connect.tachograph.datadictionary.v1.StringValueR\fvuPartNumber\x12p\n" +
 	"\x10vu_serial_number\x18\x10 \x01(\v2F.wayplatform.connect.tachograph.datadictionary.v1.ExtendedSerialNumberR\x0evuSerialNumber\x12x\n" +
 	"\x14sensor_serial_number\x18\x11 \x01(\v2F.wayplatform.connect.tachograph.datadictionary.v1.ExtendedSerialNumberR\x12sensorSerialNumberB\xdd\x02\n" +
 	"*com.wayplatform.connect.tachograph.card.v1B\x10CalibrationProtoP\x01Z`github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1;cardv1\xa2\x02\x04WCTC\xaa\x02&Wayplatform.Connect.Tachograph.Card.V1\xca\x02&Wayplatform\\Connect\\Tachograph\\Card\\V1\xe2\x022Wayplatform\\Connect\\Tachograph\\Card\\V1\\GPBMetadata\xea\x02*Wayplatform::Connect::Tachograph::Card::V1b\beditionsp\xe8\a"
@@ -836,24 +812,28 @@ var file_wayplatform_connect_tachograph_card_v1_calibration_proto_goTypes = []an
 	(*Calibration)(nil),                          // 0: wayplatform.connect.tachograph.card.v1.Calibration
 	(*Calibration_Record)(nil),                   // 1: wayplatform.connect.tachograph.card.v1.Calibration.Record
 	(v1.CalibrationPurpose)(0),                   // 2: wayplatform.connect.tachograph.datadictionary.v1.CalibrationPurpose
-	(*v1.VehicleRegistrationIdentification)(nil), // 3: wayplatform.connect.tachograph.datadictionary.v1.VehicleRegistrationIdentification
-	(*timestamppb.Timestamp)(nil),                // 4: google.protobuf.Timestamp
-	(*v1.ExtendedSerialNumber)(nil),              // 5: wayplatform.connect.tachograph.datadictionary.v1.ExtendedSerialNumber
+	(*v1.StringValue)(nil),                       // 3: wayplatform.connect.tachograph.datadictionary.v1.StringValue
+	(*v1.VehicleRegistrationIdentification)(nil), // 4: wayplatform.connect.tachograph.datadictionary.v1.VehicleRegistrationIdentification
+	(*timestamppb.Timestamp)(nil),                // 5: google.protobuf.Timestamp
+	(*v1.ExtendedSerialNumber)(nil),              // 6: wayplatform.connect.tachograph.datadictionary.v1.ExtendedSerialNumber
 }
 var file_wayplatform_connect_tachograph_card_v1_calibration_proto_depIdxs = []int32{
-	1, // 0: wayplatform.connect.tachograph.card.v1.Calibration.records:type_name -> wayplatform.connect.tachograph.card.v1.Calibration.Record
-	2, // 1: wayplatform.connect.tachograph.card.v1.Calibration.Record.calibration_purpose:type_name -> wayplatform.connect.tachograph.datadictionary.v1.CalibrationPurpose
-	3, // 2: wayplatform.connect.tachograph.card.v1.Calibration.Record.vehicle_registration:type_name -> wayplatform.connect.tachograph.datadictionary.v1.VehicleRegistrationIdentification
-	4, // 3: wayplatform.connect.tachograph.card.v1.Calibration.Record.old_time:type_name -> google.protobuf.Timestamp
-	4, // 4: wayplatform.connect.tachograph.card.v1.Calibration.Record.new_time:type_name -> google.protobuf.Timestamp
-	4, // 5: wayplatform.connect.tachograph.card.v1.Calibration.Record.next_calibration_date:type_name -> google.protobuf.Timestamp
-	5, // 6: wayplatform.connect.tachograph.card.v1.Calibration.Record.vu_serial_number:type_name -> wayplatform.connect.tachograph.datadictionary.v1.ExtendedSerialNumber
-	5, // 7: wayplatform.connect.tachograph.card.v1.Calibration.Record.sensor_serial_number:type_name -> wayplatform.connect.tachograph.datadictionary.v1.ExtendedSerialNumber
-	8, // [8:8] is the sub-list for method output_type
-	8, // [8:8] is the sub-list for method input_type
-	8, // [8:8] is the sub-list for extension type_name
-	8, // [8:8] is the sub-list for extension extendee
-	0, // [0:8] is the sub-list for field type_name
+	1,  // 0: wayplatform.connect.tachograph.card.v1.Calibration.records:type_name -> wayplatform.connect.tachograph.card.v1.Calibration.Record
+	2,  // 1: wayplatform.connect.tachograph.card.v1.Calibration.Record.calibration_purpose:type_name -> wayplatform.connect.tachograph.datadictionary.v1.CalibrationPurpose
+	3,  // 2: wayplatform.connect.tachograph.card.v1.Calibration.Record.vehicle_identification_number:type_name -> wayplatform.connect.tachograph.datadictionary.v1.StringValue
+	4,  // 3: wayplatform.connect.tachograph.card.v1.Calibration.Record.vehicle_registration:type_name -> wayplatform.connect.tachograph.datadictionary.v1.VehicleRegistrationIdentification
+	3,  // 4: wayplatform.connect.tachograph.card.v1.Calibration.Record.tyre_size:type_name -> wayplatform.connect.tachograph.datadictionary.v1.StringValue
+	5,  // 5: wayplatform.connect.tachograph.card.v1.Calibration.Record.old_time:type_name -> google.protobuf.Timestamp
+	5,  // 6: wayplatform.connect.tachograph.card.v1.Calibration.Record.new_time:type_name -> google.protobuf.Timestamp
+	5,  // 7: wayplatform.connect.tachograph.card.v1.Calibration.Record.next_calibration_date:type_name -> google.protobuf.Timestamp
+	3,  // 8: wayplatform.connect.tachograph.card.v1.Calibration.Record.vu_part_number:type_name -> wayplatform.connect.tachograph.datadictionary.v1.StringValue
+	6,  // 9: wayplatform.connect.tachograph.card.v1.Calibration.Record.vu_serial_number:type_name -> wayplatform.connect.tachograph.datadictionary.v1.ExtendedSerialNumber
+	6,  // 10: wayplatform.connect.tachograph.card.v1.Calibration.Record.sensor_serial_number:type_name -> wayplatform.connect.tachograph.datadictionary.v1.ExtendedSerialNumber
+	11, // [11:11] is the sub-list for method output_type
+	11, // [11:11] is the sub-list for method input_type
+	11, // [11:11] is the sub-list for extension type_name
+	11, // [11:11] is the sub-list for extension extendee
+	0,  // [0:11] is the sub-list for field type_name
 }
 
 func init() { file_wayplatform_connect_tachograph_card_v1_calibration_proto_init() }

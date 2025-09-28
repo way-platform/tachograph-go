@@ -93,30 +93,18 @@ func appendFullCardNumber(dst []byte, cardNumber *datadictionaryv1.FullCardNumbe
 	case datadictionaryv1.EquipmentType_DRIVER_CARD:
 		if driverID := cardNumber.GetDriverIdentification(); driverID != nil {
 			// Concatenate the driver identification components
-			identification := driverID.GetIdentification()
-			consecutive := driverID.GetConsecutiveIndex()
-			replacement := driverID.GetReplacementIndex()
-			renewal := driverID.GetRenewalIndex()
+			identification := driverID.GetIdentificationNumber()
 
 			// Build the full driver identification string
 			driverStr := ""
 			if identification != nil {
 				driverStr += identification.GetDecoded()
 			}
-			if consecutive != nil {
-				driverStr += consecutive.GetDecoded()
-			}
-			if replacement != nil {
-				driverStr += replacement.GetDecoded()
-			}
-			if renewal != nil {
-				driverStr += renewal.GetDecoded()
-			}
 			return appendString(dst, driverStr, maxLen)
 		}
 	case datadictionaryv1.EquipmentType_WORKSHOP_CARD, datadictionaryv1.EquipmentType_COMPANY_CARD:
 		if ownerID := cardNumber.GetOwnerIdentification(); ownerID != nil {
-			identification := ownerID.GetIdentification()
+			identification := ownerID.GetIdentificationNumber()
 			if identification != nil {
 				return appendString(dst, identification.GetDecoded(), maxLen)
 			}

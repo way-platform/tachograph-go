@@ -282,241 +282,6 @@ func (b0 Identification_builder) Build() *Identification {
 	return m0
 }
 
-// Represents the `driverIdentification` sequence from the `CardNumber` CHOICE.
-// This is nested here to provide local context, per our design discussion.
-//
-// ASN.1 Definition:
-//
-//	driverIdentification SEQUENCE {
-//	    driverIdentification   IA5String(SIZE(14)),
-//	    cardConsecutiveIndex   IA5String(SIZE(1)),
-//	    cardReplacementIndex   IA5String(SIZE(1)),
-//	    cardRenewalIndex       IA5String(SIZE(1))
-//	}
-type Identification_DriverIdentification struct {
-	state                       protoimpl.MessageState `protogen:"opaque.v1"`
-	xxx_hidden_Identification   *v1.StringValue        `protobuf:"bytes,1,opt,name=identification"`
-	xxx_hidden_ConsecutiveIndex *v1.StringValue        `protobuf:"bytes,2,opt,name=consecutive_index,json=consecutiveIndex"`
-	xxx_hidden_ReplacementIndex *v1.StringValue        `protobuf:"bytes,3,opt,name=replacement_index,json=replacementIndex"`
-	xxx_hidden_RenewalIndex     *v1.StringValue        `protobuf:"bytes,4,opt,name=renewal_index,json=renewalIndex"`
-	unknownFields               protoimpl.UnknownFields
-	sizeCache                   protoimpl.SizeCache
-}
-
-func (x *Identification_DriverIdentification) Reset() {
-	*x = Identification_DriverIdentification{}
-	mi := &file_wayplatform_connect_tachograph_card_v1_identification_proto_msgTypes[1]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *Identification_DriverIdentification) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*Identification_DriverIdentification) ProtoMessage() {}
-
-func (x *Identification_DriverIdentification) ProtoReflect() protoreflect.Message {
-	mi := &file_wayplatform_connect_tachograph_card_v1_identification_proto_msgTypes[1]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-func (x *Identification_DriverIdentification) GetIdentification() *v1.StringValue {
-	if x != nil {
-		return x.xxx_hidden_Identification
-	}
-	return nil
-}
-
-func (x *Identification_DriverIdentification) GetConsecutiveIndex() *v1.StringValue {
-	if x != nil {
-		return x.xxx_hidden_ConsecutiveIndex
-	}
-	return nil
-}
-
-func (x *Identification_DriverIdentification) GetReplacementIndex() *v1.StringValue {
-	if x != nil {
-		return x.xxx_hidden_ReplacementIndex
-	}
-	return nil
-}
-
-func (x *Identification_DriverIdentification) GetRenewalIndex() *v1.StringValue {
-	if x != nil {
-		return x.xxx_hidden_RenewalIndex
-	}
-	return nil
-}
-
-func (x *Identification_DriverIdentification) SetIdentification(v *v1.StringValue) {
-	x.xxx_hidden_Identification = v
-}
-
-func (x *Identification_DriverIdentification) SetConsecutiveIndex(v *v1.StringValue) {
-	x.xxx_hidden_ConsecutiveIndex = v
-}
-
-func (x *Identification_DriverIdentification) SetReplacementIndex(v *v1.StringValue) {
-	x.xxx_hidden_ReplacementIndex = v
-}
-
-func (x *Identification_DriverIdentification) SetRenewalIndex(v *v1.StringValue) {
-	x.xxx_hidden_RenewalIndex = v
-}
-
-func (x *Identification_DriverIdentification) HasIdentification() bool {
-	if x == nil {
-		return false
-	}
-	return x.xxx_hidden_Identification != nil
-}
-
-func (x *Identification_DriverIdentification) HasConsecutiveIndex() bool {
-	if x == nil {
-		return false
-	}
-	return x.xxx_hidden_ConsecutiveIndex != nil
-}
-
-func (x *Identification_DriverIdentification) HasReplacementIndex() bool {
-	if x == nil {
-		return false
-	}
-	return x.xxx_hidden_ReplacementIndex != nil
-}
-
-func (x *Identification_DriverIdentification) HasRenewalIndex() bool {
-	if x == nil {
-		return false
-	}
-	return x.xxx_hidden_RenewalIndex != nil
-}
-
-func (x *Identification_DriverIdentification) ClearIdentification() {
-	x.xxx_hidden_Identification = nil
-}
-
-func (x *Identification_DriverIdentification) ClearConsecutiveIndex() {
-	x.xxx_hidden_ConsecutiveIndex = nil
-}
-
-func (x *Identification_DriverIdentification) ClearReplacementIndex() {
-	x.xxx_hidden_ReplacementIndex = nil
-}
-
-func (x *Identification_DriverIdentification) ClearRenewalIndex() {
-	x.xxx_hidden_RenewalIndex = nil
-}
-
-type Identification_DriverIdentification_builder struct {
-	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
-
-	// The core driver identification number string.
-	Identification *v1.StringValue
-	// A single-digit index for the card.
-	ConsecutiveIndex *v1.StringValue
-	// A single-digit index for card replacement.
-	ReplacementIndex *v1.StringValue
-	// A single-digit index for card renewal.
-	RenewalIndex *v1.StringValue
-}
-
-func (b0 Identification_DriverIdentification_builder) Build() *Identification_DriverIdentification {
-	m0 := &Identification_DriverIdentification{}
-	b, x := &b0, m0
-	_, _ = b, x
-	x.xxx_hidden_Identification = b.Identification
-	x.xxx_hidden_ConsecutiveIndex = b.ConsecutiveIndex
-	x.xxx_hidden_ReplacementIndex = b.ReplacementIndex
-	x.xxx_hidden_RenewalIndex = b.RenewalIndex
-	return m0
-}
-
-// Represents the `ownerIdentification` sequence from the `CardNumber` CHOICE.
-// This is nested here to provide local context, per our design discussion.
-//
-// ASN.1 Definition:
-//
-//	ownerIdentification SEQUENCE {
-//	    ownerIdentification    IA5String(SIZE(13))
-//	}
-type Identification_OwnerIdentification struct {
-	state                     protoimpl.MessageState `protogen:"opaque.v1"`
-	xxx_hidden_Identification *v1.StringValue        `protobuf:"bytes,1,opt,name=identification"`
-	unknownFields             protoimpl.UnknownFields
-	sizeCache                 protoimpl.SizeCache
-}
-
-func (x *Identification_OwnerIdentification) Reset() {
-	*x = Identification_OwnerIdentification{}
-	mi := &file_wayplatform_connect_tachograph_card_v1_identification_proto_msgTypes[2]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *Identification_OwnerIdentification) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*Identification_OwnerIdentification) ProtoMessage() {}
-
-func (x *Identification_OwnerIdentification) ProtoReflect() protoreflect.Message {
-	mi := &file_wayplatform_connect_tachograph_card_v1_identification_proto_msgTypes[2]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-func (x *Identification_OwnerIdentification) GetIdentification() *v1.StringValue {
-	if x != nil {
-		return x.xxx_hidden_Identification
-	}
-	return nil
-}
-
-func (x *Identification_OwnerIdentification) SetIdentification(v *v1.StringValue) {
-	x.xxx_hidden_Identification = v
-}
-
-func (x *Identification_OwnerIdentification) HasIdentification() bool {
-	if x == nil {
-		return false
-	}
-	return x.xxx_hidden_Identification != nil
-}
-
-func (x *Identification_OwnerIdentification) ClearIdentification() {
-	x.xxx_hidden_Identification = nil
-}
-
-type Identification_OwnerIdentification_builder struct {
-	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
-
-	// The unique identification for the owner.
-	Identification *v1.StringValue
-}
-
-func (b0 Identification_OwnerIdentification_builder) Build() *Identification_OwnerIdentification {
-	m0 := &Identification_OwnerIdentification{}
-	b, x := &b0, m0
-	_, _ = b, x
-	x.xxx_hidden_Identification = b.Identification
-	return m0
-}
-
 // Represents card identification data, common to all card types.
 //
 // The data type `CardIdentification` is specified in the Data Dictionary, Section 2.24.
@@ -532,14 +297,14 @@ func (b0 Identification_OwnerIdentification_builder) Build() *Identification_Own
 //	    cardExpiryDate TimeReal
 //	}
 type Identification_Card struct {
-	state                               protoimpl.MessageState               `protogen:"opaque.v1"`
-	xxx_hidden_CardIssuingMemberState   v1.NationNumeric                     `protobuf:"varint,1,opt,name=card_issuing_member_state,json=cardIssuingMemberState,enum=wayplatform.connect.tachograph.datadictionary.v1.NationNumeric"`
-	xxx_hidden_DriverIdentification     *Identification_DriverIdentification `protobuf:"bytes,2,opt,name=driver_identification,json=driverIdentification"`
-	xxx_hidden_OwnerIdentification      *Identification_OwnerIdentification  `protobuf:"bytes,7,opt,name=owner_identification,json=ownerIdentification"`
-	xxx_hidden_CardIssuingAuthorityName *v1.StringValue                      `protobuf:"bytes,3,opt,name=card_issuing_authority_name,json=cardIssuingAuthorityName"`
-	xxx_hidden_CardIssueDate            *timestamppb.Timestamp               `protobuf:"bytes,4,opt,name=card_issue_date,json=cardIssueDate"`
-	xxx_hidden_CardValidityBegin        *timestamppb.Timestamp               `protobuf:"bytes,5,opt,name=card_validity_begin,json=cardValidityBegin"`
-	xxx_hidden_CardExpiryDate           *timestamppb.Timestamp               `protobuf:"bytes,6,opt,name=card_expiry_date,json=cardExpiryDate"`
+	state                               protoimpl.MessageState   `protogen:"opaque.v1"`
+	xxx_hidden_CardIssuingMemberState   v1.NationNumeric         `protobuf:"varint,1,opt,name=card_issuing_member_state,json=cardIssuingMemberState,enum=wayplatform.connect.tachograph.datadictionary.v1.NationNumeric"`
+	xxx_hidden_DriverIdentification     *v1.DriverIdentification `protobuf:"bytes,2,opt,name=driver_identification,json=driverIdentification"`
+	xxx_hidden_OwnerIdentification      *v1.OwnerIdentification  `protobuf:"bytes,7,opt,name=owner_identification,json=ownerIdentification"`
+	xxx_hidden_CardIssuingAuthorityName *v1.StringValue          `protobuf:"bytes,3,opt,name=card_issuing_authority_name,json=cardIssuingAuthorityName"`
+	xxx_hidden_CardIssueDate            *timestamppb.Timestamp   `protobuf:"bytes,4,opt,name=card_issue_date,json=cardIssueDate"`
+	xxx_hidden_CardValidityBegin        *timestamppb.Timestamp   `protobuf:"bytes,5,opt,name=card_validity_begin,json=cardValidityBegin"`
+	xxx_hidden_CardExpiryDate           *timestamppb.Timestamp   `protobuf:"bytes,6,opt,name=card_expiry_date,json=cardExpiryDate"`
 	XXX_raceDetectHookData              protoimpl.RaceDetectHookData
 	XXX_presence                        [1]uint32
 	unknownFields                       protoimpl.UnknownFields
@@ -548,7 +313,7 @@ type Identification_Card struct {
 
 func (x *Identification_Card) Reset() {
 	*x = Identification_Card{}
-	mi := &file_wayplatform_connect_tachograph_card_v1_identification_proto_msgTypes[3]
+	mi := &file_wayplatform_connect_tachograph_card_v1_identification_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -560,7 +325,7 @@ func (x *Identification_Card) String() string {
 func (*Identification_Card) ProtoMessage() {}
 
 func (x *Identification_Card) ProtoReflect() protoreflect.Message {
-	mi := &file_wayplatform_connect_tachograph_card_v1_identification_proto_msgTypes[3]
+	mi := &file_wayplatform_connect_tachograph_card_v1_identification_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -580,14 +345,14 @@ func (x *Identification_Card) GetCardIssuingMemberState() v1.NationNumeric {
 	return v1.NationNumeric(0)
 }
 
-func (x *Identification_Card) GetDriverIdentification() *Identification_DriverIdentification {
+func (x *Identification_Card) GetDriverIdentification() *v1.DriverIdentification {
 	if x != nil {
 		return x.xxx_hidden_DriverIdentification
 	}
 	return nil
 }
 
-func (x *Identification_Card) GetOwnerIdentification() *Identification_OwnerIdentification {
+func (x *Identification_Card) GetOwnerIdentification() *v1.OwnerIdentification {
 	if x != nil {
 		return x.xxx_hidden_OwnerIdentification
 	}
@@ -627,11 +392,11 @@ func (x *Identification_Card) SetCardIssuingMemberState(v v1.NationNumeric) {
 	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 7)
 }
 
-func (x *Identification_Card) SetDriverIdentification(v *Identification_DriverIdentification) {
+func (x *Identification_Card) SetDriverIdentification(v *v1.DriverIdentification) {
 	x.xxx_hidden_DriverIdentification = v
 }
 
-func (x *Identification_Card) SetOwnerIdentification(v *Identification_OwnerIdentification) {
+func (x *Identification_Card) SetOwnerIdentification(v *v1.OwnerIdentification) {
 	x.xxx_hidden_OwnerIdentification = v
 }
 
@@ -739,10 +504,10 @@ type Identification_Card_builder struct {
 	CardIssuingMemberState *v1.NationNumeric
 	// This field is part of the `CardNumber` CHOICE.
 	// It is populated when `card_type` is `DRIVER_CARD`.
-	DriverIdentification *Identification_DriverIdentification
+	DriverIdentification *v1.DriverIdentification
 	// This field is part of the `CardNumber` CHOICE.
 	// It is populated when `card_type` is `WORKSHOP_CARD` or `COMPANY_CARD`.
-	OwnerIdentification *Identification_OwnerIdentification
+	OwnerIdentification *v1.OwnerIdentification
 	// The name of the authority that issued the card.
 	//
 	// See Data Dictionary, Section 2.24, `cardIssuingAuthorityName`.
@@ -805,7 +570,7 @@ type Identification_DriverCardHolder struct {
 
 func (x *Identification_DriverCardHolder) Reset() {
 	*x = Identification_DriverCardHolder{}
-	mi := &file_wayplatform_connect_tachograph_card_v1_identification_proto_msgTypes[4]
+	mi := &file_wayplatform_connect_tachograph_card_v1_identification_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -817,7 +582,7 @@ func (x *Identification_DriverCardHolder) String() string {
 func (*Identification_DriverCardHolder) ProtoMessage() {}
 
 func (x *Identification_DriverCardHolder) ProtoReflect() protoreflect.Message {
-	mi := &file_wayplatform_connect_tachograph_card_v1_identification_proto_msgTypes[4]
+	mi := &file_wayplatform_connect_tachograph_card_v1_identification_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -980,7 +745,7 @@ type Identification_WorkshopCardHolder struct {
 
 func (x *Identification_WorkshopCardHolder) Reset() {
 	*x = Identification_WorkshopCardHolder{}
-	mi := &file_wayplatform_connect_tachograph_card_v1_identification_proto_msgTypes[5]
+	mi := &file_wayplatform_connect_tachograph_card_v1_identification_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -992,7 +757,7 @@ func (x *Identification_WorkshopCardHolder) String() string {
 func (*Identification_WorkshopCardHolder) ProtoMessage() {}
 
 func (x *Identification_WorkshopCardHolder) ProtoReflect() protoreflect.Message {
-	mi := &file_wayplatform_connect_tachograph_card_v1_identification_proto_msgTypes[5]
+	mi := &file_wayplatform_connect_tachograph_card_v1_identification_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1183,7 +948,7 @@ type Identification_ControlCardHolder struct {
 
 func (x *Identification_ControlCardHolder) Reset() {
 	*x = Identification_ControlCardHolder{}
-	mi := &file_wayplatform_connect_tachograph_card_v1_identification_proto_msgTypes[6]
+	mi := &file_wayplatform_connect_tachograph_card_v1_identification_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1195,7 +960,7 @@ func (x *Identification_ControlCardHolder) String() string {
 func (*Identification_ControlCardHolder) ProtoMessage() {}
 
 func (x *Identification_ControlCardHolder) ProtoReflect() protoreflect.Message {
-	mi := &file_wayplatform_connect_tachograph_card_v1_identification_proto_msgTypes[6]
+	mi := &file_wayplatform_connect_tachograph_card_v1_identification_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1383,7 +1148,7 @@ type Identification_CompanyCardHolder struct {
 
 func (x *Identification_CompanyCardHolder) Reset() {
 	*x = Identification_CompanyCardHolder{}
-	mi := &file_wayplatform_connect_tachograph_card_v1_identification_proto_msgTypes[7]
+	mi := &file_wayplatform_connect_tachograph_card_v1_identification_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1395,7 +1160,7 @@ func (x *Identification_CompanyCardHolder) String() string {
 func (*Identification_CompanyCardHolder) ProtoMessage() {}
 
 func (x *Identification_CompanyCardHolder) ProtoReflect() protoreflect.Message {
-	mi := &file_wayplatform_connect_tachograph_card_v1_identification_proto_msgTypes[7]
+	mi := &file_wayplatform_connect_tachograph_card_v1_identification_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1509,7 +1274,7 @@ var File_wayplatform_connect_tachograph_card_v1_identification_proto protoreflec
 
 const file_wayplatform_connect_tachograph_card_v1_identification_proto_rawDesc = "" +
 	"\n" +
-	";wayplatform/connect/tachograph/card/v1/identification.proto\x12&wayplatform.connect.tachograph.card.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a6wayplatform/connect/tachograph/card/v1/card_type.proto\x1aEwayplatform/connect/tachograph/datadictionary/v1/nation_numeric.proto\x1aCwayplatform/connect/tachograph/datadictionary/v1/string_value.proto\x1a;wayplatform/connect/tachograph/datadictionary/v1/date.proto\"\xc7\x1f\n" +
+	";wayplatform/connect/tachograph/card/v1/identification.proto\x12&wayplatform.connect.tachograph.card.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a6wayplatform/connect/tachograph/card/v1/card_type.proto\x1aEwayplatform/connect/tachograph/datadictionary/v1/nation_numeric.proto\x1aCwayplatform/connect/tachograph/datadictionary/v1/string_value.proto\x1a;wayplatform/connect/tachograph/datadictionary/v1/date.proto\x1aLwayplatform/connect/tachograph/datadictionary/v1/driver_identification.proto\x1aKwayplatform/connect/tachograph/datadictionary/v1/owner_identification.proto\"\x82\x1b\n" +
 	"\x0eIdentification\x12O\n" +
 	"\x04card\x18\x01 \x01(\v2;.wayplatform.connect.tachograph.card.v1.Identification.CardR\x04card\x12M\n" +
 	"\tcard_type\x18\x02 \x01(\x0e20.wayplatform.connect.tachograph.card.v1.CardTypeR\bcardType\x12u\n" +
@@ -1517,18 +1282,11 @@ const file_wayplatform_connect_tachograph_card_v1_identification_proto_rawDesc =
 	"\x14workshop_card_holder\x18\x04 \x01(\v2I.wayplatform.connect.tachograph.card.v1.Identification.WorkshopCardHolderR\x12workshopCardHolder\x12x\n" +
 	"\x13control_card_holder\x18\x05 \x01(\v2H.wayplatform.connect.tachograph.card.v1.Identification.ControlCardHolderR\x11controlCardHolder\x12x\n" +
 	"\x13company_card_holder\x18\x06 \x01(\v2H.wayplatform.connect.tachograph.card.v1.Identification.CompanyCardHolderR\x11companyCardHolder\x12\x1c\n" +
-	"\tsignature\x18\a \x01(\fR\tsignature\x1a\xb9\x03\n" +
-	"\x14DriverIdentification\x12e\n" +
-	"\x0eidentification\x18\x01 \x01(\v2=.wayplatform.connect.tachograph.datadictionary.v1.StringValueR\x0eidentification\x12j\n" +
-	"\x11consecutive_index\x18\x02 \x01(\v2=.wayplatform.connect.tachograph.datadictionary.v1.StringValueR\x10consecutiveIndex\x12j\n" +
-	"\x11replacement_index\x18\x03 \x01(\v2=.wayplatform.connect.tachograph.datadictionary.v1.StringValueR\x10replacementIndex\x12b\n" +
-	"\rrenewal_index\x18\x04 \x01(\v2=.wayplatform.connect.tachograph.datadictionary.v1.StringValueR\frenewalIndex\x1a|\n" +
-	"\x13OwnerIdentification\x12e\n" +
-	"\x0eidentification\x18\x01 \x01(\v2=.wayplatform.connect.tachograph.datadictionary.v1.StringValueR\x0eidentification\x1a\xd8\x05\n" +
+	"\tsignature\x18\a \x01(\fR\tsignature\x1a\xcd\x05\n" +
 	"\x04Card\x12z\n" +
-	"\x19card_issuing_member_state\x18\x01 \x01(\x0e2?.wayplatform.connect.tachograph.datadictionary.v1.NationNumericR\x16cardIssuingMemberState\x12\x80\x01\n" +
-	"\x15driver_identification\x18\x02 \x01(\v2K.wayplatform.connect.tachograph.card.v1.Identification.DriverIdentificationR\x14driverIdentification\x12}\n" +
-	"\x14owner_identification\x18\a \x01(\v2J.wayplatform.connect.tachograph.card.v1.Identification.OwnerIdentificationR\x13ownerIdentification\x12|\n" +
+	"\x19card_issuing_member_state\x18\x01 \x01(\x0e2?.wayplatform.connect.tachograph.datadictionary.v1.NationNumericR\x16cardIssuingMemberState\x12{\n" +
+	"\x15driver_identification\x18\x02 \x01(\v2F.wayplatform.connect.tachograph.datadictionary.v1.DriverIdentificationR\x14driverIdentification\x12x\n" +
+	"\x14owner_identification\x18\a \x01(\v2E.wayplatform.connect.tachograph.datadictionary.v1.OwnerIdentificationR\x13ownerIdentification\x12|\n" +
 	"\x1bcard_issuing_authority_name\x18\x03 \x01(\v2=.wayplatform.connect.tachograph.datadictionary.v1.StringValueR\x18cardIssuingAuthorityName\x12B\n" +
 	"\x0fcard_issue_date\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampR\rcardIssueDate\x12J\n" +
 	"\x13card_validity_begin\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampR\x11cardValidityBegin\x12D\n" +
@@ -1556,63 +1314,58 @@ const file_wayplatform_connect_tachograph_card_v1_identification_proto_rawDesc =
 	"\x1ecard_holder_preferred_language\x18\x03 \x01(\v2=.wayplatform.connect.tachograph.datadictionary.v1.StringValueR\x1bcardHolderPreferredLanguageB\xe0\x02\n" +
 	"*com.wayplatform.connect.tachograph.card.v1B\x13IdentificationProtoP\x01Z`github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1;cardv1\xa2\x02\x04WCTC\xaa\x02&Wayplatform.Connect.Tachograph.Card.V1\xca\x02&Wayplatform\\Connect\\Tachograph\\Card\\V1\xe2\x022Wayplatform\\Connect\\Tachograph\\Card\\V1\\GPBMetadata\xea\x02*Wayplatform::Connect::Tachograph::Card::V1b\beditionsp\xe8\a"
 
-var file_wayplatform_connect_tachograph_card_v1_identification_proto_msgTypes = make([]protoimpl.MessageInfo, 8)
+var file_wayplatform_connect_tachograph_card_v1_identification_proto_msgTypes = make([]protoimpl.MessageInfo, 6)
 var file_wayplatform_connect_tachograph_card_v1_identification_proto_goTypes = []any{
-	(*Identification)(nil),                      // 0: wayplatform.connect.tachograph.card.v1.Identification
-	(*Identification_DriverIdentification)(nil), // 1: wayplatform.connect.tachograph.card.v1.Identification.DriverIdentification
-	(*Identification_OwnerIdentification)(nil),  // 2: wayplatform.connect.tachograph.card.v1.Identification.OwnerIdentification
-	(*Identification_Card)(nil),                 // 3: wayplatform.connect.tachograph.card.v1.Identification.Card
-	(*Identification_DriverCardHolder)(nil),     // 4: wayplatform.connect.tachograph.card.v1.Identification.DriverCardHolder
-	(*Identification_WorkshopCardHolder)(nil),   // 5: wayplatform.connect.tachograph.card.v1.Identification.WorkshopCardHolder
-	(*Identification_ControlCardHolder)(nil),    // 6: wayplatform.connect.tachograph.card.v1.Identification.ControlCardHolder
-	(*Identification_CompanyCardHolder)(nil),    // 7: wayplatform.connect.tachograph.card.v1.Identification.CompanyCardHolder
-	(CardType)(0),                               // 8: wayplatform.connect.tachograph.card.v1.CardType
-	(*v1.StringValue)(nil),                      // 9: wayplatform.connect.tachograph.datadictionary.v1.StringValue
-	(v1.NationNumeric)(0),                       // 10: wayplatform.connect.tachograph.datadictionary.v1.NationNumeric
-	(*timestamppb.Timestamp)(nil),               // 11: google.protobuf.Timestamp
-	(*v1.Date)(nil),                             // 12: wayplatform.connect.tachograph.datadictionary.v1.Date
+	(*Identification)(nil),                    // 0: wayplatform.connect.tachograph.card.v1.Identification
+	(*Identification_Card)(nil),               // 1: wayplatform.connect.tachograph.card.v1.Identification.Card
+	(*Identification_DriverCardHolder)(nil),   // 2: wayplatform.connect.tachograph.card.v1.Identification.DriverCardHolder
+	(*Identification_WorkshopCardHolder)(nil), // 3: wayplatform.connect.tachograph.card.v1.Identification.WorkshopCardHolder
+	(*Identification_ControlCardHolder)(nil),  // 4: wayplatform.connect.tachograph.card.v1.Identification.ControlCardHolder
+	(*Identification_CompanyCardHolder)(nil),  // 5: wayplatform.connect.tachograph.card.v1.Identification.CompanyCardHolder
+	(CardType)(0),                             // 6: wayplatform.connect.tachograph.card.v1.CardType
+	(v1.NationNumeric)(0),                     // 7: wayplatform.connect.tachograph.datadictionary.v1.NationNumeric
+	(*v1.DriverIdentification)(nil),           // 8: wayplatform.connect.tachograph.datadictionary.v1.DriverIdentification
+	(*v1.OwnerIdentification)(nil),            // 9: wayplatform.connect.tachograph.datadictionary.v1.OwnerIdentification
+	(*v1.StringValue)(nil),                    // 10: wayplatform.connect.tachograph.datadictionary.v1.StringValue
+	(*timestamppb.Timestamp)(nil),             // 11: google.protobuf.Timestamp
+	(*v1.Date)(nil),                           // 12: wayplatform.connect.tachograph.datadictionary.v1.Date
 }
 var file_wayplatform_connect_tachograph_card_v1_identification_proto_depIdxs = []int32{
-	3,  // 0: wayplatform.connect.tachograph.card.v1.Identification.card:type_name -> wayplatform.connect.tachograph.card.v1.Identification.Card
-	8,  // 1: wayplatform.connect.tachograph.card.v1.Identification.card_type:type_name -> wayplatform.connect.tachograph.card.v1.CardType
-	4,  // 2: wayplatform.connect.tachograph.card.v1.Identification.driver_card_holder:type_name -> wayplatform.connect.tachograph.card.v1.Identification.DriverCardHolder
-	5,  // 3: wayplatform.connect.tachograph.card.v1.Identification.workshop_card_holder:type_name -> wayplatform.connect.tachograph.card.v1.Identification.WorkshopCardHolder
-	6,  // 4: wayplatform.connect.tachograph.card.v1.Identification.control_card_holder:type_name -> wayplatform.connect.tachograph.card.v1.Identification.ControlCardHolder
-	7,  // 5: wayplatform.connect.tachograph.card.v1.Identification.company_card_holder:type_name -> wayplatform.connect.tachograph.card.v1.Identification.CompanyCardHolder
-	9,  // 6: wayplatform.connect.tachograph.card.v1.Identification.DriverIdentification.identification:type_name -> wayplatform.connect.tachograph.datadictionary.v1.StringValue
-	9,  // 7: wayplatform.connect.tachograph.card.v1.Identification.DriverIdentification.consecutive_index:type_name -> wayplatform.connect.tachograph.datadictionary.v1.StringValue
-	9,  // 8: wayplatform.connect.tachograph.card.v1.Identification.DriverIdentification.replacement_index:type_name -> wayplatform.connect.tachograph.datadictionary.v1.StringValue
-	9,  // 9: wayplatform.connect.tachograph.card.v1.Identification.DriverIdentification.renewal_index:type_name -> wayplatform.connect.tachograph.datadictionary.v1.StringValue
-	9,  // 10: wayplatform.connect.tachograph.card.v1.Identification.OwnerIdentification.identification:type_name -> wayplatform.connect.tachograph.datadictionary.v1.StringValue
-	10, // 11: wayplatform.connect.tachograph.card.v1.Identification.Card.card_issuing_member_state:type_name -> wayplatform.connect.tachograph.datadictionary.v1.NationNumeric
-	1,  // 12: wayplatform.connect.tachograph.card.v1.Identification.Card.driver_identification:type_name -> wayplatform.connect.tachograph.card.v1.Identification.DriverIdentification
-	2,  // 13: wayplatform.connect.tachograph.card.v1.Identification.Card.owner_identification:type_name -> wayplatform.connect.tachograph.card.v1.Identification.OwnerIdentification
-	9,  // 14: wayplatform.connect.tachograph.card.v1.Identification.Card.card_issuing_authority_name:type_name -> wayplatform.connect.tachograph.datadictionary.v1.StringValue
-	11, // 15: wayplatform.connect.tachograph.card.v1.Identification.Card.card_issue_date:type_name -> google.protobuf.Timestamp
-	11, // 16: wayplatform.connect.tachograph.card.v1.Identification.Card.card_validity_begin:type_name -> google.protobuf.Timestamp
-	11, // 17: wayplatform.connect.tachograph.card.v1.Identification.Card.card_expiry_date:type_name -> google.protobuf.Timestamp
-	9,  // 18: wayplatform.connect.tachograph.card.v1.Identification.DriverCardHolder.card_holder_surname:type_name -> wayplatform.connect.tachograph.datadictionary.v1.StringValue
-	9,  // 19: wayplatform.connect.tachograph.card.v1.Identification.DriverCardHolder.card_holder_first_names:type_name -> wayplatform.connect.tachograph.datadictionary.v1.StringValue
-	12, // 20: wayplatform.connect.tachograph.card.v1.Identification.DriverCardHolder.card_holder_birth_date:type_name -> wayplatform.connect.tachograph.datadictionary.v1.Date
-	9,  // 21: wayplatform.connect.tachograph.card.v1.Identification.DriverCardHolder.card_holder_preferred_language:type_name -> wayplatform.connect.tachograph.datadictionary.v1.StringValue
-	9,  // 22: wayplatform.connect.tachograph.card.v1.Identification.WorkshopCardHolder.workshop_name:type_name -> wayplatform.connect.tachograph.datadictionary.v1.StringValue
-	9,  // 23: wayplatform.connect.tachograph.card.v1.Identification.WorkshopCardHolder.workshop_address:type_name -> wayplatform.connect.tachograph.datadictionary.v1.StringValue
-	9,  // 24: wayplatform.connect.tachograph.card.v1.Identification.WorkshopCardHolder.card_holder_surname:type_name -> wayplatform.connect.tachograph.datadictionary.v1.StringValue
-	9,  // 25: wayplatform.connect.tachograph.card.v1.Identification.WorkshopCardHolder.card_holder_first_names:type_name -> wayplatform.connect.tachograph.datadictionary.v1.StringValue
-	9,  // 26: wayplatform.connect.tachograph.card.v1.Identification.WorkshopCardHolder.card_holder_preferred_language:type_name -> wayplatform.connect.tachograph.datadictionary.v1.StringValue
-	9,  // 27: wayplatform.connect.tachograph.card.v1.Identification.ControlCardHolder.control_body_name:type_name -> wayplatform.connect.tachograph.datadictionary.v1.StringValue
-	9,  // 28: wayplatform.connect.tachograph.card.v1.Identification.ControlCardHolder.control_body_address:type_name -> wayplatform.connect.tachograph.datadictionary.v1.StringValue
-	9,  // 29: wayplatform.connect.tachograph.card.v1.Identification.ControlCardHolder.card_holder_surname:type_name -> wayplatform.connect.tachograph.datadictionary.v1.StringValue
-	9,  // 30: wayplatform.connect.tachograph.card.v1.Identification.ControlCardHolder.card_holder_first_names:type_name -> wayplatform.connect.tachograph.datadictionary.v1.StringValue
-	9,  // 31: wayplatform.connect.tachograph.card.v1.Identification.ControlCardHolder.card_holder_preferred_language:type_name -> wayplatform.connect.tachograph.datadictionary.v1.StringValue
-	9,  // 32: wayplatform.connect.tachograph.card.v1.Identification.CompanyCardHolder.company_name:type_name -> wayplatform.connect.tachograph.datadictionary.v1.StringValue
-	9,  // 33: wayplatform.connect.tachograph.card.v1.Identification.CompanyCardHolder.company_address:type_name -> wayplatform.connect.tachograph.datadictionary.v1.StringValue
-	9,  // 34: wayplatform.connect.tachograph.card.v1.Identification.CompanyCardHolder.card_holder_preferred_language:type_name -> wayplatform.connect.tachograph.datadictionary.v1.StringValue
-	35, // [35:35] is the sub-list for method output_type
-	35, // [35:35] is the sub-list for method input_type
-	35, // [35:35] is the sub-list for extension type_name
-	35, // [35:35] is the sub-list for extension extendee
-	0,  // [0:35] is the sub-list for field type_name
+	1,  // 0: wayplatform.connect.tachograph.card.v1.Identification.card:type_name -> wayplatform.connect.tachograph.card.v1.Identification.Card
+	6,  // 1: wayplatform.connect.tachograph.card.v1.Identification.card_type:type_name -> wayplatform.connect.tachograph.card.v1.CardType
+	2,  // 2: wayplatform.connect.tachograph.card.v1.Identification.driver_card_holder:type_name -> wayplatform.connect.tachograph.card.v1.Identification.DriverCardHolder
+	3,  // 3: wayplatform.connect.tachograph.card.v1.Identification.workshop_card_holder:type_name -> wayplatform.connect.tachograph.card.v1.Identification.WorkshopCardHolder
+	4,  // 4: wayplatform.connect.tachograph.card.v1.Identification.control_card_holder:type_name -> wayplatform.connect.tachograph.card.v1.Identification.ControlCardHolder
+	5,  // 5: wayplatform.connect.tachograph.card.v1.Identification.company_card_holder:type_name -> wayplatform.connect.tachograph.card.v1.Identification.CompanyCardHolder
+	7,  // 6: wayplatform.connect.tachograph.card.v1.Identification.Card.card_issuing_member_state:type_name -> wayplatform.connect.tachograph.datadictionary.v1.NationNumeric
+	8,  // 7: wayplatform.connect.tachograph.card.v1.Identification.Card.driver_identification:type_name -> wayplatform.connect.tachograph.datadictionary.v1.DriverIdentification
+	9,  // 8: wayplatform.connect.tachograph.card.v1.Identification.Card.owner_identification:type_name -> wayplatform.connect.tachograph.datadictionary.v1.OwnerIdentification
+	10, // 9: wayplatform.connect.tachograph.card.v1.Identification.Card.card_issuing_authority_name:type_name -> wayplatform.connect.tachograph.datadictionary.v1.StringValue
+	11, // 10: wayplatform.connect.tachograph.card.v1.Identification.Card.card_issue_date:type_name -> google.protobuf.Timestamp
+	11, // 11: wayplatform.connect.tachograph.card.v1.Identification.Card.card_validity_begin:type_name -> google.protobuf.Timestamp
+	11, // 12: wayplatform.connect.tachograph.card.v1.Identification.Card.card_expiry_date:type_name -> google.protobuf.Timestamp
+	10, // 13: wayplatform.connect.tachograph.card.v1.Identification.DriverCardHolder.card_holder_surname:type_name -> wayplatform.connect.tachograph.datadictionary.v1.StringValue
+	10, // 14: wayplatform.connect.tachograph.card.v1.Identification.DriverCardHolder.card_holder_first_names:type_name -> wayplatform.connect.tachograph.datadictionary.v1.StringValue
+	12, // 15: wayplatform.connect.tachograph.card.v1.Identification.DriverCardHolder.card_holder_birth_date:type_name -> wayplatform.connect.tachograph.datadictionary.v1.Date
+	10, // 16: wayplatform.connect.tachograph.card.v1.Identification.DriverCardHolder.card_holder_preferred_language:type_name -> wayplatform.connect.tachograph.datadictionary.v1.StringValue
+	10, // 17: wayplatform.connect.tachograph.card.v1.Identification.WorkshopCardHolder.workshop_name:type_name -> wayplatform.connect.tachograph.datadictionary.v1.StringValue
+	10, // 18: wayplatform.connect.tachograph.card.v1.Identification.WorkshopCardHolder.workshop_address:type_name -> wayplatform.connect.tachograph.datadictionary.v1.StringValue
+	10, // 19: wayplatform.connect.tachograph.card.v1.Identification.WorkshopCardHolder.card_holder_surname:type_name -> wayplatform.connect.tachograph.datadictionary.v1.StringValue
+	10, // 20: wayplatform.connect.tachograph.card.v1.Identification.WorkshopCardHolder.card_holder_first_names:type_name -> wayplatform.connect.tachograph.datadictionary.v1.StringValue
+	10, // 21: wayplatform.connect.tachograph.card.v1.Identification.WorkshopCardHolder.card_holder_preferred_language:type_name -> wayplatform.connect.tachograph.datadictionary.v1.StringValue
+	10, // 22: wayplatform.connect.tachograph.card.v1.Identification.ControlCardHolder.control_body_name:type_name -> wayplatform.connect.tachograph.datadictionary.v1.StringValue
+	10, // 23: wayplatform.connect.tachograph.card.v1.Identification.ControlCardHolder.control_body_address:type_name -> wayplatform.connect.tachograph.datadictionary.v1.StringValue
+	10, // 24: wayplatform.connect.tachograph.card.v1.Identification.ControlCardHolder.card_holder_surname:type_name -> wayplatform.connect.tachograph.datadictionary.v1.StringValue
+	10, // 25: wayplatform.connect.tachograph.card.v1.Identification.ControlCardHolder.card_holder_first_names:type_name -> wayplatform.connect.tachograph.datadictionary.v1.StringValue
+	10, // 26: wayplatform.connect.tachograph.card.v1.Identification.ControlCardHolder.card_holder_preferred_language:type_name -> wayplatform.connect.tachograph.datadictionary.v1.StringValue
+	10, // 27: wayplatform.connect.tachograph.card.v1.Identification.CompanyCardHolder.company_name:type_name -> wayplatform.connect.tachograph.datadictionary.v1.StringValue
+	10, // 28: wayplatform.connect.tachograph.card.v1.Identification.CompanyCardHolder.company_address:type_name -> wayplatform.connect.tachograph.datadictionary.v1.StringValue
+	10, // 29: wayplatform.connect.tachograph.card.v1.Identification.CompanyCardHolder.card_holder_preferred_language:type_name -> wayplatform.connect.tachograph.datadictionary.v1.StringValue
+	30, // [30:30] is the sub-list for method output_type
+	30, // [30:30] is the sub-list for method input_type
+	30, // [30:30] is the sub-list for extension type_name
+	30, // [30:30] is the sub-list for extension extendee
+	0,  // [0:30] is the sub-list for field type_name
 }
 
 func init() { file_wayplatform_connect_tachograph_card_v1_identification_proto_init() }
@@ -1627,7 +1380,7 @@ func file_wayplatform_connect_tachograph_card_v1_identification_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_wayplatform_connect_tachograph_card_v1_identification_proto_rawDesc), len(file_wayplatform_connect_tachograph_card_v1_identification_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   8,
+			NumMessages:   6,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

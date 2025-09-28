@@ -41,7 +41,7 @@ type Overview struct {
 	xxx_hidden_CompanyLocks                  *[]*Overview_CompanyLock              `protobuf:"bytes,11,rep,name=company_locks,json=companyLocks"`
 	xxx_hidden_ControlActivities             *[]*Overview_ControlActivity          `protobuf:"bytes,12,rep,name=control_activities,json=controlActivities"`
 	xxx_hidden_VehicleRegistrationWithNation *v1.VehicleRegistrationIdentification `protobuf:"bytes,13,opt,name=vehicle_registration_with_nation,json=vehicleRegistrationWithNation"`
-	xxx_hidden_VehicleRegistrationNumberOnly *string                               `protobuf:"bytes,14,opt,name=vehicle_registration_number_only,json=vehicleRegistrationNumberOnly"`
+	xxx_hidden_VehicleRegistrationNumberOnly *v1.StringValue                       `protobuf:"bytes,14,opt,name=vehicle_registration_number_only,json=vehicleRegistrationNumberOnly"`
 	xxx_hidden_SignatureGen1                 []byte                                `protobuf:"bytes,15,opt,name=signature_gen1,json=signatureGen1"`
 	xxx_hidden_SignatureGen2                 []byte                                `protobuf:"bytes,16,opt,name=signature_gen2,json=signatureGen2"`
 	XXX_raceDetectHookData                   protoimpl.RaceDetectHookData
@@ -180,14 +180,11 @@ func (x *Overview) GetVehicleRegistrationWithNation() *v1.VehicleRegistrationIde
 	return nil
 }
 
-func (x *Overview) GetVehicleRegistrationNumberOnly() string {
+func (x *Overview) GetVehicleRegistrationNumberOnly() *v1.StringValue {
 	if x != nil {
-		if x.xxx_hidden_VehicleRegistrationNumberOnly != nil {
-			return *x.xxx_hidden_VehicleRegistrationNumberOnly
-		}
-		return ""
+		return x.xxx_hidden_VehicleRegistrationNumberOnly
 	}
-	return ""
+	return nil
 }
 
 func (x *Overview) GetSignatureGen1() []byte {
@@ -268,9 +265,8 @@ func (x *Overview) SetVehicleRegistrationWithNation(v *v1.VehicleRegistrationIde
 	x.xxx_hidden_VehicleRegistrationWithNation = v
 }
 
-func (x *Overview) SetVehicleRegistrationNumberOnly(v string) {
-	x.xxx_hidden_VehicleRegistrationNumberOnly = &v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 13, 16)
+func (x *Overview) SetVehicleRegistrationNumberOnly(v *v1.StringValue) {
+	x.xxx_hidden_VehicleRegistrationNumberOnly = v
 }
 
 func (x *Overview) SetSignatureGen1(v []byte) {
@@ -363,7 +359,7 @@ func (x *Overview) HasVehicleRegistrationNumberOnly() bool {
 	if x == nil {
 		return false
 	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 13)
+	return x.xxx_hidden_VehicleRegistrationNumberOnly != nil
 }
 
 func (x *Overview) HasSignatureGen1() bool {
@@ -427,7 +423,6 @@ func (x *Overview) ClearVehicleRegistrationWithNation() {
 }
 
 func (x *Overview) ClearVehicleRegistrationNumberOnly() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 13)
 	x.xxx_hidden_VehicleRegistrationNumberOnly = nil
 }
 
@@ -526,7 +521,7 @@ type Overview_builder struct {
 	// ASN.1 Definition:
 	//
 	//	VehicleRegistrationNumber ::= IA5String(SIZE(13))
-	VehicleRegistrationNumberOnly *string
+	VehicleRegistrationNumberOnly *v1.StringValue
 	// Signature for Gen1 data.
 	//
 	// See Data Dictionary, Section 2.149, `Signature`.
@@ -575,10 +570,7 @@ func (b0 Overview_builder) Build() *Overview {
 	x.xxx_hidden_CompanyLocks = &b.CompanyLocks
 	x.xxx_hidden_ControlActivities = &b.ControlActivities
 	x.xxx_hidden_VehicleRegistrationWithNation = b.VehicleRegistrationWithNation
-	if b.VehicleRegistrationNumberOnly != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 13, 16)
-		x.xxx_hidden_VehicleRegistrationNumberOnly = b.VehicleRegistrationNumberOnly
-	}
+	x.xxx_hidden_VehicleRegistrationNumberOnly = b.VehicleRegistrationNumberOnly
 	if b.SignatureGen1 != nil {
 		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 14, 16)
 		x.xxx_hidden_SignatureGen1 = b.SignatureGen1
@@ -1157,7 +1149,7 @@ var File_wayplatform_connect_tachograph_vu_v1_overview_proto protoreflect.FileDe
 
 const file_wayplatform_connect_tachograph_vu_v1_overview_proto_rawDesc = "" +
 	"\n" +
-	"3wayplatform/connect/tachograph/vu/v1/overview.proto\x12$wayplatform.connect.tachograph.vu.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1aCwayplatform/connect/tachograph/datadictionary/v1/control_type.proto\x1aJwayplatform/connect/tachograph/datadictionary/v1/downloadable_period.proto\x1aGwayplatform/connect/tachograph/datadictionary/v1/full_card_number.proto\x1aAwayplatform/connect/tachograph/datadictionary/v1/generation.proto\x1aEwayplatform/connect/tachograph/datadictionary/v1/slot_card_type.proto\x1aCwayplatform/connect/tachograph/datadictionary/v1/string_value.proto\x1aZwayplatform/connect/tachograph/datadictionary/v1/vehicle_registration_identification.proto\x1a5wayplatform/connect/tachograph/vu/v1/versioning.proto\"\x85\x15\n" +
+	"3wayplatform/connect/tachograph/vu/v1/overview.proto\x12$wayplatform.connect.tachograph.vu.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1aCwayplatform/connect/tachograph/datadictionary/v1/control_type.proto\x1aJwayplatform/connect/tachograph/datadictionary/v1/downloadable_period.proto\x1aGwayplatform/connect/tachograph/datadictionary/v1/full_card_number.proto\x1aAwayplatform/connect/tachograph/datadictionary/v1/generation.proto\x1aEwayplatform/connect/tachograph/datadictionary/v1/slot_card_type.proto\x1aCwayplatform/connect/tachograph/datadictionary/v1/string_value.proto\x1aZwayplatform/connect/tachograph/datadictionary/v1/vehicle_registration_identification.proto\x1a5wayplatform/connect/tachograph/vu/v1/versioning.proto\"\xc5\x15\n" +
 	"\bOverview\x12\\\n" +
 	"\n" +
 	"generation\x18\x01 \x01(\x0e2<.wayplatform.connect.tachograph.datadictionary.v1.GenerationR\n" +
@@ -1174,8 +1166,8 @@ const file_wayplatform_connect_tachograph_vu_v1_overview_proto_rawDesc = "" +
 	" \x03(\v2?.wayplatform.connect.tachograph.vu.v1.Overview.DownloadActivityR\x12downloadActivities\x12_\n" +
 	"\rcompany_locks\x18\v \x03(\v2:.wayplatform.connect.tachograph.vu.v1.Overview.CompanyLockR\fcompanyLocks\x12m\n" +
 	"\x12control_activities\x18\f \x03(\v2>.wayplatform.connect.tachograph.vu.v1.Overview.ControlActivityR\x11controlActivities\x12\x9c\x01\n" +
-	" vehicle_registration_with_nation\x18\r \x01(\v2S.wayplatform.connect.tachograph.datadictionary.v1.VehicleRegistrationIdentificationR\x1dvehicleRegistrationWithNation\x12G\n" +
-	" vehicle_registration_number_only\x18\x0e \x01(\tR\x1dvehicleRegistrationNumberOnly\x12%\n" +
+	" vehicle_registration_with_nation\x18\r \x01(\v2S.wayplatform.connect.tachograph.datadictionary.v1.VehicleRegistrationIdentificationR\x1dvehicleRegistrationWithNation\x12\x86\x01\n" +
+	" vehicle_registration_number_only\x18\x0e \x01(\v2=.wayplatform.connect.tachograph.datadictionary.v1.StringValueR\x1dvehicleRegistrationNumberOnly\x12%\n" +
 	"\x0esignature_gen1\x18\x0f \x01(\fR\rsignatureGen1\x12%\n" +
 	"\x0esignature_gen2\x18\x10 \x01(\fR\rsignatureGen2\x1a\xbd\x02\n" +
 	"\x10DownloadActivity\x12E\n" +
@@ -1225,24 +1217,25 @@ var file_wayplatform_connect_tachograph_vu_v1_overview_proto_depIdxs = []int32{
 	2,  // 8: wayplatform.connect.tachograph.vu.v1.Overview.company_locks:type_name -> wayplatform.connect.tachograph.vu.v1.Overview.CompanyLock
 	3,  // 9: wayplatform.connect.tachograph.vu.v1.Overview.control_activities:type_name -> wayplatform.connect.tachograph.vu.v1.Overview.ControlActivity
 	10, // 10: wayplatform.connect.tachograph.vu.v1.Overview.vehicle_registration_with_nation:type_name -> wayplatform.connect.tachograph.datadictionary.v1.VehicleRegistrationIdentification
-	7,  // 11: wayplatform.connect.tachograph.vu.v1.Overview.DownloadActivity.downloading_time:type_name -> google.protobuf.Timestamp
-	11, // 12: wayplatform.connect.tachograph.vu.v1.Overview.DownloadActivity.full_card_number:type_name -> wayplatform.connect.tachograph.datadictionary.v1.FullCardNumber
-	6,  // 13: wayplatform.connect.tachograph.vu.v1.Overview.DownloadActivity.company_or_workshop_name:type_name -> wayplatform.connect.tachograph.datadictionary.v1.StringValue
-	7,  // 14: wayplatform.connect.tachograph.vu.v1.Overview.CompanyLock.lock_in_time:type_name -> google.protobuf.Timestamp
-	7,  // 15: wayplatform.connect.tachograph.vu.v1.Overview.CompanyLock.lock_out_time:type_name -> google.protobuf.Timestamp
-	6,  // 16: wayplatform.connect.tachograph.vu.v1.Overview.CompanyLock.company_name:type_name -> wayplatform.connect.tachograph.datadictionary.v1.StringValue
-	6,  // 17: wayplatform.connect.tachograph.vu.v1.Overview.CompanyLock.company_address:type_name -> wayplatform.connect.tachograph.datadictionary.v1.StringValue
-	11, // 18: wayplatform.connect.tachograph.vu.v1.Overview.CompanyLock.company_card_number:type_name -> wayplatform.connect.tachograph.datadictionary.v1.FullCardNumber
-	12, // 19: wayplatform.connect.tachograph.vu.v1.Overview.ControlActivity.control_type:type_name -> wayplatform.connect.tachograph.datadictionary.v1.ControlType
-	7,  // 20: wayplatform.connect.tachograph.vu.v1.Overview.ControlActivity.control_time:type_name -> google.protobuf.Timestamp
-	11, // 21: wayplatform.connect.tachograph.vu.v1.Overview.ControlActivity.control_card_number:type_name -> wayplatform.connect.tachograph.datadictionary.v1.FullCardNumber
-	7,  // 22: wayplatform.connect.tachograph.vu.v1.Overview.ControlActivity.download_period_begin_time:type_name -> google.protobuf.Timestamp
-	7,  // 23: wayplatform.connect.tachograph.vu.v1.Overview.ControlActivity.download_period_end_time:type_name -> google.protobuf.Timestamp
-	24, // [24:24] is the sub-list for method output_type
-	24, // [24:24] is the sub-list for method input_type
-	24, // [24:24] is the sub-list for extension type_name
-	24, // [24:24] is the sub-list for extension extendee
-	0,  // [0:24] is the sub-list for field type_name
+	6,  // 11: wayplatform.connect.tachograph.vu.v1.Overview.vehicle_registration_number_only:type_name -> wayplatform.connect.tachograph.datadictionary.v1.StringValue
+	7,  // 12: wayplatform.connect.tachograph.vu.v1.Overview.DownloadActivity.downloading_time:type_name -> google.protobuf.Timestamp
+	11, // 13: wayplatform.connect.tachograph.vu.v1.Overview.DownloadActivity.full_card_number:type_name -> wayplatform.connect.tachograph.datadictionary.v1.FullCardNumber
+	6,  // 14: wayplatform.connect.tachograph.vu.v1.Overview.DownloadActivity.company_or_workshop_name:type_name -> wayplatform.connect.tachograph.datadictionary.v1.StringValue
+	7,  // 15: wayplatform.connect.tachograph.vu.v1.Overview.CompanyLock.lock_in_time:type_name -> google.protobuf.Timestamp
+	7,  // 16: wayplatform.connect.tachograph.vu.v1.Overview.CompanyLock.lock_out_time:type_name -> google.protobuf.Timestamp
+	6,  // 17: wayplatform.connect.tachograph.vu.v1.Overview.CompanyLock.company_name:type_name -> wayplatform.connect.tachograph.datadictionary.v1.StringValue
+	6,  // 18: wayplatform.connect.tachograph.vu.v1.Overview.CompanyLock.company_address:type_name -> wayplatform.connect.tachograph.datadictionary.v1.StringValue
+	11, // 19: wayplatform.connect.tachograph.vu.v1.Overview.CompanyLock.company_card_number:type_name -> wayplatform.connect.tachograph.datadictionary.v1.FullCardNumber
+	12, // 20: wayplatform.connect.tachograph.vu.v1.Overview.ControlActivity.control_type:type_name -> wayplatform.connect.tachograph.datadictionary.v1.ControlType
+	7,  // 21: wayplatform.connect.tachograph.vu.v1.Overview.ControlActivity.control_time:type_name -> google.protobuf.Timestamp
+	11, // 22: wayplatform.connect.tachograph.vu.v1.Overview.ControlActivity.control_card_number:type_name -> wayplatform.connect.tachograph.datadictionary.v1.FullCardNumber
+	7,  // 23: wayplatform.connect.tachograph.vu.v1.Overview.ControlActivity.download_period_begin_time:type_name -> google.protobuf.Timestamp
+	7,  // 24: wayplatform.connect.tachograph.vu.v1.Overview.ControlActivity.download_period_end_time:type_name -> google.protobuf.Timestamp
+	25, // [25:25] is the sub-list for method output_type
+	25, // [25:25] is the sub-list for method input_type
+	25, // [25:25] is the sub-list for extension type_name
+	25, // [25:25] is the sub-list for extension extendee
+	0,  // [0:25] is the sub-list for field type_name
 }
 
 func init() { file_wayplatform_connect_tachograph_vu_v1_overview_proto_init() }

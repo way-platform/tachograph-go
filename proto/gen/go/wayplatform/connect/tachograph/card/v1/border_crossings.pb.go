@@ -7,6 +7,7 @@
 package cardv1
 
 import (
+	v1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/datadictionary/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	_ "google.golang.org/protobuf/types/known/timestamppb"
@@ -151,8 +152,8 @@ func (b0 BorderCrossings_builder) Build() *BorderCrossings {
 //	}
 type BorderCrossings_Record struct {
 	state                          protoimpl.MessageState `protogen:"opaque.v1"`
-	xxx_hidden_CountryLeft         int32                  `protobuf:"varint,1,opt,name=country_left,json=countryLeft"`
-	xxx_hidden_CountryEntered      int32                  `protobuf:"varint,2,opt,name=country_entered,json=countryEntered"`
+	xxx_hidden_CountryLeft         v1.NationNumeric       `protobuf:"varint,1,opt,name=country_left,json=countryLeft,enum=wayplatform.connect.tachograph.datadictionary.v1.NationNumeric"`
+	xxx_hidden_CountryEntered      v1.NationNumeric       `protobuf:"varint,2,opt,name=country_entered,json=countryEntered,enum=wayplatform.connect.tachograph.datadictionary.v1.NationNumeric"`
 	xxx_hidden_GnssPlaceAuthRecord *GnssPlaceAuthRecord   `protobuf:"bytes,3,opt,name=gnss_place_auth_record,json=gnssPlaceAuthRecord"`
 	xxx_hidden_VehicleOdometerKm   int32                  `protobuf:"varint,4,opt,name=vehicle_odometer_km,json=vehicleOdometerKm"`
 	XXX_raceDetectHookData         protoimpl.RaceDetectHookData
@@ -186,18 +187,22 @@ func (x *BorderCrossings_Record) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-func (x *BorderCrossings_Record) GetCountryLeft() int32 {
+func (x *BorderCrossings_Record) GetCountryLeft() v1.NationNumeric {
 	if x != nil {
-		return x.xxx_hidden_CountryLeft
+		if protoimpl.X.Present(&(x.XXX_presence[0]), 0) {
+			return x.xxx_hidden_CountryLeft
+		}
 	}
-	return 0
+	return v1.NationNumeric(0)
 }
 
-func (x *BorderCrossings_Record) GetCountryEntered() int32 {
+func (x *BorderCrossings_Record) GetCountryEntered() v1.NationNumeric {
 	if x != nil {
-		return x.xxx_hidden_CountryEntered
+		if protoimpl.X.Present(&(x.XXX_presence[0]), 1) {
+			return x.xxx_hidden_CountryEntered
+		}
 	}
-	return 0
+	return v1.NationNumeric(0)
 }
 
 func (x *BorderCrossings_Record) GetGnssPlaceAuthRecord() *GnssPlaceAuthRecord {
@@ -214,12 +219,12 @@ func (x *BorderCrossings_Record) GetVehicleOdometerKm() int32 {
 	return 0
 }
 
-func (x *BorderCrossings_Record) SetCountryLeft(v int32) {
+func (x *BorderCrossings_Record) SetCountryLeft(v v1.NationNumeric) {
 	x.xxx_hidden_CountryLeft = v
 	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 4)
 }
 
-func (x *BorderCrossings_Record) SetCountryEntered(v int32) {
+func (x *BorderCrossings_Record) SetCountryEntered(v v1.NationNumeric) {
 	x.xxx_hidden_CountryEntered = v
 	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 4)
 }
@@ -263,12 +268,12 @@ func (x *BorderCrossings_Record) HasVehicleOdometerKm() bool {
 
 func (x *BorderCrossings_Record) ClearCountryLeft() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 0)
-	x.xxx_hidden_CountryLeft = 0
+	x.xxx_hidden_CountryLeft = v1.NationNumeric_NATION_NUMERIC_UNSPECIFIED
 }
 
 func (x *BorderCrossings_Record) ClearCountryEntered() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 1)
-	x.xxx_hidden_CountryEntered = 0
+	x.xxx_hidden_CountryEntered = v1.NationNumeric_NATION_NUMERIC_UNSPECIFIED
 }
 
 func (x *BorderCrossings_Record) ClearGnssPlaceAuthRecord() {
@@ -289,14 +294,14 @@ type BorderCrossings_Record_builder struct {
 	// ASN.1 Specification:
 	//
 	//	NationNumeric ::= INTEGER (0..255)
-	CountryLeft *int32
+	CountryLeft *v1.NationNumeric
 	// Country the vehicle is entering.
 	//
 	// See Data Dictionary, Section 2.101, `NationNumeric`.
 	// ASN.1 Specification:
 	//
 	//	NationNumeric ::= INTEGER (0..255)
-	CountryEntered *int32
+	CountryEntered *v1.NationNumeric
 	// Authenticated position of the vehicle at the time of crossing.
 	//
 	// See Data Dictionary, Section 2.79c, `GNSSPlaceAuthRecord`.
@@ -334,13 +339,13 @@ var File_wayplatform_connect_tachograph_card_v1_border_crossings_proto protorefl
 
 const file_wayplatform_connect_tachograph_card_v1_border_crossings_proto_rawDesc = "" +
 	"\n" +
-	"=wayplatform/connect/tachograph/card/v1/border_crossings.proto\x12&wayplatform.connect.tachograph.card.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1aCwayplatform/connect/tachograph/card/v1/gnss_place_auth_record.proto\"\x94\x03\n" +
+	"=wayplatform/connect/tachograph/card/v1/border_crossings.proto\x12&wayplatform.connect.tachograph.card.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1aCwayplatform/connect/tachograph/card/v1/gnss_place_auth_record.proto\x1aEwayplatform/connect/tachograph/datadictionary/v1/nation_numeric.proto\"\x96\x04\n" +
 	"\x0fBorderCrossings\x12.\n" +
 	"\x13newest_record_index\x18\x01 \x01(\x05R\x11newestRecordIndex\x12X\n" +
-	"\arecords\x18\x02 \x03(\v2>.wayplatform.connect.tachograph.card.v1.BorderCrossings.RecordR\arecords\x1a\xf6\x01\n" +
-	"\x06Record\x12!\n" +
-	"\fcountry_left\x18\x01 \x01(\x05R\vcountryLeft\x12'\n" +
-	"\x0fcountry_entered\x18\x02 \x01(\x05R\x0ecountryEntered\x12p\n" +
+	"\arecords\x18\x02 \x03(\v2>.wayplatform.connect.tachograph.card.v1.BorderCrossings.RecordR\arecords\x1a\xf8\x02\n" +
+	"\x06Record\x12b\n" +
+	"\fcountry_left\x18\x01 \x01(\x0e2?.wayplatform.connect.tachograph.datadictionary.v1.NationNumericR\vcountryLeft\x12h\n" +
+	"\x0fcountry_entered\x18\x02 \x01(\x0e2?.wayplatform.connect.tachograph.datadictionary.v1.NationNumericR\x0ecountryEntered\x12p\n" +
 	"\x16gnss_place_auth_record\x18\x03 \x01(\v2;.wayplatform.connect.tachograph.card.v1.GnssPlaceAuthRecordR\x13gnssPlaceAuthRecord\x12.\n" +
 	"\x13vehicle_odometer_km\x18\x04 \x01(\x05R\x11vehicleOdometerKmB\xe1\x02\n" +
 	"*com.wayplatform.connect.tachograph.card.v1B\x14BorderCrossingsProtoP\x01Z`github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1;cardv1\xa2\x02\x04WCTC\xaa\x02&Wayplatform.Connect.Tachograph.Card.V1\xca\x02&Wayplatform\\Connect\\Tachograph\\Card\\V1\xe2\x022Wayplatform\\Connect\\Tachograph\\Card\\V1\\GPBMetadata\xea\x02*Wayplatform::Connect::Tachograph::Card::V1b\beditionsp\xe8\a"
@@ -349,16 +354,19 @@ var file_wayplatform_connect_tachograph_card_v1_border_crossings_proto_msgTypes 
 var file_wayplatform_connect_tachograph_card_v1_border_crossings_proto_goTypes = []any{
 	(*BorderCrossings)(nil),        // 0: wayplatform.connect.tachograph.card.v1.BorderCrossings
 	(*BorderCrossings_Record)(nil), // 1: wayplatform.connect.tachograph.card.v1.BorderCrossings.Record
-	(*GnssPlaceAuthRecord)(nil),    // 2: wayplatform.connect.tachograph.card.v1.GnssPlaceAuthRecord
+	(v1.NationNumeric)(0),          // 2: wayplatform.connect.tachograph.datadictionary.v1.NationNumeric
+	(*GnssPlaceAuthRecord)(nil),    // 3: wayplatform.connect.tachograph.card.v1.GnssPlaceAuthRecord
 }
 var file_wayplatform_connect_tachograph_card_v1_border_crossings_proto_depIdxs = []int32{
 	1, // 0: wayplatform.connect.tachograph.card.v1.BorderCrossings.records:type_name -> wayplatform.connect.tachograph.card.v1.BorderCrossings.Record
-	2, // 1: wayplatform.connect.tachograph.card.v1.BorderCrossings.Record.gnss_place_auth_record:type_name -> wayplatform.connect.tachograph.card.v1.GnssPlaceAuthRecord
-	2, // [2:2] is the sub-list for method output_type
-	2, // [2:2] is the sub-list for method input_type
-	2, // [2:2] is the sub-list for extension type_name
-	2, // [2:2] is the sub-list for extension extendee
-	0, // [0:2] is the sub-list for field type_name
+	2, // 1: wayplatform.connect.tachograph.card.v1.BorderCrossings.Record.country_left:type_name -> wayplatform.connect.tachograph.datadictionary.v1.NationNumeric
+	2, // 2: wayplatform.connect.tachograph.card.v1.BorderCrossings.Record.country_entered:type_name -> wayplatform.connect.tachograph.datadictionary.v1.NationNumeric
+	3, // 3: wayplatform.connect.tachograph.card.v1.BorderCrossings.Record.gnss_place_auth_record:type_name -> wayplatform.connect.tachograph.card.v1.GnssPlaceAuthRecord
+	4, // [4:4] is the sub-list for method output_type
+	4, // [4:4] is the sub-list for method input_type
+	4, // [4:4] is the sub-list for extension type_name
+	4, // [4:4] is the sub-list for extension extendee
+	0, // [0:4] is the sub-list for field type_name
 }
 
 func init() { file_wayplatform_connect_tachograph_card_v1_border_crossings_proto_init() }

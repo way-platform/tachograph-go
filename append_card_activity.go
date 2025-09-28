@@ -95,7 +95,9 @@ func appendParsedDailyRecord(dst []byte, rec *cardv1.DriverActivityData_DailyRec
 	contentBuf = appendDatef(contentBuf, rec.GetActivityRecordDate())
 
 	// Activity daily presence counter (2 bytes BCD)
-	contentBuf = binary.BigEndian.AppendUint16(contentBuf, uint16(rec.GetActivityDailyPresenceCounter()))
+	if bcdCounter := rec.GetActivityDailyPresenceCounter(); bcdCounter != nil {
+		contentBuf = append(contentBuf, bcdCounter.GetEncoded()...)
+	}
 
 	// Activity day distance (2 bytes)
 	contentBuf = binary.BigEndian.AppendUint16(contentBuf, uint16(rec.GetActivityDayDistance()))

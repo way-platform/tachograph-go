@@ -41,8 +41,8 @@ const (
 type DrivingLicenceInfo struct {
 	state                                     protoimpl.MessageState `protogen:"opaque.v1"`
 	xxx_hidden_DrivingLicenceIssuingAuthority *v1.StringValue        `protobuf:"bytes,1,opt,name=driving_licence_issuing_authority,json=drivingLicenceIssuingAuthority"`
-	xxx_hidden_DrivingLicenceIssuingNation    int32                  `protobuf:"varint,2,opt,name=driving_licence_issuing_nation,json=drivingLicenceIssuingNation"`
-	xxx_hidden_DrivingLicenceNumber           *string                `protobuf:"bytes,3,opt,name=driving_licence_number,json=drivingLicenceNumber"`
+	xxx_hidden_DrivingLicenceIssuingNation    v1.NationNumeric       `protobuf:"varint,2,opt,name=driving_licence_issuing_nation,json=drivingLicenceIssuingNation,enum=wayplatform.connect.tachograph.datadictionary.v1.NationNumeric"`
+	xxx_hidden_DrivingLicenceNumber           *v1.StringValue        `protobuf:"bytes,3,opt,name=driving_licence_number,json=drivingLicenceNumber"`
 	xxx_hidden_Signature                      []byte                 `protobuf:"bytes,4,opt,name=signature"`
 	XXX_raceDetectHookData                    protoimpl.RaceDetectHookData
 	XXX_presence                              [1]uint32
@@ -82,21 +82,20 @@ func (x *DrivingLicenceInfo) GetDrivingLicenceIssuingAuthority() *v1.StringValue
 	return nil
 }
 
-func (x *DrivingLicenceInfo) GetDrivingLicenceIssuingNation() int32 {
+func (x *DrivingLicenceInfo) GetDrivingLicenceIssuingNation() v1.NationNumeric {
 	if x != nil {
-		return x.xxx_hidden_DrivingLicenceIssuingNation
+		if protoimpl.X.Present(&(x.XXX_presence[0]), 1) {
+			return x.xxx_hidden_DrivingLicenceIssuingNation
+		}
 	}
-	return 0
+	return v1.NationNumeric(0)
 }
 
-func (x *DrivingLicenceInfo) GetDrivingLicenceNumber() string {
+func (x *DrivingLicenceInfo) GetDrivingLicenceNumber() *v1.StringValue {
 	if x != nil {
-		if x.xxx_hidden_DrivingLicenceNumber != nil {
-			return *x.xxx_hidden_DrivingLicenceNumber
-		}
-		return ""
+		return x.xxx_hidden_DrivingLicenceNumber
 	}
-	return ""
+	return nil
 }
 
 func (x *DrivingLicenceInfo) GetSignature() []byte {
@@ -110,14 +109,13 @@ func (x *DrivingLicenceInfo) SetDrivingLicenceIssuingAuthority(v *v1.StringValue
 	x.xxx_hidden_DrivingLicenceIssuingAuthority = v
 }
 
-func (x *DrivingLicenceInfo) SetDrivingLicenceIssuingNation(v int32) {
+func (x *DrivingLicenceInfo) SetDrivingLicenceIssuingNation(v v1.NationNumeric) {
 	x.xxx_hidden_DrivingLicenceIssuingNation = v
 	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 4)
 }
 
-func (x *DrivingLicenceInfo) SetDrivingLicenceNumber(v string) {
-	x.xxx_hidden_DrivingLicenceNumber = &v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 4)
+func (x *DrivingLicenceInfo) SetDrivingLicenceNumber(v *v1.StringValue) {
+	x.xxx_hidden_DrivingLicenceNumber = v
 }
 
 func (x *DrivingLicenceInfo) SetSignature(v []byte) {
@@ -146,7 +144,7 @@ func (x *DrivingLicenceInfo) HasDrivingLicenceNumber() bool {
 	if x == nil {
 		return false
 	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 2)
+	return x.xxx_hidden_DrivingLicenceNumber != nil
 }
 
 func (x *DrivingLicenceInfo) HasSignature() bool {
@@ -162,11 +160,10 @@ func (x *DrivingLicenceInfo) ClearDrivingLicenceIssuingAuthority() {
 
 func (x *DrivingLicenceInfo) ClearDrivingLicenceIssuingNation() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 1)
-	x.xxx_hidden_DrivingLicenceIssuingNation = 0
+	x.xxx_hidden_DrivingLicenceIssuingNation = v1.NationNumeric_NATION_NUMERIC_UNSPECIFIED
 }
 
 func (x *DrivingLicenceInfo) ClearDrivingLicenceNumber() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 2)
 	x.xxx_hidden_DrivingLicenceNumber = nil
 }
 
@@ -191,14 +188,14 @@ type DrivingLicenceInfo_builder struct {
 	// ASN.1 Specification:
 	//
 	//	NationNumeric ::= INTEGER(0..255)
-	DrivingLicenceIssuingNation *int32
+	DrivingLicenceIssuingNation *v1.NationNumeric
 	// The driving licence number.
 	//
 	// See Data Dictionary, Section 2.18, `drivingLicenceNumber`.
 	// ASN.1 Specification:
 	//
 	//	IA5String(SIZE(16))
-	DrivingLicenceNumber *string
+	DrivingLicenceNumber *v1.StringValue
 	// Digital signature for the EF_Driving_Licence_Info file content.
 	//
 	// See Data Dictionary, Section 2.149, `Signature`.
@@ -217,10 +214,7 @@ func (b0 DrivingLicenceInfo_builder) Build() *DrivingLicenceInfo {
 		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 4)
 		x.xxx_hidden_DrivingLicenceIssuingNation = *b.DrivingLicenceIssuingNation
 	}
-	if b.DrivingLicenceNumber != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 4)
-		x.xxx_hidden_DrivingLicenceNumber = b.DrivingLicenceNumber
-	}
+	x.xxx_hidden_DrivingLicenceNumber = b.DrivingLicenceNumber
 	if b.Signature != nil {
 		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 3, 4)
 		x.xxx_hidden_Signature = b.Signature
@@ -232,11 +226,11 @@ var File_wayplatform_connect_tachograph_card_v1_driving_licence_info_proto proto
 
 const file_wayplatform_connect_tachograph_card_v1_driving_licence_info_proto_rawDesc = "" +
 	"\n" +
-	"Awayplatform/connect/tachograph/card/v1/driving_licence_info.proto\x12&wayplatform.connect.tachograph.card.v1\x1aCwayplatform/connect/tachograph/datadictionary/v1/string_value.proto\"\xb8\x02\n" +
+	"Awayplatform/connect/tachograph/card/v1/driving_licence_info.proto\x12&wayplatform.connect.tachograph.card.v1\x1aCwayplatform/connect/tachograph/datadictionary/v1/string_value.proto\x1aEwayplatform/connect/tachograph/datadictionary/v1/nation_numeric.proto\"\xb9\x03\n" +
 	"\x12DrivingLicenceInfo\x12\x88\x01\n" +
-	"!driving_licence_issuing_authority\x18\x01 \x01(\v2=.wayplatform.connect.tachograph.datadictionary.v1.StringValueR\x1edrivingLicenceIssuingAuthority\x12C\n" +
-	"\x1edriving_licence_issuing_nation\x18\x02 \x01(\x05R\x1bdrivingLicenceIssuingNation\x124\n" +
-	"\x16driving_licence_number\x18\x03 \x01(\tR\x14drivingLicenceNumber\x12\x1c\n" +
+	"!driving_licence_issuing_authority\x18\x01 \x01(\v2=.wayplatform.connect.tachograph.datadictionary.v1.StringValueR\x1edrivingLicenceIssuingAuthority\x12\x84\x01\n" +
+	"\x1edriving_licence_issuing_nation\x18\x02 \x01(\x0e2?.wayplatform.connect.tachograph.datadictionary.v1.NationNumericR\x1bdrivingLicenceIssuingNation\x12s\n" +
+	"\x16driving_licence_number\x18\x03 \x01(\v2=.wayplatform.connect.tachograph.datadictionary.v1.StringValueR\x14drivingLicenceNumber\x12\x1c\n" +
 	"\tsignature\x18\x04 \x01(\fR\tsignatureB\xe4\x02\n" +
 	"*com.wayplatform.connect.tachograph.card.v1B\x17DrivingLicenceInfoProtoP\x01Z`github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1;cardv1\xa2\x02\x04WCTC\xaa\x02&Wayplatform.Connect.Tachograph.Card.V1\xca\x02&Wayplatform\\Connect\\Tachograph\\Card\\V1\xe2\x022Wayplatform\\Connect\\Tachograph\\Card\\V1\\GPBMetadata\xea\x02*Wayplatform::Connect::Tachograph::Card::V1b\beditionsp\xe8\a"
 
@@ -244,14 +238,17 @@ var file_wayplatform_connect_tachograph_card_v1_driving_licence_info_proto_msgTy
 var file_wayplatform_connect_tachograph_card_v1_driving_licence_info_proto_goTypes = []any{
 	(*DrivingLicenceInfo)(nil), // 0: wayplatform.connect.tachograph.card.v1.DrivingLicenceInfo
 	(*v1.StringValue)(nil),     // 1: wayplatform.connect.tachograph.datadictionary.v1.StringValue
+	(v1.NationNumeric)(0),      // 2: wayplatform.connect.tachograph.datadictionary.v1.NationNumeric
 }
 var file_wayplatform_connect_tachograph_card_v1_driving_licence_info_proto_depIdxs = []int32{
 	1, // 0: wayplatform.connect.tachograph.card.v1.DrivingLicenceInfo.driving_licence_issuing_authority:type_name -> wayplatform.connect.tachograph.datadictionary.v1.StringValue
-	1, // [1:1] is the sub-list for method output_type
-	1, // [1:1] is the sub-list for method input_type
-	1, // [1:1] is the sub-list for extension type_name
-	1, // [1:1] is the sub-list for extension extendee
-	0, // [0:1] is the sub-list for field type_name
+	2, // 1: wayplatform.connect.tachograph.card.v1.DrivingLicenceInfo.driving_licence_issuing_nation:type_name -> wayplatform.connect.tachograph.datadictionary.v1.NationNumeric
+	1, // 2: wayplatform.connect.tachograph.card.v1.DrivingLicenceInfo.driving_licence_number:type_name -> wayplatform.connect.tachograph.datadictionary.v1.StringValue
+	3, // [3:3] is the sub-list for method output_type
+	3, // [3:3] is the sub-list for method input_type
+	3, // [3:3] is the sub-list for extension type_name
+	3, // [3:3] is the sub-list for extension extendee
+	0, // [0:3] is the sub-list for field type_name
 }
 
 func init() { file_wayplatform_connect_tachograph_card_v1_driving_licence_info_proto_init() }

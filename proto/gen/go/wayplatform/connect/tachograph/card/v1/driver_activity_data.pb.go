@@ -237,7 +237,7 @@ type DriverActivityData_DailyRecord struct {
 	xxx_hidden_ActivityPreviousRecordLength int32                     `protobuf:"varint,2,opt,name=activity_previous_record_length,json=activityPreviousRecordLength"`
 	xxx_hidden_ActivityRecordLength         int32                     `protobuf:"varint,3,opt,name=activity_record_length,json=activityRecordLength"`
 	xxx_hidden_ActivityRecordDate           *timestamppb.Timestamp    `protobuf:"bytes,4,opt,name=activity_record_date,json=activityRecordDate"`
-	xxx_hidden_ActivityDailyPresenceCounter int32                     `protobuf:"varint,5,opt,name=activity_daily_presence_counter,json=activityDailyPresenceCounter"`
+	xxx_hidden_ActivityDailyPresenceCounter *v1.BcdString             `protobuf:"bytes,5,opt,name=activity_daily_presence_counter,json=activityDailyPresenceCounter"`
 	xxx_hidden_ActivityDayDistance          int32                     `protobuf:"varint,6,opt,name=activity_day_distance,json=activityDayDistance"`
 	xxx_hidden_ActivityChangeInfo           *[]*v1.ActivityChangeInfo `protobuf:"bytes,7,rep,name=activity_change_info,json=activityChangeInfo"`
 	xxx_hidden_Raw                          []byte                    `protobuf:"bytes,8,opt,name=raw"`
@@ -300,11 +300,11 @@ func (x *DriverActivityData_DailyRecord) GetActivityRecordDate() *timestamppb.Ti
 	return nil
 }
 
-func (x *DriverActivityData_DailyRecord) GetActivityDailyPresenceCounter() int32 {
+func (x *DriverActivityData_DailyRecord) GetActivityDailyPresenceCounter() *v1.BcdString {
 	if x != nil {
 		return x.xxx_hidden_ActivityDailyPresenceCounter
 	}
-	return 0
+	return nil
 }
 
 func (x *DriverActivityData_DailyRecord) GetActivityDayDistance() int32 {
@@ -349,9 +349,8 @@ func (x *DriverActivityData_DailyRecord) SetActivityRecordDate(v *timestamppb.Ti
 	x.xxx_hidden_ActivityRecordDate = v
 }
 
-func (x *DriverActivityData_DailyRecord) SetActivityDailyPresenceCounter(v int32) {
+func (x *DriverActivityData_DailyRecord) SetActivityDailyPresenceCounter(v *v1.BcdString) {
 	x.xxx_hidden_ActivityDailyPresenceCounter = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 4, 8)
 }
 
 func (x *DriverActivityData_DailyRecord) SetActivityDayDistance(v int32) {
@@ -403,7 +402,7 @@ func (x *DriverActivityData_DailyRecord) HasActivityDailyPresenceCounter() bool 
 	if x == nil {
 		return false
 	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 4)
+	return x.xxx_hidden_ActivityDailyPresenceCounter != nil
 }
 
 func (x *DriverActivityData_DailyRecord) HasActivityDayDistance() bool {
@@ -440,8 +439,7 @@ func (x *DriverActivityData_DailyRecord) ClearActivityRecordDate() {
 }
 
 func (x *DriverActivityData_DailyRecord) ClearActivityDailyPresenceCounter() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 4)
-	x.xxx_hidden_ActivityDailyPresenceCounter = 0
+	x.xxx_hidden_ActivityDailyPresenceCounter = nil
 }
 
 func (x *DriverActivityData_DailyRecord) ClearActivityDayDistance() {
@@ -487,7 +485,7 @@ type DriverActivityData_DailyRecord_builder struct {
 	// ASN.1 Specification:
 	//
 	//	DailyPresenceCounter ::= BCDString(SIZE(2))
-	ActivityDailyPresenceCounter *int32
+	ActivityDailyPresenceCounter *v1.BcdString
 	// The total distance travelled this day in kilometers.
 	//
 	// See Data Dictionary, Section 2.9, `activityDayDistance`.
@@ -520,10 +518,7 @@ func (b0 DriverActivityData_DailyRecord_builder) Build() *DriverActivityData_Dai
 		x.xxx_hidden_ActivityRecordLength = *b.ActivityRecordLength
 	}
 	x.xxx_hidden_ActivityRecordDate = b.ActivityRecordDate
-	if b.ActivityDailyPresenceCounter != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 4, 8)
-		x.xxx_hidden_ActivityDailyPresenceCounter = *b.ActivityDailyPresenceCounter
-	}
+	x.xxx_hidden_ActivityDailyPresenceCounter = b.ActivityDailyPresenceCounter
 	if b.ActivityDayDistance != nil {
 		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 5, 8)
 		x.xxx_hidden_ActivityDayDistance = *b.ActivityDayDistance
@@ -540,18 +535,18 @@ var File_wayplatform_connect_tachograph_card_v1_driver_activity_data_proto proto
 
 const file_wayplatform_connect_tachograph_card_v1_driver_activity_data_proto_rawDesc = "" +
 	"\n" +
-	"Awayplatform/connect/tachograph/card/v1/driver_activity_data.proto\x12&wayplatform.connect.tachograph.card.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1aKwayplatform/connect/tachograph/datadictionary/v1/activity_change_info.proto\"\x83\x06\n" +
+	"Awayplatform/connect/tachograph/card/v1/driver_activity_data.proto\x12&wayplatform.connect.tachograph.card.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1aKwayplatform/connect/tachograph/datadictionary/v1/activity_change_info.proto\x1aAwayplatform/connect/tachograph/datadictionary/v1/bcd_string.proto\"\xc1\x06\n" +
 	"\x12DriverActivityData\x125\n" +
 	"\x17oldest_day_record_index\x18\x01 \x01(\x05R\x14oldestDayRecordIndex\x125\n" +
 	"\x17newest_day_record_index\x18\x02 \x01(\x05R\x14newestDayRecordIndex\x12k\n" +
 	"\rdaily_records\x18\x03 \x03(\v2F.wayplatform.connect.tachograph.card.v1.DriverActivityData.DailyRecordR\fdailyRecords\x12\x1c\n" +
-	"\tsignature\x18\x04 \x01(\fR\tsignature\x1a\xf3\x03\n" +
+	"\tsignature\x18\x04 \x01(\fR\tsignature\x1a\xb1\x04\n" +
 	"\vDailyRecord\x12\x14\n" +
 	"\x05valid\x18\x01 \x01(\bR\x05valid\x12E\n" +
 	"\x1factivity_previous_record_length\x18\x02 \x01(\x05R\x1cactivityPreviousRecordLength\x124\n" +
 	"\x16activity_record_length\x18\x03 \x01(\x05R\x14activityRecordLength\x12L\n" +
-	"\x14activity_record_date\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampR\x12activityRecordDate\x12E\n" +
-	"\x1factivity_daily_presence_counter\x18\x05 \x01(\x05R\x1cactivityDailyPresenceCounter\x122\n" +
+	"\x14activity_record_date\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampR\x12activityRecordDate\x12\x82\x01\n" +
+	"\x1factivity_daily_presence_counter\x18\x05 \x01(\v2;.wayplatform.connect.tachograph.datadictionary.v1.BcdStringR\x1cactivityDailyPresenceCounter\x122\n" +
 	"\x15activity_day_distance\x18\x06 \x01(\x05R\x13activityDayDistance\x12v\n" +
 	"\x14activity_change_info\x18\a \x03(\v2D.wayplatform.connect.tachograph.datadictionary.v1.ActivityChangeInfoR\x12activityChangeInfo\x12\x10\n" +
 	"\x03raw\x18\b \x01(\fR\x03rawB\xe4\x02\n" +
@@ -562,17 +557,19 @@ var file_wayplatform_connect_tachograph_card_v1_driver_activity_data_proto_goTyp
 	(*DriverActivityData)(nil),             // 0: wayplatform.connect.tachograph.card.v1.DriverActivityData
 	(*DriverActivityData_DailyRecord)(nil), // 1: wayplatform.connect.tachograph.card.v1.DriverActivityData.DailyRecord
 	(*timestamppb.Timestamp)(nil),          // 2: google.protobuf.Timestamp
-	(*v1.ActivityChangeInfo)(nil),          // 3: wayplatform.connect.tachograph.datadictionary.v1.ActivityChangeInfo
+	(*v1.BcdString)(nil),                   // 3: wayplatform.connect.tachograph.datadictionary.v1.BcdString
+	(*v1.ActivityChangeInfo)(nil),          // 4: wayplatform.connect.tachograph.datadictionary.v1.ActivityChangeInfo
 }
 var file_wayplatform_connect_tachograph_card_v1_driver_activity_data_proto_depIdxs = []int32{
 	1, // 0: wayplatform.connect.tachograph.card.v1.DriverActivityData.daily_records:type_name -> wayplatform.connect.tachograph.card.v1.DriverActivityData.DailyRecord
 	2, // 1: wayplatform.connect.tachograph.card.v1.DriverActivityData.DailyRecord.activity_record_date:type_name -> google.protobuf.Timestamp
-	3, // 2: wayplatform.connect.tachograph.card.v1.DriverActivityData.DailyRecord.activity_change_info:type_name -> wayplatform.connect.tachograph.datadictionary.v1.ActivityChangeInfo
-	3, // [3:3] is the sub-list for method output_type
-	3, // [3:3] is the sub-list for method input_type
-	3, // [3:3] is the sub-list for extension type_name
-	3, // [3:3] is the sub-list for extension extendee
-	0, // [0:3] is the sub-list for field type_name
+	3, // 2: wayplatform.connect.tachograph.card.v1.DriverActivityData.DailyRecord.activity_daily_presence_counter:type_name -> wayplatform.connect.tachograph.datadictionary.v1.BcdString
+	4, // 3: wayplatform.connect.tachograph.card.v1.DriverActivityData.DailyRecord.activity_change_info:type_name -> wayplatform.connect.tachograph.datadictionary.v1.ActivityChangeInfo
+	4, // [4:4] is the sub-list for method output_type
+	4, // [4:4] is the sub-list for method input_type
+	4, // [4:4] is the sub-list for extension type_name
+	4, // [4:4] is the sub-list for extension extendee
+	0, // [0:4] is the sub-list for field type_name
 }
 
 func init() { file_wayplatform_connect_tachograph_card_v1_driver_activity_data_proto_init() }

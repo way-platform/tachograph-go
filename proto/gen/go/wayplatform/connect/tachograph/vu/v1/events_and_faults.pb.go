@@ -1419,11 +1419,9 @@ type EventsAndFaults_TimeAdjustmentRecord struct {
 	state                             protoimpl.MessageState          `protogen:"opaque.v1"`
 	xxx_hidden_OldTime                *timestamppb.Timestamp          `protobuf:"bytes,1,opt,name=old_time,json=oldTime"`
 	xxx_hidden_NewTime                *timestamppb.Timestamp          `protobuf:"bytes,2,opt,name=new_time,json=newTime"`
-	xxx_hidden_WorkshopName           *string                         `protobuf:"bytes,3,opt,name=workshop_name,json=workshopName"`
-	xxx_hidden_WorkshopAddress        *string                         `protobuf:"bytes,4,opt,name=workshop_address,json=workshopAddress"`
+	xxx_hidden_WorkshopName           *v1.StringValue                 `protobuf:"bytes,3,opt,name=workshop_name,json=workshopName"`
+	xxx_hidden_WorkshopAddress        *v1.StringValue                 `protobuf:"bytes,4,opt,name=workshop_address,json=workshopAddress"`
 	xxx_hidden_WorkshopCardIdentifier *v1.FullCardNumberAndGeneration `protobuf:"bytes,5,opt,name=workshop_card_identifier,json=workshopCardIdentifier"`
-	XXX_raceDetectHookData            protoimpl.RaceDetectHookData
-	XXX_presence                      [1]uint32
 	unknownFields                     protoimpl.UnknownFields
 	sizeCache                         protoimpl.SizeCache
 }
@@ -1467,24 +1465,18 @@ func (x *EventsAndFaults_TimeAdjustmentRecord) GetNewTime() *timestamppb.Timesta
 	return nil
 }
 
-func (x *EventsAndFaults_TimeAdjustmentRecord) GetWorkshopName() string {
+func (x *EventsAndFaults_TimeAdjustmentRecord) GetWorkshopName() *v1.StringValue {
 	if x != nil {
-		if x.xxx_hidden_WorkshopName != nil {
-			return *x.xxx_hidden_WorkshopName
-		}
-		return ""
+		return x.xxx_hidden_WorkshopName
 	}
-	return ""
+	return nil
 }
 
-func (x *EventsAndFaults_TimeAdjustmentRecord) GetWorkshopAddress() string {
+func (x *EventsAndFaults_TimeAdjustmentRecord) GetWorkshopAddress() *v1.StringValue {
 	if x != nil {
-		if x.xxx_hidden_WorkshopAddress != nil {
-			return *x.xxx_hidden_WorkshopAddress
-		}
-		return ""
+		return x.xxx_hidden_WorkshopAddress
 	}
-	return ""
+	return nil
 }
 
 func (x *EventsAndFaults_TimeAdjustmentRecord) GetWorkshopCardIdentifier() *v1.FullCardNumberAndGeneration {
@@ -1502,14 +1494,12 @@ func (x *EventsAndFaults_TimeAdjustmentRecord) SetNewTime(v *timestamppb.Timesta
 	x.xxx_hidden_NewTime = v
 }
 
-func (x *EventsAndFaults_TimeAdjustmentRecord) SetWorkshopName(v string) {
-	x.xxx_hidden_WorkshopName = &v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 5)
+func (x *EventsAndFaults_TimeAdjustmentRecord) SetWorkshopName(v *v1.StringValue) {
+	x.xxx_hidden_WorkshopName = v
 }
 
-func (x *EventsAndFaults_TimeAdjustmentRecord) SetWorkshopAddress(v string) {
-	x.xxx_hidden_WorkshopAddress = &v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 3, 5)
+func (x *EventsAndFaults_TimeAdjustmentRecord) SetWorkshopAddress(v *v1.StringValue) {
+	x.xxx_hidden_WorkshopAddress = v
 }
 
 func (x *EventsAndFaults_TimeAdjustmentRecord) SetWorkshopCardIdentifier(v *v1.FullCardNumberAndGeneration) {
@@ -1534,14 +1524,14 @@ func (x *EventsAndFaults_TimeAdjustmentRecord) HasWorkshopName() bool {
 	if x == nil {
 		return false
 	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 2)
+	return x.xxx_hidden_WorkshopName != nil
 }
 
 func (x *EventsAndFaults_TimeAdjustmentRecord) HasWorkshopAddress() bool {
 	if x == nil {
 		return false
 	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 3)
+	return x.xxx_hidden_WorkshopAddress != nil
 }
 
 func (x *EventsAndFaults_TimeAdjustmentRecord) HasWorkshopCardIdentifier() bool {
@@ -1560,12 +1550,10 @@ func (x *EventsAndFaults_TimeAdjustmentRecord) ClearNewTime() {
 }
 
 func (x *EventsAndFaults_TimeAdjustmentRecord) ClearWorkshopName() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 2)
 	x.xxx_hidden_WorkshopName = nil
 }
 
 func (x *EventsAndFaults_TimeAdjustmentRecord) ClearWorkshopAddress() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 3)
 	x.xxx_hidden_WorkshopAddress = nil
 }
 
@@ -1596,14 +1584,14 @@ type EventsAndFaults_TimeAdjustmentRecord_builder struct {
 	// ASN.1 Definition:
 	//
 	//	Name ::= SEQUENCE { codePage INTEGER(0..255), name OCTET STRING (SIZE(36)) }
-	WorkshopName *string
+	WorkshopName *v1.StringValue
 	// Address of the workshop.
 	//
 	// See Data Dictionary, Section 2.2, `Address`.
 	// ASN.1 Definition:
 	//
 	//	Address ::= SEQUENCE { codePage INTEGER(0..255), address OCTET STRING (SIZE(36)) }
-	WorkshopAddress *string
+	WorkshopAddress *v1.StringValue
 	// The card number and generation of the workshop that performed the adjustment.
 	//
 	// See Data Dictionary, Section 2.74, `FullCardNumberAndGeneration`.
@@ -1622,14 +1610,8 @@ func (b0 EventsAndFaults_TimeAdjustmentRecord_builder) Build() *EventsAndFaults_
 	_, _ = b, x
 	x.xxx_hidden_OldTime = b.OldTime
 	x.xxx_hidden_NewTime = b.NewTime
-	if b.WorkshopName != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 5)
-		x.xxx_hidden_WorkshopName = b.WorkshopName
-	}
-	if b.WorkshopAddress != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 3, 5)
-		x.xxx_hidden_WorkshopAddress = b.WorkshopAddress
-	}
+	x.xxx_hidden_WorkshopName = b.WorkshopName
+	x.xxx_hidden_WorkshopAddress = b.WorkshopAddress
 	x.xxx_hidden_WorkshopCardIdentifier = b.WorkshopCardIdentifier
 	return m0
 }
@@ -1638,7 +1620,7 @@ var File_wayplatform_connect_tachograph_vu_v1_events_and_faults_proto protorefle
 
 const file_wayplatform_connect_tachograph_vu_v1_events_and_faults_proto_rawDesc = "" +
 	"\n" +
-	"<wayplatform/connect/tachograph/vu/v1/events_and_faults.proto\x12$wayplatform.connect.tachograph.vu.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1aQwayplatform/connect/tachograph/datadictionary/v1/event_fault_record_purpose.proto\x1aGwayplatform/connect/tachograph/datadictionary/v1/event_fault_type.proto\x1aVwayplatform/connect/tachograph/datadictionary/v1/full_card_number_and_generation.proto\x1aAwayplatform/connect/tachograph/datadictionary/v1/generation.proto\"\xcc\x19\n" +
+	"<wayplatform/connect/tachograph/vu/v1/events_and_faults.proto\x12$wayplatform.connect.tachograph.vu.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1aQwayplatform/connect/tachograph/datadictionary/v1/event_fault_record_purpose.proto\x1aGwayplatform/connect/tachograph/datadictionary/v1/event_fault_type.proto\x1aVwayplatform/connect/tachograph/datadictionary/v1/full_card_number_and_generation.proto\x1aAwayplatform/connect/tachograph/datadictionary/v1/generation.proto\x1aCwayplatform/connect/tachograph/datadictionary/v1/string_value.proto\"\xca\x1a\n" +
 	"\x0fEventsAndFaults\x12\\\n" +
 	"\n" +
 	"generation\x18\x01 \x01(\x0e2<.wayplatform.connect.tachograph.datadictionary.v1.GenerationR\n" +
@@ -1686,12 +1668,12 @@ const file_wayplatform_connect_tachograph_vu_v1_events_and_faults_proto_rawDesc 
 	"\bend_time\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampR\aendTime\x12\"\n" +
 	"\rmax_speed_kmh\x18\a \x01(\x05R\vmaxSpeedKmh\x12*\n" +
 	"\x11average_speed_kmh\x18\b \x01(\x05R\x0faverageSpeedKmh\x12v\n" +
-	"\x0fcard_identifier\x18\t \x01(\v2M.wayplatform.connect.tachograph.datadictionary.v1.FullCardNumberAndGenerationR\x0ecardIdentifier\x1a\xde\x02\n" +
+	"\x0fcard_identifier\x18\t \x01(\v2M.wayplatform.connect.tachograph.datadictionary.v1.FullCardNumberAndGenerationR\x0ecardIdentifier\x1a\xdc\x03\n" +
 	"\x14TimeAdjustmentRecord\x125\n" +
 	"\bold_time\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\aoldTime\x125\n" +
-	"\bnew_time\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\anewTime\x12#\n" +
-	"\rworkshop_name\x18\x03 \x01(\tR\fworkshopName\x12)\n" +
-	"\x10workshop_address\x18\x04 \x01(\tR\x0fworkshopAddress\x12\x87\x01\n" +
+	"\bnew_time\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\anewTime\x12b\n" +
+	"\rworkshop_name\x18\x03 \x01(\v2=.wayplatform.connect.tachograph.datadictionary.v1.StringValueR\fworkshopName\x12h\n" +
+	"\x10workshop_address\x18\x04 \x01(\v2=.wayplatform.connect.tachograph.datadictionary.v1.StringValueR\x0fworkshopAddress\x12\x87\x01\n" +
 	"\x18workshop_card_identifier\x18\x05 \x01(\v2M.wayplatform.connect.tachograph.datadictionary.v1.FullCardNumberAndGenerationR\x16workshopCardIdentifierB\xd3\x02\n" +
 	"(com.wayplatform.connect.tachograph.vu.v1B\x14EventsAndFaultsProtoP\x01Z\\github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/vu/v1;vuv1\xa2\x02\x04WCTV\xaa\x02$Wayplatform.Connect.Tachograph.Vu.V1\xca\x02$Wayplatform\\Connect\\Tachograph\\Vu\\V1\xe2\x020Wayplatform\\Connect\\Tachograph\\Vu\\V1\\GPBMetadata\xea\x02(Wayplatform::Connect::Tachograph::Vu::V1b\beditionsp\xe8\a"
 
@@ -1708,6 +1690,7 @@ var file_wayplatform_connect_tachograph_vu_v1_events_and_faults_proto_goTypes = 
 	(v1.EventFaultRecordPurpose)(0),                 // 8: wayplatform.connect.tachograph.datadictionary.v1.EventFaultRecordPurpose
 	(*timestamppb.Timestamp)(nil),                   // 9: google.protobuf.Timestamp
 	(*v1.FullCardNumberAndGeneration)(nil),          // 10: wayplatform.connect.tachograph.datadictionary.v1.FullCardNumberAndGeneration
+	(*v1.StringValue)(nil),                          // 11: wayplatform.connect.tachograph.datadictionary.v1.StringValue
 }
 var file_wayplatform_connect_tachograph_vu_v1_events_and_faults_proto_depIdxs = []int32{
 	6,  // 0: wayplatform.connect.tachograph.vu.v1.EventsAndFaults.generation:type_name -> wayplatform.connect.tachograph.datadictionary.v1.Generation
@@ -1735,12 +1718,14 @@ var file_wayplatform_connect_tachograph_vu_v1_events_and_faults_proto_depIdxs = 
 	10, // 22: wayplatform.connect.tachograph.vu.v1.EventsAndFaults.OverSpeedingEventRecord.card_identifier:type_name -> wayplatform.connect.tachograph.datadictionary.v1.FullCardNumberAndGeneration
 	9,  // 23: wayplatform.connect.tachograph.vu.v1.EventsAndFaults.TimeAdjustmentRecord.old_time:type_name -> google.protobuf.Timestamp
 	9,  // 24: wayplatform.connect.tachograph.vu.v1.EventsAndFaults.TimeAdjustmentRecord.new_time:type_name -> google.protobuf.Timestamp
-	10, // 25: wayplatform.connect.tachograph.vu.v1.EventsAndFaults.TimeAdjustmentRecord.workshop_card_identifier:type_name -> wayplatform.connect.tachograph.datadictionary.v1.FullCardNumberAndGeneration
-	26, // [26:26] is the sub-list for method output_type
-	26, // [26:26] is the sub-list for method input_type
-	26, // [26:26] is the sub-list for extension type_name
-	26, // [26:26] is the sub-list for extension extendee
-	0,  // [0:26] is the sub-list for field type_name
+	11, // 25: wayplatform.connect.tachograph.vu.v1.EventsAndFaults.TimeAdjustmentRecord.workshop_name:type_name -> wayplatform.connect.tachograph.datadictionary.v1.StringValue
+	11, // 26: wayplatform.connect.tachograph.vu.v1.EventsAndFaults.TimeAdjustmentRecord.workshop_address:type_name -> wayplatform.connect.tachograph.datadictionary.v1.StringValue
+	10, // 27: wayplatform.connect.tachograph.vu.v1.EventsAndFaults.TimeAdjustmentRecord.workshop_card_identifier:type_name -> wayplatform.connect.tachograph.datadictionary.v1.FullCardNumberAndGeneration
+	28, // [28:28] is the sub-list for method output_type
+	28, // [28:28] is the sub-list for method input_type
+	28, // [28:28] is the sub-list for extension type_name
+	28, // [28:28] is the sub-list for extension extendee
+	0,  // [0:28] is the sub-list for field type_name
 }
 
 func init() { file_wayplatform_connect_tachograph_vu_v1_events_and_faults_proto_init() }

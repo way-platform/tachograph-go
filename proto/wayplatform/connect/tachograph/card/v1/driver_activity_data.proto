@@ -4,6 +4,7 @@ package wayplatform.connect.tachograph.card.v1;
 
 import "google/protobuf/timestamp.proto";
 import "wayplatform/connect/tachograph/datadictionary/v1/activity_change_info.proto";
+import "wayplatform/connect/tachograph/datadictionary/v1/bcd_string.proto";
 
 // Represents the content of the EF_Driver_Activity_Data file.
 //
@@ -74,7 +75,7 @@ message DriverActivityData {
     // ASN.1 Specification:
     //
     //     DailyPresenceCounter ::= BCDString(SIZE(2))
-    int32 activity_daily_presence_counter = 5;
+    datadictionary.v1.BcdString activity_daily_presence_counter = 5;
 
     // The total distance travelled this day in kilometers.
     //

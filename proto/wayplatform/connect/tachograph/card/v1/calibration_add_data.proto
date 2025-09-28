@@ -4,6 +4,8 @@ package wayplatform.connect.tachograph.card.v1;
 
 import "google/protobuf/timestamp.proto";
 import "wayplatform/connect/tachograph/datadictionary/v1/load_type.proto";
+import "wayplatform/connect/tachograph/datadictionary/v1/string_value.proto";
+import "wayplatform/connect/tachograph/datadictionary/v1/nation_numeric.proto";
 
 // Represents the content of the EF_Calibration_Add_Data file (Gen2v2).
 //
@@ -49,7 +51,7 @@ message CalibrationAddData {
     // ASN.1 Specification:
     //
     //     VehicleIdentificationNumber ::= IA5String(SIZE(17))
-    string vehicle_identification_number = 2;
+    wayplatform.connect.tachograph.datadictionary.v1.StringValue vehicle_identification_number = 2;
 
     // The default load type.
     //
@@ -67,7 +69,7 @@ message CalibrationAddData {
     // ASN.1 Specification:
     //
     //     NationNumeric ::= INTEGER(0..255)
-    int32 calibration_country = 4;
+    wayplatform.connect.tachograph.datadictionary.v1.NationNumeric calibration_country = 4;
 
     // The timestamp when the calibration country was recorded.
     //

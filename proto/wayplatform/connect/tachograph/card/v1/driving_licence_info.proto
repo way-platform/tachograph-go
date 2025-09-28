@@ -3,6 +3,7 @@ edition = "2023";
 package wayplatform.connect.tachograph.card.v1;
 
 import "wayplatform/connect/tachograph/datadictionary/v1/string_value.proto";
+import "wayplatform/connect/tachograph/datadictionary/v1/nation_numeric.proto";
 
 // Represents the content of the EF_Driving_Licence_Info file, which contains the
 // card holder's driving licence information.
@@ -36,7 +37,7 @@ message DrivingLicenceInfo {
   // ASN.1 Specification:
   //
   //     NationNumeric ::= INTEGER(0..255)
-  int32 driving_licence_issuing_nation = 2;
+  wayplatform.connect.tachograph.datadictionary.v1.NationNumeric driving_licence_issuing_nation = 2;
 
   // The driving licence number.
   //
@@ -44,7 +45,7 @@ message DrivingLicenceInfo {
   // ASN.1 Specification:
   //
   //     IA5String(SIZE(16))
-  string driving_licence_number = 3;
+  wayplatform.connect.tachograph.datadictionary.v1.StringValue driving_licence_number = 3;
 
   // Digital signature for the EF_Driving_Licence_Info file content.
   //

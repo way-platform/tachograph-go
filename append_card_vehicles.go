@@ -90,6 +90,8 @@ func AppendVehicleRecord(dst []byte, rec *cardv1.VehiclesUsed_Record) ([]byte, e
 	if err != nil {
 		return nil, err
 	}
-	dst = binary.BigEndian.AppendUint16(dst, uint16(rec.GetVuDataBlockCounter()))
+	if bcdCounter := rec.GetVuDataBlockCounter(); bcdCounter != nil {
+		dst = append(dst, bcdCounter.GetEncoded()...)
+	}
 	return dst, nil
 }

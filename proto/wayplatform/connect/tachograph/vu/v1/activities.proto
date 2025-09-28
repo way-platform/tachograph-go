@@ -10,6 +10,7 @@ import "wayplatform/connect/tachograph/datadictionary/v1/entry_type_daily_work_p
 import "wayplatform/connect/tachograph/datadictionary/v1/full_card_number.proto";
 import "wayplatform/connect/tachograph/datadictionary/v1/generation.proto";
 import "wayplatform/connect/tachograph/datadictionary/v1/geo_coordinates.proto";
+import "wayplatform/connect/tachograph/datadictionary/v1/holder_name.proto";
 import "wayplatform/connect/tachograph/datadictionary/v1/nation_numeric.proto";
 import "wayplatform/connect/tachograph/datadictionary/v1/operation_type.proto";
 import "wayplatform/connect/tachograph/datadictionary/v1/position_authentication_status.proto";
@@ -71,10 +72,9 @@ message Activities {
     }
 
     // The name of the card holder.
-    // This is a simplification of the `HolderName` type.
     //
     // See Data Dictionary, Section 2.83, `HolderName`.
-    string card_holder_name = 1;
+    wayplatform.connect.tachograph.datadictionary.v1.HolderName card_holder_name = 1;
 
     // The full card number of the inserted card.
     //
@@ -160,17 +160,21 @@ message Activities {
     //     NationNumeric ::= INTEGER (0..255)
     datadictionary.v1.NationNumeric country = 4;
 
-    // Region code.
+    // Region code. This is not a number, but a single-byte identifier.
     //
-    // The meaning of this code is country-specific. For Gen1, the data
-    // dictionary provides values for Spain. For Gen2, codes are maintained
-    // on the JRC website: https://dtlab.jrc.ec.europa.eu/
+    // The name `RegionNumeric` is a misnomer; it distinguishes this type from
+    // `RegionAlpha`. The value is an opaque byte whose meaning is defined by
+    // an external enumeration.
+    //
+    // For Gen2, the list of codes for each country is maintained by the EU's
+    // Joint Research Centre (JRC) and can be looked up on their website:
+    // https://dtlab.jrc.ec.europa.eu/
     //
     // See Data Dictionary, Section 2.122, `RegionNumeric`.
     // ASN.1 Definition:
     //
     //     RegionNumeric ::= OCTET STRING (SIZE (1))
-    int32 region = 6;
+    bytes region = 6;
 
     // Odometer value at the time of entry in kilometers.
     //

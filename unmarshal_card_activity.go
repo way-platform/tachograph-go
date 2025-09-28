@@ -186,8 +186,11 @@ func parseSingleActivityDailyRecord(data []byte) (*cardv1.DriverActivityData_Dai
 	if offset+2 > len(data) {
 		return nil, fmt.Errorf("insufficient data for presence counter")
 	}
-	presenceCounter, _ := bcdBytesToInt(data[offset : offset+2])
-	record.SetActivityDailyPresenceCounter(int32(presenceCounter))
+	bcdCounter, err := createBcdString(data[offset : offset+2])
+	if err != nil {
+		return nil, fmt.Errorf("failed to create BCD string for presence counter: %w", err)
+	}
+	record.SetActivityDailyPresenceCounter(bcdCounter)
 	offset += 2
 
 	// Read activity day distance (2 bytes)

@@ -5,6 +5,7 @@ package wayplatform.connect.tachograph.card.v1;
 import "google/protobuf/timestamp.proto";
 import "wayplatform/connect/tachograph/datadictionary/v1/calibration_purpose.proto";
 import "wayplatform/connect/tachograph/datadictionary/v1/extended_serial_number.proto";
+import "wayplatform/connect/tachograph/datadictionary/v1/string_value.proto";
 import "wayplatform/connect/tachograph/datadictionary/v1/vehicle_registration_identification.proto";
 
 // Represents the content of the EF_Calibration file.
@@ -60,15 +61,15 @@ message Calibration {
     // The Vehicle Identification Number.
     //
     // See Data Dictionary, Section 2.164, `VehicleIdentificationNumber`.
-    // ASN.1 Specification:
+    // ASN.1 Definition:
     //
     //     VehicleIdentificationNumber ::= IA5String(SIZE(17))
-    string vehicle_identification_number = 3;
+    wayplatform.connect.tachograph.datadictionary.v1.StringValue vehicle_identification_number = 3;
 
     // The vehicle registration identifier.
     //
     // See Data Dictionary, Section 2.166, `VehicleRegistrationIdentification`.
-    // ASN.1 Specification:
+    // ASN.1 Definition:
     //
     //     VehicleRegistrationIdentification ::= SEQUENCE { ... }
     datadictionary.v1.VehicleRegistrationIdentification vehicle_registration = 4;
@@ -76,7 +77,7 @@ message Calibration {
     // The vehicle characteristic constant.
     //
     // See Data Dictionary, Section 2.239, `W-VehicleCharacteristicConstant`.
-    // ASN.1 Specification:
+    // ASN.1 Definition:
     //
     //     W-VehicleCharacteristicConstant ::= INTEGER(0..65535)
     int32 w_vehicle_characteristic_constant = 5;
@@ -84,7 +85,7 @@ message Calibration {
     // The constant of the recording equipment.
     //
     // See Data Dictionary, Section 2.85, `K-ConstantOfRecordingEquipment`.
-    // ASN.1 Specification:
+    // ASN.1 Definition:
     //
     //     K-ConstantOfRecordingEquipment ::= INTEGER(0..65535)
     int32 k_constant_of_recording_equipment = 6;
@@ -92,7 +93,7 @@ message Calibration {
     // The tyre circumference in mm.
     //
     // See Data Dictionary, Section 2.91, `L-TyreCircumference`.
-    // ASN.1 Specification:
+    // ASN.1 Definition:
     //
     //     L-TyreCircumference ::= INTEGER(0..65535)
     int32 l_tyre_circumference_mm = 7;
@@ -100,15 +101,15 @@ message Calibration {
     // The tyre size designation.
     //
     // See Data Dictionary, Section 2.163, `TyreSize`.
-    // ASN.1 Specification:
+    // ASN.1 Definition:
     //
     //     TyreSize ::= IA5String(SIZE(15))
-    string tyre_size = 8;
+    wayplatform.connect.tachograph.datadictionary.v1.StringValue tyre_size = 8;
 
     // The authorised speed in km/h.
     //
     // See Data Dictionary, Section 2.156, `SpeedAuthorised`.
-    // ASN.1 Specification:
+    // ASN.1 Definition:
     //
     //     SpeedAuthorised ::= INTEGER(0..255)
     int32 authorised_speed_kmh = 9;
@@ -116,7 +117,7 @@ message Calibration {
     // The odometer value before calibration in km.
     //
     // See Data Dictionary, Section 2.113, `OdometerShort`.
-    // ASN.1 Specification:
+    // ASN.1 Definition:
     //
     //     OdometerShort ::= INTEGER(0..999999)
     int32 old_odometer_km = 10;
@@ -124,7 +125,7 @@ message Calibration {
     // The odometer value after calibration in km.
     //
     // See Data Dictionary, Section 2.113, `OdometerShort`.
-    // ASN.1 Specification:
+    // ASN.1 Definition:
     //
     //     OdometerShort ::= INTEGER(0..999999)
     int32 new_odometer_km = 11;
@@ -132,7 +133,7 @@ message Calibration {
     // The time value before calibration.
     //
     // See Data Dictionary, Section 2.162, `TimeReal`.
-    // ASN.1 Specification:
+    // ASN.1 Definition:
     //
     //     TimeReal ::= INTEGER (0..2^32-1)
     google.protobuf.Timestamp old_time = 12;
@@ -140,7 +141,7 @@ message Calibration {
     // The time value after calibration.
     //
     // See Data Dictionary, Section 2.162, `TimeReal`.
-    // ASN.1 Specification:
+    // ASN.1 Definition:
     //
     //     TimeReal ::= INTEGER (0..2^32-1)
     google.protobuf.Timestamp new_time = 13;
@@ -148,7 +149,7 @@ message Calibration {
     // The date of the next calibration.
     //
     // See Data Dictionary, Section 2.162, `TimeReal`.
-    // ASN.1 Specification:
+    // ASN.1 Definition:
     //
     //     TimeReal ::= INTEGER (0..2^32-1)
     google.protobuf.Timestamp next_calibration_date = 14;
@@ -156,10 +157,10 @@ message Calibration {
     // The part number of the Vehicle Unit.
     //
     // See Data Dictionary, Section 2.217, `VuPartNumber`.
-    // ASN.1 Specification:
+    // ASN.1 Definition:
     //
     //     VuPartNumber ::= IA5String(SIZE(16))
-    string vu_part_number = 15;
+    wayplatform.connect.tachograph.datadictionary.v1.StringValue vu_part_number = 15;
 
     // The serial number of the Vehicle Unit.
     //

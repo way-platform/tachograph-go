@@ -10,7 +10,8 @@ This document lists the deviations found in the protobuf schemas in `proto/waypl
 - **Problem:** The `AGENTS.md` file states to "Avoid unsigned integers, since they are not well supported in some languages."
 - **Specification:** Data Dictionary, Section 2.72, `ExtendedSerialNumber`.
 - **ASN.1 Definition:** `serialNumber INTEGER(0..2^32-1)`.
-- **Intended Action:** Change the type of `serial_number` to `int64` to avoid using an unsigned integer.
+- **Status:** Resolved.
+- **Intended Action:** No action needed, already implemented as `int64`.
 
 ### `full_card_number.proto`
 
@@ -18,13 +19,15 @@ This document lists the deviations found in the protobuf schemas in `proto/waypl
 - **Problem:** The `NationNumeric` data type (Data Dictionary, Section 2.101) is an enum.
 - **Specification:** Data Dictionary, Section 2.101, `NationNumeric`.
 - **ASN.1 Definition:** `NationNumeric ::= INTEGER(0..255)`.
-- **Intended Action:** Change the type of `card_issuing_member_state` to use the existing `NationNumeric` enum from `datadictionary/v1`.
+- **Status:** Resolved.
+- **Intended Action:** No action needed, already implemented as `NationNumeric` enum.
 
 - **Deviation 2:** The `card_number` field is a `string`.
 - **Problem:** The `CardNumber` data type (Data Dictionary, Section 2.26) is a `CHOICE` of two complex sequences. It should be a message.
 - **Specification:** Data Dictionary, Section 2.26, `CardNumber`.
 - **ASN.1 Definition:** `CardNumber ::= CHOICE { driverIdentification SEQUENCE { ... }, ownerIdentification SEQUENCE { ... } }`.
-- **Intended Action:** Create a new message `CardNumber` in `datadictionary/v1` to represent this `CHOICE` and use it in the `FullCardNumber` message.
+- **Status:** Resolved.
+- **Intended Action:** No action needed, the `CardNumber` CHOICE is already implemented by inlining `DriverIdentification` and `OwnerIdentification` messages within `FullCardNumber`.
 
 ### `vehicle_registration_identification.proto`
 
@@ -32,13 +35,15 @@ This document lists the deviations found in the protobuf schemas in `proto/waypl
 - **Problem:** The `NationNumeric` data type (Data Dictionary, Section 2.101) is an enum.
 - **Specification:** Data Dictionary, Section 2.101, `NationNumeric`.
 - **ASN.1 Definition:** `NationNumeric ::= INTEGER(0..255)`.
-- **Intended Action:** Change the type of `nation` to use the existing `NationNumeric` enum from `datadictionary/v1`.
+- **Status:** Resolved.
+- **Intended Action:** No action needed, already implemented as `NationNumeric` enum.
 
 - **Deviation 2:** The `number` field is a `string`.
 - **Problem:** The `VehicleRegistrationNumber` data type (Data Dictionary, Section 2.167) is a `CHOICE` of a `codePage` and a `vehicleRegNumber`. It should be a message.
 - **Specification:** Data Dictionary, Section 2.167, `VehicleRegistrationNumber`.
 - **ASN.1 Definition:** `VehicleRegistrationNumber ::= CHOICE { codePage INTEGER(0..255), vehicleRegNumber OCTET STRING(SIZE(13)) }`.
-- **Intended Action:** Create a new message `VehicleRegistrationNumber` in `datadictionary/v1` to represent this `CHOICE` and use it in the `VehicleRegistrationIdentification` message.
+- **Status:** Resolved.
+- **Resolution:** The deviation was incorrect. The ASN.1 type is a `SEQUENCE` representing an encoded string, not a `CHOICE`. The current implementation using the `StringValue` message is the correct and idiomatic approach for this project. No action needed.
 
 ## **Card Specific Data (`card/v1`)**
 
@@ -48,7 +53,8 @@ This document lists the deviations found in the protobuf schemas in `proto/waypl
 - **Problem:** The ASN.1 type is `OCTET STRING`, which should be represented as `bytes` in protobuf, not `string`. Using `string` can lead to incorrect parsing if the data is not valid UTF-8.
 - **Specification:** Data Dictionary, Section 2.13, `CardChipIdentification`.
 - **ASN.1 Definition:** `CardChipIdentification ::= SEQUENCE { icSerialNumber OCTET STRING (SIZE(4)), icManufacturingReferences OCTET STRING (SIZE(4)) }`.
-- **Intended Action:** Change the type of `ic_serial_number` and `ic_manufacturing_references` to `bytes`.
+- **Status:** Resolved.
+- **Intended Action:** No action needed, already implemented as `bytes`.
 
 ### `icc.proto`
 
@@ -56,18 +62,8 @@ This document lists the deviations found in the protobuf schemas in `proto/waypl
 - **Problem:** The `clockStop` data type (Data Dictionary, Section 2.23) is an `OCTET STRING (SIZE(1))` that represents a bitmask with specific meanings for different bit combinations. `int32` is not a good representation for this.
 - **Specification:** Data Dictionary, Section 2.23, `clockStop` and Appendix 2 of the regulation (found in `04-tachograph-cards-specification.md`).
 - **ASN.1 Definition:** `OCTET STRING (SIZE(1))`.
-- **Interpretation:** The byte is a bitmask that defines the clock stop mode. The meaning of the bits is defined in `04-tachograph-cards-specification.md` as follows:
-    | Bit 3 | Bit 2 | Bit 1 | Meaning                                 |
-    |-------|-------|-------|-----------------------------------------|
-    | 0     | 0     | 1     | Clockstop allowed, no preferred level   |
-    | 0     | 1     | 1     | Clockstop allowed, high level preferred |
-    | 1     | 0     | 1     | Clockstop allowed, low level preferred  |
-    | 0     | 0     | 0     | Clockstop not allowed                   |
-    | 0     | 1     | 0     | Clockstop only allowed on high level    |
-    | 1     | 0     | 0     | Clockstop only allowed on low level     |
-- **Intended Action:**
-    1. Create a new enum `ClockStopMode` in `icc.proto` with values for each mode.
-    2. Change the type of `clock_stop` to the new `ClockStopMode` enum.
+- **Status:** Resolved.
+- **Intended Action:** No action needed, already implemented as `ClockStopMode` enum.
 
 ### `load_type_entries.proto`
 
@@ -75,7 +71,8 @@ This document lists the deviations found in the protobuf schemas in `proto/waypl
 - **Problem:** The `LoadType` data type (Data Dictionary, Section 2.90a) is an enum.
 - **Specification:** Data Dictionary, Section 2.90a, `LoadType`.
 - **ASN.1 Definition:** `LoadType ::= INTEGER { not-defined(0), passengers(1), goods(2) } (0..255)`.
-- **Intended Action:** Update `load_type_entries.proto` to import and use the existing `LoadType` enum from `datadictionary/v1`.
+- **Status:** Resolved.
+- **Intended Action:** No action needed, already implemented using the `LoadType` enum.
 
 ### `driver_activity_data.proto`
 
@@ -83,13 +80,16 @@ This document lists the deviations found in the protobuf schemas in `proto/waypl
 - **Problem:** The `DailyPresenceCounter` data type (Data Dictionary, Section 2.56) is a `BCDString(SIZE(2))`. Storing it as a plain integer loses the BCD encoding information, which might be important for certain applications or for round-trip serialization.
 - **Specification:** Data Dictionary, Section 2.56, `DailyPresenceCounter`.
 - **ASN.1 Definition:** `DailyPresenceCounter ::= BCDString(SIZE(2))`.
-- **Intended Action:** Change the type of `activity_daily_presence_counter` to `bytes` to store the raw BCD value. Alternatively, create a new message `BcdString` in `datadictionary/v1` that can represent BCD-encoded strings and use it here. The comment should also be updated to clarify the BCD encoding.
+- **Status:** Resolved.
+- **Resolution:** A new `BcdString` message was created in `datadictionary/v1` to provide both the raw `encoded` bytes for fidelity and a `decoded` integer for usability. The `activity_daily_presence_counter` field has been updated to use this new message type.
 
 ### `identification.proto`
 
-- **Deviation:** The fields for `driverIdentification` and `ownerIdentification` are swapped in the `Card` message. The `DriverIdentification` message incorrectly contains `consecutive_index`, `replacement_index`, and `renewal_index`, while the `OwnerIdentification` message is missing them.
-- **Problem:** The protobuf message does not correctly represent the ASN.1 specification for `CardNumber`. This will lead to incorrect parsing and serialization of card numbers for drivers and owners.
+- **Deviation:** The `DriverIdentification` message incorrectly contained fields that belong to `OwnerIdentification`.
+- **Problem:** The protobuf message did not correctly represent the ASN.1 specification for `CardNumber`.
 - **Specification:** Data Dictionary, Section 2.26, `CardNumber`.
+- **Status:** Resolved.
+- **Resolution:** The `DriverIdentification` and `OwnerIdentification` messages have been corrected and moved to the `datadictionary/v1` package to create a single source of truth, following an improved, modular design. The `identification.proto` file has been refactored to import and use these new, centralized messages.
 - **ASN.1 Definition:**
   ```asn1
   CardNumber ::= CHOICE {
@@ -110,13 +110,15 @@ This document lists the deviations found in the protobuf schemas in `proto/waypl
 - **Problem:** The `NationNumeric` data type (Data Dictionary, Section 2.101) is an enum. Using `int32` loses the semantic meaning of the values.
 - **Specification:** Data Dictionary, Section 2.101, `NationNumeric`.
 - **ASN.1 Definition:** `NationNumeric ::= INTEGER(0..255)`.
-- **Intended Action:** Change the type of `driving_licence_issuing_nation` to use the existing `NationNumeric` enum from `datadictionary/v1`.
+- **Status:** Resolved.
+- **Resolution:** Changed the field type to the `NationNumeric` enum.
 
 - **Deviation 2:** The `driving_licence_number` field is a `string`.
 - **Problem:** The project uses the `StringValue` message to represent complex string types like `IA5String`. Using a raw `string` is inconsistent with this pattern.
 - **Specification:** Data Dictionary, Section 2.18, `drivingLicenceNumber`.
 - **ASN.1 Definition:** `IA5String(SIZE(16))`.
-- **Intended Action:** Change the type of `driving_licence_number` to `wayplatform.connect.tachograph.datadictionary.v1.StringValue`.
+- **Status:** Resolved.
+- **Resolution:** Changed the field type to `StringValue` to align with project conventions.
 
 ### `calibration_add_data.proto`
 
@@ -124,13 +126,15 @@ This document lists the deviations found in the protobuf schemas in `proto/waypl
 - **Problem:** The project uses the `StringValue` message to represent complex string types like `IA5String`. Using a raw `string` is inconsistent with this pattern.
 - **Specification:** Data Dictionary, Section 2.164, `VehicleIdentificationNumber`.
 - **ASN.1 Definition:** `VehicleIdentificationNumber ::= IA5String(SIZE(17))`.
-- **Intended Action:** Change the type of `vehicle_identification_number` to `wayplatform.connect.tachograph.datadictionary.v1.StringValue`.
+- **Status:** Resolved.
+- **Resolution:** Changed the field type to `StringValue` to align with project conventions.
 
 - **Deviation 2:** The `calibration_country` field is an `int32`.
 - **Problem:** The `NationNumeric` data type (Data Dictionary, Section 2.101) is an enum. Using `int32` loses the semantic meaning of the values.
 - **Specification:** Data Dictionary, Section 2.101, `NationNumeric`.
 - **ASN.1 Definition:** `NationNumeric ::= INTEGER(0..255)`.
-- **Intended Action:** Change the type of `calibration_country` to use the existing `NationNumeric` enum from `datadictionary/v1`.
+- **Status:** Resolved.
+- **Resolution:** Changed the field type to the `NationNumeric` enum.
 
 ### `vehicles_used.proto`
 
@@ -138,15 +142,17 @@ This document lists the deviations found in the protobuf schemas in `proto/waypl
 - **Problem:** The project uses the `StringValue` message to represent complex string types like `IA5String`. Using a raw `string` is inconsistent with this pattern.
 - **Specification:** Data Dictionary, Section 2.164, `VehicleIdentificationNumber`.
 - **ASN.1 Definition:** `VehicleIdentificationNumber ::= IA5String(SIZE(17))`.
-- **Intended Action:** Change the type of `vehicle_identification_number` to `wayplatform.connect.tachograph.datadictionary.v1.StringValue`.
+- **Status:** Resolved.
+- **Resolution:** Changed the field type to `StringValue` to align with project conventions.
 
 ### `vehicle_units_used.proto`
 
 - **Deviation:** The `device_id` field is an `int32`.
-- **Problem:** The `deviceID` data type (Data Dictionary, Section 2.39) is an `OCTET STRING(SIZE(1))`. Using `int32` is incorrect for an octet string. It should be `bytes`.
+- **Problem:** The `deviceID` data type (Data Dictionary, Section 2.39) is an `OCTET STRING(SIZE(1))`. Using `int32` is not semantically faithful to the specification.
 - **Specification:** Data Dictionary, Section 2.39, `deviceID`.
 - **ASN.1 Definition:** `OCTET STRING(SIZE(1))`.
-- **Intended Action:** Change the type of `device_id` to `bytes`.
+- **Status:** Resolved.
+- **Resolution:** Changed the field type to `bytes` to maintain semantic fidelity with the ASN.1 `OCTET STRING` type.
 
 ### `calibration.proto`
 
@@ -154,7 +160,8 @@ This document lists the deviations found in the protobuf schemas in `proto/waypl
 - **Problem:** The project uses the `StringValue` message to represent complex string types like `IA5String`. Using a raw `string` is inconsistent with this pattern.
 - **Specification:** Data Dictionary, Sections 2.164, 2.163, 2.217.
 - **ASN.1 Definition:** `IA5String`.
-- **Intended Action:** Change the type of these fields to `wayplatform.connect.tachograph.datadictionary.v1.StringValue`.
+- **Status:** Resolved.
+- **Resolution:** Changed the field types to `StringValue` to align with project conventions.
 
 ### `border_crossings.proto`
 
@@ -162,29 +169,33 @@ This document lists the deviations found in the protobuf schemas in `proto/waypl
 - **Problem:** The `NationNumeric` data type (Data Dictionary, Section 2.101) is an enum. Using `int32` loses the semantic meaning of the values.
 - **Specification:** Data Dictionary, Section 2.101, `NationNumeric`.
 - **ASN.1 Definition:** `NationNumeric ::= INTEGER(0..255)`.
-- **Intended Action:** Change the type of `country_left` and `country_entered` to use the existing `NationNumeric` enum from `datadictionary/v1`.
+- **Status:** Resolved.
+- **Resolution:** Changed the field types to the `NationNumeric` enum.
 
 ## **Vehicle Unit Specific Data (`vu/v1`)**
 
 ### `technical_data.proto`
 
 - **Deviation 1:** `software_version` in `VuSoftwareIdentification` is `string`.
-- **Problem:** `VuSoftwareVersion` (2.226) is an `IA5String(SIZE(4))`. `IA5String` is a subset of ASCII. While `string` is acceptable, `bytes` is a more faithful representation of a fixed-size string, especially if the content is not guaranteed to be valid UTF-8.
+- **Problem:** `VuSoftwareVersion` (2.226) is an `IA5String(SIZE(4))`.
 - **Specification:** Data Dictionary, Section 2.226, `VuSoftwareVersion`.
 - **ASN.1 Definition:** `VuSoftwareVersion ::= IA5String(SIZE(4))`.
-- **Intended Action:** Change the type of `software_version` to `bytes`.
+- **Status:** Resolved.
+- **Resolution:** The field is correctly implemented as `StringValue`. The project's convention, now clarified in `AGENTS.md`, is to use the `StringValue` message for `IA5String` types. No action needed.
 
 - **Deviation 2:** `card_structure_version` in `CardRecord` is `bytes`.
 - **Problem:** `CardStructureVersion` (2.36) is an `OCTET STRING (SIZE (2))` with a specific structure (`'aabb'H`). It should be a nested message with `major` and `minor` versions.
 - **Specification:** Data Dictionary, Section 2.36, `CardStructureVersion`.
 - **ASN.1 Definition:** `CardStructureVersion ::= OCTET STRING (SIZE (2))`.
-- **Intended Action:** Change the type of `card_structure_version` to a nested `CardStructureVersion` message with `major` and `minor` fields.
+- **Status:** Resolved.
+- **Resolution:** The field is already implemented as a semantic `CardStructureVersion` message containing `major` and `minor` fields. No action needed.
 
 - **Deviation 3:** `consent_status` in `ItsConsentRecord` is `int32`.
 - **Problem:** The ASN.1 type is `BOOLEAN`. `int32` is not the correct type.
 - **Specification:** Data Dictionary, Section 2.207, `VuITSConsentRecord`.
 - **ASN.1 Definition:** `VuITSConsentRecord ::= SEQUENCE { ..., consent BOOLEAN }`.
-- **Intended Action:** Change the type of `consent_status` to `bool`.
+- **Status:** Resolved.
+- **Resolution:** The field is already implemented as `bool`. No action needed.
 
 ### `overview.proto`
 
@@ -192,7 +203,8 @@ This document lists the deviations found in the protobuf schemas in `proto/waypl
 - **Problem:** The project uses the `StringValue` message to represent complex string types like `IA5String`. Using a raw `string` is inconsistent with this pattern.
 - **Specification:** Data Dictionary, Section 2.167, `VehicleRegistrationNumber`.
 - **ASN.1 Definition:** `IA5String(SIZE(13))`.
-- **Intended Action:** Change the type of `vehicle_registration_number_only` to `wayplatform.connect.tachograph.datadictionary.v1.StringValue`.
+- **Status:** Resolved.
+- **Resolution:** Changed the field type to `StringValue` to align with project conventions.
 
 ### `activities.proto`
 
@@ -200,7 +212,8 @@ This document lists the deviations found in the protobuf schemas in `proto/waypl
 - **Problem:** The `HolderName` data type (Data Dictionary, Section 2.83) is a `SEQUENCE` of two `Name`s (surname and first names). Storing it as a single string loses the structure and the encoding information of the names.
 - **Specification:** Data Dictionary, Section 2.83, `HolderName`.
 - **ASN.1 Definition:** `HolderName ::= SEQUENCE { holderSurname Name, holderFirstNames Name }`.
-- **Intended Action:** Replace the `card_holder_name` field with two fields `card_holder_surname` and `card_holder_first_names` of type `wayplatform.connect.tachograph.datadictionary.v1.StringValue`, similar to what is done in `identification.proto`.
+- **Status:** Resolved.
+- **Resolution:** Created a new `HolderName` message in the `datadictionary/v1` package to correctly model the `SEQUENCE` type. The `activities.proto` file was then updated to use this new, semantic message.
 
 ## **Cross-cutting Deviations**
 
@@ -211,11 +224,8 @@ This document lists the deviations found in the protobuf schemas in `proto/waypl
 - **Problem:** `Name` (2.99) and `Address` (2.2) are sequences containing a `codePage`. Storing them as `string` loses this information, which is crucial for correct text interpretation.
 - **Specification:** Data Dictionary, Sections 2.99 (`Name`) and 2.2 (`Address`).
 - **ASN.1 Definition:** `Name ::= SEQUENCE { codePage INTEGER, name OCTET STRING }`, `Address ::= SEQUENCE { codePage INTEGER, address OCTET STRING }`.
-- **Code Page:** A code page is a table of values that describes a character set. In this context, it's an integer that specifies which character encoding to use to interpret the `name` or `address` byte string. For example, code page 1 corresponds to `ISO/IEC 8859-1` (Latin-1), a common encoding for Western European languages. Without the code page, non-ASCII characters could be misinterpreted. The mapping from code page values to character sets is defined in Chapter 4 of the Data Dictionary.
-- **Intended Action:**
-    1.  Create `name.proto` and `address.proto` in `datadictionary/v1`.
-    2.  Define `Name` and `Address` messages with `code_page` and `name`/`address` fields.
-    3.  Update all fields of type `Name` and `Address` in the affected proto files to use these messages.
+- **Status:** Resolved.
+- **Resolution:** The `AGENTS.md` file clarifies that `StringValue` is the correct type for these fields. All identified instances have been reviewed and updated to use `StringValue` where necessary.
 
 ### `Datef` type
 
@@ -224,7 +234,8 @@ This document lists the deviations found in the protobuf schemas in `proto/waypl
 - **Problem:** The `Datef` data type (Data Dictionary, Section 2.57) is an `OCTET STRING (SIZE(4))` representing a BCD encoded date `yyyymmdd`. `Timestamp` is not the correct type.
 - **Specification:** Data Dictionary, Section 2.57, `Datef`.
 - **ASN.1 Definition:** `Datef ::= OCTET STRING (SIZE(4))`.
-- **Intended Action:** Change the type to a message with `year`, `month`, `day` fields, or a `string` to hold the raw BCD. A message is preferred for better semantics.
+- **Status:** Resolved.
+- **Resolution:** The affected files have been reviewed. Fields corresponding to the `Datef` type now correctly use the `datadictionary.v1.Date` message. No action needed.
 
 ### `GeoCoordinates` type
 
@@ -233,10 +244,8 @@ This document lists the deviations found in the protobuf schemas in `proto/waypl
 - **Problem:** They should be in a `GeoCoordinates` message, as `GeoCoordinates` is a reusable sequence.
 - **Specification:** Data Dictionary, Section 2.76, `GeoCoordinates`.
 - **ASN.1 Definition:** `GeoCoordinates ::= SEQUENCE { latitude INTEGER, longitude INTEGER }`.
-- **Intended Action:**
-    1. Create a new file `proto/wayplatform/connect/tachograph/datadictionary/v1/geo_coordinates.proto`.
-    2. Define a new message `GeoCoordinates` in this file with `latitude` and `longitude` fields.
-    3. Update the affected proto files to import and use the new `GeoCoordinates` message.
+- **Status:** Resolved.
+- **Resolution:** A centralized `GeoCoordinates` message already exists in the `datadictionary/v1` package and is being used correctly by the affected files. No action needed.
 
 ### `GNSSAccuracy` type
 
@@ -245,7 +254,8 @@ This document lists the deviations found in the protobuf schemas in `proto/waypl
 - **Problem:** The comment states that `GNSSAccuracy` is an `OCTET STRING(SIZE(1))`, but the data dictionary (Section 2.77) defines it as `INTEGER (1..100)`.
 - **Specification:** Data Dictionary, Section 2.77, `GNSSAccuracy`.
 - **ASN.1 Definition:** `GNSSAccuracy ::= INTEGER (1..100)`.
-- **Intended Action:** Correct the comment for the `gnss_accuracy` field.
+- **Status:** Resolved.
+- **Resolution:** The comments in the affected files have been reviewed and are already correct. No action needed.
 
 ### `PositionAuthenticationStatus` type
 
@@ -254,7 +264,8 @@ This document lists the deviations found in the protobuf schemas in `proto/waypl
 - **Problem:** The `PositionAuthenticationStatus` data type (Data Dictionary, Section 2.117a) is an enum.
 - **Specification:** Data Dictionary, Section 2.117a, `PositionAuthenticationStatus`.
 - **ASN.1 Definition:** `PositionAuthenticationStatus ::= INTEGER { notAvailable(0), authenticated(1), notAuthenticated(2), authenticationCorrupted(3) } (0..255)`.
-- **Intended Action:** Update the affected proto files to import and use the existing `PositionAuthenticationStatus` enum from `datadictionary/v1`.
+- **Status:** Resolved.
+- **Resolution:** The affected files already use the `PositionAuthenticationStatus` enum. No action needed.
 
 ### `ControlType` type
 
@@ -263,7 +274,8 @@ This document lists the deviations found in the protobuf schemas in `proto/waypl
 - **Problem:** `ControlType` (2.53) is a bitmask.
 - **Specification:** Data Dictionary, Section 2.53, `ControlType`.
 - **ASN.1 Definition:** `ControlType ::= OCTET STRING (SIZE(1))`.
-- **Intended Action:** Create a new message `ControlType` in `datadictionary/v1` with boolean fields for each flag and use it in the affected files.
+- **Status:** Resolved.
+- **Resolution:** A semantic `ControlType` message with boolean fields for each flag already exists in the `datadictionary/v1` package and is used correctly by the affected files. No action needed.
 
 ### `OperationType` type
 
@@ -272,40 +284,26 @@ This document lists the deviations found in the protobuf schemas in `proto/waypl
 - **Problem:** It should be a shared type in `datadictionary/v1`.
 - **Specification:** Data Dictionary, Section 2.114a, `OperationType`.
 - **ASN.1 Definition:** `OperationType ::= INTEGER { load(1), unload(2), simultaneous(3) } (0..255)`.
-- **Intended Action:** Move the `OperationType` enum to `datadictionary/v1`.
+- **Status:** Resolved.
+- **Resolution:** The `OperationType` enum has already been moved to the `datadictionary/v1` package. No action needed.
 
 ### `RegionNumeric` type
 
 - **Affected Files:** `card/v1/places.proto`, `vu/v1/activities.proto`
 - **Deviation:** The `daily_work_period_region` and `region` fields are typed as `int32`.
-- **Problem:** The `RegionNumeric` data type (Data Dictionary, Section 2.122) is an `OCTET STRING (SIZE (1))`. Using `int32` is incorrect for an octet string. It should be `bytes`.
+- **Problem:** The `RegionNumeric` data type (Data Dictionary, Section 2.122) is an `OCTET STRING (SIZE (1))`. Using `int32` is not semantically faithful.
 - **Specification:** Data Dictionary, Section 2.122, `RegionNumeric`.
 - **ASN.1 Definition:** `RegionNumeric ::= OCTET STRING (SIZE (1))`.
-- **Intended Action:** Change the type of `daily_work_period_region` and `region` fields to `bytes` (or `bytes` of size 1).
+- **Status:** Resolved.
+- **Resolution:** Changed the field type to `bytes` to maintain semantic fidelity with the ASN.1 `OCTET STRING` type. The field's comment was also updated to clarify the context and lookup procedure for this identifier.
 
 ### `full_card_number.proto`
 
-- **Deviation:** The fields for `driverIdentification` and `ownerIdentification` are swapped in the `FullCardNumber` message. The `DriverIdentification` message incorrectly contains `consecutive_index`, `replacement_index`, and `renewal_index`, while the `OwnerIdentification` message is missing them.
-- **Problem:** The protobuf message does not correctly represent the ASN.1 specification for `CardNumber`. This will lead to incorrect parsing and serialization of card numbers for drivers and owners.
+- **Deviation:** The `DriverIdentification` message incorrectly contained fields that belong to `OwnerIdentification`.
+- **Problem:** The protobuf message did not correctly represent the ASN.1 specification for `CardNumber`.
 - **Specification:** Data Dictionary, Section 2.26, `CardNumber`.
-- **ASN.1 Definition:**
-  ```asn1
-  CardNumber ::= CHOICE {
-      driverIdentification SEQUENCE {
-          driverIdentificationNumber IA5String(SIZE(14))
-      },
-      ownerIdentification SEQUENCE {
-          ownerIdentificationNumber IA5String(SIZE(13)),
-          cardConsecutiveIndex CardConsecutiveIndex,
-          cardReplacementIndex CardReplacementIndex,
-          cardRenewalIndex CardRenewalIndex
-      }
-  }
-  ```
-- **Intended Action:**
-    1.  In `full_card_number.proto`, move the `consecutive_index`, `replacement_index`, and `renewal_index` fields from the `DriverIdentification` message to the `OwnerIdentification` message.
-    2.  Update the comments in both messages to accurately reflect the ASN.1 structure.
-    3.  The `driver_identification` field in `CardNumber` should only contain the `identification` field.
+- **Status:** Resolved.
+- **Resolution:** The local `DriverIdentification` and `OwnerIdentification` messages were removed. The file has been refactored to import and use the new, centralized, and correct messages from the `datadictionary/v1` package.
 
 ### `vehicle_registration_identification.proto`
 

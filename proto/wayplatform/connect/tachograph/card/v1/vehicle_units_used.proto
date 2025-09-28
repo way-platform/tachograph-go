@@ -56,7 +56,7 @@ message VehicleUnitsUsed {
     // ASN.1 Definition:
     //
     //     OCTET STRING(SIZE(1))
-    int32 device_id = 3;
+    bytes device_id = 3;
 
     // The software version of the Vehicle Unit.
     //

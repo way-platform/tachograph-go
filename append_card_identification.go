@@ -41,21 +41,21 @@ func AppendCardIdentification(dst []byte, id *cardv1.Identification_Card) ([]byt
 	cardNumberStr := ""
 	if driverID := id.GetDriverIdentification(); driverID != nil {
 		// Build driver identification string
-		if identification := driverID.GetIdentification(); identification != nil {
+		if identification := driverID.GetIdentificationNumber(); identification != nil {
 			cardNumberStr += identification.GetDecoded()
 		}
-		if consecutive := driverID.GetConsecutiveIndex(); consecutive != nil {
+	} else if ownerID := id.GetOwnerIdentification(); ownerID != nil {
+		if identification := ownerID.GetIdentificationNumber(); identification != nil {
+			cardNumberStr = identification.GetDecoded()
+		}
+		if consecutive := ownerID.GetConsecutiveIndex(); consecutive != nil {
 			cardNumberStr += consecutive.GetDecoded()
 		}
-		if replacement := driverID.GetReplacementIndex(); replacement != nil {
+		if replacement := ownerID.GetReplacementIndex(); replacement != nil {
 			cardNumberStr += replacement.GetDecoded()
 		}
-		if renewal := driverID.GetRenewalIndex(); renewal != nil {
+		if renewal := ownerID.GetRenewalIndex(); renewal != nil {
 			cardNumberStr += renewal.GetDecoded()
-		}
-	} else if ownerID := id.GetOwnerIdentification(); ownerID != nil {
-		if identification := ownerID.GetIdentification(); identification != nil {
-			cardNumberStr = identification.GetDecoded()
 		}
 	}
 	dst, err = appendString(dst, cardNumberStr, 16)

@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	cardv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1"
+	datadictionaryv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/datadictionary/v1"
 )
 
 // unmarshalDrivingLicenceInfo parses the binary data for an EF_Driving_Licence_Info record.
@@ -55,7 +56,7 @@ func unmarshalDrivingLicenceInfo(data []byte) (*cardv1.DrivingLicenceInfo, error
 	if err != nil {
 		return nil, fmt.Errorf("failed to read driving licence issuing nation: %w", err)
 	}
-	dli.SetDrivingLicenceIssuingNation(int32(nation))
+	dli.SetDrivingLicenceIssuingNation(datadictionaryv1.NationNumeric(nation))
 	offset++
 
 	// Read driving licence number (16 bytes)
@@ -66,7 +67,7 @@ func unmarshalDrivingLicenceInfo(data []byte) (*cardv1.DrivingLicenceInfo, error
 	if err != nil {
 		return nil, fmt.Errorf("failed to read driving licence number: %w", err)
 	}
-	dli.SetDrivingLicenceNumber(licenceNumber.GetDecoded())
+	dli.SetDrivingLicenceNumber(licenceNumber)
 	// offset += 16 // Not needed as this is the last field
 
 	return &dli, nil

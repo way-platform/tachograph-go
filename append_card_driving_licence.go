@@ -15,7 +15,9 @@ func AppendDrivingLicenceInfo(dst []byte, dli *cardv1.DrivingLicenceInfo) ([]byt
 		return nil, err
 	}
 	dst = append(dst, byte(dli.GetDrivingLicenceIssuingNation()))
-	dst, err = appendString(dst, dli.GetDrivingLicenceNumber(), 16)
+	if licenceNumber := dli.GetDrivingLicenceNumber(); licenceNumber != nil {
+		dst, err = appendString(dst, licenceNumber.GetDecoded(), 16)
+	}
 	if err != nil {
 		return nil, err
 	}

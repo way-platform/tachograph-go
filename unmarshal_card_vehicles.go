@@ -151,7 +151,15 @@ func parseVehicleRecord(r *bytes.Reader, recordSize int) (*cardv1.VehiclesUsed_R
 	if err := binary.Read(r, binary.BigEndian, &vuDataBlockCounter); err != nil {
 		return nil, fmt.Errorf("failed to read VU data block counter: %w", err)
 	}
-	record.SetVuDataBlockCounter(int32(vuDataBlockCounter))
+
+	// Convert to BCD bytes (2 bytes)
+	bcdBytes := make([]byte, 2)
+	binary.BigEndian.PutUint16(bcdBytes, vuDataBlockCounter)
+	bcdCounter, err := createBcdString(bcdBytes)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create BCD string for VU data block counter: %w", err)
+	}
+	record.SetVuDataBlockCounter(bcdCounter)
 
 	// For Gen2 records, read VIN (17 bytes)
 	if recordSize == 48 {
@@ -159,7 +167,7 @@ func parseVehicleRecord(r *bytes.Reader, recordSize int) (*cardv1.VehiclesUsed_R
 		if _, err := r.Read(vinBytes); err != nil {
 			return nil, fmt.Errorf("failed to read vehicle identification number: %w", err)
 		}
-		record.SetVehicleIdentificationNumber(readString(bytes.NewReader(vinBytes), 17))
+		record.SetVehicleIdentificationNumber(createStringValue(readString(bytes.NewReader(vinBytes), 17)))
 	}
 
 	return record, nil

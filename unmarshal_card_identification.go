@@ -6,6 +6,7 @@ import (
 	"fmt"
 
 	cardv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1"
+	datadictionaryv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/datadictionary/v1"
 )
 
 // unmarshalIdentification parses the binary data for an EF_Identification record.
@@ -33,7 +34,7 @@ func unmarshalIdentification(data []byte) (*cardv1.Identification, error) {
 
 	// Handle the inlined CardNumber structure
 	// For now, assume this is a driver card and create driver identification
-	driverID := &cardv1.Identification_DriverIdentification{}
+	driverID := &datadictionaryv1.DriverIdentification{}
 
 	// Card number (14 bytes)
 	if offset+14 > len(data) {
@@ -43,41 +44,8 @@ func unmarshalIdentification(data []byte) (*cardv1.Identification, error) {
 	if err != nil {
 		return nil, fmt.Errorf("failed to read card number: %w", err)
 	}
-	driverID.SetIdentification(cardNumber)
+	driverID.SetIdentificationNumber(cardNumber)
 	offset += 14
-
-	// Consecutive index (1 byte)
-	if offset+1 > len(data) {
-		return nil, fmt.Errorf("insufficient data for consecutive index")
-	}
-	consecutiveIndex, err := unmarshalIA5StringValue(data[offset : offset+1])
-	if err != nil {
-		return nil, fmt.Errorf("failed to read consecutive index: %w", err)
-	}
-	driverID.SetConsecutiveIndex(consecutiveIndex)
-	offset++
-
-	// Replacement index (1 byte)
-	if offset+1 > len(data) {
-		return nil, fmt.Errorf("insufficient data for replacement index")
-	}
-	replacementIndex, err := unmarshalIA5StringValue(data[offset : offset+1])
-	if err != nil {
-		return nil, fmt.Errorf("failed to read replacement index: %w", err)
-	}
-	driverID.SetReplacementIndex(replacementIndex)
-	offset++
-
-	// Renewal index (1 byte)
-	if offset+1 > len(data) {
-		return nil, fmt.Errorf("insufficient data for renewal index")
-	}
-	renewalIndex, err := unmarshalIA5StringValue(data[offset : offset+1])
-	if err != nil {
-		return nil, fmt.Errorf("failed to read renewal index: %w", err)
-	}
-	driverID.SetRenewalIndex(renewalIndex)
-	offset++
 
 	cardId.SetDriverIdentification(driverID)
 

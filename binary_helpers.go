@@ -24,6 +24,26 @@ func bcdBytesToInt(b []byte) (int, error) {
 	return int(i), nil
 }
 
+// createBcdString creates a BcdString message from BCD-encoded bytes
+func createBcdString(bcdBytes []byte) (*datadictionaryv1.BcdString, error) {
+	decoded, err := bcdBytesToInt(bcdBytes)
+	if err != nil {
+		return nil, err
+	}
+
+	bcdString := &datadictionaryv1.BcdString{}
+	bcdString.SetEncoded(bcdBytes)
+	bcdString.SetDecoded(int32(decoded))
+	return bcdString, nil
+}
+
+// createStringValue creates a StringValue message from a string
+func createStringValue(s string) *datadictionaryv1.StringValue {
+	stringValue := &datadictionaryv1.StringValue{}
+	stringValue.SetDecoded(s)
+	return stringValue
+}
+
 // appendOdometer appends a 3-byte odometer value
 func appendOdometer(dst []byte, odometer uint32) []byte {
 	b := make([]byte, 4)

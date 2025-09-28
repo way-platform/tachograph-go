@@ -7,6 +7,7 @@ import "wayplatform/connect/tachograph/datadictionary/v1/event_fault_record_purp
 import "wayplatform/connect/tachograph/datadictionary/v1/event_fault_type.proto";
 import "wayplatform/connect/tachograph/datadictionary/v1/full_card_number_and_generation.proto";
 import "wayplatform/connect/tachograph/datadictionary/v1/generation.proto";
+import "wayplatform/connect/tachograph/datadictionary/v1/string_value.proto";
 
 // Represents the consolidated data structure for an Events and Faults transfer.
 //
@@ -288,7 +289,7 @@ message EventsAndFaults {
     // ASN.1 Definition:
     //
     //     Name ::= SEQUENCE { codePage INTEGER(0..255), name OCTET STRING (SIZE(36)) }
-    string workshop_name = 3;
+    wayplatform.connect.tachograph.datadictionary.v1.StringValue workshop_name = 3;
 
     // Address of the workshop.
     //
@@ -296,7 +297,7 @@ message EventsAndFaults {
     // ASN.1 Definition:
     //
     //     Address ::= SEQUENCE { codePage INTEGER(0..255), address OCTET STRING (SIZE(36)) }
-    string workshop_address = 4;
+    wayplatform.connect.tachograph.datadictionary.v1.StringValue workshop_address = 4;
 
     // The card number and generation of the workshop that performed the adjustment.
     //
