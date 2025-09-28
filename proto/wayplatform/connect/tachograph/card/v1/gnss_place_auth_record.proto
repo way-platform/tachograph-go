@@ -4,6 +4,7 @@ package wayplatform.connect.tachograph.card.v1;
 
 import "wayplatform/connect/tachograph/datadictionary/v1/position_authentication_status.proto";
 import "google/protobuf/timestamp.proto";
+import "wayplatform/connect/tachograph/datadictionary/v1/geo_coordinates.proto";
 
 // Represents an authenticated GNSS position record.
 //
@@ -35,20 +36,13 @@ message GnssPlaceAuthRecord {
   // See Data Dictionary, Section 2.77, `GNSSAccuracy`.
   // ASN.1 Definition:
   //
-  //     GNSSAccuracy ::= OCTET STRING(SIZE(1))
+  //     GNSSAccuracy ::= INTEGER (1..100)
   int32 gnss_accuracy = 2;
 
-  // The geographic coordinates of the position, corresponding to the `geoCoordinates` field.
+  // The geographic coordinates of the position.
   //
   // See Data Dictionary, Section 2.76, `GeoCoordinates`.
-  // ASN.1 Definition:
-  //
-  //     GeoCoordinates ::= SEQUENCE {
-  //         latitude INTEGER(-90*3600*1000..90*3600*1000),
-  //         longitude INTEGER(-180*3600*1000+1..180*3600*1000)
-  //     }
-  sint32 longitude = 3;
-  sint32 latitude = 4;
+  wayplatform.connect.tachograph.datadictionary.v1.GeoCoordinates geo_coordinates = 3;
 
   // The authentication status of the position.
   //

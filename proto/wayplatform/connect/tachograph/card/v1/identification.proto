@@ -2,9 +2,11 @@ edition = "2023";
 
 package wayplatform.connect.tachograph.card.v1;
 
-import "wayplatform/connect/tachograph/datadictionary/v1/string_value.proto";
 import "google/protobuf/timestamp.proto";
 import "wayplatform/connect/tachograph/card/v1/card_type.proto";
+import "wayplatform/connect/tachograph/datadictionary/v1/nation_numeric.proto";
+import "wayplatform/connect/tachograph/datadictionary/v1/string_value.proto";
+import "wayplatform/connect/tachograph/datadictionary/v1/date.proto";
 
 // Represents the content of the EF_Identification file, which contains identification
 // data for the card and its holder.
@@ -17,6 +19,44 @@ import "wayplatform/connect/tachograph/card/v1/card_type.proto";
 //
 // The top-level structure varies by card type, but is a sequence of the two main data types.
 message Identification {
+  // Represents the `driverIdentification` sequence from the `CardNumber` CHOICE.
+  // This is nested here to provide local context, per our design discussion.
+  //
+  // ASN.1 Definition:
+  //
+  //     driverIdentification SEQUENCE {
+  //         driverIdentification   IA5String(SIZE(14)),
+  //         cardConsecutiveIndex   IA5String(SIZE(1)),
+  //         cardReplacementIndex   IA5String(SIZE(1)),
+  //         cardRenewalIndex       IA5String(SIZE(1))
+  //     }
+  message DriverIdentification {
+    // The core driver identification number string.
+    wayplatform.connect.tachograph.datadictionary.v1.StringValue identification = 1;
+
+    // A single-digit index for the card.
+    wayplatform.connect.tachograph.datadictionary.v1.StringValue consecutive_index = 2;
+
+    // A single-digit index for card replacement.
+    wayplatform.connect.tachograph.datadictionary.v1.StringValue replacement_index = 3;
+
+    // A single-digit index for card renewal.
+    wayplatform.connect.tachograph.datadictionary.v1.StringValue renewal_index = 4;
+  }
+
+  // Represents the `ownerIdentification` sequence from the `CardNumber` CHOICE.
+  // This is nested here to provide local context, per our design discussion.
+  //
+  // ASN.1 Definition:
+  //
+  //     ownerIdentification SEQUENCE {
+  //         ownerIdentification    IA5String(SIZE(13))
+  //     }
+  message OwnerIdentification {
+    // The unique identification for the owner.
+    wayplatform.connect.tachograph.datadictionary.v1.StringValue identification = 1;
+  }
+
   // Represents card identification data, common to all card types.
   //
   // The data type `CardIdentification` is specified in the Data Dictionary, Section 2.24.
@@ -36,13 +76,27 @@ message Identification {
     //
     // See Data Dictionary, Section 2.24, `cardIssuingMemberState`.
     // ASN.1 Specification: NationNumeric ::= INTEGER (0..255)
-    string card_issuing_member_state = 1;
-    // The card number.
+    wayplatform.connect.tachograph.datadictionary.v1.NationNumeric card_issuing_member_state = 1;
+
+    // --- Inlined CardNumber (DD 2.26) ---
+    // The following fields represent the `CardNumber` ASN.1 CHOICE.
+    // The populated field is determined by the `card_type` in the parent `Identification` message.
     //
-    // See Data Dictionary, Section 2.24, `cardNumber`.
-    // ASN.1 Specification: CardNumber ::= CHOICE { ... } (see DD 2.26 for the full structure)
-    // This proto field holds a string representation of the card number.
-    string card_number = 2;
+    // ASN.1 Definition:
+    //
+    //     CardNumber ::= CHOICE {
+    //         driverIdentification   SEQUENCE { ... },
+    //         ownerIdentification    SEQUENCE { ... }
+    //     }
+
+    // This field is part of the `CardNumber` CHOICE.
+    // It is populated when `card_type` is `DRIVER_CARD`.
+    DriverIdentification driver_identification = 2;
+
+    // This field is part of the `CardNumber` CHOICE.
+    // It is populated when `card_type` is `WORKSHOP_CARD` or `COMPANY_CARD`.
+    OwnerIdentification owner_identification = 7; // Next available field number
+
     // The name of the authority that issued the card.
     //
     // See Data Dictionary, Section 2.24, `cardIssuingAuthorityName`.
@@ -91,7 +145,7 @@ message Identification {
     //
     // See Data Dictionary, Section 2.62, `cardHolderBirthDate`.
     // ASN.1 Specification: Datef ::= OCTET STRING (SIZE(4))
-    google.protobuf.Timestamp card_holder_birth_date = 3;
+    wayplatform.connect.tachograph.datadictionary.v1.Date card_holder_birth_date = 3;
     // The preferred language of the card holder.
     //
     // See Data Dictionary, Section 2.62, `cardHolderPreferredLanguage`.

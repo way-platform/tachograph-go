@@ -4,6 +4,7 @@ package wayplatform.connect.tachograph.vu.v1;
 
 import "wayplatform/connect/tachograph/datadictionary/v1/string_value.proto";
 import "google/protobuf/timestamp.proto";
+import "wayplatform/connect/tachograph/datadictionary/v1/date.proto";
 import "wayplatform/connect/tachograph/datadictionary/v1/calibration_purpose.proto";
 import "wayplatform/connect/tachograph/datadictionary/v1/card_slot_number.proto";
 import "wayplatform/connect/tachograph/datadictionary/v1/equipment_type.proto";
@@ -230,7 +231,7 @@ message TechnicalData {
     // ASN.1 Definition:
     //
     //     Datef ::= OCTET STRING (SIZE(4))
-    google.protobuf.Timestamp workshop_card_expiry_date = 6;
+    wayplatform.connect.tachograph.datadictionary.v1.Date workshop_card_expiry_date = 6;
 
     // The Vehicle Identification Number.
     //
@@ -341,18 +342,28 @@ message TechnicalData {
   //         cardNumber CardNumber
   //     }
   message CardRecord {
+    // Represents the BCD-encoded card structure version.
+    //
+    // See Data Dictionary, Section 2.36, `CardStructureVersion`.
+    //
+    // ASN.1 Definition:
+    //
+    //     CardStructureVersion ::= OCTET STRING (SIZE (2))
+    //
+    // The two bytes are BCD-encoded, representing major and minor versions,
+    // e.g., version '01.02' is coded as '0102'H.
+    message CardStructureVersion {
+      int32 major = 1;
+      int32 minor = 2;
+    }
+
     // The full card number.
     //
     // See Data Dictionary, Section 2.74, `FullCardNumberAndGeneration`.
     datadictionary.v1.FullCardNumber full_card_number = 1;
 
     // The structure version of the card.
-    //
-    // See Data Dictionary, Section 2.36, `CardStructureVersion`.
-    // ASN.1 Definition:
-    //
-    //     CardStructureVersion ::= OCTET STRING (SIZE (2))
-    bytes card_structure_version = 2;
+    CardStructureVersion card_structure_version = 2;
 
     // The type of the card.
     //
@@ -382,7 +393,7 @@ message TechnicalData {
     // ASN.1 Definition:
     //
     //     BOOLEAN
-    int32 consent_status = 2;
+    bool consent_status = 2;
   }
 
   // Represents a record of a power supply interruption.

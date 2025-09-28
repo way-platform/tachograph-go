@@ -4,6 +4,9 @@ package wayplatform.connect.tachograph.vu.v1;
 
 import "wayplatform/connect/tachograph/datadictionary/v1/operation_type.proto";
 import "google/protobuf/timestamp.proto";
+import "wayplatform/connect/tachograph/datadictionary/v1/date.proto";
+import "wayplatform/connect/tachograph/datadictionary/v1/geo_coordinates.proto";
+import "wayplatform/connect/tachograph/datadictionary/v1/geo_coordinates.proto";
 import "wayplatform/connect/tachograph/datadictionary/v1/card_slot_number.proto";
 import "wayplatform/connect/tachograph/datadictionary/v1/driver_activity_value.proto";
 import "wayplatform/connect/tachograph/datadictionary/v1/driving_status.proto";
@@ -86,7 +89,7 @@ message Activities {
     // ASN.1 Definition:
     //
     //     Datef ::= OCTET STRING(SIZE(4))
-    google.protobuf.Timestamp card_expiry_date = 3;
+    wayplatform.connect.tachograph.datadictionary.v1.Date card_expiry_date = 3;
 
     // The time the card was inserted.
     //
@@ -182,6 +185,10 @@ message Activities {
 
     // Region code.
     //
+    // The meaning of this code is country-specific. For Gen1, the data
+    // dictionary provides values for Spain. For Gen2, codes are maintained
+    // on the JRC website: https://dtlab.jrc.ec.europa.eu/
+    //
     // See Data Dictionary, Section 2.122, `RegionNumeric`.
     // ASN.1 Definition:
     //
@@ -214,14 +221,20 @@ message Activities {
     // See Data Dictionary, Section 2.77, `GNSSAccuracy`.
     // ASN.1 Definition:
     //
-    //     GNSSAccuracy ::= OCTET STRING(SIZE(1))
+    //     GNSSAccuracy ::= INTEGER (1..100)
     int32 gnss_accuracy = 2;
 
     // Geographic coordinates of the position.
     //
     // See Data Dictionary, Section 2.76, `GeoCoordinates`.
-    sint32 longitude = 3;
-    sint32 latitude = 4;
+    //
+    // ASN.1 Definition:
+    //
+    //     GeoCoordinates ::= SEQUENCE {
+    //         latitude INTEGER(-90*3600*1000..90*3600*1000),
+    //         longitude INTEGER(-180*3600*1000+1..180*3600*1000)
+    //     }
+    wayplatform.connect.tachograph.datadictionary.v1.GeoCoordinates geo_coordinates = 3;
 
     // For Gen2v2+, indicates the authentication status of the position.
     //
