@@ -8,8 +8,23 @@ import (
 )
 
 // unmarshalCardLastDownload unmarshals last card download data from a card EF.
+//
+// ASN.1 Specification (Data Dictionary 2.16):
+//
+//	CardDownloadDriver ::= TimeReal
+//
+// Binary Layout (4 bytes):
+//
+//	0-3:   timestamp (4 bytes, TimeReal)
+//
+// Constants:
+const (
+	// CardDownloadDriver total size
+	cardDownloadDriverSize = 4
+)
+
 func unmarshalCardLastDownload(data []byte) (*cardv1.CardDownloadDriver, error) {
-	if len(data) < 4 {
+	if len(data) < cardDownloadDriverSize {
 		return nil, fmt.Errorf("insufficient data for last card download")
 	}
 

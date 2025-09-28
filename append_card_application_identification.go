@@ -7,14 +7,63 @@ import (
 )
 
 // AppendCardApplicationIdentification appends application identification data to a byte slice.
+//
+// ASN.1 Specification (Data Dictionary 2.2):
+//
+//	ApplicationIdentification ::= SEQUENCE {
+//	    typeOfTachographCardId    EquipmentType,
+//	    cardStructureVersion      CardStructureVersion,
+//	    noOfEventsPerType         INTEGER(0..255),
+//	    noOfFaultsPerType         INTEGER(0..255),
+//	    activityStructureLength   INTEGER(0..65535),
+//	    noOfCardVehicleRecords    INTEGER(0..255),
+//	    noOfCardPlaceRecords      INTEGER(0..255),
+//	    noOfGNSSADRecords         INTEGER(0..255) OPTIONAL,
+//	    noOfSpecificConditionRecords INTEGER(0..255) OPTIONAL,
+//	    noOfCardVehicleUnitRecords   INTEGER(0..255) OPTIONAL
+//	}
+//
+// Binary Layout (7-10 bytes depending on version):
+//
+//	0-0:   typeOfTachographCardId (1 byte)
+//	1-2:   cardStructureVersion (2 bytes, BCD format)
+//	3-3:   noOfEventsPerType (1 byte)
+//	4-4:   noOfFaultsPerType (1 byte)
+//	5-6:   activityStructureLength (2 bytes, big-endian)
+//	7-7:   noOfCardVehicleRecords (1 byte)
+//	8-8:   noOfCardPlaceRecords (1 byte)
+//	9-9:   noOfGNSSADRecords (1 byte, Gen2+)
+//	10-10: noOfSpecificConditionRecords (1 byte, Gen2+)
+//	11-11: noOfCardVehicleUnitRecords (1 byte, Gen2v2+)
 func AppendCardApplicationIdentification(data []byte, appId *cardv1.ApplicationIdentification) ([]byte, error) {
+	const (
+		// Minimum EF_ApplicationIdentification record size
+		MIN_EF_APPLICATION_IDENTIFICATION_SIZE = 7
+
+		// Field offsets
+		TYPE_OF_TACHOGRAPH_CARD_ID_OFFSET       = 0
+		CARD_STRUCTURE_VERSION_OFFSET           = 1
+		NO_OF_EVENTS_PER_TYPE_OFFSET            = 3
+		NO_OF_FAULTS_PER_TYPE_OFFSET            = 4
+		ACTIVITY_STRUCTURE_LENGTH_OFFSET        = 5
+		NO_OF_CARD_VEHICLE_RECORDS_OFFSET       = 7
+		NO_OF_CARD_PLACE_RECORDS_OFFSET         = 8
+		NO_OF_GNSS_AD_RECORDS_OFFSET            = 9
+		NO_OF_SPECIFIC_CONDITION_RECORDS_OFFSET = 10
+		NO_OF_CARD_VEHICLE_UNIT_RECORDS_OFFSET  = 11
+
+		// Field sizes
+		CARD_STRUCTURE_VERSION_SIZE    = 2
+		ACTIVITY_STRUCTURE_LENGTH_SIZE = 2
+	)
+
 	if appId == nil {
 		return data, nil
 	}
 
 	// Type of tachograph card ID (1 byte)
 	if appId.HasTypeOfTachographCardId() {
-		protocolValue := GetEquipmentTypeProtocolValue(appId.GetTypeOfTachographCardId(), 0)
+		protocolValue := GetProtocolValueFromEnum(appId.GetTypeOfTachographCardId(), 0)
 		data = append(data, byte(protocolValue))
 	} else {
 		data = append(data, 0x00)

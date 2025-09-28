@@ -1,10 +1,10 @@
 package tachograph
 
 import (
-	"encoding/binary"
 	"fmt"
 	"io"
 	"strings"
+	"unicode/utf8"
 
 	"golang.org/x/text/encoding/charmap"
 
@@ -48,6 +48,13 @@ func unmarshalIA5StringValue(input []byte) (*datadictionaryv1.StringValue, error
 
 	// Decode and trim the input bytes
 	decoded := trimSpaceAndZero(string(input))
+
+	// Ensure the result is valid UTF-8
+	if !utf8.ValidString(decoded) {
+		// Convert invalid UTF-8 sequences to replacement characters
+		decoded = strings.ToValidUTF8(decoded, string(utf8.RuneError))
+	}
+
 	output.SetDecoded(decoded)
 
 	return &output, nil
@@ -150,69 +157,15 @@ func decodeWithCodePage(codePage byte, data []byte) (string, error) {
 	if err != nil {
 		return "", fmt.Errorf("could not decode code page %d string: %w", codePage, err)
 	}
-	return trimSpaceAndZero(res), nil
-}
 
-// Protocol-compliant helper functions
+	// The character map decoder should produce valid UTF-8, but let's be safe
+	trimmed := trimSpaceAndZero(res)
 
-// unmarshalStringValueFromReader reads a code-paged string from a reader
-func unmarshalStringValueFromReader(r io.Reader, length int) (*datadictionaryv1.StringValue, error) {
-	data := make([]byte, length)
-	if _, err := r.Read(data); err != nil {
-		return nil, err
-	}
-	return unmarshalStringValue(data)
-}
-
-// unmarshalIA5StringValueFromReader reads an IA5 string from a reader
-func unmarshalIA5StringValueFromReader(r io.Reader, length int) (*datadictionaryv1.StringValue, error) {
-	data := make([]byte, length)
-	if _, err := r.Read(data); err != nil {
-		return nil, err
-	}
-	return unmarshalIA5StringValue(data)
-}
-
-// unmarshalNationNumericFromReader reads a nation code from a reader
-func unmarshalNationNumericFromReader(r io.Reader) (datadictionaryv1.NationNumeric, error) {
-	var nation byte
-	if err := binary.Read(r, binary.BigEndian, &nation); err != nil {
-		return datadictionaryv1.NationNumeric_NATION_NUMERIC_UNSPECIFIED, err
-	}
-	return datadictionaryv1.NationNumeric(nation), nil
-}
-
-// unmarshalControlTypeFromReader reads a control type byte from a reader
-func unmarshalControlTypeFromReader(r io.Reader) (*datadictionaryv1.ControlType, error) {
-	var b byte
-	if err := binary.Read(r, binary.BigEndian, &b); err != nil {
-		return nil, err
+	// If the result is not valid UTF-8, convert it to valid UTF-8
+	if !utf8.ValidString(trimmed) {
+		// Convert invalid UTF-8 sequences to replacement characters
+		trimmed = strings.ToValidUTF8(trimmed, string(utf8.RuneError))
 	}
 
-	ct := &datadictionaryv1.ControlType{}
-	ct.SetCardDownloading((b & 0x80) != 0)
-	ct.SetVuDownloading((b & 0x40) != 0)
-	ct.SetPrinting((b & 0x20) != 0)
-	ct.SetDisplay((b & 0x10) != 0)
-	ct.SetCalibrationChecking((b & 0x08) != 0)
-	return ct, nil
-}
-
-// unmarshalDateFromReader reads a BCD-encoded date from a reader
-func unmarshalDateFromReader(r io.Reader) (*datadictionaryv1.Date, error) {
-	data := make([]byte, 4)
-	if _, err := r.Read(data); err != nil {
-		return nil, err
-	}
-
-	// Parse BCD format: YYYYMMDD
-	year := int32(int32((data[0]&0xF0)>>4)*1000 + int32(data[0]&0x0F)*100 + int32((data[1]&0xF0)>>4)*10 + int32(data[1]&0x0F))
-	month := int32(int32((data[2]&0xF0)>>4)*10 + int32(data[2]&0x0F))
-	day := int32(int32((data[3]&0xF0)>>4)*10 + int32(data[3]&0x0F))
-
-	date := &datadictionaryv1.Date{}
-	date.SetYear(year)
-	date.SetMonth(month)
-	date.SetDay(day)
-	return date, nil
+	return trimmed, nil
 }

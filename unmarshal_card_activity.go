@@ -7,11 +7,59 @@ import (
 
 	cardv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1"
 	datadictionaryv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/datadictionary/v1"
+	"google.golang.org/protobuf/reflect/protoreflect"
 )
 
 // unmarshalDriverActivityData unmarshals driver activity data from a card EF.
+//
+// ASN.1 Specification (Data Dictionary 2.17):
+//
+//	CardDriverActivity ::= SEQUENCE {
+//	    activityPointerOldestDayRecord    INTEGER(0..CardActivityLengthRange),
+//	    activityPointerNewestRecord       INTEGER(0..CardActivityLengthRange),
+//	    activityDailyRecords              OCTET STRING (SIZE (CardActivityLengthRange))
+//	}
+//
+//	CardActivityDailyRecord ::= SEQUENCE {
+//	    activityPreviousRecordLength      INTEGER(0..CardActivityLengthRange),
+//	    activityRecordLength              INTEGER(0..CardActivityLengthRange),
+//	    activityRecordDate                TimeReal,
+//	    activityDailyPresenceCounter      DailyPresenceCounter,
+//	    activityDayDistance               Distance,
+//	    activityChangeInfo                SET SIZE (1..1440) OF ActivityChangeInfo
+//	}
+//
+//	ActivityChangeInfo ::= OCTET STRING (SIZE (2))
+//
+// Binary Layout (variable size):
+//
+//	0-1:   activityPointerOldestDayRecord (2 bytes, big-endian)
+//	2-3:   activityPointerNewestRecord (2 bytes, big-endian)
+//	4+:    activityDailyRecords (cyclic buffer of CardActivityDailyRecord)
+//	  - 0-1:   activityPreviousRecordLength (2 bytes, big-endian)
+//	  - 2-3:   activityRecordLength (2 bytes, big-endian)
+//	  - 4-7:   activityRecordDate (4 bytes, TimeReal)
+//	  - 8-8:   activityDailyPresenceCounter (1 byte)
+//	  - 9-12:  activityDayDistance (4 bytes, big-endian)
+//	  - 13+:   activityChangeInfo (2 bytes each, up to 1440 records)
+//
+// Constants:
+const (
+	// CardDriverActivity header size
+	cardDriverActivityHeaderSize = 4 // 2 bytes oldest + 2 bytes newest pointer
+
+	// CardActivityDailyRecord fixed fields size
+	cardActivityDailyRecordFixedSize = 13 // 2+2+4+1+4 bytes
+
+	// ActivityChangeInfo size
+	activityChangeInfoSize = 2
+
+	// Maximum number of activity changes per day
+	maxActivityChangesPerDay = 1440
+)
+
 func unmarshalDriverActivityData(data []byte) (*cardv1.DriverActivityData, error) {
-	if len(data) < 4 {
+	if len(data) < cardDriverActivityHeaderSize {
 		return nil, fmt.Errorf("insufficient data for activity data header")
 	}
 
@@ -181,10 +229,16 @@ func parseSingleActivityDailyRecord(data []byte) (*cardv1.DriverActivityData_Dai
 		activityChange := &datadictionaryv1.ActivityChangeInfo{}
 
 		// Convert raw values to enums using protocol annotations
-		SetCardSlotNumber(slot, activityChange.SetSlot, nil)
-		SetDrivingStatus(drivingStatus, activityChange.SetDrivingStatus, nil)
-		activityChange.SetInserted(SetCardInserted(cardStatus))
-		SetDriverActivityValue(activity, activityChange.SetActivity, nil)
+		SetCardSlotNumber(datadictionaryv1.CardSlotNumber_CARD_SLOT_NUMBER_UNSPECIFIED.Descriptor(), slot, func(en protoreflect.EnumNumber) {
+			activityChange.SetSlot(datadictionaryv1.CardSlotNumber(en))
+		}, nil)
+		SetDrivingStatus(datadictionaryv1.DrivingStatus_DRIVING_STATUS_UNSPECIFIED.Descriptor(), drivingStatus, func(en protoreflect.EnumNumber) {
+			activityChange.SetDrivingStatus(datadictionaryv1.DrivingStatus(en))
+		}, nil)
+		activityChange.SetInserted(cardStatus != 0) // Convert to boolean (1 = inserted, 0 = not inserted)
+		SetDriverActivityValue(datadictionaryv1.DriverActivityValue_DRIVER_ACTIVITY_UNSPECIFIED.Descriptor(), activity, func(en protoreflect.EnumNumber) {
+			activityChange.SetActivity(datadictionaryv1.DriverActivityValue(en))
+		}, nil)
 
 		activityChange.SetTimeOfChangeMinutes(timeOfChange)
 

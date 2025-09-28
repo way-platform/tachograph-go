@@ -8,27 +8,62 @@ import (
 	datadictionaryv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/datadictionary/v1"
 )
 
+// unmarshalCardCurrentUsage unmarshals current usage data from a card EF.
+//
+// ASN.1 Specification (Data Dictionary 2.16):
+//
+//	CardCurrentUse ::= SEQUENCE {
+//	    sessionOpenTime                   TimeReal,
+//	    sessionOpenVehicle                VehicleRegistrationIdentification
+//	}
+//
+// Binary Layout (19 bytes):
+//
+//	0-3:   sessionOpenTime (4 bytes, TimeReal)
+//	4-18:  sessionOpenVehicle (15 bytes: 1 byte nation + 14 bytes number)
+//
+// Constants:
+const (
+	// CardCurrentUse total size
+	cardCurrentUseSize = 19
+)
+
 func unmarshalCardCurrentUsage(data []byte) (*cardv1.CurrentUsage, error) {
-	if len(data) < 19 {
+	if len(data) < cardCurrentUseSize {
 		return nil, fmt.Errorf("insufficient data for current usage")
 	}
 	var target cardv1.CurrentUsage
-	r := bytes.NewReader(data)
+	offset := 0
+
 	// Read session open time (4 bytes)
-	target.SetSessionOpenTime(readTimeReal(r))
+	if offset+4 > len(data) {
+		return nil, fmt.Errorf("insufficient data for session open time")
+	}
+	target.SetSessionOpenTime(readTimeReal(bytes.NewReader(data[offset : offset+4])))
+	offset += 4
+
 	// Read session open vehicle registration (15 bytes: 1 byte nation + 14 bytes number)
-	nation, err := unmarshalNationNumericFromReader(r)
+	if offset+1 > len(data) {
+		return nil, fmt.Errorf("insufficient data for vehicle registration nation")
+	}
+	nation, err := unmarshalNationNumeric(data[offset : offset+1])
 	if err != nil {
 		return nil, fmt.Errorf("failed to read vehicle registration nation: %w", err)
 	}
+	offset++
+
 	// Create VehicleRegistrationIdentification structure
 	vehicleReg := &datadictionaryv1.VehicleRegistrationIdentification{}
 	vehicleReg.SetNation(nation)
 
-	regNumber, err := unmarshalIA5StringValueFromReader(r, 14)
+	if offset+14 > len(data) {
+		return nil, fmt.Errorf("insufficient data for vehicle registration number")
+	}
+	regNumber, err := unmarshalIA5StringValue(data[offset : offset+14])
 	if err != nil {
 		return nil, fmt.Errorf("failed to read vehicle registration number: %w", err)
 	}
+	offset += 14
 	vehicleReg.SetNumber(regNumber)
 	target.SetSessionOpenVehicle(vehicleReg)
 	return &target, nil

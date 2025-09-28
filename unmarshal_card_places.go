@@ -6,12 +6,56 @@ import (
 	"fmt"
 
 	cardv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1"
+	datadictionaryv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/datadictionary/v1"
+	"google.golang.org/protobuf/reflect/protoreflect"
 )
 
 // unmarshalCardPlaces unmarshals places data from a card EF.
+//
+// ASN.1 Specification (Data Dictionary 2.4):
+//
+//	CardPlaceDailyWorkPeriod ::= SEQUENCE {
+//	    entryTime                    TimeReal,
+//	    entryTypeDailyWorkPeriod     EntryTypeDailyWorkPeriod,
+//	    dailyWorkPeriodCountry       NationNumeric,
+//	    dailyWorkPeriodRegion        RegionNumeric,
+//	    vehicleOdometerValue         OdometerShort
+//	}
+//
+// Binary Layout (variable size):
+//
+//	0-1:   newestRecordIndex (2 bytes, big-endian)
+//	2+:    place records (12 bytes each)
+//	  - 0-3:   entryTime (4 bytes)
+//	  - 4-4:   entryTypeDailyWorkPeriod (1 byte)
+//	  - 5-5:   dailyWorkPeriodCountry (1 byte)
+//	  - 6-7:   dailyWorkPeriodRegion (2 bytes, big-endian)
+//	  - 8-10:  vehicleOdometerValue (3 bytes)
+//	  - 11-11: reserved (1 byte)
 func unmarshalCardPlaces(data []byte) (*cardv1.Places, error) {
-	if len(data) < 2 {
-		return nil, fmt.Errorf("insufficient data for places")
+	const (
+		// Minimum EF_Places record size
+		MIN_EF_PLACES_SIZE = 2
+
+		// Field offsets within place record
+		ENTRY_TIME_OFFSET                = 0
+		ENTRY_TYPE_OFFSET                = 4
+		DAILY_WORK_PERIOD_COUNTRY_OFFSET = 5
+		DAILY_WORK_PERIOD_REGION_OFFSET  = 6
+		VEHICLE_ODOMETER_VALUE_OFFSET    = 8
+		RESERVED_OFFSET                  = 11
+
+		// Field sizes
+		ENTRY_TIME_SIZE                = 4
+		ENTRY_TYPE_SIZE                = 1
+		DAILY_WORK_PERIOD_COUNTRY_SIZE = 1
+		DAILY_WORK_PERIOD_REGION_SIZE  = 2
+		VEHICLE_ODOMETER_VALUE_SIZE    = 3
+		RESERVED_SIZE                  = 1
+	)
+
+	if len(data) < MIN_EF_PLACES_SIZE {
+		return nil, fmt.Errorf("insufficient data for places: got %d bytes, need at least %d", len(data), MIN_EF_PLACES_SIZE)
 	}
 
 	var target cardv1.Places
@@ -77,7 +121,11 @@ func parsePlaceRecord(r *bytes.Reader) (*cardv1.Places_Record, error) {
 		return nil, fmt.Errorf("failed to read entry type: %w", err)
 	}
 	// Convert raw entry type to enum using protocol annotations
-	SetEntryTypeDailyWorkPeriod(int32(entryType), record.SetEntryType, nil)
+	SetEnumFromProtocolValue(datadictionaryv1.EntryTypeDailyWorkPeriod_ENTRY_TYPE_DAILY_WORK_PERIOD_UNSPECIFIED.Descriptor(),
+		int32(entryType),
+		func(enumNum protoreflect.EnumNumber) {
+			record.SetEntryType(datadictionaryv1.EntryTypeDailyWorkPeriod(enumNum))
+		}, nil)
 
 	// Read daily work period country (1 byte)
 	var country byte
@@ -85,7 +133,11 @@ func parsePlaceRecord(r *bytes.Reader) (*cardv1.Places_Record, error) {
 		return nil, fmt.Errorf("failed to read country: %w", err)
 	}
 	// Convert raw country to enum using protocol annotations
-	SetNationNumeric(int32(country), record.SetDailyWorkPeriodCountry, nil)
+	SetEnumFromProtocolValue(datadictionaryv1.NationNumeric_NATION_NUMERIC_UNSPECIFIED.Descriptor(),
+		int32(country),
+		func(enumNum protoreflect.EnumNumber) {
+			record.SetDailyWorkPeriodCountry(datadictionaryv1.NationNumeric(enumNum))
+		}, nil)
 
 	// Read daily work period region (2 bytes)
 	var region uint16

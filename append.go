@@ -283,7 +283,7 @@ func appendVU(dst []byte, file *tachographv1.File) ([]byte, error) {
 
 		// Append the 2-byte tag (0x76XX format)
 		vuTag := uint16(0x7600 | (uint16(tag) & 0xFF))
-		appendVuTag(buf, vuTag)
+		buf.Write(appendVuTag(nil, vuTag))
 
 		// Append the transfer data based on type
 		switch transfer.GetType() {

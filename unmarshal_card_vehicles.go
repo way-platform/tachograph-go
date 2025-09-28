@@ -10,9 +10,63 @@ import (
 )
 
 // unmarshalCardVehiclesUsed unmarshals vehicles used data from a card EF.
+//
+// ASN.1 Specification (Data Dictionary 2.6):
+//
+//	CardVehicleRecord ::= SEQUENCE {
+//	    vehicleOdometerBeginKm       OdometerShort,
+//	    vehicleOdometerEndKm         OdometerShort,
+//	    vehicleFirstUse              TimeReal,
+//	    vehicleLastUse               TimeReal,
+//	    vehicleRegistration          VehicleRegistrationIdentification,
+//	    vehicleIdentificationNumber  VehicleIdentificationNumber OPTIONAL,
+//	    vehicleRegistrationNation    NationNumeric OPTIONAL,
+//	    vehicleRegistrationNumber    RegistrationNumber OPTIONAL
+//	}
+//
+// Binary Layout (variable size):
+//
+//	0-1:   newestRecordIndex (2 bytes, big-endian)
+//	2+:    vehicle records (31 bytes Gen1, 48 bytes Gen2 each)
+//	  - 0-2:   vehicleOdometerBeginKm (3 bytes)
+//	  - 3-5:   vehicleOdometerEndKm (3 bytes)
+//	  - 6-9:   vehicleFirstUse (4 bytes)
+//	  - 10-13: vehicleLastUse (4 bytes)
+//	  - 14-28: vehicleRegistration (15 bytes: 1 byte nation + 14 bytes registration)
+//	  - 29-30: vehicleIdentificationNumber (2 bytes, Gen2+)
+//	  - 31-31: vehicleRegistrationNation (1 byte, Gen2+)
+//	  - 32-47: vehicleRegistrationNumber (16 bytes, Gen2+)
 func unmarshalCardVehiclesUsed(data []byte) (*cardv1.VehiclesUsed, error) {
-	if len(data) < 2 {
-		return nil, fmt.Errorf("insufficient data for vehicles used")
+	const (
+		// Minimum EF_VehiclesUsed record size
+		MIN_EF_VEHICLES_USED_SIZE = 2
+
+		// Vehicle record sizes
+		GEN1_VEHICLE_RECORD_SIZE = 31
+		GEN2_VEHICLE_RECORD_SIZE = 48
+
+		// Field offsets within vehicle record
+		VEHICLE_ODOMETER_BEGIN_OFFSET        = 0
+		VEHICLE_ODOMETER_END_OFFSET          = 3
+		VEHICLE_FIRST_USE_OFFSET             = 6
+		VEHICLE_LAST_USE_OFFSET              = 10
+		VEHICLE_REGISTRATION_OFFSET          = 14
+		VEHICLE_IDENTIFICATION_NUMBER_OFFSET = 29
+		VEHICLE_REGISTRATION_NATION_OFFSET   = 31
+		VEHICLE_REGISTRATION_NUMBER_OFFSET   = 32
+
+		// Field sizes
+		VEHICLE_ODOMETER_SIZE              = 3
+		VEHICLE_FIRST_USE_SIZE             = 4
+		VEHICLE_LAST_USE_SIZE              = 4
+		VEHICLE_REGISTRATION_SIZE          = 15
+		VEHICLE_IDENTIFICATION_NUMBER_SIZE = 2
+		VEHICLE_REGISTRATION_NATION_SIZE   = 1
+		VEHICLE_REGISTRATION_NUMBER_SIZE   = 16
+	)
+
+	if len(data) < MIN_EF_VEHICLES_USED_SIZE {
+		return nil, fmt.Errorf("insufficient data for vehicles used: got %d bytes, need at least %d", len(data), MIN_EF_VEHICLES_USED_SIZE)
 	}
 
 	var target cardv1.VehiclesUsed
@@ -102,9 +156,14 @@ func parseVehicleRecord(r *bytes.Reader, recordSize int) (*cardv1.VehiclesUsed_R
 	vehicleReg := &datadictionaryv1.VehicleRegistrationIdentification{}
 	vehicleReg.SetNation(datadictionaryv1.NationNumeric(nation))
 
-	regNumber, err := unmarshalIA5StringValueFromReader(r, 14)
-	if err != nil {
+	// Read vehicle registration number (14 bytes)
+	regNumberBytes := make([]byte, 14)
+	if _, err := r.Read(regNumberBytes); err != nil {
 		return nil, fmt.Errorf("failed to read vehicle registration number: %w", err)
+	}
+	regNumber, err := unmarshalIA5StringValue(regNumberBytes)
+	if err != nil {
+		return nil, fmt.Errorf("failed to parse vehicle registration number: %w", err)
 	}
 	vehicleReg.SetNumber(regNumber)
 	record.SetVehicleRegistration(vehicleReg)

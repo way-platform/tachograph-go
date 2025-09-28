@@ -8,27 +8,37 @@ import (
 )
 
 // unmarshalCardIc unmarshals IC identification data from EF_IC.
+//
+// ASN.1 Specification (Data Dictionary 2.13):
+//
+//	CardChipIdentification ::= SEQUENCE {
+//	    icSerialNumber              OCTET STRING (SIZE(4)),
+//	    icManufacturingReferences   OCTET STRING (SIZE(4))
+//	}
 func unmarshalCardIc(data []byte) (*cardv1.Ic, error) {
-	if len(data) < 8 {
-		return nil, fmt.Errorf("insufficient data for IC identification: got %d bytes, need 8", len(data))
+	const (
+		// CardChipIdentification layout constants
+		lenIcSerialNumber            = 4
+		lenIcManufacturingReferences = 4
+		totalLength                  = lenIcSerialNumber + lenIcManufacturingReferences
+	)
+
+	if len(data) < totalLength {
+		return nil, fmt.Errorf("insufficient data for IC identification: got %d bytes, need %d", len(data), totalLength)
 	}
 
 	var target cardv1.Ic
 	r := bytes.NewReader(data)
 
-	// According to Data Dictionary Section 2.13, EF_IC contains:
-	// - IC Serial Number (4 bytes)
-	// - IC Manufacturing References (4 bytes)
-
 	// Read IC Serial Number (4 bytes)
-	serialBytes := make([]byte, 4)
+	serialBytes := make([]byte, lenIcSerialNumber)
 	if _, err := r.Read(serialBytes); err != nil {
 		return nil, fmt.Errorf("failed to read IC serial number: %w", err)
 	}
 	target.SetIcSerialNumber(serialBytes)
 
 	// Read IC Manufacturing References (4 bytes)
-	mfgBytes := make([]byte, 4)
+	mfgBytes := make([]byte, lenIcManufacturingReferences)
 	if _, err := r.Read(mfgBytes); err != nil {
 		return nil, fmt.Errorf("failed to read IC manufacturing references: %w", err)
 	}

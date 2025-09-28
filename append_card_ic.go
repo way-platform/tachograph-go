@@ -5,29 +5,42 @@ import (
 )
 
 // AppendCardIc appends IC identification data to a byte slice.
+//
+// ASN.1 Specification (Data Dictionary 2.13):
+//
+//	CardChipIdentification ::= SEQUENCE {
+//	    icSerialNumber              OCTET STRING (SIZE(4)),
+//	    icManufacturingReferences   OCTET STRING (SIZE(4))
+//	}
 func AppendCardIc(data []byte, ic *cardv1.Ic) ([]byte, error) {
+	const (
+		// CardChipIdentification layout constants
+		lenIcSerialNumber            = 4
+		lenIcManufacturingReferences = 4
+	)
+
 	if ic == nil {
 		return data, nil
 	}
 
-	// IC Serial Number (4 bytes)
+	// Append IC Serial Number (4 bytes)
 	serialBytes := ic.GetIcSerialNumber()
-	if len(serialBytes) >= 4 {
-		data = append(data, serialBytes[:4]...)
+	if len(serialBytes) >= lenIcSerialNumber {
+		data = append(data, serialBytes[:lenIcSerialNumber]...)
 	} else {
 		// Pad with zeros
-		padded := make([]byte, 4)
+		padded := make([]byte, lenIcSerialNumber)
 		copy(padded, serialBytes)
 		data = append(data, padded...)
 	}
 
-	// IC Manufacturing References (4 bytes)
+	// Append IC Manufacturing References (4 bytes)
 	mfgBytes := ic.GetIcManufacturingReferences()
-	if len(mfgBytes) >= 4 {
-		data = append(data, mfgBytes[:4]...)
+	if len(mfgBytes) >= lenIcManufacturingReferences {
+		data = append(data, mfgBytes[:lenIcManufacturingReferences]...)
 	} else {
 		// Pad with zeros
-		padded := make([]byte, 4)
+		padded := make([]byte, lenIcManufacturingReferences)
 		copy(padded, mfgBytes)
 		data = append(data, padded...)
 	}

@@ -7,14 +7,14 @@ import (
 
 	cardv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1"
 	datadictionaryv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/datadictionary/v1"
+	"google.golang.org/protobuf/reflect/protoreflect"
 )
 
 func unmarshalEventsData(data []byte) (*cardv1.EventsData, error) {
-	const recordSize = 24
 	r := bytes.NewReader(data)
 	var records []*cardv1.EventsData_Record
-	for r.Len() >= recordSize {
-		recordData := make([]byte, recordSize)
+	for r.Len() >= cardEventFaultRecordSize {
+		recordData := make([]byte, cardEventFaultRecordSize)
 		r.Read(recordData)
 		// Check if this is a valid record by examining the event begin time (first 4 bytes after event type)
 		// Event type is 1 byte, so event begin time starts at byte 1
@@ -41,27 +41,81 @@ func unmarshalEventsData(data []byte) (*cardv1.EventsData, error) {
 }
 
 // unmarshalEventRecord parses a single 24-byte event record.
+//
+// ASN.1 Specification (Data Dictionary 2.20):
+//
+//	CardEventRecord ::= SEQUENCE {
+//	    eventType                   EventFaultType,                     -- 1 byte
+//	    eventBeginTime              TimeReal,                         -- 4 bytes
+//	    eventEndTime                TimeReal,                         -- 4 bytes
+//	    eventVehicleRegistration    VehicleRegistrationIdentification -- 15 bytes
+//	}
 func unmarshalEventRecord(data []byte) (*cardv1.EventsData_Record, error) {
+	const (
+		// CardEventRecord layout constants
+		lenEventType                = 1
+		lenEventBeginTime           = 4
+		lenEventEndTime             = 4
+		lenEventVehicleRegistration = 15
+		totalLength                 = lenEventType + lenEventBeginTime + lenEventEndTime + lenEventVehicleRegistration
+	)
+
+	if len(data) < totalLength {
+		return nil, fmt.Errorf("insufficient data for event record: got %d bytes, need %d", len(data), totalLength)
+	}
+
 	var rec cardv1.EventsData_Record
-	r := bytes.NewReader(data)
-	eventType, _ := r.ReadByte()
-	// Convert raw event type to enum using protocol annotations
-	SetEventFaultType(int32(eventType), rec.SetEventType, nil)
-	rec.SetEventBeginTime(readTimeReal(r))
-	rec.SetEventEndTime(readTimeReal(r))
+	offset := 0
+
+	// Read event type (1 byte) and convert using generic enum helper
+	if offset+1 > len(data) {
+		return nil, fmt.Errorf("insufficient data for event type")
+	}
+	eventType := data[offset]
+	enumDesc := datadictionaryv1.EventFaultType_EVENT_FAULT_TYPE_UNSPECIFIED.Descriptor()
+	SetEnumFromProtocolValue(enumDesc, int32(eventType),
+		func(enumNum protoreflect.EnumNumber) {
+			rec.SetEventType(datadictionaryv1.EventFaultType(enumNum))
+		}, nil)
+	offset++
+
+	// Read event begin time (4 bytes)
+	if offset+4 > len(data) {
+		return nil, fmt.Errorf("insufficient data for event begin time")
+	}
+	rec.SetEventBeginTime(readTimeReal(bytes.NewReader(data[offset : offset+4])))
+	offset += 4
+
+	// Read event end time (4 bytes)
+	if offset+4 > len(data) {
+		return nil, fmt.Errorf("insufficient data for event end time")
+	}
+	rec.SetEventEndTime(readTimeReal(bytes.NewReader(data[offset : offset+4])))
+	offset += 4
+
 	// Read vehicle registration nation (1 byte)
-	nation, err := unmarshalNationNumericFromReader(r)
+	if offset+1 > len(data) {
+		return nil, fmt.Errorf("insufficient data for vehicle registration nation")
+	}
+	nation, err := unmarshalNationNumeric(data[offset : offset+1])
 	if err != nil {
 		return nil, fmt.Errorf("failed to read vehicle registration nation: %w", err)
 	}
+	offset++
+
 	// Create VehicleRegistrationIdentification structure
 	vehicleReg := &datadictionaryv1.VehicleRegistrationIdentification{}
 	vehicleReg.SetNation(nation)
 
-	regNumber, err := unmarshalIA5StringValueFromReader(r, 14)
+	// Read vehicle registration number (14 bytes)
+	if offset+14 > len(data) {
+		return nil, fmt.Errorf("insufficient data for vehicle registration number")
+	}
+	regNumber, err := unmarshalIA5StringValue(data[offset : offset+14])
 	if err != nil {
 		return nil, fmt.Errorf("failed to read vehicle registration number: %w", err)
 	}
+	offset += 14
 	vehicleReg.SetNumber(regNumber)
 	rec.SetEventVehicleRegistration(vehicleReg)
 	return &rec, nil

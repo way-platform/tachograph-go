@@ -6,9 +6,24 @@ import (
 	"fmt"
 
 	cardv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1"
+	datadictionaryv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/datadictionary/v1"
+	"google.golang.org/protobuf/reflect/protoreflect"
 )
 
 // unmarshalCardSpecificConditions unmarshals specific conditions data from a card EF.
+//
+// TODO: Add ASN.1 Specification - SpecificConditionRecord definition not found in data dictionary
+//
+// Binary Layout (variable size):
+//
+//	Each record: 5 bytes (4 bytes time + 1 byte condition type)
+//
+// Constants:
+const (
+	// SpecificConditionRecord size
+	specificConditionRecordSize = 5
+)
+
 func unmarshalCardSpecificConditions(data []byte) (*cardv1.SpecificConditions, error) {
 	if len(data) == 0 {
 		// Empty data is valid - no specific conditions
@@ -22,7 +37,7 @@ func unmarshalCardSpecificConditions(data []byte) (*cardv1.SpecificConditions, e
 	var records []*cardv1.SpecificConditions_Record
 
 	// Each record is 5 bytes: 4 bytes time + 1 byte condition type
-	recordSize := 5
+	recordSize := specificConditionRecordSize
 
 	for r.Len() >= recordSize {
 		record, err := parseSpecificConditionRecord(r)
@@ -64,7 +79,9 @@ func parseSpecificConditionRecord(r *bytes.Reader) (*cardv1.SpecificConditions_R
 		return nil, fmt.Errorf("failed to read condition type: %w", err)
 	}
 	// Convert raw condition type to enum using protocol annotations
-	SetSpecificConditionType(int32(conditionType), record.SetSpecificConditionType, nil)
+	SetSpecificConditionType(datadictionaryv1.SpecificConditionType_SPECIFIC_CONDITION_TYPE_UNSPECIFIED.Descriptor(), int32(conditionType), func(st protoreflect.EnumNumber) {
+		record.SetSpecificConditionType(datadictionaryv1.SpecificConditionType(st))
+	}, nil)
 
 	return record, nil
 }

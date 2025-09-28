@@ -1,7 +1,6 @@
 package tachograph
 
 import (
-	"bytes"
 	"fmt"
 
 	datadictionaryv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/datadictionary/v1"
@@ -9,8 +8,34 @@ import (
 )
 
 // UnmarshalVuTechnicalData unmarshals VU technical data from a VU transfer.
-func UnmarshalVuTechnicalData(r *bytes.Reader, target *vuv1.TechnicalData, generation int) (int, error) {
-	initialLen := r.Len()
+//
+// ASN.1 Specification (Data Dictionary 2.2.6.5):
+//
+//	VuTechnicalDataFirstGen ::= SEQUENCE {
+//	    vuIdentification                  VuIdentification,
+//	    vuCalibrationData                 VuCalibrationData,
+//	    vuCardData                        VuCardData,
+//	    signature                         SignatureFirstGen
+//	}
+//
+//	VuTechnicalDataSecondGen ::= SEQUENCE {
+//	    vuIdentificationRecordArray       VuIdentificationRecordArray,
+//	    vuCalibrationRecordArray          VuCalibrationRecordArray,
+//	    vuCardRecordArray                 VuCardRecordArray,
+//	    signatureRecordArray              SignatureRecordArray
+//	}
+//
+// Binary Layout (Gen1):
+//
+//	Variable size structure containing:
+//	- vuIdentification (variable size)
+//	- vuCalibrationData (variable size)
+//	- vuCardData (variable size)
+//	- signature (128 bytes)
+//
+
+func UnmarshalVuTechnicalData(data []byte, offset int, target *vuv1.TechnicalData, generation int) (int, error) {
+	startOffset := offset
 
 	// Set generation
 	if generation == 1 {
@@ -23,8 +48,8 @@ func UnmarshalVuTechnicalData(r *bytes.Reader, target *vuv1.TechnicalData, gener
 	// This ensures the interface is complete while allowing for future enhancement
 
 	// Read all remaining data
-	remainingData := make([]byte, r.Len())
-	if _, err := r.Read(remainingData); err != nil {
+	remainingData, offset, err := readBytesFromBytes(data, offset, len(data)-offset)
+	if err != nil {
 		return 0, fmt.Errorf("failed to read technical data: %w", err)
 	}
 
@@ -35,5 +60,5 @@ func UnmarshalVuTechnicalData(r *bytes.Reader, target *vuv1.TechnicalData, gener
 		target.SetSignatureGen2(remainingData)
 	}
 
-	return initialLen - r.Len(), nil
+	return offset - startOffset, nil
 }

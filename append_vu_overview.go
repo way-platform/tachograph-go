@@ -28,94 +28,99 @@ func appendOverviewGen1(buf *bytes.Buffer, overview *vuv1.Overview) {
 	// MemberStateCertificate (194 bytes)
 	memberStateCert := overview.GetMemberStateCertificate()
 	if len(memberStateCert) >= 194 {
-		appendVuBytes(buf, memberStateCert[:194])
+		buf.Write(appendVuBytes(nil, memberStateCert[:194]))
 	} else {
 		// Pad to 194 bytes
 		padded := make([]byte, 194)
 		copy(padded, memberStateCert)
-		appendVuBytes(buf, padded)
+		buf.Write(appendVuBytes(nil, padded))
 	}
 
 	// VuCertificate (194 bytes)
 	vuCert := overview.GetVuCertificate()
 	if len(vuCert) >= 194 {
-		appendVuBytes(buf, vuCert[:194])
+		buf.Write(appendVuBytes(nil, vuCert[:194]))
 	} else {
 		// Pad to 194 bytes
 		padded := make([]byte, 194)
 		copy(padded, vuCert)
-		appendVuBytes(buf, padded)
+		buf.Write(appendVuBytes(nil, padded))
 	}
 
 	// VehicleIdentificationNumber (17 bytes)
 	vin := overview.GetVehicleIdentificationNumber()
 	if vin != nil {
-		appendVuString(buf, vin.GetDecoded(), 17)
+		buf.Write(appendVuString(nil, vin.GetDecoded(), 17))
 	} else {
-		appendVuString(buf, "", 17)
+		buf.Write(appendVuString(nil, "", 17))
 	}
 
 	// VehicleRegistrationIdentification (15 bytes: nation(1) + regnum(14))
 	vehicleReg := overview.GetVehicleRegistrationWithNation()
 	if vehicleReg != nil {
-		appendUint8(buf, uint8(vehicleReg.GetNation()))
+		buf.Write(appendUint8(nil, uint8(vehicleReg.GetNation())))
 		// First byte of registration is codepage (assume codepage 1 = ISO-8859-1)
-		appendUint8(buf, 1)
+		buf.Write(appendUint8(nil, 1))
 		// Registration number (13 bytes)
 		number := vehicleReg.GetNumber()
 		if number != nil {
-			appendVuString(buf, number.GetDecoded(), 13)
+			buf.Write(appendVuString(nil, number.GetDecoded(), 13))
 		} else {
-			appendVuString(buf, "", 13)
+			buf.Write(appendVuString(nil, "", 13))
 		}
 	} else {
 		// Default values
-		appendUint8(buf, 0)         // nation
-		appendUint8(buf, 1)         // codepage
-		appendVuString(buf, "", 13) // empty registration
+		buf.Write(appendUint8(nil, 0))         // nation
+		buf.Write(appendUint8(nil, 1))         // codepage
+		buf.Write(appendVuString(nil, "", 13)) // empty registration
 	}
 
 	// CurrentDateTime (4 bytes)
-	appendVuTimeReal(buf, overview.GetCurrentDateTime())
+	buf.Write(appendVuTimeReal(nil, overview.GetCurrentDateTime()))
 
 	// VuDownloadablePeriod (8 bytes: 4 bytes min + 4 bytes max)
 	downloadablePeriod := overview.GetDownloadablePeriod()
 	if downloadablePeriod != nil {
-		appendVuTimeReal(buf, downloadablePeriod.GetMinTime())
-		appendVuTimeReal(buf, downloadablePeriod.GetMaxTime())
+		buf.Write(appendVuTimeReal(nil, downloadablePeriod.GetMinTime()))
+		buf.Write(appendVuTimeReal(nil, downloadablePeriod.GetMaxTime()))
 	} else {
-		appendUint32(buf, 0)
-		appendUint32(buf, 0)
+		buf.Write(appendUint32(nil, 0))
+		buf.Write(appendUint32(nil, 0))
 	}
 
 	// CardSlotsStatus (1 byte - driver and co-driver slots)
 	driverSlot := mapSlotCardTypeToUint8(overview.GetDriverSlotCard())
 	coDriverSlot := mapSlotCardTypeToUint8(overview.GetCoDriverSlotCard())
 	slotsStatus := (driverSlot << 4) | (coDriverSlot & 0x0F)
-	appendUint8(buf, slotsStatus)
+	buf.Write(appendUint8(nil, slotsStatus))
 
 	// VuDownloadActivityData (4 bytes - last download time)
-	appendVuTimeReal(buf, overview.GetLastDownloadTime())
+	downloadActivities := overview.GetDownloadActivities()
+	if len(downloadActivities) > 0 {
+		buf.Write(appendVuTimeReal(nil, downloadActivities[0].GetDownloadingTime()))
+	} else {
+		buf.Write(appendVuTimeReal(nil, nil))
+	}
 
 	// VuCompanyLocksData - variable length
 	// For now, we'll append the company locks in a simplified format
 	companyLocks := overview.GetCompanyLocks()
 	for _, lock := range companyLocks {
-		appendVuTimeReal(buf, lock.GetLockInTime())
-		appendVuTimeReal(buf, lock.GetLockOutTime())
+		buf.Write(appendVuTimeReal(nil, lock.GetLockInTime()))
+		buf.Write(appendVuTimeReal(nil, lock.GetLockOutTime()))
 		companyName := lock.GetCompanyName()
 		if companyName != nil {
-			appendVuString(buf, companyName.GetDecoded(), 36)
+			buf.Write(appendVuString(nil, companyName.GetDecoded(), 36))
 		} else {
-			appendVuString(buf, "", 36)
+			buf.Write(appendVuString(nil, "", 36))
 		}
 		companyAddress := lock.GetCompanyAddress()
 		if companyAddress != nil {
-			appendVuString(buf, companyAddress.GetDecoded(), 36)
+			buf.Write(appendVuString(nil, companyAddress.GetDecoded(), 36))
 		} else {
-			appendVuString(buf, "", 36)
+			buf.Write(appendVuString(nil, "", 36))
 		}
-		appendVuFullCardNumber(buf, lock.GetCompanyCardNumber(), 16) // Card number field
+		buf.Write(appendVuFullCardNumber(nil, lock.GetCompanyCardNumber(), 16)) // Card number field
 	}
 
 	// VuControlActivityData - variable length
@@ -140,25 +145,25 @@ func appendOverviewGen1(buf *bytes.Buffer, overview *vuv1.Overview) {
 			if controlType.GetCalibrationChecking() {
 				b |= 0x08 // bit 'e'
 			}
-			appendUint8(buf, b)
+			buf.Write(appendUint8(nil, b))
 		} else {
-			appendUint8(buf, 0)
+			buf.Write(appendUint8(nil, 0))
 		}
-		appendVuTimeReal(buf, control.GetControlTime())
-		appendVuFullCardNumber(buf, control.GetControlCardNumber(), 16)
-		appendVuTimeReal(buf, control.GetDownloadPeriodBeginTime())
-		appendVuTimeReal(buf, control.GetDownloadPeriodEndTime())
+		buf.Write(appendVuTimeReal(nil, control.GetControlTime()))
+		buf.Write(appendVuFullCardNumber(nil, control.GetControlCardNumber(), 16))
+		buf.Write(appendVuTimeReal(nil, control.GetDownloadPeriodBeginTime()))
+		buf.Write(appendVuTimeReal(nil, control.GetDownloadPeriodEndTime()))
 	}
 
 	// Signature (128 bytes for Gen1)
 	signature := overview.GetSignatureGen1()
 	if len(signature) >= 128 {
-		appendVuBytes(buf, signature[:128])
+		buf.Write(appendVuBytes(nil, signature[:128]))
 	} else {
 		// Pad to 128 bytes
 		padded := make([]byte, 128)
 		copy(padded, signature)
-		appendVuBytes(buf, padded)
+		buf.Write(appendVuBytes(nil, padded))
 	}
 }
 

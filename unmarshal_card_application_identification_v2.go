@@ -8,9 +8,37 @@ import (
 	cardv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1"
 )
 
+// unmarshalCardApplicationIdentificationV2 parses the binary data for an EF_ApplicationIdentificationV2 record.
+//
+// ASN.1 Specification (Data Dictionary 2.2):
+//
+//	ApplicationIdentificationV2 ::= SEQUENCE {
+//	    noOfBorderCrossingRecords    INTEGER(0..255),
+//	    noOfLoadUnloadRecords        INTEGER(0..255),
+//	    noOfLoadTypeEntryRecords     INTEGER(0..255),
+//	    vuConfigurationLengthRange   INTEGER(0..255)
+//	}
+//
+// Binary Layout (4 bytes):
+//
+//	0-0: noOfBorderCrossingRecords (1 byte)
+//	1-1: noOfLoadUnloadRecords (1 byte)
+//	2-2: noOfLoadTypeEntryRecords (1 byte)
+//	3-3: vuConfigurationLengthRange (1 byte)
 func unmarshalCardApplicationIdentificationV2(data []byte) (*cardv1.ApplicationIdentificationV2, error) {
-	if len(data) < 4 {
-		return nil, fmt.Errorf("insufficient data for application identification V2")
+	const (
+		// EF_ApplicationIdentificationV2 record size
+		EF_APPLICATION_IDENTIFICATION_V2_SIZE = 4
+
+		// Field offsets
+		NO_OF_BORDER_CROSSING_RECORDS_OFFSET = 0
+		NO_OF_LOAD_UNLOAD_RECORDS_OFFSET     = 1
+		NO_OF_LOAD_TYPE_ENTRY_RECORDS_OFFSET = 2
+		VU_CONFIGURATION_LENGTH_RANGE_OFFSET = 3
+	)
+
+	if len(data) < EF_APPLICATION_IDENTIFICATION_V2_SIZE {
+		return nil, fmt.Errorf("insufficient data for application identification V2: got %d bytes, need %d", len(data), EF_APPLICATION_IDENTIFICATION_V2_SIZE)
 	}
 	var target cardv1.ApplicationIdentificationV2
 	r := bytes.NewReader(data)

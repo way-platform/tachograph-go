@@ -1,24 +1,41 @@
 package tachograph
 
 import (
-	"bytes"
-
 	datadictionaryv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/datadictionary/v1"
 	vuv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/vu/v1"
 )
 
 // UnmarshalDownloadInterfaceVersion parses the download interface version from VU data
-func UnmarshalDownloadInterfaceVersion(r *bytes.Reader, version *vuv1.DownloadInterfaceVersion) (int, error) {
-	startPos := int64(r.Len())
+//
+// ASN.1 Specification (Data Dictionary 2.2.6.1):
+//
+//	DownloadInterfaceVersion ::= SEQUENCE {
+//	    generation    Generation,
+//	    version       Version
+//	}
+//
+// Binary Layout (2 bytes):
+//
+//	0-0:   generation (1 byte)
+//	1-1:   version (1 byte)
+//
+// Constants:
+const (
+	// DownloadInterfaceVersion total size
+	downloadInterfaceVersionSize = 2
+)
+
+func UnmarshalDownloadInterfaceVersion(data []byte, offset int, version *vuv1.DownloadInterfaceVersion) (int, error) {
+	startOffset := offset
 
 	// DownloadInterfaceVersion structure (2 bytes: generation + version)
 	// See Appendix 7, Section 2.2.6.1
-	generationByte, err := readUint8(r)
+	generationByte, offset, err := readUint8FromBytes(data, offset)
 	if err != nil {
 		return 0, err
 	}
 
-	versionByte, err := readUint8(r)
+	versionByte, offset, err := readUint8FromBytes(data, offset)
 	if err != nil {
 		return 0, err
 	}
@@ -43,6 +60,6 @@ func UnmarshalDownloadInterfaceVersion(r *bytes.Reader, version *vuv1.DownloadIn
 		version.SetVersion(vuv1.Version_VERSION_UNSPECIFIED)
 	}
 
-	bytesRead := int(startPos - int64(r.Len()))
+	bytesRead := offset - startOffset
 	return bytesRead, nil
 }

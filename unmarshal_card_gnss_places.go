@@ -9,9 +9,51 @@ import (
 )
 
 // unmarshalCardGnssPlaces unmarshals GNSS places data from a card EF.
+//
+// ASN.1 Specification (Data Dictionary 2.5):
+//
+//	CardGNSSPlaceRecord ::= SEQUENCE {
+//	    entryTime                    TimeReal,
+//	    gnssPlaceAccuracy           GNSSPlaceAccuracy,
+//	    longitude                    Longitude,
+//	    latitude                     Latitude,
+//	    vehicleOdometerValue         OdometerShort
+//	}
+//
+// Binary Layout (variable size):
+//
+//	0-1:   newestRecordIndex (2 bytes, big-endian)
+//	2+:    GNSS place records (variable size each)
+//	  - 0-3:   entryTime (4 bytes)
+//	  - 4-4:   gnssPlaceAccuracy (1 byte)
+//	  - 5-8:   longitude (4 bytes, big-endian)
+//	  - 9-12:  latitude (4 bytes, big-endian)
+//	  - 13-15: vehicleOdometerValue (3 bytes)
 func unmarshalCardGnssPlaces(data []byte) (*cardv1.GnssPlaces, error) {
-	if len(data) < 2 {
-		return nil, fmt.Errorf("insufficient data for GNSS places")
+	const (
+		// Minimum EF_GNSSPlaces record size
+		MIN_EF_GNSS_PLACES_SIZE = 2
+
+		// GNSS place record size
+		GNSS_PLACE_RECORD_SIZE = 16
+
+		// Field offsets within GNSS place record
+		ENTRY_TIME_OFFSET             = 0
+		GNSS_PLACE_ACCURACY_OFFSET    = 4
+		LONGITUDE_OFFSET              = 5
+		LATITUDE_OFFSET               = 9
+		VEHICLE_ODOMETER_VALUE_OFFSET = 13
+
+		// Field sizes
+		ENTRY_TIME_SIZE             = 4
+		GNSS_PLACE_ACCURACY_SIZE    = 1
+		LONGITUDE_SIZE              = 4
+		LATITUDE_SIZE               = 4
+		VEHICLE_ODOMETER_VALUE_SIZE = 3
+	)
+
+	if len(data) < MIN_EF_GNSS_PLACES_SIZE {
+		return nil, fmt.Errorf("insufficient data for GNSS places: got %d bytes, need at least %d", len(data), MIN_EF_GNSS_PLACES_SIZE)
 	}
 
 	var target cardv1.GnssPlaces

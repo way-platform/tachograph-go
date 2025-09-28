@@ -17,9 +17,42 @@ import "wayplatform/connect/tachograph/vu/v1/versioning.proto";
 // This message corresponds to the data defined in the regulation document:
 // Appendix 7, Section 2.2.6.2: "Positive Response Transfer Data Overview".
 message Overview {
+  // Represents a record of a download activity from the VU.
+  //
+  // This message corresponds to the `VuDownloadActivityData` data type.
+  // See Data Dictionary, Section 2.195.
+  //
+  // ASN.1 Definition (Gen1):
+  //
+  //     VuDownloadActivityData ::= SEQUENCE {
+  //         downloadingTime TimeReal,
+  //         fullCardNumber FullCardNumber,
+  //         companyOrWorkshopName Name
+  //     }
+  //
+  // For Gen2, this is typically part of a `VuDownloadActivityDataRecordArray`.
+  message DownloadActivity {
+    // The time the download was performed.
+    //
+    // See Data Dictionary, Section 2.162, `TimeReal`.
+    // ASN.1 Definition:
+    //
+    //     TimeReal ::= INTEGER (0..2^32-1)
+    google.protobuf.Timestamp downloading_time = 1;
 
+    // The card number of the company or workshop that performed the download.
+    //
+    // See Data Dictionary, Section 2.73, `FullCardNumber`.
+    datadictionary.v1.FullCardNumber full_card_number = 2;
 
-
+    // The name of the company or workshop.
+    //
+    // See Data Dictionary, Section 2.99, `Name`.
+    // ASN.1 Definition:
+    //
+    //     Name ::= SEQUENCE { codePage INTEGER(0..255), name OCTET STRING (SIZE(36)) }
+    wayplatform.connect.tachograph.datadictionary.v1.StringValue company_or_workshop_name = 3;
+  }
 
   // Represents a company lock record.
   //
@@ -175,17 +208,29 @@ message Overview {
   // Type of card in the co-driver slot.
   datadictionary.v1.SlotCardType co_driver_slot_card = 9;
 
-  // Time of the last VU download.
+  // Information about recent download activities.
+  // This field uses a repeated message to represent both the single record from Gen1
+  // and the record array from Gen2, as per the project's design guidelines.
   //
-  // See Data Dictionary, Section 2.195, `VuDownloadActivityData`.
-  // ASN.1 Definition:
+  // See Data Dictionary, Sections 2.195 and 2.196.
+  //
+  // ASN.1 Definition (Gen1 - `VuDownloadActivityData`):
   //
   //     VuDownloadActivityData ::= SEQUENCE {
   //         downloadingTime TimeReal,
   //         fullCardNumber FullCardNumber,
   //         companyOrWorkshopName Name
   //     }
-  google.protobuf.Timestamp last_download_time = 10;
+  //
+  // ASN.1 Definition (Gen2 - `VuDownloadActivityDataRecordArray`):
+  //
+  //     VuDownloadActivityDataRecordArray ::= SEQUENCE {
+  //         recordType RecordType,
+  //         recordSize INTEGER(0..2^16-1),
+  //         noOfRecords INTEGER(0..2^16-1),
+  //         records SET SIZE(noOfRecords) OF VuDownloadActivityData
+  //     }
+  repeated DownloadActivity download_activities = 10;
 
   // All company locks stored in the VU.
   //

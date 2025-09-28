@@ -1,9 +1,8 @@
 package tachograph
 
 import (
-	"bytes"
-	"encoding/binary"
 	"fmt"
+	"time"
 
 	"google.golang.org/protobuf/types/known/timestamppb"
 
@@ -12,78 +11,131 @@ import (
 )
 
 // UnmarshalVuActivities unmarshals VU activities data from a VU transfer.
-func UnmarshalVuActivities(r *bytes.Reader, target *vuv1.Activities, generation int) (int, error) {
+//
+// ASN.1 Specification (Data Dictionary 2.2.6.2):
+//
+//	VuActivitiesFirstGen ::= SEQUENCE {
+//	    dateOfDay                        TimeReal,
+//	    odometerValueMidnight            OdometerValueMidnight,
+//	    vuCardIWData                     VuCardIWData,
+//	    vuActivityDailyData              VuActivityDailyData,
+//	    vuPlaceDailyWorkPeriodData       VuPlaceDailyWorkPeriodData,
+//	    vuSpecificConditionData          VuSpecificConditionData,
+//	    signature                        SignatureFirstGen
+//	}
+//
+//	VuActivitiesSecondGen ::= SEQUENCE {
+//	    dateOfDayDownloadedRecordArray           DateOfDayDownloadedRecordArray,
+//	    odometerValueMidnightRecordArray         OdometerValueMidnightRecordArray,
+//	    vuCardIWRecordArray                      VuCardIWRecordArray,
+//	    vuActivityDailyRecordArray               VuActivityDailyRecordArray,
+//	    vuPlaceDailyWorkPeriodRecordArray        VuPlaceDailyWorkPeriodRecordArray,
+//	    vuGNSSADRecordArray                      VuGNSSADRecordArray,
+//	    vuSpecificConditionRecordArray           VuSpecificConditionRecordArray,
+//	    vuBorderCrossingRecordArray              VuBorderCrossingRecordArray OPTIONAL,
+//	    vuLoadUnloadRecordArray                  VuLoadUnloadRecordArray OPTIONAL,
+//	    signatureRecordArray                     SignatureRecordArray
+//	}
+//
+// Binary Layout (Gen1):
+//
+//	0-3:     dateOfDay (4 bytes, TimeReal)
+//	4-6:     odometerValueMidnight (3 bytes)
+//	7+:      vuCardIWData (variable size)
+//	...:     vuActivityDailyData (variable size)
+//	...:     vuPlaceDailyWorkPeriodData (variable size)
+//	...:     vuSpecificConditionData (variable size)
+//	...:     signature (128 bytes)
+//
+// Constants:
+const (
+	// VuActivitiesFirstGen fixed fields size
+	vuActivitiesFirstGenFixedSize = 4 + 3 // dateOfDay + odometerValueMidnight = 7 bytes
+	
+	// Time and odometer
+	timeRealSize = 4
+	odometerValueMidnightSize = 3
+	
+	// Signature
+	signatureFirstGenSize = 128
+)
+
+func UnmarshalVuActivities(data []byte, offset int, target *vuv1.Activities, generation int) (int, error) {
 	switch generation {
 	case 1:
-		return unmarshalVuActivitiesGen1(r, target)
+		return unmarshalVuActivitiesGen1(data, offset, target)
 	case 2:
-		return unmarshalVuActivitiesGen2(r, target)
+		return unmarshalVuActivitiesGen2(data, offset, target)
 	default:
 		return 0, fmt.Errorf("unsupported generation: %d", generation)
 	}
 }
 
 // unmarshalVuActivitiesGen1 unmarshals Generation 1 VU activities
-func unmarshalVuActivitiesGen1(r *bytes.Reader, target *vuv1.Activities) (int, error) {
-	initialLen := r.Len()
+func unmarshalVuActivitiesGen1(data []byte, offset int, target *vuv1.Activities) (int, error) {
+	startOffset := offset
 	target.SetGeneration(datadictionaryv1.Generation_GENERATION_1)
 
 	// Read TimeReal (4 bytes) - this is the date of the day
-	target.SetDateOfDay(readTimeReal(r))
+	timeReal, offset, err := readVuTimeRealFromBytes(data, offset)
+	if err != nil {
+		return 0, fmt.Errorf("failed to read date of day: %w", err)
+	}
+	target.SetDateOfDay(timestamppb.New(time.Unix(timeReal, 0)))
 
 	// Read OdometerValueMidnight (3 bytes)
-	odometerBytes := make([]byte, 3)
-	if _, err := r.Read(odometerBytes); err != nil {
+	odometerValue, offset, err := readVuOdometerFromBytes(data, offset)
+	if err != nil {
 		return 0, fmt.Errorf("failed to read odometer value midnight: %w", err)
 	}
-	target.SetOdometerMidnightKm(int32(binary.BigEndian.Uint32(append([]byte{0}, odometerBytes...))))
+	target.SetOdometerMidnightKm(int32(odometerValue))
 
 	// Parse VuCardIWData
-	cardIWData, err := parseVuCardIWData(r)
+	cardIWData, offset, err := parseVuCardIWData(data, offset)
 	if err != nil {
 		return 0, fmt.Errorf("failed to parse card IW data: %w", err)
 	}
 	target.SetCardIwData(cardIWData)
 
 	// Parse VuActivityDailyData
-	activityChanges, err := parseVuActivityDailyData(r)
+	activityChanges, offset, err := parseVuActivityDailyData(data, offset)
 	if err != nil {
 		return 0, fmt.Errorf("failed to parse activity daily data: %w", err)
 	}
 	target.SetActivityChanges(activityChanges)
 
 	// Parse VuPlaceDailyWorkPeriodData
-	places, err := parseVuPlaceDailyWorkPeriodData(r)
+	places, offset, err := parseVuPlaceDailyWorkPeriodData(data, offset)
 	if err != nil {
 		return 0, fmt.Errorf("failed to parse place daily work period data: %w", err)
 	}
 	target.SetPlaces(places)
 
 	// Parse VuSpecificConditionData
-	specificConditions, err := parseVuSpecificConditionData(r)
+	specificConditions, offset, err := parseVuSpecificConditionData(data, offset)
 	if err != nil {
 		return 0, fmt.Errorf("failed to parse specific condition data: %w", err)
 	}
 	target.SetSpecificConditions(specificConditions)
 
 	// Read signature (128 bytes for Gen1)
-	signatureBytes := make([]byte, 128)
-	if _, err := r.Read(signatureBytes); err != nil {
+	signatureBytes, offset, err := readBytesFromBytes(data, offset, 128)
+	if err != nil {
 		return 0, fmt.Errorf("failed to read signature: %w", err)
 	}
 	target.SetSignatureGen1(signatureBytes)
 
-	return initialLen - r.Len(), nil
+	return offset - startOffset, nil
 }
 
 // unmarshalVuActivitiesGen2 unmarshals Generation 2 VU activities
-func unmarshalVuActivitiesGen2(r *bytes.Reader, target *vuv1.Activities) (int, error) {
-	initialLen := r.Len()
+func unmarshalVuActivitiesGen2(data []byte, offset int, target *vuv1.Activities) (int, error) {
+	startOffset := offset
 	target.SetGeneration(datadictionaryv1.Generation_GENERATION_2)
 
 	// Gen2 format uses record arrays, each with a header
 	// Parse DateOfDayDownloadedRecordArray
-	dates, err := parseDateOfDayDownloadedRecordArray(r)
+	dates, offset, err := parseDateOfDayDownloadedRecordArray(data, offset)
 	if err != nil {
 		return 0, fmt.Errorf("failed to parse date of day downloaded record array: %w", err)
 	}
@@ -92,7 +144,7 @@ func unmarshalVuActivitiesGen2(r *bytes.Reader, target *vuv1.Activities) (int, e
 	}
 
 	// Parse OdometerValueMidnightRecordArray
-	odometerValues, err := parseOdometerValueMidnightRecordArray(r)
+	odometerValues, offset, err := parseOdometerValueMidnightRecordArray(data, offset)
 	if err != nil {
 		return 0, fmt.Errorf("failed to parse odometer value midnight record array: %w", err)
 	}
@@ -101,139 +153,141 @@ func unmarshalVuActivitiesGen2(r *bytes.Reader, target *vuv1.Activities) (int, e
 	}
 
 	// Parse VuCardIWRecordArray
-	cardIWData, err := parseVuCardIWRecordArray(r)
+	cardIWData, offset, err := parseVuCardIWRecordArray(data, offset)
 	if err != nil {
 		return 0, fmt.Errorf("failed to parse card IW record array: %w", err)
 	}
 	target.SetCardIwData(cardIWData)
 
 	// Parse VuActivityDailyRecordArray
-	activityChanges, err := parseVuActivityDailyRecordArray(r)
+	activityChanges, offset, err := parseVuActivityDailyRecordArray(data, offset)
 	if err != nil {
 		return 0, fmt.Errorf("failed to parse activity daily record array: %w", err)
 	}
 	target.SetActivityChanges(activityChanges)
 
 	// Parse VuPlaceDailyWorkPeriodRecordArray
-	places, err := parseVuPlaceDailyWorkPeriodRecordArray(r)
+	places, offset, err := parseVuPlaceDailyWorkPeriodRecordArray(data, offset)
 	if err != nil {
 		return 0, fmt.Errorf("failed to parse place daily work period record array: %w", err)
 	}
 	target.SetPlaces(places)
 
 	// Parse VuGNSSADRecordArray (Gen2+)
-	gnssRecords, err := parseVuGNSSADRecordArray(r)
+	gnssRecords, offset, err := parseVuGNSSADRecordArray(data, offset)
 	if err != nil {
 		return 0, fmt.Errorf("failed to parse GNSS AD record array: %w", err)
 	}
 	target.SetGnssAccumulatedDriving(gnssRecords)
 
 	// Parse VuSpecificConditionRecordArray
-	specificConditions, err := parseVuSpecificConditionRecordArray(r)
+	specificConditions, offset, err := parseVuSpecificConditionRecordArray(data, offset)
 	if err != nil {
 		return 0, fmt.Errorf("failed to parse specific condition record array: %w", err)
 	}
 	target.SetSpecificConditions(specificConditions)
 
 	// Try to parse Gen2v2 specific arrays if there's more data
-	if r.Len() > 10 { // Need some minimum data for arrays
+	if offset+10 <= len(data) { // Need some minimum data for arrays
 		// Parse VuBorderCrossingRecordArray (Gen2v2+)
-		borderCrossings, err := parseVuBorderCrossingRecordArray(r)
+		borderCrossings, newOffset, err := parseVuBorderCrossingRecordArray(data, offset)
 		if err == nil {
 			target.SetBorderCrossings(borderCrossings)
 			target.SetVersion(vuv1.Version_VERSION_2)
+			offset = newOffset
 		}
 
 		// Parse VuLoadUnloadRecordArray (Gen2v2+)
-		if r.Len() > 5 {
-			loadUnloadRecords, err := parseVuLoadUnloadRecordArray(r)
+		if offset+5 <= len(data) {
+			loadUnloadRecords, newOffset, err := parseVuLoadUnloadRecordArray(data, offset)
 			if err == nil {
 				target.SetLoadUnloadOperations(loadUnloadRecords)
+				offset = newOffset
 			}
 		}
 	}
 
 	// Parse SignatureRecordArray
-	signatureBytes, err := parseSignatureRecordArray(r)
+	signatureBytes, offset, err := parseSignatureRecordArray(data, offset)
 	if err != nil {
 		return 0, fmt.Errorf("failed to parse signature record array: %w", err)
 	}
 	target.SetSignatureGen2(signatureBytes)
 
-	return initialLen - r.Len(), nil
+	return offset - startOffset, nil
 }
 
 // Helper functions for parsing different record types
 // These are simplified implementations - in a full implementation,
 // each would need to properly handle the record array format
 
-func parseVuCardIWData(r *bytes.Reader) ([]*vuv1.Activities_CardIWRecord, error) {
+func parseVuCardIWData(data []byte, offset int) ([]*vuv1.Activities_CardIWRecord, int, error) {
 	// Simplified implementation - would need to parse the actual structure
-	return []*vuv1.Activities_CardIWRecord{}, nil
+	return []*vuv1.Activities_CardIWRecord{}, offset, nil
 }
 
-func parseVuActivityDailyData(r *bytes.Reader) ([]*datadictionaryv1.ActivityChangeInfo, error) {
+func parseVuActivityDailyData(data []byte, offset int) ([]*datadictionaryv1.ActivityChangeInfo, int, error) {
 	// Simplified implementation - would need to parse the actual structure
-	return []*datadictionaryv1.ActivityChangeInfo{}, nil
+	return []*datadictionaryv1.ActivityChangeInfo{}, offset, nil
 }
 
-func parseVuPlaceDailyWorkPeriodData(r *bytes.Reader) ([]*vuv1.Activities_PlaceRecord, error) {
+func parseVuPlaceDailyWorkPeriodData(data []byte, offset int) ([]*vuv1.Activities_PlaceRecord, int, error) {
 	// Simplified implementation - would need to parse the actual structure
-	return []*vuv1.Activities_PlaceRecord{}, nil
+	return []*vuv1.Activities_PlaceRecord{}, offset, nil
 }
 
-func parseVuSpecificConditionData(r *bytes.Reader) ([]*vuv1.Activities_SpecificConditionRecord, error) {
+func parseVuSpecificConditionData(data []byte, offset int) ([]*vuv1.Activities_SpecificConditionRecord, int, error) {
 	// Simplified implementation - would need to parse the actual structure
-	return []*vuv1.Activities_SpecificConditionRecord{}, nil
+	return []*vuv1.Activities_SpecificConditionRecord{}, offset, nil
 }
 
 // Gen2 record array parsers
-func parseDateOfDayDownloadedRecordArray(r *bytes.Reader) ([]*timestamppb.Timestamp, error) {
+func parseDateOfDayDownloadedRecordArray(data []byte, offset int) ([]*timestamppb.Timestamp, int, error) {
 	// Parse record array header and records
-	return []*timestamppb.Timestamp{}, nil
+	return []*timestamppb.Timestamp{}, offset, nil
 }
 
-func parseOdometerValueMidnightRecordArray(r *bytes.Reader) ([]int32, error) {
+func parseOdometerValueMidnightRecordArray(data []byte, offset int) ([]int32, int, error) {
 	// Parse record array header and records
-	return []int32{}, nil
+	return []int32{}, offset, nil
 }
 
-func parseVuCardIWRecordArray(r *bytes.Reader) ([]*vuv1.Activities_CardIWRecord, error) {
+func parseVuCardIWRecordArray(data []byte, offset int) ([]*vuv1.Activities_CardIWRecord, int, error) {
 	// Parse record array header and records
-	return []*vuv1.Activities_CardIWRecord{}, nil
+	return []*vuv1.Activities_CardIWRecord{}, offset, nil
 }
 
-func parseVuActivityDailyRecordArray(r *bytes.Reader) ([]*datadictionaryv1.ActivityChangeInfo, error) {
+func parseVuActivityDailyRecordArray(data []byte, offset int) ([]*datadictionaryv1.ActivityChangeInfo, int, error) {
 	// Parse record array header and records
-	return []*datadictionaryv1.ActivityChangeInfo{}, nil
+	return []*datadictionaryv1.ActivityChangeInfo{}, offset, nil
 }
 
-func parseVuPlaceDailyWorkPeriodRecordArray(r *bytes.Reader) ([]*vuv1.Activities_PlaceRecord, error) {
+func parseVuPlaceDailyWorkPeriodRecordArray(data []byte, offset int) ([]*vuv1.Activities_PlaceRecord, int, error) {
 	// Parse record array header and records
-	return []*vuv1.Activities_PlaceRecord{}, nil
+	return []*vuv1.Activities_PlaceRecord{}, offset, nil
 }
 
-func parseVuGNSSADRecordArray(r *bytes.Reader) ([]*vuv1.Activities_GnssRecord, error) {
+func parseVuGNSSADRecordArray(data []byte, offset int) ([]*vuv1.Activities_GnssRecord, int, error) {
 	// Parse record array header and records
-	return []*vuv1.Activities_GnssRecord{}, nil
+	return []*vuv1.Activities_GnssRecord{}, offset, nil
 }
 
-func parseVuSpecificConditionRecordArray(r *bytes.Reader) ([]*vuv1.Activities_SpecificConditionRecord, error) {
+func parseVuSpecificConditionRecordArray(data []byte, offset int) ([]*vuv1.Activities_SpecificConditionRecord, int, error) {
 	// Parse record array header and records
-	return []*vuv1.Activities_SpecificConditionRecord{}, nil
+	return []*vuv1.Activities_SpecificConditionRecord{}, offset, nil
 }
 
-func parseVuBorderCrossingRecordArray(r *bytes.Reader) ([]*vuv1.Activities_BorderCrossingRecord, error) {
+func parseVuBorderCrossingRecordArray(data []byte, offset int) ([]*vuv1.Activities_BorderCrossingRecord, int, error) {
 	// Parse record array header and records
-	return []*vuv1.Activities_BorderCrossingRecord{}, nil
+	return []*vuv1.Activities_BorderCrossingRecord{}, offset, nil
 }
 
-func parseVuLoadUnloadRecordArray(r *bytes.Reader) ([]*vuv1.Activities_LoadUnloadRecord, error) {
+func parseVuLoadUnloadRecordArray(data []byte, offset int) ([]*vuv1.Activities_LoadUnloadRecord, int, error) {
 	// Parse record array header and records
-	return []*vuv1.Activities_LoadUnloadRecord{}, nil
+	return []*vuv1.Activities_LoadUnloadRecord{}, offset, nil
 }
 
-func parseSignatureRecordArray(r *bytes.Reader) ([]byte, error) {
+func parseSignatureRecordArray(data []byte, offset int) ([]byte, int, error) {
 	// Parse signature record array and return the signature bytes
-	return []byte{}, nil
+	return []byte{}, offset, nil
 }

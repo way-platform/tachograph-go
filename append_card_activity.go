@@ -8,6 +8,39 @@ import (
 )
 
 // AppendDriverActivity appends the binary representation of DriverActivityData to dst.
+//
+// ASN.1 Specification (Data Dictionary 2.17):
+//
+//	CardDriverActivity ::= SEQUENCE {
+//	    activityPointerOldestDayRecord    INTEGER(0..CardActivityLengthRange),
+//	    activityPointerNewestRecord       INTEGER(0..CardActivityLengthRange),
+//	    activityDailyRecords              OCTET STRING (SIZE (CardActivityLengthRange))
+//	}
+//
+//	CardActivityDailyRecord ::= SEQUENCE {
+//	    activityPreviousRecordLength      INTEGER(0..CardActivityLengthRange),
+//	    activityRecordLength              INTEGER(0..CardActivityLengthRange),
+//	    activityRecordDate                TimeReal,
+//	    activityDailyPresenceCounter      DailyPresenceCounter,
+//	    activityDayDistance               Distance,
+//	    activityChangeInfo                SET SIZE (1..1440) OF ActivityChangeInfo
+//	}
+//
+//	ActivityChangeInfo ::= OCTET STRING (SIZE (2))
+//
+// Binary Layout (variable size):
+//
+//	0-1:   activityPointerOldestDayRecord (2 bytes, big-endian)
+//	2-3:   activityPointerNewestRecord (2 bytes, big-endian)
+//	4+:    activityDailyRecords (cyclic buffer of CardActivityDailyRecord)
+//	  - 0-1:   activityPreviousRecordLength (2 bytes, big-endian)
+//	  - 2-3:   activityRecordLength (2 bytes, big-endian)
+//	  - 4-7:   activityRecordDate (4 bytes, TimeReal)
+//	  - 8-8:   activityDailyPresenceCounter (1 byte)
+//	  - 9-12:  activityDayDistance (4 bytes, big-endian)
+//	  - 13+:   activityChangeInfo (2 bytes each, up to 1440 records)
+//
+
 func AppendDriverActivity(dst []byte, activity *cardv1.DriverActivityData) ([]byte, error) {
 	if activity == nil {
 		return dst, nil
@@ -89,14 +122,29 @@ func appendParsedDailyRecord(dst []byte, rec *cardv1.DriverActivityData_DailyRec
 	return dst, nil
 }
 
-// AppendActivityChange appends a single 2-byte activity change info.
+// AppendActivityChange appends the binary representation of ActivityChangeInfo to dst.
+//
+// ASN.1 Specification (Data Dictionary 2.1):
+//
+//	ActivityChangeInfo ::= OCTET STRING (SIZE (2))
+//
+// Binary Layout (2 bytes):
+//
+//	Bit layout: 'scpaattttttttttt'B (16 bits)
+//	- s: Slot (1 bit): '0'B: DRIVER, '1'B: CO-DRIVER
+//	- c: Driving status (1 bit): '0'B: SINGLE, '1'B: CREW
+//	- p: Card status (1 bit): '0'B: INSERTED, '1'B: NOT INSERTED
+//	- aa: Activity (2 bits): '00'B: BREAK/REST, '01'B: AVAILABILITY, '10'B: WORK, '11'B: DRIVING
+//	- ttttttttttt: Time of change (11 bits): Number of minutes since 00h00 on the given day
+//
+
 func AppendActivityChange(dst []byte, ac *datadictionaryv1.ActivityChangeInfo) ([]byte, error) {
 	var aci uint16
 
 	// Reconstruct the bitfield from enum values
 	slot := GetCardSlotNumber(ac.GetSlot(), 0)
 	drivingStatus := GetDrivingStatus(ac.GetDrivingStatus(), 0)
-	cardInserted := GetCardInserted(ac.GetInserted())
+	cardInserted := GetCardInsertedFromBool(ac.GetInserted())
 	activity := GetDriverActivityValue(ac.GetActivity(), 0)
 
 	aci |= (uint16(slot) & 0x1) << 15

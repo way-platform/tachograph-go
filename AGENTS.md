@@ -60,6 +60,20 @@ os.WriteFile("tachograph.DDD", data, 0600)
 - **[Protobuf Schemas](./proto/AGENTS.md)**: Guidelines for developing the protobuf schemas.
 - **[Development Tools](./tools/AGENTS.md)**: Guidance on build scripts and build targets.
 
+### VU Data Modeling for Gen1 and Gen2
+
+Vehicle Unit (VU) data structures differ between generations. Generation 1 (Gen1) often specifies a single data record or a `SET OF` records, while Generation 2 (Gen2) introduces `RecordArray` types that explicitly contain multiple records.
+
+To create a unified and forward-compatible protobuf data model, we have adopted the following policy:
+
+**Always use `repeated` fields for data structures that can contain multiple records in any generation.**
+
+-   For data that is a single record in Gen1 and a `RecordArray` in Gen2 (e.g., `VuCalibrationData`), we define a single `repeated` field in our protobuf message (e.g., `repeated CalibrationRecord`).
+-   When parsing Gen1 data, this `repeated` field will contain one element.
+-   When parsing Gen2 data, it will contain multiple elements.
+
+This approach avoids the need for separate `_gen1` and `_gen2` fields, simplifying both the data model and the client-side logic required to interact with it.
+
 ### Marshalling and Unmarshalling
 
 To ensure the codebase remains maintainable and easy to extend, we follow a specific structure for marshalling and unmarshalling logic within this package.

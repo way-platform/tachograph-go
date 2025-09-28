@@ -1,32 +1,67 @@
 package tachograph
 
 import (
-	"bytes"
 	"encoding/binary"
 	"errors"
 	"fmt"
 
 	cardv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1"
 	datadictionaryv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/datadictionary/v1"
+	"google.golang.org/protobuf/reflect/protoreflect"
 )
 
 // unmarshalIcc parses the binary data for an EF_ICC record.
+//
+// ASN.1 Specification (Data Dictionary 2.23):
+//
+//	CardIccIdentification ::= SEQUENCE {
+//	    clockStop                   OCTET STRING (SIZE(1)),
+//	    cardExtendedSerialNumber    ExtendedSerialNumber,    -- 8 bytes
+//	    cardApprovalNumber          CardApprovalNumber,      -- 8 bytes
+//	    cardPersonaliserID          ManufacturerCode,        -- 1 byte
+//	    embedderIcAssemblerId       EmbedderIcAssemblerId,   -- 5 bytes
+//	    icIdentifier                OCTET STRING (SIZE(2))
+//	}
 func unmarshalIcc(data []byte) (*cardv1.Icc, error) {
+	const (
+		// CardIccIdentification layout constants
+		lenClockStop                = 1
+		lenCardExtendedSerialNumber = 8
+		lenCardApprovalNumber       = 8
+		lenCardPersonaliserId       = 1
+		lenEmbedderIcAssemblerId    = 5
+		lenIcIdentifier             = 2
+		totalLength                 = lenClockStop + lenCardExtendedSerialNumber + lenCardApprovalNumber + lenCardPersonaliserId + lenEmbedderIcAssemblerId + lenIcIdentifier
+	)
+
 	var icc cardv1.Icc
-	if len(data) < 25 {
+	if len(data) < totalLength {
 		return nil, errors.New("not enough data for IccIdentification")
 	}
-	r := bytes.NewReader(data)
-	clockStop, _ := r.ReadByte()
-	// Convert clock stop byte to ClockStopMode enum
-	// This is a simplified mapping - the actual mapping should be based on the bit pattern
-	clockStopMode := datadictionaryv1.ClockStopMode(clockStop)
-	icc.SetClockStop(clockStopMode)
+	offset := 0
+
+	// Read clock stop (1 byte)
+	if offset+1 > len(data) {
+		return nil, fmt.Errorf("insufficient data for clock stop")
+	}
+	clockStop := data[offset]
+	// Convert clock stop byte to ClockStopMode enum using generic helper
+	enumDesc := datadictionaryv1.ClockStopMode_CLOCK_STOP_MODE_UNSPECIFIED.Descriptor()
+	SetEnumFromProtocolValue(enumDesc, int32(clockStop),
+		func(enumNum protoreflect.EnumNumber) {
+			icc.SetClockStop(datadictionaryv1.ClockStopMode(enumNum))
+		}, nil)
+	offset++
+
 	// Create ExtendedSerialNumber structure
 	esn := &datadictionaryv1.ExtendedSerialNumber{}
 	// Read the 8-byte extended serial number
-	serialBytes := make([]byte, 8)
-	if _, err := r.Read(serialBytes); err == nil && len(serialBytes) >= 8 {
+	if offset+lenCardExtendedSerialNumber > len(data) {
+		return nil, fmt.Errorf("insufficient data for card extended serial number")
+	}
+	serialBytes := data[offset : offset+lenCardExtendedSerialNumber]
+	offset += lenCardExtendedSerialNumber
+	if len(serialBytes) >= lenCardExtendedSerialNumber {
 		// Parse the fields according to ExtendedSerialNumber structure
 		// First 4 bytes: serial number (big-endian)
 		serialNum := binary.BigEndian.Uint32(serialBytes[0:4])
@@ -50,9 +85,13 @@ func unmarshalIcc(data []byte) (*cardv1.Icc, error) {
 			}
 		}
 
-		// Next byte: equipment type (convert from protocol value)
+		// Next byte: equipment type (convert from protocol value using generic helper)
 		if len(serialBytes) > 6 {
-			SetEquipmentType(int32(serialBytes[6]), esn.SetType, nil)
+			enumDesc := datadictionaryv1.EquipmentType_EQUIPMENT_TYPE_UNSPECIFIED.Descriptor()
+			SetEnumFromProtocolValue(enumDesc, int32(serialBytes[6]),
+				func(enumNum protoreflect.EnumNumber) {
+					esn.SetType(datadictionaryv1.EquipmentType(enumNum))
+				}, nil)
 		}
 
 		// Last byte: manufacturer code
@@ -61,20 +100,34 @@ func unmarshalIcc(data []byte) (*cardv1.Icc, error) {
 		}
 	}
 	icc.SetCardExtendedSerialNumber(esn)
-	cardApprovalNumber, err := unmarshalIA5StringValueFromReader(r, 8)
+
+	// Read card approval number (8 bytes)
+	if offset+lenCardApprovalNumber > len(data) {
+		return nil, fmt.Errorf("insufficient data for card approval number")
+	}
+	cardApprovalNumber, err := unmarshalIA5StringValue(data[offset : offset+lenCardApprovalNumber])
 	if err != nil {
 		return nil, fmt.Errorf("failed to read card approval number: %w", err)
 	}
 	icc.SetCardApprovalNumber(cardApprovalNumber)
-	personaliser, _ := r.ReadByte()
-	icc.SetCardPersonaliserId(int32(personaliser))
-	// Create EmbedderIcAssemblerId structure
-	embedder := make([]byte, 5)
-	if _, err := r.Read(embedder); err != nil {
-		return nil, fmt.Errorf("failed to read embedder IC assembler ID: %w", err)
+	offset += lenCardApprovalNumber
+
+	// Read card personaliser ID (1 byte)
+	if offset+1 > len(data) {
+		return nil, fmt.Errorf("insufficient data for card personaliser ID")
 	}
+	personaliser := data[offset]
+	icc.SetCardPersonaliserId(int32(personaliser))
+	offset++
+
+	// Create EmbedderIcAssemblerId structure (5 bytes)
+	if offset+lenEmbedderIcAssemblerId > len(data) {
+		return nil, fmt.Errorf("insufficient data for embedder IC assembler ID")
+	}
+	embedder := data[offset : offset+lenEmbedderIcAssemblerId]
+	offset += lenEmbedderIcAssemblerId
 	eia := &cardv1.Icc_EmbedderIcAssemblerId{}
-	if len(embedder) >= 5 {
+	if len(embedder) >= lenEmbedderIcAssemblerId {
 		// Store as hex string to avoid UTF-8 validation issues with binary data
 		countryCode := &datadictionaryv1.StringValue{}
 		countryCode.SetEncoding(datadictionaryv1.Encoding_IA5)
@@ -91,8 +144,13 @@ func unmarshalIcc(data []byte) (*cardv1.Icc, error) {
 		eia.SetManufacturerInformation(int32(embedder[4]))
 	}
 	icc.SetEmbedderIcAssemblerId(eia)
-	icIdentifier := make([]byte, 2)
-	r.Read(icIdentifier)
+
+	// Read IC identifier (2 bytes)
+	if offset+lenIcIdentifier > len(data) {
+		return nil, fmt.Errorf("insufficient data for IC identifier")
+	}
+	icIdentifier := data[offset : offset+lenIcIdentifier]
+	offset += lenIcIdentifier
 	icc.SetIcIdentifier(icIdentifier)
 	return &icc, nil
 }

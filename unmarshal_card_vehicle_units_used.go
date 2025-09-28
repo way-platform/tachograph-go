@@ -9,8 +9,36 @@ import (
 )
 
 // unmarshalCardVehicleUnitsUsed unmarshals vehicle units used data from a card EF.
+//
+// ASN.1 Specification (Data Dictionary 2.40):
+//
+//	CardVehicleUnitsUsed ::= SEQUENCE {
+//	    vehicleUnitPointerNewestRecord     INTEGER(0..NoOfCardVehicleUnitRecords-1),
+//	    cardVehicleUnitRecords             SET SIZE(NoOfCardVehicleUnitRecords) OF CardVehicleUnitRecord
+//	}
+//
+//	CardVehicleUnitRecord ::= SEQUENCE {
+//	    timeStamp                          TimeReal,
+//	    manufacturerCode                   ManufacturerCode,
+//	    deviceID                           DeviceID,
+//	    vuSoftwareVersion                  VuSoftwareVersion
+//	}
+//
+// TODO: Add detailed ASN.1 Specification - CardVehicleUnitRecord definition not found in data dictionary
+//
+// Binary Layout (variable size):
+//
+//	0-1:   vehicleUnitPointerNewestRecord (2 bytes, big-endian)
+//	2+:    cardVehicleUnitRecords (variable size each)
+//
+// Constants:
+const (
+	// CardVehicleUnitsUsed header size
+	cardVehicleUnitsUsedHeaderSize = 2
+)
+
 func unmarshalCardVehicleUnitsUsed(data []byte) (*cardv1.VehicleUnitsUsed, error) {
-	if len(data) < 2 {
+	if len(data) < cardVehicleUnitsUsedHeaderSize {
 		return nil, fmt.Errorf("insufficient data for vehicle units used")
 	}
 
