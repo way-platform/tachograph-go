@@ -19,19 +19,23 @@ package wayplatform.connect.tachograph.card.v1;
 //         icManufacturingReferences OCTET STRING (SIZE(4))
 //     }
 message Ic {
-  // The serial number of the integrated circuit.
+  // The serial number of the integrated circuit. The interpretation of this
+  // value may be card-vendor specific.
   //
   // See Data Dictionary, Section 2.13, `icSerialNumber`.
+  //
   // ASN.1 Definition:
   //
   //     OCTET STRING (SIZE(4))
-  string ic_serial_number = 1;
+  bytes ic_serial_number = 1;
 
-  // The manufacturing references of the integrated circuit.
+  // The manufacturing references of the integrated circuit. The interpretation
+  // of this value is card-vendor specific.
   //
   // See Data Dictionary, Section 2.13, `icManufacturingReferences`.
+  //
   // ASN.1 Definition:
   //
   //     OCTET STRING (SIZE(4))
-  string ic_manufacturing_references = 2;
+  bytes ic_manufacturing_references = 2;
 }

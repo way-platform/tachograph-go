@@ -1,0 +1,199 @@
+edition = "2023";
+
+package wayplatform.connect.tachograph.card.v1;
+
+import "wayplatform/connect/tachograph/card/v1/card_type.proto";
+import "wayplatform/connect/tachograph/datadictionary/v1/equipment_type.proto";
+
+// Represents data from EF_Application_Identification.
+//
+// The structure of this EF depends on the type of card. This message uses a
+// tagged union pattern to represent this, where the `card_type` field indicates
+// which of the nested messages is populated.
+message ApplicationIdentification {
+  // The type of card this data is from.
+  CardType card_type = 1;
+
+  // The type of tachograph card.
+  //
+  // See Data Dictionary, Section 2.67, `EquipmentType`.
+  // ASN.1 definition:
+  //
+  //     EquipmentType ::= INTEGER (0..255)
+  datadictionary.v1.EquipmentType type_of_tachograph_card_id = 2;
+
+  // The version of the card structure.
+  //
+  // See Data Dictionary, Section 2.36, `CardStructureVersion`.
+  // ASN.1 definition:
+  //
+  //     CardStructureVersion ::= OCTET STRING (SIZE (2))
+  message CardStructureVersion {
+    int32 major = 1;
+    int32 minor = 2;
+  }
+  CardStructureVersion card_structure_version = 3;
+
+  // Data for a driver card. Populated if `card_type` is `DRIVER_CARD`.
+  // See Data Dictionary, Section 2.61, `DriverCardApplicationIdentification`.
+  message Driver {
+    // The number of events per type the card can record.
+    //
+    // See Data Dictionary, Section 2.109, `NoOfEventsPerType`.
+    // ASN.1 definition:
+    //
+    //     NoOfEventsPerType ::= INTEGER(0..255)
+    int32 events_per_type_count = 1;
+
+    // The number of faults per type the card can record.
+    //
+    // See Data Dictionary, Section 2.110, `NoOfFaultsPerType`.
+    // ASN.1 definition:
+    //
+    //     NoOfFaultsPerType ::= INTEGER(0..255)
+    int32 faults_per_type_count = 2;
+
+    // The number of bytes available for storing activity records.
+    //
+    // See Data Dictionary, Section 2.10, `CardActivityLengthRange`.
+    // ASN.1 definition:
+    //
+    //     CardActivityLengthRange ::= INTEGER(0..2^16-1)
+    int32 activity_structure_length = 3;
+
+    // The number of vehicle records the card can contain.
+    //
+    // See Data Dictionary, Section 2.105, `NoOfCardVehicleRecords`.
+    // ASN.1 definition:
+    //
+    //     NoOfCardVehicleRecords ::= INTEGER(0..65535)
+    int32 card_vehicle_records_count = 4;
+
+    // The number of place records the card can store.
+    //
+    // See Data Dictionary, Section 2.104, `NoOfCardPlaceRecords`.
+    // ASN.1 definition:
+    //
+    //     NoOfCardPlaceRecords ::= INTEGER(0..65535)
+    int32 card_place_records_count = 5;
+
+    // --- Gen2+ fields ---
+
+    // The number of GNSS accumulated driving records the card can store.
+    //
+    // See Data Dictionary, Section 2.111, `NoOfGNSSADRecords`.
+    // ASN.1 definition:
+    //
+    //     NoOfGNSSADRecords ::= INTEGER(0..65535)
+    int32 gnss_ad_records_count = 6;
+
+    // The number of specific condition records the card can store.
+    //
+    // See Data Dictionary, Section 2.112, `NoOfSpecificConditionRecords`.
+    // ASN.1 definition:
+    //
+    //     NoOfSpecificConditionRecords ::= INTEGER(0..255)
+    int32 specific_condition_records_count = 7;
+
+    // The number of vehicle units used records the card can store.
+    //
+    // See Data Dictionary, Section 2.106, `NoOfCardVehicleUnitRecords`.
+    // ASN.1 definition:
+    //
+    //     NoOfCardVehicleUnitRecords ::= INTEGER(0..65535)
+    int32 card_vehicle_unit_records_count = 8;
+
+    // Digital signature for the EF_Application_Identification file content.
+    //
+    // See Data Dictionary, Section 2.149, `Signature`.
+    // ASN.1 definition:
+    //
+    //     Signature ::= OCTET STRING (SIZE(128 for Gen1))
+    bytes signature = 9;
+  }
+
+  // Data for a workshop card. Populated if `card_type` is `WORKSHOP_CARD`.
+  // See Data Dictionary, Section 2.234, `WorkshopCardApplicationIdentification`.
+  message Workshop {
+    // The number of events per type the card can record.
+    //
+    // See Data Dictionary, Section 2.109, `NoOfEventsPerType`.
+    // ASN.1 definition:
+    //
+    //     NoOfEventsPerType ::= INTEGER(0..255)
+    int32 events_per_type_count = 1;
+
+    // The number of faults per type the card can record.
+    //
+    // See Data Dictionary, Section 2.110, `NoOfFaultsPerType`.
+    // ASN.1 definition:
+    //
+    //     NoOfFaultsPerType ::= INTEGER(0..255)
+    int32 faults_per_type_count = 2;
+
+    // The number of bytes available for storing activity records.
+    //
+    // See Data Dictionary, Section 2.10, `CardActivityLengthRange`.
+    // ASN.1 definition:
+    //
+    //     CardActivityLengthRange ::= INTEGER(0..2^16-1)
+    int32 activity_structure_length = 3;
+
+    // The number of vehicle records the card can contain.
+    //
+    // See Data Dictionary, Section 2.105, `NoOfCardVehicleRecords`.
+    // ASN.1 definition:
+    //
+    //     NoOfCardVehicleRecords ::= INTEGER(0..65535)
+    int32 card_vehicle_records_count = 4;
+
+    // The number of place records the card can store.
+    //
+    // See Data Dictionary, Section 2.104, `NoOfCardPlaceRecords`.
+    // ASN.1 definition:
+    //
+    //     NoOfCardPlaceRecords ::= INTEGER(0..65535)
+    int32 card_place_records_count = 5;
+
+    // The number of calibration records the card can store.
+    //
+    // See Data Dictionary, Section 2.102, `NoOfCalibrationRecords`.
+    // ASN.1 definition:
+    //
+    //     NoOfCalibrationRecords ::= INTEGER(0..255)
+    int32 calibration_records_count = 6;
+  }
+
+  // Data for a company card. Populated if `card_type` is `COMPANY_CARD`.
+  // See Data Dictionary, Section 2.48, `CompanyCardApplicationIdentification`.
+  message Company {
+    // The number of company activity records the card can store.
+    //
+    // See Data Dictionary, Section 2.107, `NoOfCompanyActivityRecords`.
+    // ASN.1 definition:
+    //
+    //     NoOfCompanyActivityRecords ::= INTEGER(0..65535)
+    int32 company_activity_records_count = 1;
+  }
+
+  // Data for a control card. Populated if `card_type` is `CONTROL_CARD`.
+  // See Data Dictionary, Section 2.50, `ControlCardApplicationIdentification`.
+  message Control {
+    // The number of control activity records the card can store.
+    //
+    // See Data Dictionary, Section 2.108, `NoOfControlActivityRecords`.
+    // ASN.1 definition:
+    //
+    //     NoOfControlActivityRecords ::= INTEGER(0..65535)
+    int32 control_activity_records_count = 1;
+  }
+
+  // Populated if `card_type` is `DRIVER_CARD`.
+  Driver driver = 4;
+  // Populated if `card_type` is `WORKSHOP_CARD`.
+  Workshop workshop = 5;
+  // Populated if `card_type` is `COMPANY_CARD`.
+  Company company = 6;
+  // Populated if `card_type` is `CONTROL_CARD`.
+  Control control = 7;
+}

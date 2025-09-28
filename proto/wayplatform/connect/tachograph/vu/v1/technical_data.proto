@@ -2,6 +2,7 @@ edition = "2023";
 
 package wayplatform.connect.tachograph.vu.v1;
 
+import "wayplatform/connect/tachograph/datadictionary/v1/string_value.proto";
 import "google/protobuf/timestamp.proto";
 import "wayplatform/connect/tachograph/datadictionary/v1/calibration_purpose.proto";
 import "wayplatform/connect/tachograph/datadictionary/v1/card_slot_number.proto";
@@ -52,10 +53,11 @@ message TechnicalData {
       // The software version of the VU.
       //
       // See Data Dictionary, Section 2.226, `VuSoftwareVersion`.
+      //
       // ASN.1 Definition:
       //
-      //     VuSoftwareVersion ::= OCTET STRING (SIZE(4))
-      string software_version = 1;
+      //     VuSoftwareVersion ::= IA5String(SIZE(4))
+      wayplatform.connect.tachograph.datadictionary.v1.StringValue software_version = 1;
 
       // The installation date of the software.
       //
@@ -72,7 +74,7 @@ message TechnicalData {
     // ASN.1 Definition:
     //
     //     VuManufacturerName ::= Name
-    string manufacturer_name = 1;
+    wayplatform.connect.tachograph.datadictionary.v1.StringValue manufacturer_name = 1;
 
     // The address of the VU manufacturer.
     //
@@ -80,15 +82,16 @@ message TechnicalData {
     // ASN.1 Definition:
     //
     //     VuManufacturerAddress ::= Address
-    string manufacturer_address = 2;
+    wayplatform.connect.tachograph.datadictionary.v1.StringValue manufacturer_address = 2;
 
     // The part number of the VU.
     //
     // See Data Dictionary, Section 2.217, `VuPartNumber`.
+    //
     // ASN.1 Definition:
     //
     //     VuPartNumber ::= IA5String(SIZE(16))
-    string part_number = 3;
+    wayplatform.connect.tachograph.datadictionary.v1.StringValue part_number = 3;
 
     // The serial number of the VU.
     //
@@ -109,10 +112,11 @@ message TechnicalData {
     // The approval number of the VU.
     //
     // See Data Dictionary, Section 2.172, `VuApprovalNumber`.
+    //
     // ASN.1 Definition:
     //
     //     VuApprovalNumber ::= IA5String(SIZE(8)) or IA5String(SIZE(16))
-    string approval_number = 7;
+    wayplatform.connect.tachograph.datadictionary.v1.StringValue approval_number = 7;
   }
 
   // Represents a paired motion sensor record.
@@ -135,10 +139,15 @@ message TechnicalData {
     // The approval number of the motion sensor.
     //
     // See Data Dictionary, Section 2.131, `SensorApprovalNumber`.
-    // ASN.1 Definition:
     //
-    //     SensorApprovalNumber ::= IA5String(SIZE(8)) or IA5String(SIZE(16))
-    string approval_number = 2;
+    // ASN.1 Definition (Gen1):
+    //
+    //     SensorApprovalNumber ::= IA5String(SIZE(8))
+    //
+    // ASN.1 Definition (Gen2):
+    //
+    //     SensorApprovalNumber ::= IA5String(SIZE(16))
+    wayplatform.connect.tachograph.datadictionary.v1.StringValue approval_number = 2;
 
     // The date the sensor was paired.
     //
@@ -169,10 +178,11 @@ message TechnicalData {
     // The approval number of the external GNSS.
     //
     // See Data Dictionary, Section 2.132, `SensorExternalGNSSApprovalNumber`.
+    //
     // ASN.1 Definition:
     //
     //     SensorExternalGNSSApprovalNumber ::= IA5String(SIZE(16))
-    string approval_number = 2;
+    wayplatform.connect.tachograph.datadictionary.v1.StringValue approval_number = 2;
 
     // The date the GNSS was coupled.
     //
@@ -199,7 +209,7 @@ message TechnicalData {
     // ASN.1 Definition:
     //
     //     Name ::= SEQUENCE { codePage INTEGER(0..255), name OCTET STRING (SIZE(36)) }
-    string workshop_name = 3;
+    wayplatform.connect.tachograph.datadictionary.v1.StringValue workshop_name = 3;
 
     // The address of the workshop.
     //
@@ -207,7 +217,7 @@ message TechnicalData {
     // ASN.1 Definition:
     //
     //     Address ::= SEQUENCE { codePage INTEGER(0..255), address OCTET STRING (SIZE(36)) }
-    string workshop_address = 4;
+    wayplatform.connect.tachograph.datadictionary.v1.StringValue workshop_address = 4;
 
     // The card number of the workshop.
     //
@@ -225,10 +235,11 @@ message TechnicalData {
     // The Vehicle Identification Number.
     //
     // See Data Dictionary, Section 2.164, `VehicleIdentificationNumber`.
+    //
     // ASN.1 Definition:
     //
     //     VehicleIdentificationNumber ::= IA5String(SIZE(17))
-    string vin = 7;
+    wayplatform.connect.tachograph.datadictionary.v1.StringValue vin = 7;
 
     // The vehicle registration identifier.
     //
@@ -262,10 +273,11 @@ message TechnicalData {
     // The tyre size designation.
     //
     // See Data Dictionary, Section 2.163, `TyreSize`.
+    //
     // ASN.1 Definition:
     //
     //     TyreSize ::= IA5String(SIZE(15))
-    string tyre_size = 12;
+    wayplatform.connect.tachograph.datadictionary.v1.StringValue tyre_size = 12;
 
     // The authorised speed in km/h.
     //

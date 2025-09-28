@@ -90,6 +90,9 @@ When designing our protobuf schemas, we apply the following principles:
 - Prefer tagged unions (e.g. a `type` enum) over `oneof` constructs, for ergonomic reasons.
 - Use `google.protobuf.Timestamp` for timestamp fields.
 - Avoid unsigned integers, since they are not well supported in some languages.
+- Include ASN.1 definitions from [03-data-dictionary.md](docs/regulation/chapters/03-data-dictionary.md) for all messages and fields.
+- Field comments should always start with a single sentence or paragraph summarizing the purpose and/or function of the field.
+- **Use `StringValue` for complex strings:** Many string-like types in the data dictionary are not simple UTF-8 strings. They can be fixed-size `IA5String` types with padding, or complex `SEQUENCE` types (like `Name` and `Address`) that include a code page byte to define their character set. To handle these cases correctly and ensure lossless round-trips, any such field **must** be represented using the `datadictionary.v1.StringValue` message. This type provides the original `encoded` bytes, the `Encoding` enum to specify how to interpret them, and a convenient `decoded` field for display purposes.
 
 ### [`wayplatform.connect.tachograph.v1`](proto/wayplatform/connect/tachograph/v1)
 
@@ -116,6 +119,7 @@ Key entities are:
 - `wayplatform.connect.tachograph.card.v1.DriverCardFile`, representing a driver card file.
 - `wayplatform.connect.tachograph.card.v1.RawCardFile`, representing a generic card file (TLV records).
 - One top-level message type for every EF (elementary file) that a card file can contain.
+- The top-level messages should be named after the EF they represent.
 
 ### [`wayplatform.connect.tachograph.datadictionary.v1`](proto/wayplatform/connect/tachograph/datadictionary/v1)
 
@@ -130,6 +134,8 @@ When a type in the data dictionary is only used in a single EF or VU transfer, i
 The API is meant to be simple, easy to use, and orthogonal. less is moere.
 
 Any type, function or method that is not explicitly needed in the public API should be made private.
+
+**IMPORTANT**: Always read [docs/asn-1.md](docs/asn-1.md) before working with ASN.1 data.
 
 ### `tachograph.UnmarshalFile(data []byte) (*tachographv1.File, error)`
 

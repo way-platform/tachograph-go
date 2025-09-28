@@ -30,12 +30,22 @@ var file_wayplatform_connect_tachograph_datadictionary_v1_annotations_proto_extT
 		Tag:           "varint,582387,opt,name=protocol_enum_value",
 		Filename:      "wayplatform/connect/tachograph/datadictionary/v1/annotations.proto",
 	},
+	{
+		ExtendedType:  (*descriptorpb.EnumValueOptions)(nil),
+		ExtensionType: (*int32)(nil),
+		Field:         582388,
+		Name:          "wayplatform.connect.tachograph.datadictionary.v1.code_page",
+		Tag:           "varint,582388,opt,name=code_page",
+		Filename:      "wayplatform/connect/tachograph/datadictionary/v1/annotations.proto",
+	},
 }
 
 // Extension fields to descriptorpb.EnumValueOptions.
 var (
 	// optional int32 protocol_enum_value = 582387;
 	E_ProtocolEnumValue = &file_wayplatform_connect_tachograph_datadictionary_v1_annotations_proto_extTypes[0]
+	// optional int32 code_page = 582388;
+	E_CodePage = &file_wayplatform_connect_tachograph_datadictionary_v1_annotations_proto_extTypes[1]
 )
 
 var File_wayplatform_connect_tachograph_datadictionary_v1_annotations_proto protoreflect.FileDescriptor
@@ -43,7 +53,8 @@ var File_wayplatform_connect_tachograph_datadictionary_v1_annotations_proto prot
 const file_wayplatform_connect_tachograph_datadictionary_v1_annotations_proto_rawDesc = "" +
 	"\n" +
 	"Bwayplatform/connect/tachograph/datadictionary/v1/annotations.proto\x120wayplatform.connect.tachograph.datadictionary.v1\x1a google/protobuf/descriptor.proto:S\n" +
-	"\x13protocol_enum_value\x12!.google.protobuf.EnumValueOptions\x18\xf3\xc5# \x01(\x05R\x11protocolEnumValueB\xa3\x03\n" +
+	"\x13protocol_enum_value\x12!.google.protobuf.EnumValueOptions\x18\xf3\xc5# \x01(\x05R\x11protocolEnumValue:@\n" +
+	"\tcode_page\x12!.google.protobuf.EnumValueOptions\x18\xf4\xc5# \x01(\x05R\bcodePageB\xa3\x03\n" +
 	"4com.wayplatform.connect.tachograph.datadictionary.v1B\x10AnnotationsProtoP\x01Ztgithub.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/datadictionary/v1;datadictionaryv1\xa2\x02\x04WCTD\xaa\x020Wayplatform.Connect.Tachograph.Datadictionary.V1\xca\x020Wayplatform\\Connect\\Tachograph\\Datadictionary\\V1\xe2\x02<Wayplatform\\Connect\\Tachograph\\Datadictionary\\V1\\GPBMetadata\xea\x024Wayplatform::Connect::Tachograph::Datadictionary::V1b\beditionsp\xe8\a"
 
 var file_wayplatform_connect_tachograph_datadictionary_v1_annotations_proto_goTypes = []any{
@@ -51,10 +62,11 @@ var file_wayplatform_connect_tachograph_datadictionary_v1_annotations_proto_goTy
 }
 var file_wayplatform_connect_tachograph_datadictionary_v1_annotations_proto_depIdxs = []int32{
 	0, // 0: wayplatform.connect.tachograph.datadictionary.v1.protocol_enum_value:extendee -> google.protobuf.EnumValueOptions
-	1, // [1:1] is the sub-list for method output_type
-	1, // [1:1] is the sub-list for method input_type
-	1, // [1:1] is the sub-list for extension type_name
-	0, // [0:1] is the sub-list for extension extendee
+	0, // 1: wayplatform.connect.tachograph.datadictionary.v1.code_page:extendee -> google.protobuf.EnumValueOptions
+	2, // [2:2] is the sub-list for method output_type
+	2, // [2:2] is the sub-list for method input_type
+	2, // [2:2] is the sub-list for extension type_name
+	0, // [0:2] is the sub-list for extension extendee
 	0, // [0:0] is the sub-list for field type_name
 }
 
@@ -70,7 +82,7 @@ func file_wayplatform_connect_tachograph_datadictionary_v1_annotations_proto_ini
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_wayplatform_connect_tachograph_datadictionary_v1_annotations_proto_rawDesc), len(file_wayplatform_connect_tachograph_datadictionary_v1_annotations_proto_rawDesc)),
 			NumEnums:      0,
 			NumMessages:   0,
-			NumExtensions: 1,
+			NumExtensions: 2,
 			NumServices:   0,
 		},
 		GoTypes:           file_wayplatform_connect_tachograph_datadictionary_v1_annotations_proto_goTypes,

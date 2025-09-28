@@ -149,7 +149,7 @@ func (b0 CompanyActivityData_builder) Build() *CompanyActivityData {
 // See Data Dictionary, Section 2.46.
 type CompanyActivityData_Record struct {
 	state                                     protoimpl.MessageState                `protogen:"opaque.v1"`
-	xxx_hidden_CompanyActivityType            int32                                 `protobuf:"varint,1,opt,name=company_activity_type,json=companyActivityType"`
+	xxx_hidden_CompanyActivityType            v1.CompanyActivityType                `protobuf:"varint,1,opt,name=company_activity_type,json=companyActivityType,enum=wayplatform.connect.tachograph.datadictionary.v1.CompanyActivityType"`
 	xxx_hidden_CompanyActivityTime            *timestamppb.Timestamp                `protobuf:"bytes,2,opt,name=company_activity_time,json=companyActivityTime"`
 	xxx_hidden_CardNumberInformation          *v1.FullCardNumber                    `protobuf:"bytes,3,opt,name=card_number_information,json=cardNumberInformation"`
 	xxx_hidden_VehicleRegistrationInformation *v1.VehicleRegistrationIdentification `protobuf:"bytes,4,opt,name=vehicle_registration_information,json=vehicleRegistrationInformation"`
@@ -186,11 +186,13 @@ func (x *CompanyActivityData_Record) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-func (x *CompanyActivityData_Record) GetCompanyActivityType() int32 {
+func (x *CompanyActivityData_Record) GetCompanyActivityType() v1.CompanyActivityType {
 	if x != nil {
-		return x.xxx_hidden_CompanyActivityType
+		if protoimpl.X.Present(&(x.XXX_presence[0]), 0) {
+			return x.xxx_hidden_CompanyActivityType
+		}
 	}
-	return 0
+	return v1.CompanyActivityType(0)
 }
 
 func (x *CompanyActivityData_Record) GetCompanyActivityTime() *timestamppb.Timestamp {
@@ -228,7 +230,7 @@ func (x *CompanyActivityData_Record) GetDownloadPeriodEnd() *timestamppb.Timesta
 	return nil
 }
 
-func (x *CompanyActivityData_Record) SetCompanyActivityType(v int32) {
+func (x *CompanyActivityData_Record) SetCompanyActivityType(v v1.CompanyActivityType) {
 	x.xxx_hidden_CompanyActivityType = v
 	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 6)
 }
@@ -297,7 +299,7 @@ func (x *CompanyActivityData_Record) HasDownloadPeriodEnd() bool {
 
 func (x *CompanyActivityData_Record) ClearCompanyActivityType() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 0)
-	x.xxx_hidden_CompanyActivityType = 0
+	x.xxx_hidden_CompanyActivityType = v1.CompanyActivityType_COMPANY_ACTIVITY_TYPE_UNSPECIFIED
 }
 
 func (x *CompanyActivityData_Record) ClearCompanyActivityTime() {
@@ -331,7 +333,7 @@ type CompanyActivityData_Record_builder struct {
 	//	CompanyActivityType ::= INTEGER {
 	//	    card-downloading(1), VU-downloading(2), VU-lock-in(3), VU-lock-out(4)
 	//	}
-	CompanyActivityType *int32
+	CompanyActivityType *v1.CompanyActivityType
 	// The date and time of the company activity.
 	//
 	// See Data Dictionary, Section 2.162, `TimeReal`.
@@ -389,12 +391,12 @@ var File_wayplatform_connect_tachograph_card_v1_company_activity_data_proto prot
 
 const file_wayplatform_connect_tachograph_card_v1_company_activity_data_proto_rawDesc = "" +
 	"\n" +
-	"Bwayplatform/connect/tachograph/card/v1/company_activity_data.proto\x12&wayplatform.connect.tachograph.card.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1aGwayplatform/connect/tachograph/datadictionary/v1/full_card_number.proto\x1aZwayplatform/connect/tachograph/datadictionary/v1/vehicle_registration_identification.proto\"\xe8\x05\n" +
+	"Bwayplatform/connect/tachograph/card/v1/company_activity_data.proto\x12&wayplatform.connect.tachograph.card.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1aGwayplatform/connect/tachograph/datadictionary/v1/full_card_number.proto\x1aZwayplatform/connect/tachograph/datadictionary/v1/vehicle_registration_identification.proto\x1aLwayplatform/connect/tachograph/datadictionary/v1/company_activity_type.proto\"\xaf\x06\n" +
 	"\x13CompanyActivityData\x12.\n" +
 	"\x13newest_record_index\x18\x01 \x01(\x05R\x11newestRecordIndex\x12\\\n" +
-	"\arecords\x18\x02 \x03(\v2B.wayplatform.connect.tachograph.card.v1.CompanyActivityData.RecordR\arecords\x1a\xc2\x04\n" +
-	"\x06Record\x122\n" +
-	"\x15company_activity_type\x18\x01 \x01(\x05R\x13companyActivityType\x12N\n" +
+	"\arecords\x18\x02 \x03(\v2B.wayplatform.connect.tachograph.card.v1.CompanyActivityData.RecordR\arecords\x1a\x89\x05\n" +
+	"\x06Record\x12y\n" +
+	"\x15company_activity_type\x18\x01 \x01(\x0e2E.wayplatform.connect.tachograph.datadictionary.v1.CompanyActivityTypeR\x13companyActivityType\x12N\n" +
 	"\x15company_activity_time\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\x13companyActivityTime\x12x\n" +
 	"\x17card_number_information\x18\x03 \x01(\v2@.wayplatform.connect.tachograph.datadictionary.v1.FullCardNumberR\x15cardNumberInformation\x12\x9d\x01\n" +
 	" vehicle_registration_information\x18\x04 \x01(\v2S.wayplatform.connect.tachograph.datadictionary.v1.VehicleRegistrationIdentificationR\x1evehicleRegistrationInformation\x12N\n" +
@@ -406,22 +408,24 @@ var file_wayplatform_connect_tachograph_card_v1_company_activity_data_proto_msgT
 var file_wayplatform_connect_tachograph_card_v1_company_activity_data_proto_goTypes = []any{
 	(*CompanyActivityData)(nil),                  // 0: wayplatform.connect.tachograph.card.v1.CompanyActivityData
 	(*CompanyActivityData_Record)(nil),           // 1: wayplatform.connect.tachograph.card.v1.CompanyActivityData.Record
-	(*timestamppb.Timestamp)(nil),                // 2: google.protobuf.Timestamp
-	(*v1.FullCardNumber)(nil),                    // 3: wayplatform.connect.tachograph.datadictionary.v1.FullCardNumber
-	(*v1.VehicleRegistrationIdentification)(nil), // 4: wayplatform.connect.tachograph.datadictionary.v1.VehicleRegistrationIdentification
+	(v1.CompanyActivityType)(0),                  // 2: wayplatform.connect.tachograph.datadictionary.v1.CompanyActivityType
+	(*timestamppb.Timestamp)(nil),                // 3: google.protobuf.Timestamp
+	(*v1.FullCardNumber)(nil),                    // 4: wayplatform.connect.tachograph.datadictionary.v1.FullCardNumber
+	(*v1.VehicleRegistrationIdentification)(nil), // 5: wayplatform.connect.tachograph.datadictionary.v1.VehicleRegistrationIdentification
 }
 var file_wayplatform_connect_tachograph_card_v1_company_activity_data_proto_depIdxs = []int32{
 	1, // 0: wayplatform.connect.tachograph.card.v1.CompanyActivityData.records:type_name -> wayplatform.connect.tachograph.card.v1.CompanyActivityData.Record
-	2, // 1: wayplatform.connect.tachograph.card.v1.CompanyActivityData.Record.company_activity_time:type_name -> google.protobuf.Timestamp
-	3, // 2: wayplatform.connect.tachograph.card.v1.CompanyActivityData.Record.card_number_information:type_name -> wayplatform.connect.tachograph.datadictionary.v1.FullCardNumber
-	4, // 3: wayplatform.connect.tachograph.card.v1.CompanyActivityData.Record.vehicle_registration_information:type_name -> wayplatform.connect.tachograph.datadictionary.v1.VehicleRegistrationIdentification
-	2, // 4: wayplatform.connect.tachograph.card.v1.CompanyActivityData.Record.download_period_begin:type_name -> google.protobuf.Timestamp
-	2, // 5: wayplatform.connect.tachograph.card.v1.CompanyActivityData.Record.download_period_end:type_name -> google.protobuf.Timestamp
-	6, // [6:6] is the sub-list for method output_type
-	6, // [6:6] is the sub-list for method input_type
-	6, // [6:6] is the sub-list for extension type_name
-	6, // [6:6] is the sub-list for extension extendee
-	0, // [0:6] is the sub-list for field type_name
+	2, // 1: wayplatform.connect.tachograph.card.v1.CompanyActivityData.Record.company_activity_type:type_name -> wayplatform.connect.tachograph.datadictionary.v1.CompanyActivityType
+	3, // 2: wayplatform.connect.tachograph.card.v1.CompanyActivityData.Record.company_activity_time:type_name -> google.protobuf.Timestamp
+	4, // 3: wayplatform.connect.tachograph.card.v1.CompanyActivityData.Record.card_number_information:type_name -> wayplatform.connect.tachograph.datadictionary.v1.FullCardNumber
+	5, // 4: wayplatform.connect.tachograph.card.v1.CompanyActivityData.Record.vehicle_registration_information:type_name -> wayplatform.connect.tachograph.datadictionary.v1.VehicleRegistrationIdentification
+	3, // 5: wayplatform.connect.tachograph.card.v1.CompanyActivityData.Record.download_period_begin:type_name -> google.protobuf.Timestamp
+	3, // 6: wayplatform.connect.tachograph.card.v1.CompanyActivityData.Record.download_period_end:type_name -> google.protobuf.Timestamp
+	7, // [7:7] is the sub-list for method output_type
+	7, // [7:7] is the sub-list for method input_type
+	7, // [7:7] is the sub-list for extension type_name
+	7, // [7:7] is the sub-list for extension extendee
+	0, // [0:7] is the sub-list for field type_name
 }
 
 func init() { file_wayplatform_connect_tachograph_card_v1_company_activity_data_proto_init() }

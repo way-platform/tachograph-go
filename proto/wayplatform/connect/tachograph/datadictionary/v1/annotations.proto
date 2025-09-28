@@ -8,4 +8,5 @@ option go_package = "github.com/way-platform/tachograph-go/proto/gen/go/wayplatf
 
 extend google.protobuf.EnumValueOptions {
   int32 protocol_enum_value = 582387;
+  int32 code_page = 582388;
 }

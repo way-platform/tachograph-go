@@ -23,29 +23,21 @@ const (
 // Represents data from EF_Application_Identification_V2, which contains
 // additional capacity information for Gen2v2 cards.
 //
-// This message corresponds to data from a driver card.
-// See Data Dictionary, Section 2.61a, `DriverCardApplicationIdentificationV2`.
-//
-// ASN.1 Specification:
-//
-//	DriverCardApplicationIdentificationV2 ::= SEQUENCE {
-//	    lengthOfFollowingData LengthOfFollowingData,
-//	    noOfBorderCrossingRecords NoOfBorderCrossingRecords,
-//	    noOfLoadUnloadRecords NoOfLoadUnloadRecords,
-//	    noOfLoadTypeEntryRecords NoOfLoadTypeEntryRecords,
-//	    vuConfigurationLengthRange VuConfigurationLengthRange
-//	}
+// The structure of this EF depends on the type of card. This message uses a
+// tagged union pattern to represent this, where the `card_type` field indicates
+// which of the nested messages is populated.
 type ApplicationIdentificationV2 struct {
-	state                                 protoimpl.MessageState `protogen:"opaque.v1"`
-	xxx_hidden_BorderCrossingRecordsCount int32                  `protobuf:"varint,1,opt,name=border_crossing_records_count,json=borderCrossingRecordsCount"`
-	xxx_hidden_LoadUnloadRecordsCount     int32                  `protobuf:"varint,2,opt,name=load_unload_records_count,json=loadUnloadRecordsCount"`
-	xxx_hidden_LoadTypeEntryRecordsCount  int32                  `protobuf:"varint,3,opt,name=load_type_entry_records_count,json=loadTypeEntryRecordsCount"`
-	xxx_hidden_VuConfigurationLengthRange int32                  `protobuf:"varint,4,opt,name=vu_configuration_length_range,json=vuConfigurationLengthRange"`
-	xxx_hidden_Signature                  []byte                 `protobuf:"bytes,5,opt,name=signature"`
-	XXX_raceDetectHookData                protoimpl.RaceDetectHookData
-	XXX_presence                          [1]uint32
-	unknownFields                         protoimpl.UnknownFields
-	sizeCache                             protoimpl.SizeCache
+	state                  protoimpl.MessageState                `protogen:"opaque.v1"`
+	xxx_hidden_CardType    CardType                              `protobuf:"varint,1,opt,name=card_type,json=cardType,enum=wayplatform.connect.tachograph.card.v1.CardType"`
+	xxx_hidden_Driver      *ApplicationIdentificationV2_Driver   `protobuf:"bytes,2,opt,name=driver"`
+	xxx_hidden_Workshop    *ApplicationIdentificationV2_Workshop `protobuf:"bytes,3,opt,name=workshop"`
+	xxx_hidden_Company     *ApplicationIdentificationV2_Company  `protobuf:"bytes,4,opt,name=company"`
+	xxx_hidden_Control     *ApplicationIdentificationV2_Control  `protobuf:"bytes,5,opt,name=control"`
+	xxx_hidden_Signature   []byte                                `protobuf:"bytes,6,opt,name=signature"`
+	XXX_raceDetectHookData protoimpl.RaceDetectHookData
+	XXX_presence           [1]uint32
+	unknownFields          protoimpl.UnknownFields
+	sizeCache              protoimpl.SizeCache
 }
 
 func (x *ApplicationIdentificationV2) Reset() {
@@ -73,32 +65,41 @@ func (x *ApplicationIdentificationV2) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-func (x *ApplicationIdentificationV2) GetBorderCrossingRecordsCount() int32 {
+func (x *ApplicationIdentificationV2) GetCardType() CardType {
 	if x != nil {
-		return x.xxx_hidden_BorderCrossingRecordsCount
+		if protoimpl.X.Present(&(x.XXX_presence[0]), 0) {
+			return x.xxx_hidden_CardType
+		}
 	}
-	return 0
+	return CardType_CARD_TYPE_UNSPECIFIED
 }
 
-func (x *ApplicationIdentificationV2) GetLoadUnloadRecordsCount() int32 {
+func (x *ApplicationIdentificationV2) GetDriver() *ApplicationIdentificationV2_Driver {
 	if x != nil {
-		return x.xxx_hidden_LoadUnloadRecordsCount
+		return x.xxx_hidden_Driver
 	}
-	return 0
+	return nil
 }
 
-func (x *ApplicationIdentificationV2) GetLoadTypeEntryRecordsCount() int32 {
+func (x *ApplicationIdentificationV2) GetWorkshop() *ApplicationIdentificationV2_Workshop {
 	if x != nil {
-		return x.xxx_hidden_LoadTypeEntryRecordsCount
+		return x.xxx_hidden_Workshop
 	}
-	return 0
+	return nil
 }
 
-func (x *ApplicationIdentificationV2) GetVuConfigurationLengthRange() int32 {
+func (x *ApplicationIdentificationV2) GetCompany() *ApplicationIdentificationV2_Company {
 	if x != nil {
-		return x.xxx_hidden_VuConfigurationLengthRange
+		return x.xxx_hidden_Company
 	}
-	return 0
+	return nil
+}
+
+func (x *ApplicationIdentificationV2) GetControl() *ApplicationIdentificationV2_Control {
+	if x != nil {
+		return x.xxx_hidden_Control
+	}
+	return nil
 }
 
 func (x *ApplicationIdentificationV2) GetSignature() []byte {
@@ -108,24 +109,25 @@ func (x *ApplicationIdentificationV2) GetSignature() []byte {
 	return nil
 }
 
-func (x *ApplicationIdentificationV2) SetBorderCrossingRecordsCount(v int32) {
-	x.xxx_hidden_BorderCrossingRecordsCount = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 5)
+func (x *ApplicationIdentificationV2) SetCardType(v CardType) {
+	x.xxx_hidden_CardType = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 6)
 }
 
-func (x *ApplicationIdentificationV2) SetLoadUnloadRecordsCount(v int32) {
-	x.xxx_hidden_LoadUnloadRecordsCount = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 5)
+func (x *ApplicationIdentificationV2) SetDriver(v *ApplicationIdentificationV2_Driver) {
+	x.xxx_hidden_Driver = v
 }
 
-func (x *ApplicationIdentificationV2) SetLoadTypeEntryRecordsCount(v int32) {
-	x.xxx_hidden_LoadTypeEntryRecordsCount = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 5)
+func (x *ApplicationIdentificationV2) SetWorkshop(v *ApplicationIdentificationV2_Workshop) {
+	x.xxx_hidden_Workshop = v
 }
 
-func (x *ApplicationIdentificationV2) SetVuConfigurationLengthRange(v int32) {
-	x.xxx_hidden_VuConfigurationLengthRange = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 3, 5)
+func (x *ApplicationIdentificationV2) SetCompany(v *ApplicationIdentificationV2_Company) {
+	x.xxx_hidden_Company = v
+}
+
+func (x *ApplicationIdentificationV2) SetControl(v *ApplicationIdentificationV2_Control) {
+	x.xxx_hidden_Control = v
 }
 
 func (x *ApplicationIdentificationV2) SetSignature(v []byte) {
@@ -133,100 +135,90 @@ func (x *ApplicationIdentificationV2) SetSignature(v []byte) {
 		v = []byte{}
 	}
 	x.xxx_hidden_Signature = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 4, 5)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 5, 6)
 }
 
-func (x *ApplicationIdentificationV2) HasBorderCrossingRecordsCount() bool {
+func (x *ApplicationIdentificationV2) HasCardType() bool {
 	if x == nil {
 		return false
 	}
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 0)
 }
 
-func (x *ApplicationIdentificationV2) HasLoadUnloadRecordsCount() bool {
+func (x *ApplicationIdentificationV2) HasDriver() bool {
 	if x == nil {
 		return false
 	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 1)
+	return x.xxx_hidden_Driver != nil
 }
 
-func (x *ApplicationIdentificationV2) HasLoadTypeEntryRecordsCount() bool {
+func (x *ApplicationIdentificationV2) HasWorkshop() bool {
 	if x == nil {
 		return false
 	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 2)
+	return x.xxx_hidden_Workshop != nil
 }
 
-func (x *ApplicationIdentificationV2) HasVuConfigurationLengthRange() bool {
+func (x *ApplicationIdentificationV2) HasCompany() bool {
 	if x == nil {
 		return false
 	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 3)
+	return x.xxx_hidden_Company != nil
+}
+
+func (x *ApplicationIdentificationV2) HasControl() bool {
+	if x == nil {
+		return false
+	}
+	return x.xxx_hidden_Control != nil
 }
 
 func (x *ApplicationIdentificationV2) HasSignature() bool {
 	if x == nil {
 		return false
 	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 4)
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 5)
 }
 
-func (x *ApplicationIdentificationV2) ClearBorderCrossingRecordsCount() {
+func (x *ApplicationIdentificationV2) ClearCardType() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 0)
-	x.xxx_hidden_BorderCrossingRecordsCount = 0
+	x.xxx_hidden_CardType = CardType_CARD_TYPE_UNSPECIFIED
 }
 
-func (x *ApplicationIdentificationV2) ClearLoadUnloadRecordsCount() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 1)
-	x.xxx_hidden_LoadUnloadRecordsCount = 0
+func (x *ApplicationIdentificationV2) ClearDriver() {
+	x.xxx_hidden_Driver = nil
 }
 
-func (x *ApplicationIdentificationV2) ClearLoadTypeEntryRecordsCount() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 2)
-	x.xxx_hidden_LoadTypeEntryRecordsCount = 0
+func (x *ApplicationIdentificationV2) ClearWorkshop() {
+	x.xxx_hidden_Workshop = nil
 }
 
-func (x *ApplicationIdentificationV2) ClearVuConfigurationLengthRange() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 3)
-	x.xxx_hidden_VuConfigurationLengthRange = 0
+func (x *ApplicationIdentificationV2) ClearCompany() {
+	x.xxx_hidden_Company = nil
+}
+
+func (x *ApplicationIdentificationV2) ClearControl() {
+	x.xxx_hidden_Control = nil
 }
 
 func (x *ApplicationIdentificationV2) ClearSignature() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 4)
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 5)
 	x.xxx_hidden_Signature = nil
 }
 
 type ApplicationIdentificationV2_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
-	// The number of border crossing records the card can store.
-	//
-	// See Data Dictionary, Section 2.101a, `NoOfBorderCrossingRecords`.
-	// ASN.1 Specification:
-	//
-	//	NoOfBorderCrossingRecords ::= INTEGER (0..255)
-	BorderCrossingRecordsCount *int32
-	// The number of load/unload records the card can store.
-	//
-	// See Data Dictionary, Section 2.111a, `NoOfLoadUnloadRecords`.
-	// ASN.1 Specification:
-	//
-	//	NoOfLoadUnloadRecords ::= INTEGER (0..255)
-	LoadUnloadRecordsCount *int32
-	// The number of load type entry records the card can store.
-	//
-	// See Data Dictionary, Section 2.112a, `NoOfLoadTypeEntryRecords`.
-	// ASN.1 Specification:
-	//
-	//	NoOfLoadTypeEntryRecords ::= INTEGER (0..255)
-	LoadTypeEntryRecordsCount *int32
-	// The number of bytes available to store VU configurations.
-	//
-	// See Data Dictionary, Section 2.185a, `VuConfigurationLengthRange`.
-	// ASN.1 Specification:
-	//
-	//	VuConfigurationLengthRange ::= INTEGER(0..2^16-1)
-	VuConfigurationLengthRange *int32
+	// The type of card this data is from.
+	CardType *CardType
+	// Populated if `card_type` is `DRIVER_CARD`.
+	Driver *ApplicationIdentificationV2_Driver
+	// Populated if `card_type` is `WORKSHOP_CARD`.
+	Workshop *ApplicationIdentificationV2_Workshop
+	// Populated if `card_type` is `COMPANY_CARD`.
+	Company *ApplicationIdentificationV2_Company
+	// Populated if `card_type` is `CONTROL_CARD`.
+	Control *ApplicationIdentificationV2_Control
 	// Digital signature for the EF_Application_Identification_V2 file content.
 	//
 	// See Data Dictionary, Section 2.149, `Signature`.
@@ -238,6 +230,369 @@ type ApplicationIdentificationV2_builder struct {
 
 func (b0 ApplicationIdentificationV2_builder) Build() *ApplicationIdentificationV2 {
 	m0 := &ApplicationIdentificationV2{}
+	b, x := &b0, m0
+	_, _ = b, x
+	if b.CardType != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 6)
+		x.xxx_hidden_CardType = *b.CardType
+	}
+	x.xxx_hidden_Driver = b.Driver
+	x.xxx_hidden_Workshop = b.Workshop
+	x.xxx_hidden_Company = b.Company
+	x.xxx_hidden_Control = b.Control
+	if b.Signature != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 5, 6)
+		x.xxx_hidden_Signature = b.Signature
+	}
+	return m0
+}
+
+// Data for a driver card. Populated if `card_type` is `DRIVER_CARD`.
+// See Data Dictionary, Section 2.61a, `DriverCardApplicationIdentificationV2`.
+type ApplicationIdentificationV2_Driver struct {
+	state                                 protoimpl.MessageState `protogen:"opaque.v1"`
+	xxx_hidden_BorderCrossingRecordsCount int32                  `protobuf:"varint,1,opt,name=border_crossing_records_count,json=borderCrossingRecordsCount"`
+	xxx_hidden_LoadUnloadRecordsCount     int32                  `protobuf:"varint,2,opt,name=load_unload_records_count,json=loadUnloadRecordsCount"`
+	xxx_hidden_LoadTypeEntryRecordsCount  int32                  `protobuf:"varint,3,opt,name=load_type_entry_records_count,json=loadTypeEntryRecordsCount"`
+	xxx_hidden_VuConfigurationLengthRange int32                  `protobuf:"varint,4,opt,name=vu_configuration_length_range,json=vuConfigurationLengthRange"`
+	XXX_raceDetectHookData                protoimpl.RaceDetectHookData
+	XXX_presence                          [1]uint32
+	unknownFields                         protoimpl.UnknownFields
+	sizeCache                             protoimpl.SizeCache
+}
+
+func (x *ApplicationIdentificationV2_Driver) Reset() {
+	*x = ApplicationIdentificationV2_Driver{}
+	mi := &file_wayplatform_connect_tachograph_card_v1_application_identification_v2_proto_msgTypes[1]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ApplicationIdentificationV2_Driver) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ApplicationIdentificationV2_Driver) ProtoMessage() {}
+
+func (x *ApplicationIdentificationV2_Driver) ProtoReflect() protoreflect.Message {
+	mi := &file_wayplatform_connect_tachograph_card_v1_application_identification_v2_proto_msgTypes[1]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+func (x *ApplicationIdentificationV2_Driver) GetBorderCrossingRecordsCount() int32 {
+	if x != nil {
+		return x.xxx_hidden_BorderCrossingRecordsCount
+	}
+	return 0
+}
+
+func (x *ApplicationIdentificationV2_Driver) GetLoadUnloadRecordsCount() int32 {
+	if x != nil {
+		return x.xxx_hidden_LoadUnloadRecordsCount
+	}
+	return 0
+}
+
+func (x *ApplicationIdentificationV2_Driver) GetLoadTypeEntryRecordsCount() int32 {
+	if x != nil {
+		return x.xxx_hidden_LoadTypeEntryRecordsCount
+	}
+	return 0
+}
+
+func (x *ApplicationIdentificationV2_Driver) GetVuConfigurationLengthRange() int32 {
+	if x != nil {
+		return x.xxx_hidden_VuConfigurationLengthRange
+	}
+	return 0
+}
+
+func (x *ApplicationIdentificationV2_Driver) SetBorderCrossingRecordsCount(v int32) {
+	x.xxx_hidden_BorderCrossingRecordsCount = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 4)
+}
+
+func (x *ApplicationIdentificationV2_Driver) SetLoadUnloadRecordsCount(v int32) {
+	x.xxx_hidden_LoadUnloadRecordsCount = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 4)
+}
+
+func (x *ApplicationIdentificationV2_Driver) SetLoadTypeEntryRecordsCount(v int32) {
+	x.xxx_hidden_LoadTypeEntryRecordsCount = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 4)
+}
+
+func (x *ApplicationIdentificationV2_Driver) SetVuConfigurationLengthRange(v int32) {
+	x.xxx_hidden_VuConfigurationLengthRange = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 3, 4)
+}
+
+func (x *ApplicationIdentificationV2_Driver) HasBorderCrossingRecordsCount() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 0)
+}
+
+func (x *ApplicationIdentificationV2_Driver) HasLoadUnloadRecordsCount() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 1)
+}
+
+func (x *ApplicationIdentificationV2_Driver) HasLoadTypeEntryRecordsCount() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 2)
+}
+
+func (x *ApplicationIdentificationV2_Driver) HasVuConfigurationLengthRange() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 3)
+}
+
+func (x *ApplicationIdentificationV2_Driver) ClearBorderCrossingRecordsCount() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 0)
+	x.xxx_hidden_BorderCrossingRecordsCount = 0
+}
+
+func (x *ApplicationIdentificationV2_Driver) ClearLoadUnloadRecordsCount() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 1)
+	x.xxx_hidden_LoadUnloadRecordsCount = 0
+}
+
+func (x *ApplicationIdentificationV2_Driver) ClearLoadTypeEntryRecordsCount() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 2)
+	x.xxx_hidden_LoadTypeEntryRecordsCount = 0
+}
+
+func (x *ApplicationIdentificationV2_Driver) ClearVuConfigurationLengthRange() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 3)
+	x.xxx_hidden_VuConfigurationLengthRange = 0
+}
+
+type ApplicationIdentificationV2_Driver_builder struct {
+	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
+
+	// The number of border crossing records the card can store.
+	BorderCrossingRecordsCount *int32
+	// The number of load/unload records the card can store.
+	LoadUnloadRecordsCount *int32
+	// The number of load type entry records the card can store.
+	LoadTypeEntryRecordsCount *int32
+	// The number of bytes available to store VU configurations.
+	VuConfigurationLengthRange *int32
+}
+
+func (b0 ApplicationIdentificationV2_Driver_builder) Build() *ApplicationIdentificationV2_Driver {
+	m0 := &ApplicationIdentificationV2_Driver{}
+	b, x := &b0, m0
+	_, _ = b, x
+	if b.BorderCrossingRecordsCount != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 4)
+		x.xxx_hidden_BorderCrossingRecordsCount = *b.BorderCrossingRecordsCount
+	}
+	if b.LoadUnloadRecordsCount != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 4)
+		x.xxx_hidden_LoadUnloadRecordsCount = *b.LoadUnloadRecordsCount
+	}
+	if b.LoadTypeEntryRecordsCount != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 4)
+		x.xxx_hidden_LoadTypeEntryRecordsCount = *b.LoadTypeEntryRecordsCount
+	}
+	if b.VuConfigurationLengthRange != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 3, 4)
+		x.xxx_hidden_VuConfigurationLengthRange = *b.VuConfigurationLengthRange
+	}
+	return m0
+}
+
+// Data for a workshop card. Populated if `card_type` is `WORKSHOP_CARD`.
+// See Data Dictionary, Section 2.234a, `WorkshopCardApplicationIdentificationV2`.
+type ApplicationIdentificationV2_Workshop struct {
+	state                                     protoimpl.MessageState `protogen:"opaque.v1"`
+	xxx_hidden_BorderCrossingRecordsCount     int32                  `protobuf:"varint,1,opt,name=border_crossing_records_count,json=borderCrossingRecordsCount"`
+	xxx_hidden_LoadUnloadRecordsCount         int32                  `protobuf:"varint,2,opt,name=load_unload_records_count,json=loadUnloadRecordsCount"`
+	xxx_hidden_LoadTypeEntryRecordsCount      int32                  `protobuf:"varint,3,opt,name=load_type_entry_records_count,json=loadTypeEntryRecordsCount"`
+	xxx_hidden_VuConfigurationLengthRange     int32                  `protobuf:"varint,4,opt,name=vu_configuration_length_range,json=vuConfigurationLengthRange"`
+	xxx_hidden_WorkshopCardCalibrationAddData *CalibrationAddData    `protobuf:"bytes,5,opt,name=workshop_card_calibration_add_data,json=workshopCardCalibrationAddData"`
+	XXX_raceDetectHookData                    protoimpl.RaceDetectHookData
+	XXX_presence                              [1]uint32
+	unknownFields                             protoimpl.UnknownFields
+	sizeCache                                 protoimpl.SizeCache
+}
+
+func (x *ApplicationIdentificationV2_Workshop) Reset() {
+	*x = ApplicationIdentificationV2_Workshop{}
+	mi := &file_wayplatform_connect_tachograph_card_v1_application_identification_v2_proto_msgTypes[2]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ApplicationIdentificationV2_Workshop) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ApplicationIdentificationV2_Workshop) ProtoMessage() {}
+
+func (x *ApplicationIdentificationV2_Workshop) ProtoReflect() protoreflect.Message {
+	mi := &file_wayplatform_connect_tachograph_card_v1_application_identification_v2_proto_msgTypes[2]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+func (x *ApplicationIdentificationV2_Workshop) GetBorderCrossingRecordsCount() int32 {
+	if x != nil {
+		return x.xxx_hidden_BorderCrossingRecordsCount
+	}
+	return 0
+}
+
+func (x *ApplicationIdentificationV2_Workshop) GetLoadUnloadRecordsCount() int32 {
+	if x != nil {
+		return x.xxx_hidden_LoadUnloadRecordsCount
+	}
+	return 0
+}
+
+func (x *ApplicationIdentificationV2_Workshop) GetLoadTypeEntryRecordsCount() int32 {
+	if x != nil {
+		return x.xxx_hidden_LoadTypeEntryRecordsCount
+	}
+	return 0
+}
+
+func (x *ApplicationIdentificationV2_Workshop) GetVuConfigurationLengthRange() int32 {
+	if x != nil {
+		return x.xxx_hidden_VuConfigurationLengthRange
+	}
+	return 0
+}
+
+func (x *ApplicationIdentificationV2_Workshop) GetWorkshopCardCalibrationAddData() *CalibrationAddData {
+	if x != nil {
+		return x.xxx_hidden_WorkshopCardCalibrationAddData
+	}
+	return nil
+}
+
+func (x *ApplicationIdentificationV2_Workshop) SetBorderCrossingRecordsCount(v int32) {
+	x.xxx_hidden_BorderCrossingRecordsCount = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 5)
+}
+
+func (x *ApplicationIdentificationV2_Workshop) SetLoadUnloadRecordsCount(v int32) {
+	x.xxx_hidden_LoadUnloadRecordsCount = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 5)
+}
+
+func (x *ApplicationIdentificationV2_Workshop) SetLoadTypeEntryRecordsCount(v int32) {
+	x.xxx_hidden_LoadTypeEntryRecordsCount = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 5)
+}
+
+func (x *ApplicationIdentificationV2_Workshop) SetVuConfigurationLengthRange(v int32) {
+	x.xxx_hidden_VuConfigurationLengthRange = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 3, 5)
+}
+
+func (x *ApplicationIdentificationV2_Workshop) SetWorkshopCardCalibrationAddData(v *CalibrationAddData) {
+	x.xxx_hidden_WorkshopCardCalibrationAddData = v
+}
+
+func (x *ApplicationIdentificationV2_Workshop) HasBorderCrossingRecordsCount() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 0)
+}
+
+func (x *ApplicationIdentificationV2_Workshop) HasLoadUnloadRecordsCount() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 1)
+}
+
+func (x *ApplicationIdentificationV2_Workshop) HasLoadTypeEntryRecordsCount() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 2)
+}
+
+func (x *ApplicationIdentificationV2_Workshop) HasVuConfigurationLengthRange() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 3)
+}
+
+func (x *ApplicationIdentificationV2_Workshop) HasWorkshopCardCalibrationAddData() bool {
+	if x == nil {
+		return false
+	}
+	return x.xxx_hidden_WorkshopCardCalibrationAddData != nil
+}
+
+func (x *ApplicationIdentificationV2_Workshop) ClearBorderCrossingRecordsCount() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 0)
+	x.xxx_hidden_BorderCrossingRecordsCount = 0
+}
+
+func (x *ApplicationIdentificationV2_Workshop) ClearLoadUnloadRecordsCount() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 1)
+	x.xxx_hidden_LoadUnloadRecordsCount = 0
+}
+
+func (x *ApplicationIdentificationV2_Workshop) ClearLoadTypeEntryRecordsCount() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 2)
+	x.xxx_hidden_LoadTypeEntryRecordsCount = 0
+}
+
+func (x *ApplicationIdentificationV2_Workshop) ClearVuConfigurationLengthRange() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 3)
+	x.xxx_hidden_VuConfigurationLengthRange = 0
+}
+
+func (x *ApplicationIdentificationV2_Workshop) ClearWorkshopCardCalibrationAddData() {
+	x.xxx_hidden_WorkshopCardCalibrationAddData = nil
+}
+
+type ApplicationIdentificationV2_Workshop_builder struct {
+	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
+
+	// The number of border crossing records the card can store.
+	BorderCrossingRecordsCount *int32
+	// The number of load/unload records the card can store.
+	LoadUnloadRecordsCount *int32
+	// The number of load type entry records the card can store.
+	LoadTypeEntryRecordsCount *int32
+	// The number of bytes available to store VU configurations.
+	VuConfigurationLengthRange *int32
+	// Additional calibration data for workshop cards.
+	WorkshopCardCalibrationAddData *CalibrationAddData
+}
+
+func (b0 ApplicationIdentificationV2_Workshop_builder) Build() *ApplicationIdentificationV2_Workshop {
+	m0 := &ApplicationIdentificationV2_Workshop{}
 	b, x := &b0, m0
 	_, _ = b, x
 	if b.BorderCrossingRecordsCount != nil {
@@ -256,9 +611,162 @@ func (b0 ApplicationIdentificationV2_builder) Build() *ApplicationIdentification
 		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 3, 5)
 		x.xxx_hidden_VuConfigurationLengthRange = *b.VuConfigurationLengthRange
 	}
-	if b.Signature != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 4, 5)
-		x.xxx_hidden_Signature = b.Signature
+	x.xxx_hidden_WorkshopCardCalibrationAddData = b.WorkshopCardCalibrationAddData
+	return m0
+}
+
+// Data for a company card. Populated if `card_type` is `COMPANY_CARD`.
+// See Data Dictionary, Section 2.48a, `CompanyCardApplicationIdentificationV2`.
+type ApplicationIdentificationV2_Company struct {
+	state                                 protoimpl.MessageState `protogen:"opaque.v1"`
+	xxx_hidden_VuConfigurationLengthRange int32                  `protobuf:"varint,1,opt,name=vu_configuration_length_range,json=vuConfigurationLengthRange"`
+	XXX_raceDetectHookData                protoimpl.RaceDetectHookData
+	XXX_presence                          [1]uint32
+	unknownFields                         protoimpl.UnknownFields
+	sizeCache                             protoimpl.SizeCache
+}
+
+func (x *ApplicationIdentificationV2_Company) Reset() {
+	*x = ApplicationIdentificationV2_Company{}
+	mi := &file_wayplatform_connect_tachograph_card_v1_application_identification_v2_proto_msgTypes[3]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ApplicationIdentificationV2_Company) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ApplicationIdentificationV2_Company) ProtoMessage() {}
+
+func (x *ApplicationIdentificationV2_Company) ProtoReflect() protoreflect.Message {
+	mi := &file_wayplatform_connect_tachograph_card_v1_application_identification_v2_proto_msgTypes[3]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+func (x *ApplicationIdentificationV2_Company) GetVuConfigurationLengthRange() int32 {
+	if x != nil {
+		return x.xxx_hidden_VuConfigurationLengthRange
+	}
+	return 0
+}
+
+func (x *ApplicationIdentificationV2_Company) SetVuConfigurationLengthRange(v int32) {
+	x.xxx_hidden_VuConfigurationLengthRange = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 1)
+}
+
+func (x *ApplicationIdentificationV2_Company) HasVuConfigurationLengthRange() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 0)
+}
+
+func (x *ApplicationIdentificationV2_Company) ClearVuConfigurationLengthRange() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 0)
+	x.xxx_hidden_VuConfigurationLengthRange = 0
+}
+
+type ApplicationIdentificationV2_Company_builder struct {
+	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
+
+	// The number of bytes available to store VU configurations.
+	VuConfigurationLengthRange *int32
+}
+
+func (b0 ApplicationIdentificationV2_Company_builder) Build() *ApplicationIdentificationV2_Company {
+	m0 := &ApplicationIdentificationV2_Company{}
+	b, x := &b0, m0
+	_, _ = b, x
+	if b.VuConfigurationLengthRange != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 1)
+		x.xxx_hidden_VuConfigurationLengthRange = *b.VuConfigurationLengthRange
+	}
+	return m0
+}
+
+// Data for a control card. Populated if `card_type` is `CONTROL_CARD`.
+// See Data Dictionary, Section 2.50a, `ControlCardApplicationIdentificationV2`.
+type ApplicationIdentificationV2_Control struct {
+	state                                 protoimpl.MessageState `protogen:"opaque.v1"`
+	xxx_hidden_VuConfigurationLengthRange int32                  `protobuf:"varint,1,opt,name=vu_configuration_length_range,json=vuConfigurationLengthRange"`
+	XXX_raceDetectHookData                protoimpl.RaceDetectHookData
+	XXX_presence                          [1]uint32
+	unknownFields                         protoimpl.UnknownFields
+	sizeCache                             protoimpl.SizeCache
+}
+
+func (x *ApplicationIdentificationV2_Control) Reset() {
+	*x = ApplicationIdentificationV2_Control{}
+	mi := &file_wayplatform_connect_tachograph_card_v1_application_identification_v2_proto_msgTypes[4]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ApplicationIdentificationV2_Control) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ApplicationIdentificationV2_Control) ProtoMessage() {}
+
+func (x *ApplicationIdentificationV2_Control) ProtoReflect() protoreflect.Message {
+	mi := &file_wayplatform_connect_tachograph_card_v1_application_identification_v2_proto_msgTypes[4]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+func (x *ApplicationIdentificationV2_Control) GetVuConfigurationLengthRange() int32 {
+	if x != nil {
+		return x.xxx_hidden_VuConfigurationLengthRange
+	}
+	return 0
+}
+
+func (x *ApplicationIdentificationV2_Control) SetVuConfigurationLengthRange(v int32) {
+	x.xxx_hidden_VuConfigurationLengthRange = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 1)
+}
+
+func (x *ApplicationIdentificationV2_Control) HasVuConfigurationLengthRange() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 0)
+}
+
+func (x *ApplicationIdentificationV2_Control) ClearVuConfigurationLengthRange() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 0)
+	x.xxx_hidden_VuConfigurationLengthRange = 0
+}
+
+type ApplicationIdentificationV2_Control_builder struct {
+	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
+
+	// The number of bytes available to store VU configurations.
+	VuConfigurationLengthRange *int32
+}
+
+func (b0 ApplicationIdentificationV2_Control_builder) Build() *ApplicationIdentificationV2_Control {
+	m0 := &ApplicationIdentificationV2_Control{}
+	b, x := &b0, m0
+	_, _ = b, x
+	if b.VuConfigurationLengthRange != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 1)
+		x.xxx_hidden_VuConfigurationLengthRange = *b.VuConfigurationLengthRange
 	}
 	return m0
 }
@@ -267,25 +775,54 @@ var File_wayplatform_connect_tachograph_card_v1_application_identification_v2_pr
 
 const file_wayplatform_connect_tachograph_card_v1_application_identification_v2_proto_rawDesc = "" +
 	"\n" +
-	"Jwayplatform/connect/tachograph/card/v1/application_identification_v2.proto\x12&wayplatform.connect.tachograph.card.v1\"\xbe\x02\n" +
-	"\x1bApplicationIdentificationV2\x12A\n" +
+	"Jwayplatform/connect/tachograph/card/v1/application_identification_v2.proto\x12&wayplatform.connect.tachograph.card.v1\x1a6wayplatform/connect/tachograph/card/v1/card_type.proto\x1aAwayplatform/connect/tachograph/card/v1/calibration_add_data.proto\"\xe9\n" +
+	"\n" +
+	"\x1bApplicationIdentificationV2\x12M\n" +
+	"\tcard_type\x18\x01 \x01(\x0e20.wayplatform.connect.tachograph.card.v1.CardTypeR\bcardType\x12b\n" +
+	"\x06driver\x18\x02 \x01(\v2J.wayplatform.connect.tachograph.card.v1.ApplicationIdentificationV2.DriverR\x06driver\x12h\n" +
+	"\bworkshop\x18\x03 \x01(\v2L.wayplatform.connect.tachograph.card.v1.ApplicationIdentificationV2.WorkshopR\bworkshop\x12e\n" +
+	"\acompany\x18\x04 \x01(\v2K.wayplatform.connect.tachograph.card.v1.ApplicationIdentificationV2.CompanyR\acompany\x12e\n" +
+	"\acontrol\x18\x05 \x01(\v2K.wayplatform.connect.tachograph.card.v1.ApplicationIdentificationV2.ControlR\acontrol\x12\x1c\n" +
+	"\tsignature\x18\x06 \x01(\fR\tsignature\x1a\x8b\x02\n" +
+	"\x06Driver\x12A\n" +
 	"\x1dborder_crossing_records_count\x18\x01 \x01(\x05R\x1aborderCrossingRecordsCount\x129\n" +
 	"\x19load_unload_records_count\x18\x02 \x01(\x05R\x16loadUnloadRecordsCount\x12@\n" +
 	"\x1dload_type_entry_records_count\x18\x03 \x01(\x05R\x19loadTypeEntryRecordsCount\x12A\n" +
-	"\x1dvu_configuration_length_range\x18\x04 \x01(\x05R\x1avuConfigurationLengthRange\x12\x1c\n" +
-	"\tsignature\x18\x05 \x01(\fR\tsignatureB\xed\x02\n" +
+	"\x1dvu_configuration_length_range\x18\x04 \x01(\x05R\x1avuConfigurationLengthRange\x1a\x96\x03\n" +
+	"\bWorkshop\x12A\n" +
+	"\x1dborder_crossing_records_count\x18\x01 \x01(\x05R\x1aborderCrossingRecordsCount\x129\n" +
+	"\x19load_unload_records_count\x18\x02 \x01(\x05R\x16loadUnloadRecordsCount\x12@\n" +
+	"\x1dload_type_entry_records_count\x18\x03 \x01(\x05R\x19loadTypeEntryRecordsCount\x12A\n" +
+	"\x1dvu_configuration_length_range\x18\x04 \x01(\x05R\x1avuConfigurationLengthRange\x12\x86\x01\n" +
+	"\"workshop_card_calibration_add_data\x18\x05 \x01(\v2:.wayplatform.connect.tachograph.card.v1.CalibrationAddDataR\x1eworkshopCardCalibrationAddData\x1aL\n" +
+	"\aCompany\x12A\n" +
+	"\x1dvu_configuration_length_range\x18\x01 \x01(\x05R\x1avuConfigurationLengthRange\x1aL\n" +
+	"\aControl\x12A\n" +
+	"\x1dvu_configuration_length_range\x18\x01 \x01(\x05R\x1avuConfigurationLengthRangeB\xed\x02\n" +
 	"*com.wayplatform.connect.tachograph.card.v1B ApplicationIdentificationV2ProtoP\x01Z`github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1;cardv1\xa2\x02\x04WCTC\xaa\x02&Wayplatform.Connect.Tachograph.Card.V1\xca\x02&Wayplatform\\Connect\\Tachograph\\Card\\V1\xe2\x022Wayplatform\\Connect\\Tachograph\\Card\\V1\\GPBMetadata\xea\x02*Wayplatform::Connect::Tachograph::Card::V1b\beditionsp\xe8\a"
 
-var file_wayplatform_connect_tachograph_card_v1_application_identification_v2_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
+var file_wayplatform_connect_tachograph_card_v1_application_identification_v2_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
 var file_wayplatform_connect_tachograph_card_v1_application_identification_v2_proto_goTypes = []any{
-	(*ApplicationIdentificationV2)(nil), // 0: wayplatform.connect.tachograph.card.v1.ApplicationIdentificationV2
+	(*ApplicationIdentificationV2)(nil),          // 0: wayplatform.connect.tachograph.card.v1.ApplicationIdentificationV2
+	(*ApplicationIdentificationV2_Driver)(nil),   // 1: wayplatform.connect.tachograph.card.v1.ApplicationIdentificationV2.Driver
+	(*ApplicationIdentificationV2_Workshop)(nil), // 2: wayplatform.connect.tachograph.card.v1.ApplicationIdentificationV2.Workshop
+	(*ApplicationIdentificationV2_Company)(nil),  // 3: wayplatform.connect.tachograph.card.v1.ApplicationIdentificationV2.Company
+	(*ApplicationIdentificationV2_Control)(nil),  // 4: wayplatform.connect.tachograph.card.v1.ApplicationIdentificationV2.Control
+	(CardType)(0),              // 5: wayplatform.connect.tachograph.card.v1.CardType
+	(*CalibrationAddData)(nil), // 6: wayplatform.connect.tachograph.card.v1.CalibrationAddData
 }
 var file_wayplatform_connect_tachograph_card_v1_application_identification_v2_proto_depIdxs = []int32{
-	0, // [0:0] is the sub-list for method output_type
-	0, // [0:0] is the sub-list for method input_type
-	0, // [0:0] is the sub-list for extension type_name
-	0, // [0:0] is the sub-list for extension extendee
-	0, // [0:0] is the sub-list for field type_name
+	5, // 0: wayplatform.connect.tachograph.card.v1.ApplicationIdentificationV2.card_type:type_name -> wayplatform.connect.tachograph.card.v1.CardType
+	1, // 1: wayplatform.connect.tachograph.card.v1.ApplicationIdentificationV2.driver:type_name -> wayplatform.connect.tachograph.card.v1.ApplicationIdentificationV2.Driver
+	2, // 2: wayplatform.connect.tachograph.card.v1.ApplicationIdentificationV2.workshop:type_name -> wayplatform.connect.tachograph.card.v1.ApplicationIdentificationV2.Workshop
+	3, // 3: wayplatform.connect.tachograph.card.v1.ApplicationIdentificationV2.company:type_name -> wayplatform.connect.tachograph.card.v1.ApplicationIdentificationV2.Company
+	4, // 4: wayplatform.connect.tachograph.card.v1.ApplicationIdentificationV2.control:type_name -> wayplatform.connect.tachograph.card.v1.ApplicationIdentificationV2.Control
+	6, // 5: wayplatform.connect.tachograph.card.v1.ApplicationIdentificationV2.Workshop.workshop_card_calibration_add_data:type_name -> wayplatform.connect.tachograph.card.v1.CalibrationAddData
+	6, // [6:6] is the sub-list for method output_type
+	6, // [6:6] is the sub-list for method input_type
+	6, // [6:6] is the sub-list for extension type_name
+	6, // [6:6] is the sub-list for extension extendee
+	0, // [0:6] is the sub-list for field type_name
 }
 
 func init() { file_wayplatform_connect_tachograph_card_v1_application_identification_v2_proto_init() }
@@ -293,13 +830,15 @@ func file_wayplatform_connect_tachograph_card_v1_application_identification_v2_p
 	if File_wayplatform_connect_tachograph_card_v1_application_identification_v2_proto != nil {
 		return
 	}
+	file_wayplatform_connect_tachograph_card_v1_card_type_proto_init()
+	file_wayplatform_connect_tachograph_card_v1_calibration_add_data_proto_init()
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_wayplatform_connect_tachograph_card_v1_application_identification_v2_proto_rawDesc), len(file_wayplatform_connect_tachograph_card_v1_application_identification_v2_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   1,
+			NumMessages:   5,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

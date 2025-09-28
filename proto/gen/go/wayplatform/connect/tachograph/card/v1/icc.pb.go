@@ -45,7 +45,7 @@ type Icc struct {
 	state                               protoimpl.MessageState     `protogen:"opaque.v1"`
 	xxx_hidden_ClockStop                int32                      `protobuf:"varint,1,opt,name=clock_stop,json=clockStop"`
 	xxx_hidden_CardExtendedSerialNumber *v1.ExtendedSerialNumber   `protobuf:"bytes,2,opt,name=card_extended_serial_number,json=cardExtendedSerialNumber"`
-	xxx_hidden_CardApprovalNumber       *string                    `protobuf:"bytes,3,opt,name=card_approval_number,json=cardApprovalNumber"`
+	xxx_hidden_CardApprovalNumber       *v1.StringValue            `protobuf:"bytes,3,opt,name=card_approval_number,json=cardApprovalNumber"`
 	xxx_hidden_CardPersonaliserId       int32                      `protobuf:"varint,4,opt,name=card_personaliser_id,json=cardPersonaliserId"`
 	xxx_hidden_EmbedderIcAssemblerId    *Icc_EmbedderIcAssemblerId `protobuf:"bytes,5,opt,name=embedder_ic_assembler_id,json=embedderIcAssemblerId"`
 	xxx_hidden_IcIdentifier             []byte                     `protobuf:"bytes,6,opt,name=ic_identifier,json=icIdentifier"`
@@ -94,14 +94,11 @@ func (x *Icc) GetCardExtendedSerialNumber() *v1.ExtendedSerialNumber {
 	return nil
 }
 
-func (x *Icc) GetCardApprovalNumber() string {
+func (x *Icc) GetCardApprovalNumber() *v1.StringValue {
 	if x != nil {
-		if x.xxx_hidden_CardApprovalNumber != nil {
-			return *x.xxx_hidden_CardApprovalNumber
-		}
-		return ""
+		return x.xxx_hidden_CardApprovalNumber
 	}
-	return ""
+	return nil
 }
 
 func (x *Icc) GetCardPersonaliserId() int32 {
@@ -134,9 +131,8 @@ func (x *Icc) SetCardExtendedSerialNumber(v *v1.ExtendedSerialNumber) {
 	x.xxx_hidden_CardExtendedSerialNumber = v
 }
 
-func (x *Icc) SetCardApprovalNumber(v string) {
-	x.xxx_hidden_CardApprovalNumber = &v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 6)
+func (x *Icc) SetCardApprovalNumber(v *v1.StringValue) {
+	x.xxx_hidden_CardApprovalNumber = v
 }
 
 func (x *Icc) SetCardPersonaliserId(v int32) {
@@ -174,7 +170,7 @@ func (x *Icc) HasCardApprovalNumber() bool {
 	if x == nil {
 		return false
 	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 2)
+	return x.xxx_hidden_CardApprovalNumber != nil
 }
 
 func (x *Icc) HasCardPersonaliserId() bool {
@@ -208,7 +204,6 @@ func (x *Icc) ClearCardExtendedSerialNumber() {
 }
 
 func (x *Icc) ClearCardApprovalNumber() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 2)
 	x.xxx_hidden_CardApprovalNumber = nil
 }
 
@@ -246,7 +241,7 @@ type Icc_builder struct {
 	// ASN.1 Definition:
 	//
 	//	CardApprovalNumber ::= IA5String (SIZE (8))
-	CardApprovalNumber *string
+	CardApprovalNumber *v1.StringValue
 	// The ID of the card personaliser.
 	//
 	// See Data Dictionary, Section 2.94, `ManufacturerCode`.
@@ -276,10 +271,7 @@ func (b0 Icc_builder) Build() *Icc {
 		x.xxx_hidden_ClockStop = *b.ClockStop
 	}
 	x.xxx_hidden_CardExtendedSerialNumber = b.CardExtendedSerialNumber
-	if b.CardApprovalNumber != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 6)
-		x.xxx_hidden_CardApprovalNumber = b.CardApprovalNumber
-	}
+	x.xxx_hidden_CardApprovalNumber = b.CardApprovalNumber
 	if b.CardPersonaliserId != nil {
 		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 3, 6)
 		x.xxx_hidden_CardPersonaliserId = *b.CardPersonaliserId
@@ -305,8 +297,8 @@ func (b0 Icc_builder) Build() *Icc {
 //	}
 type Icc_EmbedderIcAssemblerId struct {
 	state                              protoimpl.MessageState `protogen:"opaque.v1"`
-	xxx_hidden_CountryCode             *string                `protobuf:"bytes,1,opt,name=country_code,json=countryCode"`
-	xxx_hidden_ModuleEmbedder          *string                `protobuf:"bytes,2,opt,name=module_embedder,json=moduleEmbedder"`
+	xxx_hidden_CountryCode             *v1.StringValue        `protobuf:"bytes,1,opt,name=country_code,json=countryCode"`
+	xxx_hidden_ModuleEmbedder          *v1.StringValue        `protobuf:"bytes,2,opt,name=module_embedder,json=moduleEmbedder"`
 	xxx_hidden_ManufacturerInformation int32                  `protobuf:"varint,3,opt,name=manufacturer_information,json=manufacturerInformation"`
 	XXX_raceDetectHookData             protoimpl.RaceDetectHookData
 	XXX_presence                       [1]uint32
@@ -339,24 +331,18 @@ func (x *Icc_EmbedderIcAssemblerId) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-func (x *Icc_EmbedderIcAssemblerId) GetCountryCode() string {
+func (x *Icc_EmbedderIcAssemblerId) GetCountryCode() *v1.StringValue {
 	if x != nil {
-		if x.xxx_hidden_CountryCode != nil {
-			return *x.xxx_hidden_CountryCode
-		}
-		return ""
+		return x.xxx_hidden_CountryCode
 	}
-	return ""
+	return nil
 }
 
-func (x *Icc_EmbedderIcAssemblerId) GetModuleEmbedder() string {
+func (x *Icc_EmbedderIcAssemblerId) GetModuleEmbedder() *v1.StringValue {
 	if x != nil {
-		if x.xxx_hidden_ModuleEmbedder != nil {
-			return *x.xxx_hidden_ModuleEmbedder
-		}
-		return ""
+		return x.xxx_hidden_ModuleEmbedder
 	}
-	return ""
+	return nil
 }
 
 func (x *Icc_EmbedderIcAssemblerId) GetManufacturerInformation() int32 {
@@ -366,14 +352,12 @@ func (x *Icc_EmbedderIcAssemblerId) GetManufacturerInformation() int32 {
 	return 0
 }
 
-func (x *Icc_EmbedderIcAssemblerId) SetCountryCode(v string) {
-	x.xxx_hidden_CountryCode = &v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 3)
+func (x *Icc_EmbedderIcAssemblerId) SetCountryCode(v *v1.StringValue) {
+	x.xxx_hidden_CountryCode = v
 }
 
-func (x *Icc_EmbedderIcAssemblerId) SetModuleEmbedder(v string) {
-	x.xxx_hidden_ModuleEmbedder = &v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 3)
+func (x *Icc_EmbedderIcAssemblerId) SetModuleEmbedder(v *v1.StringValue) {
+	x.xxx_hidden_ModuleEmbedder = v
 }
 
 func (x *Icc_EmbedderIcAssemblerId) SetManufacturerInformation(v int32) {
@@ -385,14 +369,14 @@ func (x *Icc_EmbedderIcAssemblerId) HasCountryCode() bool {
 	if x == nil {
 		return false
 	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 0)
+	return x.xxx_hidden_CountryCode != nil
 }
 
 func (x *Icc_EmbedderIcAssemblerId) HasModuleEmbedder() bool {
 	if x == nil {
 		return false
 	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 1)
+	return x.xxx_hidden_ModuleEmbedder != nil
 }
 
 func (x *Icc_EmbedderIcAssemblerId) HasManufacturerInformation() bool {
@@ -403,12 +387,10 @@ func (x *Icc_EmbedderIcAssemblerId) HasManufacturerInformation() bool {
 }
 
 func (x *Icc_EmbedderIcAssemblerId) ClearCountryCode() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 0)
 	x.xxx_hidden_CountryCode = nil
 }
 
 func (x *Icc_EmbedderIcAssemblerId) ClearModuleEmbedder() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 1)
 	x.xxx_hidden_ModuleEmbedder = nil
 }
 
@@ -426,14 +408,14 @@ type Icc_EmbedderIcAssemblerId_builder struct {
 	// ASN.1 Definition:
 	//
 	//	IA5String(SIZE(2))
-	CountryCode *string
+	CountryCode *v1.StringValue
 	// 2-character code identifying the module embedder.
 	//
 	// See Data Dictionary, Section 2.65, `moduleEmbedder`.
 	// ASN.1 Definition:
 	//
 	//	IA5String(SIZE(2))
-	ModuleEmbedder *string
+	ModuleEmbedder *v1.StringValue
 	// Manufacturer-specific information.
 	//
 	// See Data Dictionary, Section 2.65, `manufacturerInformation`.
@@ -447,14 +429,8 @@ func (b0 Icc_EmbedderIcAssemblerId_builder) Build() *Icc_EmbedderIcAssemblerId {
 	m0 := &Icc_EmbedderIcAssemblerId{}
 	b, x := &b0, m0
 	_, _ = b, x
-	if b.CountryCode != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 3)
-		x.xxx_hidden_CountryCode = b.CountryCode
-	}
-	if b.ModuleEmbedder != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 3)
-		x.xxx_hidden_ModuleEmbedder = b.ModuleEmbedder
-	}
+	x.xxx_hidden_CountryCode = b.CountryCode
+	x.xxx_hidden_ModuleEmbedder = b.ModuleEmbedder
 	if b.ManufacturerInformation != nil {
 		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 3)
 		x.xxx_hidden_ManufacturerInformation = *b.ManufacturerInformation
@@ -466,18 +442,18 @@ var File_wayplatform_connect_tachograph_card_v1_icc_proto protoreflect.FileDescr
 
 const file_wayplatform_connect_tachograph_card_v1_icc_proto_rawDesc = "" +
 	"\n" +
-	"0wayplatform/connect/tachograph/card/v1/icc.proto\x12&wayplatform.connect.tachograph.card.v1\x1aMwayplatform/connect/tachograph/datadictionary/v1/extended_serial_number.proto\"\xd2\x04\n" +
+	"0wayplatform/connect/tachograph/card/v1/icc.proto\x12&wayplatform.connect.tachograph.card.v1\x1aCwayplatform/connect/tachograph/datadictionary/v1/string_value.proto\x1aMwayplatform/connect/tachograph/datadictionary/v1/extended_serial_number.proto\"\x8f\x06\n" +
 	"\x03Icc\x12\x1d\n" +
 	"\n" +
 	"clock_stop\x18\x01 \x01(\x05R\tclockStop\x12\x85\x01\n" +
-	"\x1bcard_extended_serial_number\x18\x02 \x01(\v2F.wayplatform.connect.tachograph.datadictionary.v1.ExtendedSerialNumberR\x18cardExtendedSerialNumber\x120\n" +
-	"\x14card_approval_number\x18\x03 \x01(\tR\x12cardApprovalNumber\x120\n" +
+	"\x1bcard_extended_serial_number\x18\x02 \x01(\v2F.wayplatform.connect.tachograph.datadictionary.v1.ExtendedSerialNumberR\x18cardExtendedSerialNumber\x12o\n" +
+	"\x14card_approval_number\x18\x03 \x01(\v2=.wayplatform.connect.tachograph.datadictionary.v1.StringValueR\x12cardApprovalNumber\x120\n" +
 	"\x14card_personaliser_id\x18\x04 \x01(\x05R\x12cardPersonaliserId\x12z\n" +
 	"\x18embedder_ic_assembler_id\x18\x05 \x01(\v2A.wayplatform.connect.tachograph.card.v1.Icc.EmbedderIcAssemblerIdR\x15embedderIcAssemblerId\x12#\n" +
-	"\ric_identifier\x18\x06 \x01(\fR\ficIdentifier\x1a\x9e\x01\n" +
-	"\x15EmbedderIcAssemblerId\x12!\n" +
-	"\fcountry_code\x18\x01 \x01(\tR\vcountryCode\x12'\n" +
-	"\x0fmodule_embedder\x18\x02 \x01(\tR\x0emoduleEmbedder\x129\n" +
+	"\ric_identifier\x18\x06 \x01(\fR\ficIdentifier\x1a\x9c\x02\n" +
+	"\x15EmbedderIcAssemblerId\x12`\n" +
+	"\fcountry_code\x18\x01 \x01(\v2=.wayplatform.connect.tachograph.datadictionary.v1.StringValueR\vcountryCode\x12f\n" +
+	"\x0fmodule_embedder\x18\x02 \x01(\v2=.wayplatform.connect.tachograph.datadictionary.v1.StringValueR\x0emoduleEmbedder\x129\n" +
 	"\x18manufacturer_information\x18\x03 \x01(\x05R\x17manufacturerInformationB\xd5\x02\n" +
 	"*com.wayplatform.connect.tachograph.card.v1B\bIccProtoP\x01Z`github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1;cardv1\xa2\x02\x04WCTC\xaa\x02&Wayplatform.Connect.Tachograph.Card.V1\xca\x02&Wayplatform\\Connect\\Tachograph\\Card\\V1\xe2\x022Wayplatform\\Connect\\Tachograph\\Card\\V1\\GPBMetadata\xea\x02*Wayplatform::Connect::Tachograph::Card::V1b\beditionsp\xe8\a"
 
@@ -486,15 +462,19 @@ var file_wayplatform_connect_tachograph_card_v1_icc_proto_goTypes = []any{
 	(*Icc)(nil),                       // 0: wayplatform.connect.tachograph.card.v1.Icc
 	(*Icc_EmbedderIcAssemblerId)(nil), // 1: wayplatform.connect.tachograph.card.v1.Icc.EmbedderIcAssemblerId
 	(*v1.ExtendedSerialNumber)(nil),   // 2: wayplatform.connect.tachograph.datadictionary.v1.ExtendedSerialNumber
+	(*v1.StringValue)(nil),            // 3: wayplatform.connect.tachograph.datadictionary.v1.StringValue
 }
 var file_wayplatform_connect_tachograph_card_v1_icc_proto_depIdxs = []int32{
 	2, // 0: wayplatform.connect.tachograph.card.v1.Icc.card_extended_serial_number:type_name -> wayplatform.connect.tachograph.datadictionary.v1.ExtendedSerialNumber
-	1, // 1: wayplatform.connect.tachograph.card.v1.Icc.embedder_ic_assembler_id:type_name -> wayplatform.connect.tachograph.card.v1.Icc.EmbedderIcAssemblerId
-	2, // [2:2] is the sub-list for method output_type
-	2, // [2:2] is the sub-list for method input_type
-	2, // [2:2] is the sub-list for extension type_name
-	2, // [2:2] is the sub-list for extension extendee
-	0, // [0:2] is the sub-list for field type_name
+	3, // 1: wayplatform.connect.tachograph.card.v1.Icc.card_approval_number:type_name -> wayplatform.connect.tachograph.datadictionary.v1.StringValue
+	1, // 2: wayplatform.connect.tachograph.card.v1.Icc.embedder_ic_assembler_id:type_name -> wayplatform.connect.tachograph.card.v1.Icc.EmbedderIcAssemblerId
+	3, // 3: wayplatform.connect.tachograph.card.v1.Icc.EmbedderIcAssemblerId.country_code:type_name -> wayplatform.connect.tachograph.datadictionary.v1.StringValue
+	3, // 4: wayplatform.connect.tachograph.card.v1.Icc.EmbedderIcAssemblerId.module_embedder:type_name -> wayplatform.connect.tachograph.datadictionary.v1.StringValue
+	5, // [5:5] is the sub-list for method output_type
+	5, // [5:5] is the sub-list for method input_type
+	5, // [5:5] is the sub-list for extension type_name
+	5, // [5:5] is the sub-list for extension extendee
+	0, // [0:5] is the sub-list for field type_name
 }
 
 func init() { file_wayplatform_connect_tachograph_card_v1_icc_proto_init() }

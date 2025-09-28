@@ -7,6 +7,7 @@
 package cardv1
 
 import (
+	v1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/datadictionary/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
@@ -299,7 +300,7 @@ type Identification_Card struct {
 	state                               protoimpl.MessageState `protogen:"opaque.v1"`
 	xxx_hidden_CardIssuingMemberState   *string                `protobuf:"bytes,1,opt,name=card_issuing_member_state,json=cardIssuingMemberState"`
 	xxx_hidden_CardNumber               *string                `protobuf:"bytes,2,opt,name=card_number,json=cardNumber"`
-	xxx_hidden_CardIssuingAuthorityName *string                `protobuf:"bytes,3,opt,name=card_issuing_authority_name,json=cardIssuingAuthorityName"`
+	xxx_hidden_CardIssuingAuthorityName *v1.StringValue        `protobuf:"bytes,3,opt,name=card_issuing_authority_name,json=cardIssuingAuthorityName"`
 	xxx_hidden_CardIssueDate            *timestamppb.Timestamp `protobuf:"bytes,4,opt,name=card_issue_date,json=cardIssueDate"`
 	xxx_hidden_CardValidityBegin        *timestamppb.Timestamp `protobuf:"bytes,5,opt,name=card_validity_begin,json=cardValidityBegin"`
 	xxx_hidden_CardExpiryDate           *timestamppb.Timestamp `protobuf:"bytes,6,opt,name=card_expiry_date,json=cardExpiryDate"`
@@ -354,14 +355,11 @@ func (x *Identification_Card) GetCardNumber() string {
 	return ""
 }
 
-func (x *Identification_Card) GetCardIssuingAuthorityName() string {
+func (x *Identification_Card) GetCardIssuingAuthorityName() *v1.StringValue {
 	if x != nil {
-		if x.xxx_hidden_CardIssuingAuthorityName != nil {
-			return *x.xxx_hidden_CardIssuingAuthorityName
-		}
-		return ""
+		return x.xxx_hidden_CardIssuingAuthorityName
 	}
-	return ""
+	return nil
 }
 
 func (x *Identification_Card) GetCardIssueDate() *timestamppb.Timestamp {
@@ -395,9 +393,8 @@ func (x *Identification_Card) SetCardNumber(v string) {
 	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 6)
 }
 
-func (x *Identification_Card) SetCardIssuingAuthorityName(v string) {
-	x.xxx_hidden_CardIssuingAuthorityName = &v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 6)
+func (x *Identification_Card) SetCardIssuingAuthorityName(v *v1.StringValue) {
+	x.xxx_hidden_CardIssuingAuthorityName = v
 }
 
 func (x *Identification_Card) SetCardIssueDate(v *timestamppb.Timestamp) {
@@ -430,7 +427,7 @@ func (x *Identification_Card) HasCardIssuingAuthorityName() bool {
 	if x == nil {
 		return false
 	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 2)
+	return x.xxx_hidden_CardIssuingAuthorityName != nil
 }
 
 func (x *Identification_Card) HasCardIssueDate() bool {
@@ -465,7 +462,6 @@ func (x *Identification_Card) ClearCardNumber() {
 }
 
 func (x *Identification_Card) ClearCardIssuingAuthorityName() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 2)
 	x.xxx_hidden_CardIssuingAuthorityName = nil
 }
 
@@ -499,7 +495,7 @@ type Identification_Card_builder struct {
 	//
 	// See Data Dictionary, Section 2.24, `cardIssuingAuthorityName`.
 	// ASN.1 Specification: Name ::= SEQUENCE { codePage INTEGER(0..255), name OCTET STRING (SIZE(36)) }
-	CardIssuingAuthorityName *string
+	CardIssuingAuthorityName *v1.StringValue
 	// The date the card was issued.
 	//
 	// See Data Dictionary, Section 2.24, `cardIssueDate`.
@@ -529,10 +525,7 @@ func (b0 Identification_Card_builder) Build() *Identification_Card {
 		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 6)
 		x.xxx_hidden_CardNumber = b.CardNumber
 	}
-	if b.CardIssuingAuthorityName != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 6)
-		x.xxx_hidden_CardIssuingAuthorityName = b.CardIssuingAuthorityName
-	}
+	x.xxx_hidden_CardIssuingAuthorityName = b.CardIssuingAuthorityName
 	x.xxx_hidden_CardIssueDate = b.CardIssueDate
 	x.xxx_hidden_CardValidityBegin = b.CardValidityBegin
 	x.xxx_hidden_CardExpiryDate = b.CardExpiryDate
@@ -552,12 +545,10 @@ func (b0 Identification_Card_builder) Build() *Identification_Card {
 //	}
 type Identification_DriverCardHolder struct {
 	state                                  protoimpl.MessageState `protogen:"opaque.v1"`
-	xxx_hidden_CardHolderSurname           *string                `protobuf:"bytes,1,opt,name=card_holder_surname,json=cardHolderSurname"`
-	xxx_hidden_CardHolderFirstNames        *string                `protobuf:"bytes,2,opt,name=card_holder_first_names,json=cardHolderFirstNames"`
+	xxx_hidden_CardHolderSurname           *v1.StringValue        `protobuf:"bytes,1,opt,name=card_holder_surname,json=cardHolderSurname"`
+	xxx_hidden_CardHolderFirstNames        *v1.StringValue        `protobuf:"bytes,2,opt,name=card_holder_first_names,json=cardHolderFirstNames"`
 	xxx_hidden_CardHolderBirthDate         *timestamppb.Timestamp `protobuf:"bytes,3,opt,name=card_holder_birth_date,json=cardHolderBirthDate"`
-	xxx_hidden_CardHolderPreferredLanguage *string                `protobuf:"bytes,4,opt,name=card_holder_preferred_language,json=cardHolderPreferredLanguage"`
-	XXX_raceDetectHookData                 protoimpl.RaceDetectHookData
-	XXX_presence                           [1]uint32
+	xxx_hidden_CardHolderPreferredLanguage *v1.StringValue        `protobuf:"bytes,4,opt,name=card_holder_preferred_language,json=cardHolderPreferredLanguage"`
 	unknownFields                          protoimpl.UnknownFields
 	sizeCache                              protoimpl.SizeCache
 }
@@ -587,24 +578,18 @@ func (x *Identification_DriverCardHolder) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-func (x *Identification_DriverCardHolder) GetCardHolderSurname() string {
+func (x *Identification_DriverCardHolder) GetCardHolderSurname() *v1.StringValue {
 	if x != nil {
-		if x.xxx_hidden_CardHolderSurname != nil {
-			return *x.xxx_hidden_CardHolderSurname
-		}
-		return ""
+		return x.xxx_hidden_CardHolderSurname
 	}
-	return ""
+	return nil
 }
 
-func (x *Identification_DriverCardHolder) GetCardHolderFirstNames() string {
+func (x *Identification_DriverCardHolder) GetCardHolderFirstNames() *v1.StringValue {
 	if x != nil {
-		if x.xxx_hidden_CardHolderFirstNames != nil {
-			return *x.xxx_hidden_CardHolderFirstNames
-		}
-		return ""
+		return x.xxx_hidden_CardHolderFirstNames
 	}
-	return ""
+	return nil
 }
 
 func (x *Identification_DriverCardHolder) GetCardHolderBirthDate() *timestamppb.Timestamp {
@@ -614,47 +599,41 @@ func (x *Identification_DriverCardHolder) GetCardHolderBirthDate() *timestamppb.
 	return nil
 }
 
-func (x *Identification_DriverCardHolder) GetCardHolderPreferredLanguage() string {
+func (x *Identification_DriverCardHolder) GetCardHolderPreferredLanguage() *v1.StringValue {
 	if x != nil {
-		if x.xxx_hidden_CardHolderPreferredLanguage != nil {
-			return *x.xxx_hidden_CardHolderPreferredLanguage
-		}
-		return ""
+		return x.xxx_hidden_CardHolderPreferredLanguage
 	}
-	return ""
+	return nil
 }
 
-func (x *Identification_DriverCardHolder) SetCardHolderSurname(v string) {
-	x.xxx_hidden_CardHolderSurname = &v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 4)
+func (x *Identification_DriverCardHolder) SetCardHolderSurname(v *v1.StringValue) {
+	x.xxx_hidden_CardHolderSurname = v
 }
 
-func (x *Identification_DriverCardHolder) SetCardHolderFirstNames(v string) {
-	x.xxx_hidden_CardHolderFirstNames = &v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 4)
+func (x *Identification_DriverCardHolder) SetCardHolderFirstNames(v *v1.StringValue) {
+	x.xxx_hidden_CardHolderFirstNames = v
 }
 
 func (x *Identification_DriverCardHolder) SetCardHolderBirthDate(v *timestamppb.Timestamp) {
 	x.xxx_hidden_CardHolderBirthDate = v
 }
 
-func (x *Identification_DriverCardHolder) SetCardHolderPreferredLanguage(v string) {
-	x.xxx_hidden_CardHolderPreferredLanguage = &v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 3, 4)
+func (x *Identification_DriverCardHolder) SetCardHolderPreferredLanguage(v *v1.StringValue) {
+	x.xxx_hidden_CardHolderPreferredLanguage = v
 }
 
 func (x *Identification_DriverCardHolder) HasCardHolderSurname() bool {
 	if x == nil {
 		return false
 	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 0)
+	return x.xxx_hidden_CardHolderSurname != nil
 }
 
 func (x *Identification_DriverCardHolder) HasCardHolderFirstNames() bool {
 	if x == nil {
 		return false
 	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 1)
+	return x.xxx_hidden_CardHolderFirstNames != nil
 }
 
 func (x *Identification_DriverCardHolder) HasCardHolderBirthDate() bool {
@@ -668,16 +647,14 @@ func (x *Identification_DriverCardHolder) HasCardHolderPreferredLanguage() bool 
 	if x == nil {
 		return false
 	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 3)
+	return x.xxx_hidden_CardHolderPreferredLanguage != nil
 }
 
 func (x *Identification_DriverCardHolder) ClearCardHolderSurname() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 0)
 	x.xxx_hidden_CardHolderSurname = nil
 }
 
 func (x *Identification_DriverCardHolder) ClearCardHolderFirstNames() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 1)
 	x.xxx_hidden_CardHolderFirstNames = nil
 }
 
@@ -686,7 +663,6 @@ func (x *Identification_DriverCardHolder) ClearCardHolderBirthDate() {
 }
 
 func (x *Identification_DriverCardHolder) ClearCardHolderPreferredLanguage() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 3)
 	x.xxx_hidden_CardHolderPreferredLanguage = nil
 }
 
@@ -697,12 +673,12 @@ type Identification_DriverCardHolder_builder struct {
 	//
 	// Corresponds to `holderSurname` within `HolderName` (DD 2.83).
 	// ASN.1 Specification: Name ::= SEQUENCE { codePage INTEGER(0..255), name OCTET STRING (SIZE(36)) }
-	CardHolderSurname *string
+	CardHolderSurname *v1.StringValue
 	// The first name(s) of the card holder.
 	//
 	// Corresponds to `holderFirstNames` within `HolderName` (DD 2.83).
 	// ASN.1 Specification: Name ::= SEQUENCE { codePage INTEGER(0..255), name OCTET STRING (SIZE(36)) }
-	CardHolderFirstNames *string
+	CardHolderFirstNames *v1.StringValue
 	// The birth date of the card holder.
 	//
 	// See Data Dictionary, Section 2.62, `cardHolderBirthDate`.
@@ -711,27 +687,21 @@ type Identification_DriverCardHolder_builder struct {
 	// The preferred language of the card holder.
 	//
 	// See Data Dictionary, Section 2.62, `cardHolderPreferredLanguage`.
-	// ASN.1 Specification: Language ::= IA5String (SIZE(2))
-	CardHolderPreferredLanguage *string
+	//
+	// ASN.1 Definition:
+	//
+	//	Language ::= IA5String (SIZE(2))
+	CardHolderPreferredLanguage *v1.StringValue
 }
 
 func (b0 Identification_DriverCardHolder_builder) Build() *Identification_DriverCardHolder {
 	m0 := &Identification_DriverCardHolder{}
 	b, x := &b0, m0
 	_, _ = b, x
-	if b.CardHolderSurname != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 4)
-		x.xxx_hidden_CardHolderSurname = b.CardHolderSurname
-	}
-	if b.CardHolderFirstNames != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 4)
-		x.xxx_hidden_CardHolderFirstNames = b.CardHolderFirstNames
-	}
+	x.xxx_hidden_CardHolderSurname = b.CardHolderSurname
+	x.xxx_hidden_CardHolderFirstNames = b.CardHolderFirstNames
 	x.xxx_hidden_CardHolderBirthDate = b.CardHolderBirthDate
-	if b.CardHolderPreferredLanguage != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 3, 4)
-		x.xxx_hidden_CardHolderPreferredLanguage = b.CardHolderPreferredLanguage
-	}
+	x.xxx_hidden_CardHolderPreferredLanguage = b.CardHolderPreferredLanguage
 	return m0
 }
 
@@ -749,13 +719,11 @@ func (b0 Identification_DriverCardHolder_builder) Build() *Identification_Driver
 //	}
 type Identification_WorkshopCardHolder struct {
 	state                                  protoimpl.MessageState `protogen:"opaque.v1"`
-	xxx_hidden_WorkshopName                *string                `protobuf:"bytes,1,opt,name=workshop_name,json=workshopName"`
-	xxx_hidden_WorkshopAddress             *string                `protobuf:"bytes,2,opt,name=workshop_address,json=workshopAddress"`
-	xxx_hidden_CardHolderSurname           *string                `protobuf:"bytes,3,opt,name=card_holder_surname,json=cardHolderSurname"`
-	xxx_hidden_CardHolderFirstNames        *string                `protobuf:"bytes,4,opt,name=card_holder_first_names,json=cardHolderFirstNames"`
-	xxx_hidden_CardHolderPreferredLanguage *string                `protobuf:"bytes,5,opt,name=card_holder_preferred_language,json=cardHolderPreferredLanguage"`
-	XXX_raceDetectHookData                 protoimpl.RaceDetectHookData
-	XXX_presence                           [1]uint32
+	xxx_hidden_WorkshopName                *v1.StringValue        `protobuf:"bytes,1,opt,name=workshop_name,json=workshopName"`
+	xxx_hidden_WorkshopAddress             *v1.StringValue        `protobuf:"bytes,2,opt,name=workshop_address,json=workshopAddress"`
+	xxx_hidden_CardHolderSurname           *v1.StringValue        `protobuf:"bytes,3,opt,name=card_holder_surname,json=cardHolderSurname"`
+	xxx_hidden_CardHolderFirstNames        *v1.StringValue        `protobuf:"bytes,4,opt,name=card_holder_first_names,json=cardHolderFirstNames"`
+	xxx_hidden_CardHolderPreferredLanguage *v1.StringValue        `protobuf:"bytes,5,opt,name=card_holder_preferred_language,json=cardHolderPreferredLanguage"`
 	unknownFields                          protoimpl.UnknownFields
 	sizeCache                              protoimpl.SizeCache
 }
@@ -785,138 +753,113 @@ func (x *Identification_WorkshopCardHolder) ProtoReflect() protoreflect.Message 
 	return mi.MessageOf(x)
 }
 
-func (x *Identification_WorkshopCardHolder) GetWorkshopName() string {
+func (x *Identification_WorkshopCardHolder) GetWorkshopName() *v1.StringValue {
 	if x != nil {
-		if x.xxx_hidden_WorkshopName != nil {
-			return *x.xxx_hidden_WorkshopName
-		}
-		return ""
+		return x.xxx_hidden_WorkshopName
 	}
-	return ""
+	return nil
 }
 
-func (x *Identification_WorkshopCardHolder) GetWorkshopAddress() string {
+func (x *Identification_WorkshopCardHolder) GetWorkshopAddress() *v1.StringValue {
 	if x != nil {
-		if x.xxx_hidden_WorkshopAddress != nil {
-			return *x.xxx_hidden_WorkshopAddress
-		}
-		return ""
+		return x.xxx_hidden_WorkshopAddress
 	}
-	return ""
+	return nil
 }
 
-func (x *Identification_WorkshopCardHolder) GetCardHolderSurname() string {
+func (x *Identification_WorkshopCardHolder) GetCardHolderSurname() *v1.StringValue {
 	if x != nil {
-		if x.xxx_hidden_CardHolderSurname != nil {
-			return *x.xxx_hidden_CardHolderSurname
-		}
-		return ""
+		return x.xxx_hidden_CardHolderSurname
 	}
-	return ""
+	return nil
 }
 
-func (x *Identification_WorkshopCardHolder) GetCardHolderFirstNames() string {
+func (x *Identification_WorkshopCardHolder) GetCardHolderFirstNames() *v1.StringValue {
 	if x != nil {
-		if x.xxx_hidden_CardHolderFirstNames != nil {
-			return *x.xxx_hidden_CardHolderFirstNames
-		}
-		return ""
+		return x.xxx_hidden_CardHolderFirstNames
 	}
-	return ""
+	return nil
 }
 
-func (x *Identification_WorkshopCardHolder) GetCardHolderPreferredLanguage() string {
+func (x *Identification_WorkshopCardHolder) GetCardHolderPreferredLanguage() *v1.StringValue {
 	if x != nil {
-		if x.xxx_hidden_CardHolderPreferredLanguage != nil {
-			return *x.xxx_hidden_CardHolderPreferredLanguage
-		}
-		return ""
+		return x.xxx_hidden_CardHolderPreferredLanguage
 	}
-	return ""
+	return nil
 }
 
-func (x *Identification_WorkshopCardHolder) SetWorkshopName(v string) {
-	x.xxx_hidden_WorkshopName = &v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 5)
+func (x *Identification_WorkshopCardHolder) SetWorkshopName(v *v1.StringValue) {
+	x.xxx_hidden_WorkshopName = v
 }
 
-func (x *Identification_WorkshopCardHolder) SetWorkshopAddress(v string) {
-	x.xxx_hidden_WorkshopAddress = &v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 5)
+func (x *Identification_WorkshopCardHolder) SetWorkshopAddress(v *v1.StringValue) {
+	x.xxx_hidden_WorkshopAddress = v
 }
 
-func (x *Identification_WorkshopCardHolder) SetCardHolderSurname(v string) {
-	x.xxx_hidden_CardHolderSurname = &v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 5)
+func (x *Identification_WorkshopCardHolder) SetCardHolderSurname(v *v1.StringValue) {
+	x.xxx_hidden_CardHolderSurname = v
 }
 
-func (x *Identification_WorkshopCardHolder) SetCardHolderFirstNames(v string) {
-	x.xxx_hidden_CardHolderFirstNames = &v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 3, 5)
+func (x *Identification_WorkshopCardHolder) SetCardHolderFirstNames(v *v1.StringValue) {
+	x.xxx_hidden_CardHolderFirstNames = v
 }
 
-func (x *Identification_WorkshopCardHolder) SetCardHolderPreferredLanguage(v string) {
-	x.xxx_hidden_CardHolderPreferredLanguage = &v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 4, 5)
+func (x *Identification_WorkshopCardHolder) SetCardHolderPreferredLanguage(v *v1.StringValue) {
+	x.xxx_hidden_CardHolderPreferredLanguage = v
 }
 
 func (x *Identification_WorkshopCardHolder) HasWorkshopName() bool {
 	if x == nil {
 		return false
 	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 0)
+	return x.xxx_hidden_WorkshopName != nil
 }
 
 func (x *Identification_WorkshopCardHolder) HasWorkshopAddress() bool {
 	if x == nil {
 		return false
 	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 1)
+	return x.xxx_hidden_WorkshopAddress != nil
 }
 
 func (x *Identification_WorkshopCardHolder) HasCardHolderSurname() bool {
 	if x == nil {
 		return false
 	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 2)
+	return x.xxx_hidden_CardHolderSurname != nil
 }
 
 func (x *Identification_WorkshopCardHolder) HasCardHolderFirstNames() bool {
 	if x == nil {
 		return false
 	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 3)
+	return x.xxx_hidden_CardHolderFirstNames != nil
 }
 
 func (x *Identification_WorkshopCardHolder) HasCardHolderPreferredLanguage() bool {
 	if x == nil {
 		return false
 	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 4)
+	return x.xxx_hidden_CardHolderPreferredLanguage != nil
 }
 
 func (x *Identification_WorkshopCardHolder) ClearWorkshopName() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 0)
 	x.xxx_hidden_WorkshopName = nil
 }
 
 func (x *Identification_WorkshopCardHolder) ClearWorkshopAddress() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 1)
 	x.xxx_hidden_WorkshopAddress = nil
 }
 
 func (x *Identification_WorkshopCardHolder) ClearCardHolderSurname() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 2)
 	x.xxx_hidden_CardHolderSurname = nil
 }
 
 func (x *Identification_WorkshopCardHolder) ClearCardHolderFirstNames() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 3)
 	x.xxx_hidden_CardHolderFirstNames = nil
 }
 
 func (x *Identification_WorkshopCardHolder) ClearCardHolderPreferredLanguage() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 4)
 	x.xxx_hidden_CardHolderPreferredLanguage = nil
 }
 
@@ -927,53 +870,41 @@ type Identification_WorkshopCardHolder_builder struct {
 	//
 	// See Data Dictionary, Section 2.237, `workshopName`.
 	// ASN.1 Specification: Name ::= SEQUENCE { codePage INTEGER(0..255), name OCTET STRING (SIZE(36)) }
-	WorkshopName *string
+	WorkshopName *v1.StringValue
 	// The address of the workshop.
 	//
 	// See Data Dictionary, Section 2.237, `workshopAddress`.
 	// ASN.1 Specification: Address ::= SEQUENCE { codePage INTEGER(0..255), address OCTET STRING (SIZE(36)) }
-	WorkshopAddress *string
+	WorkshopAddress *v1.StringValue
 	// The surname of the card holder.
 	//
 	// Corresponds to `holderSurname` within `HolderName` (DD 2.83).
 	// ASN.1 Specification: Name ::= SEQUENCE { codePage INTEGER(0..255), name OCTET STRING (SIZE(36)) }
-	CardHolderSurname *string
+	CardHolderSurname *v1.StringValue
 	// The first name(s) of the card holder.
 	//
 	// Corresponds to `holderFirstNames` within `HolderName` (DD 2.83).
 	// ASN.1 Specification: Name ::= SEQUENCE { codePage INTEGER(0..255), name OCTET STRING (SIZE(36)) }
-	CardHolderFirstNames *string
+	CardHolderFirstNames *v1.StringValue
 	// The preferred language of the card holder.
 	//
 	// See Data Dictionary, Section 2.237, `cardHolderPreferredLanguage`.
-	// ASN.1 Specification: Language ::= IA5String (SIZE(2))
-	CardHolderPreferredLanguage *string
+	//
+	// ASN.1 Definition:
+	//
+	//	Language ::= IA5String (SIZE(2))
+	CardHolderPreferredLanguage *v1.StringValue
 }
 
 func (b0 Identification_WorkshopCardHolder_builder) Build() *Identification_WorkshopCardHolder {
 	m0 := &Identification_WorkshopCardHolder{}
 	b, x := &b0, m0
 	_, _ = b, x
-	if b.WorkshopName != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 5)
-		x.xxx_hidden_WorkshopName = b.WorkshopName
-	}
-	if b.WorkshopAddress != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 5)
-		x.xxx_hidden_WorkshopAddress = b.WorkshopAddress
-	}
-	if b.CardHolderSurname != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 5)
-		x.xxx_hidden_CardHolderSurname = b.CardHolderSurname
-	}
-	if b.CardHolderFirstNames != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 3, 5)
-		x.xxx_hidden_CardHolderFirstNames = b.CardHolderFirstNames
-	}
-	if b.CardHolderPreferredLanguage != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 4, 5)
-		x.xxx_hidden_CardHolderPreferredLanguage = b.CardHolderPreferredLanguage
-	}
+	x.xxx_hidden_WorkshopName = b.WorkshopName
+	x.xxx_hidden_WorkshopAddress = b.WorkshopAddress
+	x.xxx_hidden_CardHolderSurname = b.CardHolderSurname
+	x.xxx_hidden_CardHolderFirstNames = b.CardHolderFirstNames
+	x.xxx_hidden_CardHolderPreferredLanguage = b.CardHolderPreferredLanguage
 	return m0
 }
 
@@ -991,13 +922,11 @@ func (b0 Identification_WorkshopCardHolder_builder) Build() *Identification_Work
 //	}
 type Identification_ControlCardHolder struct {
 	state                                  protoimpl.MessageState `protogen:"opaque.v1"`
-	xxx_hidden_ControlBodyName             *string                `protobuf:"bytes,1,opt,name=control_body_name,json=controlBodyName"`
-	xxx_hidden_ControlBodyAddress          *string                `protobuf:"bytes,2,opt,name=control_body_address,json=controlBodyAddress"`
-	xxx_hidden_CardHolderSurname           *string                `protobuf:"bytes,3,opt,name=card_holder_surname,json=cardHolderSurname"`
-	xxx_hidden_CardHolderFirstNames        *string                `protobuf:"bytes,4,opt,name=card_holder_first_names,json=cardHolderFirstNames"`
-	xxx_hidden_CardHolderPreferredLanguage *string                `protobuf:"bytes,5,opt,name=card_holder_preferred_language,json=cardHolderPreferredLanguage"`
-	XXX_raceDetectHookData                 protoimpl.RaceDetectHookData
-	XXX_presence                           [1]uint32
+	xxx_hidden_ControlBodyName             *v1.StringValue        `protobuf:"bytes,1,opt,name=control_body_name,json=controlBodyName"`
+	xxx_hidden_ControlBodyAddress          *v1.StringValue        `protobuf:"bytes,2,opt,name=control_body_address,json=controlBodyAddress"`
+	xxx_hidden_CardHolderSurname           *v1.StringValue        `protobuf:"bytes,3,opt,name=card_holder_surname,json=cardHolderSurname"`
+	xxx_hidden_CardHolderFirstNames        *v1.StringValue        `protobuf:"bytes,4,opt,name=card_holder_first_names,json=cardHolderFirstNames"`
+	xxx_hidden_CardHolderPreferredLanguage *v1.StringValue        `protobuf:"bytes,5,opt,name=card_holder_preferred_language,json=cardHolderPreferredLanguage"`
 	unknownFields                          protoimpl.UnknownFields
 	sizeCache                              protoimpl.SizeCache
 }
@@ -1027,138 +956,113 @@ func (x *Identification_ControlCardHolder) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-func (x *Identification_ControlCardHolder) GetControlBodyName() string {
+func (x *Identification_ControlCardHolder) GetControlBodyName() *v1.StringValue {
 	if x != nil {
-		if x.xxx_hidden_ControlBodyName != nil {
-			return *x.xxx_hidden_ControlBodyName
-		}
-		return ""
+		return x.xxx_hidden_ControlBodyName
 	}
-	return ""
+	return nil
 }
 
-func (x *Identification_ControlCardHolder) GetControlBodyAddress() string {
+func (x *Identification_ControlCardHolder) GetControlBodyAddress() *v1.StringValue {
 	if x != nil {
-		if x.xxx_hidden_ControlBodyAddress != nil {
-			return *x.xxx_hidden_ControlBodyAddress
-		}
-		return ""
+		return x.xxx_hidden_ControlBodyAddress
 	}
-	return ""
+	return nil
 }
 
-func (x *Identification_ControlCardHolder) GetCardHolderSurname() string {
+func (x *Identification_ControlCardHolder) GetCardHolderSurname() *v1.StringValue {
 	if x != nil {
-		if x.xxx_hidden_CardHolderSurname != nil {
-			return *x.xxx_hidden_CardHolderSurname
-		}
-		return ""
+		return x.xxx_hidden_CardHolderSurname
 	}
-	return ""
+	return nil
 }
 
-func (x *Identification_ControlCardHolder) GetCardHolderFirstNames() string {
+func (x *Identification_ControlCardHolder) GetCardHolderFirstNames() *v1.StringValue {
 	if x != nil {
-		if x.xxx_hidden_CardHolderFirstNames != nil {
-			return *x.xxx_hidden_CardHolderFirstNames
-		}
-		return ""
+		return x.xxx_hidden_CardHolderFirstNames
 	}
-	return ""
+	return nil
 }
 
-func (x *Identification_ControlCardHolder) GetCardHolderPreferredLanguage() string {
+func (x *Identification_ControlCardHolder) GetCardHolderPreferredLanguage() *v1.StringValue {
 	if x != nil {
-		if x.xxx_hidden_CardHolderPreferredLanguage != nil {
-			return *x.xxx_hidden_CardHolderPreferredLanguage
-		}
-		return ""
+		return x.xxx_hidden_CardHolderPreferredLanguage
 	}
-	return ""
+	return nil
 }
 
-func (x *Identification_ControlCardHolder) SetControlBodyName(v string) {
-	x.xxx_hidden_ControlBodyName = &v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 5)
+func (x *Identification_ControlCardHolder) SetControlBodyName(v *v1.StringValue) {
+	x.xxx_hidden_ControlBodyName = v
 }
 
-func (x *Identification_ControlCardHolder) SetControlBodyAddress(v string) {
-	x.xxx_hidden_ControlBodyAddress = &v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 5)
+func (x *Identification_ControlCardHolder) SetControlBodyAddress(v *v1.StringValue) {
+	x.xxx_hidden_ControlBodyAddress = v
 }
 
-func (x *Identification_ControlCardHolder) SetCardHolderSurname(v string) {
-	x.xxx_hidden_CardHolderSurname = &v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 5)
+func (x *Identification_ControlCardHolder) SetCardHolderSurname(v *v1.StringValue) {
+	x.xxx_hidden_CardHolderSurname = v
 }
 
-func (x *Identification_ControlCardHolder) SetCardHolderFirstNames(v string) {
-	x.xxx_hidden_CardHolderFirstNames = &v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 3, 5)
+func (x *Identification_ControlCardHolder) SetCardHolderFirstNames(v *v1.StringValue) {
+	x.xxx_hidden_CardHolderFirstNames = v
 }
 
-func (x *Identification_ControlCardHolder) SetCardHolderPreferredLanguage(v string) {
-	x.xxx_hidden_CardHolderPreferredLanguage = &v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 4, 5)
+func (x *Identification_ControlCardHolder) SetCardHolderPreferredLanguage(v *v1.StringValue) {
+	x.xxx_hidden_CardHolderPreferredLanguage = v
 }
 
 func (x *Identification_ControlCardHolder) HasControlBodyName() bool {
 	if x == nil {
 		return false
 	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 0)
+	return x.xxx_hidden_ControlBodyName != nil
 }
 
 func (x *Identification_ControlCardHolder) HasControlBodyAddress() bool {
 	if x == nil {
 		return false
 	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 1)
+	return x.xxx_hidden_ControlBodyAddress != nil
 }
 
 func (x *Identification_ControlCardHolder) HasCardHolderSurname() bool {
 	if x == nil {
 		return false
 	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 2)
+	return x.xxx_hidden_CardHolderSurname != nil
 }
 
 func (x *Identification_ControlCardHolder) HasCardHolderFirstNames() bool {
 	if x == nil {
 		return false
 	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 3)
+	return x.xxx_hidden_CardHolderFirstNames != nil
 }
 
 func (x *Identification_ControlCardHolder) HasCardHolderPreferredLanguage() bool {
 	if x == nil {
 		return false
 	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 4)
+	return x.xxx_hidden_CardHolderPreferredLanguage != nil
 }
 
 func (x *Identification_ControlCardHolder) ClearControlBodyName() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 0)
 	x.xxx_hidden_ControlBodyName = nil
 }
 
 func (x *Identification_ControlCardHolder) ClearControlBodyAddress() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 1)
 	x.xxx_hidden_ControlBodyAddress = nil
 }
 
 func (x *Identification_ControlCardHolder) ClearCardHolderSurname() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 2)
 	x.xxx_hidden_CardHolderSurname = nil
 }
 
 func (x *Identification_ControlCardHolder) ClearCardHolderFirstNames() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 3)
 	x.xxx_hidden_CardHolderFirstNames = nil
 }
 
 func (x *Identification_ControlCardHolder) ClearCardHolderPreferredLanguage() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 4)
 	x.xxx_hidden_CardHolderPreferredLanguage = nil
 }
 
@@ -1169,53 +1073,41 @@ type Identification_ControlCardHolder_builder struct {
 	//
 	// See Data Dictionary, Section 2.52, `controlBodyName`.
 	// ASN.1 Specification: Name ::= SEQUENCE { codePage INTEGER(0..255), name OCTET STRING (SIZE(36)) }
-	ControlBodyName *string
+	ControlBodyName *v1.StringValue
 	// The address of the control body.
 	//
 	// See Data Dictionary, Section 2.52, `controlBodyAddress`.
 	// ASN.1 Specification: Address ::= SEQUENCE { codePage INTEGER(0..255), address OCTET STRING (SIZE(36)) }
-	ControlBodyAddress *string
+	ControlBodyAddress *v1.StringValue
 	// The surname of the card holder.
 	//
 	// Corresponds to `holderSurname` within `HolderName` (DD 2.83).
 	// ASN.1 Specification: Name ::= SEQUENCE { codePage INTEGER(0..255), name OCTET STRING (SIZE(36)) }
-	CardHolderSurname *string
+	CardHolderSurname *v1.StringValue
 	// The first name(s) of the card holder.
 	//
 	// Corresponds to `holderFirstNames` within `HolderName` (DD 2.83).
 	// ASN.1 Specification: Name ::= SEQUENCE { codePage INTEGER(0..255), name OCTET STRING (SIZE(36)) }
-	CardHolderFirstNames *string
+	CardHolderFirstNames *v1.StringValue
 	// The preferred language of the card holder.
 	//
 	// See Data Dictionary, Section 2.52, `cardHolderPreferredLanguage`.
-	// ASN.1 Specification: Language ::= IA5String (SIZE(2))
-	CardHolderPreferredLanguage *string
+	//
+	// ASN.1 Definition:
+	//
+	//	Language ::= IA5String (SIZE(2))
+	CardHolderPreferredLanguage *v1.StringValue
 }
 
 func (b0 Identification_ControlCardHolder_builder) Build() *Identification_ControlCardHolder {
 	m0 := &Identification_ControlCardHolder{}
 	b, x := &b0, m0
 	_, _ = b, x
-	if b.ControlBodyName != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 5)
-		x.xxx_hidden_ControlBodyName = b.ControlBodyName
-	}
-	if b.ControlBodyAddress != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 5)
-		x.xxx_hidden_ControlBodyAddress = b.ControlBodyAddress
-	}
-	if b.CardHolderSurname != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 5)
-		x.xxx_hidden_CardHolderSurname = b.CardHolderSurname
-	}
-	if b.CardHolderFirstNames != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 3, 5)
-		x.xxx_hidden_CardHolderFirstNames = b.CardHolderFirstNames
-	}
-	if b.CardHolderPreferredLanguage != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 4, 5)
-		x.xxx_hidden_CardHolderPreferredLanguage = b.CardHolderPreferredLanguage
-	}
+	x.xxx_hidden_ControlBodyName = b.ControlBodyName
+	x.xxx_hidden_ControlBodyAddress = b.ControlBodyAddress
+	x.xxx_hidden_CardHolderSurname = b.CardHolderSurname
+	x.xxx_hidden_CardHolderFirstNames = b.CardHolderFirstNames
+	x.xxx_hidden_CardHolderPreferredLanguage = b.CardHolderPreferredLanguage
 	return m0
 }
 
@@ -1232,11 +1124,9 @@ func (b0 Identification_ControlCardHolder_builder) Build() *Identification_Contr
 //	}
 type Identification_CompanyCardHolder struct {
 	state                                  protoimpl.MessageState `protogen:"opaque.v1"`
-	xxx_hidden_CompanyName                 *string                `protobuf:"bytes,1,opt,name=company_name,json=companyName"`
-	xxx_hidden_CompanyAddress              *string                `protobuf:"bytes,2,opt,name=company_address,json=companyAddress"`
-	xxx_hidden_CardHolderPreferredLanguage *string                `protobuf:"bytes,3,opt,name=card_holder_preferred_language,json=cardHolderPreferredLanguage"`
-	XXX_raceDetectHookData                 protoimpl.RaceDetectHookData
-	XXX_presence                           [1]uint32
+	xxx_hidden_CompanyName                 *v1.StringValue        `protobuf:"bytes,1,opt,name=company_name,json=companyName"`
+	xxx_hidden_CompanyAddress              *v1.StringValue        `protobuf:"bytes,2,opt,name=company_address,json=companyAddress"`
+	xxx_hidden_CardHolderPreferredLanguage *v1.StringValue        `protobuf:"bytes,3,opt,name=card_holder_preferred_language,json=cardHolderPreferredLanguage"`
 	unknownFields                          protoimpl.UnknownFields
 	sizeCache                              protoimpl.SizeCache
 }
@@ -1266,84 +1156,69 @@ func (x *Identification_CompanyCardHolder) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-func (x *Identification_CompanyCardHolder) GetCompanyName() string {
+func (x *Identification_CompanyCardHolder) GetCompanyName() *v1.StringValue {
 	if x != nil {
-		if x.xxx_hidden_CompanyName != nil {
-			return *x.xxx_hidden_CompanyName
-		}
-		return ""
+		return x.xxx_hidden_CompanyName
 	}
-	return ""
+	return nil
 }
 
-func (x *Identification_CompanyCardHolder) GetCompanyAddress() string {
+func (x *Identification_CompanyCardHolder) GetCompanyAddress() *v1.StringValue {
 	if x != nil {
-		if x.xxx_hidden_CompanyAddress != nil {
-			return *x.xxx_hidden_CompanyAddress
-		}
-		return ""
+		return x.xxx_hidden_CompanyAddress
 	}
-	return ""
+	return nil
 }
 
-func (x *Identification_CompanyCardHolder) GetCardHolderPreferredLanguage() string {
+func (x *Identification_CompanyCardHolder) GetCardHolderPreferredLanguage() *v1.StringValue {
 	if x != nil {
-		if x.xxx_hidden_CardHolderPreferredLanguage != nil {
-			return *x.xxx_hidden_CardHolderPreferredLanguage
-		}
-		return ""
+		return x.xxx_hidden_CardHolderPreferredLanguage
 	}
-	return ""
+	return nil
 }
 
-func (x *Identification_CompanyCardHolder) SetCompanyName(v string) {
-	x.xxx_hidden_CompanyName = &v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 3)
+func (x *Identification_CompanyCardHolder) SetCompanyName(v *v1.StringValue) {
+	x.xxx_hidden_CompanyName = v
 }
 
-func (x *Identification_CompanyCardHolder) SetCompanyAddress(v string) {
-	x.xxx_hidden_CompanyAddress = &v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 3)
+func (x *Identification_CompanyCardHolder) SetCompanyAddress(v *v1.StringValue) {
+	x.xxx_hidden_CompanyAddress = v
 }
 
-func (x *Identification_CompanyCardHolder) SetCardHolderPreferredLanguage(v string) {
-	x.xxx_hidden_CardHolderPreferredLanguage = &v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 3)
+func (x *Identification_CompanyCardHolder) SetCardHolderPreferredLanguage(v *v1.StringValue) {
+	x.xxx_hidden_CardHolderPreferredLanguage = v
 }
 
 func (x *Identification_CompanyCardHolder) HasCompanyName() bool {
 	if x == nil {
 		return false
 	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 0)
+	return x.xxx_hidden_CompanyName != nil
 }
 
 func (x *Identification_CompanyCardHolder) HasCompanyAddress() bool {
 	if x == nil {
 		return false
 	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 1)
+	return x.xxx_hidden_CompanyAddress != nil
 }
 
 func (x *Identification_CompanyCardHolder) HasCardHolderPreferredLanguage() bool {
 	if x == nil {
 		return false
 	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 2)
+	return x.xxx_hidden_CardHolderPreferredLanguage != nil
 }
 
 func (x *Identification_CompanyCardHolder) ClearCompanyName() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 0)
 	x.xxx_hidden_CompanyName = nil
 }
 
 func (x *Identification_CompanyCardHolder) ClearCompanyAddress() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 1)
 	x.xxx_hidden_CompanyAddress = nil
 }
 
 func (x *Identification_CompanyCardHolder) ClearCardHolderPreferredLanguage() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 2)
 	x.xxx_hidden_CardHolderPreferredLanguage = nil
 }
 
@@ -1354,35 +1229,29 @@ type Identification_CompanyCardHolder_builder struct {
 	//
 	// See Data Dictionary, Section 2.49, `companyName`.
 	// ASN.1 Specification: Name ::= SEQUENCE { codePage INTEGER(0..255), name OCTET STRING (SIZE(36)) }
-	CompanyName *string
+	CompanyName *v1.StringValue
 	// The address of the company.
 	//
 	// See Data Dictionary, Section 2.49, `companyAddress`.
 	// ASN.1 Specification: Address ::= SEQUENCE { codePage INTEGER(0..255), address OCTET STRING (SIZE(36)) }
-	CompanyAddress *string
+	CompanyAddress *v1.StringValue
 	// The preferred language of the card holder.
 	//
 	// See Data Dictionary, Section 2.49, `cardHolderPreferredLanguage`.
-	// ASN.1 Specification: Language ::= IA5String (SIZE(2))
-	CardHolderPreferredLanguage *string
+	//
+	// ASN.1 Definition:
+	//
+	//	Language ::= IA5String (SIZE(2))
+	CardHolderPreferredLanguage *v1.StringValue
 }
 
 func (b0 Identification_CompanyCardHolder_builder) Build() *Identification_CompanyCardHolder {
 	m0 := &Identification_CompanyCardHolder{}
 	b, x := &b0, m0
 	_, _ = b, x
-	if b.CompanyName != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 3)
-		x.xxx_hidden_CompanyName = b.CompanyName
-	}
-	if b.CompanyAddress != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 3)
-		x.xxx_hidden_CompanyAddress = b.CompanyAddress
-	}
-	if b.CardHolderPreferredLanguage != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 3)
-		x.xxx_hidden_CardHolderPreferredLanguage = b.CardHolderPreferredLanguage
-	}
+	x.xxx_hidden_CompanyName = b.CompanyName
+	x.xxx_hidden_CompanyAddress = b.CompanyAddress
+	x.xxx_hidden_CardHolderPreferredLanguage = b.CardHolderPreferredLanguage
 	return m0
 }
 
@@ -1390,7 +1259,7 @@ var File_wayplatform_connect_tachograph_card_v1_identification_proto protoreflec
 
 const file_wayplatform_connect_tachograph_card_v1_identification_proto_rawDesc = "" +
 	"\n" +
-	";wayplatform/connect/tachograph/card/v1/identification.proto\x12&wayplatform.connect.tachograph.card.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a6wayplatform/connect/tachograph/card/v1/card_type.proto\"\x9c\x10\n" +
+	";wayplatform/connect/tachograph/card/v1/identification.proto\x12&wayplatform.connect.tachograph.card.v1\x1aCwayplatform/connect/tachograph/datadictionary/v1/string_value.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a6wayplatform/connect/tachograph/card/v1/card_type.proto\"\xcf\x18\n" +
 	"\x0eIdentification\x12O\n" +
 	"\x04card\x18\x01 \x01(\v2;.wayplatform.connect.tachograph.card.v1.Identification.CardR\x04card\x12M\n" +
 	"\tcard_type\x18\x02 \x01(\x0e20.wayplatform.connect.tachograph.card.v1.CardTypeR\bcardType\x12u\n" +
@@ -1398,36 +1267,36 @@ const file_wayplatform_connect_tachograph_card_v1_identification_proto_rawDesc =
 	"\x14workshop_card_holder\x18\x04 \x01(\v2I.wayplatform.connect.tachograph.card.v1.Identification.WorkshopCardHolderR\x12workshopCardHolder\x12x\n" +
 	"\x13control_card_holder\x18\x05 \x01(\v2H.wayplatform.connect.tachograph.card.v1.Identification.ControlCardHolderR\x11controlCardHolder\x12x\n" +
 	"\x13company_card_holder\x18\x06 \x01(\v2H.wayplatform.connect.tachograph.card.v1.Identification.CompanyCardHolderR\x11companyCardHolder\x12\x1c\n" +
-	"\tsignature\x18\a \x01(\fR\tsignature\x1a\xf7\x02\n" +
+	"\tsignature\x18\a \x01(\fR\tsignature\x1a\xb6\x03\n" +
 	"\x04Card\x129\n" +
 	"\x19card_issuing_member_state\x18\x01 \x01(\tR\x16cardIssuingMemberState\x12\x1f\n" +
 	"\vcard_number\x18\x02 \x01(\tR\n" +
-	"cardNumber\x12=\n" +
-	"\x1bcard_issuing_authority_name\x18\x03 \x01(\tR\x18cardIssuingAuthorityName\x12B\n" +
+	"cardNumber\x12|\n" +
+	"\x1bcard_issuing_authority_name\x18\x03 \x01(\v2=.wayplatform.connect.tachograph.datadictionary.v1.StringValueR\x18cardIssuingAuthorityName\x12B\n" +
 	"\x0fcard_issue_date\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampR\rcardIssueDate\x12J\n" +
 	"\x13card_validity_begin\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampR\x11cardValidityBegin\x12D\n" +
-	"\x10card_expiry_date\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampR\x0ecardExpiryDate\x1a\x8f\x02\n" +
-	"\x10DriverCardHolder\x12.\n" +
-	"\x13card_holder_surname\x18\x01 \x01(\tR\x11cardHolderSurname\x125\n" +
-	"\x17card_holder_first_names\x18\x02 \x01(\tR\x14cardHolderFirstNames\x12O\n" +
-	"\x16card_holder_birth_date\x18\x03 \x01(\v2\x1a.google.protobuf.TimestampR\x13cardHolderBirthDate\x12C\n" +
-	"\x1ecard_holder_preferred_language\x18\x04 \x01(\tR\x1bcardHolderPreferredLanguage\x1a\x90\x02\n" +
-	"\x12WorkshopCardHolder\x12#\n" +
-	"\rworkshop_name\x18\x01 \x01(\tR\fworkshopName\x12)\n" +
-	"\x10workshop_address\x18\x02 \x01(\tR\x0fworkshopAddress\x12.\n" +
-	"\x13card_holder_surname\x18\x03 \x01(\tR\x11cardHolderSurname\x125\n" +
-	"\x17card_holder_first_names\x18\x04 \x01(\tR\x14cardHolderFirstNames\x12C\n" +
-	"\x1ecard_holder_preferred_language\x18\x05 \x01(\tR\x1bcardHolderPreferredLanguage\x1a\x9d\x02\n" +
-	"\x11ControlCardHolder\x12*\n" +
-	"\x11control_body_name\x18\x01 \x01(\tR\x0fcontrolBodyName\x120\n" +
-	"\x14control_body_address\x18\x02 \x01(\tR\x12controlBodyAddress\x12.\n" +
-	"\x13card_holder_surname\x18\x03 \x01(\tR\x11cardHolderSurname\x125\n" +
-	"\x17card_holder_first_names\x18\x04 \x01(\tR\x14cardHolderFirstNames\x12C\n" +
-	"\x1ecard_holder_preferred_language\x18\x05 \x01(\tR\x1bcardHolderPreferredLanguage\x1a\xa4\x01\n" +
-	"\x11CompanyCardHolder\x12!\n" +
-	"\fcompany_name\x18\x01 \x01(\tR\vcompanyName\x12'\n" +
-	"\x0fcompany_address\x18\x02 \x01(\tR\x0ecompanyAddress\x12C\n" +
-	"\x1ecard_holder_preferred_language\x18\x03 \x01(\tR\x1bcardHolderPreferredLanguageB\xe0\x02\n" +
+	"\x10card_expiry_date\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampR\x0ecardExpiryDate\x1a\xcd\x03\n" +
+	"\x10DriverCardHolder\x12m\n" +
+	"\x13card_holder_surname\x18\x01 \x01(\v2=.wayplatform.connect.tachograph.datadictionary.v1.StringValueR\x11cardHolderSurname\x12t\n" +
+	"\x17card_holder_first_names\x18\x02 \x01(\v2=.wayplatform.connect.tachograph.datadictionary.v1.StringValueR\x14cardHolderFirstNames\x12O\n" +
+	"\x16card_holder_birth_date\x18\x03 \x01(\v2\x1a.google.protobuf.TimestampR\x13cardHolderBirthDate\x12\x82\x01\n" +
+	"\x1ecard_holder_preferred_language\x18\x04 \x01(\v2=.wayplatform.connect.tachograph.datadictionary.v1.StringValueR\x1bcardHolderPreferredLanguage\x1a\xcc\x04\n" +
+	"\x12WorkshopCardHolder\x12b\n" +
+	"\rworkshop_name\x18\x01 \x01(\v2=.wayplatform.connect.tachograph.datadictionary.v1.StringValueR\fworkshopName\x12h\n" +
+	"\x10workshop_address\x18\x02 \x01(\v2=.wayplatform.connect.tachograph.datadictionary.v1.StringValueR\x0fworkshopAddress\x12m\n" +
+	"\x13card_holder_surname\x18\x03 \x01(\v2=.wayplatform.connect.tachograph.datadictionary.v1.StringValueR\x11cardHolderSurname\x12t\n" +
+	"\x17card_holder_first_names\x18\x04 \x01(\v2=.wayplatform.connect.tachograph.datadictionary.v1.StringValueR\x14cardHolderFirstNames\x12\x82\x01\n" +
+	"\x1ecard_holder_preferred_language\x18\x05 \x01(\v2=.wayplatform.connect.tachograph.datadictionary.v1.StringValueR\x1bcardHolderPreferredLanguage\x1a\xd9\x04\n" +
+	"\x11ControlCardHolder\x12i\n" +
+	"\x11control_body_name\x18\x01 \x01(\v2=.wayplatform.connect.tachograph.datadictionary.v1.StringValueR\x0fcontrolBodyName\x12o\n" +
+	"\x14control_body_address\x18\x02 \x01(\v2=.wayplatform.connect.tachograph.datadictionary.v1.StringValueR\x12controlBodyAddress\x12m\n" +
+	"\x13card_holder_surname\x18\x03 \x01(\v2=.wayplatform.connect.tachograph.datadictionary.v1.StringValueR\x11cardHolderSurname\x12t\n" +
+	"\x17card_holder_first_names\x18\x04 \x01(\v2=.wayplatform.connect.tachograph.datadictionary.v1.StringValueR\x14cardHolderFirstNames\x12\x82\x01\n" +
+	"\x1ecard_holder_preferred_language\x18\x05 \x01(\v2=.wayplatform.connect.tachograph.datadictionary.v1.StringValueR\x1bcardHolderPreferredLanguage\x1a\xe2\x02\n" +
+	"\x11CompanyCardHolder\x12`\n" +
+	"\fcompany_name\x18\x01 \x01(\v2=.wayplatform.connect.tachograph.datadictionary.v1.StringValueR\vcompanyName\x12f\n" +
+	"\x0fcompany_address\x18\x02 \x01(\v2=.wayplatform.connect.tachograph.datadictionary.v1.StringValueR\x0ecompanyAddress\x12\x82\x01\n" +
+	"\x1ecard_holder_preferred_language\x18\x03 \x01(\v2=.wayplatform.connect.tachograph.datadictionary.v1.StringValueR\x1bcardHolderPreferredLanguageB\xe0\x02\n" +
 	"*com.wayplatform.connect.tachograph.card.v1B\x13IdentificationProtoP\x01Z`github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1;cardv1\xa2\x02\x04WCTC\xaa\x02&Wayplatform.Connect.Tachograph.Card.V1\xca\x02&Wayplatform\\Connect\\Tachograph\\Card\\V1\xe2\x022Wayplatform\\Connect\\Tachograph\\Card\\V1\\GPBMetadata\xea\x02*Wayplatform::Connect::Tachograph::Card::V1b\beditionsp\xe8\a"
 
 var file_wayplatform_connect_tachograph_card_v1_identification_proto_msgTypes = make([]protoimpl.MessageInfo, 6)
@@ -1439,7 +1308,8 @@ var file_wayplatform_connect_tachograph_card_v1_identification_proto_goTypes = [
 	(*Identification_ControlCardHolder)(nil),  // 4: wayplatform.connect.tachograph.card.v1.Identification.ControlCardHolder
 	(*Identification_CompanyCardHolder)(nil),  // 5: wayplatform.connect.tachograph.card.v1.Identification.CompanyCardHolder
 	(CardType)(0),                             // 6: wayplatform.connect.tachograph.card.v1.CardType
-	(*timestamppb.Timestamp)(nil),             // 7: google.protobuf.Timestamp
+	(*v1.StringValue)(nil),                    // 7: wayplatform.connect.tachograph.datadictionary.v1.StringValue
+	(*timestamppb.Timestamp)(nil),             // 8: google.protobuf.Timestamp
 }
 var file_wayplatform_connect_tachograph_card_v1_identification_proto_depIdxs = []int32{
 	1,  // 0: wayplatform.connect.tachograph.card.v1.Identification.card:type_name -> wayplatform.connect.tachograph.card.v1.Identification.Card
@@ -1448,15 +1318,32 @@ var file_wayplatform_connect_tachograph_card_v1_identification_proto_depIdxs = [
 	3,  // 3: wayplatform.connect.tachograph.card.v1.Identification.workshop_card_holder:type_name -> wayplatform.connect.tachograph.card.v1.Identification.WorkshopCardHolder
 	4,  // 4: wayplatform.connect.tachograph.card.v1.Identification.control_card_holder:type_name -> wayplatform.connect.tachograph.card.v1.Identification.ControlCardHolder
 	5,  // 5: wayplatform.connect.tachograph.card.v1.Identification.company_card_holder:type_name -> wayplatform.connect.tachograph.card.v1.Identification.CompanyCardHolder
-	7,  // 6: wayplatform.connect.tachograph.card.v1.Identification.Card.card_issue_date:type_name -> google.protobuf.Timestamp
-	7,  // 7: wayplatform.connect.tachograph.card.v1.Identification.Card.card_validity_begin:type_name -> google.protobuf.Timestamp
-	7,  // 8: wayplatform.connect.tachograph.card.v1.Identification.Card.card_expiry_date:type_name -> google.protobuf.Timestamp
-	7,  // 9: wayplatform.connect.tachograph.card.v1.Identification.DriverCardHolder.card_holder_birth_date:type_name -> google.protobuf.Timestamp
-	10, // [10:10] is the sub-list for method output_type
-	10, // [10:10] is the sub-list for method input_type
-	10, // [10:10] is the sub-list for extension type_name
-	10, // [10:10] is the sub-list for extension extendee
-	0,  // [0:10] is the sub-list for field type_name
+	7,  // 6: wayplatform.connect.tachograph.card.v1.Identification.Card.card_issuing_authority_name:type_name -> wayplatform.connect.tachograph.datadictionary.v1.StringValue
+	8,  // 7: wayplatform.connect.tachograph.card.v1.Identification.Card.card_issue_date:type_name -> google.protobuf.Timestamp
+	8,  // 8: wayplatform.connect.tachograph.card.v1.Identification.Card.card_validity_begin:type_name -> google.protobuf.Timestamp
+	8,  // 9: wayplatform.connect.tachograph.card.v1.Identification.Card.card_expiry_date:type_name -> google.protobuf.Timestamp
+	7,  // 10: wayplatform.connect.tachograph.card.v1.Identification.DriverCardHolder.card_holder_surname:type_name -> wayplatform.connect.tachograph.datadictionary.v1.StringValue
+	7,  // 11: wayplatform.connect.tachograph.card.v1.Identification.DriverCardHolder.card_holder_first_names:type_name -> wayplatform.connect.tachograph.datadictionary.v1.StringValue
+	8,  // 12: wayplatform.connect.tachograph.card.v1.Identification.DriverCardHolder.card_holder_birth_date:type_name -> google.protobuf.Timestamp
+	7,  // 13: wayplatform.connect.tachograph.card.v1.Identification.DriverCardHolder.card_holder_preferred_language:type_name -> wayplatform.connect.tachograph.datadictionary.v1.StringValue
+	7,  // 14: wayplatform.connect.tachograph.card.v1.Identification.WorkshopCardHolder.workshop_name:type_name -> wayplatform.connect.tachograph.datadictionary.v1.StringValue
+	7,  // 15: wayplatform.connect.tachograph.card.v1.Identification.WorkshopCardHolder.workshop_address:type_name -> wayplatform.connect.tachograph.datadictionary.v1.StringValue
+	7,  // 16: wayplatform.connect.tachograph.card.v1.Identification.WorkshopCardHolder.card_holder_surname:type_name -> wayplatform.connect.tachograph.datadictionary.v1.StringValue
+	7,  // 17: wayplatform.connect.tachograph.card.v1.Identification.WorkshopCardHolder.card_holder_first_names:type_name -> wayplatform.connect.tachograph.datadictionary.v1.StringValue
+	7,  // 18: wayplatform.connect.tachograph.card.v1.Identification.WorkshopCardHolder.card_holder_preferred_language:type_name -> wayplatform.connect.tachograph.datadictionary.v1.StringValue
+	7,  // 19: wayplatform.connect.tachograph.card.v1.Identification.ControlCardHolder.control_body_name:type_name -> wayplatform.connect.tachograph.datadictionary.v1.StringValue
+	7,  // 20: wayplatform.connect.tachograph.card.v1.Identification.ControlCardHolder.control_body_address:type_name -> wayplatform.connect.tachograph.datadictionary.v1.StringValue
+	7,  // 21: wayplatform.connect.tachograph.card.v1.Identification.ControlCardHolder.card_holder_surname:type_name -> wayplatform.connect.tachograph.datadictionary.v1.StringValue
+	7,  // 22: wayplatform.connect.tachograph.card.v1.Identification.ControlCardHolder.card_holder_first_names:type_name -> wayplatform.connect.tachograph.datadictionary.v1.StringValue
+	7,  // 23: wayplatform.connect.tachograph.card.v1.Identification.ControlCardHolder.card_holder_preferred_language:type_name -> wayplatform.connect.tachograph.datadictionary.v1.StringValue
+	7,  // 24: wayplatform.connect.tachograph.card.v1.Identification.CompanyCardHolder.company_name:type_name -> wayplatform.connect.tachograph.datadictionary.v1.StringValue
+	7,  // 25: wayplatform.connect.tachograph.card.v1.Identification.CompanyCardHolder.company_address:type_name -> wayplatform.connect.tachograph.datadictionary.v1.StringValue
+	7,  // 26: wayplatform.connect.tachograph.card.v1.Identification.CompanyCardHolder.card_holder_preferred_language:type_name -> wayplatform.connect.tachograph.datadictionary.v1.StringValue
+	27, // [27:27] is the sub-list for method output_type
+	27, // [27:27] is the sub-list for method input_type
+	27, // [27:27] is the sub-list for extension type_name
+	27, // [27:27] is the sub-list for extension extendee
+	0,  // [0:27] is the sub-list for field type_name
 }
 
 func init() { file_wayplatform_connect_tachograph_card_v1_identification_proto_init() }

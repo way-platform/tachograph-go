@@ -38,8 +38,8 @@ const (
 //	}
 type Ic struct {
 	state                                protoimpl.MessageState `protogen:"opaque.v1"`
-	xxx_hidden_IcSerialNumber            *string                `protobuf:"bytes,1,opt,name=ic_serial_number,json=icSerialNumber"`
-	xxx_hidden_IcManufacturingReferences *string                `protobuf:"bytes,2,opt,name=ic_manufacturing_references,json=icManufacturingReferences"`
+	xxx_hidden_IcSerialNumber            []byte                 `protobuf:"bytes,1,opt,name=ic_serial_number,json=icSerialNumber"`
+	xxx_hidden_IcManufacturingReferences []byte                 `protobuf:"bytes,2,opt,name=ic_manufacturing_references,json=icManufacturingReferences"`
 	XXX_raceDetectHookData               protoimpl.RaceDetectHookData
 	XXX_presence                         [1]uint32
 	unknownFields                        protoimpl.UnknownFields
@@ -71,33 +71,33 @@ func (x *Ic) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-func (x *Ic) GetIcSerialNumber() string {
+func (x *Ic) GetIcSerialNumber() []byte {
 	if x != nil {
-		if x.xxx_hidden_IcSerialNumber != nil {
-			return *x.xxx_hidden_IcSerialNumber
-		}
-		return ""
+		return x.xxx_hidden_IcSerialNumber
 	}
-	return ""
+	return nil
 }
 
-func (x *Ic) GetIcManufacturingReferences() string {
+func (x *Ic) GetIcManufacturingReferences() []byte {
 	if x != nil {
-		if x.xxx_hidden_IcManufacturingReferences != nil {
-			return *x.xxx_hidden_IcManufacturingReferences
-		}
-		return ""
+		return x.xxx_hidden_IcManufacturingReferences
 	}
-	return ""
+	return nil
 }
 
-func (x *Ic) SetIcSerialNumber(v string) {
-	x.xxx_hidden_IcSerialNumber = &v
+func (x *Ic) SetIcSerialNumber(v []byte) {
+	if v == nil {
+		v = []byte{}
+	}
+	x.xxx_hidden_IcSerialNumber = v
 	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 2)
 }
 
-func (x *Ic) SetIcManufacturingReferences(v string) {
-	x.xxx_hidden_IcManufacturingReferences = &v
+func (x *Ic) SetIcManufacturingReferences(v []byte) {
+	if v == nil {
+		v = []byte{}
+	}
+	x.xxx_hidden_IcManufacturingReferences = v
 	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 2)
 }
 
@@ -128,20 +128,24 @@ func (x *Ic) ClearIcManufacturingReferences() {
 type Ic_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
-	// The serial number of the integrated circuit.
+	// The serial number of the integrated circuit. The interpretation of this
+	// value may be card-vendor specific.
 	//
 	// See Data Dictionary, Section 2.13, `icSerialNumber`.
+	//
 	// ASN.1 Definition:
 	//
 	//	OCTET STRING (SIZE(4))
-	IcSerialNumber *string
-	// The manufacturing references of the integrated circuit.
+	IcSerialNumber []byte
+	// The manufacturing references of the integrated circuit. The interpretation
+	// of this value is card-vendor specific.
 	//
 	// See Data Dictionary, Section 2.13, `icManufacturingReferences`.
+	//
 	// ASN.1 Definition:
 	//
 	//	OCTET STRING (SIZE(4))
-	IcManufacturingReferences *string
+	IcManufacturingReferences []byte
 }
 
 func (b0 Ic_builder) Build() *Ic {
@@ -165,8 +169,8 @@ const file_wayplatform_connect_tachograph_card_v1_ic_proto_rawDesc = "" +
 	"\n" +
 	"/wayplatform/connect/tachograph/card/v1/ic.proto\x12&wayplatform.connect.tachograph.card.v1\"n\n" +
 	"\x02Ic\x12(\n" +
-	"\x10ic_serial_number\x18\x01 \x01(\tR\x0eicSerialNumber\x12>\n" +
-	"\x1bic_manufacturing_references\x18\x02 \x01(\tR\x19icManufacturingReferencesB\xd4\x02\n" +
+	"\x10ic_serial_number\x18\x01 \x01(\fR\x0eicSerialNumber\x12>\n" +
+	"\x1bic_manufacturing_references\x18\x02 \x01(\fR\x19icManufacturingReferencesB\xd4\x02\n" +
 	"*com.wayplatform.connect.tachograph.card.v1B\aIcProtoP\x01Z`github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1;cardv1\xa2\x02\x04WCTC\xaa\x02&Wayplatform.Connect.Tachograph.Card.V1\xca\x02&Wayplatform\\Connect\\Tachograph\\Card\\V1\xe2\x022Wayplatform\\Connect\\Tachograph\\Card\\V1\\GPBMetadata\xea\x02*Wayplatform::Connect::Tachograph::Card::V1b\beditionsp\xe8\a"
 
 var file_wayplatform_connect_tachograph_card_v1_ic_proto_msgTypes = make([]protoimpl.MessageInfo, 1)

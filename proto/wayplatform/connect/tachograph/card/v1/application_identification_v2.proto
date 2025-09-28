@@ -2,53 +2,69 @@ edition = "2023";
 
 package wayplatform.connect.tachograph.card.v1;
 
+import "wayplatform/connect/tachograph/card/v1/card_type.proto";
+import "wayplatform/connect/tachograph/card/v1/calibration_add_data.proto";
+
 // Represents data from EF_Application_Identification_V2, which contains
 // additional capacity information for Gen2v2 cards.
 //
-// This message corresponds to data from a driver card.
-// See Data Dictionary, Section 2.61a, `DriverCardApplicationIdentificationV2`.
-//
-// ASN.1 Specification:
-//
-//     DriverCardApplicationIdentificationV2 ::= SEQUENCE {
-//         lengthOfFollowingData LengthOfFollowingData,
-//         noOfBorderCrossingRecords NoOfBorderCrossingRecords,
-//         noOfLoadUnloadRecords NoOfLoadUnloadRecords,
-//         noOfLoadTypeEntryRecords NoOfLoadTypeEntryRecords,
-//         vuConfigurationLengthRange VuConfigurationLengthRange
-//     }
+// The structure of this EF depends on the type of card. This message uses a
+// tagged union pattern to represent this, where the `card_type` field indicates
+// which of the nested messages is populated.
 message ApplicationIdentificationV2 {
-  // The number of border crossing records the card can store.
-  //
-  // See Data Dictionary, Section 2.101a, `NoOfBorderCrossingRecords`.
-  // ASN.1 Specification:
-  //
-  //     NoOfBorderCrossingRecords ::= INTEGER (0..255)
-  int32 border_crossing_records_count = 1;
+  // The type of card this data is from.
+  CardType card_type = 1;
 
-  // The number of load/unload records the card can store.
-  //
-  // See Data Dictionary, Section 2.111a, `NoOfLoadUnloadRecords`.
-  // ASN.1 Specification:
-  //
-  //     NoOfLoadUnloadRecords ::= INTEGER (0..255)
-  int32 load_unload_records_count = 2;
+  // Data for a driver card. Populated if `card_type` is `DRIVER_CARD`.
+  // See Data Dictionary, Section 2.61a, `DriverCardApplicationIdentificationV2`.
+  message Driver {
+    // The number of border crossing records the card can store.
+    int32 border_crossing_records_count = 1;
+    // The number of load/unload records the card can store.
+    int32 load_unload_records_count = 2;
+    // The number of load type entry records the card can store.
+    int32 load_type_entry_records_count = 3;
+    // The number of bytes available to store VU configurations.
+    int32 vu_configuration_length_range = 4;
+  }
 
-  // The number of load type entry records the card can store.
-  //
-  // See Data Dictionary, Section 2.112a, `NoOfLoadTypeEntryRecords`.
-  // ASN.1 Specification:
-  //
-  //     NoOfLoadTypeEntryRecords ::= INTEGER (0..255)
-  int32 load_type_entry_records_count = 3;
+  // Data for a workshop card. Populated if `card_type` is `WORKSHOP_CARD`.
+  // See Data Dictionary, Section 2.234a, `WorkshopCardApplicationIdentificationV2`.
+  message Workshop {
+    // The number of border crossing records the card can store.
+    int32 border_crossing_records_count = 1;
+    // The number of load/unload records the card can store.
+    int32 load_unload_records_count = 2;
+    // The number of load type entry records the card can store.
+    int32 load_type_entry_records_count = 3;
+    // The number of bytes available to store VU configurations.
+    int32 vu_configuration_length_range = 4;
+    // Additional calibration data for workshop cards.
+    CalibrationAddData workshop_card_calibration_add_data = 5;
+  }
 
-  // The number of bytes available to store VU configurations.
-  //
-  // See Data Dictionary, Section 2.185a, `VuConfigurationLengthRange`.
-  // ASN.1 Specification:
-  //
-  //     VuConfigurationLengthRange ::= INTEGER(0..2^16-1)
-  int32 vu_configuration_length_range = 4;
+  // Data for a company card. Populated if `card_type` is `COMPANY_CARD`.
+  // See Data Dictionary, Section 2.48a, `CompanyCardApplicationIdentificationV2`.
+  message Company {
+    // The number of bytes available to store VU configurations.
+    int32 vu_configuration_length_range = 1;
+  }
+
+  // Data for a control card. Populated if `card_type` is `CONTROL_CARD`.
+  // See Data Dictionary, Section 2.50a, `ControlCardApplicationIdentificationV2`.
+  message Control {
+    // The number of bytes available to store VU configurations.
+    int32 vu_configuration_length_range = 1;
+  }
+
+  // Populated if `card_type` is `DRIVER_CARD`.
+  Driver driver = 2;
+  // Populated if `card_type` is `WORKSHOP_CARD`.
+  Workshop workshop = 3;
+  // Populated if `card_type` is `COMPANY_CARD`.
+  Company company = 4;
+  // Populated if `card_type` is `CONTROL_CARD`.
+  Control control = 5;
 
   // Digital signature for the EF_Application_Identification_V2 file content.
   //
@@ -56,5 +72,5 @@ message ApplicationIdentificationV2 {
   // ASN.1 Specification:
   //
   //     Signature ::= OCTET STRING (SIZE(128 for Gen1))
-  bytes signature = 5;
+  bytes signature = 6;
 }
