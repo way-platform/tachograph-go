@@ -1,0 +1,35 @@
+syntax = "proto3";
+
+package wayplatform.connect.tachograph.dd.v1;
+
+import "wayplatform/connect/tachograph/dd/v1/annotations.proto";
+
+// Defines the authentication status of a GNSS position.
+//
+// See Data Dictionary, Section 2.117a.
+//
+// ASN.1 Definition:
+//
+//     PositionAuthenticationStatus ::= INTEGER {
+//         notAvailable(0), authenticated(1), notAuthenticated(2),
+//         authenticationCorrupted(3)
+//     } (0..255)
+enum PositionAuthenticationStatus {
+  // The authentication status is not specified.
+  POSITION_AUTHENTICATION_STATUS_UNSPECIFIED = 0;
+
+  // The authentication status was present but not recognized.
+  POSITION_AUTHENTICATION_STATUS_UNRECOGNIZED = 1;
+
+  // Authentication information is not available.
+  POSITION_AUTHENTICATION_STATUS_NOT_AVAILABLE = 2 [(protocol_enum_value) = 0];
+
+  // The position has been authenticated.
+  POSITION_AUTHENTICATED = 3 [(protocol_enum_value) = 1];
+
+  // The position has not been authenticated.
+  POSITION_NOT_AUTHENTICATED = 4 [(protocol_enum_value) = 2];
+
+  // The authentication information is corrupted.
+  POSITION_AUTHENTICATION_CORRUPTED = 5 [(protocol_enum_value) = 3];
+}

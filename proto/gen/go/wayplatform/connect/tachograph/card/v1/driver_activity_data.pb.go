@@ -7,7 +7,7 @@
 package cardv1
 
 import (
-	v1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/datadictionary/v1"
+	v1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
@@ -535,20 +535,20 @@ var File_wayplatform_connect_tachograph_card_v1_driver_activity_data_proto proto
 
 const file_wayplatform_connect_tachograph_card_v1_driver_activity_data_proto_rawDesc = "" +
 	"\n" +
-	"Awayplatform/connect/tachograph/card/v1/driver_activity_data.proto\x12&wayplatform.connect.tachograph.card.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1aKwayplatform/connect/tachograph/datadictionary/v1/activity_change_info.proto\x1aAwayplatform/connect/tachograph/datadictionary/v1/bcd_string.proto\"\xc1\x06\n" +
+	"Awayplatform/connect/tachograph/card/v1/driver_activity_data.proto\x12&wayplatform.connect.tachograph.card.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a?wayplatform/connect/tachograph/dd/v1/activity_change_info.proto\x1a5wayplatform/connect/tachograph/dd/v1/bcd_string.proto\"\xa8\x06\n" +
 	"\x12DriverActivityData\x125\n" +
 	"\x17oldest_day_record_index\x18\x01 \x01(\x05R\x14oldestDayRecordIndex\x125\n" +
 	"\x17newest_day_record_index\x18\x02 \x01(\x05R\x14newestDayRecordIndex\x12k\n" +
 	"\rdaily_records\x18\x03 \x03(\v2F.wayplatform.connect.tachograph.card.v1.DriverActivityData.DailyRecordR\fdailyRecords\x12\x1c\n" +
-	"\tsignature\x18\x04 \x01(\fR\tsignature\x1a\xb1\x04\n" +
+	"\tsignature\x18\x04 \x01(\fR\tsignature\x1a\x98\x04\n" +
 	"\vDailyRecord\x12\x14\n" +
 	"\x05valid\x18\x01 \x01(\bR\x05valid\x12E\n" +
 	"\x1factivity_previous_record_length\x18\x02 \x01(\x05R\x1cactivityPreviousRecordLength\x124\n" +
 	"\x16activity_record_length\x18\x03 \x01(\x05R\x14activityRecordLength\x12L\n" +
-	"\x14activity_record_date\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampR\x12activityRecordDate\x12\x82\x01\n" +
-	"\x1factivity_daily_presence_counter\x18\x05 \x01(\v2;.wayplatform.connect.tachograph.datadictionary.v1.BcdStringR\x1cactivityDailyPresenceCounter\x122\n" +
-	"\x15activity_day_distance\x18\x06 \x01(\x05R\x13activityDayDistance\x12v\n" +
-	"\x14activity_change_info\x18\a \x03(\v2D.wayplatform.connect.tachograph.datadictionary.v1.ActivityChangeInfoR\x12activityChangeInfo\x12\x10\n" +
+	"\x14activity_record_date\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampR\x12activityRecordDate\x12v\n" +
+	"\x1factivity_daily_presence_counter\x18\x05 \x01(\v2/.wayplatform.connect.tachograph.dd.v1.BcdStringR\x1cactivityDailyPresenceCounter\x122\n" +
+	"\x15activity_day_distance\x18\x06 \x01(\x05R\x13activityDayDistance\x12j\n" +
+	"\x14activity_change_info\x18\a \x03(\v28.wayplatform.connect.tachograph.dd.v1.ActivityChangeInfoR\x12activityChangeInfo\x12\x10\n" +
 	"\x03raw\x18\b \x01(\fR\x03rawB\xe4\x02\n" +
 	"*com.wayplatform.connect.tachograph.card.v1B\x17DriverActivityDataProtoP\x01Z`github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1;cardv1\xa2\x02\x04WCTC\xaa\x02&Wayplatform.Connect.Tachograph.Card.V1\xca\x02&Wayplatform\\Connect\\Tachograph\\Card\\V1\xe2\x022Wayplatform\\Connect\\Tachograph\\Card\\V1\\GPBMetadata\xea\x02*Wayplatform::Connect::Tachograph::Card::V1b\beditionsp\xe8\a"
 
@@ -557,14 +557,14 @@ var file_wayplatform_connect_tachograph_card_v1_driver_activity_data_proto_goTyp
 	(*DriverActivityData)(nil),             // 0: wayplatform.connect.tachograph.card.v1.DriverActivityData
 	(*DriverActivityData_DailyRecord)(nil), // 1: wayplatform.connect.tachograph.card.v1.DriverActivityData.DailyRecord
 	(*timestamppb.Timestamp)(nil),          // 2: google.protobuf.Timestamp
-	(*v1.BcdString)(nil),                   // 3: wayplatform.connect.tachograph.datadictionary.v1.BcdString
-	(*v1.ActivityChangeInfo)(nil),          // 4: wayplatform.connect.tachograph.datadictionary.v1.ActivityChangeInfo
+	(*v1.BcdString)(nil),                   // 3: wayplatform.connect.tachograph.dd.v1.BcdString
+	(*v1.ActivityChangeInfo)(nil),          // 4: wayplatform.connect.tachograph.dd.v1.ActivityChangeInfo
 }
 var file_wayplatform_connect_tachograph_card_v1_driver_activity_data_proto_depIdxs = []int32{
 	1, // 0: wayplatform.connect.tachograph.card.v1.DriverActivityData.daily_records:type_name -> wayplatform.connect.tachograph.card.v1.DriverActivityData.DailyRecord
 	2, // 1: wayplatform.connect.tachograph.card.v1.DriverActivityData.DailyRecord.activity_record_date:type_name -> google.protobuf.Timestamp
-	3, // 2: wayplatform.connect.tachograph.card.v1.DriverActivityData.DailyRecord.activity_daily_presence_counter:type_name -> wayplatform.connect.tachograph.datadictionary.v1.BcdString
-	4, // 3: wayplatform.connect.tachograph.card.v1.DriverActivityData.DailyRecord.activity_change_info:type_name -> wayplatform.connect.tachograph.datadictionary.v1.ActivityChangeInfo
+	3, // 2: wayplatform.connect.tachograph.card.v1.DriverActivityData.DailyRecord.activity_daily_presence_counter:type_name -> wayplatform.connect.tachograph.dd.v1.BcdString
+	4, // 3: wayplatform.connect.tachograph.card.v1.DriverActivityData.DailyRecord.activity_change_info:type_name -> wayplatform.connect.tachograph.dd.v1.ActivityChangeInfo
 	4, // [4:4] is the sub-list for method output_type
 	4, // [4:4] is the sub-list for method input_type
 	4, // [4:4] is the sub-list for extension type_name

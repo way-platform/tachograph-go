@@ -7,7 +7,7 @@
 package cardv1
 
 import (
-	v1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/datadictionary/v1"
+	v1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
@@ -490,21 +490,21 @@ var File_wayplatform_connect_tachograph_card_v1_gnss_places_proto protoreflect.F
 
 const file_wayplatform_connect_tachograph_card_v1_gnss_places_proto_rawDesc = "" +
 	"\n" +
-	"8wayplatform/connect/tachograph/card/v1/gnss_places.proto\x12&wayplatform.connect.tachograph.card.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1aFwayplatform/connect/tachograph/datadictionary/v1/geo_coordinates.proto\"\xe0\x04\n" +
+	"8wayplatform/connect/tachograph/card/v1/gnss_places.proto\x12&wayplatform.connect.tachograph.card.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a:wayplatform/connect/tachograph/dd/v1/geo_coordinates.proto\"\xd4\x04\n" +
 	"\n" +
 	"GnssPlaces\x12.\n" +
 	"\x13newest_record_index\x18\x01 \x01(\x05R\x11newestRecordIndex\x12S\n" +
 	"\arecords\x18\x02 \x03(\v29.wayplatform.connect.tachograph.card.v1.GnssPlaces.RecordR\arecords\x12\x1c\n" +
-	"\tsignature\x18\x03 \x01(\fR\tsignature\x1a\xae\x03\n" +
+	"\tsignature\x18\x03 \x01(\fR\tsignature\x1a\xa2\x03\n" +
 	"\x06Record\x128\n" +
 	"\ttimestamp\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\ttimestamp\x12b\n" +
 	"\n" +
 	"gnss_place\x18\x02 \x01(\v2C.wayplatform.connect.tachograph.card.v1.GnssPlaces.Record.GnssPlaceR\tgnssPlace\x12.\n" +
-	"\x13vehicle_odometer_km\x18\x03 \x01(\x05R\x11vehicleOdometerKm\x1a\xd5\x01\n" +
+	"\x13vehicle_odometer_km\x18\x03 \x01(\x05R\x11vehicleOdometerKm\x1a\xc9\x01\n" +
 	"\tGnssPlace\x128\n" +
 	"\ttimestamp\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\ttimestamp\x12#\n" +
-	"\rgnss_accuracy\x18\x02 \x01(\x05R\fgnssAccuracy\x12i\n" +
-	"\x0fgeo_coordinates\x18\x03 \x01(\v2@.wayplatform.connect.tachograph.datadictionary.v1.GeoCoordinatesR\x0egeoCoordinatesB\xdc\x02\n" +
+	"\rgnss_accuracy\x18\x02 \x01(\x05R\fgnssAccuracy\x12]\n" +
+	"\x0fgeo_coordinates\x18\x03 \x01(\v24.wayplatform.connect.tachograph.dd.v1.GeoCoordinatesR\x0egeoCoordinatesB\xdc\x02\n" +
 	"*com.wayplatform.connect.tachograph.card.v1B\x0fGnssPlacesProtoP\x01Z`github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1;cardv1\xa2\x02\x04WCTC\xaa\x02&Wayplatform.Connect.Tachograph.Card.V1\xca\x02&Wayplatform\\Connect\\Tachograph\\Card\\V1\xe2\x022Wayplatform\\Connect\\Tachograph\\Card\\V1\\GPBMetadata\xea\x02*Wayplatform::Connect::Tachograph::Card::V1b\beditionsp\xe8\a"
 
 var file_wayplatform_connect_tachograph_card_v1_gnss_places_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
@@ -513,14 +513,14 @@ var file_wayplatform_connect_tachograph_card_v1_gnss_places_proto_goTypes = []an
 	(*GnssPlaces_Record)(nil),           // 1: wayplatform.connect.tachograph.card.v1.GnssPlaces.Record
 	(*GnssPlaces_Record_GnssPlace)(nil), // 2: wayplatform.connect.tachograph.card.v1.GnssPlaces.Record.GnssPlace
 	(*timestamppb.Timestamp)(nil),       // 3: google.protobuf.Timestamp
-	(*v1.GeoCoordinates)(nil),           // 4: wayplatform.connect.tachograph.datadictionary.v1.GeoCoordinates
+	(*v1.GeoCoordinates)(nil),           // 4: wayplatform.connect.tachograph.dd.v1.GeoCoordinates
 }
 var file_wayplatform_connect_tachograph_card_v1_gnss_places_proto_depIdxs = []int32{
 	1, // 0: wayplatform.connect.tachograph.card.v1.GnssPlaces.records:type_name -> wayplatform.connect.tachograph.card.v1.GnssPlaces.Record
 	3, // 1: wayplatform.connect.tachograph.card.v1.GnssPlaces.Record.timestamp:type_name -> google.protobuf.Timestamp
 	2, // 2: wayplatform.connect.tachograph.card.v1.GnssPlaces.Record.gnss_place:type_name -> wayplatform.connect.tachograph.card.v1.GnssPlaces.Record.GnssPlace
 	3, // 3: wayplatform.connect.tachograph.card.v1.GnssPlaces.Record.GnssPlace.timestamp:type_name -> google.protobuf.Timestamp
-	4, // 4: wayplatform.connect.tachograph.card.v1.GnssPlaces.Record.GnssPlace.geo_coordinates:type_name -> wayplatform.connect.tachograph.datadictionary.v1.GeoCoordinates
+	4, // 4: wayplatform.connect.tachograph.card.v1.GnssPlaces.Record.GnssPlace.geo_coordinates:type_name -> wayplatform.connect.tachograph.dd.v1.GeoCoordinates
 	5, // [5:5] is the sub-list for method output_type
 	5, // [5:5] is the sub-list for method input_type
 	5, // [5:5] is the sub-list for extension type_name

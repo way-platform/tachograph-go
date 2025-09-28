@@ -7,7 +7,7 @@
 package vuv1
 
 import (
-	v1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/datadictionary/v1"
+	v1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -33,7 +33,7 @@ const (
 // The two bytes of the OCTET STRING are parsed into the fields below.
 type DownloadInterfaceVersion struct {
 	state                  protoimpl.MessageState `protogen:"opaque.v1"`
-	xxx_hidden_Generation  v1.Generation          `protobuf:"varint,1,opt,name=generation,enum=wayplatform.connect.tachograph.datadictionary.v1.Generation"`
+	xxx_hidden_Generation  v1.Generation          `protobuf:"varint,1,opt,name=generation,enum=wayplatform.connect.tachograph.dd.v1.Generation"`
 	xxx_hidden_Version     Version                `protobuf:"varint,2,opt,name=version,enum=wayplatform.connect.tachograph.vu.v1.Version"`
 	XXX_raceDetectHookData protoimpl.RaceDetectHookData
 	XXX_presence           [1]uint32
@@ -148,10 +148,10 @@ var File_wayplatform_connect_tachograph_vu_v1_download_interface_version_proto p
 
 const file_wayplatform_connect_tachograph_vu_v1_download_interface_version_proto_rawDesc = "" +
 	"\n" +
-	"Ewayplatform/connect/tachograph/vu/v1/download_interface_version.proto\x12$wayplatform.connect.tachograph.vu.v1\x1aAwayplatform/connect/tachograph/datadictionary/v1/generation.proto\x1a5wayplatform/connect/tachograph/vu/v1/versioning.proto\"\xc1\x01\n" +
-	"\x18DownloadInterfaceVersion\x12\\\n" +
+	"Ewayplatform/connect/tachograph/vu/v1/download_interface_version.proto\x12$wayplatform.connect.tachograph.vu.v1\x1a5wayplatform/connect/tachograph/dd/v1/generation.proto\x1a5wayplatform/connect/tachograph/vu/v1/versioning.proto\"\xb5\x01\n" +
+	"\x18DownloadInterfaceVersion\x12P\n" +
 	"\n" +
-	"generation\x18\x01 \x01(\x0e2<.wayplatform.connect.tachograph.datadictionary.v1.GenerationR\n" +
+	"generation\x18\x01 \x01(\x0e20.wayplatform.connect.tachograph.dd.v1.GenerationR\n" +
 	"generation\x12G\n" +
 	"\aversion\x18\x02 \x01(\x0e2-.wayplatform.connect.tachograph.vu.v1.VersionR\aversionB\xdc\x02\n" +
 	"(com.wayplatform.connect.tachograph.vu.v1B\x1dDownloadInterfaceVersionProtoP\x01Z\\github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/vu/v1;vuv1\xa2\x02\x04WCTV\xaa\x02$Wayplatform.Connect.Tachograph.Vu.V1\xca\x02$Wayplatform\\Connect\\Tachograph\\Vu\\V1\xe2\x020Wayplatform\\Connect\\Tachograph\\Vu\\V1\\GPBMetadata\xea\x02(Wayplatform::Connect::Tachograph::Vu::V1b\beditionsp\xe8\a"
@@ -159,11 +159,11 @@ const file_wayplatform_connect_tachograph_vu_v1_download_interface_version_proto
 var file_wayplatform_connect_tachograph_vu_v1_download_interface_version_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_wayplatform_connect_tachograph_vu_v1_download_interface_version_proto_goTypes = []any{
 	(*DownloadInterfaceVersion)(nil), // 0: wayplatform.connect.tachograph.vu.v1.DownloadInterfaceVersion
-	(v1.Generation)(0),               // 1: wayplatform.connect.tachograph.datadictionary.v1.Generation
+	(v1.Generation)(0),               // 1: wayplatform.connect.tachograph.dd.v1.Generation
 	(Version)(0),                     // 2: wayplatform.connect.tachograph.vu.v1.Version
 }
 var file_wayplatform_connect_tachograph_vu_v1_download_interface_version_proto_depIdxs = []int32{
-	1, // 0: wayplatform.connect.tachograph.vu.v1.DownloadInterfaceVersion.generation:type_name -> wayplatform.connect.tachograph.datadictionary.v1.Generation
+	1, // 0: wayplatform.connect.tachograph.vu.v1.DownloadInterfaceVersion.generation:type_name -> wayplatform.connect.tachograph.dd.v1.Generation
 	2, // 1: wayplatform.connect.tachograph.vu.v1.DownloadInterfaceVersion.version:type_name -> wayplatform.connect.tachograph.vu.v1.Version
 	2, // [2:2] is the sub-list for method output_type
 	2, // [2:2] is the sub-list for method input_type

@@ -6,7 +6,7 @@ import (
 	"fmt"
 
 	cardv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1"
-	datadictionaryv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/datadictionary/v1"
+	ddv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
 	"google.golang.org/protobuf/reflect/protoreflect"
 )
 
@@ -202,7 +202,7 @@ func parseSingleActivityDailyRecord(data []byte) (*cardv1.DriverActivityData_Dai
 	offset += 2
 
 	// Parse activity change info - loop through remainder in 2-byte chunks
-	var activityChanges []*datadictionaryv1.ActivityChangeInfo
+	var activityChanges []*ddv1.ActivityChangeInfo
 
 	for offset+2 <= len(data) {
 		// Parse 2-byte ActivityChangeInfo bitfield
@@ -221,18 +221,18 @@ func parseSingleActivityDailyRecord(data []byte) (*cardv1.DriverActivityData_Dai
 		activity := int32((changeData >> 11) & 0x3)
 		timeOfChange := int32(changeData & 0x7FF)
 
-		activityChange := &datadictionaryv1.ActivityChangeInfo{}
+		activityChange := &ddv1.ActivityChangeInfo{}
 
 		// Convert raw values to enums using protocol annotations
-		SetCardSlotNumber(datadictionaryv1.CardSlotNumber_CARD_SLOT_NUMBER_UNSPECIFIED.Descriptor(), slot, func(en protoreflect.EnumNumber) {
-			activityChange.SetSlot(datadictionaryv1.CardSlotNumber(en))
+		SetCardSlotNumber(ddv1.CardSlotNumber_CARD_SLOT_NUMBER_UNSPECIFIED.Descriptor(), slot, func(en protoreflect.EnumNumber) {
+			activityChange.SetSlot(ddv1.CardSlotNumber(en))
 		}, nil)
-		SetDrivingStatus(datadictionaryv1.DrivingStatus_DRIVING_STATUS_UNSPECIFIED.Descriptor(), drivingStatus, func(en protoreflect.EnumNumber) {
-			activityChange.SetDrivingStatus(datadictionaryv1.DrivingStatus(en))
+		SetDrivingStatus(ddv1.DrivingStatus_DRIVING_STATUS_UNSPECIFIED.Descriptor(), drivingStatus, func(en protoreflect.EnumNumber) {
+			activityChange.SetDrivingStatus(ddv1.DrivingStatus(en))
 		}, nil)
 		activityChange.SetInserted(cardStatus != 0) // Convert to boolean (1 = inserted, 0 = not inserted)
-		SetDriverActivityValue(datadictionaryv1.DriverActivityValue_DRIVER_ACTIVITY_UNSPECIFIED.Descriptor(), activity, func(en protoreflect.EnumNumber) {
-			activityChange.SetActivity(datadictionaryv1.DriverActivityValue(en))
+		SetDriverActivityValue(ddv1.DriverActivityValue_DRIVER_ACTIVITY_UNSPECIFIED.Descriptor(), activity, func(en protoreflect.EnumNumber) {
+			activityChange.SetActivity(ddv1.DriverActivityValue(en))
 		}, nil)
 
 		activityChange.SetTimeOfChangeMinutes(timeOfChange)

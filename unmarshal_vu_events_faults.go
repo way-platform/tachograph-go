@@ -3,7 +3,7 @@ package tachograph
 import (
 	"fmt"
 
-	datadictionaryv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/datadictionary/v1"
+	ddv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
 	vuv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/vu/v1"
 )
 
@@ -42,9 +42,9 @@ func UnmarshalVuEventsAndFaults(data []byte, offset int, target *vuv1.EventsAndF
 
 	// Set generation
 	if generation == 1 {
-		target.SetGeneration(datadictionaryv1.Generation_GENERATION_1)
+		target.SetGeneration(ddv1.Generation_GENERATION_1)
 	} else {
-		target.SetGeneration(datadictionaryv1.Generation_GENERATION_2)
+		target.SetGeneration(ddv1.Generation_GENERATION_2)
 	}
 
 	// For now, implement a simplified version that just reads the data

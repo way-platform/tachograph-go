@@ -6,7 +6,7 @@ import (
 	"fmt"
 
 	cardv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1"
-	datadictionaryv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/datadictionary/v1"
+	ddv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
 	"google.golang.org/protobuf/reflect/protoreflect"
 )
 
@@ -46,15 +46,15 @@ func unmarshalIcc(data []byte) (*cardv1.Icc, error) {
 	}
 	clockStop := data[offset]
 	// Convert clock stop byte to ClockStopMode enum using generic helper
-	enumDesc := datadictionaryv1.ClockStopMode_CLOCK_STOP_MODE_UNSPECIFIED.Descriptor()
+	enumDesc := ddv1.ClockStopMode_CLOCK_STOP_MODE_UNSPECIFIED.Descriptor()
 	SetEnumFromProtocolValue(enumDesc, int32(clockStop),
 		func(enumNum protoreflect.EnumNumber) {
-			icc.SetClockStop(datadictionaryv1.ClockStopMode(enumNum))
+			icc.SetClockStop(ddv1.ClockStopMode(enumNum))
 		}, nil)
 	offset++
 
 	// Create ExtendedSerialNumber structure
-	esn := &datadictionaryv1.ExtendedSerialNumber{}
+	esn := &ddv1.ExtendedSerialNumber{}
 	// Read the 8-byte extended serial number
 	if offset+lenCardExtendedSerialNumber > len(data) {
 		return nil, fmt.Errorf("insufficient data for card extended serial number")
@@ -87,10 +87,10 @@ func unmarshalIcc(data []byte) (*cardv1.Icc, error) {
 
 		// Next byte: equipment type (convert from protocol value using generic helper)
 		if len(serialBytes) > 6 {
-			enumDesc := datadictionaryv1.EquipmentType_EQUIPMENT_TYPE_UNSPECIFIED.Descriptor()
+			enumDesc := ddv1.EquipmentType_EQUIPMENT_TYPE_UNSPECIFIED.Descriptor()
 			SetEnumFromProtocolValue(enumDesc, int32(serialBytes[6]),
 				func(enumNum protoreflect.EnumNumber) {
-					esn.SetType(datadictionaryv1.EquipmentType(enumNum))
+					esn.SetType(ddv1.EquipmentType(enumNum))
 				}, nil)
 		}
 
@@ -129,14 +129,14 @@ func unmarshalIcc(data []byte) (*cardv1.Icc, error) {
 	eia := &cardv1.Icc_EmbedderIcAssemblerId{}
 	if len(embedder) >= lenEmbedderIcAssemblerId {
 		// Store as hex string to avoid UTF-8 validation issues with binary data
-		countryCode := &datadictionaryv1.StringValue{}
-		countryCode.SetEncoding(datadictionaryv1.Encoding_IA5)
+		countryCode := &ddv1.StringValue{}
+		countryCode.SetEncoding(ddv1.Encoding_IA5)
 		countryCode.SetEncoded([]byte(fmt.Sprintf("%02X%02X", embedder[0], embedder[1])))
 		countryCode.SetDecoded(fmt.Sprintf("%02X%02X", embedder[0], embedder[1]))
 		eia.SetCountryCode(countryCode)
 
-		moduleEmbedder := &datadictionaryv1.StringValue{}
-		moduleEmbedder.SetEncoding(datadictionaryv1.Encoding_IA5)
+		moduleEmbedder := &ddv1.StringValue{}
+		moduleEmbedder.SetEncoding(ddv1.Encoding_IA5)
 		moduleEmbedder.SetEncoded([]byte(fmt.Sprintf("%02X%02X", embedder[2], embedder[3])))
 		moduleEmbedder.SetDecoded(fmt.Sprintf("%02X%02X", embedder[2], embedder[3]))
 		eia.SetModuleEmbedder(moduleEmbedder)

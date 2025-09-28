@@ -7,7 +7,7 @@
 package cardv1
 
 import (
-	v1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/datadictionary/v1"
+	v1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -43,7 +43,7 @@ const (
 //	}
 type Icc struct {
 	state                               protoimpl.MessageState     `protogen:"opaque.v1"`
-	xxx_hidden_ClockStop                v1.ClockStopMode           `protobuf:"varint,1,opt,name=clock_stop,json=clockStop,enum=wayplatform.connect.tachograph.datadictionary.v1.ClockStopMode"`
+	xxx_hidden_ClockStop                v1.ClockStopMode           `protobuf:"varint,1,opt,name=clock_stop,json=clockStop,enum=wayplatform.connect.tachograph.dd.v1.ClockStopMode"`
 	xxx_hidden_CardExtendedSerialNumber *v1.ExtendedSerialNumber   `protobuf:"bytes,2,opt,name=card_extended_serial_number,json=cardExtendedSerialNumber"`
 	xxx_hidden_CardApprovalNumber       *v1.StringValue            `protobuf:"bytes,3,opt,name=card_approval_number,json=cardApprovalNumber"`
 	xxx_hidden_CardPersonaliserId       int32                      `protobuf:"varint,4,opt,name=card_personaliser_id,json=cardPersonaliserId"`
@@ -444,18 +444,18 @@ var File_wayplatform_connect_tachograph_card_v1_icc_proto protoreflect.FileDescr
 
 const file_wayplatform_connect_tachograph_card_v1_icc_proto_rawDesc = "" +
 	"\n" +
-	"0wayplatform/connect/tachograph/card/v1/icc.proto\x12&wayplatform.connect.tachograph.card.v1\x1aFwayplatform/connect/tachograph/datadictionary/v1/clock_stop_mode.proto\x1aCwayplatform/connect/tachograph/datadictionary/v1/string_value.proto\x1aMwayplatform/connect/tachograph/datadictionary/v1/extended_serial_number.proto\"\xd0\x06\n" +
-	"\x03Icc\x12^\n" +
+	"0wayplatform/connect/tachograph/card/v1/icc.proto\x12&wayplatform.connect.tachograph.card.v1\x1a:wayplatform/connect/tachograph/dd/v1/clock_stop_mode.proto\x1aAwayplatform/connect/tachograph/dd/v1/extended_serial_number.proto\x1a7wayplatform/connect/tachograph/dd/v1/string_value.proto\"\x93\x06\n" +
+	"\x03Icc\x12R\n" +
 	"\n" +
-	"clock_stop\x18\x01 \x01(\x0e2?.wayplatform.connect.tachograph.datadictionary.v1.ClockStopModeR\tclockStop\x12\x85\x01\n" +
-	"\x1bcard_extended_serial_number\x18\x02 \x01(\v2F.wayplatform.connect.tachograph.datadictionary.v1.ExtendedSerialNumberR\x18cardExtendedSerialNumber\x12o\n" +
-	"\x14card_approval_number\x18\x03 \x01(\v2=.wayplatform.connect.tachograph.datadictionary.v1.StringValueR\x12cardApprovalNumber\x120\n" +
+	"clock_stop\x18\x01 \x01(\x0e23.wayplatform.connect.tachograph.dd.v1.ClockStopModeR\tclockStop\x12y\n" +
+	"\x1bcard_extended_serial_number\x18\x02 \x01(\v2:.wayplatform.connect.tachograph.dd.v1.ExtendedSerialNumberR\x18cardExtendedSerialNumber\x12c\n" +
+	"\x14card_approval_number\x18\x03 \x01(\v21.wayplatform.connect.tachograph.dd.v1.StringValueR\x12cardApprovalNumber\x120\n" +
 	"\x14card_personaliser_id\x18\x04 \x01(\x05R\x12cardPersonaliserId\x12z\n" +
 	"\x18embedder_ic_assembler_id\x18\x05 \x01(\v2A.wayplatform.connect.tachograph.card.v1.Icc.EmbedderIcAssemblerIdR\x15embedderIcAssemblerId\x12#\n" +
-	"\ric_identifier\x18\x06 \x01(\fR\ficIdentifier\x1a\x9c\x02\n" +
-	"\x15EmbedderIcAssemblerId\x12`\n" +
-	"\fcountry_code\x18\x01 \x01(\v2=.wayplatform.connect.tachograph.datadictionary.v1.StringValueR\vcountryCode\x12f\n" +
-	"\x0fmodule_embedder\x18\x02 \x01(\v2=.wayplatform.connect.tachograph.datadictionary.v1.StringValueR\x0emoduleEmbedder\x129\n" +
+	"\ric_identifier\x18\x06 \x01(\fR\ficIdentifier\x1a\x84\x02\n" +
+	"\x15EmbedderIcAssemblerId\x12T\n" +
+	"\fcountry_code\x18\x01 \x01(\v21.wayplatform.connect.tachograph.dd.v1.StringValueR\vcountryCode\x12Z\n" +
+	"\x0fmodule_embedder\x18\x02 \x01(\v21.wayplatform.connect.tachograph.dd.v1.StringValueR\x0emoduleEmbedder\x129\n" +
 	"\x18manufacturer_information\x18\x03 \x01(\x05R\x17manufacturerInformationB\xd5\x02\n" +
 	"*com.wayplatform.connect.tachograph.card.v1B\bIccProtoP\x01Z`github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1;cardv1\xa2\x02\x04WCTC\xaa\x02&Wayplatform.Connect.Tachograph.Card.V1\xca\x02&Wayplatform\\Connect\\Tachograph\\Card\\V1\xe2\x022Wayplatform\\Connect\\Tachograph\\Card\\V1\\GPBMetadata\xea\x02*Wayplatform::Connect::Tachograph::Card::V1b\beditionsp\xe8\a"
 
@@ -463,17 +463,17 @@ var file_wayplatform_connect_tachograph_card_v1_icc_proto_msgTypes = make([]prot
 var file_wayplatform_connect_tachograph_card_v1_icc_proto_goTypes = []any{
 	(*Icc)(nil),                       // 0: wayplatform.connect.tachograph.card.v1.Icc
 	(*Icc_EmbedderIcAssemblerId)(nil), // 1: wayplatform.connect.tachograph.card.v1.Icc.EmbedderIcAssemblerId
-	(v1.ClockStopMode)(0),             // 2: wayplatform.connect.tachograph.datadictionary.v1.ClockStopMode
-	(*v1.ExtendedSerialNumber)(nil),   // 3: wayplatform.connect.tachograph.datadictionary.v1.ExtendedSerialNumber
-	(*v1.StringValue)(nil),            // 4: wayplatform.connect.tachograph.datadictionary.v1.StringValue
+	(v1.ClockStopMode)(0),             // 2: wayplatform.connect.tachograph.dd.v1.ClockStopMode
+	(*v1.ExtendedSerialNumber)(nil),   // 3: wayplatform.connect.tachograph.dd.v1.ExtendedSerialNumber
+	(*v1.StringValue)(nil),            // 4: wayplatform.connect.tachograph.dd.v1.StringValue
 }
 var file_wayplatform_connect_tachograph_card_v1_icc_proto_depIdxs = []int32{
-	2, // 0: wayplatform.connect.tachograph.card.v1.Icc.clock_stop:type_name -> wayplatform.connect.tachograph.datadictionary.v1.ClockStopMode
-	3, // 1: wayplatform.connect.tachograph.card.v1.Icc.card_extended_serial_number:type_name -> wayplatform.connect.tachograph.datadictionary.v1.ExtendedSerialNumber
-	4, // 2: wayplatform.connect.tachograph.card.v1.Icc.card_approval_number:type_name -> wayplatform.connect.tachograph.datadictionary.v1.StringValue
+	2, // 0: wayplatform.connect.tachograph.card.v1.Icc.clock_stop:type_name -> wayplatform.connect.tachograph.dd.v1.ClockStopMode
+	3, // 1: wayplatform.connect.tachograph.card.v1.Icc.card_extended_serial_number:type_name -> wayplatform.connect.tachograph.dd.v1.ExtendedSerialNumber
+	4, // 2: wayplatform.connect.tachograph.card.v1.Icc.card_approval_number:type_name -> wayplatform.connect.tachograph.dd.v1.StringValue
 	1, // 3: wayplatform.connect.tachograph.card.v1.Icc.embedder_ic_assembler_id:type_name -> wayplatform.connect.tachograph.card.v1.Icc.EmbedderIcAssemblerId
-	4, // 4: wayplatform.connect.tachograph.card.v1.Icc.EmbedderIcAssemblerId.country_code:type_name -> wayplatform.connect.tachograph.datadictionary.v1.StringValue
-	4, // 5: wayplatform.connect.tachograph.card.v1.Icc.EmbedderIcAssemblerId.module_embedder:type_name -> wayplatform.connect.tachograph.datadictionary.v1.StringValue
+	4, // 4: wayplatform.connect.tachograph.card.v1.Icc.EmbedderIcAssemblerId.country_code:type_name -> wayplatform.connect.tachograph.dd.v1.StringValue
+	4, // 5: wayplatform.connect.tachograph.card.v1.Icc.EmbedderIcAssemblerId.module_embedder:type_name -> wayplatform.connect.tachograph.dd.v1.StringValue
 	6, // [6:6] is the sub-list for method output_type
 	6, // [6:6] is the sub-list for method input_type
 	6, // [6:6] is the sub-list for extension type_name

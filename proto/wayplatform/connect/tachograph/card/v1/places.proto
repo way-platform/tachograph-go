@@ -3,8 +3,8 @@ edition = "2023";
 package wayplatform.connect.tachograph.card.v1;
 
 import "google/protobuf/timestamp.proto";
-import "wayplatform/connect/tachograph/datadictionary/v1/entry_type_daily_work_period.proto";
-import "wayplatform/connect/tachograph/datadictionary/v1/nation_numeric.proto";
+import "wayplatform/connect/tachograph/dd/v1/entry_type_daily_work_period.proto";
+import "wayplatform/connect/tachograph/dd/v1/nation_numeric.proto";
 
 // Represents the content of the EF_Places file, where daily work periods begin and/or end.
 //
@@ -52,7 +52,7 @@ message Places {
     //     EntryTypeDailyWorkPeriod ::= INTEGER {
     //         begin(0), end(1), relatedToGNSS(2), relatedToITS(3)
     //     } (0..255)
-    datadictionary.v1.EntryTypeDailyWorkPeriod entry_type = 2;
+    dd.v1.EntryTypeDailyWorkPeriod entry_type = 2;
 
     // Country code.
     //
@@ -60,7 +60,7 @@ message Places {
     // ASN.1 Definition:
     //
     //     NationNumeric ::= INTEGER(0..255)
-    datadictionary.v1.NationNumeric daily_work_period_country = 4;
+    dd.v1.NationNumeric daily_work_period_country = 4;
 
     // Region code.
     //

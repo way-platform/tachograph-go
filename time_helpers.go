@@ -7,7 +7,7 @@ import (
 
 	"google.golang.org/protobuf/types/known/timestamppb"
 
-	datadictionaryv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/datadictionary/v1"
+	ddv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
 )
 
 // appendTimeReal appends a 4-byte TimeReal value.
@@ -35,7 +35,7 @@ func appendDatef(dst []byte, ts *timestamppb.Timestamp) []byte {
 }
 
 // appendDate appends a 4-byte BCD-encoded date from the new Date type.
-func appendDate(dst []byte, date *datadictionaryv1.Date) []byte {
+func appendDate(dst []byte, date *ddv1.Date) []byte {
 	if date == nil {
 		return append(dst, 0, 0, 0, 0)
 	}
@@ -61,7 +61,7 @@ func readTimeReal(r *bytes.Reader) *timestamppb.Timestamp {
 }
 
 // readDatef reads a Datef value (4 bytes BCD) from a bytes.Reader and converts to Date
-func readDatef(r *bytes.Reader) (*datadictionaryv1.Date, error) {
+func readDatef(r *bytes.Reader) (*ddv1.Date, error) {
 	b := make([]byte, 4)
 	_, _ = r.Read(b) // ignore error as we're reading from in-memory buffer
 
@@ -75,7 +75,7 @@ func readDatef(r *bytes.Reader) (*datadictionaryv1.Date, error) {
 		return nil, nil // Return nil for invalid or zero dates
 	}
 
-	date := &datadictionaryv1.Date{}
+	date := &ddv1.Date{}
 	date.SetYear(year)
 	date.SetMonth(month)
 	date.SetDay(day)

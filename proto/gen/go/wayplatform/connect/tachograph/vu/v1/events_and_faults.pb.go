@@ -7,7 +7,7 @@
 package vuv1
 
 import (
-	v1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/datadictionary/v1"
+	v1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
@@ -28,7 +28,7 @@ const (
 // Appendix 7, Section 2.2.6.4: "Positive Response Transfer Data Events and Faults".
 type EventsAndFaults struct {
 	state                          protoimpl.MessageState                      `protogen:"opaque.v1"`
-	xxx_hidden_Generation          v1.Generation                               `protobuf:"varint,1,opt,name=generation,enum=wayplatform.connect.tachograph.datadictionary.v1.Generation"`
+	xxx_hidden_Generation          v1.Generation                               `protobuf:"varint,1,opt,name=generation,enum=wayplatform.connect.tachograph.dd.v1.Generation"`
 	xxx_hidden_Faults              *[]*EventsAndFaults_FaultRecord             `protobuf:"bytes,2,rep,name=faults"`
 	xxx_hidden_Events              *[]*EventsAndFaults_EventRecord             `protobuf:"bytes,3,rep,name=events"`
 	xxx_hidden_OverspeedingControl *EventsAndFaults_OverSpeedingControlData    `protobuf:"bytes,4,opt,name=overspeeding_control,json=overspeedingControl"`
@@ -294,9 +294,9 @@ func (b0 EventsAndFaults_builder) Build() *EventsAndFaults {
 //	}
 type EventsAndFaults_FaultRecord struct {
 	state                                protoimpl.MessageState          `protogen:"opaque.v1"`
-	xxx_hidden_FaultType                 v1.EventFaultType               `protobuf:"varint,1,opt,name=fault_type,json=faultType,enum=wayplatform.connect.tachograph.datadictionary.v1.EventFaultType"`
+	xxx_hidden_FaultType                 v1.EventFaultType               `protobuf:"varint,1,opt,name=fault_type,json=faultType,enum=wayplatform.connect.tachograph.dd.v1.EventFaultType"`
 	xxx_hidden_UnrecognizedFaultType     int32                           `protobuf:"varint,2,opt,name=unrecognized_fault_type,json=unrecognizedFaultType"`
-	xxx_hidden_RecordPurpose             v1.EventFaultRecordPurpose      `protobuf:"varint,3,opt,name=record_purpose,json=recordPurpose,enum=wayplatform.connect.tachograph.datadictionary.v1.EventFaultRecordPurpose"`
+	xxx_hidden_RecordPurpose             v1.EventFaultRecordPurpose      `protobuf:"varint,3,opt,name=record_purpose,json=recordPurpose,enum=wayplatform.connect.tachograph.dd.v1.EventFaultRecordPurpose"`
 	xxx_hidden_UnrecognizedRecordPurpose int32                           `protobuf:"varint,4,opt,name=unrecognized_record_purpose,json=unrecognizedRecordPurpose"`
 	xxx_hidden_BeginTime                 *timestamppb.Timestamp          `protobuf:"bytes,5,opt,name=begin_time,json=beginTime"`
 	xxx_hidden_EndTime                   *timestamppb.Timestamp          `protobuf:"bytes,6,opt,name=end_time,json=endTime"`
@@ -583,9 +583,9 @@ func (b0 EventsAndFaults_FaultRecord_builder) Build() *EventsAndFaults_FaultReco
 //	}
 type EventsAndFaults_EventRecord struct {
 	state                                protoimpl.MessageState          `protogen:"opaque.v1"`
-	xxx_hidden_EventType                 v1.EventFaultType               `protobuf:"varint,1,opt,name=event_type,json=eventType,enum=wayplatform.connect.tachograph.datadictionary.v1.EventFaultType"`
+	xxx_hidden_EventType                 v1.EventFaultType               `protobuf:"varint,1,opt,name=event_type,json=eventType,enum=wayplatform.connect.tachograph.dd.v1.EventFaultType"`
 	xxx_hidden_UnrecognizedEventType     int32                           `protobuf:"varint,2,opt,name=unrecognized_event_type,json=unrecognizedEventType"`
-	xxx_hidden_RecordPurpose             v1.EventFaultRecordPurpose      `protobuf:"varint,3,opt,name=record_purpose,json=recordPurpose,enum=wayplatform.connect.tachograph.datadictionary.v1.EventFaultRecordPurpose"`
+	xxx_hidden_RecordPurpose             v1.EventFaultRecordPurpose      `protobuf:"varint,3,opt,name=record_purpose,json=recordPurpose,enum=wayplatform.connect.tachograph.dd.v1.EventFaultRecordPurpose"`
 	xxx_hidden_UnrecognizedRecordPurpose int32                           `protobuf:"varint,4,opt,name=unrecognized_record_purpose,json=unrecognizedRecordPurpose"`
 	xxx_hidden_BeginTime                 *timestamppb.Timestamp          `protobuf:"bytes,5,opt,name=begin_time,json=beginTime"`
 	xxx_hidden_EndTime                   *timestamppb.Timestamp          `protobuf:"bytes,6,opt,name=end_time,json=endTime"`
@@ -1061,9 +1061,9 @@ func (b0 EventsAndFaults_OverSpeedingControlData_builder) Build() *EventsAndFaul
 //	}
 type EventsAndFaults_OverSpeedingEventRecord struct {
 	state                                protoimpl.MessageState          `protogen:"opaque.v1"`
-	xxx_hidden_EventType                 v1.EventFaultType               `protobuf:"varint,1,opt,name=event_type,json=eventType,enum=wayplatform.connect.tachograph.datadictionary.v1.EventFaultType"`
+	xxx_hidden_EventType                 v1.EventFaultType               `protobuf:"varint,1,opt,name=event_type,json=eventType,enum=wayplatform.connect.tachograph.dd.v1.EventFaultType"`
 	xxx_hidden_UnrecognizedEventType     int32                           `protobuf:"varint,2,opt,name=unrecognized_event_type,json=unrecognizedEventType"`
-	xxx_hidden_RecordPurpose             v1.EventFaultRecordPurpose      `protobuf:"varint,3,opt,name=record_purpose,json=recordPurpose,enum=wayplatform.connect.tachograph.datadictionary.v1.EventFaultRecordPurpose"`
+	xxx_hidden_RecordPurpose             v1.EventFaultRecordPurpose      `protobuf:"varint,3,opt,name=record_purpose,json=recordPurpose,enum=wayplatform.connect.tachograph.dd.v1.EventFaultRecordPurpose"`
 	xxx_hidden_UnrecognizedRecordPurpose int32                           `protobuf:"varint,4,opt,name=unrecognized_record_purpose,json=unrecognizedRecordPurpose"`
 	xxx_hidden_BeginTime                 *timestamppb.Timestamp          `protobuf:"bytes,5,opt,name=begin_time,json=beginTime"`
 	xxx_hidden_EndTime                   *timestamppb.Timestamp          `protobuf:"bytes,6,opt,name=end_time,json=endTime"`
@@ -1620,10 +1620,10 @@ var File_wayplatform_connect_tachograph_vu_v1_events_and_faults_proto protorefle
 
 const file_wayplatform_connect_tachograph_vu_v1_events_and_faults_proto_rawDesc = "" +
 	"\n" +
-	"<wayplatform/connect/tachograph/vu/v1/events_and_faults.proto\x12$wayplatform.connect.tachograph.vu.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1aQwayplatform/connect/tachograph/datadictionary/v1/event_fault_record_purpose.proto\x1aGwayplatform/connect/tachograph/datadictionary/v1/event_fault_type.proto\x1aVwayplatform/connect/tachograph/datadictionary/v1/full_card_number_and_generation.proto\x1aAwayplatform/connect/tachograph/datadictionary/v1/generation.proto\x1aCwayplatform/connect/tachograph/datadictionary/v1/string_value.proto\"\xca\x1a\n" +
-	"\x0fEventsAndFaults\x12\\\n" +
+	"<wayplatform/connect/tachograph/vu/v1/events_and_faults.proto\x12$wayplatform.connect.tachograph.vu.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1aEwayplatform/connect/tachograph/dd/v1/event_fault_record_purpose.proto\x1a;wayplatform/connect/tachograph/dd/v1/event_fault_type.proto\x1aJwayplatform/connect/tachograph/dd/v1/full_card_number_and_generation.proto\x1a5wayplatform/connect/tachograph/dd/v1/generation.proto\x1a7wayplatform/connect/tachograph/dd/v1/string_value.proto\"\xad\x19\n" +
+	"\x0fEventsAndFaults\x12P\n" +
 	"\n" +
-	"generation\x18\x01 \x01(\x0e2<.wayplatform.connect.tachograph.datadictionary.v1.GenerationR\n" +
+	"generation\x18\x01 \x01(\x0e20.wayplatform.connect.tachograph.dd.v1.GenerationR\n" +
 	"generation\x12Y\n" +
 	"\x06faults\x18\x02 \x03(\v2A.wayplatform.connect.tachograph.vu.v1.EventsAndFaults.FaultRecordR\x06faults\x12Y\n" +
 	"\x06events\x18\x03 \x03(\v2A.wayplatform.connect.tachograph.vu.v1.EventsAndFaults.EventRecordR\x06events\x12\x80\x01\n" +
@@ -1631,50 +1631,50 @@ const file_wayplatform_connect_tachograph_vu_v1_events_and_faults_proto_rawDesc 
 	"\x13overspeeding_events\x18\x05 \x03(\v2M.wayplatform.connect.tachograph.vu.v1.EventsAndFaults.OverSpeedingEventRecordR\x12overspeedingEvents\x12u\n" +
 	"\x10time_adjustments\x18\x06 \x03(\v2J.wayplatform.connect.tachograph.vu.v1.EventsAndFaults.TimeAdjustmentRecordR\x0ftimeAdjustments\x12%\n" +
 	"\x0esignature_gen1\x18\a \x01(\fR\rsignatureGen1\x12%\n" +
-	"\x0esignature_gen2\x18\b \x01(\fR\rsignatureGen2\x1a\xc2\x04\n" +
-	"\vFaultRecord\x12_\n" +
+	"\x0esignature_gen2\x18\b \x01(\fR\rsignatureGen2\x1a\x9e\x04\n" +
+	"\vFaultRecord\x12S\n" +
 	"\n" +
-	"fault_type\x18\x01 \x01(\x0e2@.wayplatform.connect.tachograph.datadictionary.v1.EventFaultTypeR\tfaultType\x126\n" +
-	"\x17unrecognized_fault_type\x18\x02 \x01(\x05R\x15unrecognizedFaultType\x12p\n" +
-	"\x0erecord_purpose\x18\x03 \x01(\x0e2I.wayplatform.connect.tachograph.datadictionary.v1.EventFaultRecordPurposeR\rrecordPurpose\x12>\n" +
+	"fault_type\x18\x01 \x01(\x0e24.wayplatform.connect.tachograph.dd.v1.EventFaultTypeR\tfaultType\x126\n" +
+	"\x17unrecognized_fault_type\x18\x02 \x01(\x05R\x15unrecognizedFaultType\x12d\n" +
+	"\x0erecord_purpose\x18\x03 \x01(\x0e2=.wayplatform.connect.tachograph.dd.v1.EventFaultRecordPurposeR\rrecordPurpose\x12>\n" +
 	"\x1bunrecognized_record_purpose\x18\x04 \x01(\x05R\x19unrecognizedRecordPurpose\x129\n" +
 	"\n" +
 	"begin_time\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampR\tbeginTime\x125\n" +
-	"\bend_time\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampR\aendTime\x12v\n" +
-	"\x0fcard_identifier\x18\a \x01(\v2M.wayplatform.connect.tachograph.datadictionary.v1.FullCardNumberAndGenerationR\x0ecardIdentifier\x1a\xf6\x04\n" +
-	"\vEventRecord\x12_\n" +
+	"\bend_time\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampR\aendTime\x12j\n" +
+	"\x0fcard_identifier\x18\a \x01(\v2A.wayplatform.connect.tachograph.dd.v1.FullCardNumberAndGenerationR\x0ecardIdentifier\x1a\xd2\x04\n" +
+	"\vEventRecord\x12S\n" +
 	"\n" +
-	"event_type\x18\x01 \x01(\x0e2@.wayplatform.connect.tachograph.datadictionary.v1.EventFaultTypeR\teventType\x126\n" +
-	"\x17unrecognized_event_type\x18\x02 \x01(\x05R\x15unrecognizedEventType\x12p\n" +
-	"\x0erecord_purpose\x18\x03 \x01(\x0e2I.wayplatform.connect.tachograph.datadictionary.v1.EventFaultRecordPurposeR\rrecordPurpose\x12>\n" +
+	"event_type\x18\x01 \x01(\x0e24.wayplatform.connect.tachograph.dd.v1.EventFaultTypeR\teventType\x126\n" +
+	"\x17unrecognized_event_type\x18\x02 \x01(\x05R\x15unrecognizedEventType\x12d\n" +
+	"\x0erecord_purpose\x18\x03 \x01(\x0e2=.wayplatform.connect.tachograph.dd.v1.EventFaultRecordPurposeR\rrecordPurpose\x12>\n" +
 	"\x1bunrecognized_record_purpose\x18\x04 \x01(\x05R\x19unrecognizedRecordPurpose\x129\n" +
 	"\n" +
 	"begin_time\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampR\tbeginTime\x125\n" +
-	"\bend_time\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampR\aendTime\x12v\n" +
-	"\x0fcard_identifier\x18\a \x01(\v2M.wayplatform.connect.tachograph.datadictionary.v1.FullCardNumberAndGenerationR\x0ecardIdentifier\x122\n" +
+	"\bend_time\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampR\aendTime\x12j\n" +
+	"\x0fcard_identifier\x18\a \x01(\v2A.wayplatform.connect.tachograph.dd.v1.FullCardNumberAndGenerationR\x0ecardIdentifier\x122\n" +
 	"\x15similar_events_number\x18\b \x01(\x05R\x13similarEventsNumber\x1a\x9c\x02\n" +
 	"\x17OverSpeedingControlData\x12F\n" +
 	"\x11last_control_time\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\x0flastControlTime\x12f\n" +
 	"\"first_overspeed_since_last_control\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\x1efirstOverspeedSinceLastControl\x12Q\n" +
-	"&number_of_overspeed_since_last_control\x18\x03 \x01(\x05R!numberOfOverspeedSinceLastControl\x1a\x9e\x05\n" +
-	"\x17OverSpeedingEventRecord\x12_\n" +
+	"&number_of_overspeed_since_last_control\x18\x03 \x01(\x05R!numberOfOverspeedSinceLastControl\x1a\xfa\x04\n" +
+	"\x17OverSpeedingEventRecord\x12S\n" +
 	"\n" +
-	"event_type\x18\x01 \x01(\x0e2@.wayplatform.connect.tachograph.datadictionary.v1.EventFaultTypeR\teventType\x126\n" +
-	"\x17unrecognized_event_type\x18\x02 \x01(\x05R\x15unrecognizedEventType\x12p\n" +
-	"\x0erecord_purpose\x18\x03 \x01(\x0e2I.wayplatform.connect.tachograph.datadictionary.v1.EventFaultRecordPurposeR\rrecordPurpose\x12>\n" +
+	"event_type\x18\x01 \x01(\x0e24.wayplatform.connect.tachograph.dd.v1.EventFaultTypeR\teventType\x126\n" +
+	"\x17unrecognized_event_type\x18\x02 \x01(\x05R\x15unrecognizedEventType\x12d\n" +
+	"\x0erecord_purpose\x18\x03 \x01(\x0e2=.wayplatform.connect.tachograph.dd.v1.EventFaultRecordPurposeR\rrecordPurpose\x12>\n" +
 	"\x1bunrecognized_record_purpose\x18\x04 \x01(\x05R\x19unrecognizedRecordPurpose\x129\n" +
 	"\n" +
 	"begin_time\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampR\tbeginTime\x125\n" +
 	"\bend_time\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampR\aendTime\x12\"\n" +
 	"\rmax_speed_kmh\x18\a \x01(\x05R\vmaxSpeedKmh\x12*\n" +
-	"\x11average_speed_kmh\x18\b \x01(\x05R\x0faverageSpeedKmh\x12v\n" +
-	"\x0fcard_identifier\x18\t \x01(\v2M.wayplatform.connect.tachograph.datadictionary.v1.FullCardNumberAndGenerationR\x0ecardIdentifier\x1a\xdc\x03\n" +
+	"\x11average_speed_kmh\x18\b \x01(\x05R\x0faverageSpeedKmh\x12j\n" +
+	"\x0fcard_identifier\x18\t \x01(\v2A.wayplatform.connect.tachograph.dd.v1.FullCardNumberAndGenerationR\x0ecardIdentifier\x1a\xb7\x03\n" +
 	"\x14TimeAdjustmentRecord\x125\n" +
 	"\bold_time\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\aoldTime\x125\n" +
-	"\bnew_time\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\anewTime\x12b\n" +
-	"\rworkshop_name\x18\x03 \x01(\v2=.wayplatform.connect.tachograph.datadictionary.v1.StringValueR\fworkshopName\x12h\n" +
-	"\x10workshop_address\x18\x04 \x01(\v2=.wayplatform.connect.tachograph.datadictionary.v1.StringValueR\x0fworkshopAddress\x12\x87\x01\n" +
-	"\x18workshop_card_identifier\x18\x05 \x01(\v2M.wayplatform.connect.tachograph.datadictionary.v1.FullCardNumberAndGenerationR\x16workshopCardIdentifierB\xd3\x02\n" +
+	"\bnew_time\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\anewTime\x12V\n" +
+	"\rworkshop_name\x18\x03 \x01(\v21.wayplatform.connect.tachograph.dd.v1.StringValueR\fworkshopName\x12\\\n" +
+	"\x10workshop_address\x18\x04 \x01(\v21.wayplatform.connect.tachograph.dd.v1.StringValueR\x0fworkshopAddress\x12{\n" +
+	"\x18workshop_card_identifier\x18\x05 \x01(\v2A.wayplatform.connect.tachograph.dd.v1.FullCardNumberAndGenerationR\x16workshopCardIdentifierB\xd3\x02\n" +
 	"(com.wayplatform.connect.tachograph.vu.v1B\x14EventsAndFaultsProtoP\x01Z\\github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/vu/v1;vuv1\xa2\x02\x04WCTV\xaa\x02$Wayplatform.Connect.Tachograph.Vu.V1\xca\x02$Wayplatform\\Connect\\Tachograph\\Vu\\V1\xe2\x020Wayplatform\\Connect\\Tachograph\\Vu\\V1\\GPBMetadata\xea\x02(Wayplatform::Connect::Tachograph::Vu::V1b\beditionsp\xe8\a"
 
 var file_wayplatform_connect_tachograph_vu_v1_events_and_faults_proto_msgTypes = make([]protoimpl.MessageInfo, 6)
@@ -1685,42 +1685,42 @@ var file_wayplatform_connect_tachograph_vu_v1_events_and_faults_proto_goTypes = 
 	(*EventsAndFaults_OverSpeedingControlData)(nil), // 3: wayplatform.connect.tachograph.vu.v1.EventsAndFaults.OverSpeedingControlData
 	(*EventsAndFaults_OverSpeedingEventRecord)(nil), // 4: wayplatform.connect.tachograph.vu.v1.EventsAndFaults.OverSpeedingEventRecord
 	(*EventsAndFaults_TimeAdjustmentRecord)(nil),    // 5: wayplatform.connect.tachograph.vu.v1.EventsAndFaults.TimeAdjustmentRecord
-	(v1.Generation)(0),                              // 6: wayplatform.connect.tachograph.datadictionary.v1.Generation
-	(v1.EventFaultType)(0),                          // 7: wayplatform.connect.tachograph.datadictionary.v1.EventFaultType
-	(v1.EventFaultRecordPurpose)(0),                 // 8: wayplatform.connect.tachograph.datadictionary.v1.EventFaultRecordPurpose
+	(v1.Generation)(0),                              // 6: wayplatform.connect.tachograph.dd.v1.Generation
+	(v1.EventFaultType)(0),                          // 7: wayplatform.connect.tachograph.dd.v1.EventFaultType
+	(v1.EventFaultRecordPurpose)(0),                 // 8: wayplatform.connect.tachograph.dd.v1.EventFaultRecordPurpose
 	(*timestamppb.Timestamp)(nil),                   // 9: google.protobuf.Timestamp
-	(*v1.FullCardNumberAndGeneration)(nil),          // 10: wayplatform.connect.tachograph.datadictionary.v1.FullCardNumberAndGeneration
-	(*v1.StringValue)(nil),                          // 11: wayplatform.connect.tachograph.datadictionary.v1.StringValue
+	(*v1.FullCardNumberAndGeneration)(nil),          // 10: wayplatform.connect.tachograph.dd.v1.FullCardNumberAndGeneration
+	(*v1.StringValue)(nil),                          // 11: wayplatform.connect.tachograph.dd.v1.StringValue
 }
 var file_wayplatform_connect_tachograph_vu_v1_events_and_faults_proto_depIdxs = []int32{
-	6,  // 0: wayplatform.connect.tachograph.vu.v1.EventsAndFaults.generation:type_name -> wayplatform.connect.tachograph.datadictionary.v1.Generation
+	6,  // 0: wayplatform.connect.tachograph.vu.v1.EventsAndFaults.generation:type_name -> wayplatform.connect.tachograph.dd.v1.Generation
 	1,  // 1: wayplatform.connect.tachograph.vu.v1.EventsAndFaults.faults:type_name -> wayplatform.connect.tachograph.vu.v1.EventsAndFaults.FaultRecord
 	2,  // 2: wayplatform.connect.tachograph.vu.v1.EventsAndFaults.events:type_name -> wayplatform.connect.tachograph.vu.v1.EventsAndFaults.EventRecord
 	3,  // 3: wayplatform.connect.tachograph.vu.v1.EventsAndFaults.overspeeding_control:type_name -> wayplatform.connect.tachograph.vu.v1.EventsAndFaults.OverSpeedingControlData
 	4,  // 4: wayplatform.connect.tachograph.vu.v1.EventsAndFaults.overspeeding_events:type_name -> wayplatform.connect.tachograph.vu.v1.EventsAndFaults.OverSpeedingEventRecord
 	5,  // 5: wayplatform.connect.tachograph.vu.v1.EventsAndFaults.time_adjustments:type_name -> wayplatform.connect.tachograph.vu.v1.EventsAndFaults.TimeAdjustmentRecord
-	7,  // 6: wayplatform.connect.tachograph.vu.v1.EventsAndFaults.FaultRecord.fault_type:type_name -> wayplatform.connect.tachograph.datadictionary.v1.EventFaultType
-	8,  // 7: wayplatform.connect.tachograph.vu.v1.EventsAndFaults.FaultRecord.record_purpose:type_name -> wayplatform.connect.tachograph.datadictionary.v1.EventFaultRecordPurpose
+	7,  // 6: wayplatform.connect.tachograph.vu.v1.EventsAndFaults.FaultRecord.fault_type:type_name -> wayplatform.connect.tachograph.dd.v1.EventFaultType
+	8,  // 7: wayplatform.connect.tachograph.vu.v1.EventsAndFaults.FaultRecord.record_purpose:type_name -> wayplatform.connect.tachograph.dd.v1.EventFaultRecordPurpose
 	9,  // 8: wayplatform.connect.tachograph.vu.v1.EventsAndFaults.FaultRecord.begin_time:type_name -> google.protobuf.Timestamp
 	9,  // 9: wayplatform.connect.tachograph.vu.v1.EventsAndFaults.FaultRecord.end_time:type_name -> google.protobuf.Timestamp
-	10, // 10: wayplatform.connect.tachograph.vu.v1.EventsAndFaults.FaultRecord.card_identifier:type_name -> wayplatform.connect.tachograph.datadictionary.v1.FullCardNumberAndGeneration
-	7,  // 11: wayplatform.connect.tachograph.vu.v1.EventsAndFaults.EventRecord.event_type:type_name -> wayplatform.connect.tachograph.datadictionary.v1.EventFaultType
-	8,  // 12: wayplatform.connect.tachograph.vu.v1.EventsAndFaults.EventRecord.record_purpose:type_name -> wayplatform.connect.tachograph.datadictionary.v1.EventFaultRecordPurpose
+	10, // 10: wayplatform.connect.tachograph.vu.v1.EventsAndFaults.FaultRecord.card_identifier:type_name -> wayplatform.connect.tachograph.dd.v1.FullCardNumberAndGeneration
+	7,  // 11: wayplatform.connect.tachograph.vu.v1.EventsAndFaults.EventRecord.event_type:type_name -> wayplatform.connect.tachograph.dd.v1.EventFaultType
+	8,  // 12: wayplatform.connect.tachograph.vu.v1.EventsAndFaults.EventRecord.record_purpose:type_name -> wayplatform.connect.tachograph.dd.v1.EventFaultRecordPurpose
 	9,  // 13: wayplatform.connect.tachograph.vu.v1.EventsAndFaults.EventRecord.begin_time:type_name -> google.protobuf.Timestamp
 	9,  // 14: wayplatform.connect.tachograph.vu.v1.EventsAndFaults.EventRecord.end_time:type_name -> google.protobuf.Timestamp
-	10, // 15: wayplatform.connect.tachograph.vu.v1.EventsAndFaults.EventRecord.card_identifier:type_name -> wayplatform.connect.tachograph.datadictionary.v1.FullCardNumberAndGeneration
+	10, // 15: wayplatform.connect.tachograph.vu.v1.EventsAndFaults.EventRecord.card_identifier:type_name -> wayplatform.connect.tachograph.dd.v1.FullCardNumberAndGeneration
 	9,  // 16: wayplatform.connect.tachograph.vu.v1.EventsAndFaults.OverSpeedingControlData.last_control_time:type_name -> google.protobuf.Timestamp
 	9,  // 17: wayplatform.connect.tachograph.vu.v1.EventsAndFaults.OverSpeedingControlData.first_overspeed_since_last_control:type_name -> google.protobuf.Timestamp
-	7,  // 18: wayplatform.connect.tachograph.vu.v1.EventsAndFaults.OverSpeedingEventRecord.event_type:type_name -> wayplatform.connect.tachograph.datadictionary.v1.EventFaultType
-	8,  // 19: wayplatform.connect.tachograph.vu.v1.EventsAndFaults.OverSpeedingEventRecord.record_purpose:type_name -> wayplatform.connect.tachograph.datadictionary.v1.EventFaultRecordPurpose
+	7,  // 18: wayplatform.connect.tachograph.vu.v1.EventsAndFaults.OverSpeedingEventRecord.event_type:type_name -> wayplatform.connect.tachograph.dd.v1.EventFaultType
+	8,  // 19: wayplatform.connect.tachograph.vu.v1.EventsAndFaults.OverSpeedingEventRecord.record_purpose:type_name -> wayplatform.connect.tachograph.dd.v1.EventFaultRecordPurpose
 	9,  // 20: wayplatform.connect.tachograph.vu.v1.EventsAndFaults.OverSpeedingEventRecord.begin_time:type_name -> google.protobuf.Timestamp
 	9,  // 21: wayplatform.connect.tachograph.vu.v1.EventsAndFaults.OverSpeedingEventRecord.end_time:type_name -> google.protobuf.Timestamp
-	10, // 22: wayplatform.connect.tachograph.vu.v1.EventsAndFaults.OverSpeedingEventRecord.card_identifier:type_name -> wayplatform.connect.tachograph.datadictionary.v1.FullCardNumberAndGeneration
+	10, // 22: wayplatform.connect.tachograph.vu.v1.EventsAndFaults.OverSpeedingEventRecord.card_identifier:type_name -> wayplatform.connect.tachograph.dd.v1.FullCardNumberAndGeneration
 	9,  // 23: wayplatform.connect.tachograph.vu.v1.EventsAndFaults.TimeAdjustmentRecord.old_time:type_name -> google.protobuf.Timestamp
 	9,  // 24: wayplatform.connect.tachograph.vu.v1.EventsAndFaults.TimeAdjustmentRecord.new_time:type_name -> google.protobuf.Timestamp
-	11, // 25: wayplatform.connect.tachograph.vu.v1.EventsAndFaults.TimeAdjustmentRecord.workshop_name:type_name -> wayplatform.connect.tachograph.datadictionary.v1.StringValue
-	11, // 26: wayplatform.connect.tachograph.vu.v1.EventsAndFaults.TimeAdjustmentRecord.workshop_address:type_name -> wayplatform.connect.tachograph.datadictionary.v1.StringValue
-	10, // 27: wayplatform.connect.tachograph.vu.v1.EventsAndFaults.TimeAdjustmentRecord.workshop_card_identifier:type_name -> wayplatform.connect.tachograph.datadictionary.v1.FullCardNumberAndGeneration
+	11, // 25: wayplatform.connect.tachograph.vu.v1.EventsAndFaults.TimeAdjustmentRecord.workshop_name:type_name -> wayplatform.connect.tachograph.dd.v1.StringValue
+	11, // 26: wayplatform.connect.tachograph.vu.v1.EventsAndFaults.TimeAdjustmentRecord.workshop_address:type_name -> wayplatform.connect.tachograph.dd.v1.StringValue
+	10, // 27: wayplatform.connect.tachograph.vu.v1.EventsAndFaults.TimeAdjustmentRecord.workshop_card_identifier:type_name -> wayplatform.connect.tachograph.dd.v1.FullCardNumberAndGeneration
 	28, // [28:28] is the sub-list for method output_type
 	28, // [28:28] is the sub-list for method input_type
 	28, // [28:28] is the sub-list for extension type_name

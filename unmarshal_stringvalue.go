@@ -9,12 +9,12 @@ import (
 
 	"golang.org/x/text/encoding/charmap"
 
-	datadictionaryv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/datadictionary/v1"
+	ddv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
 )
 
 // unmarshalStringValue unmarshals a code-paged string value from binary data.
 // The input should contain a code page byte followed by the encoded string data.
-func unmarshalStringValue(input []byte) (*datadictionaryv1.StringValue, error) {
+func unmarshalStringValue(input []byte) (*ddv1.StringValue, error) {
 	if len(input) < 2 {
 		return nil, fmt.Errorf("insufficient data for string value: %w", io.ErrUnexpectedEOF)
 	}
@@ -22,7 +22,7 @@ func unmarshalStringValue(input []byte) (*datadictionaryv1.StringValue, error) {
 	codePage := input[0]
 	data := input[1:]
 
-	var output datadictionaryv1.StringValue
+	var output ddv1.StringValue
 	output.SetEncoding(getEncodingFromCodePage(codePage))
 	output.SetEncoded(data)
 
@@ -38,13 +38,13 @@ func unmarshalStringValue(input []byte) (*datadictionaryv1.StringValue, error) {
 
 // unmarshalIA5StringValue unmarshals an IA5 (ASCII) string value from binary data.
 // IA5 strings have a fixed encoding and may include padding.
-func unmarshalIA5StringValue(input []byte) (*datadictionaryv1.StringValue, error) {
+func unmarshalIA5StringValue(input []byte) (*ddv1.StringValue, error) {
 	if len(input) == 0 {
 		return nil, fmt.Errorf("insufficient data for string value: %w", io.ErrUnexpectedEOF)
 	}
 
-	var output datadictionaryv1.StringValue
-	output.SetEncoding(datadictionaryv1.Encoding_IA5)
+	var output ddv1.StringValue
+	output.SetEncoding(ddv1.Encoding_IA5)
 	output.SetEncoded(input)
 
 	// Decode and trim the input bytes
@@ -63,36 +63,36 @@ func unmarshalIA5StringValue(input []byte) (*datadictionaryv1.StringValue, error
 }
 
 // getEncodingFromCodePage maps a code page byte to the corresponding Encoding enum.
-func getEncodingFromCodePage(codePage byte) datadictionaryv1.Encoding {
+func getEncodingFromCodePage(codePage byte) ddv1.Encoding {
 	switch codePage {
 	case 0:
-		return datadictionaryv1.Encoding_ENCODING_DEFAULT
+		return ddv1.Encoding_ENCODING_DEFAULT
 	case 1:
-		return datadictionaryv1.Encoding_ISO_8859_1
+		return ddv1.Encoding_ISO_8859_1
 	case 2:
-		return datadictionaryv1.Encoding_ISO_8859_2
+		return ddv1.Encoding_ISO_8859_2
 	case 3:
-		return datadictionaryv1.Encoding_ISO_8859_3
+		return ddv1.Encoding_ISO_8859_3
 	case 5:
-		return datadictionaryv1.Encoding_ISO_8859_5
+		return ddv1.Encoding_ISO_8859_5
 	case 7:
-		return datadictionaryv1.Encoding_ISO_8859_7
+		return ddv1.Encoding_ISO_8859_7
 	case 9:
-		return datadictionaryv1.Encoding_ISO_8859_9
+		return ddv1.Encoding_ISO_8859_9
 	case 13:
-		return datadictionaryv1.Encoding_ISO_8859_13
+		return ddv1.Encoding_ISO_8859_13
 	case 15:
-		return datadictionaryv1.Encoding_ISO_8859_15
+		return ddv1.Encoding_ISO_8859_15
 	case 16:
-		return datadictionaryv1.Encoding_ISO_8859_16
+		return ddv1.Encoding_ISO_8859_16
 	case 80:
-		return datadictionaryv1.Encoding_KOI8_R
+		return ddv1.Encoding_KOI8_R
 	case 85:
-		return datadictionaryv1.Encoding_KOI8_U
+		return ddv1.Encoding_KOI8_U
 	case 255:
-		return datadictionaryv1.Encoding_ENCODING_EMPTY
+		return ddv1.Encoding_ENCODING_EMPTY
 	default:
-		return datadictionaryv1.Encoding_ENCODING_UNRECOGNIZED
+		return ddv1.Encoding_ENCODING_UNRECOGNIZED
 	}
 }
 

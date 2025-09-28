@@ -6,7 +6,7 @@ import (
 	"fmt"
 
 	cardv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1"
-	datadictionaryv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/datadictionary/v1"
+	ddv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
 )
 
 // unmarshalIdentification parses the binary data for an EF_Identification record.
@@ -34,7 +34,7 @@ func unmarshalIdentification(data []byte) (*cardv1.Identification, error) {
 
 	// Handle the inlined CardNumber structure
 	// For now, assume this is a driver card and create driver identification
-	driverID := &datadictionaryv1.DriverIdentification{}
+	driverID := &ddv1.DriverIdentification{}
 
 	// Card number (14 bytes)
 	if offset+14 > len(data) {

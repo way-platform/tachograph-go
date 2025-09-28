@@ -4,7 +4,7 @@ import (
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/reflect/protoreflect"
 
-	datadictionaryv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/datadictionary/v1"
+	ddv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
 )
 
 // getProtocolValueFromEnum returns the protocol value for an enum using protobuf reflection.
@@ -17,11 +17,11 @@ func getProtocolValueFromEnum(enumValue protoreflect.Enum) (int32, bool) {
 	}
 
 	opts := valueDesc.Options()
-	if !proto.HasExtension(opts, datadictionaryv1.E_ProtocolEnumValue) {
+	if !proto.HasExtension(opts, ddv1.E_ProtocolEnumValue) {
 		return 0, false
 	}
 
-	protocolValue := proto.GetExtension(opts, datadictionaryv1.E_ProtocolEnumValue).(int32)
+	protocolValue := proto.GetExtension(opts, ddv1.E_ProtocolEnumValue).(int32)
 	return protocolValue, true
 }
 
@@ -34,8 +34,8 @@ func setEnumFromProtocolValue(enumDesc protoreflect.EnumDescriptor, rawValue int
 		opts := valueDesc.Options()
 
 		// Check if this value has the protocol_enum_value annotation
-		if proto.HasExtension(opts, datadictionaryv1.E_ProtocolEnumValue) {
-			protocolValue := proto.GetExtension(opts, datadictionaryv1.E_ProtocolEnumValue).(int32)
+		if proto.HasExtension(opts, ddv1.E_ProtocolEnumValue) {
+			protocolValue := proto.GetExtension(opts, ddv1.E_ProtocolEnumValue).(int32)
 			if protocolValue == rawValue {
 				return valueDesc.Number(), true
 			}

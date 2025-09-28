@@ -6,7 +6,7 @@ import (
 	"fmt"
 
 	cardv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1"
-	datadictionaryv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/datadictionary/v1"
+	ddv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
 	"google.golang.org/protobuf/proto"
 )
 
@@ -131,8 +131,8 @@ func parseVehicleRecord(r *bytes.Reader, recordSize int) (*cardv1.VehiclesUsed_R
 		return nil, fmt.Errorf("failed to read vehicle registration nation: %w", err)
 	}
 	// Create VehicleRegistrationIdentification structure
-	vehicleReg := &datadictionaryv1.VehicleRegistrationIdentification{}
-	vehicleReg.SetNation(datadictionaryv1.NationNumeric(nation))
+	vehicleReg := &ddv1.VehicleRegistrationIdentification{}
+	vehicleReg.SetNation(ddv1.NationNumeric(nation))
 
 	// Read vehicle registration number (14 bytes)
 	regNumberBytes := make([]byte, 14)

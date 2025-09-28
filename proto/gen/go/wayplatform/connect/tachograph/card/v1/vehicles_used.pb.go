@@ -7,7 +7,7 @@
 package cardv1
 
 import (
-	v1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/datadictionary/v1"
+	v1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
@@ -464,19 +464,19 @@ var File_wayplatform_connect_tachograph_card_v1_vehicles_used_proto protoreflect
 
 const file_wayplatform_connect_tachograph_card_v1_vehicles_used_proto_rawDesc = "" +
 	"\n" +
-	":wayplatform/connect/tachograph/card/v1/vehicles_used.proto\x12&wayplatform.connect.tachograph.card.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1aAwayplatform/connect/tachograph/datadictionary/v1/bcd_string.proto\x1aCwayplatform/connect/tachograph/datadictionary/v1/string_value.proto\x1aZwayplatform/connect/tachograph/datadictionary/v1/vehicle_registration_identification.proto\"\xbb\x06\n" +
+	":wayplatform/connect/tachograph/card/v1/vehicles_used.proto\x12&wayplatform.connect.tachograph.card.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a5wayplatform/connect/tachograph/dd/v1/bcd_string.proto\x1a7wayplatform/connect/tachograph/dd/v1/string_value.proto\x1aNwayplatform/connect/tachograph/dd/v1/vehicle_registration_identification.proto\"\x95\x06\n" +
 	"\fVehiclesUsed\x12.\n" +
 	"\x13newest_record_index\x18\x01 \x01(\x05R\x11newestRecordIndex\x12U\n" +
 	"\arecords\x18\x02 \x03(\v2;.wayplatform.connect.tachograph.card.v1.VehiclesUsed.RecordR\arecords\x12\x1c\n" +
-	"\tsignature\x18\x03 \x01(\fR\tsignature\x1a\x85\x05\n" +
+	"\tsignature\x18\x03 \x01(\fR\tsignature\x1a\xdf\x04\n" +
 	"\x06Record\x129\n" +
 	"\x19vehicle_odometer_begin_km\x18\x01 \x01(\x05R\x16vehicleOdometerBeginKm\x125\n" +
 	"\x17vehicle_odometer_end_km\x18\x02 \x01(\x05R\x14vehicleOdometerEndKm\x12F\n" +
 	"\x11vehicle_first_use\x18\x03 \x01(\v2\x1a.google.protobuf.TimestampR\x0fvehicleFirstUse\x12D\n" +
-	"\x10vehicle_last_use\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampR\x0evehicleLastUse\x12\x86\x01\n" +
-	"\x14vehicle_registration\x18\x05 \x01(\v2S.wayplatform.connect.tachograph.datadictionary.v1.VehicleRegistrationIdentificationR\x13vehicleRegistration\x12n\n" +
-	"\x15vu_data_block_counter\x18\x06 \x01(\v2;.wayplatform.connect.tachograph.datadictionary.v1.BcdStringR\x12vuDataBlockCounter\x12\x81\x01\n" +
-	"\x1dvehicle_identification_number\x18\a \x01(\v2=.wayplatform.connect.tachograph.datadictionary.v1.StringValueR\x1bvehicleIdentificationNumberB\xde\x02\n" +
+	"\x10vehicle_last_use\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampR\x0evehicleLastUse\x12z\n" +
+	"\x14vehicle_registration\x18\x05 \x01(\v2G.wayplatform.connect.tachograph.dd.v1.VehicleRegistrationIdentificationR\x13vehicleRegistration\x12b\n" +
+	"\x15vu_data_block_counter\x18\x06 \x01(\v2/.wayplatform.connect.tachograph.dd.v1.BcdStringR\x12vuDataBlockCounter\x12u\n" +
+	"\x1dvehicle_identification_number\x18\a \x01(\v21.wayplatform.connect.tachograph.dd.v1.StringValueR\x1bvehicleIdentificationNumberB\xde\x02\n" +
 	"*com.wayplatform.connect.tachograph.card.v1B\x11VehiclesUsedProtoP\x01Z`github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1;cardv1\xa2\x02\x04WCTC\xaa\x02&Wayplatform.Connect.Tachograph.Card.V1\xca\x02&Wayplatform\\Connect\\Tachograph\\Card\\V1\xe2\x022Wayplatform\\Connect\\Tachograph\\Card\\V1\\GPBMetadata\xea\x02*Wayplatform::Connect::Tachograph::Card::V1b\beditionsp\xe8\a"
 
 var file_wayplatform_connect_tachograph_card_v1_vehicles_used_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
@@ -484,17 +484,17 @@ var file_wayplatform_connect_tachograph_card_v1_vehicles_used_proto_goTypes = []
 	(*VehiclesUsed)(nil),                         // 0: wayplatform.connect.tachograph.card.v1.VehiclesUsed
 	(*VehiclesUsed_Record)(nil),                  // 1: wayplatform.connect.tachograph.card.v1.VehiclesUsed.Record
 	(*timestamppb.Timestamp)(nil),                // 2: google.protobuf.Timestamp
-	(*v1.VehicleRegistrationIdentification)(nil), // 3: wayplatform.connect.tachograph.datadictionary.v1.VehicleRegistrationIdentification
-	(*v1.BcdString)(nil),                         // 4: wayplatform.connect.tachograph.datadictionary.v1.BcdString
-	(*v1.StringValue)(nil),                       // 5: wayplatform.connect.tachograph.datadictionary.v1.StringValue
+	(*v1.VehicleRegistrationIdentification)(nil), // 3: wayplatform.connect.tachograph.dd.v1.VehicleRegistrationIdentification
+	(*v1.BcdString)(nil),                         // 4: wayplatform.connect.tachograph.dd.v1.BcdString
+	(*v1.StringValue)(nil),                       // 5: wayplatform.connect.tachograph.dd.v1.StringValue
 }
 var file_wayplatform_connect_tachograph_card_v1_vehicles_used_proto_depIdxs = []int32{
 	1, // 0: wayplatform.connect.tachograph.card.v1.VehiclesUsed.records:type_name -> wayplatform.connect.tachograph.card.v1.VehiclesUsed.Record
 	2, // 1: wayplatform.connect.tachograph.card.v1.VehiclesUsed.Record.vehicle_first_use:type_name -> google.protobuf.Timestamp
 	2, // 2: wayplatform.connect.tachograph.card.v1.VehiclesUsed.Record.vehicle_last_use:type_name -> google.protobuf.Timestamp
-	3, // 3: wayplatform.connect.tachograph.card.v1.VehiclesUsed.Record.vehicle_registration:type_name -> wayplatform.connect.tachograph.datadictionary.v1.VehicleRegistrationIdentification
-	4, // 4: wayplatform.connect.tachograph.card.v1.VehiclesUsed.Record.vu_data_block_counter:type_name -> wayplatform.connect.tachograph.datadictionary.v1.BcdString
-	5, // 5: wayplatform.connect.tachograph.card.v1.VehiclesUsed.Record.vehicle_identification_number:type_name -> wayplatform.connect.tachograph.datadictionary.v1.StringValue
+	3, // 3: wayplatform.connect.tachograph.card.v1.VehiclesUsed.Record.vehicle_registration:type_name -> wayplatform.connect.tachograph.dd.v1.VehicleRegistrationIdentification
+	4, // 4: wayplatform.connect.tachograph.card.v1.VehiclesUsed.Record.vu_data_block_counter:type_name -> wayplatform.connect.tachograph.dd.v1.BcdString
+	5, // 5: wayplatform.connect.tachograph.card.v1.VehiclesUsed.Record.vehicle_identification_number:type_name -> wayplatform.connect.tachograph.dd.v1.StringValue
 	6, // [6:6] is the sub-list for method output_type
 	6, // [6:6] is the sub-list for method input_type
 	6, // [6:6] is the sub-list for extension type_name

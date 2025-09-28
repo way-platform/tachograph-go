@@ -7,7 +7,7 @@
 package cardv1
 
 import (
-	v1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/datadictionary/v1"
+	v1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
@@ -43,7 +43,7 @@ type GnssPlaceAuthRecord struct {
 	xxx_hidden_Timestamp            *timestamppb.Timestamp          `protobuf:"bytes,1,opt,name=timestamp"`
 	xxx_hidden_GnssAccuracy         int32                           `protobuf:"varint,2,opt,name=gnss_accuracy,json=gnssAccuracy"`
 	xxx_hidden_GeoCoordinates       *v1.GeoCoordinates              `protobuf:"bytes,3,opt,name=geo_coordinates,json=geoCoordinates"`
-	xxx_hidden_AuthenticationStatus v1.PositionAuthenticationStatus `protobuf:"varint,5,opt,name=authentication_status,json=authenticationStatus,enum=wayplatform.connect.tachograph.datadictionary.v1.PositionAuthenticationStatus"`
+	xxx_hidden_AuthenticationStatus v1.PositionAuthenticationStatus `protobuf:"varint,5,opt,name=authentication_status,json=authenticationStatus,enum=wayplatform.connect.tachograph.dd.v1.PositionAuthenticationStatus"`
 	XXX_raceDetectHookData          protoimpl.RaceDetectHookData
 	XXX_presence                    [1]uint32
 	unknownFields                   protoimpl.UnknownFields
@@ -225,25 +225,25 @@ var File_wayplatform_connect_tachograph_card_v1_gnss_place_auth_record_proto pro
 
 const file_wayplatform_connect_tachograph_card_v1_gnss_place_auth_record_proto_rawDesc = "" +
 	"\n" +
-	"Cwayplatform/connect/tachograph/card/v1/gnss_place_auth_record.proto\x12&wayplatform.connect.tachograph.card.v1\x1aUwayplatform/connect/tachograph/datadictionary/v1/position_authentication_status.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1aFwayplatform/connect/tachograph/datadictionary/v1/geo_coordinates.proto\"\xe5\x02\n" +
+	"Cwayplatform/connect/tachograph/card/v1/gnss_place_auth_record.proto\x12&wayplatform.connect.tachograph.card.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a:wayplatform/connect/tachograph/dd/v1/geo_coordinates.proto\x1aIwayplatform/connect/tachograph/dd/v1/position_authentication_status.proto\"\xcc\x02\n" +
 	"\x13GnssPlaceAuthRecord\x128\n" +
 	"\ttimestamp\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\ttimestamp\x12#\n" +
-	"\rgnss_accuracy\x18\x02 \x01(\x05R\fgnssAccuracy\x12i\n" +
-	"\x0fgeo_coordinates\x18\x03 \x01(\v2@.wayplatform.connect.tachograph.datadictionary.v1.GeoCoordinatesR\x0egeoCoordinates\x12\x83\x01\n" +
-	"\x15authentication_status\x18\x05 \x01(\x0e2N.wayplatform.connect.tachograph.datadictionary.v1.PositionAuthenticationStatusR\x14authenticationStatusB\xe5\x02\n" +
+	"\rgnss_accuracy\x18\x02 \x01(\x05R\fgnssAccuracy\x12]\n" +
+	"\x0fgeo_coordinates\x18\x03 \x01(\v24.wayplatform.connect.tachograph.dd.v1.GeoCoordinatesR\x0egeoCoordinates\x12w\n" +
+	"\x15authentication_status\x18\x05 \x01(\x0e2B.wayplatform.connect.tachograph.dd.v1.PositionAuthenticationStatusR\x14authenticationStatusB\xe5\x02\n" +
 	"*com.wayplatform.connect.tachograph.card.v1B\x18GnssPlaceAuthRecordProtoP\x01Z`github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1;cardv1\xa2\x02\x04WCTC\xaa\x02&Wayplatform.Connect.Tachograph.Card.V1\xca\x02&Wayplatform\\Connect\\Tachograph\\Card\\V1\xe2\x022Wayplatform\\Connect\\Tachograph\\Card\\V1\\GPBMetadata\xea\x02*Wayplatform::Connect::Tachograph::Card::V1b\beditionsp\xe8\a"
 
 var file_wayplatform_connect_tachograph_card_v1_gnss_place_auth_record_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_wayplatform_connect_tachograph_card_v1_gnss_place_auth_record_proto_goTypes = []any{
 	(*GnssPlaceAuthRecord)(nil),          // 0: wayplatform.connect.tachograph.card.v1.GnssPlaceAuthRecord
 	(*timestamppb.Timestamp)(nil),        // 1: google.protobuf.Timestamp
-	(*v1.GeoCoordinates)(nil),            // 2: wayplatform.connect.tachograph.datadictionary.v1.GeoCoordinates
-	(v1.PositionAuthenticationStatus)(0), // 3: wayplatform.connect.tachograph.datadictionary.v1.PositionAuthenticationStatus
+	(*v1.GeoCoordinates)(nil),            // 2: wayplatform.connect.tachograph.dd.v1.GeoCoordinates
+	(v1.PositionAuthenticationStatus)(0), // 3: wayplatform.connect.tachograph.dd.v1.PositionAuthenticationStatus
 }
 var file_wayplatform_connect_tachograph_card_v1_gnss_place_auth_record_proto_depIdxs = []int32{
 	1, // 0: wayplatform.connect.tachograph.card.v1.GnssPlaceAuthRecord.timestamp:type_name -> google.protobuf.Timestamp
-	2, // 1: wayplatform.connect.tachograph.card.v1.GnssPlaceAuthRecord.geo_coordinates:type_name -> wayplatform.connect.tachograph.datadictionary.v1.GeoCoordinates
-	3, // 2: wayplatform.connect.tachograph.card.v1.GnssPlaceAuthRecord.authentication_status:type_name -> wayplatform.connect.tachograph.datadictionary.v1.PositionAuthenticationStatus
+	2, // 1: wayplatform.connect.tachograph.card.v1.GnssPlaceAuthRecord.geo_coordinates:type_name -> wayplatform.connect.tachograph.dd.v1.GeoCoordinates
+	3, // 2: wayplatform.connect.tachograph.card.v1.GnssPlaceAuthRecord.authentication_status:type_name -> wayplatform.connect.tachograph.dd.v1.PositionAuthenticationStatus
 	3, // [3:3] is the sub-list for method output_type
 	3, // [3:3] is the sub-list for method input_type
 	3, // [3:3] is the sub-list for extension type_name

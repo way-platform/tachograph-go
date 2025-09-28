@@ -7,7 +7,7 @@
 package vuv1
 
 import (
-	_ "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/datadictionary/v1"
+	_ "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -147,7 +147,7 @@ var File_wayplatform_connect_tachograph_vu_v1_transfer_type_proto protoreflect.F
 
 const file_wayplatform_connect_tachograph_vu_v1_transfer_type_proto_rawDesc = "" +
 	"\n" +
-	"8wayplatform/connect/tachograph/vu/v1/transfer_type.proto\x12$wayplatform.connect.tachograph.vu.v1\x1a/wayplatform/connect/tachograph/vu/v1/trep.proto\x1aAwayplatform/connect/tachograph/datadictionary/v1/generation.proto\x1a5wayplatform/connect/tachograph/vu/v1/versioning.proto*\x81\x05\n" +
+	"8wayplatform/connect/tachograph/vu/v1/transfer_type.proto\x12$wayplatform.connect.tachograph.vu.v1\x1a5wayplatform/connect/tachograph/dd/v1/generation.proto\x1a/wayplatform/connect/tachograph/vu/v1/trep.proto\x1a5wayplatform/connect/tachograph/vu/v1/versioning.proto*\x81\x05\n" +
 	"\fTransferType\x12\x1d\n" +
 	"\x19TRANSFER_TYPE_UNSPECIFIED\x10\x00\x12,\n" +
 	"\x1aDOWNLOAD_INTERFACE_VERSION\x10\x01\x1a\f\xf8\xc7\x18\x00\x80\xc8\x18\x02\x88\xc8\x18\x02\x12\x1b\n" +

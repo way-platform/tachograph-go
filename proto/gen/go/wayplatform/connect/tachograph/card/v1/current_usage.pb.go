@@ -7,7 +7,7 @@
 package cardv1
 
 import (
-	v1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/datadictionary/v1"
+	v1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
@@ -188,10 +188,10 @@ var File_wayplatform_connect_tachograph_card_v1_current_usage_proto protoreflect
 
 const file_wayplatform_connect_tachograph_card_v1_current_usage_proto_rawDesc = "" +
 	"\n" +
-	":wayplatform/connect/tachograph/card/v1/current_usage.proto\x12&wayplatform.connect.tachograph.card.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1aZwayplatform/connect/tachograph/datadictionary/v1/vehicle_registration_identification.proto\"\xfc\x01\n" +
+	":wayplatform/connect/tachograph/card/v1/current_usage.proto\x12&wayplatform.connect.tachograph.card.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1aNwayplatform/connect/tachograph/dd/v1/vehicle_registration_identification.proto\"\xef\x01\n" +
 	"\fCurrentUsage\x12F\n" +
-	"\x11session_open_time\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\x0fsessionOpenTime\x12\x85\x01\n" +
-	"\x14session_open_vehicle\x18\x02 \x01(\v2S.wayplatform.connect.tachograph.datadictionary.v1.VehicleRegistrationIdentificationR\x12sessionOpenVehicle\x12\x1c\n" +
+	"\x11session_open_time\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\x0fsessionOpenTime\x12y\n" +
+	"\x14session_open_vehicle\x18\x02 \x01(\v2G.wayplatform.connect.tachograph.dd.v1.VehicleRegistrationIdentificationR\x12sessionOpenVehicle\x12\x1c\n" +
 	"\tsignature\x18\x03 \x01(\fR\tsignatureB\xde\x02\n" +
 	"*com.wayplatform.connect.tachograph.card.v1B\x11CurrentUsageProtoP\x01Z`github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1;cardv1\xa2\x02\x04WCTC\xaa\x02&Wayplatform.Connect.Tachograph.Card.V1\xca\x02&Wayplatform\\Connect\\Tachograph\\Card\\V1\xe2\x022Wayplatform\\Connect\\Tachograph\\Card\\V1\\GPBMetadata\xea\x02*Wayplatform::Connect::Tachograph::Card::V1b\beditionsp\xe8\a"
 
@@ -199,11 +199,11 @@ var file_wayplatform_connect_tachograph_card_v1_current_usage_proto_msgTypes = m
 var file_wayplatform_connect_tachograph_card_v1_current_usage_proto_goTypes = []any{
 	(*CurrentUsage)(nil),                         // 0: wayplatform.connect.tachograph.card.v1.CurrentUsage
 	(*timestamppb.Timestamp)(nil),                // 1: google.protobuf.Timestamp
-	(*v1.VehicleRegistrationIdentification)(nil), // 2: wayplatform.connect.tachograph.datadictionary.v1.VehicleRegistrationIdentification
+	(*v1.VehicleRegistrationIdentification)(nil), // 2: wayplatform.connect.tachograph.dd.v1.VehicleRegistrationIdentification
 }
 var file_wayplatform_connect_tachograph_card_v1_current_usage_proto_depIdxs = []int32{
 	1, // 0: wayplatform.connect.tachograph.card.v1.CurrentUsage.session_open_time:type_name -> google.protobuf.Timestamp
-	2, // 1: wayplatform.connect.tachograph.card.v1.CurrentUsage.session_open_vehicle:type_name -> wayplatform.connect.tachograph.datadictionary.v1.VehicleRegistrationIdentification
+	2, // 1: wayplatform.connect.tachograph.card.v1.CurrentUsage.session_open_vehicle:type_name -> wayplatform.connect.tachograph.dd.v1.VehicleRegistrationIdentification
 	2, // [2:2] is the sub-list for method output_type
 	2, // [2:2] is the sub-list for method input_type
 	2, // [2:2] is the sub-list for extension type_name

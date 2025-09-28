@@ -3,7 +3,7 @@ package tachograph
 import (
 	"bytes"
 
-	datadictionaryv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/datadictionary/v1"
+	ddv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
 	vuv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/vu/v1"
 )
 
@@ -14,9 +14,9 @@ func AppendOverview(buf *bytes.Buffer, overview *vuv1.Overview) {
 	}
 
 	switch overview.GetGeneration() {
-	case datadictionaryv1.Generation_GENERATION_1:
+	case ddv1.Generation_GENERATION_1:
 		appendOverviewGen1(buf, overview)
-	case datadictionaryv1.Generation_GENERATION_2:
+	case ddv1.Generation_GENERATION_2:
 		appendOverviewGen2(buf, overview)
 	}
 }
@@ -176,17 +176,17 @@ func appendOverviewGen2(buf *bytes.Buffer, overview *vuv1.Overview) {
 	// This is a placeholder for future Gen2 implementation
 }
 
-func mapSlotCardTypeToUint8(cardType datadictionaryv1.SlotCardType) uint8 {
+func mapSlotCardTypeToUint8(cardType ddv1.SlotCardType) uint8 {
 	switch cardType {
-	case datadictionaryv1.SlotCardType_NO_CARD:
+	case ddv1.SlotCardType_NO_CARD:
 		return 0
-	case datadictionaryv1.SlotCardType_DRIVER_CARD_INSERTED:
+	case ddv1.SlotCardType_DRIVER_CARD_INSERTED:
 		return 1
-	case datadictionaryv1.SlotCardType_WORKSHOP_CARD_INSERTED:
+	case ddv1.SlotCardType_WORKSHOP_CARD_INSERTED:
 		return 2
-	case datadictionaryv1.SlotCardType_CONTROL_CARD_INSERTED:
+	case ddv1.SlotCardType_CONTROL_CARD_INSERTED:
 		return 3
-	case datadictionaryv1.SlotCardType_COMPANY_CARD_INSERTED:
+	case ddv1.SlotCardType_COMPANY_CARD_INSERTED:
 		return 4
 	default:
 		return 0

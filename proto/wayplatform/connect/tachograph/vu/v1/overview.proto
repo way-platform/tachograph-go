@@ -3,13 +3,13 @@ edition = "2023";
 package wayplatform.connect.tachograph.vu.v1;
 
 import "google/protobuf/timestamp.proto";
-import "wayplatform/connect/tachograph/datadictionary/v1/control_type.proto";
-import "wayplatform/connect/tachograph/datadictionary/v1/downloadable_period.proto";
-import "wayplatform/connect/tachograph/datadictionary/v1/full_card_number.proto";
-import "wayplatform/connect/tachograph/datadictionary/v1/generation.proto";
-import "wayplatform/connect/tachograph/datadictionary/v1/slot_card_type.proto";
-import "wayplatform/connect/tachograph/datadictionary/v1/string_value.proto";
-import "wayplatform/connect/tachograph/datadictionary/v1/vehicle_registration_identification.proto";
+import "wayplatform/connect/tachograph/dd/v1/control_type.proto";
+import "wayplatform/connect/tachograph/dd/v1/downloadable_period.proto";
+import "wayplatform/connect/tachograph/dd/v1/full_card_number.proto";
+import "wayplatform/connect/tachograph/dd/v1/generation.proto";
+import "wayplatform/connect/tachograph/dd/v1/slot_card_type.proto";
+import "wayplatform/connect/tachograph/dd/v1/string_value.proto";
+import "wayplatform/connect/tachograph/dd/v1/vehicle_registration_identification.proto";
 import "wayplatform/connect/tachograph/vu/v1/versioning.proto";
 
 // Represents the consolidated data structure for an Overview transfer.
@@ -43,7 +43,7 @@ message Overview {
     // The card number of the company or workshop that performed the download.
     //
     // See Data Dictionary, Section 2.73, `FullCardNumber`.
-    datadictionary.v1.FullCardNumber full_card_number = 2;
+    dd.v1.FullCardNumber full_card_number = 2;
 
     // The name of the company or workshop.
     //
@@ -51,7 +51,7 @@ message Overview {
     // ASN.1 Definition:
     //
     //     Name ::= SEQUENCE { codePage INTEGER(0..255), name OCTET STRING (SIZE(36)) }
-    wayplatform.connect.tachograph.datadictionary.v1.StringValue company_or_workshop_name = 3;
+    wayplatform.connect.tachograph.dd.v1.StringValue company_or_workshop_name = 3;
   }
 
   // Represents a company lock record.
@@ -90,7 +90,7 @@ message Overview {
     // ASN.1 Definition:
     //
     //     Name ::= SEQUENCE { codePage INTEGER(0..255), name OCTET STRING (SIZE(36)) }
-    wayplatform.connect.tachograph.datadictionary.v1.StringValue company_name = 3;
+    wayplatform.connect.tachograph.dd.v1.StringValue company_name = 3;
 
     // The address of the company.
     //
@@ -98,12 +98,12 @@ message Overview {
     // ASN.1 Definition:
     //
     //     Address ::= SEQUENCE { codePage INTEGER(0..255), address OCTET STRING (SIZE(36)) }
-    wayplatform.connect.tachograph.datadictionary.v1.StringValue company_address = 4;
+    wayplatform.connect.tachograph.dd.v1.StringValue company_address = 4;
 
     // The card number of the company.
     //
     // See Data Dictionary, Section 2.73, `FullCardNumber`.
-    datadictionary.v1.FullCardNumber company_card_number = 5;
+    dd.v1.FullCardNumber company_card_number = 5;
   }
 
   // Represents a control activity record.
@@ -126,7 +126,7 @@ message Overview {
     // ASN.1 Definition:
     //
     //     ControlType ::= OCTET STRING (SIZE(1))
-    wayplatform.connect.tachograph.datadictionary.v1.ControlType control_type = 1;
+    wayplatform.connect.tachograph.dd.v1.ControlType control_type = 1;
 
     // The time of the control.
     //
@@ -139,7 +139,7 @@ message Overview {
     // The card number of the control officer.
     //
     // See Data Dictionary, Section 2.73, `FullCardNumber`.
-    datadictionary.v1.FullCardNumber control_card_number = 3;
+    dd.v1.FullCardNumber control_card_number = 3;
 
     // The start of the downloaded period.
     //
@@ -160,7 +160,7 @@ message Overview {
 
   // The generation of the vehicle unit, parsed from the raw transfer data.
   // This is a discriminator field used for parsing.
-  datadictionary.v1.Generation generation = 1;
+  dd.v1.Generation generation = 1;
 
   // The version of the interface, parsed from the raw transfer data.
   // This is a discriminator field used for parsing.
@@ -189,7 +189,7 @@ message Overview {
   // ASN.1 Definition:
   //
   //     VehicleIdentificationNumber ::= IA5String(SIZE(17))
-  wayplatform.connect.tachograph.datadictionary.v1.StringValue vehicle_identification_number = 5;
+  wayplatform.connect.tachograph.dd.v1.StringValue vehicle_identification_number = 5;
 
   // Current date and time of the VU.
   //
@@ -200,13 +200,13 @@ message Overview {
   google.protobuf.Timestamp current_date_time = 6;
 
   // The range of dates for which data can be downloaded.
-  datadictionary.v1.DownloadablePeriod downloadable_period = 7;
+  dd.v1.DownloadablePeriod downloadable_period = 7;
 
   // Type of card in the driver slot.
-  datadictionary.v1.SlotCardType driver_slot_card = 8;
+  dd.v1.SlotCardType driver_slot_card = 8;
 
   // Type of card in the co-driver slot.
-  datadictionary.v1.SlotCardType co_driver_slot_card = 9;
+  dd.v1.SlotCardType co_driver_slot_card = 9;
 
   // Information about recent download activities.
   // This field uses a repeated message to represent both the single record from Gen1
@@ -245,7 +245,7 @@ message Overview {
   // The vehicle registration, including nation (Gen1, Gen2v1).
   //
   // See Data Dictionary, Section 2.166, `VehicleRegistrationIdentification`.
-  datadictionary.v1.VehicleRegistrationIdentification vehicle_registration_with_nation = 13;
+  dd.v1.VehicleRegistrationIdentification vehicle_registration_with_nation = 13;
 
   // The vehicle registration number only (Gen2v2).
   //
@@ -253,7 +253,7 @@ message Overview {
   // ASN.1 Definition:
   //
   //     VehicleRegistrationNumber ::= IA5String(SIZE(13))
-  wayplatform.connect.tachograph.datadictionary.v1.StringValue vehicle_registration_number_only = 14;
+  wayplatform.connect.tachograph.dd.v1.StringValue vehicle_registration_number_only = 14;
 
   // Signature for Gen1 data.
   //

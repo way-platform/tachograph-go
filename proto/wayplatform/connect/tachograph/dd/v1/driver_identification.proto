@@ -1,0 +1,23 @@
+edition = "2023";
+
+package wayplatform.connect.tachograph.dd.v1;
+
+import "wayplatform/connect/tachograph/dd/v1/string_value.proto";
+
+// Represents the `driverIdentification` sequence from the `CardNumber` CHOICE.
+//
+// See Data Dictionary, Section 2.26, `CardNumber`.
+//
+// ASN.1 Definition:
+//
+//     driverIdentification SEQUENCE {
+//         driverIdentificationNumber IA5String(SIZE(14))
+//     }
+message DriverIdentification {
+  // The core driver identification number string.
+  //
+  // ASN.1 Definition:
+  //
+  //     driverIdentificationNumber IA5String(SIZE(14))
+  StringValue identification_number = 1;
+}

@@ -6,7 +6,7 @@ import (
 	"fmt"
 
 	cardv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1"
-	datadictionaryv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/datadictionary/v1"
+	ddv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
 )
 
 // unmarshalCardControlActivityData unmarshals control activity data from a card EF.
@@ -72,8 +72,8 @@ func unmarshalCardControlActivityData(data []byte) (*cardv1.ControlActivityData,
 
 	// Read control card number (18 bytes) - this should be parsed as a proper FullCardNumber
 	// For now, create a basic structure - this needs proper protocol parsing
-	fullCardNumber := &datadictionaryv1.FullCardNumber{}
-	fullCardNumber.SetCardType(datadictionaryv1.EquipmentType_DRIVER_CARD)
+	fullCardNumber := &ddv1.FullCardNumber{}
+	fullCardNumber.SetCardType(ddv1.EquipmentType_DRIVER_CARD)
 
 	// Read the card number as IA5 string
 	if offset+18 > len(data) {
@@ -86,7 +86,7 @@ func unmarshalCardControlActivityData(data []byte) (*cardv1.ControlActivityData,
 	offset += 18
 
 	// Create driver identification with the card number
-	driverID := &datadictionaryv1.DriverIdentification{}
+	driverID := &ddv1.DriverIdentification{}
 	driverID.SetIdentificationNumber(cardNumberStr)
 	fullCardNumber.SetDriverIdentification(driverID)
 	target.SetControlCardNumber(fullCardNumber)
@@ -102,7 +102,7 @@ func unmarshalCardControlActivityData(data []byte) (*cardv1.ControlActivityData,
 	offset++
 
 	// Create VehicleRegistrationIdentification structure
-	vehicleReg := &datadictionaryv1.VehicleRegistrationIdentification{}
+	vehicleReg := &ddv1.VehicleRegistrationIdentification{}
 	vehicleReg.SetNation(nation)
 
 	if offset+14 > len(data) {

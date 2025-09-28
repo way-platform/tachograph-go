@@ -5,7 +5,7 @@ import (
 	"fmt"
 
 	cardv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1"
-	datadictionaryv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/datadictionary/v1"
+	ddv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
 )
 
 // unmarshalCardCurrentUsage unmarshals current usage data from a card EF.
@@ -53,7 +53,7 @@ func unmarshalCardCurrentUsage(data []byte) (*cardv1.CurrentUsage, error) {
 	offset++
 
 	// Create VehicleRegistrationIdentification structure
-	vehicleReg := &datadictionaryv1.VehicleRegistrationIdentification{}
+	vehicleReg := &ddv1.VehicleRegistrationIdentification{}
 	vehicleReg.SetNation(nation)
 
 	if offset+14 > len(data) {

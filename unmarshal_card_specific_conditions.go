@@ -6,7 +6,7 @@ import (
 	"fmt"
 
 	cardv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1"
-	datadictionaryv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/datadictionary/v1"
+	ddv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/reflect/protoreflect"
 )
@@ -80,8 +80,8 @@ func parseSpecificConditionRecord(r *bytes.Reader) (*cardv1.SpecificConditions_R
 		return nil, fmt.Errorf("failed to read condition type: %w", err)
 	}
 	// Convert raw condition type to enum using protocol annotations
-	SetSpecificConditionType(datadictionaryv1.SpecificConditionType_SPECIFIC_CONDITION_TYPE_UNSPECIFIED.Descriptor(), int32(conditionType), func(st protoreflect.EnumNumber) {
-		record.SetSpecificConditionType(datadictionaryv1.SpecificConditionType(st))
+	SetSpecificConditionType(ddv1.SpecificConditionType_SPECIFIC_CONDITION_TYPE_UNSPECIFIED.Descriptor(), int32(conditionType), func(st protoreflect.EnumNumber) {
+		record.SetSpecificConditionType(ddv1.SpecificConditionType(st))
 	}, nil)
 
 	return record, nil

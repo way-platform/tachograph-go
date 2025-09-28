@@ -1,0 +1,37 @@
+edition = "2023";
+
+package wayplatform.connect.tachograph.dd.v1;
+
+// BcdString provides a canonical representation for Binary Coded Decimal (BCD)
+// strings found in the tachograph regulations.
+//
+// The BCD format represents decimal digits in 4-bit nibbles. This type is
+// necessary because a direct conversion to a standard integer type (like int32)
+// can be lossy. While the numeric value might be preserved, the exact
+// byte representation may not be, especially in cases involving non-canonical
+// padding or other vendor-specific quirks.
+//
+// For example, the number 123 could be represented as `[0x01, 0x23]` by one
+// system, but as `[0xF1, 0x23]` by another that uses 'F' as a padding nibble.
+// Both decode to 123, but only storing the integer loses the original byte
+// pattern.
+//
+// This message solves the problem by storing both the original raw bytes for
+// perfect fidelity (essential for round-tripping and signature validation) and
+// the decoded numeric value for ease of use.
+//
+// See Data Dictionary, Section 2.7.
+//
+// ASN.1 Definition:
+//
+//     BCDString ::= CharacterStringType
+message BcdString {
+  // The raw, original BCD-encoded bytes. This field is the source of truth
+  // and should always be used when marshalling the data back to its binary
+  // format.
+  bytes encoded = 1;
+
+  // The decoded numeric value of the BCD string. This field is provided for
+  // consumer convenience and should be treated as a read-only, derived value.
+  int32 decoded = 2;
+}

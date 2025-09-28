@@ -3,11 +3,11 @@ edition = "2023";
 package wayplatform.connect.tachograph.vu.v1;
 
 import "google/protobuf/timestamp.proto";
-import "wayplatform/connect/tachograph/datadictionary/v1/event_fault_record_purpose.proto";
-import "wayplatform/connect/tachograph/datadictionary/v1/event_fault_type.proto";
-import "wayplatform/connect/tachograph/datadictionary/v1/full_card_number_and_generation.proto";
-import "wayplatform/connect/tachograph/datadictionary/v1/generation.proto";
-import "wayplatform/connect/tachograph/datadictionary/v1/string_value.proto";
+import "wayplatform/connect/tachograph/dd/v1/event_fault_record_purpose.proto";
+import "wayplatform/connect/tachograph/dd/v1/event_fault_type.proto";
+import "wayplatform/connect/tachograph/dd/v1/full_card_number_and_generation.proto";
+import "wayplatform/connect/tachograph/dd/v1/generation.proto";
+import "wayplatform/connect/tachograph/dd/v1/string_value.proto";
 
 // Represents the consolidated data structure for an Events and Faults transfer.
 //
@@ -16,7 +16,7 @@ import "wayplatform/connect/tachograph/datadictionary/v1/string_value.proto";
 message EventsAndFaults {
   // The generation of the vehicle unit, parsed from the raw transfer data.
   // This is a discriminator field used for parsing.
-  datadictionary.v1.Generation generation = 1;
+  dd.v1.Generation generation = 1;
 
   // Represents a vehicle unit fault record.
   //
@@ -38,13 +38,13 @@ message EventsAndFaults {
     // Type of the fault.
     //
     // See Data Dictionary, Section 2.70, `EventFaultType`.
-    datadictionary.v1.EventFaultType fault_type = 1;
+    dd.v1.EventFaultType fault_type = 1;
     int32 unrecognized_fault_type = 2;
 
     // Purpose for which the fault has been recorded.
     //
     // See Data Dictionary, Section 2.69, `EventFaultRecordPurpose`.
-    datadictionary.v1.EventFaultRecordPurpose record_purpose = 3;
+    dd.v1.EventFaultRecordPurpose record_purpose = 3;
     int32 unrecognized_record_purpose = 4;
 
     // Date and time of the beginning of the fault.
@@ -73,7 +73,7 @@ message EventsAndFaults {
     //         fullcardNumber FullCardNumber,
     //         generation Generation
     //     }
-    datadictionary.v1.FullCardNumberAndGeneration card_identifier = 7;
+    dd.v1.FullCardNumberAndGeneration card_identifier = 7;
   }
 
   // Represents a vehicle unit event record.
@@ -97,13 +97,13 @@ message EventsAndFaults {
     // Type of the event.
     //
     // See Data Dictionary, Section 2.70, `EventFaultType`.
-    datadictionary.v1.EventFaultType event_type = 1;
+    dd.v1.EventFaultType event_type = 1;
     int32 unrecognized_event_type = 2;
 
     // Purpose for which the event has been recorded.
     //
     // See Data Dictionary, Section 2.69, `EventFaultRecordPurpose`.
-    datadictionary.v1.EventFaultRecordPurpose record_purpose = 3;
+    dd.v1.EventFaultRecordPurpose record_purpose = 3;
     int32 unrecognized_record_purpose = 4;
 
     // Date and time of the beginning of the event.
@@ -132,7 +132,7 @@ message EventsAndFaults {
     //         fullcardNumber FullCardNumber,
     //         generation Generation
     //     }
-    datadictionary.v1.FullCardNumberAndGeneration card_identifier = 7;
+    dd.v1.FullCardNumberAndGeneration card_identifier = 7;
 
     // Number of similar events on the same day.
     //
@@ -200,13 +200,13 @@ message EventsAndFaults {
     // Type of the event (always 'Over speeding').
     //
     // See Data Dictionary, Section 2.70, `EventFaultType`.
-    datadictionary.v1.EventFaultType event_type = 1;
+    dd.v1.EventFaultType event_type = 1;
     int32 unrecognized_event_type = 2;
 
     // Purpose for which the event has been recorded.
     //
     // See Data Dictionary, Section 2.69, `EventFaultRecordPurpose`.
-    datadictionary.v1.EventFaultRecordPurpose record_purpose = 3;
+    dd.v1.EventFaultRecordPurpose record_purpose = 3;
     int32 unrecognized_record_purpose = 4;
 
     // Date and time of the beginning of the event.
@@ -250,7 +250,7 @@ message EventsAndFaults {
     //         fullcardNumber FullCardNumber,
     //         generation Generation
     //     }
-    datadictionary.v1.FullCardNumberAndGeneration card_identifier = 9;
+    dd.v1.FullCardNumberAndGeneration card_identifier = 9;
   }
 
   // Represents a time adjustment record.
@@ -289,7 +289,7 @@ message EventsAndFaults {
     // ASN.1 Definition:
     //
     //     Name ::= SEQUENCE { codePage INTEGER(0..255), name OCTET STRING (SIZE(36)) }
-    wayplatform.connect.tachograph.datadictionary.v1.StringValue workshop_name = 3;
+    wayplatform.connect.tachograph.dd.v1.StringValue workshop_name = 3;
 
     // Address of the workshop.
     //
@@ -297,7 +297,7 @@ message EventsAndFaults {
     // ASN.1 Definition:
     //
     //     Address ::= SEQUENCE { codePage INTEGER(0..255), address OCTET STRING (SIZE(36)) }
-    wayplatform.connect.tachograph.datadictionary.v1.StringValue workshop_address = 4;
+    wayplatform.connect.tachograph.dd.v1.StringValue workshop_address = 4;
 
     // The card number and generation of the workshop that performed the adjustment.
     //
@@ -308,7 +308,7 @@ message EventsAndFaults {
     //         fullcardNumber FullCardNumber,
     //         generation Generation
     //     }
-    datadictionary.v1.FullCardNumberAndGeneration workshop_card_identifier = 5;
+    dd.v1.FullCardNumberAndGeneration workshop_card_identifier = 5;
   }
 
   // All faults stored or on-going in the VU.

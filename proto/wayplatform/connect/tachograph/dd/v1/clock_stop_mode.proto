@@ -1,0 +1,42 @@
+syntax = "proto3";
+
+package wayplatform.connect.tachograph.dd.v1;
+
+import "wayplatform/connect/tachograph/dd/v1/annotations.proto";
+
+// Defines the clock stop mode of the card's integrated circuit.
+// This corresponds to the `clockStop` field in `CardIccIdentification` (DD 2.23).
+//
+// The protocol value is a bitmask. The meaning of the bits is defined in
+// Appendix 2 of the regulation (`04-tachograph-cards-specification.md`):
+//
+// | Bit 3 | Bit 2 | Bit 1 | Meaning                                 |
+// |-------|-------|-------|-----------------------------------------|
+// | 0     | 0     | 0     | Clockstop not allowed                   |
+// | 0     | 0     | 1     | Clockstop allowed, no preferred level   |
+// | 0     | 1     | 0     | Clockstop only allowed on high level    |
+// | 0     | 1     | 1     | Clockstop allowed, high level preferred |
+// | 1     | 0     | 0     | Clockstop only allowed on low level     |
+// | 1     | 0     | 1     | Clockstop allowed, low level preferred  |
+enum ClockStopMode {
+  CLOCK_STOP_MODE_UNSPECIFIED = 0;
+  CLOCK_STOP_MODE_UNRECOGNIZED = 1;
+
+  // Protocol value 0b000 = 0
+  NOT_ALLOWED = 2 [(protocol_enum_value) = 0];
+
+  // Protocol value 0b001 = 1
+  ALLOWED_NO_PREFERENCE = 3 [(protocol_enum_value) = 1];
+
+  // Protocol value 0b010 = 2
+  ALLOWED_ONLY_HIGH_LEVEL = 4 [(protocol_enum_value) = 2];
+
+  // Protocol value 0b011 = 3
+  ALLOWED_HIGH_LEVEL_PREFERRED = 5 [(protocol_enum_value) = 3];
+
+  // Protocol value 0b100 = 4
+  ALLOWED_ONLY_LOW_LEVEL = 6 [(protocol_enum_value) = 4];
+
+  // Protocol value 0b101 = 5
+  ALLOWED_LOW_LEVEL_PREFERRED = 7 [(protocol_enum_value) = 5];
+}

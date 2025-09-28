@@ -7,7 +7,7 @@ import (
 	"strconv"
 
 	cardv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1"
-	datadictionaryv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/datadictionary/v1"
+	ddv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
@@ -25,21 +25,21 @@ func bcdBytesToInt(b []byte) (int, error) {
 }
 
 // createBcdString creates a BcdString message from BCD-encoded bytes
-func createBcdString(bcdBytes []byte) (*datadictionaryv1.BcdString, error) {
+func createBcdString(bcdBytes []byte) (*ddv1.BcdString, error) {
 	decoded, err := bcdBytesToInt(bcdBytes)
 	if err != nil {
 		return nil, err
 	}
 
-	bcdString := &datadictionaryv1.BcdString{}
+	bcdString := &ddv1.BcdString{}
 	bcdString.SetEncoded(bcdBytes)
 	bcdString.SetDecoded(int32(decoded))
 	return bcdString, nil
 }
 
 // createStringValue creates a StringValue message from a string
-func createStringValue(s string) *datadictionaryv1.StringValue {
-	stringValue := &datadictionaryv1.StringValue{}
+func createStringValue(s string) *ddv1.StringValue {
+	stringValue := &ddv1.StringValue{}
 	stringValue.SetDecoded(s)
 	return stringValue
 }
@@ -52,7 +52,7 @@ func appendOdometer(dst []byte, odometer uint32) []byte {
 }
 
 // appendControlType appends a ControlType as a single byte bitmask.
-func appendControlType(dst []byte, ct *datadictionaryv1.ControlType) []byte {
+func appendControlType(dst []byte, ct *ddv1.ControlType) []byte {
 	if ct == nil {
 		return append(dst, 0)
 	}
@@ -79,7 +79,7 @@ func appendControlType(dst []byte, ct *datadictionaryv1.ControlType) []byte {
 }
 
 // appendExtendedSerialNumber appends an ExtendedSerialNumber structure as string (legacy compatibility)
-func appendExtendedSerialNumber(dst []byte, esn *datadictionaryv1.ExtendedSerialNumber, maxLen int) ([]byte, error) {
+func appendExtendedSerialNumber(dst []byte, esn *ddv1.ExtendedSerialNumber, maxLen int) ([]byte, error) {
 	if esn == nil {
 		return append(dst, make([]byte, maxLen)...), nil
 	}
@@ -106,7 +106,7 @@ func appendExtendedSerialNumber(dst []byte, esn *datadictionaryv1.ExtendedSerial
 	}
 
 	// Next byte: equipment type (converted to protocol value using generic helper)
-	if esn.GetType() != datadictionaryv1.EquipmentType_EQUIPMENT_TYPE_UNSPECIFIED {
+	if esn.GetType() != ddv1.EquipmentType_EQUIPMENT_TYPE_UNSPECIFIED {
 		serialBytes[6] = byte(GetProtocolValueFromEnum(esn.GetType(), 0))
 	}
 
@@ -180,7 +180,7 @@ func appendVuTimeReal(dst []byte, ts *timestamppb.Timestamp) []byte {
 }
 
 // appendVuFullCardNumber appends a FullCardNumber to dst with a fixed length
-func appendVuFullCardNumber(dst []byte, cardNumber *datadictionaryv1.FullCardNumber, length int) []byte {
+func appendVuFullCardNumber(dst []byte, cardNumber *ddv1.FullCardNumber, length int) []byte {
 	if cardNumber == nil {
 		return append(dst, make([]byte, length)...)
 	}

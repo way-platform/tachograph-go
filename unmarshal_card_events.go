@@ -6,7 +6,7 @@ import (
 	"fmt"
 
 	cardv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1"
-	datadictionaryv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/datadictionary/v1"
+	ddv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
 	"google.golang.org/protobuf/reflect/protoreflect"
 )
 
@@ -72,10 +72,10 @@ func unmarshalEventRecord(data []byte) (*cardv1.EventsData_Record, error) {
 		return nil, fmt.Errorf("insufficient data for event type")
 	}
 	eventType := data[offset]
-	enumDesc := datadictionaryv1.EventFaultType_EVENT_FAULT_TYPE_UNSPECIFIED.Descriptor()
+	enumDesc := ddv1.EventFaultType_EVENT_FAULT_TYPE_UNSPECIFIED.Descriptor()
 	SetEnumFromProtocolValue(enumDesc, int32(eventType),
 		func(enumNum protoreflect.EnumNumber) {
-			rec.SetEventType(datadictionaryv1.EventFaultType(enumNum))
+			rec.SetEventType(ddv1.EventFaultType(enumNum))
 		}, nil)
 	offset++
 
@@ -104,7 +104,7 @@ func unmarshalEventRecord(data []byte) (*cardv1.EventsData_Record, error) {
 	offset++
 
 	// Create VehicleRegistrationIdentification structure
-	vehicleReg := &datadictionaryv1.VehicleRegistrationIdentification{}
+	vehicleReg := &ddv1.VehicleRegistrationIdentification{}
 	vehicleReg.SetNation(nation)
 
 	// Read vehicle registration number (14 bytes)

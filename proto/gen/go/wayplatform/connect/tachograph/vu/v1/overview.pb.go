@@ -7,7 +7,7 @@
 package vuv1
 
 import (
-	v1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/datadictionary/v1"
+	v1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
@@ -28,15 +28,15 @@ const (
 // Appendix 7, Section 2.2.6.2: "Positive Response Transfer Data Overview".
 type Overview struct {
 	state                                    protoimpl.MessageState                `protogen:"opaque.v1"`
-	xxx_hidden_Generation                    v1.Generation                         `protobuf:"varint,1,opt,name=generation,enum=wayplatform.connect.tachograph.datadictionary.v1.Generation"`
+	xxx_hidden_Generation                    v1.Generation                         `protobuf:"varint,1,opt,name=generation,enum=wayplatform.connect.tachograph.dd.v1.Generation"`
 	xxx_hidden_Version                       Version                               `protobuf:"varint,2,opt,name=version,enum=wayplatform.connect.tachograph.vu.v1.Version"`
 	xxx_hidden_MemberStateCertificate        []byte                                `protobuf:"bytes,3,opt,name=member_state_certificate,json=memberStateCertificate"`
 	xxx_hidden_VuCertificate                 []byte                                `protobuf:"bytes,4,opt,name=vu_certificate,json=vuCertificate"`
 	xxx_hidden_VehicleIdentificationNumber   *v1.StringValue                       `protobuf:"bytes,5,opt,name=vehicle_identification_number,json=vehicleIdentificationNumber"`
 	xxx_hidden_CurrentDateTime               *timestamppb.Timestamp                `protobuf:"bytes,6,opt,name=current_date_time,json=currentDateTime"`
 	xxx_hidden_DownloadablePeriod            *v1.DownloadablePeriod                `protobuf:"bytes,7,opt,name=downloadable_period,json=downloadablePeriod"`
-	xxx_hidden_DriverSlotCard                v1.SlotCardType                       `protobuf:"varint,8,opt,name=driver_slot_card,json=driverSlotCard,enum=wayplatform.connect.tachograph.datadictionary.v1.SlotCardType"`
-	xxx_hidden_CoDriverSlotCard              v1.SlotCardType                       `protobuf:"varint,9,opt,name=co_driver_slot_card,json=coDriverSlotCard,enum=wayplatform.connect.tachograph.datadictionary.v1.SlotCardType"`
+	xxx_hidden_DriverSlotCard                v1.SlotCardType                       `protobuf:"varint,8,opt,name=driver_slot_card,json=driverSlotCard,enum=wayplatform.connect.tachograph.dd.v1.SlotCardType"`
+	xxx_hidden_CoDriverSlotCard              v1.SlotCardType                       `protobuf:"varint,9,opt,name=co_driver_slot_card,json=coDriverSlotCard,enum=wayplatform.connect.tachograph.dd.v1.SlotCardType"`
 	xxx_hidden_DownloadActivities            *[]*Overview_DownloadActivity         `protobuf:"bytes,10,rep,name=download_activities,json=downloadActivities"`
 	xxx_hidden_CompanyLocks                  *[]*Overview_CompanyLock              `protobuf:"bytes,11,rep,name=company_locks,json=companyLocks"`
 	xxx_hidden_ControlActivities             *[]*Overview_ControlActivity          `protobuf:"bytes,12,rep,name=control_activities,json=controlActivities"`
@@ -1149,42 +1149,42 @@ var File_wayplatform_connect_tachograph_vu_v1_overview_proto protoreflect.FileDe
 
 const file_wayplatform_connect_tachograph_vu_v1_overview_proto_rawDesc = "" +
 	"\n" +
-	"3wayplatform/connect/tachograph/vu/v1/overview.proto\x12$wayplatform.connect.tachograph.vu.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1aCwayplatform/connect/tachograph/datadictionary/v1/control_type.proto\x1aJwayplatform/connect/tachograph/datadictionary/v1/downloadable_period.proto\x1aGwayplatform/connect/tachograph/datadictionary/v1/full_card_number.proto\x1aAwayplatform/connect/tachograph/datadictionary/v1/generation.proto\x1aEwayplatform/connect/tachograph/datadictionary/v1/slot_card_type.proto\x1aCwayplatform/connect/tachograph/datadictionary/v1/string_value.proto\x1aZwayplatform/connect/tachograph/datadictionary/v1/vehicle_registration_identification.proto\x1a5wayplatform/connect/tachograph/vu/v1/versioning.proto\"\xc5\x15\n" +
-	"\bOverview\x12\\\n" +
+	"3wayplatform/connect/tachograph/vu/v1/overview.proto\x12$wayplatform.connect.tachograph.vu.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a7wayplatform/connect/tachograph/dd/v1/control_type.proto\x1a>wayplatform/connect/tachograph/dd/v1/downloadable_period.proto\x1a;wayplatform/connect/tachograph/dd/v1/full_card_number.proto\x1a5wayplatform/connect/tachograph/dd/v1/generation.proto\x1a9wayplatform/connect/tachograph/dd/v1/slot_card_type.proto\x1a7wayplatform/connect/tachograph/dd/v1/string_value.proto\x1aNwayplatform/connect/tachograph/dd/v1/vehicle_registration_identification.proto\x1a5wayplatform/connect/tachograph/vu/v1/versioning.proto\"\x9b\x14\n" +
+	"\bOverview\x12P\n" +
 	"\n" +
-	"generation\x18\x01 \x01(\x0e2<.wayplatform.connect.tachograph.datadictionary.v1.GenerationR\n" +
+	"generation\x18\x01 \x01(\x0e20.wayplatform.connect.tachograph.dd.v1.GenerationR\n" +
 	"generation\x12G\n" +
 	"\aversion\x18\x02 \x01(\x0e2-.wayplatform.connect.tachograph.vu.v1.VersionR\aversion\x128\n" +
 	"\x18member_state_certificate\x18\x03 \x01(\fR\x16memberStateCertificate\x12%\n" +
-	"\x0evu_certificate\x18\x04 \x01(\fR\rvuCertificate\x12\x81\x01\n" +
-	"\x1dvehicle_identification_number\x18\x05 \x01(\v2=.wayplatform.connect.tachograph.datadictionary.v1.StringValueR\x1bvehicleIdentificationNumber\x12F\n" +
-	"\x11current_date_time\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampR\x0fcurrentDateTime\x12u\n" +
-	"\x13downloadable_period\x18\a \x01(\v2D.wayplatform.connect.tachograph.datadictionary.v1.DownloadablePeriodR\x12downloadablePeriod\x12h\n" +
-	"\x10driver_slot_card\x18\b \x01(\x0e2>.wayplatform.connect.tachograph.datadictionary.v1.SlotCardTypeR\x0edriverSlotCard\x12m\n" +
-	"\x13co_driver_slot_card\x18\t \x01(\x0e2>.wayplatform.connect.tachograph.datadictionary.v1.SlotCardTypeR\x10coDriverSlotCard\x12p\n" +
+	"\x0evu_certificate\x18\x04 \x01(\fR\rvuCertificate\x12u\n" +
+	"\x1dvehicle_identification_number\x18\x05 \x01(\v21.wayplatform.connect.tachograph.dd.v1.StringValueR\x1bvehicleIdentificationNumber\x12F\n" +
+	"\x11current_date_time\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampR\x0fcurrentDateTime\x12i\n" +
+	"\x13downloadable_period\x18\a \x01(\v28.wayplatform.connect.tachograph.dd.v1.DownloadablePeriodR\x12downloadablePeriod\x12\\\n" +
+	"\x10driver_slot_card\x18\b \x01(\x0e22.wayplatform.connect.tachograph.dd.v1.SlotCardTypeR\x0edriverSlotCard\x12a\n" +
+	"\x13co_driver_slot_card\x18\t \x01(\x0e22.wayplatform.connect.tachograph.dd.v1.SlotCardTypeR\x10coDriverSlotCard\x12p\n" +
 	"\x13download_activities\x18\n" +
 	" \x03(\v2?.wayplatform.connect.tachograph.vu.v1.Overview.DownloadActivityR\x12downloadActivities\x12_\n" +
 	"\rcompany_locks\x18\v \x03(\v2:.wayplatform.connect.tachograph.vu.v1.Overview.CompanyLockR\fcompanyLocks\x12m\n" +
-	"\x12control_activities\x18\f \x03(\v2>.wayplatform.connect.tachograph.vu.v1.Overview.ControlActivityR\x11controlActivities\x12\x9c\x01\n" +
-	" vehicle_registration_with_nation\x18\r \x01(\v2S.wayplatform.connect.tachograph.datadictionary.v1.VehicleRegistrationIdentificationR\x1dvehicleRegistrationWithNation\x12\x86\x01\n" +
-	" vehicle_registration_number_only\x18\x0e \x01(\v2=.wayplatform.connect.tachograph.datadictionary.v1.StringValueR\x1dvehicleRegistrationNumberOnly\x12%\n" +
+	"\x12control_activities\x18\f \x03(\v2>.wayplatform.connect.tachograph.vu.v1.Overview.ControlActivityR\x11controlActivities\x12\x90\x01\n" +
+	" vehicle_registration_with_nation\x18\r \x01(\v2G.wayplatform.connect.tachograph.dd.v1.VehicleRegistrationIdentificationR\x1dvehicleRegistrationWithNation\x12z\n" +
+	" vehicle_registration_number_only\x18\x0e \x01(\v21.wayplatform.connect.tachograph.dd.v1.StringValueR\x1dvehicleRegistrationNumberOnly\x12%\n" +
 	"\x0esignature_gen1\x18\x0f \x01(\fR\rsignatureGen1\x12%\n" +
-	"\x0esignature_gen2\x18\x10 \x01(\fR\rsignatureGen2\x1a\xbd\x02\n" +
+	"\x0esignature_gen2\x18\x10 \x01(\fR\rsignatureGen2\x1a\xa5\x02\n" +
 	"\x10DownloadActivity\x12E\n" +
-	"\x10downloading_time\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\x0fdownloadingTime\x12j\n" +
-	"\x10full_card_number\x18\x02 \x01(\v2@.wayplatform.connect.tachograph.datadictionary.v1.FullCardNumberR\x0efullCardNumber\x12v\n" +
-	"\x18company_or_workshop_name\x18\x03 \x01(\v2=.wayplatform.connect.tachograph.datadictionary.v1.StringValueR\x15companyOrWorkshopName\x1a\xc7\x03\n" +
+	"\x10downloading_time\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\x0fdownloadingTime\x12^\n" +
+	"\x10full_card_number\x18\x02 \x01(\v24.wayplatform.connect.tachograph.dd.v1.FullCardNumberR\x0efullCardNumber\x12j\n" +
+	"\x18company_or_workshop_name\x18\x03 \x01(\v21.wayplatform.connect.tachograph.dd.v1.StringValueR\x15companyOrWorkshopName\x1a\xa3\x03\n" +
 	"\vCompanyLock\x12<\n" +
 	"\flock_in_time\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\n" +
 	"lockInTime\x12>\n" +
-	"\rlock_out_time\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\vlockOutTime\x12`\n" +
-	"\fcompany_name\x18\x03 \x01(\v2=.wayplatform.connect.tachograph.datadictionary.v1.StringValueR\vcompanyName\x12f\n" +
-	"\x0fcompany_address\x18\x04 \x01(\v2=.wayplatform.connect.tachograph.datadictionary.v1.StringValueR\x0ecompanyAddress\x12p\n" +
-	"\x13company_card_number\x18\x05 \x01(\v2@.wayplatform.connect.tachograph.datadictionary.v1.FullCardNumberR\x11companyCardNumber\x1a\xd2\x03\n" +
-	"\x0fControlActivity\x12`\n" +
-	"\fcontrol_type\x18\x01 \x01(\v2=.wayplatform.connect.tachograph.datadictionary.v1.ControlTypeR\vcontrolType\x12=\n" +
-	"\fcontrol_time\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\vcontrolTime\x12p\n" +
-	"\x13control_card_number\x18\x03 \x01(\v2@.wayplatform.connect.tachograph.datadictionary.v1.FullCardNumberR\x11controlCardNumber\x12W\n" +
+	"\rlock_out_time\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\vlockOutTime\x12T\n" +
+	"\fcompany_name\x18\x03 \x01(\v21.wayplatform.connect.tachograph.dd.v1.StringValueR\vcompanyName\x12Z\n" +
+	"\x0fcompany_address\x18\x04 \x01(\v21.wayplatform.connect.tachograph.dd.v1.StringValueR\x0ecompanyAddress\x12d\n" +
+	"\x13company_card_number\x18\x05 \x01(\v24.wayplatform.connect.tachograph.dd.v1.FullCardNumberR\x11companyCardNumber\x1a\xba\x03\n" +
+	"\x0fControlActivity\x12T\n" +
+	"\fcontrol_type\x18\x01 \x01(\v21.wayplatform.connect.tachograph.dd.v1.ControlTypeR\vcontrolType\x12=\n" +
+	"\fcontrol_time\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\vcontrolTime\x12d\n" +
+	"\x13control_card_number\x18\x03 \x01(\v24.wayplatform.connect.tachograph.dd.v1.FullCardNumberR\x11controlCardNumber\x12W\n" +
 	"\x1adownload_period_begin_time\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampR\x17downloadPeriodBeginTime\x12S\n" +
 	"\x18download_period_end_time\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampR\x15downloadPeriodEndTimeB\xcc\x02\n" +
 	"(com.wayplatform.connect.tachograph.vu.v1B\rOverviewProtoP\x01Z\\github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/vu/v1;vuv1\xa2\x02\x04WCTV\xaa\x02$Wayplatform.Connect.Tachograph.Vu.V1\xca\x02$Wayplatform\\Connect\\Tachograph\\Vu\\V1\xe2\x020Wayplatform\\Connect\\Tachograph\\Vu\\V1\\GPBMetadata\xea\x02(Wayplatform::Connect::Tachograph::Vu::V1b\beditionsp\xe8\a"
@@ -1195,40 +1195,40 @@ var file_wayplatform_connect_tachograph_vu_v1_overview_proto_goTypes = []any{
 	(*Overview_DownloadActivity)(nil),            // 1: wayplatform.connect.tachograph.vu.v1.Overview.DownloadActivity
 	(*Overview_CompanyLock)(nil),                 // 2: wayplatform.connect.tachograph.vu.v1.Overview.CompanyLock
 	(*Overview_ControlActivity)(nil),             // 3: wayplatform.connect.tachograph.vu.v1.Overview.ControlActivity
-	(v1.Generation)(0),                           // 4: wayplatform.connect.tachograph.datadictionary.v1.Generation
+	(v1.Generation)(0),                           // 4: wayplatform.connect.tachograph.dd.v1.Generation
 	(Version)(0),                                 // 5: wayplatform.connect.tachograph.vu.v1.Version
-	(*v1.StringValue)(nil),                       // 6: wayplatform.connect.tachograph.datadictionary.v1.StringValue
+	(*v1.StringValue)(nil),                       // 6: wayplatform.connect.tachograph.dd.v1.StringValue
 	(*timestamppb.Timestamp)(nil),                // 7: google.protobuf.Timestamp
-	(*v1.DownloadablePeriod)(nil),                // 8: wayplatform.connect.tachograph.datadictionary.v1.DownloadablePeriod
-	(v1.SlotCardType)(0),                         // 9: wayplatform.connect.tachograph.datadictionary.v1.SlotCardType
-	(*v1.VehicleRegistrationIdentification)(nil), // 10: wayplatform.connect.tachograph.datadictionary.v1.VehicleRegistrationIdentification
-	(*v1.FullCardNumber)(nil),                    // 11: wayplatform.connect.tachograph.datadictionary.v1.FullCardNumber
-	(*v1.ControlType)(nil),                       // 12: wayplatform.connect.tachograph.datadictionary.v1.ControlType
+	(*v1.DownloadablePeriod)(nil),                // 8: wayplatform.connect.tachograph.dd.v1.DownloadablePeriod
+	(v1.SlotCardType)(0),                         // 9: wayplatform.connect.tachograph.dd.v1.SlotCardType
+	(*v1.VehicleRegistrationIdentification)(nil), // 10: wayplatform.connect.tachograph.dd.v1.VehicleRegistrationIdentification
+	(*v1.FullCardNumber)(nil),                    // 11: wayplatform.connect.tachograph.dd.v1.FullCardNumber
+	(*v1.ControlType)(nil),                       // 12: wayplatform.connect.tachograph.dd.v1.ControlType
 }
 var file_wayplatform_connect_tachograph_vu_v1_overview_proto_depIdxs = []int32{
-	4,  // 0: wayplatform.connect.tachograph.vu.v1.Overview.generation:type_name -> wayplatform.connect.tachograph.datadictionary.v1.Generation
+	4,  // 0: wayplatform.connect.tachograph.vu.v1.Overview.generation:type_name -> wayplatform.connect.tachograph.dd.v1.Generation
 	5,  // 1: wayplatform.connect.tachograph.vu.v1.Overview.version:type_name -> wayplatform.connect.tachograph.vu.v1.Version
-	6,  // 2: wayplatform.connect.tachograph.vu.v1.Overview.vehicle_identification_number:type_name -> wayplatform.connect.tachograph.datadictionary.v1.StringValue
+	6,  // 2: wayplatform.connect.tachograph.vu.v1.Overview.vehicle_identification_number:type_name -> wayplatform.connect.tachograph.dd.v1.StringValue
 	7,  // 3: wayplatform.connect.tachograph.vu.v1.Overview.current_date_time:type_name -> google.protobuf.Timestamp
-	8,  // 4: wayplatform.connect.tachograph.vu.v1.Overview.downloadable_period:type_name -> wayplatform.connect.tachograph.datadictionary.v1.DownloadablePeriod
-	9,  // 5: wayplatform.connect.tachograph.vu.v1.Overview.driver_slot_card:type_name -> wayplatform.connect.tachograph.datadictionary.v1.SlotCardType
-	9,  // 6: wayplatform.connect.tachograph.vu.v1.Overview.co_driver_slot_card:type_name -> wayplatform.connect.tachograph.datadictionary.v1.SlotCardType
+	8,  // 4: wayplatform.connect.tachograph.vu.v1.Overview.downloadable_period:type_name -> wayplatform.connect.tachograph.dd.v1.DownloadablePeriod
+	9,  // 5: wayplatform.connect.tachograph.vu.v1.Overview.driver_slot_card:type_name -> wayplatform.connect.tachograph.dd.v1.SlotCardType
+	9,  // 6: wayplatform.connect.tachograph.vu.v1.Overview.co_driver_slot_card:type_name -> wayplatform.connect.tachograph.dd.v1.SlotCardType
 	1,  // 7: wayplatform.connect.tachograph.vu.v1.Overview.download_activities:type_name -> wayplatform.connect.tachograph.vu.v1.Overview.DownloadActivity
 	2,  // 8: wayplatform.connect.tachograph.vu.v1.Overview.company_locks:type_name -> wayplatform.connect.tachograph.vu.v1.Overview.CompanyLock
 	3,  // 9: wayplatform.connect.tachograph.vu.v1.Overview.control_activities:type_name -> wayplatform.connect.tachograph.vu.v1.Overview.ControlActivity
-	10, // 10: wayplatform.connect.tachograph.vu.v1.Overview.vehicle_registration_with_nation:type_name -> wayplatform.connect.tachograph.datadictionary.v1.VehicleRegistrationIdentification
-	6,  // 11: wayplatform.connect.tachograph.vu.v1.Overview.vehicle_registration_number_only:type_name -> wayplatform.connect.tachograph.datadictionary.v1.StringValue
+	10, // 10: wayplatform.connect.tachograph.vu.v1.Overview.vehicle_registration_with_nation:type_name -> wayplatform.connect.tachograph.dd.v1.VehicleRegistrationIdentification
+	6,  // 11: wayplatform.connect.tachograph.vu.v1.Overview.vehicle_registration_number_only:type_name -> wayplatform.connect.tachograph.dd.v1.StringValue
 	7,  // 12: wayplatform.connect.tachograph.vu.v1.Overview.DownloadActivity.downloading_time:type_name -> google.protobuf.Timestamp
-	11, // 13: wayplatform.connect.tachograph.vu.v1.Overview.DownloadActivity.full_card_number:type_name -> wayplatform.connect.tachograph.datadictionary.v1.FullCardNumber
-	6,  // 14: wayplatform.connect.tachograph.vu.v1.Overview.DownloadActivity.company_or_workshop_name:type_name -> wayplatform.connect.tachograph.datadictionary.v1.StringValue
+	11, // 13: wayplatform.connect.tachograph.vu.v1.Overview.DownloadActivity.full_card_number:type_name -> wayplatform.connect.tachograph.dd.v1.FullCardNumber
+	6,  // 14: wayplatform.connect.tachograph.vu.v1.Overview.DownloadActivity.company_or_workshop_name:type_name -> wayplatform.connect.tachograph.dd.v1.StringValue
 	7,  // 15: wayplatform.connect.tachograph.vu.v1.Overview.CompanyLock.lock_in_time:type_name -> google.protobuf.Timestamp
 	7,  // 16: wayplatform.connect.tachograph.vu.v1.Overview.CompanyLock.lock_out_time:type_name -> google.protobuf.Timestamp
-	6,  // 17: wayplatform.connect.tachograph.vu.v1.Overview.CompanyLock.company_name:type_name -> wayplatform.connect.tachograph.datadictionary.v1.StringValue
-	6,  // 18: wayplatform.connect.tachograph.vu.v1.Overview.CompanyLock.company_address:type_name -> wayplatform.connect.tachograph.datadictionary.v1.StringValue
-	11, // 19: wayplatform.connect.tachograph.vu.v1.Overview.CompanyLock.company_card_number:type_name -> wayplatform.connect.tachograph.datadictionary.v1.FullCardNumber
-	12, // 20: wayplatform.connect.tachograph.vu.v1.Overview.ControlActivity.control_type:type_name -> wayplatform.connect.tachograph.datadictionary.v1.ControlType
+	6,  // 17: wayplatform.connect.tachograph.vu.v1.Overview.CompanyLock.company_name:type_name -> wayplatform.connect.tachograph.dd.v1.StringValue
+	6,  // 18: wayplatform.connect.tachograph.vu.v1.Overview.CompanyLock.company_address:type_name -> wayplatform.connect.tachograph.dd.v1.StringValue
+	11, // 19: wayplatform.connect.tachograph.vu.v1.Overview.CompanyLock.company_card_number:type_name -> wayplatform.connect.tachograph.dd.v1.FullCardNumber
+	12, // 20: wayplatform.connect.tachograph.vu.v1.Overview.ControlActivity.control_type:type_name -> wayplatform.connect.tachograph.dd.v1.ControlType
 	7,  // 21: wayplatform.connect.tachograph.vu.v1.Overview.ControlActivity.control_time:type_name -> google.protobuf.Timestamp
-	11, // 22: wayplatform.connect.tachograph.vu.v1.Overview.ControlActivity.control_card_number:type_name -> wayplatform.connect.tachograph.datadictionary.v1.FullCardNumber
+	11, // 22: wayplatform.connect.tachograph.vu.v1.Overview.ControlActivity.control_card_number:type_name -> wayplatform.connect.tachograph.dd.v1.FullCardNumber
 	7,  // 23: wayplatform.connect.tachograph.vu.v1.Overview.ControlActivity.download_period_begin_time:type_name -> google.protobuf.Timestamp
 	7,  // 24: wayplatform.connect.tachograph.vu.v1.Overview.ControlActivity.download_period_end_time:type_name -> google.protobuf.Timestamp
 	25, // [25:25] is the sub-list for method output_type

@@ -1,0 +1,19 @@
+edition = "2023";
+
+package wayplatform.connect.tachograph.dd.v1;
+
+import "wayplatform/connect/tachograph/dd/v1/annotations.proto";
+
+// CalibrationPurpose explains why a calibration was performed.
+// See Data Dictionary, Section 2.8.
+enum CalibrationPurpose {
+  CALIBRATION_PURPOSE_UNSPECIFIED = 0;
+  CALIBRATION_PURPOSE_UNRECOGNIZED = 1;
+  CALIBRATION_PURPOSE_RESERVED = 2 [(protocol_enum_value) = 0x00];
+  ACTIVATION = 3 [(protocol_enum_value) = 0x01];
+  FIRST_INSTALLATION = 4 [(protocol_enum_value) = 0x02];
+  INSTALLATION = 5 [(protocol_enum_value) = 0x03];
+  PERIODIC_INSPECTION = 6 [(protocol_enum_value) = 0x04];
+  VRN_ENTRY_BY_COMPANY = 7 [(protocol_enum_value) = 0x05];
+  TIME_ADJUSTMENT = 8 [(protocol_enum_value) = 0x06];
+}

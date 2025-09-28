@@ -4,7 +4,7 @@ import (
 	"encoding/binary"
 
 	cardv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1"
-	datadictionaryv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/datadictionary/v1"
+	ddv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
 )
 
 // AppendDriverActivity appends the binary representation of DriverActivityData to dst.
@@ -140,7 +140,7 @@ func appendParsedDailyRecord(dst []byte, rec *cardv1.DriverActivityData_DailyRec
 //	- ttttttttttt: Time of change (11 bits): Number of minutes since 00h00 on the given day
 //
 
-func AppendActivityChange(dst []byte, ac *datadictionaryv1.ActivityChangeInfo) ([]byte, error) {
+func AppendActivityChange(dst []byte, ac *ddv1.ActivityChangeInfo) ([]byte, error) {
 	var aci uint16
 
 	// Reconstruct the bitfield from enum values

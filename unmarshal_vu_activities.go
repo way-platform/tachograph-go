@@ -6,7 +6,7 @@ import (
 
 	"google.golang.org/protobuf/types/known/timestamppb"
 
-	datadictionaryv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/datadictionary/v1"
+	ddv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
 	vuv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/vu/v1"
 )
 
@@ -64,7 +64,7 @@ func UnmarshalVuActivities(data []byte, offset int, target *vuv1.Activities, gen
 // unmarshalVuActivitiesGen1 unmarshals Generation 1 VU activities
 func unmarshalVuActivitiesGen1(data []byte, offset int, target *vuv1.Activities) (int, error) {
 	startOffset := offset
-	target.SetGeneration(datadictionaryv1.Generation_GENERATION_1)
+	target.SetGeneration(ddv1.Generation_GENERATION_1)
 
 	// Read TimeReal (4 bytes) - this is the date of the day
 	timeReal, offset, err := readVuTimeRealFromBytes(data, offset)
@@ -121,7 +121,7 @@ func unmarshalVuActivitiesGen1(data []byte, offset int, target *vuv1.Activities)
 // unmarshalVuActivitiesGen2 unmarshals Generation 2 VU activities
 func unmarshalVuActivitiesGen2(data []byte, offset int, target *vuv1.Activities) (int, error) {
 	startOffset := offset
-	target.SetGeneration(datadictionaryv1.Generation_GENERATION_2)
+	target.SetGeneration(ddv1.Generation_GENERATION_2)
 
 	// Gen2 format uses record arrays, each with a header
 	// Parse DateOfDayDownloadedRecordArray
@@ -216,9 +216,9 @@ func parseVuCardIWData(data []byte, offset int) ([]*vuv1.Activities_CardIWRecord
 	return []*vuv1.Activities_CardIWRecord{}, offset, nil
 }
 
-func parseVuActivityDailyData(data []byte, offset int) ([]*datadictionaryv1.ActivityChangeInfo, int, error) {
+func parseVuActivityDailyData(data []byte, offset int) ([]*ddv1.ActivityChangeInfo, int, error) {
 	// Simplified implementation - would need to parse the actual structure
-	return []*datadictionaryv1.ActivityChangeInfo{}, offset, nil
+	return []*ddv1.ActivityChangeInfo{}, offset, nil
 }
 
 func parseVuPlaceDailyWorkPeriodData(data []byte, offset int) ([]*vuv1.Activities_PlaceRecord, int, error) {
@@ -247,9 +247,9 @@ func parseVuCardIWRecordArray(data []byte, offset int) ([]*vuv1.Activities_CardI
 	return []*vuv1.Activities_CardIWRecord{}, offset, nil
 }
 
-func parseVuActivityDailyRecordArray(data []byte, offset int) ([]*datadictionaryv1.ActivityChangeInfo, int, error) {
+func parseVuActivityDailyRecordArray(data []byte, offset int) ([]*ddv1.ActivityChangeInfo, int, error) {
 	// Parse record array header and records
-	return []*datadictionaryv1.ActivityChangeInfo{}, offset, nil
+	return []*ddv1.ActivityChangeInfo{}, offset, nil
 }
 
 func parseVuPlaceDailyWorkPeriodRecordArray(data []byte, offset int) ([]*vuv1.Activities_PlaceRecord, int, error) {

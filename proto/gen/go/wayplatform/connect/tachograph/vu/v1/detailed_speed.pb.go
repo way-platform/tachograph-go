@@ -7,7 +7,7 @@
 package vuv1
 
 import (
-	v1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/datadictionary/v1"
+	v1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
@@ -38,7 +38,7 @@ const (
 //	└─SignatureRecordArray
 type DetailedSpeed struct {
 	state                    protoimpl.MessageState               `protogen:"opaque.v1"`
-	xxx_hidden_Generation    v1.Generation                        `protobuf:"varint,1,opt,name=generation,enum=wayplatform.connect.tachograph.datadictionary.v1.Generation"`
+	xxx_hidden_Generation    v1.Generation                        `protobuf:"varint,1,opt,name=generation,enum=wayplatform.connect.tachograph.dd.v1.Generation"`
 	xxx_hidden_SpeedBlocks   *[]*DetailedSpeed_DetailedSpeedBlock `protobuf:"bytes,2,rep,name=speed_blocks,json=speedBlocks"`
 	xxx_hidden_SignatureGen1 []byte                               `protobuf:"bytes,3,opt,name=signature_gen1,json=signatureGen1"`
 	xxx_hidden_SignatureGen2 []byte                               `protobuf:"bytes,4,opt,name=signature_gen2,json=signatureGen2"`
@@ -315,10 +315,10 @@ var File_wayplatform_connect_tachograph_vu_v1_detailed_speed_proto protoreflect.
 
 const file_wayplatform_connect_tachograph_vu_v1_detailed_speed_proto_rawDesc = "" +
 	"\n" +
-	"9wayplatform/connect/tachograph/vu/v1/detailed_speed.proto\x12$wayplatform.connect.tachograph.vu.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1aAwayplatform/connect/tachograph/datadictionary/v1/generation.proto\"\x96\x03\n" +
-	"\rDetailedSpeed\x12\\\n" +
+	"9wayplatform/connect/tachograph/vu/v1/detailed_speed.proto\x12$wayplatform.connect.tachograph.vu.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a5wayplatform/connect/tachograph/dd/v1/generation.proto\"\x8a\x03\n" +
+	"\rDetailedSpeed\x12P\n" +
 	"\n" +
-	"generation\x18\x01 \x01(\x0e2<.wayplatform.connect.tachograph.datadictionary.v1.GenerationR\n" +
+	"generation\x18\x01 \x01(\x0e20.wayplatform.connect.tachograph.dd.v1.GenerationR\n" +
 	"generation\x12i\n" +
 	"\fspeed_blocks\x18\x02 \x03(\v2F.wayplatform.connect.tachograph.vu.v1.DetailedSpeed.DetailedSpeedBlockR\vspeedBlocks\x12%\n" +
 	"\x0esignature_gen1\x18\x03 \x01(\fR\rsignatureGen1\x12%\n" +
@@ -334,11 +334,11 @@ var file_wayplatform_connect_tachograph_vu_v1_detailed_speed_proto_msgTypes = ma
 var file_wayplatform_connect_tachograph_vu_v1_detailed_speed_proto_goTypes = []any{
 	(*DetailedSpeed)(nil),                    // 0: wayplatform.connect.tachograph.vu.v1.DetailedSpeed
 	(*DetailedSpeed_DetailedSpeedBlock)(nil), // 1: wayplatform.connect.tachograph.vu.v1.DetailedSpeed.DetailedSpeedBlock
-	(v1.Generation)(0),                       // 2: wayplatform.connect.tachograph.datadictionary.v1.Generation
+	(v1.Generation)(0),                       // 2: wayplatform.connect.tachograph.dd.v1.Generation
 	(*timestamppb.Timestamp)(nil),            // 3: google.protobuf.Timestamp
 }
 var file_wayplatform_connect_tachograph_vu_v1_detailed_speed_proto_depIdxs = []int32{
-	2, // 0: wayplatform.connect.tachograph.vu.v1.DetailedSpeed.generation:type_name -> wayplatform.connect.tachograph.datadictionary.v1.Generation
+	2, // 0: wayplatform.connect.tachograph.vu.v1.DetailedSpeed.generation:type_name -> wayplatform.connect.tachograph.dd.v1.Generation
 	1, // 1: wayplatform.connect.tachograph.vu.v1.DetailedSpeed.speed_blocks:type_name -> wayplatform.connect.tachograph.vu.v1.DetailedSpeed.DetailedSpeedBlock
 	3, // 2: wayplatform.connect.tachograph.vu.v1.DetailedSpeed.DetailedSpeedBlock.begin_date:type_name -> google.protobuf.Timestamp
 	3, // [3:3] is the sub-list for method output_type

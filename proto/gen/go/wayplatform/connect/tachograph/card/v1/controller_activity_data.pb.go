@@ -7,7 +7,7 @@
 package cardv1
 
 import (
-	v1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/datadictionary/v1"
+	v1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
@@ -380,15 +380,15 @@ var File_wayplatform_connect_tachograph_card_v1_controller_activity_data_proto p
 
 const file_wayplatform_connect_tachograph_card_v1_controller_activity_data_proto_rawDesc = "" +
 	"\n" +
-	"Ewayplatform/connect/tachograph/card/v1/controller_activity_data.proto\x12&wayplatform.connect.tachograph.card.v1\x1aCwayplatform/connect/tachograph/datadictionary/v1/control_type.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1aGwayplatform/connect/tachograph/datadictionary/v1/full_card_number.proto\x1aZwayplatform/connect/tachograph/datadictionary/v1/vehicle_registration_identification.proto\"\xa5\x06\n" +
+	"Ewayplatform/connect/tachograph/card/v1/controller_activity_data.proto\x12&wayplatform.connect.tachograph.card.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a7wayplatform/connect/tachograph/dd/v1/control_type.proto\x1a;wayplatform/connect/tachograph/dd/v1/full_card_number.proto\x1aNwayplatform/connect/tachograph/dd/v1/vehicle_registration_identification.proto\"\x81\x06\n" +
 	"\x16ControllerActivityData\x12.\n" +
 	"\x13newest_record_index\x18\x01 \x01(\x05R\x11newestRecordIndex\x12_\n" +
-	"\arecords\x18\x02 \x03(\v2E.wayplatform.connect.tachograph.card.v1.ControllerActivityData.RecordR\arecords\x1a\xf9\x04\n" +
-	"\x06Record\x12`\n" +
-	"\fcontrol_type\x18\x01 \x01(\v2=.wayplatform.connect.tachograph.datadictionary.v1.ControlTypeR\vcontrolType\x12=\n" +
-	"\fcontrol_time\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\vcontrolTime\x12v\n" +
-	"\x16controlled_card_number\x18\x03 \x01(\v2@.wayplatform.connect.tachograph.datadictionary.v1.FullCardNumberR\x14controlledCardNumber\x12\x9b\x01\n" +
-	"\x1fcontrolled_vehicle_registration\x18\x04 \x01(\v2S.wayplatform.connect.tachograph.datadictionary.v1.VehicleRegistrationIdentificationR\x1dcontrolledVehicleRegistration\x12]\n" +
+	"\arecords\x18\x02 \x03(\v2E.wayplatform.connect.tachograph.card.v1.ControllerActivityData.RecordR\arecords\x1a\xd5\x04\n" +
+	"\x06Record\x12T\n" +
+	"\fcontrol_type\x18\x01 \x01(\v21.wayplatform.connect.tachograph.dd.v1.ControlTypeR\vcontrolType\x12=\n" +
+	"\fcontrol_time\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\vcontrolTime\x12j\n" +
+	"\x16controlled_card_number\x18\x03 \x01(\v24.wayplatform.connect.tachograph.dd.v1.FullCardNumberR\x14controlledCardNumber\x12\x8f\x01\n" +
+	"\x1fcontrolled_vehicle_registration\x18\x04 \x01(\v2G.wayplatform.connect.tachograph.dd.v1.VehicleRegistrationIdentificationR\x1dcontrolledVehicleRegistration\x12]\n" +
 	"\x1dcontrol_download_period_begin\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampR\x1acontrolDownloadPeriodBegin\x12Y\n" +
 	"\x1bcontrol_download_period_end\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampR\x18controlDownloadPeriodEndB\xe8\x02\n" +
 	"*com.wayplatform.connect.tachograph.card.v1B\x1bControllerActivityDataProtoP\x01Z`github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1;cardv1\xa2\x02\x04WCTC\xaa\x02&Wayplatform.Connect.Tachograph.Card.V1\xca\x02&Wayplatform\\Connect\\Tachograph\\Card\\V1\xe2\x022Wayplatform\\Connect\\Tachograph\\Card\\V1\\GPBMetadata\xea\x02*Wayplatform::Connect::Tachograph::Card::V1b\beditionsp\xe8\a"
@@ -397,17 +397,17 @@ var file_wayplatform_connect_tachograph_card_v1_controller_activity_data_proto_m
 var file_wayplatform_connect_tachograph_card_v1_controller_activity_data_proto_goTypes = []any{
 	(*ControllerActivityData)(nil),               // 0: wayplatform.connect.tachograph.card.v1.ControllerActivityData
 	(*ControllerActivityData_Record)(nil),        // 1: wayplatform.connect.tachograph.card.v1.ControllerActivityData.Record
-	(*v1.ControlType)(nil),                       // 2: wayplatform.connect.tachograph.datadictionary.v1.ControlType
+	(*v1.ControlType)(nil),                       // 2: wayplatform.connect.tachograph.dd.v1.ControlType
 	(*timestamppb.Timestamp)(nil),                // 3: google.protobuf.Timestamp
-	(*v1.FullCardNumber)(nil),                    // 4: wayplatform.connect.tachograph.datadictionary.v1.FullCardNumber
-	(*v1.VehicleRegistrationIdentification)(nil), // 5: wayplatform.connect.tachograph.datadictionary.v1.VehicleRegistrationIdentification
+	(*v1.FullCardNumber)(nil),                    // 4: wayplatform.connect.tachograph.dd.v1.FullCardNumber
+	(*v1.VehicleRegistrationIdentification)(nil), // 5: wayplatform.connect.tachograph.dd.v1.VehicleRegistrationIdentification
 }
 var file_wayplatform_connect_tachograph_card_v1_controller_activity_data_proto_depIdxs = []int32{
 	1, // 0: wayplatform.connect.tachograph.card.v1.ControllerActivityData.records:type_name -> wayplatform.connect.tachograph.card.v1.ControllerActivityData.Record
-	2, // 1: wayplatform.connect.tachograph.card.v1.ControllerActivityData.Record.control_type:type_name -> wayplatform.connect.tachograph.datadictionary.v1.ControlType
+	2, // 1: wayplatform.connect.tachograph.card.v1.ControllerActivityData.Record.control_type:type_name -> wayplatform.connect.tachograph.dd.v1.ControlType
 	3, // 2: wayplatform.connect.tachograph.card.v1.ControllerActivityData.Record.control_time:type_name -> google.protobuf.Timestamp
-	4, // 3: wayplatform.connect.tachograph.card.v1.ControllerActivityData.Record.controlled_card_number:type_name -> wayplatform.connect.tachograph.datadictionary.v1.FullCardNumber
-	5, // 4: wayplatform.connect.tachograph.card.v1.ControllerActivityData.Record.controlled_vehicle_registration:type_name -> wayplatform.connect.tachograph.datadictionary.v1.VehicleRegistrationIdentification
+	4, // 3: wayplatform.connect.tachograph.card.v1.ControllerActivityData.Record.controlled_card_number:type_name -> wayplatform.connect.tachograph.dd.v1.FullCardNumber
+	5, // 4: wayplatform.connect.tachograph.card.v1.ControllerActivityData.Record.controlled_vehicle_registration:type_name -> wayplatform.connect.tachograph.dd.v1.VehicleRegistrationIdentification
 	3, // 5: wayplatform.connect.tachograph.card.v1.ControllerActivityData.Record.control_download_period_begin:type_name -> google.protobuf.Timestamp
 	3, // 6: wayplatform.connect.tachograph.card.v1.ControllerActivityData.Record.control_download_period_end:type_name -> google.protobuf.Timestamp
 	7, // [7:7] is the sub-list for method output_type

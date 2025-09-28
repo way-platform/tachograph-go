@@ -6,7 +6,7 @@ import (
 	"fmt"
 
 	cardv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1"
-	datadictionaryv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/datadictionary/v1"
+	ddv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/reflect/protoreflect"
 )
@@ -106,10 +106,10 @@ func parsePlaceRecord(r *bytes.Reader) (*cardv1.Places_Record, error) {
 		return nil, fmt.Errorf("failed to read entry type: %w", err)
 	}
 	// Convert raw entry type to enum using protocol annotations
-	SetEnumFromProtocolValue(datadictionaryv1.EntryTypeDailyWorkPeriod_ENTRY_TYPE_DAILY_WORK_PERIOD_UNSPECIFIED.Descriptor(),
+	SetEnumFromProtocolValue(ddv1.EntryTypeDailyWorkPeriod_ENTRY_TYPE_DAILY_WORK_PERIOD_UNSPECIFIED.Descriptor(),
 		int32(entryType),
 		func(enumNum protoreflect.EnumNumber) {
-			record.SetEntryType(datadictionaryv1.EntryTypeDailyWorkPeriod(enumNum))
+			record.SetEntryType(ddv1.EntryTypeDailyWorkPeriod(enumNum))
 		}, nil)
 
 	// Read daily work period country (1 byte)
@@ -118,10 +118,10 @@ func parsePlaceRecord(r *bytes.Reader) (*cardv1.Places_Record, error) {
 		return nil, fmt.Errorf("failed to read country: %w", err)
 	}
 	// Convert raw country to enum using protocol annotations
-	SetEnumFromProtocolValue(datadictionaryv1.NationNumeric_NATION_NUMERIC_UNSPECIFIED.Descriptor(),
+	SetEnumFromProtocolValue(ddv1.NationNumeric_NATION_NUMERIC_UNSPECIFIED.Descriptor(),
 		int32(country),
 		func(enumNum protoreflect.EnumNumber) {
-			record.SetDailyWorkPeriodCountry(datadictionaryv1.NationNumeric(enumNum))
+			record.SetDailyWorkPeriodCountry(ddv1.NationNumeric(enumNum))
 		}, nil)
 
 	// Read daily work period region (2 bytes)

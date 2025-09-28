@@ -3,10 +3,10 @@ edition = "2023";
 package wayplatform.connect.tachograph.card.v1;
 
 import "google/protobuf/timestamp.proto";
-import "wayplatform/connect/tachograph/datadictionary/v1/calibration_purpose.proto";
-import "wayplatform/connect/tachograph/datadictionary/v1/extended_serial_number.proto";
-import "wayplatform/connect/tachograph/datadictionary/v1/string_value.proto";
-import "wayplatform/connect/tachograph/datadictionary/v1/vehicle_registration_identification.proto";
+import "wayplatform/connect/tachograph/dd/v1/calibration_purpose.proto";
+import "wayplatform/connect/tachograph/dd/v1/extended_serial_number.proto";
+import "wayplatform/connect/tachograph/dd/v1/string_value.proto";
+import "wayplatform/connect/tachograph/dd/v1/vehicle_registration_identification.proto";
 
 // Represents the content of the EF_Calibration file.
 //
@@ -56,7 +56,7 @@ message Calibration {
     // ASN.1 Specification:
     //
     //     CalibrationPurpose ::= OCTET STRING (SIZE(1))
-    datadictionary.v1.CalibrationPurpose calibration_purpose = 1;
+    dd.v1.CalibrationPurpose calibration_purpose = 1;
 
     // The Vehicle Identification Number.
     //
@@ -64,7 +64,7 @@ message Calibration {
     // ASN.1 Definition:
     //
     //     VehicleIdentificationNumber ::= IA5String(SIZE(17))
-    wayplatform.connect.tachograph.datadictionary.v1.StringValue vehicle_identification_number = 3;
+    wayplatform.connect.tachograph.dd.v1.StringValue vehicle_identification_number = 3;
 
     // The vehicle registration identifier.
     //
@@ -72,7 +72,7 @@ message Calibration {
     // ASN.1 Definition:
     //
     //     VehicleRegistrationIdentification ::= SEQUENCE { ... }
-    datadictionary.v1.VehicleRegistrationIdentification vehicle_registration = 4;
+    dd.v1.VehicleRegistrationIdentification vehicle_registration = 4;
 
     // The vehicle characteristic constant.
     //
@@ -104,7 +104,7 @@ message Calibration {
     // ASN.1 Definition:
     //
     //     TyreSize ::= IA5String(SIZE(15))
-    wayplatform.connect.tachograph.datadictionary.v1.StringValue tyre_size = 8;
+    wayplatform.connect.tachograph.dd.v1.StringValue tyre_size = 8;
 
     // The authorised speed in km/h.
     //
@@ -160,7 +160,7 @@ message Calibration {
     // ASN.1 Definition:
     //
     //     VuPartNumber ::= IA5String(SIZE(16))
-    wayplatform.connect.tachograph.datadictionary.v1.StringValue vu_part_number = 15;
+    wayplatform.connect.tachograph.dd.v1.StringValue vu_part_number = 15;
 
     // The serial number of the Vehicle Unit.
     //
@@ -168,7 +168,7 @@ message Calibration {
     // ASN.1 Specification:
     //
     //     ExtendedSerialNumber ::= SEQUENCE { ... }
-    datadictionary.v1.ExtendedSerialNumber vu_serial_number = 16;
+    dd.v1.ExtendedSerialNumber vu_serial_number = 16;
 
     // The serial number of the motion sensor.
     //
@@ -176,7 +176,7 @@ message Calibration {
     // ASN.1 Specification:
     //
     //     SensorSerialNumber ::= ExtendedSerialNumber
-    datadictionary.v1.ExtendedSerialNumber sensor_serial_number = 17;
+    dd.v1.ExtendedSerialNumber sensor_serial_number = 17;
   }
 
   // Total number of calibrations performed with the card.

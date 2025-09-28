@@ -3,8 +3,8 @@ edition = "2023";
 package wayplatform.connect.tachograph.card.v1;
 
 import "google/protobuf/timestamp.proto";
-import "wayplatform/connect/tachograph/datadictionary/v1/activity_change_info.proto";
-import "wayplatform/connect/tachograph/datadictionary/v1/bcd_string.proto";
+import "wayplatform/connect/tachograph/dd/v1/activity_change_info.proto";
+import "wayplatform/connect/tachograph/dd/v1/bcd_string.proto";
 
 // Represents the content of the EF_Driver_Activity_Data file.
 //
@@ -75,7 +75,7 @@ message DriverActivityData {
     // ASN.1 Specification:
     //
     //     DailyPresenceCounter ::= BCDString(SIZE(2))
-    datadictionary.v1.BcdString activity_daily_presence_counter = 5;
+    dd.v1.BcdString activity_daily_presence_counter = 5;
 
     // The total distance travelled this day in kilometers.
     //
@@ -88,7 +88,7 @@ message DriverActivityData {
     // The set of activity changes for the driver on this day.
     //
     // See Data Dictionary, Section 2.9, `activityChangeInfo`.
-    repeated datadictionary.v1.ActivityChangeInfo activity_change_info = 7;
+    repeated dd.v1.ActivityChangeInfo activity_change_info = 7;
 
     // --- Field for raw data (when valid = false) ---
 

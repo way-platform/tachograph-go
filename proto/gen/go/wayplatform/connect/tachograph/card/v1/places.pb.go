@@ -7,7 +7,7 @@
 package cardv1
 
 import (
-	v1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/datadictionary/v1"
+	v1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
@@ -226,8 +226,8 @@ func (b0 Places_builder) Build() *Places {
 type Places_Record struct {
 	state                             protoimpl.MessageState      `protogen:"opaque.v1"`
 	xxx_hidden_EntryTime              *timestamppb.Timestamp      `protobuf:"bytes,1,opt,name=entry_time,json=entryTime"`
-	xxx_hidden_EntryType              v1.EntryTypeDailyWorkPeriod `protobuf:"varint,2,opt,name=entry_type,json=entryType,enum=wayplatform.connect.tachograph.datadictionary.v1.EntryTypeDailyWorkPeriod"`
-	xxx_hidden_DailyWorkPeriodCountry v1.NationNumeric            `protobuf:"varint,4,opt,name=daily_work_period_country,json=dailyWorkPeriodCountry,enum=wayplatform.connect.tachograph.datadictionary.v1.NationNumeric"`
+	xxx_hidden_EntryType              v1.EntryTypeDailyWorkPeriod `protobuf:"varint,2,opt,name=entry_type,json=entryType,enum=wayplatform.connect.tachograph.dd.v1.EntryTypeDailyWorkPeriod"`
+	xxx_hidden_DailyWorkPeriodCountry v1.NationNumeric            `protobuf:"varint,4,opt,name=daily_work_period_country,json=dailyWorkPeriodCountry,enum=wayplatform.connect.tachograph.dd.v1.NationNumeric"`
 	xxx_hidden_DailyWorkPeriodRegion  int32                       `protobuf:"varint,6,opt,name=daily_work_period_region,json=dailyWorkPeriodRegion"`
 	xxx_hidden_VehicleOdometerKm      int32                       `protobuf:"varint,7,opt,name=vehicle_odometer_km,json=vehicleOdometerKm"`
 	xxx_hidden_ReservedByte           int32                       `protobuf:"varint,8,opt,name=reserved_byte,json=reservedByte"`
@@ -489,18 +489,18 @@ var File_wayplatform_connect_tachograph_card_v1_places_proto protoreflect.FileDe
 
 const file_wayplatform_connect_tachograph_card_v1_places_proto_rawDesc = "" +
 	"\n" +
-	"3wayplatform/connect/tachograph/card/v1/places.proto\x12&wayplatform.connect.tachograph.card.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1aSwayplatform/connect/tachograph/datadictionary/v1/entry_type_daily_work_period.proto\x1aEwayplatform/connect/tachograph/datadictionary/v1/nation_numeric.proto\"\x89\x05\n" +
+	"3wayplatform/connect/tachograph/card/v1/places.proto\x12&wayplatform.connect.tachograph.card.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1aGwayplatform/connect/tachograph/dd/v1/entry_type_daily_work_period.proto\x1a9wayplatform/connect/tachograph/dd/v1/nation_numeric.proto\"\xf1\x04\n" +
 	"\x06Places\x12.\n" +
 	"\x13newest_record_index\x18\x01 \x01(\x05R\x11newestRecordIndex\x12O\n" +
 	"\arecords\x18\x02 \x03(\v25.wayplatform.connect.tachograph.card.v1.Places.RecordR\arecords\x12%\n" +
 	"\x0etrailing_bytes\x18\x03 \x01(\fR\rtrailingBytes\x12\x1c\n" +
-	"\tsignature\x18\x04 \x01(\fR\tsignature\x1a\xb8\x03\n" +
+	"\tsignature\x18\x04 \x01(\fR\tsignature\x1a\xa0\x03\n" +
 	"\x06Record\x129\n" +
 	"\n" +
-	"entry_time\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\tentryTime\x12i\n" +
+	"entry_time\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\tentryTime\x12]\n" +
 	"\n" +
-	"entry_type\x18\x02 \x01(\x0e2J.wayplatform.connect.tachograph.datadictionary.v1.EntryTypeDailyWorkPeriodR\tentryType\x12z\n" +
-	"\x19daily_work_period_country\x18\x04 \x01(\x0e2?.wayplatform.connect.tachograph.datadictionary.v1.NationNumericR\x16dailyWorkPeriodCountry\x127\n" +
+	"entry_type\x18\x02 \x01(\x0e2>.wayplatform.connect.tachograph.dd.v1.EntryTypeDailyWorkPeriodR\tentryType\x12n\n" +
+	"\x19daily_work_period_country\x18\x04 \x01(\x0e23.wayplatform.connect.tachograph.dd.v1.NationNumericR\x16dailyWorkPeriodCountry\x127\n" +
 	"\x18daily_work_period_region\x18\x06 \x01(\x05R\x15dailyWorkPeriodRegion\x12.\n" +
 	"\x13vehicle_odometer_km\x18\a \x01(\x05R\x11vehicleOdometerKm\x12#\n" +
 	"\rreserved_byte\x18\b \x01(\x05R\freservedByteB\xd8\x02\n" +
@@ -511,14 +511,14 @@ var file_wayplatform_connect_tachograph_card_v1_places_proto_goTypes = []any{
 	(*Places)(nil),                   // 0: wayplatform.connect.tachograph.card.v1.Places
 	(*Places_Record)(nil),            // 1: wayplatform.connect.tachograph.card.v1.Places.Record
 	(*timestamppb.Timestamp)(nil),    // 2: google.protobuf.Timestamp
-	(v1.EntryTypeDailyWorkPeriod)(0), // 3: wayplatform.connect.tachograph.datadictionary.v1.EntryTypeDailyWorkPeriod
-	(v1.NationNumeric)(0),            // 4: wayplatform.connect.tachograph.datadictionary.v1.NationNumeric
+	(v1.EntryTypeDailyWorkPeriod)(0), // 3: wayplatform.connect.tachograph.dd.v1.EntryTypeDailyWorkPeriod
+	(v1.NationNumeric)(0),            // 4: wayplatform.connect.tachograph.dd.v1.NationNumeric
 }
 var file_wayplatform_connect_tachograph_card_v1_places_proto_depIdxs = []int32{
 	1, // 0: wayplatform.connect.tachograph.card.v1.Places.records:type_name -> wayplatform.connect.tachograph.card.v1.Places.Record
 	2, // 1: wayplatform.connect.tachograph.card.v1.Places.Record.entry_time:type_name -> google.protobuf.Timestamp
-	3, // 2: wayplatform.connect.tachograph.card.v1.Places.Record.entry_type:type_name -> wayplatform.connect.tachograph.datadictionary.v1.EntryTypeDailyWorkPeriod
-	4, // 3: wayplatform.connect.tachograph.card.v1.Places.Record.daily_work_period_country:type_name -> wayplatform.connect.tachograph.datadictionary.v1.NationNumeric
+	3, // 2: wayplatform.connect.tachograph.card.v1.Places.Record.entry_type:type_name -> wayplatform.connect.tachograph.dd.v1.EntryTypeDailyWorkPeriod
+	4, // 3: wayplatform.connect.tachograph.card.v1.Places.Record.daily_work_period_country:type_name -> wayplatform.connect.tachograph.dd.v1.NationNumeric
 	4, // [4:4] is the sub-list for method output_type
 	4, // [4:4] is the sub-list for method input_type
 	4, // [4:4] is the sub-list for extension type_name

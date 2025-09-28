@@ -7,7 +7,7 @@
 package cardv1
 
 import (
-	v1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/datadictionary/v1"
+	v1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
@@ -152,7 +152,7 @@ func (b0 LoadUnloadOperations_builder) Build() *LoadUnloadOperations {
 type LoadUnloadOperations_Record struct {
 	state                          protoimpl.MessageState `protogen:"opaque.v1"`
 	xxx_hidden_Timestamp           *timestamppb.Timestamp `protobuf:"bytes,1,opt,name=timestamp"`
-	xxx_hidden_OperationType       v1.OperationType       `protobuf:"varint,2,opt,name=operation_type,json=operationType,enum=wayplatform.connect.tachograph.datadictionary.v1.OperationType"`
+	xxx_hidden_OperationType       v1.OperationType       `protobuf:"varint,2,opt,name=operation_type,json=operationType,enum=wayplatform.connect.tachograph.dd.v1.OperationType"`
 	xxx_hidden_GnssPlaceAuthRecord *GnssPlaceAuthRecord   `protobuf:"bytes,3,opt,name=gnss_place_auth_record,json=gnssPlaceAuthRecord"`
 	xxx_hidden_VehicleOdometerKm   int32                  `protobuf:"varint,4,opt,name=vehicle_odometer_km,json=vehicleOdometerKm"`
 	XXX_raceDetectHookData         protoimpl.RaceDetectHookData
@@ -326,13 +326,13 @@ var File_wayplatform_connect_tachograph_card_v1_load_unload_operations_proto pro
 
 const file_wayplatform_connect_tachograph_card_v1_load_unload_operations_proto_rawDesc = "" +
 	"\n" +
-	"Cwayplatform/connect/tachograph/card/v1/load_unload_operations.proto\x12&wayplatform.connect.tachograph.card.v1\x1aEwayplatform/connect/tachograph/datadictionary/v1/operation_type.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1aCwayplatform/connect/tachograph/card/v1/gnss_place_auth_record.proto\"\xf4\x03\n" +
+	"Cwayplatform/connect/tachograph/card/v1/load_unload_operations.proto\x12&wayplatform.connect.tachograph.card.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1aCwayplatform/connect/tachograph/card/v1/gnss_place_auth_record.proto\x1a9wayplatform/connect/tachograph/dd/v1/operation_type.proto\"\xe8\x03\n" +
 	"\x14LoadUnloadOperations\x12.\n" +
 	"\x13newest_record_index\x18\x01 \x01(\x05R\x11newestRecordIndex\x12]\n" +
-	"\arecords\x18\x02 \x03(\v2C.wayplatform.connect.tachograph.card.v1.LoadUnloadOperations.RecordR\arecords\x1a\xcc\x02\n" +
+	"\arecords\x18\x02 \x03(\v2C.wayplatform.connect.tachograph.card.v1.LoadUnloadOperations.RecordR\arecords\x1a\xc0\x02\n" +
 	"\x06Record\x128\n" +
-	"\ttimestamp\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\ttimestamp\x12f\n" +
-	"\x0eoperation_type\x18\x02 \x01(\x0e2?.wayplatform.connect.tachograph.datadictionary.v1.OperationTypeR\roperationType\x12p\n" +
+	"\ttimestamp\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\ttimestamp\x12Z\n" +
+	"\x0eoperation_type\x18\x02 \x01(\x0e23.wayplatform.connect.tachograph.dd.v1.OperationTypeR\roperationType\x12p\n" +
 	"\x16gnss_place_auth_record\x18\x03 \x01(\v2;.wayplatform.connect.tachograph.card.v1.GnssPlaceAuthRecordR\x13gnssPlaceAuthRecord\x12.\n" +
 	"\x13vehicle_odometer_km\x18\x04 \x01(\x05R\x11vehicleOdometerKmB\xe6\x02\n" +
 	"*com.wayplatform.connect.tachograph.card.v1B\x19LoadUnloadOperationsProtoP\x01Z`github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1;cardv1\xa2\x02\x04WCTC\xaa\x02&Wayplatform.Connect.Tachograph.Card.V1\xca\x02&Wayplatform\\Connect\\Tachograph\\Card\\V1\xe2\x022Wayplatform\\Connect\\Tachograph\\Card\\V1\\GPBMetadata\xea\x02*Wayplatform::Connect::Tachograph::Card::V1b\beditionsp\xe8\a"
@@ -342,13 +342,13 @@ var file_wayplatform_connect_tachograph_card_v1_load_unload_operations_proto_goT
 	(*LoadUnloadOperations)(nil),        // 0: wayplatform.connect.tachograph.card.v1.LoadUnloadOperations
 	(*LoadUnloadOperations_Record)(nil), // 1: wayplatform.connect.tachograph.card.v1.LoadUnloadOperations.Record
 	(*timestamppb.Timestamp)(nil),       // 2: google.protobuf.Timestamp
-	(v1.OperationType)(0),               // 3: wayplatform.connect.tachograph.datadictionary.v1.OperationType
+	(v1.OperationType)(0),               // 3: wayplatform.connect.tachograph.dd.v1.OperationType
 	(*GnssPlaceAuthRecord)(nil),         // 4: wayplatform.connect.tachograph.card.v1.GnssPlaceAuthRecord
 }
 var file_wayplatform_connect_tachograph_card_v1_load_unload_operations_proto_depIdxs = []int32{
 	1, // 0: wayplatform.connect.tachograph.card.v1.LoadUnloadOperations.records:type_name -> wayplatform.connect.tachograph.card.v1.LoadUnloadOperations.Record
 	2, // 1: wayplatform.connect.tachograph.card.v1.LoadUnloadOperations.Record.timestamp:type_name -> google.protobuf.Timestamp
-	3, // 2: wayplatform.connect.tachograph.card.v1.LoadUnloadOperations.Record.operation_type:type_name -> wayplatform.connect.tachograph.datadictionary.v1.OperationType
+	3, // 2: wayplatform.connect.tachograph.card.v1.LoadUnloadOperations.Record.operation_type:type_name -> wayplatform.connect.tachograph.dd.v1.OperationType
 	4, // 3: wayplatform.connect.tachograph.card.v1.LoadUnloadOperations.Record.gnss_place_auth_record:type_name -> wayplatform.connect.tachograph.card.v1.GnssPlaceAuthRecord
 	4, // [4:4] is the sub-list for method output_type
 	4, // [4:4] is the sub-list for method input_type

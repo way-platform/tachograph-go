@@ -1,0 +1,32 @@
+edition = "2023";
+
+package wayplatform.connect.tachograph.dd.v1;
+
+import "wayplatform/connect/tachograph/dd/v1/annotations.proto";
+
+// EquipmentType distinguishes different types of tachograph equipment.
+// See Data Dictionary, Section 2.67.
+enum EquipmentType {
+  EQUIPMENT_TYPE_UNSPECIFIED = 0;
+  EQUIPMENT_TYPE_UNRECOGNIZED = 1;
+  RESERVED_MEMBER_STATE_OR_EUROPE = 2 [(protocol_enum_value) = 0];
+  DRIVER_CARD = 3 [(protocol_enum_value) = 1];
+  WORKSHOP_CARD = 4 [(protocol_enum_value) = 2];
+  CONTROL_CARD = 5 [(protocol_enum_value) = 3];
+  COMPANY_CARD = 6 [(protocol_enum_value) = 4];
+  MANUFACTURING_CARD = 7 [(protocol_enum_value) = 5];
+  VEHICLE_UNIT = 8 [(protocol_enum_value) = 6];
+  MOTION_SENSOR = 9 [(protocol_enum_value) = 7];
+  GNSS_FACILITY = 10 [(protocol_enum_value) = 8]; // Gen2
+  REMOTE_COMMUNICATION_MODULE = 11 [(protocol_enum_value) = 9]; // Gen2
+  ITS_INTERFACE_MODULE = 12 [(protocol_enum_value) = 10]; // Gen2
+  PLAQUE = 13 [(protocol_enum_value) = 11]; // Gen2
+  M1_N1_ADAPTER = 14 [(protocol_enum_value) = 12]; // Gen2
+  EUROPEAN_ROOT_CA = 15 [(protocol_enum_value) = 13]; // Gen2
+  MEMBER_STATE_CA = 16 [(protocol_enum_value) = 14]; // Gen2
+  EXTERNAL_GNSS_CONNECTION = 17 [(protocol_enum_value) = 15]; // Gen2
+  UNUSED = 18 [(protocol_enum_value) = 16]; // Gen2
+  DRIVER_CARD_SIGN = 19 [(protocol_enum_value) = 17]; // Gen2
+  WORKSHOP_CARD_SIGN = 20 [(protocol_enum_value) = 18]; // Gen2
+  VEHICLE_UNIT_SIGN = 21 [(protocol_enum_value) = 19]; // Gen2
+}

@@ -7,7 +7,7 @@
 package cardv1
 
 import (
-	v1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/datadictionary/v1"
+	v1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
@@ -153,7 +153,7 @@ func (b0 FaultsData_builder) Build() *FaultsData {
 type FaultsData_Record struct {
 	state                               protoimpl.MessageState                `protogen:"opaque.v1"`
 	xxx_hidden_Valid                    bool                                  `protobuf:"varint,1,opt,name=valid"`
-	xxx_hidden_FaultType                v1.EventFaultType                     `protobuf:"varint,2,opt,name=fault_type,json=faultType,enum=wayplatform.connect.tachograph.datadictionary.v1.EventFaultType"`
+	xxx_hidden_FaultType                v1.EventFaultType                     `protobuf:"varint,2,opt,name=fault_type,json=faultType,enum=wayplatform.connect.tachograph.dd.v1.EventFaultType"`
 	xxx_hidden_FaultBeginTime           *timestamppb.Timestamp                `protobuf:"bytes,4,opt,name=fault_begin_time,json=faultBeginTime"`
 	xxx_hidden_FaultEndTime             *timestamppb.Timestamp                `protobuf:"bytes,5,opt,name=fault_end_time,json=faultEndTime"`
 	xxx_hidden_FaultVehicleRegistration *v1.VehicleRegistrationIdentification `protobuf:"bytes,6,opt,name=fault_vehicle_registration,json=faultVehicleRegistration"`
@@ -398,18 +398,18 @@ var File_wayplatform_connect_tachograph_card_v1_faults_data_proto protoreflect.F
 
 const file_wayplatform_connect_tachograph_card_v1_faults_data_proto_rawDesc = "" +
 	"\n" +
-	"8wayplatform/connect/tachograph/card/v1/faults_data.proto\x12&wayplatform.connect.tachograph.card.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1aGwayplatform/connect/tachograph/datadictionary/v1/event_fault_type.proto\x1aZwayplatform/connect/tachograph/datadictionary/v1/vehicle_registration_identification.proto\"\xb8\x04\n" +
+	"8wayplatform/connect/tachograph/card/v1/faults_data.proto\x12&wayplatform.connect.tachograph.card.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a;wayplatform/connect/tachograph/dd/v1/event_fault_type.proto\x1aNwayplatform/connect/tachograph/dd/v1/vehicle_registration_identification.proto\"\xa0\x04\n" +
 	"\n" +
 	"FaultsData\x12S\n" +
 	"\arecords\x18\x01 \x03(\v29.wayplatform.connect.tachograph.card.v1.FaultsData.RecordR\arecords\x12\x1c\n" +
-	"\tsignature\x18\x02 \x01(\fR\tsignature\x1a\xb6\x03\n" +
+	"\tsignature\x18\x02 \x01(\fR\tsignature\x1a\x9e\x03\n" +
 	"\x06Record\x12\x14\n" +
-	"\x05valid\x18\x01 \x01(\bR\x05valid\x12_\n" +
+	"\x05valid\x18\x01 \x01(\bR\x05valid\x12S\n" +
 	"\n" +
-	"fault_type\x18\x02 \x01(\x0e2@.wayplatform.connect.tachograph.datadictionary.v1.EventFaultTypeR\tfaultType\x12D\n" +
+	"fault_type\x18\x02 \x01(\x0e24.wayplatform.connect.tachograph.dd.v1.EventFaultTypeR\tfaultType\x12D\n" +
 	"\x10fault_begin_time\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampR\x0efaultBeginTime\x12@\n" +
-	"\x0efault_end_time\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampR\ffaultEndTime\x12\x91\x01\n" +
-	"\x1afault_vehicle_registration\x18\x06 \x01(\v2S.wayplatform.connect.tachograph.datadictionary.v1.VehicleRegistrationIdentificationR\x18faultVehicleRegistration\x12\x19\n" +
+	"\x0efault_end_time\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampR\ffaultEndTime\x12\x85\x01\n" +
+	"\x1afault_vehicle_registration\x18\x06 \x01(\v2G.wayplatform.connect.tachograph.dd.v1.VehicleRegistrationIdentificationR\x18faultVehicleRegistration\x12\x19\n" +
 	"\braw_data\x18\a \x01(\fR\arawDataB\xdc\x02\n" +
 	"*com.wayplatform.connect.tachograph.card.v1B\x0fFaultsDataProtoP\x01Z`github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1;cardv1\xa2\x02\x04WCTC\xaa\x02&Wayplatform.Connect.Tachograph.Card.V1\xca\x02&Wayplatform\\Connect\\Tachograph\\Card\\V1\xe2\x022Wayplatform\\Connect\\Tachograph\\Card\\V1\\GPBMetadata\xea\x02*Wayplatform::Connect::Tachograph::Card::V1b\beditionsp\xe8\a"
 
@@ -417,16 +417,16 @@ var file_wayplatform_connect_tachograph_card_v1_faults_data_proto_msgTypes = mak
 var file_wayplatform_connect_tachograph_card_v1_faults_data_proto_goTypes = []any{
 	(*FaultsData)(nil),                           // 0: wayplatform.connect.tachograph.card.v1.FaultsData
 	(*FaultsData_Record)(nil),                    // 1: wayplatform.connect.tachograph.card.v1.FaultsData.Record
-	(v1.EventFaultType)(0),                       // 2: wayplatform.connect.tachograph.datadictionary.v1.EventFaultType
+	(v1.EventFaultType)(0),                       // 2: wayplatform.connect.tachograph.dd.v1.EventFaultType
 	(*timestamppb.Timestamp)(nil),                // 3: google.protobuf.Timestamp
-	(*v1.VehicleRegistrationIdentification)(nil), // 4: wayplatform.connect.tachograph.datadictionary.v1.VehicleRegistrationIdentification
+	(*v1.VehicleRegistrationIdentification)(nil), // 4: wayplatform.connect.tachograph.dd.v1.VehicleRegistrationIdentification
 }
 var file_wayplatform_connect_tachograph_card_v1_faults_data_proto_depIdxs = []int32{
 	1, // 0: wayplatform.connect.tachograph.card.v1.FaultsData.records:type_name -> wayplatform.connect.tachograph.card.v1.FaultsData.Record
-	2, // 1: wayplatform.connect.tachograph.card.v1.FaultsData.Record.fault_type:type_name -> wayplatform.connect.tachograph.datadictionary.v1.EventFaultType
+	2, // 1: wayplatform.connect.tachograph.card.v1.FaultsData.Record.fault_type:type_name -> wayplatform.connect.tachograph.dd.v1.EventFaultType
 	3, // 2: wayplatform.connect.tachograph.card.v1.FaultsData.Record.fault_begin_time:type_name -> google.protobuf.Timestamp
 	3, // 3: wayplatform.connect.tachograph.card.v1.FaultsData.Record.fault_end_time:type_name -> google.protobuf.Timestamp
-	4, // 4: wayplatform.connect.tachograph.card.v1.FaultsData.Record.fault_vehicle_registration:type_name -> wayplatform.connect.tachograph.datadictionary.v1.VehicleRegistrationIdentification
+	4, // 4: wayplatform.connect.tachograph.card.v1.FaultsData.Record.fault_vehicle_registration:type_name -> wayplatform.connect.tachograph.dd.v1.VehicleRegistrationIdentification
 	5, // [5:5] is the sub-list for method output_type
 	5, // [5:5] is the sub-list for method input_type
 	5, // [5:5] is the sub-list for extension type_name

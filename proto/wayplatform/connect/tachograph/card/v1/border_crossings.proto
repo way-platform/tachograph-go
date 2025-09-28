@@ -4,7 +4,7 @@ package wayplatform.connect.tachograph.card.v1;
 
 import "google/protobuf/timestamp.proto";
 import "wayplatform/connect/tachograph/card/v1/gnss_place_auth_record.proto";
-import "wayplatform/connect/tachograph/datadictionary/v1/nation_numeric.proto";
+import "wayplatform/connect/tachograph/dd/v1/nation_numeric.proto";
 
 // Represents the content of the EF_Border_Crossings file.
 //
@@ -42,7 +42,7 @@ message BorderCrossings {
     // ASN.1 Specification:
     //
     //     NationNumeric ::= INTEGER (0..255)
-    wayplatform.connect.tachograph.datadictionary.v1.NationNumeric country_left = 1;
+    wayplatform.connect.tachograph.dd.v1.NationNumeric country_left = 1;
 
     // Country the vehicle is entering.
     //
@@ -50,7 +50,7 @@ message BorderCrossings {
     // ASN.1 Specification:
     //
     //     NationNumeric ::= INTEGER (0..255)
-    wayplatform.connect.tachograph.datadictionary.v1.NationNumeric country_entered = 2;
+    wayplatform.connect.tachograph.dd.v1.NationNumeric country_entered = 2;
 
     // Authenticated position of the vehicle at the time of crossing.
     //

@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"strings"
 
-	datadictionaryv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/datadictionary/v1"
+	ddv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
 )
 
 // readString reads a fixed-length string from a bytes.Reader
@@ -63,7 +63,7 @@ func appendString(dst []byte, s string, length int) ([]byte, error) {
 }
 
 // appendStringValue appends a fixed-length string from a StringValue, padding with spaces.
-func appendStringValue(dst []byte, sv *datadictionaryv1.StringValue, length int) ([]byte, error) {
+func appendStringValue(dst []byte, sv *ddv1.StringValue, length int) ([]byte, error) {
 	if sv == nil {
 		return appendString(dst, "", length)
 	}
@@ -83,14 +83,14 @@ func appendBCDNation(dst []byte, nation string) ([]byte, error) {
 }
 
 // appendFullCardNumber appends a FullCardNumber structure as a string
-func appendFullCardNumber(dst []byte, cardNumber *datadictionaryv1.FullCardNumber, maxLen int) ([]byte, error) {
+func appendFullCardNumber(dst []byte, cardNumber *ddv1.FullCardNumber, maxLen int) ([]byte, error) {
 	if cardNumber == nil {
 		return appendString(dst, "", maxLen)
 	}
 
 	// Handle the CardNumber CHOICE based on card type
 	switch cardNumber.GetCardType() {
-	case datadictionaryv1.EquipmentType_DRIVER_CARD:
+	case ddv1.EquipmentType_DRIVER_CARD:
 		if driverID := cardNumber.GetDriverIdentification(); driverID != nil {
 			// Concatenate the driver identification components
 			identification := driverID.GetIdentificationNumber()
@@ -102,7 +102,7 @@ func appendFullCardNumber(dst []byte, cardNumber *datadictionaryv1.FullCardNumbe
 			}
 			return appendString(dst, driverStr, maxLen)
 		}
-	case datadictionaryv1.EquipmentType_WORKSHOP_CARD, datadictionaryv1.EquipmentType_COMPANY_CARD:
+	case ddv1.EquipmentType_WORKSHOP_CARD, ddv1.EquipmentType_COMPANY_CARD:
 		if ownerID := cardNumber.GetOwnerIdentification(); ownerID != nil {
 			identification := ownerID.GetIdentificationNumber()
 			if identification != nil {
@@ -116,7 +116,7 @@ func appendFullCardNumber(dst []byte, cardNumber *datadictionaryv1.FullCardNumbe
 }
 
 // appendVehicleRegistration appends vehicle registration from VehicleRegistrationIdentification
-func appendVehicleRegistration(dst []byte, vehicleReg *datadictionaryv1.VehicleRegistrationIdentification) ([]byte, error) {
+func appendVehicleRegistration(dst []byte, vehicleReg *ddv1.VehicleRegistrationIdentification) ([]byte, error) {
 	if vehicleReg == nil {
 		// Append default values: 1 byte nation (0xFF) + 14 bytes registration number (spaces)
 		dst = append(dst, 0xFF)

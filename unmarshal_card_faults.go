@@ -9,7 +9,7 @@ import (
 	"google.golang.org/protobuf/reflect/protoreflect"
 
 	cardv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1"
-	datadictionaryv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/datadictionary/v1"
+	ddv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
 )
 
 // unmarshalFaultsData parses the binary data for an EF_Faults_Data record.
@@ -89,10 +89,10 @@ func UnmarshalFaultRecord(data []byte, rec *cardv1.FaultsData_Record) error {
 		return fmt.Errorf("insufficient data for fault type")
 	}
 	faultType := data[offset]
-	enumDesc := datadictionaryv1.EventFaultType_EVENT_FAULT_TYPE_UNSPECIFIED.Descriptor()
+	enumDesc := ddv1.EventFaultType_EVENT_FAULT_TYPE_UNSPECIFIED.Descriptor()
 	SetEnumFromProtocolValue(enumDesc, int32(faultType),
 		func(enumNum protoreflect.EnumNumber) {
-			rec.SetFaultType(datadictionaryv1.EventFaultType(enumNum))
+			rec.SetFaultType(ddv1.EventFaultType(enumNum))
 		}, nil)
 	offset++
 
@@ -121,7 +121,7 @@ func UnmarshalFaultRecord(data []byte, rec *cardv1.FaultsData_Record) error {
 	offset++
 
 	// Create VehicleRegistrationIdentification structure
-	vehicleReg := &datadictionaryv1.VehicleRegistrationIdentification{}
+	vehicleReg := &ddv1.VehicleRegistrationIdentification{}
 	vehicleReg.SetNation(nation)
 
 	// Read vehicle registration number (14 bytes)

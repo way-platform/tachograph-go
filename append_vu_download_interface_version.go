@@ -3,7 +3,7 @@ package tachograph
 import (
 	"bytes"
 
-	datadictionaryv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/datadictionary/v1"
+	ddv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
 	vuv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/vu/v1"
 )
 
@@ -19,9 +19,9 @@ func AppendDownloadInterfaceVersion(buf *bytes.Buffer, version *vuv1.DownloadInt
 	// Map generation enum to byte
 	var generationByte uint8
 	switch version.GetGeneration() {
-	case datadictionaryv1.Generation_GENERATION_1:
+	case ddv1.Generation_GENERATION_1:
 		generationByte = 1
-	case datadictionaryv1.Generation_GENERATION_2:
+	case ddv1.Generation_GENERATION_2:
 		generationByte = 2
 	default:
 		generationByte = 0

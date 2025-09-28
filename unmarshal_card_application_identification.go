@@ -6,7 +6,7 @@ import (
 	"fmt"
 
 	cardv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1"
-	datadictionaryv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/datadictionary/v1"
+	ddv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
 	"google.golang.org/protobuf/reflect/protoreflect"
 )
 
@@ -58,8 +58,8 @@ func unmarshalCardApplicationIdentification(data []byte) (*cardv1.ApplicationIde
 		return nil, fmt.Errorf("failed to read card type: %w", err)
 	}
 	// Convert raw card type to enum using protocol annotations
-	SetEquipmentType(datadictionaryv1.EquipmentType_EQUIPMENT_TYPE_UNSPECIFIED.Descriptor(), int32(cardType), func(et protoreflect.EnumNumber) {
-		target.SetTypeOfTachographCardId(datadictionaryv1.EquipmentType(et))
+	SetEquipmentType(ddv1.EquipmentType_EQUIPMENT_TYPE_UNSPECIFIED.Descriptor(), int32(cardType), func(et protoreflect.EnumNumber) {
+		target.SetTypeOfTachographCardId(ddv1.EquipmentType(et))
 	}, nil)
 
 	// Read card structure version (2 bytes)
@@ -70,7 +70,7 @@ func unmarshalCardApplicationIdentification(data []byte) (*cardv1.ApplicationIde
 	// Parse BCD structure version
 	major := int32((structureVersionBytes[0]&0xF0)>>4)*10 + int32(structureVersionBytes[0]&0x0F)
 	minor := int32((structureVersionBytes[1]&0xF0)>>4)*10 + int32(structureVersionBytes[1]&0x0F)
-	cardStructureVersion := &datadictionaryv1.CardStructureVersion{}
+	cardStructureVersion := &ddv1.CardStructureVersion{}
 	cardStructureVersion.SetMajor(major)
 	cardStructureVersion.SetMinor(minor)
 	target.SetCardStructureVersion(cardStructureVersion)

@@ -3,19 +3,19 @@ edition = "2023";
 package wayplatform.connect.tachograph.vu.v1;
 
 import "google/protobuf/timestamp.proto";
-import "wayplatform/connect/tachograph/datadictionary/v1/activity_change_info.proto";
-import "wayplatform/connect/tachograph/datadictionary/v1/card_slot_number.proto";
-import "wayplatform/connect/tachograph/datadictionary/v1/date.proto";
-import "wayplatform/connect/tachograph/datadictionary/v1/entry_type_daily_work_period.proto";
-import "wayplatform/connect/tachograph/datadictionary/v1/full_card_number.proto";
-import "wayplatform/connect/tachograph/datadictionary/v1/generation.proto";
-import "wayplatform/connect/tachograph/datadictionary/v1/geo_coordinates.proto";
-import "wayplatform/connect/tachograph/datadictionary/v1/holder_name.proto";
-import "wayplatform/connect/tachograph/datadictionary/v1/nation_numeric.proto";
-import "wayplatform/connect/tachograph/datadictionary/v1/operation_type.proto";
-import "wayplatform/connect/tachograph/datadictionary/v1/position_authentication_status.proto";
-import "wayplatform/connect/tachograph/datadictionary/v1/specific_condition_type.proto";
-import "wayplatform/connect/tachograph/datadictionary/v1/vehicle_registration_identification.proto";
+import "wayplatform/connect/tachograph/dd/v1/activity_change_info.proto";
+import "wayplatform/connect/tachograph/dd/v1/card_slot_number.proto";
+import "wayplatform/connect/tachograph/dd/v1/date.proto";
+import "wayplatform/connect/tachograph/dd/v1/entry_type_daily_work_period.proto";
+import "wayplatform/connect/tachograph/dd/v1/full_card_number.proto";
+import "wayplatform/connect/tachograph/dd/v1/generation.proto";
+import "wayplatform/connect/tachograph/dd/v1/geo_coordinates.proto";
+import "wayplatform/connect/tachograph/dd/v1/holder_name.proto";
+import "wayplatform/connect/tachograph/dd/v1/nation_numeric.proto";
+import "wayplatform/connect/tachograph/dd/v1/operation_type.proto";
+import "wayplatform/connect/tachograph/dd/v1/position_authentication_status.proto";
+import "wayplatform/connect/tachograph/dd/v1/specific_condition_type.proto";
+import "wayplatform/connect/tachograph/dd/v1/vehicle_registration_identification.proto";
 import "wayplatform/connect/tachograph/vu/v1/versioning.proto";
 
 // Represents the consolidated data structure for an Activities transfer.
@@ -60,7 +60,7 @@ message Activities {
       // The registration of the previous vehicle.
       //
       // See Data Dictionary, Section 2.166, `VehicleRegistrationIdentification`.
-      datadictionary.v1.VehicleRegistrationIdentification vehicle_registration = 1;
+      dd.v1.VehicleRegistrationIdentification vehicle_registration = 1;
 
       // The time the card was withdrawn from the previous vehicle.
       //
@@ -74,12 +74,12 @@ message Activities {
     // The name of the card holder.
     //
     // See Data Dictionary, Section 2.83, `HolderName`.
-    wayplatform.connect.tachograph.datadictionary.v1.HolderName card_holder_name = 1;
+    wayplatform.connect.tachograph.dd.v1.HolderName card_holder_name = 1;
 
     // The full card number of the inserted card.
     //
     // See Data Dictionary, Section 2.73, `FullCardNumber` and 2.74, `FullCardNumberAndGeneration`.
-    datadictionary.v1.FullCardNumber full_card_number = 2;
+    dd.v1.FullCardNumber full_card_number = 2;
 
     // The expiry date of the card.
     //
@@ -87,7 +87,7 @@ message Activities {
     // ASN.1 Definition:
     //
     //     Datef ::= OCTET STRING(SIZE(4))
-    wayplatform.connect.tachograph.datadictionary.v1.Date card_expiry_date = 3;
+    wayplatform.connect.tachograph.dd.v1.Date card_expiry_date = 3;
 
     // The time the card was inserted.
     //
@@ -108,7 +108,7 @@ message Activities {
     // The slot the card was inserted into.
     //
     // See Data Dictionary, Section 2.33, `CardSlotNumber`.
-    datadictionary.v1.CardSlotNumber card_slot_number = 6;
+    dd.v1.CardSlotNumber card_slot_number = 6;
 
     // The time the card was withdrawn.
     //
@@ -150,7 +150,7 @@ message Activities {
     // Type of entry (begin or end).
     //
     // See Data Dictionary, Section 2.66, `EntryTypeDailyWorkPeriod`.
-    datadictionary.v1.EntryTypeDailyWorkPeriod entry_type = 2;
+    dd.v1.EntryTypeDailyWorkPeriod entry_type = 2;
 
     // Country code.
     //
@@ -158,7 +158,7 @@ message Activities {
     // ASN.1 Definition:
     //
     //     NationNumeric ::= INTEGER (0..255)
-    datadictionary.v1.NationNumeric country = 4;
+    dd.v1.NationNumeric country = 4;
 
     // Region code. This is not a number, but a single-byte identifier.
     //
@@ -215,12 +215,12 @@ message Activities {
     //         latitude INTEGER(-90*3600*1000..90*3600*1000),
     //         longitude INTEGER(-180*3600*1000+1..180*3600*1000)
     //     }
-    wayplatform.connect.tachograph.datadictionary.v1.GeoCoordinates geo_coordinates = 3;
+    wayplatform.connect.tachograph.dd.v1.GeoCoordinates geo_coordinates = 3;
 
     // For Gen2v2+, indicates the authentication status of the position.
     //
     // See Data Dictionary, Section 2.117a, `PositionAuthenticationStatus`.
-    datadictionary.v1.PositionAuthenticationStatus authentication_status = 5;
+    dd.v1.PositionAuthenticationStatus authentication_status = 5;
   }
 
   // Represents a specific condition record (e.g., Ferry/Train crossing).
@@ -245,7 +245,7 @@ message Activities {
     // Type of specific condition.
     //
     // See Data Dictionary, Section 2.154, `SpecificConditionType`.
-    datadictionary.v1.SpecificConditionType specific_condition_type = 2;
+    dd.v1.SpecificConditionType specific_condition_type = 2;
   }
 
   // Represents a border crossing record (Gen2v2+).
@@ -266,22 +266,22 @@ message Activities {
     // Card number of the driver.
     //
     // See Data Dictionary, Section 2.74, `FullCardNumberAndGeneration`.
-    datadictionary.v1.FullCardNumber full_card_number = 1;
+    dd.v1.FullCardNumber full_card_number = 1;
 
     // Generation of the driver's card.
     //
     // See Data Dictionary, Section 2.75, `Generation`.
-    datadictionary.v1.Generation card_generation = 2;
+    dd.v1.Generation card_generation = 2;
 
     // Country the vehicle is leaving.
     //
     // See Data Dictionary, Section 2.101, `NationNumeric`.
-    datadictionary.v1.NationNumeric country_left = 3;
+    dd.v1.NationNumeric country_left = 3;
 
     // Country the vehicle is entering.
     //
     // See Data Dictionary, Section 2.101, `NationNumeric`.
-    datadictionary.v1.NationNumeric country_entered = 5;
+    dd.v1.NationNumeric country_entered = 5;
 
     // Position of the vehicle at the time of crossing.
     //
@@ -315,15 +315,15 @@ message Activities {
     // Card number of the driver.
     //
     // See Data Dictionary, Section 2.74, `FullCardNumberAndGeneration`.
-    datadictionary.v1.FullCardNumber full_card_number = 1;
+    dd.v1.FullCardNumber full_card_number = 1;
 
     // Generation of the driver's card.
     //
     // See Data Dictionary, Section 2.75, `Generation`.
-    datadictionary.v1.Generation card_generation = 2;
+    dd.v1.Generation card_generation = 2;
 
     // Type of operation (load, unload, or both).
-    wayplatform.connect.tachograph.datadictionary.v1.OperationType operation_type = 3;
+    wayplatform.connect.tachograph.dd.v1.OperationType operation_type = 3;
 
     // Position of the vehicle at the time of the operation.
     //
@@ -341,7 +341,7 @@ message Activities {
 
   // The generation of the vehicle unit, parsed from the raw transfer data.
   // This is a discriminator field used for parsing.
-  datadictionary.v1.Generation generation = 1;
+  dd.v1.Generation generation = 1;
 
   // The version of the interface, parsed from the raw transfer data.
   // This is a discriminator field used for parsing.
@@ -369,7 +369,7 @@ message Activities {
 
   // Driver activity changes.
   // Corresponds to `VuActivityDailyData` (DD 2.170) or `VuActivityDailyRecordArray` (DD 2.171).
-  repeated datadictionary.v1.ActivityChangeInfo activity_changes = 6;
+  repeated dd.v1.ActivityChangeInfo activity_changes = 6;
 
   // Daily work period place entries.
   // Corresponds to `VuPlaceDailyWorkPeriodData` (DD 2.218) or `VuPlaceDailyWorkPeriodRecordArray` (DD 2.220).

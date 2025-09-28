@@ -1,0 +1,53 @@
+edition = "2023";
+
+package wayplatform.connect.tachograph.dd.v1;
+
+import "wayplatform/connect/tachograph/dd/v1/driver_identification.proto";
+import "wayplatform/connect/tachograph/dd/v1/equipment_type.proto";
+import "wayplatform/connect/tachograph/dd/v1/nation_numeric.proto";
+import "wayplatform/connect/tachograph/dd/v1/owner_identification.proto";
+import "wayplatform/connect/tachograph/dd/v1/string_value.proto";
+
+// Corresponds to the `FullCardNumber` data type in the Data Dictionary, Section 2.73.
+//
+// ASN.1 Specification:
+//
+//     FullCardNumber ::= SEQUENCE {
+//         cardType EquipmentType,
+//         cardIssuingMemberState NationNumeric,
+//         cardNumber CardNumber
+//     }
+message FullCardNumber {
+  // The type of the tachograph card. This field acts as the discriminant for the
+  // `CardNumber` CHOICE, determining which of the fields below is populated.
+  //
+  // ASN.1 Specification:
+  //
+  //     EquipmentType ::= INTEGER (0..255)
+  EquipmentType card_type = 1;
+
+  // The code of the Member State issuing the card.
+  //
+  // ASN.1 Specification:
+  //
+  //     NationNumeric ::= INTEGER(0..255)
+  NationNumeric card_issuing_member_state = 2;
+
+  // --- Inlined CardNumber (DD 2.26) ---
+  // The following fields represent the `CardNumber` ASN.1 CHOICE.
+  //
+  // ASN.1 Definition:
+  //
+  //     CardNumber ::= CHOICE {
+  //         driverIdentification   SEQUENCE { ... },
+  //         ownerIdentification    SEQUENCE { ... }
+  //     }
+
+  // This field is part of the `CardNumber` CHOICE.
+  // It is populated when `card_type` is `DRIVER_CARD`.
+  DriverIdentification driver_identification = 3;
+
+  // This field is part of the `CardNumber` CHOICE.
+  // It is populated when `card_type` is `WORKSHOP_CARD` or `COMPANY_CARD`.
+  OwnerIdentification owner_identification = 4;
+}

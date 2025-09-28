@@ -7,7 +7,7 @@
 package cardv1
 
 import (
-	v1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/datadictionary/v1"
+	v1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -29,7 +29,7 @@ const (
 type ApplicationIdentification struct {
 	state                             protoimpl.MessageState              `protogen:"opaque.v1"`
 	xxx_hidden_CardType               CardType                            `protobuf:"varint,1,opt,name=card_type,json=cardType,enum=wayplatform.connect.tachograph.card.v1.CardType"`
-	xxx_hidden_TypeOfTachographCardId v1.EquipmentType                    `protobuf:"varint,2,opt,name=type_of_tachograph_card_id,json=typeOfTachographCardId,enum=wayplatform.connect.tachograph.datadictionary.v1.EquipmentType"`
+	xxx_hidden_TypeOfTachographCardId v1.EquipmentType                    `protobuf:"varint,2,opt,name=type_of_tachograph_card_id,json=typeOfTachographCardId,enum=wayplatform.connect.tachograph.dd.v1.EquipmentType"`
 	xxx_hidden_CardStructureVersion   *v1.CardStructureVersion            `protobuf:"bytes,3,opt,name=card_structure_version,json=cardStructureVersion"`
 	xxx_hidden_Driver                 *ApplicationIdentification_Driver   `protobuf:"bytes,4,opt,name=driver"`
 	xxx_hidden_Workshop               *ApplicationIdentification_Workshop `protobuf:"bytes,5,opt,name=workshop"`
@@ -1084,11 +1084,11 @@ var File_wayplatform_connect_tachograph_card_v1_application_identification_proto
 
 const file_wayplatform_connect_tachograph_card_v1_application_identification_proto_rawDesc = "" +
 	"\n" +
-	"Gwayplatform/connect/tachograph/card/v1/application_identification.proto\x12&wayplatform.connect.tachograph.card.v1\x1a6wayplatform/connect/tachograph/card/v1/card_type.proto\x1aMwayplatform/connect/tachograph/datadictionary/v1/card_structure_version.proto\x1aEwayplatform/connect/tachograph/datadictionary/v1/equipment_type.proto\"\xfd\r\n" +
+	"Gwayplatform/connect/tachograph/card/v1/application_identification.proto\x12&wayplatform.connect.tachograph.card.v1\x1a6wayplatform/connect/tachograph/card/v1/card_type.proto\x1aAwayplatform/connect/tachograph/dd/v1/card_structure_version.proto\x1a9wayplatform/connect/tachograph/dd/v1/equipment_type.proto\"\xe5\r\n" +
 	"\x19ApplicationIdentification\x12M\n" +
-	"\tcard_type\x18\x01 \x01(\x0e20.wayplatform.connect.tachograph.card.v1.CardTypeR\bcardType\x12{\n" +
-	"\x1atype_of_tachograph_card_id\x18\x02 \x01(\x0e2?.wayplatform.connect.tachograph.datadictionary.v1.EquipmentTypeR\x16typeOfTachographCardId\x12|\n" +
-	"\x16card_structure_version\x18\x03 \x01(\v2F.wayplatform.connect.tachograph.datadictionary.v1.CardStructureVersionR\x14cardStructureVersion\x12`\n" +
+	"\tcard_type\x18\x01 \x01(\x0e20.wayplatform.connect.tachograph.card.v1.CardTypeR\bcardType\x12o\n" +
+	"\x1atype_of_tachograph_card_id\x18\x02 \x01(\x0e23.wayplatform.connect.tachograph.dd.v1.EquipmentTypeR\x16typeOfTachographCardId\x12p\n" +
+	"\x16card_structure_version\x18\x03 \x01(\v2:.wayplatform.connect.tachograph.dd.v1.CardStructureVersionR\x14cardStructureVersion\x12`\n" +
 	"\x06driver\x18\x04 \x01(\v2H.wayplatform.connect.tachograph.card.v1.ApplicationIdentification.DriverR\x06driver\x12f\n" +
 	"\bworkshop\x18\x05 \x01(\v2J.wayplatform.connect.tachograph.card.v1.ApplicationIdentification.WorkshopR\bworkshop\x12c\n" +
 	"\acompany\x18\x06 \x01(\v2I.wayplatform.connect.tachograph.card.v1.ApplicationIdentification.CompanyR\acompany\x12c\n" +
@@ -1124,13 +1124,13 @@ var file_wayplatform_connect_tachograph_card_v1_application_identification_proto
 	(*ApplicationIdentification_Company)(nil),  // 3: wayplatform.connect.tachograph.card.v1.ApplicationIdentification.Company
 	(*ApplicationIdentification_Control)(nil),  // 4: wayplatform.connect.tachograph.card.v1.ApplicationIdentification.Control
 	(CardType)(0),                   // 5: wayplatform.connect.tachograph.card.v1.CardType
-	(v1.EquipmentType)(0),           // 6: wayplatform.connect.tachograph.datadictionary.v1.EquipmentType
-	(*v1.CardStructureVersion)(nil), // 7: wayplatform.connect.tachograph.datadictionary.v1.CardStructureVersion
+	(v1.EquipmentType)(0),           // 6: wayplatform.connect.tachograph.dd.v1.EquipmentType
+	(*v1.CardStructureVersion)(nil), // 7: wayplatform.connect.tachograph.dd.v1.CardStructureVersion
 }
 var file_wayplatform_connect_tachograph_card_v1_application_identification_proto_depIdxs = []int32{
 	5, // 0: wayplatform.connect.tachograph.card.v1.ApplicationIdentification.card_type:type_name -> wayplatform.connect.tachograph.card.v1.CardType
-	6, // 1: wayplatform.connect.tachograph.card.v1.ApplicationIdentification.type_of_tachograph_card_id:type_name -> wayplatform.connect.tachograph.datadictionary.v1.EquipmentType
-	7, // 2: wayplatform.connect.tachograph.card.v1.ApplicationIdentification.card_structure_version:type_name -> wayplatform.connect.tachograph.datadictionary.v1.CardStructureVersion
+	6, // 1: wayplatform.connect.tachograph.card.v1.ApplicationIdentification.type_of_tachograph_card_id:type_name -> wayplatform.connect.tachograph.dd.v1.EquipmentType
+	7, // 2: wayplatform.connect.tachograph.card.v1.ApplicationIdentification.card_structure_version:type_name -> wayplatform.connect.tachograph.dd.v1.CardStructureVersion
 	1, // 3: wayplatform.connect.tachograph.card.v1.ApplicationIdentification.driver:type_name -> wayplatform.connect.tachograph.card.v1.ApplicationIdentification.Driver
 	2, // 4: wayplatform.connect.tachograph.card.v1.ApplicationIdentification.workshop:type_name -> wayplatform.connect.tachograph.card.v1.ApplicationIdentification.Workshop
 	3, // 5: wayplatform.connect.tachograph.card.v1.ApplicationIdentification.company:type_name -> wayplatform.connect.tachograph.card.v1.ApplicationIdentification.Company

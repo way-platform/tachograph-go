@@ -4,11 +4,11 @@ package wayplatform.connect.tachograph.card.v1;
 
 import "google/protobuf/timestamp.proto";
 import "wayplatform/connect/tachograph/card/v1/card_type.proto";
-import "wayplatform/connect/tachograph/datadictionary/v1/nation_numeric.proto";
-import "wayplatform/connect/tachograph/datadictionary/v1/string_value.proto";
-import "wayplatform/connect/tachograph/datadictionary/v1/date.proto";
-import "wayplatform/connect/tachograph/datadictionary/v1/driver_identification.proto";
-import "wayplatform/connect/tachograph/datadictionary/v1/owner_identification.proto";
+import "wayplatform/connect/tachograph/dd/v1/date.proto";
+import "wayplatform/connect/tachograph/dd/v1/driver_identification.proto";
+import "wayplatform/connect/tachograph/dd/v1/nation_numeric.proto";
+import "wayplatform/connect/tachograph/dd/v1/owner_identification.proto";
+import "wayplatform/connect/tachograph/dd/v1/string_value.proto";
 
 // Represents the content of the EF_Identification file, which contains identification
 // data for the card and its holder.
@@ -40,7 +40,7 @@ message Identification {
     //
     // See Data Dictionary, Section 2.24, `cardIssuingMemberState`.
     // ASN.1 Specification: NationNumeric ::= INTEGER (0..255)
-    wayplatform.connect.tachograph.datadictionary.v1.NationNumeric card_issuing_member_state = 1;
+    wayplatform.connect.tachograph.dd.v1.NationNumeric card_issuing_member_state = 1;
 
     // --- Inlined CardNumber (DD 2.26) ---
     // The following fields represent the `CardNumber` ASN.1 CHOICE.
@@ -55,17 +55,17 @@ message Identification {
 
     // This field is part of the `CardNumber` CHOICE.
     // It is populated when `card_type` is `DRIVER_CARD`.
-    datadictionary.v1.DriverIdentification driver_identification = 2;
+    dd.v1.DriverIdentification driver_identification = 2;
 
     // This field is part of the `CardNumber` CHOICE.
     // It is populated when `card_type` is `WORKSHOP_CARD` or `COMPANY_CARD`.
-    datadictionary.v1.OwnerIdentification owner_identification = 7; // Next available field number
+    dd.v1.OwnerIdentification owner_identification = 7; // Next available field number
 
     // The name of the authority that issued the card.
     //
     // See Data Dictionary, Section 2.24, `cardIssuingAuthorityName`.
     // ASN.1 Specification: Name ::= SEQUENCE { codePage INTEGER(0..255), name OCTET STRING (SIZE(36)) }
-    wayplatform.connect.tachograph.datadictionary.v1.StringValue card_issuing_authority_name = 3;
+    wayplatform.connect.tachograph.dd.v1.StringValue card_issuing_authority_name = 3;
     // The date the card was issued.
     //
     // See Data Dictionary, Section 2.24, `cardIssueDate`.
@@ -99,17 +99,17 @@ message Identification {
     //
     // Corresponds to `holderSurname` within `HolderName` (DD 2.83).
     // ASN.1 Specification: Name ::= SEQUENCE { codePage INTEGER(0..255), name OCTET STRING (SIZE(36)) }
-    wayplatform.connect.tachograph.datadictionary.v1.StringValue card_holder_surname = 1;
+    wayplatform.connect.tachograph.dd.v1.StringValue card_holder_surname = 1;
     // The first name(s) of the card holder.
     //
     // Corresponds to `holderFirstNames` within `HolderName` (DD 2.83).
     // ASN.1 Specification: Name ::= SEQUENCE { codePage INTEGER(0..255), name OCTET STRING (SIZE(36)) }
-    wayplatform.connect.tachograph.datadictionary.v1.StringValue card_holder_first_names = 2;
+    wayplatform.connect.tachograph.dd.v1.StringValue card_holder_first_names = 2;
     // The birth date of the card holder.
     //
     // See Data Dictionary, Section 2.62, `cardHolderBirthDate`.
     // ASN.1 Specification: Datef ::= OCTET STRING (SIZE(4))
-    wayplatform.connect.tachograph.datadictionary.v1.Date card_holder_birth_date = 3;
+    wayplatform.connect.tachograph.dd.v1.Date card_holder_birth_date = 3;
     // The preferred language of the card holder.
     //
     // See Data Dictionary, Section 2.62, `cardHolderPreferredLanguage`.
@@ -117,7 +117,7 @@ message Identification {
     // ASN.1 Definition:
     //
     //     Language ::= IA5String (SIZE(2))
-    wayplatform.connect.tachograph.datadictionary.v1.StringValue card_holder_preferred_language = 4;
+    wayplatform.connect.tachograph.dd.v1.StringValue card_holder_preferred_language = 4;
   }
 
   // Represents the identification of the workshop card holder.
@@ -137,22 +137,22 @@ message Identification {
     //
     // See Data Dictionary, Section 2.237, `workshopName`.
     // ASN.1 Specification: Name ::= SEQUENCE { codePage INTEGER(0..255), name OCTET STRING (SIZE(36)) }
-    wayplatform.connect.tachograph.datadictionary.v1.StringValue workshop_name = 1;
+    wayplatform.connect.tachograph.dd.v1.StringValue workshop_name = 1;
     // The address of the workshop.
     //
     // See Data Dictionary, Section 2.237, `workshopAddress`.
     // ASN.1 Specification: Address ::= SEQUENCE { codePage INTEGER(0..255), address OCTET STRING (SIZE(36)) }
-    wayplatform.connect.tachograph.datadictionary.v1.StringValue workshop_address = 2;
+    wayplatform.connect.tachograph.dd.v1.StringValue workshop_address = 2;
     // The surname of the card holder.
     //
     // Corresponds to `holderSurname` within `HolderName` (DD 2.83).
     // ASN.1 Specification: Name ::= SEQUENCE { codePage INTEGER(0..255), name OCTET STRING (SIZE(36)) }
-    wayplatform.connect.tachograph.datadictionary.v1.StringValue card_holder_surname = 3;
+    wayplatform.connect.tachograph.dd.v1.StringValue card_holder_surname = 3;
     // The first name(s) of the card holder.
     //
     // Corresponds to `holderFirstNames` within `HolderName` (DD 2.83).
     // ASN.1 Specification: Name ::= SEQUENCE { codePage INTEGER(0..255), name OCTET STRING (SIZE(36)) }
-    wayplatform.connect.tachograph.datadictionary.v1.StringValue card_holder_first_names = 4;
+    wayplatform.connect.tachograph.dd.v1.StringValue card_holder_first_names = 4;
     // The preferred language of the card holder.
     //
     // See Data Dictionary, Section 2.237, `cardHolderPreferredLanguage`.
@@ -160,7 +160,7 @@ message Identification {
     // ASN.1 Definition:
     //
     //     Language ::= IA5String (SIZE(2))
-    wayplatform.connect.tachograph.datadictionary.v1.StringValue card_holder_preferred_language = 5;
+    wayplatform.connect.tachograph.dd.v1.StringValue card_holder_preferred_language = 5;
   }
 
   // Represents the identification of the control card holder.
@@ -180,22 +180,22 @@ message Identification {
     //
     // See Data Dictionary, Section 2.52, `controlBodyName`.
     // ASN.1 Specification: Name ::= SEQUENCE { codePage INTEGER(0..255), name OCTET STRING (SIZE(36)) }
-    wayplatform.connect.tachograph.datadictionary.v1.StringValue control_body_name = 1;
+    wayplatform.connect.tachograph.dd.v1.StringValue control_body_name = 1;
     // The address of the control body.
     //
     // See Data Dictionary, Section 2.52, `controlBodyAddress`.
     // ASN.1 Specification: Address ::= SEQUENCE { codePage INTEGER(0..255), address OCTET STRING (SIZE(36)) }
-    wayplatform.connect.tachograph.datadictionary.v1.StringValue control_body_address = 2;
+    wayplatform.connect.tachograph.dd.v1.StringValue control_body_address = 2;
     // The surname of the card holder.
     //
     // Corresponds to `holderSurname` within `HolderName` (DD 2.83).
     // ASN.1 Specification: Name ::= SEQUENCE { codePage INTEGER(0..255), name OCTET STRING (SIZE(36)) }
-    wayplatform.connect.tachograph.datadictionary.v1.StringValue card_holder_surname = 3;
+    wayplatform.connect.tachograph.dd.v1.StringValue card_holder_surname = 3;
     // The first name(s) of the card holder.
     //
     // Corresponds to `holderFirstNames` within `HolderName` (DD 2.83).
     // ASN.1 Specification: Name ::= SEQUENCE { codePage INTEGER(0..255), name OCTET STRING (SIZE(36)) }
-    wayplatform.connect.tachograph.datadictionary.v1.StringValue card_holder_first_names = 4;
+    wayplatform.connect.tachograph.dd.v1.StringValue card_holder_first_names = 4;
     // The preferred language of the card holder.
     //
     // See Data Dictionary, Section 2.52, `cardHolderPreferredLanguage`.
@@ -203,7 +203,7 @@ message Identification {
     // ASN.1 Definition:
     //
     //     Language ::= IA5String (SIZE(2))
-    wayplatform.connect.tachograph.datadictionary.v1.StringValue card_holder_preferred_language = 5;
+    wayplatform.connect.tachograph.dd.v1.StringValue card_holder_preferred_language = 5;
   }
 
   // Represents the identification of the company card holder.
@@ -222,12 +222,12 @@ message Identification {
     //
     // See Data Dictionary, Section 2.49, `companyName`.
     // ASN.1 Specification: Name ::= SEQUENCE { codePage INTEGER(0..255), name OCTET STRING (SIZE(36)) }
-    wayplatform.connect.tachograph.datadictionary.v1.StringValue company_name = 1;
+    wayplatform.connect.tachograph.dd.v1.StringValue company_name = 1;
     // The address of the company.
     //
     // See Data Dictionary, Section 2.49, `companyAddress`.
     // ASN.1 Specification: Address ::= SEQUENCE { codePage INTEGER(0..255), address OCTET STRING (SIZE(36)) }
-    wayplatform.connect.tachograph.datadictionary.v1.StringValue company_address = 2;
+    wayplatform.connect.tachograph.dd.v1.StringValue company_address = 2;
     // The preferred language of the card holder.
     //
     // See Data Dictionary, Section 2.49, `cardHolderPreferredLanguage`.
@@ -235,7 +235,7 @@ message Identification {
     // ASN.1 Definition:
     //
     //     Language ::= IA5String (SIZE(2))
-    wayplatform.connect.tachograph.datadictionary.v1.StringValue card_holder_preferred_language = 3;
+    wayplatform.connect.tachograph.dd.v1.StringValue card_holder_preferred_language = 3;
   }
 
   // The common card identification part.

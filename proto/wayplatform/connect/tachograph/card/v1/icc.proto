@@ -2,9 +2,9 @@ edition = "2023";
 
 package wayplatform.connect.tachograph.card.v1;
 
-import "wayplatform/connect/tachograph/datadictionary/v1/clock_stop_mode.proto";
-import "wayplatform/connect/tachograph/datadictionary/v1/string_value.proto";
-import "wayplatform/connect/tachograph/datadictionary/v1/extended_serial_number.proto";
+import "wayplatform/connect/tachograph/dd/v1/clock_stop_mode.proto";
+import "wayplatform/connect/tachograph/dd/v1/extended_serial_number.proto";
+import "wayplatform/connect/tachograph/dd/v1/string_value.proto";
 
 // Represents the content of the EF_ICC file, which contains identification data
 // for the Integrated Circuit Card.
@@ -45,7 +45,7 @@ message Icc {
     // ASN.1 Definition:
     //
     //     IA5String(SIZE(2))
-    wayplatform.connect.tachograph.datadictionary.v1.StringValue country_code = 1;
+    wayplatform.connect.tachograph.dd.v1.StringValue country_code = 1;
 
     // 2-character code identifying the module embedder.
     //
@@ -53,7 +53,7 @@ message Icc {
     // ASN.1 Definition:
     //
     //     IA5String(SIZE(2))
-    wayplatform.connect.tachograph.datadictionary.v1.StringValue module_embedder = 2;
+    wayplatform.connect.tachograph.dd.v1.StringValue module_embedder = 2;
 
     // Manufacturer-specific information.
     //
@@ -70,12 +70,12 @@ message Icc {
   // ASN.1 Definition:
   //
   //     OCTET STRING (SIZE(1))
-  wayplatform.connect.tachograph.datadictionary.v1.ClockStopMode clock_stop = 1;
+  wayplatform.connect.tachograph.dd.v1.ClockStopMode clock_stop = 1;
 
   // The unique serial number of the IC card.
   //
   // See Data Dictionary, Section 2.72, `ExtendedSerialNumber`.
-  datadictionary.v1.ExtendedSerialNumber card_extended_serial_number = 2;
+  dd.v1.ExtendedSerialNumber card_extended_serial_number = 2;
 
   // The type approval number of the card.
   //
@@ -83,7 +83,7 @@ message Icc {
   // ASN.1 Definition:
   //
   //     CardApprovalNumber ::= IA5String (SIZE (8))
-  wayplatform.connect.tachograph.datadictionary.v1.StringValue card_approval_number = 3;
+  wayplatform.connect.tachograph.dd.v1.StringValue card_approval_number = 3;
 
   // The ID of the card personaliser.
   //

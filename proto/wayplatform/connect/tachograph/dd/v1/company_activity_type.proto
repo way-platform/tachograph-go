@@ -1,0 +1,16 @@
+edition = "2023";
+
+package wayplatform.connect.tachograph.dd.v1;
+
+import "wayplatform/connect/tachograph/dd/v1/annotations.proto";
+
+// CompanyActivityType indicates an activity carried out by a company.
+// See Data Dictionary, Section 2.47.
+enum CompanyActivityType {
+  COMPANY_ACTIVITY_TYPE_UNSPECIFIED = 0;
+  COMPANY_ACTIVITY_TYPE_UNRECOGNIZED = 1;
+  CARD_DOWNLOADING = 2 [(protocol_enum_value) = 1];
+  VU_DOWNLOADING = 3 [(protocol_enum_value) = 2];
+  VU_LOCK_IN = 4 [(protocol_enum_value) = 3];
+  VU_LOCK_OUT = 5 [(protocol_enum_value) = 4];
+}

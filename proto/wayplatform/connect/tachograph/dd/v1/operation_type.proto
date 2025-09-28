@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+package wayplatform.connect.tachograph.dd.v1;
+
+import "wayplatform/connect/tachograph/dd/v1/annotations.proto";
+
+// Defines the type of load/unload operation.
+//
+// See Data Dictionary, Section 2.114a.
+//
+// ASN.1 Definition:
+//
+//     OperationType ::= INTEGER {
+//         load(1), unload(2), simultaneous(3)
+//     } (0..255)
+enum OperationType {
+  // The operation type is not specified.
+  OPERATION_TYPE_UNSPECIFIED = 0;
+
+  // The operation type was present but not recognized.
+  OPERATION_TYPE_UNRECOGNIZED = 1;
+
+  // A load operation.
+  LOAD_OPERATION = 2 [(protocol_enum_value) = 1];
+
+  // An unload operation.
+  UNLOAD_OPERATION = 3 [(protocol_enum_value) = 2];
+
+  // A simultaneous load and unload operation.
+  SIMULTANEOUS_LOAD_UNLOAD_OPERATION = 4 [(protocol_enum_value) = 3];
+}

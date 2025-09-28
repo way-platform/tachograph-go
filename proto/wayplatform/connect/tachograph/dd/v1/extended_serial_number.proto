@@ -1,0 +1,56 @@
+edition = "2023";
+
+package wayplatform.connect.tachograph.dd.v1;
+
+import "wayplatform/connect/tachograph/dd/v1/equipment_type.proto";
+
+// Corresponds to the `ExtendedSerialNumber` data type in the Data Dictionary, Section 2.72.
+//
+// ASN.1 Specification:
+//
+//     ExtendedSerialNumber ::= SEQUENCE {
+//         serialNumber INTEGER(0..2^32-1),
+//         monthYear BCDString(SIZE(2)),
+//         type EquipmentType,
+//         manufacturerCode ManufacturerCode
+//     }
+message ExtendedSerialNumber {
+  // A serial number for the equipment, unique for the manufacturer, type, and date.
+  //
+  // ASN.1 Specification:
+  //
+  //     serialNumber INTEGER(0..2^32-1)
+  int64 serial_number = 1;
+
+  // The month of manufacturing (1-12).
+  // Parsed from the BCD-encoded `monthYear` field.
+  //
+  // Source ASN.1 Specification:
+  //
+  //     monthYear BCDString(SIZE(2))
+  int32 month = 2;
+
+  // The year of manufacturing (e.g., 2023).
+  // Parsed from the BCD-encoded `monthYear` field.
+  //
+  // Source ASN.1 Specification:
+  //
+  //     monthYear BCDString(SIZE(2))
+  int32 year = 3;
+
+  // The type of equipment.
+  //
+  // ASN.1 Specification:
+  //
+  //     type EquipmentType,
+  //     EquipmentType ::= INTEGER (0..255)
+  EquipmentType type = 4;
+
+  // The numerical code of the manufacturer.
+  //
+  // ASN.1 Specification:
+  //
+  //     manufacturerCode ManufacturerCode,
+  //     ManufacturerCode ::= INTEGER (0..255)
+  int32 manufacturer_code = 5;
+}

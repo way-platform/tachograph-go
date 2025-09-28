@@ -1,0 +1,37 @@
+edition = "2023";
+
+package wayplatform.connect.tachograph.dd.v1;
+
+import "wayplatform/connect/tachograph/dd/v1/nation_numeric.proto";
+import "wayplatform/connect/tachograph/dd/v1/string_value.proto";
+
+// Corresponds to the `VehicleRegistrationIdentification` data type in the Data Dictionary, Section 2.166.
+//
+// ASN.1 Specification:
+//
+//     VehicleRegistrationIdentification ::= SEQUENCE {
+//         vehicleRegistrationNation NationNumeric,
+//         vehicleRegistrationNumber VehicleRegistrationNumber
+//     }
+message VehicleRegistrationIdentification {
+  // The nation of the vehicle registration.
+  //
+  // See Data Dictionary, Section 2.101, `NationNumeric`.
+  // ASN.1 Definition:
+  //
+  //     NationNumeric ::= INTEGER(0..255)
+  NationNumeric nation = 1;
+
+  // The vehicle registration number. This is modeled as a StringValue because the
+  // underlying ASN.1 type is a SEQUENCE containing the string and its encoding.
+  //
+  // See Data Dictionary, Section 2.167, `VehicleRegistrationNumber`.
+  //
+  // ASN.1 Definition:
+  //
+  //     VehicleRegistrationNumber ::= SEQUENCE {
+  //         codePage INTEGER(0..255),
+  //         vehicleRegNumber OCTET STRING(SIZE(13))
+  //     }
+  StringValue number = 2;
+}
