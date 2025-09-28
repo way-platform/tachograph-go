@@ -18,6 +18,7 @@ Tachograph data files are binary data dumps from tachograph vehicle units (VU), 
 A full PDF copy of the regulation is in `docs/regulation`. Relevant chapters are OCR'd into Markdown in `docs/regulation/chapters`.
 
 Key chapters:
+
 - **[03-data-dictionary.md](docs/regulation/chapters/03-data-dictionary.md)**: Critical for data parsing. Contains ASN.1 specifications.
 - **[05-tachograph-cards-file-structure.md](docs/regulation/chapters/05-tachograph-cards-file-structure.md)**: Essential for card data.
 - **[11-response-message-content.md](docs/regulation/chapters/11-response-message-content.md)**: Essential for vehicle (VU) data.
@@ -35,6 +36,7 @@ The API is designed for simplicity and orthogonality. Non-essential types, funct
 Main entry point for parsing a tachograph data file. It delegates to private, type-specific unmarshal functions.
 
 Usage:
+
 ```go
 data, err := os.ReadFile("tachograph.DDD")
 // ... handle error
@@ -48,6 +50,7 @@ fmt.Println(protojson.Format(file))
 Main entry point for serializing a tachograph file. It delegates to private, type-specific append functions that use the `encoding.BinaryAppender` pattern.
 
 Usage:
+
 ```go
 file := &tachographv1.File{ /* ... */ }
 data, err := tachograph.MarshalFile(file)
@@ -68,9 +71,9 @@ To create a unified and forward-compatible protobuf data model, we have adopted 
 
 **Always use `repeated` fields for data structures that can contain multiple records in any generation.**
 
--   For data that is a single record in Gen1 and a `RecordArray` in Gen2 (e.g., `VuCalibrationData`), we define a single `repeated` field in our protobuf message (e.g., `repeated CalibrationRecord`).
--   When parsing Gen1 data, this `repeated` field will contain one element.
--   When parsing Gen2 data, it will contain multiple elements.
+- For data that is a single record in Gen1 and a `RecordArray` in Gen2 (e.g., `VuCalibrationData`), we define a single `repeated` field in our protobuf message (e.g., `repeated CalibrationRecord`).
+- When parsing Gen1 data, this `repeated` field will contain one element.
+- When parsing Gen2 data, it will contain multiple elements.
 
 This approach avoids the need for separate `_gen1` and `_gen2` fields, simplifying both the data model and the client-side logic required to interact with it.
 
@@ -80,12 +83,13 @@ To ensure the codebase remains maintainable and easy to extend, we follow a spec
 
 #### File Structure
 
-The core principle is to decompose the logic into separate files for marshalling and unmarshalling, with a direct correspondence to the protobuf schema definitions. For each protobuf file that defines a major entity (e.g., `card/v1/activity.proto`), there should be two corresponding files in the top-level package:
+The core principle is to organize files by type rather than by operation, with a direct correspondence to the protobuf schema definitions. For each protobuf file that defines a major entity (e.g., `card/v1/activity.proto`), there should be one corresponding file in the top-level package:
 
--   `unmarshal_(vu|card)_<typename>.go`: Handles parsing binary data into the corresponding protobuf message.
--   `append_(vu|card)_<typename>.go`: Handles serializing a protobuf message into binary data. The `append_` prefix is used to signify the `BinaryAppender` pattern.
+- `(vu|card|dd)_<typename>.go`: Handles both marshalling and unmarshalling for the corresponding protobuf message types. The prefix indicates the parent package (`vu` for vehicle unit, `card` for card data, `dd` for data dictionary).
 
-This convention keeps the context for each operation small and self-contained, making the code easier to read, debug, and maintain.
+This convention improves locality of context by keeping related marshalling and unmarshalling logic together, making it easier to spot inconsistencies and ensuring the operations stay in sync. The lexical ordering of files by package prefix also groups related functionality together.
+
+**Migration Note**: The existing codebase uses the old convention of separate `unmarshal_*` and `append_*` files. As we refactor the codebase, we will consolidate these into the new `(vu|card|dd)_<typename>.go` structure. This migration should be done incrementally, one proto file at a time.
 
 #### Marshalling Pattern
 
@@ -103,9 +107,9 @@ Unmarshalling functions (`unmarshal_*`) are responsible for parsing a `[]byte` s
 
 To maintain clarity and prevent the accumulation of disconnected utility functions, we avoid creating generic "helper" or "utility" files. Files with names like `helpers.go`, `utils.go`, or the existing `append_helpers.go`, `append_vu_helpers.go`, and `enum_helpers.go` are examples of a pattern we seek to avoid in new code.
 
-The preferred approach is to co-locate helper functions with the code that uses them. If a function is only used within a single `append_*.go` or `unmarshal_*.go` file, it should be a private function within that same file.
+The preferred approach is to co-locate helper functions with the code that uses them. If a function is only used within a single `(vu|card|dd)_*.go` file, it should be a private function within that same file.
 
-If a helper function is needed across multiple, related files (e.g., for handling a specific data type that appears in different structures), it should be placed in a file with a clear, semantic name that describes its purpose (e.g., `unmarshal_time.go` for time-parsing helpers). This makes the codebase easier to navigate and understand.
+If a helper function is needed across multiple, related files (e.g., for handling a specific data type that appears in different structures), it should be placed in a file with a clear, semantic name that describes its purpose (e.g., `dd_time.go` for time-parsing helpers). This makes the codebase easier to navigate and understand.
 
 ### Using Protobuf Reflection for Annotations
 
@@ -163,6 +167,7 @@ func main() {
 }
 */
 ```
+
 This approach makes the code more robust and maintainable, as the logic is driven directly by the schema definitions.
 
 ### In-Code Documentation and Context

@@ -3,7 +3,6 @@ package tachograph
 import (
 	"bytes"
 	"fmt"
-	"strings"
 
 	ddv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
 )
@@ -132,13 +131,4 @@ func appendVehicleRegistration(dst []byte, vehicleReg *ddv1.VehicleRegistrationI
 		return appendString(dst, number.GetDecoded(), 14)
 	}
 	return appendString(dst, "", 14)
-}
-
-// AppendVehicleRegistration appends a VehicleRegistrationIdentification structure.
-func AppendVehicleRegistration(dst []byte, nation string, number string) ([]byte, error) {
-	// This is also a placeholder.
-	dst = append(dst, 0) // Nation
-	dst = append(dst, []byte(strings.Repeat(" ", 14))...)
-	copy(dst[1:], []byte(number))
-	return dst, nil
 }
