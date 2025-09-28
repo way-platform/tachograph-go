@@ -27,7 +27,7 @@ func unmarshalDrivingStatus(data []byte) (ddv1.DrivingStatus, error) {
 
 	// Use the protocol enum value mapping
 	drivingStatus := ddv1.DrivingStatus_DRIVING_STATUS_UNSPECIFIED
-	SetDrivingStatus(ddv1.DrivingStatus_DRIVING_STATUS_UNSPECIFIED.Descriptor(), rawValue, func(en protoreflect.EnumNumber) {
+	setEnumFromProtocolValue(ddv1.DrivingStatus_DRIVING_STATUS_UNSPECIFIED.Descriptor(), rawValue, func(en protoreflect.EnumNumber) {
 		drivingStatus = ddv1.DrivingStatus(en)
 	}, func(unrecognized int32) {
 		drivingStatus = ddv1.DrivingStatus_DRIVING_STATUS_UNRECOGNIZED
@@ -48,6 +48,6 @@ func unmarshalDrivingStatus(data []byte) (ddv1.DrivingStatus, error) {
 //   - Driving Status (1 bit): Raw integer value (0-1)
 func appendDrivingStatus(dst []byte, drivingStatus ddv1.DrivingStatus) []byte {
 	// Get the protocol value for the enum
-	protocolValue := GetDrivingStatus(drivingStatus, 0)
+	protocolValue := getDrivingStatusProtocolValue(drivingStatus, 0)
 	return append(dst, byte(protocolValue))
 }

@@ -27,7 +27,7 @@ func unmarshalSpecificConditionType(data []byte) (ddv1.SpecificConditionType, er
 
 	// Use the protocol enum value mapping
 	specificConditionType := ddv1.SpecificConditionType_SPECIFIC_CONDITION_TYPE_UNSPECIFIED
-	SetSpecificConditionType(ddv1.SpecificConditionType_SPECIFIC_CONDITION_TYPE_UNSPECIFIED.Descriptor(), rawValue,
+	setEnumFromProtocolValue(ddv1.SpecificConditionType_SPECIFIC_CONDITION_TYPE_UNSPECIFIED.Descriptor(), rawValue,
 		func(enumNum protoreflect.EnumNumber) {
 			specificConditionType = ddv1.SpecificConditionType(enumNum)
 		}, func(unrecognized int32) {
@@ -49,6 +49,6 @@ func unmarshalSpecificConditionType(data []byte) (ddv1.SpecificConditionType, er
 //   - Specific Condition Type (1 byte): Raw integer value (0-3)
 func appendSpecificConditionType(dst []byte, specificConditionType ddv1.SpecificConditionType) []byte {
 	// Get the protocol value for the enum
-	protocolValue := GetSpecificConditionTypeProtocolValue(specificConditionType, 0)
+	protocolValue := getProtocolValueFromEnum(specificConditionType, 0)
 	return append(dst, byte(protocolValue))
 }

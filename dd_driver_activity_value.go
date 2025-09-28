@@ -27,7 +27,7 @@ func unmarshalDriverActivityValue(data []byte) (ddv1.DriverActivityValue, error)
 
 	// Use the protocol enum value mapping
 	activityValue := ddv1.DriverActivityValue_DRIVER_ACTIVITY_UNSPECIFIED
-	SetDriverActivityValue(ddv1.DriverActivityValue_DRIVER_ACTIVITY_UNSPECIFIED.Descriptor(), rawValue, func(en protoreflect.EnumNumber) {
+	setEnumFromProtocolValue(ddv1.DriverActivityValue_DRIVER_ACTIVITY_UNSPECIFIED.Descriptor(), rawValue, func(en protoreflect.EnumNumber) {
 		activityValue = ddv1.DriverActivityValue(en)
 	}, func(unrecognized int32) {
 		activityValue = ddv1.DriverActivityValue_DRIVER_ACTIVITY_UNRECOGNIZED
@@ -48,6 +48,6 @@ func unmarshalDriverActivityValue(data []byte) (ddv1.DriverActivityValue, error)
 //   - Activity Value (2 bits): Raw integer value (0-3)
 func appendDriverActivityValue(dst []byte, activityValue ddv1.DriverActivityValue) []byte {
 	// Get the protocol value for the enum
-	protocolValue := GetDriverActivityValue(activityValue, 0)
+	protocolValue := getDriverActivityValueProtocolValue(activityValue, 0)
 	return append(dst, byte(protocolValue))
 }

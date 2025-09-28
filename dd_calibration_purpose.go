@@ -30,7 +30,7 @@ func unmarshalCalibrationPurpose(data []byte) (ddv1.CalibrationPurpose, error) {
 
 	// Use the protocol enum value mapping
 	calibrationPurpose := ddv1.CalibrationPurpose_CALIBRATION_PURPOSE_UNSPECIFIED
-	SetCalibrationPurpose(ddv1.CalibrationPurpose_CALIBRATION_PURPOSE_UNSPECIFIED.Descriptor(), rawValue,
+	setEnumFromProtocolValue(ddv1.CalibrationPurpose_CALIBRATION_PURPOSE_UNSPECIFIED.Descriptor(), rawValue,
 		func(enumNum protoreflect.EnumNumber) {
 			calibrationPurpose = ddv1.CalibrationPurpose(enumNum)
 		}, func(unrecognized int32) {
@@ -55,6 +55,6 @@ func unmarshalCalibrationPurpose(data []byte) (ddv1.CalibrationPurpose, error) {
 //   - Calibration Purpose (1 byte): Raw integer value (0-6)
 func appendCalibrationPurpose(dst []byte, calibrationPurpose ddv1.CalibrationPurpose) []byte {
 	// Get the protocol value for the enum
-	protocolValue := GetCalibrationPurposeProtocolValue(calibrationPurpose, 0)
+	protocolValue := getProtocolValueFromEnum(calibrationPurpose, 0)
 	return append(dst, byte(protocolValue))
 }

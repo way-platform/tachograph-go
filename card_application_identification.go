@@ -46,7 +46,7 @@ func unmarshalCardApplicationIdentification(data []byte) (*cardv1.ApplicationIde
 		return nil, fmt.Errorf("failed to read card type: %w", err)
 	}
 	// Convert raw card type to enum using protocol annotations
-	SetEquipmentType(ddv1.EquipmentType_EQUIPMENT_TYPE_UNSPECIFIED.Descriptor(), int32(cardType), func(et protoreflect.EnumNumber) {
+	setEnumFromProtocolValue(ddv1.EquipmentType_EQUIPMENT_TYPE_UNSPECIFIED.Descriptor(), int32(cardType), func(et protoreflect.EnumNumber) {
 		target.SetTypeOfTachographCardId(ddv1.EquipmentType(et))
 	}, nil)
 
@@ -156,7 +156,7 @@ func appendCardApplicationIdentification(data []byte, appId *cardv1.ApplicationI
 
 	// Type of tachograph card ID (1 byte)
 	if appId.HasTypeOfTachographCardId() {
-		protocolValue := GetProtocolValueFromEnum(appId.GetTypeOfTachographCardId(), 0)
+		protocolValue := getProtocolValueFromEnum(appId.GetTypeOfTachographCardId(), 0)
 		data = append(data, byte(protocolValue))
 	} else {
 		data = append(data, 0x00)

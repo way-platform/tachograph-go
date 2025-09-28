@@ -29,7 +29,7 @@ func unmarshalOperationType(data []byte) (ddv1.OperationType, error) {
 
 	// Use the protocol enum value mapping
 	operationType := ddv1.OperationType_OPERATION_TYPE_UNSPECIFIED
-	SetOperationType(ddv1.OperationType_OPERATION_TYPE_UNSPECIFIED.Descriptor(), rawValue,
+	setEnumFromProtocolValue(ddv1.OperationType_OPERATION_TYPE_UNSPECIFIED.Descriptor(), rawValue,
 		func(enumNum protoreflect.EnumNumber) {
 			operationType = ddv1.OperationType(enumNum)
 		}, func(unrecognized int32) {
@@ -53,6 +53,6 @@ func unmarshalOperationType(data []byte) (ddv1.OperationType, error) {
 //   - Operation Type (1 byte): Raw integer value (1-3)
 func appendOperationType(dst []byte, operationType ddv1.OperationType) []byte {
 	// Get the protocol value for the enum
-	protocolValue := GetOperationTypeProtocolValue(operationType, 0)
+	protocolValue := getProtocolValueFromEnum(operationType, 0)
 	return append(dst, byte(protocolValue))
 }

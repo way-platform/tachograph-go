@@ -27,7 +27,7 @@ func unmarshalCompanyActivityType(data []byte) (ddv1.CompanyActivityType, error)
 
 	// Use the protocol enum value mapping
 	companyActivityType := ddv1.CompanyActivityType_COMPANY_ACTIVITY_TYPE_UNSPECIFIED
-	SetCompanyActivityType(ddv1.CompanyActivityType_COMPANY_ACTIVITY_TYPE_UNSPECIFIED.Descriptor(), rawValue,
+	setEnumFromProtocolValue(ddv1.CompanyActivityType_COMPANY_ACTIVITY_TYPE_UNSPECIFIED.Descriptor(), rawValue,
 		func(enumNum protoreflect.EnumNumber) {
 			companyActivityType = ddv1.CompanyActivityType(enumNum)
 		}, func(unrecognized int32) {
@@ -49,6 +49,6 @@ func unmarshalCompanyActivityType(data []byte) (ddv1.CompanyActivityType, error)
 //   - Company Activity Type (1 byte): Raw integer value (1-4)
 func appendCompanyActivityType(dst []byte, companyActivityType ddv1.CompanyActivityType) []byte {
 	// Get the protocol value for the enum
-	protocolValue := GetCompanyActivityTypeProtocolValue(companyActivityType, 0)
+	protocolValue := getProtocolValueFromEnum(companyActivityType, 0)
 	return append(dst, byte(protocolValue))
 }

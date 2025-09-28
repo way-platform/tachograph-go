@@ -72,7 +72,7 @@ func parseSpecificConditionRecord(r *bytes.Reader) (*cardv1.SpecificConditions_R
 		return nil, fmt.Errorf("failed to read condition type: %w", err)
 	}
 	// Convert raw condition type to enum using protocol annotations
-	SetSpecificConditionType(ddv1.SpecificConditionType_SPECIFIC_CONDITION_TYPE_UNSPECIFIED.Descriptor(), int32(conditionType), func(st protoreflect.EnumNumber) {
+	setEnumFromProtocolValue(ddv1.SpecificConditionType_SPECIFIC_CONDITION_TYPE_UNSPECIFIED.Descriptor(), int32(conditionType), func(st protoreflect.EnumNumber) {
 		record.SetSpecificConditionType(ddv1.SpecificConditionType(st))
 	}, nil)
 
@@ -104,7 +104,7 @@ func appendCardSpecificConditions(data []byte, conditions *cardv1.SpecificCondit
 		data = appendTimeReal(data, record.GetEntryTime())
 
 		// Specific condition type (1 byte) - convert enum to protocol value
-		conditionTypeProtocol := GetSpecificConditionTypeProtocolValue(record.GetSpecificConditionType(), 0)
+		conditionTypeProtocol := getProtocolValueFromEnum(record.GetSpecificConditionType(), 0)
 		data = append(data, byte(conditionTypeProtocol))
 	}
 

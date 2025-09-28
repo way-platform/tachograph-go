@@ -27,7 +27,7 @@ func unmarshalCardSlotNumber(data []byte) (ddv1.CardSlotNumber, error) {
 
 	// Use the protocol enum value mapping
 	cardSlotNumber := ddv1.CardSlotNumber_CARD_SLOT_NUMBER_UNSPECIFIED
-	SetCardSlotNumber(ddv1.CardSlotNumber_CARD_SLOT_NUMBER_UNSPECIFIED.Descriptor(), rawValue, func(en protoreflect.EnumNumber) {
+	setEnumFromProtocolValue(ddv1.CardSlotNumber_CARD_SLOT_NUMBER_UNSPECIFIED.Descriptor(), rawValue, func(en protoreflect.EnumNumber) {
 		cardSlotNumber = ddv1.CardSlotNumber(en)
 	}, func(unrecognized int32) {
 		cardSlotNumber = ddv1.CardSlotNumber_CARD_SLOT_NUMBER_UNRECOGNIZED
@@ -48,6 +48,6 @@ func unmarshalCardSlotNumber(data []byte) (ddv1.CardSlotNumber, error) {
 //   - Card Slot Number (1 bit): Raw integer value (0-1)
 func appendCardSlotNumber(dst []byte, cardSlotNumber ddv1.CardSlotNumber) []byte {
 	// Get the protocol value for the enum
-	protocolValue := GetCardSlotNumber(cardSlotNumber, 0)
+	protocolValue := getCardSlotNumberProtocolValue(cardSlotNumber, 0)
 	return append(dst, byte(protocolValue))
 }

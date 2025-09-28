@@ -30,7 +30,7 @@ func unmarshalPositionAuthenticationStatus(data []byte) (ddv1.PositionAuthentica
 
 	// Use the protocol enum value mapping
 	positionAuthStatus := ddv1.PositionAuthenticationStatus_POSITION_AUTHENTICATION_STATUS_UNSPECIFIED
-	SetPositionAuthenticationStatus(ddv1.PositionAuthenticationStatus_POSITION_AUTHENTICATION_STATUS_UNSPECIFIED.Descriptor(), rawValue,
+	setEnumFromProtocolValue(ddv1.PositionAuthenticationStatus_POSITION_AUTHENTICATION_STATUS_UNSPECIFIED.Descriptor(), rawValue,
 		func(enumNum protoreflect.EnumNumber) {
 			positionAuthStatus = ddv1.PositionAuthenticationStatus(enumNum)
 		}, func(unrecognized int32) {
@@ -55,6 +55,6 @@ func unmarshalPositionAuthenticationStatus(data []byte) (ddv1.PositionAuthentica
 //   - Position Authentication Status (1 byte): Raw integer value (0-3)
 func appendPositionAuthenticationStatus(dst []byte, positionAuthStatus ddv1.PositionAuthenticationStatus) []byte {
 	// Get the protocol value for the enum
-	protocolValue := GetPositionAuthenticationStatusProtocolValue(positionAuthStatus, 0)
+	protocolValue := getProtocolValueFromEnum(positionAuthStatus, 0)
 	return append(dst, byte(protocolValue))
 }

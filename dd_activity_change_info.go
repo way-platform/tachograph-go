@@ -36,7 +36,7 @@ func unmarshalActivityChangeInfo(data []byte) (*ddv1.ActivityChangeInfo, error) 
 
 	// Parse 2-byte bitfield according to spec
 	changeData := binary.BigEndian.Uint16(data[0:2])
-	
+
 	// Skip invalid entries (all zeros or all ones)
 	if changeData == 0 || changeData == 0xFFFF {
 		return nil, fmt.Errorf("invalid ActivityChangeInfo: all zeros or all ones")
@@ -51,14 +51,14 @@ func unmarshalActivityChangeInfo(data []byte) (*ddv1.ActivityChangeInfo, error) 
 	activityChange := &ddv1.ActivityChangeInfo{}
 
 	// Convert raw values to enums using protocol annotations
-	SetCardSlotNumber(ddv1.CardSlotNumber_CARD_SLOT_NUMBER_UNSPECIFIED.Descriptor(), slot, func(en protoreflect.EnumNumber) {
+	setEnumFromProtocolValue(ddv1.CardSlotNumber_CARD_SLOT_NUMBER_UNSPECIFIED.Descriptor(), slot, func(en protoreflect.EnumNumber) {
 		activityChange.SetSlot(ddv1.CardSlotNumber(en))
 	}, nil)
-	SetDrivingStatus(ddv1.DrivingStatus_DRIVING_STATUS_UNSPECIFIED.Descriptor(), drivingStatus, func(en protoreflect.EnumNumber) {
+	setEnumFromProtocolValue(ddv1.DrivingStatus_DRIVING_STATUS_UNSPECIFIED.Descriptor(), drivingStatus, func(en protoreflect.EnumNumber) {
 		activityChange.SetDrivingStatus(ddv1.DrivingStatus(en))
 	}, nil)
 	activityChange.SetInserted(cardStatus != 0) // Convert to boolean (1 = inserted, 0 = not inserted)
-	SetDriverActivityValue(ddv1.DriverActivityValue_DRIVER_ACTIVITY_UNSPECIFIED.Descriptor(), activity, func(en protoreflect.EnumNumber) {
+	setEnumFromProtocolValue(ddv1.DriverActivityValue_DRIVER_ACTIVITY_UNSPECIFIED.Descriptor(), activity, func(en protoreflect.EnumNumber) {
 		activityChange.SetActivity(ddv1.DriverActivityValue(en))
 	}, nil)
 
@@ -91,10 +91,10 @@ func appendActivityChangeInfo(dst []byte, ac *ddv1.ActivityChangeInfo) ([]byte, 
 	var aci uint16
 
 	// Reconstruct the bitfield from enum values
-	slot := GetCardSlotNumber(ac.GetSlot(), 0)
-	drivingStatus := GetDrivingStatus(ac.GetDrivingStatus(), 0)
-	cardInserted := GetCardInsertedFromBool(ac.GetInserted())
-	activity := GetDriverActivityValue(ac.GetActivity(), 0)
+	slot := getCardSlotNumberProtocolValue(ac.GetSlot(), 0)
+	drivingStatus := getDrivingStatusProtocolValue(ac.GetDrivingStatus(), 0)
+	cardInserted := getCardInsertedFromBool(ac.GetInserted())
+	activity := getDriverActivityValueProtocolValue(ac.GetActivity(), 0)
 
 	aci |= (uint16(slot) & 0x1) << 15
 	aci |= (uint16(drivingStatus) & 0x1) << 14

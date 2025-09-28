@@ -29,7 +29,7 @@ func unmarshalSlotCardType(data []byte) (ddv1.SlotCardType, error) {
 
 	// Use the protocol enum value mapping
 	slotCardType := ddv1.SlotCardType_SLOT_CARD_TYPE_UNSPECIFIED
-	SetSlotCardType(ddv1.SlotCardType_SLOT_CARD_TYPE_UNSPECIFIED.Descriptor(), rawValue,
+	setEnumFromProtocolValue(ddv1.SlotCardType_SLOT_CARD_TYPE_UNSPECIFIED.Descriptor(), rawValue,
 		func(enumNum protoreflect.EnumNumber) {
 			slotCardType = ddv1.SlotCardType(enumNum)
 		}, func(unrecognized int32) {
@@ -53,7 +53,7 @@ func unmarshalSlotCardType(data []byte) (ddv1.SlotCardType, error) {
 //   - Slot Card Type (4 bits): Raw integer value (0-4)
 func appendSlotCardType(dst []byte, slotCardType ddv1.SlotCardType) []byte {
 	// Get the protocol value for the enum
-	protocolValue := GetSlotCardTypeProtocolValue(slotCardType, 0)
+	protocolValue := getProtocolValueFromEnum(slotCardType, 0)
 	return append(dst, byte(protocolValue))
 }
 

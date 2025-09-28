@@ -27,7 +27,7 @@ func unmarshalEquipmentType(data []byte) (ddv1.EquipmentType, error) {
 
 	// Use the protocol enum value mapping
 	equipmentType := ddv1.EquipmentType_EQUIPMENT_TYPE_UNSPECIFIED
-	SetEquipmentType(ddv1.EquipmentType_EQUIPMENT_TYPE_UNSPECIFIED.Descriptor(), rawValue, func(en protoreflect.EnumNumber) {
+	setEnumFromProtocolValue(ddv1.EquipmentType_EQUIPMENT_TYPE_UNSPECIFIED.Descriptor(), rawValue, func(en protoreflect.EnumNumber) {
 		equipmentType = ddv1.EquipmentType(en)
 	}, func(unrecognized int32) {
 		equipmentType = ddv1.EquipmentType_EQUIPMENT_TYPE_UNRECOGNIZED
@@ -48,6 +48,6 @@ func unmarshalEquipmentType(data []byte) (ddv1.EquipmentType, error) {
 //   - Equipment Type (1 byte): Raw integer value
 func appendEquipmentType(dst []byte, equipmentType ddv1.EquipmentType) []byte {
 	// Get the protocol value for the enum
-	protocolValue := GetProtocolValueFromEnum(equipmentType, 0)
+	protocolValue := getProtocolValueFromEnum(equipmentType, 0)
 	return append(dst, byte(protocolValue))
 }

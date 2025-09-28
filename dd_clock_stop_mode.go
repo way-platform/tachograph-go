@@ -28,7 +28,7 @@ func unmarshalClockStopMode(data []byte) (ddv1.ClockStopMode, error) {
 
 	// Use the protocol enum value mapping
 	clockStopMode := ddv1.ClockStopMode_CLOCK_STOP_MODE_UNSPECIFIED
-	SetEnumFromProtocolValue(ddv1.ClockStopMode_CLOCK_STOP_MODE_UNSPECIFIED.Descriptor(), rawValue,
+	setEnumFromProtocolValue(ddv1.ClockStopMode_CLOCK_STOP_MODE_UNSPECIFIED.Descriptor(), rawValue,
 		func(enumNum protoreflect.EnumNumber) {
 			clockStopMode = ddv1.ClockStopMode(enumNum)
 		}, func(unrecognized int32) {
@@ -51,6 +51,6 @@ func unmarshalClockStopMode(data []byte) (ddv1.ClockStopMode, error) {
 //   - Clock Stop Mode (3 bits): Raw integer value (0-5)
 func appendClockStopMode(dst []byte, clockStopMode ddv1.ClockStopMode) []byte {
 	// Get the protocol value for the enum
-	protocolValue := GetClockStopModeProtocolValue(clockStopMode, 0)
+	protocolValue := getProtocolValueFromEnum(clockStopMode, 0)
 	return append(dst, byte(protocolValue))
 }

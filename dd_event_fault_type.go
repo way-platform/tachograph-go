@@ -27,7 +27,7 @@ func unmarshalEventFaultType(data []byte) (ddv1.EventFaultType, error) {
 
 	// Use the protocol enum value mapping
 	eventFaultType := ddv1.EventFaultType_EVENT_FAULT_TYPE_UNSPECIFIED
-	SetEnumFromProtocolValue(ddv1.EventFaultType_EVENT_FAULT_TYPE_UNSPECIFIED.Descriptor(), rawValue,
+	setEnumFromProtocolValue(ddv1.EventFaultType_EVENT_FAULT_TYPE_UNSPECIFIED.Descriptor(), rawValue,
 		func(enumNum protoreflect.EnumNumber) {
 			eventFaultType = ddv1.EventFaultType(enumNum)
 		}, func(unrecognized int32) {
@@ -49,6 +49,6 @@ func unmarshalEventFaultType(data []byte) (ddv1.EventFaultType, error) {
 //   - Event Fault Type (1 byte): Raw integer value (0-255)
 func appendEventFaultType(dst []byte, eventFaultType ddv1.EventFaultType) []byte {
 	// Get the protocol value for the enum
-	protocolValue := GetEventFaultTypeProtocolValue(eventFaultType, 0)
+	protocolValue := getEventFaultTypeProtocolValue(eventFaultType, 0)
 	return append(dst, byte(protocolValue))
 }

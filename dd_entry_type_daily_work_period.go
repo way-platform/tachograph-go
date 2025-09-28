@@ -29,7 +29,7 @@ func unmarshalEntryTypeDailyWorkPeriod(data []byte) (ddv1.EntryTypeDailyWorkPeri
 
 	// Use the protocol enum value mapping
 	entryTypeDailyWorkPeriod := ddv1.EntryTypeDailyWorkPeriod_ENTRY_TYPE_DAILY_WORK_PERIOD_UNSPECIFIED
-	SetEntryTypeDailyWorkPeriod(ddv1.EntryTypeDailyWorkPeriod_ENTRY_TYPE_DAILY_WORK_PERIOD_UNSPECIFIED.Descriptor(), rawValue,
+	setEnumFromProtocolValue(ddv1.EntryTypeDailyWorkPeriod_ENTRY_TYPE_DAILY_WORK_PERIOD_UNSPECIFIED.Descriptor(), rawValue,
 		func(enumNum protoreflect.EnumNumber) {
 			entryTypeDailyWorkPeriod = ddv1.EntryTypeDailyWorkPeriod(enumNum)
 		}, func(unrecognized int32) {
@@ -53,6 +53,6 @@ func unmarshalEntryTypeDailyWorkPeriod(data []byte) (ddv1.EntryTypeDailyWorkPeri
 //   - Entry Type Daily Work Period (1 byte): Raw integer value (0-3)
 func appendEntryTypeDailyWorkPeriod(dst []byte, entryTypeDailyWorkPeriod ddv1.EntryTypeDailyWorkPeriod) []byte {
 	// Get the protocol value for the enum
-	protocolValue := GetEntryTypeDailyWorkPeriodProtocolValue(entryTypeDailyWorkPeriod, 0)
+	protocolValue := getProtocolValueFromEnum(entryTypeDailyWorkPeriod, 0)
 	return append(dst, byte(protocolValue))
 }

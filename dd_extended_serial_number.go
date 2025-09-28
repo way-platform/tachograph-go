@@ -150,7 +150,7 @@ func appendExtendedSerialNumberAsString(dst []byte, esn *ddv1.ExtendedSerialNumb
 
 	// Next byte: equipment type (converted to protocol value using generic helper)
 	if esn.GetType() != ddv1.EquipmentType_EQUIPMENT_TYPE_UNSPECIFIED {
-		serialBytes[6] = byte(GetProtocolValueFromEnum(esn.GetType(), 0))
+		serialBytes[6] = byte(getProtocolValueFromEnum(esn.GetType(), 0))
 	}
 
 	// Last byte: manufacturer code

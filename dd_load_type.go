@@ -29,7 +29,7 @@ func unmarshalLoadType(data []byte) (ddv1.LoadType, error) {
 
 	// Use the protocol enum value mapping
 	loadType := ddv1.LoadType_LOAD_TYPE_UNSPECIFIED
-	SetLoadType(ddv1.LoadType_LOAD_TYPE_UNSPECIFIED.Descriptor(), rawValue,
+	setEnumFromProtocolValue(ddv1.LoadType_LOAD_TYPE_UNSPECIFIED.Descriptor(), rawValue,
 		func(enumNum protoreflect.EnumNumber) {
 			loadType = ddv1.LoadType(enumNum)
 		}, func(unrecognized int32) {
@@ -53,6 +53,6 @@ func unmarshalLoadType(data []byte) (ddv1.LoadType, error) {
 //   - Load Type (1 byte): Raw integer value (0-2)
 func appendLoadType(dst []byte, loadType ddv1.LoadType) []byte {
 	// Get the protocol value for the enum
-	protocolValue := GetLoadTypeProtocolValue(loadType, 0)
+	protocolValue := getProtocolValueFromEnum(loadType, 0)
 	return append(dst, byte(protocolValue))
 }

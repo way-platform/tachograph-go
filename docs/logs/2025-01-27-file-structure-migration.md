@@ -116,3 +116,32 @@
 3. Implement missing Gen2 support for VU files
 4. Complete simplified helper functions
 5. Standardize documentation and naming conventions
+
+## ✅ **Recent Improvements**
+
+### Function Visibility Alignment (2025-01-27)
+
+**Issue**: `protobuf_helpers.go` violated AGENTS.md principles by being a generic helper file and containing public functions.
+
+**Resolution**:
+
+- **Replaced** `protobuf_helpers.go` with `dd_enum_conversion.go` following the `dd_<typename>.go` naming convention
+- **Made all functions private** except `UnmarshalFile` and `MarshalFile` as specified in AGENTS.md
+- **Eliminated duplicative helper functions** by using generic `setEnumFromProtocolValue` and `getProtocolValueFromEnum` functions
+- **Updated all call sites** across 30+ files to use the new private function names
+- **Maintained 100% test coverage** - all tests continue to pass
+
+**Key Changes**:
+
+- `SetEnumFromProtocolValue` → `setEnumFromProtocolValue` (private)
+- `GetProtocolValueFromEnum` → `getProtocolValueFromEnum` (private)
+- `GetCardInsertedFromBool` → `getCardInsertedFromBool` (private)
+- Removed 20+ specific `Set*` and `Get*` functions in favor of generic approach
+- All enum conversion now uses protobuf reflection as recommended in AGENTS.md
+
+**Benefits**:
+
+- **Better alignment** with AGENTS.md principles
+- **Reduced code duplication** by using generic functions
+- **Improved maintainability** with co-located enum conversion logic
+- **Consistent naming** following the established conventions

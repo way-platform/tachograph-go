@@ -88,7 +88,7 @@ func unmarshalEventRecord(data []byte) (*cardv1.EventsData_Record, error) {
 	}
 	eventType := data[offset]
 	enumDesc := ddv1.EventFaultType_EVENT_FAULT_TYPE_UNSPECIFIED.Descriptor()
-	SetEnumFromProtocolValue(enumDesc, int32(eventType),
+	setEnumFromProtocolValue(enumDesc, int32(eventType),
 		func(enumNum protoreflect.EnumNumber) {
 			rec.SetEventType(ddv1.EventFaultType(enumNum))
 		}, nil)
@@ -180,7 +180,7 @@ func appendEventRecord(dst []byte, record *cardv1.EventsData_Record) ([]byte, er
 		return append(dst, record.GetRawData()...), nil
 	}
 
-	protocolValue := GetEventFaultTypeProtocolValue(record.GetEventType(), 0)
+	protocolValue := getEventFaultTypeProtocolValue(record.GetEventType(), 0)
 	dst = append(dst, byte(protocolValue))
 	dst = appendTimeReal(dst, record.GetEventBeginTime())
 	dst = appendTimeReal(dst, record.GetEventEndTime())

@@ -88,7 +88,7 @@ func parsePlaceRecord(r *bytes.Reader) (*cardv1.Places_Record, error) {
 		return nil, fmt.Errorf("failed to read entry type: %w", err)
 	}
 	// Convert raw entry type to enum using protocol annotations
-	SetEnumFromProtocolValue(ddv1.EntryTypeDailyWorkPeriod_ENTRY_TYPE_DAILY_WORK_PERIOD_UNSPECIFIED.Descriptor(),
+	setEnumFromProtocolValue(ddv1.EntryTypeDailyWorkPeriod_ENTRY_TYPE_DAILY_WORK_PERIOD_UNSPECIFIED.Descriptor(),
 		int32(entryType),
 		func(enumNum protoreflect.EnumNumber) {
 			record.SetEntryType(ddv1.EntryTypeDailyWorkPeriod(enumNum))
@@ -100,7 +100,7 @@ func parsePlaceRecord(r *bytes.Reader) (*cardv1.Places_Record, error) {
 		return nil, fmt.Errorf("failed to read country: %w", err)
 	}
 	// Convert raw country to enum using protocol annotations
-	SetEnumFromProtocolValue(ddv1.NationNumeric_NATION_NUMERIC_UNSPECIFIED.Descriptor(),
+	setEnumFromProtocolValue(ddv1.NationNumeric_NATION_NUMERIC_UNSPECIFIED.Descriptor(),
 		int32(country),
 		func(enumNum protoreflect.EnumNumber) {
 			record.SetDailyWorkPeriodCountry(ddv1.NationNumeric(enumNum))
@@ -171,11 +171,11 @@ func appendPlaceRecord(dst []byte, rec *cardv1.Places_Record) ([]byte, error) {
 	dst = appendTimeReal(dst, rec.GetEntryTime()) // 4 bytes
 
 	// Entry type with protocol value conversion using generic helper
-	entryTypeProtocol := GetProtocolValueFromEnum(rec.GetEntryType(), 0)
+	entryTypeProtocol := getProtocolValueFromEnum(rec.GetEntryType(), 0)
 	dst = append(dst, byte(entryTypeProtocol)) // 1 byte
 
 	// Country with protocol value conversion using generic helper
-	countryProtocol := GetProtocolValueFromEnum(rec.GetDailyWorkPeriodCountry(), 0)
+	countryProtocol := getProtocolValueFromEnum(rec.GetDailyWorkPeriodCountry(), 0)
 	dst = append(dst, byte(countryProtocol)) // 1 byte
 
 	dst = binary.BigEndian.AppendUint16(dst, uint16(rec.GetDailyWorkPeriodRegion())) // 2 bytes

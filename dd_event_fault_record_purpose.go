@@ -31,7 +31,7 @@ func unmarshalEventFaultRecordPurpose(data []byte) (ddv1.EventFaultRecordPurpose
 
 	// Use the protocol enum value mapping
 	eventFaultRecordPurpose := ddv1.EventFaultRecordPurpose_EVENT_FAULT_RECORD_PURPOSE_UNSPECIFIED
-	SetEventFaultRecordPurpose(ddv1.EventFaultRecordPurpose_EVENT_FAULT_RECORD_PURPOSE_UNSPECIFIED.Descriptor(), rawValue,
+	setEnumFromProtocolValue(ddv1.EventFaultRecordPurpose_EVENT_FAULT_RECORD_PURPOSE_UNSPECIFIED.Descriptor(), rawValue,
 		func(enumNum protoreflect.EnumNumber) {
 			eventFaultRecordPurpose = ddv1.EventFaultRecordPurpose(enumNum)
 		}, func(unrecognized int32) {
@@ -57,6 +57,6 @@ func unmarshalEventFaultRecordPurpose(data []byte) (ddv1.EventFaultRecordPurpose
 //   - Event Fault Record Purpose (1 byte): Raw integer value (0-7)
 func appendEventFaultRecordPurpose(dst []byte, eventFaultRecordPurpose ddv1.EventFaultRecordPurpose) []byte {
 	// Get the protocol value for the enum
-	protocolValue := GetEventFaultRecordPurposeProtocolValue(eventFaultRecordPurpose, 0)
+	protocolValue := getProtocolValueFromEnum(eventFaultRecordPurpose, 0)
 	return append(dst, byte(protocolValue))
 }

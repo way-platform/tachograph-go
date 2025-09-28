@@ -28,7 +28,7 @@ func unmarshalEncoding(data []byte) (ddv1.Encoding, error) {
 
 	// Use the protocol enum value mapping
 	encoding := ddv1.Encoding_ENCODING_UNSPECIFIED
-	SetEncoding(ddv1.Encoding_ENCODING_UNSPECIFIED.Descriptor(), rawValue,
+	setEnumFromProtocolValue(ddv1.Encoding_ENCODING_UNSPECIFIED.Descriptor(), rawValue,
 		func(enumNum protoreflect.EnumNumber) {
 			encoding = ddv1.Encoding(enumNum)
 		}, func(unrecognized int32) {
@@ -51,6 +51,6 @@ func unmarshalEncoding(data []byte) (ddv1.Encoding, error) {
 //   - Encoding (1 byte): Raw integer value (0-255)
 func appendEncoding(dst []byte, encoding ddv1.Encoding) []byte {
 	// Get the protocol value for the enum
-	protocolValue := GetEncodingProtocolValue(encoding, 0)
+	protocolValue := getProtocolValueFromEnum(encoding, 0)
 	return append(dst, byte(protocolValue))
 }
