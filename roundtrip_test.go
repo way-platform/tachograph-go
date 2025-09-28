@@ -39,7 +39,7 @@ func Test_roundTrip_rawCardFile(t *testing.T) {
 			}
 
 			// Step 2: RawCardFile → Binary
-			marshalledData, err := MarshalRawCardFile(originalRawFile)
+			marshalledData, err := marshalRawCardFile(originalRawFile)
 			if err != nil {
 				t.Fatalf("Failed to marshal RawCardFile to binary: %v", err)
 			}

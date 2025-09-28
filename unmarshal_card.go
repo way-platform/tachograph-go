@@ -19,6 +19,9 @@ func unmarshalRawCardFile(input []byte) (*cardv1.RawCardFile, error) {
 		}
 		output.SetRecords(append(output.GetRecords(), record))
 	}
+	if err := sc.Err(); err != nil {
+		return nil, err
+	}
 	return &output, nil
 }
 
@@ -28,8 +31,12 @@ func unmarshalRawCardFileRecord(input []byte) (*cardv1.RawCardFile_Record, error
 	fid := binary.BigEndian.Uint16(input[0:2])
 	appendix := input[2]
 	output.SetTag((int32(fid) << 8) | int32(appendix))
-	output.SetLength(int32(binary.BigEndian.Uint16(input[3:5])))
-	output.SetValue(input[5:])
+	length := int32(binary.BigEndian.Uint16(input[3:5]))
+	output.SetLength(length)
+	// Make a copy of the value bytes to avoid slice sharing issues with the scanner buffer
+	value := make([]byte, length)
+	copy(value, input[5:5+length])
+	output.SetValue(value)
 	// Extract generation from bit 1 of appendix byte
 	if appendix&0x02 != 0 { // bit 1 = 1
 		output.SetGeneration(cardv1.ApplicationGeneration_GENERATION_2)

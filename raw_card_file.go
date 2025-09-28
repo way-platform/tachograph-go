@@ -8,8 +8,8 @@ import (
 	cardv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1"
 )
 
-// MarshalRawCardFile converts a RawCardFile back to binary data
-func MarshalRawCardFile(rawFile *cardv1.RawCardFile) ([]byte, error) {
+// marshalRawCardFile converts a RawCardFile back to binary data
+func marshalRawCardFile(rawFile *cardv1.RawCardFile) ([]byte, error) {
 	var dst []byte
 
 	for _, record := range rawFile.GetRecords() {
