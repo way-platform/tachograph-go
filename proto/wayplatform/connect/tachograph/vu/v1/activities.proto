@@ -2,6 +2,7 @@ edition = "2023";
 
 package wayplatform.connect.tachograph.vu.v1;
 
+import "wayplatform/connect/tachograph/datadictionary/v1/operation_type.proto";
 import "google/protobuf/timestamp.proto";
 import "wayplatform/connect/tachograph/datadictionary/v1/card_slot_number.proto";
 import "wayplatform/connect/tachograph/datadictionary/v1/driver_activity_value.proto";
@@ -317,13 +318,6 @@ message Activities {
   //         vehicleOdometerValue OdometerShort
   //     }
   message LoadUnloadRecord {
-    // See Data Dictionary, Section 2.114a, `OperationType`.
-    enum OperationType {
-      OPERATION_TYPE_UNSPECIFIED = 0;
-      LOAD = 1;
-      UNLOAD = 2;
-      SIMULTANEOUS = 3;
-    }
     // Card number of the driver.
     //
     // See Data Dictionary, Section 2.74, `FullCardNumberAndGeneration`.
@@ -335,7 +329,7 @@ message Activities {
     datadictionary.v1.Generation card_generation = 2;
 
     // Type of operation (load, unload, or both).
-    OperationType operation_type = 3;
+    wayplatform.connect.tachograph.datadictionary.v1.OperationType operation_type = 3;
 
     // Position of the vehicle at the time of the operation.
     //

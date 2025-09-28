@@ -86,13 +86,55 @@ Our generated code uses the opaque API, meaning fields are hidden and accessor a
 
 When designing our protobuf schemas, we apply the following principles:
 
-- Align high-level conventions to the AEP (https://aep.dev) design system.
+- Align high-level conventions to the AIP (https://aip.dev) design system.
 - Prefer tagged unions (e.g. a `type` enum) over `oneof` constructs, for ergonomic reasons.
 - Use `google.protobuf.Timestamp` for timestamp fields.
 - Avoid unsigned integers, since they are not well supported in some languages.
-- Include ASN.1 definitions from [03-data-dictionary.md](docs/regulation/chapters/03-data-dictionary.md) for all messages and fields.
-- Field comments should always start with a single sentence or paragraph summarizing the purpose and/or function of the field.
 - **Use `StringValue` for complex strings:** Many string-like types in the data dictionary are not simple UTF-8 strings. They can be fixed-size `IA5String` types with padding, or complex `SEQUENCE` types (like `Name` and `Address`) that include a code page byte to define their character set. To handle these cases correctly and ensure lossless round-trips, any such field **must** be represented using the `datadictionary.v1.StringValue` message. This type provides the original `encoded` bytes, the `Encoding` enum to specify how to interpret them, and a convenient `decoded` field for display purposes.
+
+#### ASN.1 Documentation
+
+All messages, fields, and enums that correspond to a type in the data dictionary **must** be documented with a comment containing the original ASN.1 definition. The comment **must** follow this structure:
+
+1.  A single sentence or paragraph summarizing the purpose and/or function.
+2.  A blank line.
+3.  A reference to the Data Dictionary section (e.g., `See Data Dictionary, Section 2.53.`)
+4.  A blank line.
+5.  The heading `ASN.1 Definition:`. If the definition varies by protocol generation, use separate headings like `ASN.1 Definition (Gen1):`.
+6.  A blank line.
+7.  The full ASN.1 definition, indented to appear as a code block.
+
+**Example:**
+
+```protobuf
+// Represents the activities carried out during a control.
+//
+// See Data Dictionary, Section 2.53.
+//
+// ASN.1 Definition:
+//
+//     ControlType ::= OCTET STRING (SIZE(1))
+message ControlType {
+  // ...
+}
+```
+
+**Example with multiple generations:**
+
+```protobuf
+// The approval number of the motion sensor.
+//
+// See Data Dictionary, Section 2.131, `SensorApprovalNumber`.
+//
+// ASN.1 Definition (Gen1):
+//
+//     SensorApprovalNumber ::= IA5String(SIZE(8))
+//
+// ASN.1 Definition (Gen2):
+//
+//     SensorApprovalNumber ::= IA5String(SIZE(16))
+wayplatform.connect.tachograph.datadictionary.v1.StringValue approval_number = 2;
+```
 
 ### [`wayplatform.connect.tachograph.v1`](proto/wayplatform/connect/tachograph/v1)
 

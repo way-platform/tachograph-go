@@ -1,0 +1,35 @@
+syntax = "proto3";
+
+package wayplatform.connect.tachograph.datadictionary.v1;
+
+// Represents the activities carried out during a control.
+//
+// See Data Dictionary, Section 2.53.
+//
+// ASN.1 Definition:
+//
+//     ControlType ::= OCTET STRING (SIZE(1))
+//
+// The byte is a bitmask with the following structure: 'cvpdexxx'B
+// - 'c': card downloading
+// - 'v': VU downloading
+// - 'p': printing
+// - 'd': display
+// - 'e': roadside calibration checking (Gen2+)
+// - 'xxx': RFU
+message ControlType {
+  // Indicates if the card was downloaded during the control (bit 'c').
+  bool card_downloading = 1;
+
+  // Indicates if the VU was downloaded during the control (bit 'v').
+  bool vu_downloading = 2;
+
+  // Indicates if a printout was made during the control (bit 'p').
+  bool printing = 3;
+
+  // Indicates if the display was used during the control (bit 'd').
+  bool display = 4;
+
+  // Indicates if calibration parameters were checked (Gen2+ only) (bit 'e').
+  bool calibration_checking = 5;
+}

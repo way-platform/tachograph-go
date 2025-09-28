@@ -2,6 +2,7 @@ edition = "2023";
 
 package wayplatform.connect.tachograph.card.v1;
 
+import "wayplatform/connect/tachograph/datadictionary/v1/position_authentication_status.proto";
 import "google/protobuf/timestamp.proto";
 
 // Represents an authenticated GNSS position record.
@@ -60,5 +61,5 @@ message GnssPlaceAuthRecord {
   //         notAuthenticated(2),
   //         authenticationCorrupted(3)
   //     } (0..255)
-  int32 authentication_status = 5;
+  wayplatform.connect.tachograph.datadictionary.v1.PositionAuthenticationStatus authentication_status = 5;
 }

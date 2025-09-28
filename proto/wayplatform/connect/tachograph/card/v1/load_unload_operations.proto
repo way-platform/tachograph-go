@@ -2,6 +2,7 @@ edition = "2023";
 
 package wayplatform.connect.tachograph.card.v1;
 
+import "wayplatform/connect/tachograph/datadictionary/v1/operation_type.proto";
 import "google/protobuf/timestamp.proto";
 import "wayplatform/connect/tachograph/card/v1/gnss_place_auth_record.proto";
 
@@ -34,21 +35,6 @@ message LoadUnloadOperations {
   //         vehicleOdometerValue OdometerShort
   //     }
   message Record {
-    // The type of load/unload operation.
-    //
-    // See Data Dictionary, Section 2.114a, `OperationType`.
-    // ASN.1 Definition:
-    //
-    //     OperationType ::= INTEGER {
-    //         load(1), unload(2), simultaneous(3)
-    //     } (0..255)
-    enum OperationType {
-      OPERATION_TYPE_UNSPECIFIED = 0;
-      LOAD = 1;
-      UNLOAD = 2;
-      SIMULTANEOUS = 3;
-    }
-
     // The timestamp at the beginning of the load/unload operation.
     //
     // See Data Dictionary, Section 2.162, `TimeReal`.
@@ -58,7 +44,7 @@ message LoadUnloadOperations {
     google.protobuf.Timestamp timestamp = 1;
 
     // The type of operation performed.
-    OperationType operation_type = 2;
+    wayplatform.connect.tachograph.datadictionary.v1.OperationType operation_type = 2;
 
     // The authenticated position of the vehicle.
     //

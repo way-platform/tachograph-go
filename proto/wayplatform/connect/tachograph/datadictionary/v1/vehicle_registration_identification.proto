@@ -2,6 +2,8 @@ edition = "2023";
 
 package wayplatform.connect.tachograph.datadictionary.v1;
 
+import "wayplatform/connect/tachograph/datadictionary/v1/nation_numeric.proto";
+
 // Corresponds to the `VehicleRegistrationIdentification` data type in the Data Dictionary, Section 2.166.
 //
 // ASN.1 Specification:
@@ -17,7 +19,7 @@ message VehicleRegistrationIdentification {
   // ASN.1 Definition:
   //
   //     NationNumeric ::= INTEGER(0..255)
-  int32 nation = 1;
+  NationNumeric nation = 1;
 
   // The vehicle registration number.
   //
