@@ -1,7 +1,6 @@
 package tachograph
 
 import (
-	"bytes"
 	"fmt"
 
 	ddv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
@@ -67,28 +66,6 @@ func unmarshalVuDetailedSpeed(data []byte, offset int, target *vuv1.DetailedSpee
 //	    vuDetailedSpeedBlockRecordArray   VuDetailedSpeedBlockRecordArray,
 //	    signatureRecordArray              SignatureRecordArray
 //	}
-func appendVuDetailedSpeed(buf *bytes.Buffer, detailedSpeed *vuv1.DetailedSpeed) error {
-	if detailedSpeed == nil {
-		return nil
-	}
-
-	// For now, implement a simplified version that writes the signature data
-	// This ensures the interface is complete while allowing for future enhancement
-
-	if detailedSpeed.GetGeneration() == ddv1.Generation_GENERATION_1 {
-		signature := detailedSpeed.GetSignatureGen1()
-		if len(signature) > 0 {
-			buf.Write(signature)
-		}
-	} else {
-		signature := detailedSpeed.GetSignatureGen2()
-		if len(signature) > 0 {
-			buf.Write(signature)
-		}
-	}
-
-	return nil
-}
 
 // appendVuDetailedSpeedBytes appends VU detailed speed data to a byte slice
 func appendVuDetailedSpeedBytes(dst []byte, detailedSpeed *vuv1.DetailedSpeed) ([]byte, error) {

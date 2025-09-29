@@ -13,6 +13,16 @@ import (
 	tachographv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/v1"
 )
 
+// compositeMessage is a helper type for marshalling composite TLV values
+type compositeMessage struct {
+	data []byte
+}
+
+// ProtoReflect implements proto.Message
+func (m *compositeMessage) ProtoReflect() protoreflect.Message {
+	return nil // Not needed for our use case
+}
+
 // unmarshalDriverCardFile unmarshals a driver card file from raw card file data.
 //
 // The data type `DriverCardFile` represents a complete driver card file structure.
@@ -253,11 +263,6 @@ func unmarshalDriverCardFile(input *cardv1.RawCardFile) (*cardv1.DriverCardFile,
 	return &output, nil
 }
 
-// MarshalFile serializes a protobuf File message into the binary DDD file format.
-func MarshalFile(file *tachographv1.File) ([]byte, error) {
-	return appendCard(nil, file)
-}
-
 // appendCard orchestrates writing a card file.
 func appendCard(dst []byte, file *tachographv1.File) ([]byte, error) {
 	var err error
@@ -296,24 +301,27 @@ func appendDriverCard(dst []byte, card *cardv1.DriverCardFile) ([]byte, error) {
 		return nil, err
 	}
 
-	// 4. EF_IDENTIFICATION (0x0520) - composite file
-	// valBuf := make([]byte, 0, 143)
-	// valBuf, err = AppendCardIdentification(valBuf, card.GetIdentification())
-	// if err != nil {
-	// 	return nil, err
-	// }
-	// valBuf, err = AppendDriverCardHolderIdentification(valBuf, card.GetHolderIdentification())
-	// if err != nil {
-	// 	return nil, err
-	// }
-	// dst, err = appendTlv(dst, cardv1.ElementaryFileType_EF_IDENTIFICATION, &compositeMessage{data: valBuf}, func(dst []byte, msg *compositeMessage) ([]byte, error) {
-	// 	return append(dst, msg.data...), nil
-	// })
-	// if err != nil {
-	// 	return nil, err
-	// }
+	dst, err = appendTlv(dst, cardv1.ElementaryFileType_EF_DRIVING_LICENCE_INFO, card.GetDrivingLicenceInfo(), appendDrivingLicenceInfo)
+	if err != nil {
+		return nil, err
+	}
 
-	// 4. EF_IDENTIFICATION (0x0520) - already handled above
+	// 4. EF_IDENTIFICATION (0x0520) - composite file
+	valBuf := make([]byte, 0, 143)
+	valBuf, err = appendCardIdentification(valBuf, card.GetIdentification().GetCard())
+	if err != nil {
+		return nil, err
+	}
+	valBuf, err = appendDriverCardHolderIdentification(valBuf, card.GetIdentification().GetDriverCardHolder())
+	if err != nil {
+		return nil, err
+	}
+	dst, err = appendTlv(dst, cardv1.ElementaryFileType_EF_IDENTIFICATION, &compositeMessage{data: valBuf}, func(dst []byte, msg *compositeMessage) ([]byte, error) {
+		return append(dst, msg.data...), nil
+	})
+	if err != nil {
+		return nil, err
+	}
 
 	dst, err = appendTlv(dst, cardv1.ElementaryFileType_EF_EVENTS_DATA, card.GetEventsData(), appendEventsData)
 	if err != nil {

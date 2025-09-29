@@ -1,7 +1,6 @@
 package tachograph
 
 import (
-	"bytes"
 	"fmt"
 
 	ddv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
@@ -80,28 +79,6 @@ func unmarshalVuEventsAndFaults(data []byte, offset int, target *vuv1.EventsAndF
 //	    vuTimeAdjustmentRecordArray       VuTimeAdjustmentRecordArray,
 //	    signatureRecordArray              SignatureRecordArray
 //	}
-func appendVuEventsAndFaults(buf *bytes.Buffer, eventsAndFaults *vuv1.EventsAndFaults) error {
-	if eventsAndFaults == nil {
-		return nil
-	}
-
-	// For now, implement a simplified version that writes the signature data
-	// This ensures the interface is complete while allowing for future enhancement
-
-	if eventsAndFaults.GetGeneration() == ddv1.Generation_GENERATION_1 {
-		signature := eventsAndFaults.GetSignatureGen1()
-		if len(signature) > 0 {
-			buf.Write(signature)
-		}
-	} else {
-		signature := eventsAndFaults.GetSignatureGen2()
-		if len(signature) > 0 {
-			buf.Write(signature)
-		}
-	}
-
-	return nil
-}
 
 // appendVuEventsAndFaultsBytes appends VU events and faults data to a byte slice
 func appendVuEventsAndFaultsBytes(dst []byte, eventsAndFaults *vuv1.EventsAndFaults) ([]byte, error) {

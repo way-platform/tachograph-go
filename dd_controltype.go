@@ -12,7 +12,7 @@ import (
 //
 // ASN.1 Definition:
 //
-//     ControlType ::= OCTET STRING (SIZE(1))
+//	ControlType ::= OCTET STRING (SIZE(1))
 func unmarshalControlType(data []byte) (*ddv1.ControlType, error) {
 	if len(data) == 0 {
 		return nil, fmt.Errorf("insufficient data for control type")
@@ -34,28 +34,3 @@ func unmarshalControlType(data []byte) (*ddv1.ControlType, error) {
 // ASN.1 Definition:
 //
 //     ControlType ::= OCTET STRING (SIZE(1))
-func appendControlType(dst []byte, ct *ddv1.ControlType) []byte {
-	if ct == nil {
-		return append(dst, 0)
-	}
-
-	var b byte
-	if ct.GetCardDownloading() {
-		b |= 0x80 // bit 'c'
-	}
-	if ct.GetVuDownloading() {
-		b |= 0x40 // bit 'v'
-	}
-	if ct.GetPrinting() {
-		b |= 0x20 // bit 'p'
-	}
-	if ct.GetDisplay() {
-		b |= 0x10 // bit 'd'
-	}
-	if ct.GetCalibrationChecking() {
-		b |= 0x08 // bit 'e'
-	}
-	// bits 0-2 are RFU (Reserved for Future Use)
-
-	return append(dst, b)
-}

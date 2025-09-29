@@ -67,6 +67,8 @@ func unmarshalFullCardNumberAndGeneration(data []byte) (*ddv1.FullCardNumberAndG
 // Binary Layout (variable length):
 //   - Full Card Number (variable): FullCardNumber structure
 //   - Generation (1 byte): Generation enum value
+//
+//nolint:unused
 func appendFullCardNumberAndGeneration(dst []byte, fullCardNumberAndGen *ddv1.FullCardNumberAndGeneration) ([]byte, error) {
 	if fullCardNumberAndGen == nil {
 		// Append default values (empty FullCardNumber + default generation)

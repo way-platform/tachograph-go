@@ -20,6 +20,8 @@ import (
 //
 // Binary Layout (4 bits):
 //   - Slot Card Type (4 bits): Raw integer value (0-4)
+//
+//nolint:unused
 func unmarshalSlotCardType(data []byte) (ddv1.SlotCardType, error) {
 	if len(data) < 1 {
 		return ddv1.SlotCardType_SLOT_CARD_TYPE_UNSPECIFIED, fmt.Errorf("insufficient data for SlotCardType: got %d, want 1", len(data))
@@ -51,6 +53,8 @@ func unmarshalSlotCardType(data []byte) (ddv1.SlotCardType, error) {
 //
 // Binary Layout (4 bits):
 //   - Slot Card Type (4 bits): Raw integer value (0-4)
+//
+//nolint:unused
 func appendSlotCardType(dst []byte, slotCardType ddv1.SlotCardType) []byte {
 	// Get the protocol value for the enum
 	protocolValue := getProtocolValueFromEnum(slotCardType, 0)

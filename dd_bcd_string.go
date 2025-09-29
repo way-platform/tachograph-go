@@ -18,6 +18,8 @@ import (
 //
 // Binary Layout (variable length):
 //   - BCD String (variable): BCD-encoded bytes
+//
+//nolint:unused
 func unmarshalBcdString(data []byte) (*ddv1.BcdString, error) {
 	if len(data) == 0 {
 		return nil, fmt.Errorf("insufficient data for BcdString: got %d, want at least 1", len(data))
@@ -37,6 +39,8 @@ func unmarshalBcdString(data []byte) (*ddv1.BcdString, error) {
 //
 // Binary Layout (variable length):
 //   - BCD String (variable): BCD-encoded bytes
+//
+//nolint:unused
 func appendBcdString(dst []byte, bcdString *ddv1.BcdString) ([]byte, error) {
 	if bcdString == nil {
 		// Append empty BCD string (0 bytes)

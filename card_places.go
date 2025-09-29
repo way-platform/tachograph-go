@@ -148,67 +148,6 @@ func unmarshalPlaceRecord(data []byte) (*cardv1.Places_Record, error) {
 	return record, nil
 }
 
-// parsePlaceRecord parses a single place record
-func parsePlaceRecord(r *bytes.Reader) (*cardv1.Places_Record, error) {
-	const (
-		lenPlaceRecord = 12
-	)
-
-	if r.Len() < lenPlaceRecord {
-		return nil, fmt.Errorf("insufficient data for place record")
-	}
-
-	record := &cardv1.Places_Record{}
-
-	// Read entry time (4 bytes)
-	record.SetEntryTime(readTimeReal(r))
-
-	// Read entry type (1 byte)
-	var entryType byte
-	if err := binary.Read(r, binary.BigEndian, &entryType); err != nil {
-		return nil, fmt.Errorf("failed to read entry type: %w", err)
-	}
-	// Convert raw entry type to enum using protocol annotations
-	setEnumFromProtocolValue(ddv1.EntryTypeDailyWorkPeriod_ENTRY_TYPE_DAILY_WORK_PERIOD_UNSPECIFIED.Descriptor(),
-		int32(entryType),
-		func(enumNum protoreflect.EnumNumber) {
-			record.SetEntryType(ddv1.EntryTypeDailyWorkPeriod(enumNum))
-		}, nil)
-
-	// Read daily work period country (1 byte)
-	var country byte
-	if err := binary.Read(r, binary.BigEndian, &country); err != nil {
-		return nil, fmt.Errorf("failed to read country: %w", err)
-	}
-	// Convert raw country to enum using protocol annotations
-	setEnumFromProtocolValue(ddv1.NationNumeric_NATION_NUMERIC_UNSPECIFIED.Descriptor(),
-		int32(country),
-		func(enumNum protoreflect.EnumNumber) {
-			record.SetDailyWorkPeriodCountry(ddv1.NationNumeric(enumNum))
-		}, nil)
-
-	// Read daily work period region (2 bytes)
-	var region uint16
-	if err := binary.Read(r, binary.BigEndian, &region); err != nil {
-		return nil, fmt.Errorf("failed to read region: %w", err)
-	}
-	record.SetDailyWorkPeriodRegion(int32(region))
-
-	// Read vehicle odometer (3 bytes)
-	odometerBytes := make([]byte, 3)
-	if _, err := r.Read(odometerBytes); err != nil {
-		return nil, fmt.Errorf("failed to read odometer: %w", err)
-	}
-	record.SetVehicleOdometerKm(int32(binary.BigEndian.Uint32(append([]byte{0}, odometerBytes...))))
-
-	// Read reserved byte (1 byte) and store it for roundtrip accuracy
-	var reserved byte
-	_ = binary.Read(r, binary.BigEndian, &reserved) // ignore error as we're reading from in-memory buffer
-	record.SetReservedByte(int32(reserved))
-
-	return record, nil
-}
-
 // AppendPlaces appends the binary representation of Places to dst.
 //
 // The data type `CardPlaceDailyWorkPeriod` is specified in the Data Dictionary, Section 2.4.

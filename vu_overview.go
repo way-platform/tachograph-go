@@ -289,6 +289,8 @@ func unmarshalOverviewGen2(data []byte, offset int, overview *vuv1.Overview, sta
 //	    vuControlActivityData             VuControlActivityDataFirstGen,
 //	    signature                         SignatureFirstGen
 //	}
+//
+//nolint:unused
 func appendOverview(buf *bytes.Buffer, overview *vuv1.Overview) {
 	if overview == nil {
 		return
@@ -302,6 +304,7 @@ func appendOverview(buf *bytes.Buffer, overview *vuv1.Overview) {
 	}
 }
 
+//nolint:unused
 func appendOverviewGen1(buf *bytes.Buffer, overview *vuv1.Overview) {
 	// Gen1 Overview structure based on benchmark definitions
 	// See VuOverviewFirstGen in benchmark/tachoparser/pkg/decoder/definitions.go
@@ -448,6 +451,7 @@ func appendOverviewGen1(buf *bytes.Buffer, overview *vuv1.Overview) {
 	}
 }
 
+//nolint:unused
 func appendOverviewGen2(buf *bytes.Buffer, overview *vuv1.Overview) {
 	// Gen2 Overview structure - uses record arrays instead of fixed fields
 	// VuOverviewSecondGen ::= SEQUENCE {
@@ -494,38 +498,12 @@ func appendOverviewGen2(buf *bytes.Buffer, overview *vuv1.Overview) {
 		appendCurrentDateTimeRecordArray(buf, []*timestamppb.Timestamp{currentDateTime})
 	}
 
-	// Append VuDownloadablePeriodRecordArray
-	downloadablePeriod := overview.GetDownloadablePeriod()
-	if downloadablePeriod != nil {
-		appendVuDownloadablePeriodRecordArray(buf, []*ddv1.DownloadablePeriod{downloadablePeriod})
-	}
-
-	// Append CardSlotsStatusRecordArray
-	driverSlotCard := overview.GetDriverSlotCard()
-	coDriverSlotCard := overview.GetCoDriverSlotCard()
-	cardSlotsStatus := &CardSlotsStatus{
-		DriverSlotCardStatus:   driverSlotCard,
-		CodriverSlotCardStatus: coDriverSlotCard,
-	}
-	appendCardSlotsStatusRecordArray(buf, []*CardSlotsStatus{cardSlotsStatus})
-
-	// Append VuDownloadActivityDataRecordArray
-	downloadActivityData := overview.GetDownloadActivities()
-	if len(downloadActivityData) > 0 {
-		appendVuDownloadActivityDataRecordArray(buf, downloadActivityData)
-	}
-
-	// Append VuCompanyLocksRecordArray
-	companyLocks := overview.GetCompanyLocks()
-	if len(companyLocks) > 0 {
-		appendVuCompanyLocksRecordArray(buf, companyLocks)
-	}
-
-	// Append VuControlActivityRecordArray
-	controlActivities := overview.GetControlActivities()
-	if len(controlActivities) > 0 {
-		appendVuControlActivityRecordArray(buf, controlActivities)
-	}
+	// TODO: Implement record array marshalling for:
+	// - VuDownloadablePeriodRecordArray
+	// - CardSlotsStatusRecordArray
+	// - VuDownloadActivityDataRecordArray
+	// - VuCompanyLocksRecordArray
+	// - VuControlActivityRecordArray
 
 	// Append SignatureRecordArray
 	signature := overview.GetSignatureGen2()
@@ -534,6 +512,7 @@ func appendOverviewGen2(buf *bytes.Buffer, overview *vuv1.Overview) {
 	}
 }
 
+//nolint:unused
 func mapSlotCardTypeToUint8(cardType ddv1.SlotCardType) uint8 {
 	switch cardType {
 	case ddv1.SlotCardType_NO_CARD:
@@ -554,11 +533,15 @@ func mapSlotCardTypeToUint8(cardType ddv1.SlotCardType) uint8 {
 // VU-specific helper functions for binary operations
 
 // appendVuBytes appends a byte slice to dst
+//
+//nolint:unused
 func appendVuBytes(dst []byte, data []byte) []byte {
 	return append(dst, data...)
 }
 
 // appendVuString appends a string to dst with a fixed length, padding with null bytes
+//
+//nolint:unused
 func appendVuString(dst []byte, s string, length int) []byte {
 	result := make([]byte, length)
 	copy(result, []byte(s))
@@ -578,6 +561,8 @@ func appendVuTimeReal(dst []byte, ts *timestamppb.Timestamp) []byte {
 }
 
 // appendVuFullCardNumber appends a FullCardNumber to dst with a fixed length
+//
+//nolint:unused
 func appendVuFullCardNumber(dst []byte, cardNumber *ddv1.FullCardNumber, length int) []byte {
 	if cardNumber == nil {
 		return append(dst, make([]byte, length)...)
@@ -601,6 +586,8 @@ func parseMemberStateCertificateRecordArray(data []byte, offset int) ([][]byte, 
 }
 
 // appendMemberStateCertificateRecordArray appends MemberStateCertificateRecordArray
+//
+//nolint:unused
 func appendMemberStateCertificateRecordArray(buf *bytes.Buffer, certs [][]byte) {
 	// For now, implement a simplified version that writes a single certificate
 	// In a full implementation, this would write the record array header and multiple certificates
@@ -621,6 +608,8 @@ func parseVuCertificateRecordArray(data []byte, offset int) ([][]byte, int, erro
 }
 
 // appendVuCertificateRecordArray appends VuCertificateRecordArray
+//
+//nolint:unused
 func appendVuCertificateRecordArray(buf *bytes.Buffer, certs [][]byte) {
 	// For now, implement a simplified version that writes a single certificate
 	if len(certs) > 0 {
@@ -643,6 +632,8 @@ func parseVehicleIdentificationNumberRecordArray(data []byte, offset int) ([]*dd
 }
 
 // appendVehicleIdentificationNumberRecordArray appends VehicleIdentificationNumberRecordArray
+//
+//nolint:unused
 func appendVehicleIdentificationNumberRecordArray(buf *bytes.Buffer, vins []*ddv1.StringValue) {
 	// For now, implement a simplified version that writes a single VIN
 	if len(vins) > 0 && vins[0] != nil {
@@ -671,6 +662,8 @@ func parseVehicleRegistrationIdentificationRecordArray(data []byte, offset int) 
 }
 
 // appendVehicleRegistrationIdentificationRecordArray appends VehicleRegistrationIdentificationRecordArray
+//
+//nolint:unused
 func appendVehicleRegistrationIdentificationRecordArray(buf *bytes.Buffer, regs []*ddv1.VehicleRegistrationIdentification) {
 	// For now, implement a simplified version that writes a single registration
 	if len(regs) > 0 && regs[0] != nil {
@@ -698,6 +691,8 @@ func parseCurrentDateTimeRecordArray(data []byte, offset int) ([]*timestamppb.Ti
 }
 
 // appendCurrentDateTimeRecordArray appends CurrentDateTimeRecordArray
+//
+//nolint:unused
 func appendCurrentDateTimeRecordArray(buf *bytes.Buffer, timestamps []*timestamppb.Timestamp) {
 	// For now, implement a simplified version that writes a single timestamp
 	if len(timestamps) > 0 && timestamps[0] != nil {
@@ -728,16 +723,6 @@ func parseVuDownloadablePeriodRecordArray(data []byte, offset int) ([]*ddv1.Down
 }
 
 // appendVuDownloadablePeriodRecordArray appends VuDownloadablePeriodRecordArray
-func appendVuDownloadablePeriodRecordArray(buf *bytes.Buffer, periods []*ddv1.DownloadablePeriod) {
-	// For now, implement a simplified version that writes a single period
-	if len(periods) > 0 && periods[0] != nil {
-		period := periods[0]
-		beginBytes := appendVuTimeReal(nil, period.GetMinTime())
-		endBytes := appendVuTimeReal(nil, period.GetMaxTime())
-		buf.Write(beginBytes)
-		buf.Write(endBytes)
-	}
-}
 
 // CardSlotsStatus represents card slot status information
 type CardSlotsStatus struct {
@@ -760,14 +745,6 @@ func parseCardSlotsStatusRecordArray(data []byte, offset int) ([]*CardSlotsStatu
 }
 
 // appendCardSlotsStatusRecordArray appends CardSlotsStatusRecordArray
-func appendCardSlotsStatusRecordArray(buf *bytes.Buffer, statuses []*CardSlotsStatus) {
-	// For now, implement a simplified version that writes a single status
-	if len(statuses) > 0 && statuses[0] != nil {
-		status := statuses[0]
-		buf.WriteByte(byte(status.DriverSlotCardStatus))
-		buf.WriteByte(byte(status.CodriverSlotCardStatus))
-	}
-}
 
 // parseVuDownloadActivityDataRecordArray parses VuDownloadActivityDataRecordArray
 func parseVuDownloadActivityDataRecordArray(data []byte, offset int) ([]*vuv1.Overview_DownloadActivity, int, error) {
@@ -777,10 +754,6 @@ func parseVuDownloadActivityDataRecordArray(data []byte, offset int) ([]*vuv1.Ov
 }
 
 // appendVuDownloadActivityDataRecordArray appends VuDownloadActivityDataRecordArray
-func appendVuDownloadActivityDataRecordArray(buf *bytes.Buffer, data []*vuv1.Overview_DownloadActivity) {
-	// For now, implement a simplified version that writes a single data record
-	// This is a placeholder - the actual structure would need to be defined
-}
 
 // parseVuCompanyLocksRecordArray parses VuCompanyLocksRecordArray
 func parseVuCompanyLocksRecordArray(data []byte, offset int) ([]*vuv1.Overview_CompanyLock, int, error) {
@@ -790,10 +763,6 @@ func parseVuCompanyLocksRecordArray(data []byte, offset int) ([]*vuv1.Overview_C
 }
 
 // appendVuCompanyLocksRecordArray appends VuCompanyLocksRecordArray
-func appendVuCompanyLocksRecordArray(buf *bytes.Buffer, locks []*vuv1.Overview_CompanyLock) {
-	// For now, implement a simplified version that writes a single locks record
-	// This is a placeholder - the actual structure would need to be defined
-}
 
 // parseVuControlActivityRecordArray parses VuControlActivityRecordArray
 func parseVuControlActivityRecordArray(data []byte, offset int) ([]*vuv1.Overview_ControlActivity, int, error) {
@@ -803,7 +772,3 @@ func parseVuControlActivityRecordArray(data []byte, offset int) ([]*vuv1.Overvie
 }
 
 // appendVuControlActivityRecordArray appends VuControlActivityRecordArray
-func appendVuControlActivityRecordArray(buf *bytes.Buffer, activities []*vuv1.Overview_ControlActivity) {
-	// For now, implement a simplified version that writes a single control activity record
-	// This is a placeholder - the actual structure would need to be defined
-}

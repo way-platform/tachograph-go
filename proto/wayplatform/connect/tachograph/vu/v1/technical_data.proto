@@ -198,8 +198,13 @@ message TechnicalData {
 
     // The card number of the workshop.
     //
-    // See Data Dictionary, Section 2.73, `FullCardNumber`.
-    dd.v1.FullCardNumber workshop_card_number = 5;
+    // The underlying `VuCalibrationRecord` exists for both Gen1 and Gen2.
+    // To support both versions in a single field and ensure unique card
+    // identification for Gen2, this uses the `FullCardNumberAndGeneration` superset.
+    // For Gen1 records, the `generation` field will be unset.
+    //
+    // See Data Dictionary, Sections 2.73 (`FullCardNumber`) and 2.74 (`FullCardNumberAndGeneration`).
+    dd.v1.FullCardNumberAndGeneration workshop_card_number = 5;
 
     // The expiry date of the workshop card.
     //
@@ -239,13 +244,13 @@ message TechnicalData {
     //     K-ConstantOfRecordingEquipment ::= INTEGER(0..65535)
     int32 k_constant_of_recording_equipment = 10;
 
-    // The tyre circumference in mm.
+    // The tyre circumference in 1/8ths of a mm.
     //
     // See Data Dictionary, Section 2.91, `L-TyreCircumference`.
     // ASN.1 Definition:
     //
     //     L-TyreCircumference ::= INTEGER(0..65535)
-    int32 l_tyre_circumference_mm = 11;
+    int32 l_tyre_circumference_eighths_mm = 11;
 
     // The tyre size designation.
     //
@@ -353,7 +358,7 @@ message TechnicalData {
     dd.v1.OwnerIdentification owner_identification = 5;
   }
 
-  // Represents a record of ITS consent status for a card.
+  // Represents a record of ITS consent status for a card (Gen2 only).
   //
   // See Data Dictionary, Section 2.207, `VuITSConsentRecord`.
   //
@@ -361,13 +366,14 @@ message TechnicalData {
   //
   //     VuITSConsentRecord ::= SEQUENCE {
   //         cardNumberAndGen FullCardNumberAndGeneration,
-  //         consent BOOLEAN
+  //         consent          BOOLEAN
   //     }
   message ItsConsentRecord {
-    // The full card number.
+    // The full card number and generation of the card holder.
     //
-    // See Data Dictionary, Section 2.74, `FullCardNumberAndGeneration`.
-    dd.v1.FullCardNumber full_card_number = 1;
+    // This is a Gen2-only record and the specification explicitly requires
+    // `FullCardNumberAndGeneration`.
+    dd.v1.FullCardNumberAndGeneration full_card_number_and_generation = 1;
 
     // The consent status for ITS data provision.
     //

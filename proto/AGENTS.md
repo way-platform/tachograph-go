@@ -10,6 +10,7 @@ Our data model is based on the protobuf schemas defined in the [`proto`](.) dire
 - Prefer tagged unions (e.g., a `type` enum) over `oneof` for ergonomic reasons.
 - Use `google.protobuf.Timestamp` for timestamp fields.
 - Avoid unsigned integers due to limited support in some languages.
+- **Use Superset Messages for Generational Differences:** When a Generation 2 data structure is a clear superset of its Generation 1 equivalent (e.g., `FullCardNumberAndGeneration` contains `FullCardNumber`), we will use the Gen2 superset message for all related fields. This simplifies the API by providing a single, unified field for consumers. When parsing Gen1 data, the additional Gen2 fields in the message will be left unset.
 - **Use `StringValue` for special strings:** Many string-like types in the data dictionary are not simple UTF-8. This includes `IA5String` (which may have padding) and complex `SEQUENCE` types (like `Name` and `Address`) that contain a code page. To ensure lossless round-trips, these fields **must** use `datadictionary.v1.StringValue`. This message provides the original `encoded` bytes, the `Encoding` enum (which includes a value for `IA5`), and a `decoded` field for display.
 - **Use `Date` for BCD dates:** The `Datef` data type (DD 2.57) is an `OCTET STRING (SIZE(4))` representing a BCD-encoded `yyyymmdd` date. Any field corresponding to this type **must** use the `datadictionary.v1.Date` message, which provides decoded `year`, `month`, and `day` fields.
 - **Use `bytes` for `OCTET STRING`:** To maintain semantic fidelity with the ASN.1 specification, fields defined as `OCTET STRING` should be represented as `bytes` in Protobuf, even if they are single-byte values that could be losslessly stored in an `int32`. This makes it clear to consumers that the data is a raw byte string, not necessarily a number.
@@ -18,6 +19,8 @@ Our data model is based on the protobuf schemas defined in the [`proto`](.) dire
 ## ASN.1 Documentation
 
 All messages, fields, and enums corresponding to a data dictionary type **must** be documented with a comment containing the original ASN.1 definition.
+
+**Source Material Only:** All comments and documentation within `.proto` files must be self-contained and based on first principles from the source regulations. **Do not** reference internal project documents like `AGENTS.md` or internal policies. The rationale for a design choice should be evident from the regulatory context provided in the comment itself.
 
 The comment **must** follow this structure:
 1.  A brief summary of the element's purpose.

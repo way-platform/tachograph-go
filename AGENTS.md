@@ -18,11 +18,13 @@ Tachograph data files are binary data dumps from tachograph vehicle units (VU), 
 To ensure a high degree of quality and alignment with the specification, this project is being developed with a phased scope.
 
 **Phase 1 (Current Focus):**
--   Full, high-fidelity support for **Driver Card** files.
--   Full, high-fidelity support for **Vehicle Unit (VU)** files.
+
+- Full, high-fidelity support for **Driver Card** files.
+- Full, high-fidelity support for **Vehicle Unit (VU)** files.
 
 **Future Phases:**
--   Support for Workshop Card, Control Card, and Company Card files is intentionally deferred. The protobuf schema has placeholders for these types, but their implementation will be addressed after the core support for Driver and VU files is complete and stable.
+
+- Support for Workshop Card, Control Card, and Company Card files is intentionally deferred. The protobuf schema has placeholders for these types, but their implementation will be addressed after the core support for Driver and VU files is complete and stable.
 
 ## Regulation
 
@@ -87,6 +89,15 @@ To create a unified and forward-compatible protobuf data model, we have adopted 
 - When parsing Gen2 data, it will contain multiple elements.
 
 This approach avoids the need for separate `_gen1` and `_gen2` fields, simplifying both the data model and the client-side logic required to interact with it.
+
+### Handling Generational Differences in Marshalling
+
+When using a unified "superset" protobuf message to represent data that differs between generations (e.g., using `FullCardNumberAndGeneration` for both Gen1 and Gen2 records), the following marshalling policy applies:
+
+- **Populate for Consumer:** The unmarshalling process should always populate the full superset message for the consumer's benefit. For example, when parsing a Gen1 record, the `generation` field in `FullCardNumberAndGeneration` should be explicitly set to `GENERATION_1`. This makes the in-memory data model self-describing.
+- **Marshal for Compliance:** The marshalling (serialization) logic **must** be version-aware. When writing a binary file, the marshaller must check the target generation and only write the fields that are compliant with that generation's specification. For example, when marshalling a `FullCardNumberAndGeneration` message for a Gen1 file, it must _only_ write the bytes for the nested `FullCardNumber` and **must not** write the `generation` field.
+
+This ensures that we provide a rich, easy-to-use in-memory data model while maintaining perfect binary compliance and fidelity for the serialized output.
 
 ### Marshalling and Unmarshalling
 
@@ -273,3 +284,8 @@ Roundtrip tests exist but are currently in a failing state and should not be rel
 ## Principles
 
 Leave all version control and git to the user/developer. If you see a build error related to having a git diff, this is normal.
+
+### Code Quality
+
+- **No `//nolint` comments**: Never suppress linter warnings with `//nolint` comments. Instead, fix the underlying issues by removing unused code, implementing missing functionality, or restructuring the code properly.
+- **Zero linter errors**: The codebase must have zero linter errors at all times. This ensures code quality and maintainability.

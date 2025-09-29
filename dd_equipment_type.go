@@ -18,6 +18,8 @@ import (
 //
 // Binary Layout (1 byte):
 //   - Equipment Type (1 byte): Raw integer value
+//
+//nolint:unused
 func unmarshalEquipmentType(data []byte) (ddv1.EquipmentType, error) {
 	if len(data) < 1 {
 		return ddv1.EquipmentType_EQUIPMENT_TYPE_UNSPECIFIED, fmt.Errorf("insufficient data for EquipmentType: got %d, want 1", len(data))
@@ -46,6 +48,8 @@ func unmarshalEquipmentType(data []byte) (ddv1.EquipmentType, error) {
 //
 // Binary Layout (1 byte):
 //   - Equipment Type (1 byte): Raw integer value
+//
+//nolint:unused
 func appendEquipmentType(dst []byte, equipmentType ddv1.EquipmentType) []byte {
 	// Get the protocol value for the enum
 	protocolValue := getProtocolValueFromEnum(equipmentType, 0)

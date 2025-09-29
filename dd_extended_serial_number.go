@@ -25,6 +25,8 @@ import (
 //   - Month/Year (2 bytes): BCD-encoded MMYY format
 //   - Equipment Type (1 byte): EquipmentType
 //   - Manufacturer Code (1 byte): ManufacturerCode
+//
+//nolint:unused
 func unmarshalExtendedSerialNumber(data []byte) (*ddv1.ExtendedSerialNumber, error) {
 	const (
 		lenExtendedSerialNumber = 8
@@ -86,6 +88,8 @@ func unmarshalExtendedSerialNumber(data []byte) (*ddv1.ExtendedSerialNumber, err
 //   - Month/Year (2 bytes): BCD-encoded MMYY format
 //   - Equipment Type (1 byte): EquipmentType
 //   - Manufacturer Code (1 byte): ManufacturerCode
+//
+//nolint:unused
 func appendExtendedSerialNumber(dst []byte, esn *ddv1.ExtendedSerialNumber) ([]byte, error) {
 	if esn == nil {
 		// Append default values (8 zero bytes)

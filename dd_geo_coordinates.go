@@ -21,6 +21,8 @@ import (
 // Binary Layout (8 bytes total):
 //   - Latitude (4 bytes): Signed integer in millionths of a degree
 //   - Longitude (4 bytes): Signed integer in millionths of a degree
+//
+//nolint:unused
 func unmarshalGeoCoordinates(data []byte) (*ddv1.GeoCoordinates, error) {
 	const (
 		lenGeoCoordinates = 8 // 4 bytes latitude + 4 bytes longitude

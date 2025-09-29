@@ -44,6 +44,8 @@ func unmarshalGeneration(data []byte) (ddv1.Generation, error) {
 //
 // Binary Layout (1 byte):
 //   - Generation (1 byte): Raw integer value (1-2)
+//
+//nolint:unused
 func appendGeneration(dst []byte, generation ddv1.Generation) []byte {
 	// Map enum to generation byte
 	switch generation {

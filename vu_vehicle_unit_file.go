@@ -134,7 +134,6 @@ func unmarshalVehicleUnitFile(input []byte) (*vuv1.VehicleUnitFile, error) {
 			transfer.SetTechnicalData(technicalData)
 		default:
 			// For now, skip unknown transfer types
-			break
 		}
 
 		// Advance offset by the number of bytes read
@@ -181,7 +180,7 @@ func findTransferTypeByTag(tag uint16) vuv1.TransferType {
 //	        technicalData             TechnicalData
 //	    }
 //	}
-func appendVU(dst []byte, vuFile *vuv1.VehicleUnitFile) ([]byte, error) {
+func AppendVU(dst []byte, vuFile *vuv1.VehicleUnitFile) ([]byte, error) {
 	if vuFile == nil {
 		return dst, nil
 	}
@@ -346,94 +345,6 @@ func appendOverviewBytes(dst []byte, overview *vuv1.Overview, generation int) ([
 		}
 	} else {
 		signature := overview.GetSignatureGen2()
-		if len(signature) > 0 {
-			dst = append(dst, signature...)
-		}
-	}
-
-	return dst, nil
-}
-
-func appendActivitiesBytes(dst []byte, activities *vuv1.Activities, generation int) ([]byte, error) {
-	if activities == nil {
-		return dst, nil
-	}
-
-	// For now, implement a simplified version that just writes signature data
-	// This ensures the interface is complete while allowing for future enhancement
-	if generation == 1 {
-		signature := activities.GetSignatureGen1()
-		if len(signature) > 0 {
-			dst = append(dst, signature...)
-		}
-	} else {
-		signature := activities.GetSignatureGen2()
-		if len(signature) > 0 {
-			dst = append(dst, signature...)
-		}
-	}
-
-	return dst, nil
-}
-
-func appendEventsAndFaultsBytes(dst []byte, eventsAndFaults *vuv1.EventsAndFaults, generation int) ([]byte, error) {
-	if eventsAndFaults == nil {
-		return dst, nil
-	}
-
-	// For now, implement a simplified version that just writes signature data
-	// This ensures the interface is complete while allowing for future enhancement
-	if generation == 1 {
-		signature := eventsAndFaults.GetSignatureGen1()
-		if len(signature) > 0 {
-			dst = append(dst, signature...)
-		}
-	} else {
-		signature := eventsAndFaults.GetSignatureGen2()
-		if len(signature) > 0 {
-			dst = append(dst, signature...)
-		}
-	}
-
-	return dst, nil
-}
-
-func appendDetailedSpeedBytes(dst []byte, detailedSpeed *vuv1.DetailedSpeed, generation int) ([]byte, error) {
-	if detailedSpeed == nil {
-		return dst, nil
-	}
-
-	// For now, implement a simplified version that just writes signature data
-	// This ensures the interface is complete while allowing for future enhancement
-	if generation == 1 {
-		signature := detailedSpeed.GetSignatureGen1()
-		if len(signature) > 0 {
-			dst = append(dst, signature...)
-		}
-	} else {
-		signature := detailedSpeed.GetSignatureGen2()
-		if len(signature) > 0 {
-			dst = append(dst, signature...)
-		}
-	}
-
-	return dst, nil
-}
-
-func appendTechnicalDataBytes(dst []byte, technicalData *vuv1.TechnicalData, generation int) ([]byte, error) {
-	if technicalData == nil {
-		return dst, nil
-	}
-
-	// For now, implement a simplified version that just writes signature data
-	// This ensures the interface is complete while allowing for future enhancement
-	if generation == 1 {
-		signature := technicalData.GetSignatureGen1()
-		if len(signature) > 0 {
-			dst = append(dst, signature...)
-		}
-	} else {
-		signature := technicalData.GetSignatureGen2()
 		if len(signature) > 0 {
 			dst = append(dst, signature...)
 		}

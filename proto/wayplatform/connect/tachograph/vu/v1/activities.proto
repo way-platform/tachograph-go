@@ -8,6 +8,7 @@ import "wayplatform/connect/tachograph/dd/v1/card_slot_number.proto";
 import "wayplatform/connect/tachograph/dd/v1/date.proto";
 import "wayplatform/connect/tachograph/dd/v1/entry_type_daily_work_period.proto";
 import "wayplatform/connect/tachograph/dd/v1/full_card_number.proto";
+import "wayplatform/connect/tachograph/dd/v1/full_card_number_and_generation.proto";
 import "wayplatform/connect/tachograph/dd/v1/generation.proto";
 import "wayplatform/connect/tachograph/dd/v1/geo_coordinates.proto";
 import "wayplatform/connect/tachograph/dd/v1/holder_name.proto";
@@ -48,14 +49,13 @@ message Activities {
     //
     // See Data Dictionary, Section 2.118, `PreviousVehicleInfo`.
     //
-    // ASN.1 Definition (Gen1):
+    // ASN.1 Definition:
     //
     //     PreviousVehicleInfo ::= SEQUENCE {
     //         vehicleRegistrationIdentification VehicleRegistrationIdentification,
-    //         cardWithdrawalTime TimeReal
+    //         cardWithdrawalTime                TimeReal,
+    //         vuGeneration                      Generation -- Gen2 only
     //     }
-    //
-    // For Gen2, `vuGeneration Generation` is added.
     message PreviousVehicleInfo {
       // The registration of the previous vehicle.
       //
@@ -69,6 +69,11 @@ message Activities {
       //
       //     TimeReal ::= INTEGER (0..2^32-1)
       google.protobuf.Timestamp card_withdrawal_time = 2;
+
+      // The generation of the VU from which the card was withdrawn. (Gen2 only)
+      //
+      // See Data Dictionary, Section 2.75, `Generation`.
+      dd.v1.Generation vu_generation = 3;
     }
 
     // The name of the card holder.
@@ -77,9 +82,11 @@ message Activities {
     wayplatform.connect.tachograph.dd.v1.HolderName card_holder_name = 1;
 
     // The full card number of the inserted card.
+    // For Gen2 records, this will include the card generation.
+    // For Gen1 records, the `generation` field within this message will be unset.
     //
     // See Data Dictionary, Section 2.73, `FullCardNumber` and 2.74, `FullCardNumberAndGeneration`.
-    dd.v1.FullCardNumber full_card_number = 2;
+    dd.v1.FullCardNumberAndGeneration full_card_number_and_generation = 2;
 
     // The expiry date of the card.
     //
@@ -255,23 +262,19 @@ message Activities {
   // ASN.1 Definition:
   //
   //     VuBorderCrossingRecord ::= SEQUENCE {
-  //         cardNumberAndGenDriverSlot FullCardNumberAndGeneration,
+  //         cardNumberAndGenDriverSlot   FullCardNumberAndGeneration,
   //         cardNumberAndGenCodriverSlot FullCardNumberAndGeneration,
-  //         countryLeft NationNumeric,
-  //         countryEntered NationNumeric,
-  //         gnssPlaceAuthRecord GNSSPlaceAuthRecord,
-  //         vehicleOdometerValue OdometerShort
+  //         countryLeft                  NationNumeric,
+  //         countryEntered               NationNumeric,
+  //         gnssPlaceAuthRecord          GNSSPlaceAuthRecord,
+  //         vehicleOdometerValue         OdometerShort
   //     }
   message BorderCrossingRecord {
-    // Card number of the driver.
-    //
-    // See Data Dictionary, Section 2.74, `FullCardNumberAndGeneration`.
-    dd.v1.FullCardNumber full_card_number = 1;
+    // Card information for the driver slot.
+    dd.v1.FullCardNumberAndGeneration card_number_driver_slot = 1;
 
-    // Generation of the driver's card.
-    //
-    // See Data Dictionary, Section 2.75, `Generation`.
-    dd.v1.Generation card_generation = 2;
+    // Card information for the co-driver slot.
+    dd.v1.FullCardNumberAndGeneration card_number_codriver_slot = 2;
 
     // Country the vehicle is leaving.
     //
@@ -304,31 +307,30 @@ message Activities {
   // ASN.1 Definition:
   //
   //     VuLoadUnloadRecord ::= SEQUENCE {
-  //         timeStamp TimeReal,
-  //         operationType OperationType,
-  //         cardNumberAndGenDriverSlot FullCardNumberAndGeneration,
+  //         timeStamp                    TimeReal,
+  //         operationType                OperationType,
+  //         cardNumberAndGenDriverSlot   FullCardNumberAndGeneration,
   //         cardNumberAndGenCodriverSlot FullCardNumberAndGeneration,
-  //         gnssPlaceAuthRecord GNSSPlaceAuthRecord,
-  //         vehicleOdometerValue OdometerShort
+  //         gnssPlaceAuthRecord          GNSSPlaceAuthRecord,
+  //         vehicleOdometerValue         OdometerShort
   //     }
   message LoadUnloadRecord {
-    // Card number of the driver.
-    //
-    // See Data Dictionary, Section 2.74, `FullCardNumberAndGeneration`.
-    dd.v1.FullCardNumber full_card_number = 1;
-
-    // Generation of the driver's card.
-    //
-    // See Data Dictionary, Section 2.75, `Generation`.
-    dd.v1.Generation card_generation = 2;
+    // Timestamp of the operation.
+    google.protobuf.Timestamp timestamp = 1;
 
     // Type of operation (load, unload, or both).
-    wayplatform.connect.tachograph.dd.v1.OperationType operation_type = 3;
+    wayplatform.connect.tachograph.dd.v1.OperationType operation_type = 2;
+
+    // Card information for the driver slot.
+    dd.v1.FullCardNumberAndGeneration card_number_driver_slot = 3;
+
+    // Card information for the co-driver slot.
+    dd.v1.FullCardNumberAndGeneration card_number_codriver_slot = 4;
 
     // Position of the vehicle at the time of the operation.
     //
     // See Data Dictionary, Section 2.79c, `GNSSPlaceAuthRecord`.
-    GnssRecord place_record = 4;
+    GnssRecord place_record = 5;
 
     // Odometer value at the time of the operation in kilometers.
     //
@@ -336,7 +338,7 @@ message Activities {
     // ASN.1 Definition:
     //
     //     OdometerShort ::= INTEGER(0..999999)
-    int32 odometer_km = 5;
+    int32 odometer_km = 6;
   }
 
   // The generation of the vehicle unit, parsed from the raw transfer data.
