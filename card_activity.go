@@ -63,7 +63,11 @@ func unmarshalDriverActivityData(data []byte) (*cardv1.DriverActivityData, error
 		return nil, fmt.Errorf("failed to read activity daily records: %w", err)
 	}
 
-	dailyRecords, err := parseCyclicActivityDailyRecords(activityData, int(newestDayRecordPointer))
+	// Store the raw cyclic buffer for round-trip fidelity
+	target.SetRawCyclicBuffer(activityData)
+
+	// Parse records using the iterator
+	dailyRecords, err := parseActivityRecordsWithIterator(activityData, int(newestDayRecordPointer))
 	if err != nil {
 		return nil, fmt.Errorf("failed to parse cyclic activity daily records: %w", err)
 	}
@@ -72,47 +76,26 @@ func unmarshalDriverActivityData(data []byte) (*cardv1.DriverActivityData, error
 	return target, nil
 }
 
-// parseCyclicActivityDailyRecords parses the cyclic activity daily records structure.
-func parseCyclicActivityDailyRecords(data []byte, newestRecordPos int) ([]*cardv1.DriverActivityData_DailyRecord, error) {
-	if len(data) == 0 {
-		return nil, nil // No data to parse
-	}
-
+// parseActivityRecordsWithIterator parses activity records using the CyclicRecordIterator.
+// This separates the complex traversal logic from the parsing logic, improving maintainability
+// and enabling the buffer painting strategy for perfect round-trip fidelity.
+func parseActivityRecordsWithIterator(buffer []byte, startPos int) ([]*cardv1.DriverActivityData_DailyRecord, error) {
 	var records []*cardv1.DriverActivityData_DailyRecord
-	currentPos := newestRecordPos
 
-	// We'll parse up to 366 days worth of records as a safeguard against infinite loops.
-	for i := 0; i < 366; i++ {
-		// The current position must be valid to read a header.
-		if currentPos < 0 || currentPos+4 > len(data) {
-			// Invalid starting position for a header, stop.
-			break
-		}
+	iterator := NewCyclicRecordIterator(buffer, startPos)
+	for iterator.Next() {
+		recordBytes, _, _ := iterator.Record()
 
-		// Read the record header
-		prevRecordLength := int(binary.BigEndian.Uint16(data[currentPos : currentPos+2]))
-		currentRecordLength := int(binary.BigEndian.Uint16(data[currentPos+2 : currentPos+4]))
-
-		if currentRecordLength == 0 {
-			// A zero-length record signifies the end of the chain.
-			break
-		}
-		// Read the full record data, handling buffer wrap-around.
-		recordData := make([]byte, currentRecordLength)
-		for j := 0; j < currentRecordLength; j++ {
-			recordData[j] = data[(currentPos+j)%len(data)]
-		}
-
-		// Attempt to parse the record semantically.
-		parsedRecord, err := parseSingleActivityDailyRecord(recordData)
+		// Try to parse the record semantically
+		parsedRecord, err := parseSingleActivityDailyRecord(recordBytes)
 		dailyRecord := &cardv1.DriverActivityData_DailyRecord{}
 
 		if err != nil {
-			// Parsing failed, store as raw.
+			// Parsing failed, store as raw
 			dailyRecord.SetValid(false)
-			dailyRecord.SetRaw(recordData)
+			dailyRecord.SetRaw(recordBytes)
 		} else {
-			// Parsing succeeded.
+			// Parsing succeeded, store semantic data
 			dailyRecord.SetValid(true)
 			dailyRecord.SetActivityPreviousRecordLength(parsedRecord.GetActivityPreviousRecordLength())
 			dailyRecord.SetActivityRecordLength(parsedRecord.GetActivityRecordLength())
@@ -121,21 +104,17 @@ func parseCyclicActivityDailyRecords(data []byte, newestRecordPos int) ([]*cardv
 			dailyRecord.SetActivityDayDistance(parsedRecord.GetActivityDayDistance())
 			dailyRecord.SetActivityChangeInfo(parsedRecord.GetActivityChangeInfo())
 		}
+
+		// Position information is inferred during marshalling by walking the linked list
+
 		records = append(records, dailyRecord)
-
-		if prevRecordLength == 0 {
-			// End of the chain.
-			break
-		}
-
-		// Move to the previous record, handling wrap-around.
-		currentPos -= prevRecordLength
-		if currentPos < 0 {
-			currentPos += len(data)
-		}
 	}
 
-	// Reverse the order since we parsed backwards from newest to oldest.
+	if err := iterator.Err(); err != nil {
+		return nil, err
+	}
+
+	// Reverse to get chronological order (oldest to newest)
 	for i, j := 0, len(records)-1; i < j; i, j = i+1, j-1 {
 		records[i], records[j] = records[j], records[i]
 	}
@@ -265,21 +244,119 @@ func appendDriverActivity(dst []byte, activity *cardv1.DriverActivityData) ([]by
 	dst = binary.BigEndian.AppendUint16(dst, uint16(activity.GetOldestDayRecordIndex()))
 	dst = binary.BigEndian.AppendUint16(dst, uint16(activity.GetNewestDayRecordIndex()))
 
-	// Append the records
-	var err error
-	for _, rec := range activity.GetDailyRecords() {
-		if rec.GetValid() {
-			// It's a parsed record, so we need to serialize it.
-			dst, err = appendParsedDailyRecord(dst, rec)
-			if err != nil {
-				return nil, err
+	// Use buffer painting strategy for perfect fidelity when raw buffer is available
+	if rawBuffer := activity.GetRawCyclicBuffer(); len(rawBuffer) > 0 {
+		bufferCopy := make([]byte, len(rawBuffer))
+		copy(bufferCopy, rawBuffer)
+
+		// Paint updated records back onto the buffer by walking the linked list
+		// to infer their original positions
+		err := paintRecordsOntoBuffer(bufferCopy, activity.GetDailyRecords(), int(activity.GetNewestDayRecordIndex()))
+		if err != nil {
+			return nil, fmt.Errorf("failed to paint records onto buffer: %w", err)
+		}
+
+		dst = append(dst, bufferCopy...)
+	} else {
+		// Fallback to current logic if no raw buffer available (backward compatibility)
+		var err error
+		for _, rec := range activity.GetDailyRecords() {
+			if rec.GetValid() {
+				// It's a parsed record, so we need to serialize it.
+				dst, err = appendParsedDailyRecord(dst, rec)
+				if err != nil {
+					return nil, err
+				}
+			} else {
+				// It's a raw record, just append the bytes.
+				dst = append(dst, rec.GetRaw()...)
 			}
-		} else {
-			// It's a raw record, just append the bytes.
-			dst = append(dst, rec.GetRaw()...)
 		}
 	}
+
 	return dst, nil
+}
+
+// paintRecordsOntoBuffer paints updated records back onto the cyclic buffer
+// by walking the linked list structure to infer their original positions.
+// This implements the buffer painting strategy without storing explicit positions.
+func paintRecordsOntoBuffer(buffer []byte, records []*cardv1.DriverActivityData_DailyRecord, startPos int) error {
+	if len(records) == 0 {
+		return nil
+	}
+
+	// Create a reverse mapping from chronological order to buffer positions
+	// by walking the linked list structure like the iterator does
+	iterator := NewCyclicRecordIterator(buffer, startPos)
+	recordIndex := len(records) - 1 // Start from the newest (last in chronological order)
+
+	for iterator.Next() && recordIndex >= 0 {
+		_, recordStart, recordLength := iterator.Record()
+		record := records[recordIndex]
+
+		// Only paint valid (parsed) records that have been modified
+		if record.GetValid() {
+			// Re-serialize the semantic record
+			recordBytes, err := marshalSingleActivityRecord(record)
+			if err != nil {
+				return fmt.Errorf("failed to marshal activity record at index %d: %w", recordIndex, err)
+			}
+
+			// Validate that we don't exceed the original buffer bounds
+			if len(recordBytes) > recordLength {
+				return fmt.Errorf("serialized record length (%d) exceeds original length (%d) at position %d",
+					len(recordBytes), recordLength, recordStart)
+			}
+
+			// Paint the record back onto the buffer at its original position
+			for i, b := range recordBytes {
+				if i < recordLength {
+					buffer[(recordStart+i)%len(buffer)] = b
+				}
+			}
+
+			// If the new record is shorter than the original, fill remaining bytes with zeros
+			for i := len(recordBytes); i < recordLength; i++ {
+				buffer[(recordStart+i)%len(buffer)] = 0
+			}
+		}
+		// Raw records are already in the buffer at their correct positions, no painting needed
+
+		recordIndex--
+	}
+
+	if err := iterator.Err(); err != nil {
+		return fmt.Errorf("error walking linked list during buffer painting: %w", err)
+	}
+
+	if recordIndex >= 0 {
+		return fmt.Errorf("mismatch between records (%d) and linked list positions", len(records))
+	}
+
+	return nil
+}
+
+// marshalSingleActivityRecord marshals a single activity record to bytes.
+// This function is used by the buffer painting strategy to re-serialize
+// semantic records back to their binary form.
+func marshalSingleActivityRecord(record *cardv1.DriverActivityData_DailyRecord) ([]byte, error) {
+	if !record.GetValid() {
+		// For invalid records, return the raw bytes if available
+		if raw := record.GetRaw(); len(raw) > 0 {
+			return raw, nil
+		}
+		return nil, fmt.Errorf("invalid record has no raw data")
+	}
+
+	// Start with empty buffer and use existing append logic
+	var buf []byte
+	var err error
+	buf, err = appendParsedDailyRecord(buf, record)
+	if err != nil {
+		return nil, err
+	}
+
+	return buf, nil
 }
 
 // appendParsedDailyRecord appends a single parsed daily activity record.
@@ -371,4 +448,96 @@ func appendActivityChange(dst []byte, ac *ddv1.ActivityChangeInfo) ([]byte, erro
 	aci |= (uint16(ac.GetTimeOfChangeMinutes()) & 0x7FF)
 
 	return binary.BigEndian.AppendUint16(dst, aci), nil
+}
+
+// cyclicRecordIterator provides a clean interface for traversing the cyclic buffer
+// of daily activity records, separating the complex pointer-following logic
+// from the parsing of individual records.
+//
+// The iterator follows the linked list structure where each record contains a
+// pointer to the previous record's length, allowing backward traversal through
+// the cyclic buffer while handling wrap-around conditions.
+type cyclicRecordIterator struct {
+	buffer      []byte
+	currentPos  int
+	recordCount int
+	err         error
+
+	// Current record state
+	recordStart  int
+	recordLength int
+	recordBytes  []byte
+}
+
+// NewCyclicRecordIterator creates a new iterator for traversing activity records
+// in the cyclic buffer, starting from the newest record position.
+func NewCyclicRecordIterator(buffer []byte, startPos int) *cyclicRecordIterator {
+	return &cyclicRecordIterator{
+		buffer:     buffer,
+		currentPos: startPos,
+	}
+}
+
+// Next advances to the next record in the cyclic buffer.
+// Returns true if a record was found, false if end of chain or error.
+// The iterator traverses backwards from newest to oldest record.
+func (it *cyclicRecordIterator) Next() bool {
+	const maxRecords = 366 // Safety limit to prevent infinite loops (max days per year + 1)
+	if it.err != nil {
+		return false
+	}
+	if it.recordCount >= maxRecords {
+		it.err = fmt.Errorf("exceeded maximum record count (%d), possible infinite loop", maxRecords)
+		return false
+	}
+	if len(it.buffer) == 0 {
+		return false // No data to parse
+	}
+	// Validate current position for reading header
+	if it.currentPos < 0 || it.currentPos+4 > len(it.buffer) {
+		return false // Invalid position for header
+	}
+	// Read record header (4 bytes: prevRecordLength + currentRecordLength)
+	prevRecordLength := int(binary.BigEndian.Uint16(it.buffer[it.currentPos : it.currentPos+2]))
+	currentRecordLength := int(binary.BigEndian.Uint16(it.buffer[it.currentPos+2 : it.currentPos+4]))
+	if currentRecordLength == 0 {
+		return false // Zero-length record signifies end of chain
+	}
+	// Validate record length
+	if currentRecordLength < 4 {
+		it.err = fmt.Errorf("invalid record length %d at position %d", currentRecordLength, it.currentPos)
+		return false
+	}
+	// Store current record information
+	it.recordStart = it.currentPos
+	it.recordLength = currentRecordLength
+	// Extract record bytes, handling buffer wrap-around
+	it.recordBytes = make([]byte, currentRecordLength)
+	for i := 0; i < currentRecordLength; i++ {
+		it.recordBytes[i] = it.buffer[(it.currentPos+i)%len(it.buffer)]
+	}
+	it.recordCount++
+	// Move to previous record for next iteration
+	if prevRecordLength == 0 {
+		// End of chain marker - no more records
+		it.currentPos = -1 // Mark as finished
+	} else {
+		// Move backwards by prevRecordLength, handling wrap-around
+		it.currentPos -= prevRecordLength
+		if it.currentPos < 0 {
+			it.currentPos += len(it.buffer)
+		}
+	}
+	return true
+}
+
+// Record returns the bytes of the current record along with its position and length
+// in the original buffer. This information is needed for the buffer painting strategy.
+func (it *cyclicRecordIterator) Record() (recordBytes []byte, position int, length int) {
+	return it.recordBytes, it.recordStart, it.recordLength
+}
+
+// Err returns any error encountered during traversal.
+func (it *cyclicRecordIterator) Err() error {
+	return it.err
 }

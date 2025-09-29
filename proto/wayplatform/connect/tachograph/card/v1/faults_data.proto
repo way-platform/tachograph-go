@@ -11,18 +11,25 @@ import "wayplatform/connect/tachograph/dd/v1/vehicle_registration_identification
 //
 // The file structure is specified in Appendix 2, Section 4.2.1.
 //
+// File Structure:
+//
 //     EF Faults_Data
 //     └─CardFaultData
+//     Signature
 //
-// The data type `CardFaultData` is specified in the Data Dictionary, Section 2.21.
-// It is defined as a sequence of two sets of records. Per DD 2.70, the first
-// set contains Recording Equipment (VU) faults (type '3x'h) and the second
-// contains Card faults (type '4x'h).
+// See Data Dictionary, Section 2.21.
 //
 // ASN.1 Definition:
 //
 //     CardFaultData ::= SEQUENCE (SIZE(2)) OF
 //         cardFaultRecords SET SIZE(NoOfFaultsPerType) OF CardFaultRecord
+//
+// The ASN.1 specification defines faults as a sequence of two sets: Recording
+// Equipment faults (0x30-0x3F) followed by Card faults (0x40-0x4F). However,
+// for API usability, this protobuf representation flattens the structure into
+// a single chronological sequence. The fault type is preserved in each record's
+// fault_type field, allowing consumers to filter by type while maintaining the
+// temporal order in which faults actually occurred.
 //
 message FaultsData {
   // Represents a single fault record.
@@ -82,13 +89,9 @@ message FaultsData {
     bytes raw_data = 7;
   }
 
-  // A set of fault records related to the recording equipment (the VU).
-  // These correspond to `EventFaultType` codes in the '3x'h range.
-  repeated Record vehicle_unit_faults = 1;
-
-  // A set of fault records related to the card itself.
-  // These correspond to `EventFaultType` codes in the '4x'h range.
-  repeated Record card_faults = 2;
+  // All fault records in chronological order as they appear in the file.
+  // The fault type is available in each record's fault_type field for filtering.
+  repeated Record faults = 1;
 
   // Digital signature for the EF_Faults_Data file content.
   //
@@ -96,5 +99,5 @@ message FaultsData {
   // ASN.1 Definition:
   //
   //     Signature ::= OCTET STRING (SIZE(128 for Gen1))
-  bytes signature = 3;
+  bytes signature = 2;
 }

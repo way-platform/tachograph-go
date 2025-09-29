@@ -11,6 +11,14 @@ import "wayplatform/connect/tachograph/dd/v1/vehicle_registration_identification
 //
 // The file structure is specified in Appendix 2.
 //
+// File Structure:
+//
+//     EF Events_Data
+//     └─CardEventData
+//     Signature
+//
+// See Data Dictionary, Section 2.19.
+//
 // ASN.1 Definition (Gen1):
 //
 //     CardEventData ::= SEQUENCE (SIZE(6)) OF
@@ -21,11 +29,11 @@ import "wayplatform/connect/tachograph/dd/v1/vehicle_registration_identification
 //     CardEventData ::= SEQUENCE (SIZE(11)) OF
 //         cardEventRecords SET SIZE(NoOfEventsPerType) OF CardEventRecord
 //
-// The sequence contains 6 (Gen1) or 11 (Gen2) sets of records, ordered by
-// Event-FaultType. The protobuf message maps these to the named repeated fields
-// below. For Gen1 data, fields 7-11 will be empty. The last set in each
-// generation (`security_and_other_events`) contains security breach attempts
-// and other remaining events.
+// The ASN.1 specification defines events as a sequence of sets grouped by event type.
+// However, for API usability, this protobuf representation flattens the structure
+// into a single chronological sequence. The event type is preserved in each record's
+// event_type field, allowing consumers to filter by type while maintaining the
+// temporal order in which events actually occurred.
 message EventsData {
   // Represents a single event record.
   //
@@ -84,38 +92,9 @@ message EventsData {
     bytes raw_data = 7;
   }
 
-  // Set 1: Insertion of a non-valid card.
-  repeated Record insertion_of_non_valid_card_events = 1;
-
-  // Set 2: Card conflict.
-  repeated Record card_conflict_events = 2;
-
-  // Set 3: Time overlap.
-  repeated Record time_overlap_events = 3;
-
-  // Set 4: Driving without an appropriate card.
-  repeated Record driving_without_appropriate_card_events = 4;
-
-  // Set 5: Card insertion while driving.
-  repeated Record card_insertion_while_driving_events = 5;
-
-  // Set 6: Last card session not correctly closed.
-  repeated Record last_card_session_not_correctly_closed_events = 6;
-
-  // Set 7: Over speeding. (Gen2+)
-  repeated Record over_speeding_events = 7;
-
-  // Set 8: Power supply interruption. (Gen2+)
-  repeated Record power_supply_interruption_events = 8;
-
-  // Set 9: Motion data error. (Gen2+)
-  repeated Record motion_data_error_events = 9;
-
-  // Set 10: Vehicle Motion Conflict. (Gen2+)
-  repeated Record vehicle_motion_conflict_events = 10;
-
-  // Set 11: Security breach attempts and other events.
-  repeated Record security_and_other_events = 11;
+  // All event records in chronological order as they appear in the file.
+  // The event type is available in each record's event_type field for filtering.
+  repeated Record events = 1;
 
   // Digital signature for the EF_Events_Data file content.
   //
@@ -123,5 +102,5 @@ message EventsData {
   // ASN.1 Definition:
   //
   //     Signature ::= OCTET STRING (SIZE(128 for Gen1))
-  bytes signature = 12;
+  bytes signature = 2;
 }
