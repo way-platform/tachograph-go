@@ -188,11 +188,11 @@ func appendVehiclesUsed(dst []byte, vu *cardv1.VehiclesUsed) ([]byte, error) {
 // ASN.1 Definition:
 //
 //	CardVehicleRecord ::= SEQUENCE {
-//	    vehicleOdometerBeginKm       OdometerShort,
-//	    vehicleOdometerEndKm         OdometerShort,
-//	    vehicleFirstUse              TimeReal,
-//	    vehicleLastUse               TimeReal,
-//	    vehicleRegistration          VehicleRegistrationIdentification,
+//	    vehicleOdometerBeginKm       OdometerShort,                    -- 3 bytes
+//	    vehicleOdometerEndKm         OdometerShort,                    -- 3 bytes
+//	    vehicleFirstUse              TimeReal,                         -- 4 bytes
+//	    vehicleLastUse               TimeReal,                         -- 4 bytes
+//	    vehicleRegistration          VehicleRegistrationIdentification, -- 15 bytes
 //	    vehicleIdentificationNumber  VehicleIdentificationNumber OPTIONAL,
 //	    vehicleRegistrationNation    NationNumeric OPTIONAL,
 //	    vehicleRegistrationNumber    RegistrationNumber OPTIONAL
@@ -206,6 +206,7 @@ func appendVehicleRecord(dst []byte, rec *cardv1.VehiclesUsed_Record) ([]byte, e
 	dst = appendTimeReal(dst, rec.GetVehicleFirstUse())
 	dst = appendTimeReal(dst, rec.GetVehicleLastUse())
 	// Vehicle registration (15 bytes total: 1 byte nation + 14 bytes number)
+	// Note: Odometer fields are 3 bytes each (OdometerShort) for Gen1 cards
 	var err error
 	dst, err = appendVehicleRegistration(dst, rec.GetVehicleRegistration())
 	if err != nil {

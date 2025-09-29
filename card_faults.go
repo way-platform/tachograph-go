@@ -154,11 +154,10 @@ func unmarshalFaultRecord(data []byte, rec *cardv1.FaultsData_Record) error {
 //	CardFaultData ::= SEQUENCE OF CardFaultRecord
 //
 //	CardFaultRecord ::= SEQUENCE {
-//	    faultType                         EventFaultType,
-//	    faultBeginTime                    TimeReal,
-//	    faultEndTime                      TimeReal,
-//	    faultVehicleRegistration          VehicleRegistrationIdentification,
-//	    faultTypeSpecificData             OCTET STRING (SIZE (2))
+//	    faultType                         EventFaultType,                     -- 1 byte
+//	    faultBeginTime                    TimeReal,                         -- 4 bytes
+//	    faultEndTime                      TimeReal,                         -- 4 bytes
+//	    faultVehicleRegistration          VehicleRegistrationIdentification -- 15 bytes
 //	}
 func appendFaultsData(dst []byte, data *cardv1.FaultsData) ([]byte, error) {
 	var err error
@@ -178,11 +177,10 @@ func appendFaultsData(dst []byte, data *cardv1.FaultsData) ([]byte, error) {
 // ASN.1 Definition:
 //
 //	CardFaultRecord ::= SEQUENCE {
-//	    faultType                         EventFaultType,
-//	    faultBeginTime                    TimeReal,
-//	    faultEndTime                      TimeReal,
-//	    faultVehicleRegistration          VehicleRegistrationIdentification,
-//	    faultTypeSpecificData             OCTET STRING (SIZE (2))
+//	    faultType                         EventFaultType,                     -- 1 byte
+//	    faultBeginTime                    TimeReal,                         -- 4 bytes
+//	    faultEndTime                      TimeReal,                         -- 4 bytes
+//	    faultVehicleRegistration          VehicleRegistrationIdentification -- 15 bytes
 //	}
 func appendFaultRecord(dst []byte, record *cardv1.FaultsData_Record) ([]byte, error) {
 	if !record.GetValid() {

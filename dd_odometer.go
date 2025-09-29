@@ -19,3 +19,4 @@ func appendOdometer(dst []byte, odometer uint32) []byte {
 	binary.BigEndian.PutUint32(b, odometer)
 	return append(dst, b[1:]...)
 }
+

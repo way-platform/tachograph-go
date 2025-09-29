@@ -56,20 +56,32 @@ func unmarshalIdentification(data []byte) (*cardv1.Identification, error) {
 	cardId.SetCardIssuingMemberState(nation)
 	offset++
 
-	// Handle the inlined CardNumber structure
-	// For now, assume this is a driver card and create driver identification
-	driverID := &ddv1.DriverIdentification{}
-
-	// Card number (14 bytes)
-	if offset+14 > len(data) {
+	// Handle the CardNumber CHOICE type (16 bytes total)
+	// CardNumber ::= CHOICE {
+	//     -- Driver Card: 14 bytes identification + 1 byte replacement + 1 byte renewal
+	//     -- Other Cards: 13 bytes identification + 1 byte consecutive + 1 byte replacement + 1 byte renewal
+	// }
+	if offset+16 > len(data) {
 		return nil, fmt.Errorf("insufficient data for card number")
 	}
-	cardNumber, err := unmarshalIA5StringValue(data[offset : offset+14])
+
+	cardNumberData := data[offset : offset+16]
+	offset += 16
+
+	// For now, we'll assume driver card format (14 + 1 + 1)
+	// In a more complete implementation, we'd need to know the card type from context
+	driverID := &ddv1.DriverIdentification{}
+
+	// Driver identification (14 bytes)
+	driverIdentification, err := unmarshalIA5StringValue(cardNumberData[0:14])
 	if err != nil {
-		return nil, fmt.Errorf("failed to read card number: %w", err)
+		return nil, fmt.Errorf("failed to read driver identification: %w", err)
 	}
-	driverID.SetIdentificationNumber(cardNumber)
-	offset += 14
+	driverID.SetIdentificationNumber(driverIdentification)
+
+	// Note: The current protobuf schema doesn't include replacement and renewal indices
+	// for DriverIdentification, so we can't store them. This is a limitation of the
+	// current schema that would need to be addressed in a future update.
 
 	cardId.SetDriverIdentification(driverID)
 
@@ -185,32 +197,84 @@ func appendCardIdentification(dst []byte, id *cardv1.Identification_Card) ([]byt
 	if err != nil {
 		return nil, err
 	}
-	// Handle the CardNumber CHOICE - for now, we'll use a placeholder
-	// This needs to be implemented based on the actual card type
-	cardNumberStr := ""
+	// Handle the CardNumber CHOICE type
+	// CardNumber ::= CHOICE {
+	//     -- Driver Card
+	//     SEQUENCE {
+	//         driverIdentification    IA5String(SIZE(14)),
+	//         cardReplacementIndex    CardReplacementIndex, -- 1 byte
+	//         cardRenewalIndex        CardRenewalIndex,     -- 1 byte
+	//     },
+	//     -- Other Cards (Workshop, Control, Company)
+	//     SEQUENCE {
+	//         ownerIdentification     IA5String(SIZE(13)),
+	//         cardConsecutiveIndex    CardConsecutiveIndex, -- 1 byte
+	//         cardReplacementIndex    CardReplacementIndex, -- 1 byte
+	//         cardRenewalIndex        CardRenewalIndex      -- 1 byte
+	//     }
+	// }
+	// Total size is always 16 bytes
+	cardNumberBytes := make([]byte, 16)
 	if driverID := id.GetDriverIdentification(); driverID != nil {
-		// Build driver identification string
-		if identification := driverID.GetIdentificationNumber(); identification != nil {
-			cardNumberStr += identification.GetDecoded()
+		// Driver card: 14 bytes identification + 1 byte replacement + 1 byte renewal
+		identification := driverID.GetIdentificationNumber()
+		if identification != nil {
+			// Pad or truncate to exactly 14 bytes
+			identStr := identification.GetDecoded()
+			if len(identStr) > 14 {
+				identStr = identStr[:14]
+			}
+			copy(cardNumberBytes[0:14], []byte(identStr))
+			// Pad with spaces if needed
+			for i := len(identStr); i < 14; i++ {
+				cardNumberBytes[i] = ' '
+			}
 		}
+		// Note: DriverIdentification doesn't have replacement and renewal indices in current schema
+		// These would be bytes 14 and 15, but we can't access them
+		cardNumberBytes[14] = 0 // Default replacement index
+		cardNumberBytes[15] = 0 // Default renewal index
 	} else if ownerID := id.GetOwnerIdentification(); ownerID != nil {
-		if identification := ownerID.GetIdentificationNumber(); identification != nil {
-			cardNumberStr = identification.GetDecoded()
+		// Other cards: 13 bytes identification + 1 byte consecutive + 1 byte replacement + 1 byte renewal
+		identification := ownerID.GetIdentificationNumber()
+		if identification != nil {
+			// Pad or truncate to exactly 13 bytes
+			identStr := identification.GetDecoded()
+			if len(identStr) > 13 {
+				identStr = identStr[:13]
+			}
+			copy(cardNumberBytes[0:13], []byte(identStr))
+			// Pad with spaces if needed
+			for i := len(identStr); i < 13; i++ {
+				cardNumberBytes[i] = ' '
+			}
 		}
-		if consecutive := ownerID.GetConsecutiveIndex(); consecutive != nil {
-			cardNumberStr += consecutive.GetDecoded()
+		consecutive := ownerID.GetConsecutiveIndex()
+		if consecutive != nil {
+			// Convert string to byte value
+			consecutiveStr := consecutive.GetDecoded()
+			if len(consecutiveStr) > 0 {
+				cardNumberBytes[13] = consecutiveStr[0]
+			}
 		}
-		if replacement := ownerID.GetReplacementIndex(); replacement != nil {
-			cardNumberStr += replacement.GetDecoded()
+		replacement := ownerID.GetReplacementIndex()
+		if replacement != nil {
+			// Convert string to byte value
+			replacementStr := replacement.GetDecoded()
+			if len(replacementStr) > 0 {
+				cardNumberBytes[14] = replacementStr[0]
+			}
 		}
-		if renewal := ownerID.GetRenewalIndex(); renewal != nil {
-			cardNumberStr += renewal.GetDecoded()
+		renewal := ownerID.GetRenewalIndex()
+		if renewal != nil {
+			// Convert string to byte value
+			renewalStr := renewal.GetDecoded()
+			if len(renewalStr) > 0 {
+				cardNumberBytes[15] = renewalStr[0]
+			}
 		}
 	}
-	dst, err = appendString(dst, cardNumberStr, 16)
-	if err != nil {
-		return nil, err
-	}
+	dst = append(dst, cardNumberBytes...)
 	authorityName := id.GetCardIssuingAuthorityName()
 	if authorityName != nil {
 		dst, err = appendString(dst, authorityName.GetDecoded(), 36)

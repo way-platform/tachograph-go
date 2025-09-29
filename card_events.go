@@ -150,11 +150,10 @@ func unmarshalEventRecord(data []byte) (*cardv1.EventsData_Record, error) {
 //	CardEventData ::= SEQUENCE OF CardEventRecord
 //
 //	CardEventRecord ::= SEQUENCE {
-//	    eventType                        EventFaultType,
-//	    eventBeginTime                   TimeReal,
-//	    eventEndTime                     TimeReal,
-//	    eventVehicleRegistration         VehicleRegistrationIdentification,
-//	    eventTypeSpecificData            OCTET STRING (SIZE (2))
+//	    eventType                        EventFaultType,                     -- 1 byte
+//	    eventBeginTime                   TimeReal,                         -- 4 bytes
+//	    eventEndTime                     TimeReal,                         -- 4 bytes
+//	    eventVehicleRegistration         VehicleRegistrationIdentification -- 15 bytes
 //	}
 func appendEventsData(dst []byte, data *cardv1.EventsData) ([]byte, error) {
 	var err error
@@ -174,11 +173,10 @@ func appendEventsData(dst []byte, data *cardv1.EventsData) ([]byte, error) {
 // ASN.1 Definition:
 //
 //	CardEventRecord ::= SEQUENCE {
-//	    eventType                        EventFaultType,
-//	    eventBeginTime                   TimeReal,
-//	    eventEndTime                     TimeReal,
-//	    eventVehicleRegistration         VehicleRegistrationIdentification,
-//	    eventTypeSpecificData            OCTET STRING (SIZE (2))
+//	    eventType                        EventFaultType,                     -- 1 byte
+//	    eventBeginTime                   TimeReal,                         -- 4 bytes
+//	    eventEndTime                     TimeReal,                         -- 4 bytes
+//	    eventVehicleRegistration         VehicleRegistrationIdentification -- 15 bytes
 //	}
 func appendEventRecord(dst []byte, record *cardv1.EventsData_Record) ([]byte, error) {
 	if !record.GetValid() {

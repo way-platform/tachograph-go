@@ -37,3 +37,4 @@ func readTimeReal(r *bytes.Reader) *timestamppb.Timestamp {
 	}
 	return timestamppb.New(time.Unix(int64(timeVal), 0))
 }
+
