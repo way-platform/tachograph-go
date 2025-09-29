@@ -1,6 +1,7 @@
 package tachograph
 
 import (
+	"bufio"
 	"bytes"
 	"encoding/binary"
 	"fmt"
@@ -29,12 +30,25 @@ const (
 	cardEventRecordSize = 24
 )
 
+// splitCardEventRecord returns a SplitFunc that splits data into 24-byte event records
+func splitCardEventRecord(data []byte, atEOF bool) (advance int, token []byte, err error) {
+	if len(data) < cardEventRecordSize {
+		if atEOF {
+			return 0, nil, nil // No more complete records, but not an error
+		}
+		return 0, nil, nil // Need more data
+	}
+
+	return cardEventRecordSize, data[:cardEventRecordSize], nil
+}
+
 func unmarshalEventsData(data []byte) (*cardv1.EventsData, error) {
-	r := bytes.NewReader(data)
+	scanner := bufio.NewScanner(bytes.NewReader(data))
+	scanner.Split(splitCardEventRecord)
+
 	var records []*cardv1.EventsData_Record
-	for r.Len() >= cardEventRecordSize {
-		recordData := make([]byte, cardEventRecordSize)
-		_, _ = r.Read(recordData) // ignore error as we're reading from in-memory buffer
+	for scanner.Scan() {
+		recordData := scanner.Bytes()
 		// Check if this is a valid record by examining the event begin time (first 4 bytes after event type)
 		// Event type is 1 byte, so event begin time starts at byte 1
 		eventBeginTime := binary.BigEndian.Uint32(recordData[1:5])
@@ -54,6 +68,11 @@ func unmarshalEventsData(data []byte) (*cardv1.EventsData, error) {
 			records = append(records, rec)
 		}
 	}
+
+	if err := scanner.Err(); err != nil {
+		return nil, err
+	}
+
 	var ed cardv1.EventsData
 	ed.SetRecords(records)
 	return &ed, nil

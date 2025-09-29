@@ -7,11 +7,14 @@ import "wayplatform/connect/tachograph/dd/v1/calibration_purpose.proto";
 import "wayplatform/connect/tachograph/dd/v1/card_slot_number.proto";
 import "wayplatform/connect/tachograph/dd/v1/card_structure_version.proto";
 import "wayplatform/connect/tachograph/dd/v1/date.proto";
+import "wayplatform/connect/tachograph/dd/v1/driver_identification.proto";
 import "wayplatform/connect/tachograph/dd/v1/equipment_type.proto";
 import "wayplatform/connect/tachograph/dd/v1/extended_serial_number.proto";
 import "wayplatform/connect/tachograph/dd/v1/full_card_number.proto";
+import "wayplatform/connect/tachograph/dd/v1/full_card_number_and_generation.proto";
 import "wayplatform/connect/tachograph/dd/v1/generation.proto";
 import "wayplatform/connect/tachograph/dd/v1/nation_numeric.proto";
+import "wayplatform/connect/tachograph/dd/v1/owner_identification.proto";
 import "wayplatform/connect/tachograph/dd/v1/software_identification.proto";
 import "wayplatform/connect/tachograph/dd/v1/string_value.proto";
 import "wayplatform/connect/tachograph/dd/v1/vehicle_registration_identification.proto";
@@ -310,24 +313,44 @@ message TechnicalData {
   //
   //     VuCardRecord ::= SEQUENCE {
   //         cardNumberAndGenerationInformation FullCardNumberAndGeneration,
-  //         cardExtendedSerialNumber ExtendedSerialNumber,
-  //         cardStructureVersion CardStructureVersion,
-  //         cardNumber CardNumber
+  //         cardExtendedSerialNumber           ExtendedSerialNumber,
+  //         cardStructureVersion               CardStructureVersion,
+  //         cardNumber                         CardNumber
   //     }
   message CardRecord {
-    // The full card number.
+    // The full card number and generation of the card used.
     //
-    // See Data Dictionary, Section 2.74, `FullCardNumberAndGeneration`.
-    dd.v1.FullCardNumber full_card_number = 1;
+    // Corresponds to `cardNumberAndGenerationInformation`.
+    // See Data Dictionary, Section 2.74.
+    dd.v1.FullCardNumberAndGeneration card_number_and_generation = 1;
 
-    // The structure version of the card.
-    dd.v1.CardStructureVersion card_structure_version = 2;
-
-    // The type of the card.
+    // The extended serial number of the card, from the card's EF_ICC file.
     //
-    // See Data Dictionary, Section 2.67, `EquipmentType`.
-    dd.v1.EquipmentType card_type = 3;
-    int32 unrecognized_card_type = 4;
+    // Corresponds to `cardExtendedSerialNumber`.
+    // See Data Dictionary, Section 2.72.
+    dd.v1.ExtendedSerialNumber card_extended_serial_number = 2;
+
+    // The structure version of the card, from the card's EF_Application_Identification file.
+    //
+    // Corresponds to `cardStructureVersion`.
+    // See Data Dictionary, Section 2.36.
+    dd.v1.CardStructureVersion card_structure_version = 3;
+
+    // The card number, as read from the card's EF_Identification file.
+    // This is a CHOICE type in the ASN.1 spec, so only one of the following
+    // two fields will be populated.
+    //
+    // Corresponds to `cardNumber`.
+    // See Data Dictionary, Section 2.26.
+    //
+    // ASN.1 Definition:
+    //
+    //     CardNumber ::= CHOICE {
+    //         driverIdentification   SEQUENCE { ... },
+    //         ownerIdentification    SEQUENCE { ... }
+    //     }
+    dd.v1.DriverIdentification driver_identification = 4;
+    dd.v1.OwnerIdentification owner_identification = 5;
   }
 
   // Represents a record of ITS consent status for a card.

@@ -1,6 +1,7 @@
 package tachograph
 
 import (
+	"bufio"
 	"bytes"
 	"encoding/binary"
 	"fmt"
@@ -28,6 +29,18 @@ const (
 	placeRecordSize = 12
 )
 
+// splitPlaceRecord returns a SplitFunc that splits data into 12-byte place records
+func splitPlaceRecord(data []byte, atEOF bool) (advance int, token []byte, err error) {
+	if len(data) < placeRecordSize {
+		if atEOF {
+			return 0, nil, nil // No more complete records, but not an error
+		}
+		return 0, nil, nil // Need more data
+	}
+
+	return placeRecordSize, data[:placeRecordSize], nil
+}
+
 func unmarshalCardPlaces(data []byte) (*cardv1.Places, error) {
 	const (
 		lenMinEfPlaces = 2 // Minimum EF_Places record size
@@ -48,28 +61,91 @@ func unmarshalCardPlaces(data []byte) (*cardv1.Places, error) {
 
 	target.SetNewestRecordIndex(int32(newestRecordIndex))
 
-	// Parse place records
-	var records []*cardv1.Places_Record
-	recordSize := 12 // Fixed size: 4 bytes time + 1 byte entry type + 1 byte country + 2 bytes region + 3 bytes odometer + 1 byte reserved
+	// Parse place records using scanner
+	remainingData := make([]byte, r.Len())
+	_, _ = r.Read(remainingData) // ignore error as we're reading from in-memory buffer
 
-	for r.Len() >= recordSize {
-		record, err := parsePlaceRecord(r)
+	scanner := bufio.NewScanner(bytes.NewReader(remainingData))
+	scanner.Split(splitPlaceRecord)
+
+	var records []*cardv1.Places_Record
+	for scanner.Scan() {
+		recordData := scanner.Bytes()
+		record, err := unmarshalPlaceRecord(recordData)
 		if err != nil {
 			break // Stop parsing on error, but return what we have
 		}
 		records = append(records, record)
 	}
 
+	if err := scanner.Err(); err != nil {
+		return nil, fmt.Errorf("scanner error: %w", err)
+	}
+
 	target.SetRecords(records)
 
 	// Capture any remaining trailing bytes for roundtrip accuracy
-	if r.Len() > 0 {
-		trailingBytes := make([]byte, r.Len())
-		_, _ = r.Read(trailingBytes) // ignore error as we're reading from in-memory buffer
+	// We need to check if there are any bytes left after the scanner
+	if len(remainingData) > len(records)*placeRecordSize {
+		trailingBytes := remainingData[len(records)*placeRecordSize:]
 		target.SetTrailingBytes(trailingBytes)
 	}
 
 	return &target, nil
+}
+
+// unmarshalPlaceRecord parses a single place record from a byte slice
+func unmarshalPlaceRecord(data []byte) (*cardv1.Places_Record, error) {
+	const (
+		lenPlaceRecord = 12
+	)
+
+	if len(data) < lenPlaceRecord {
+		return nil, fmt.Errorf("insufficient data for place record")
+	}
+
+	record := &cardv1.Places_Record{}
+	offset := 0
+
+	// Read entry time (4 bytes)
+	record.SetEntryTime(readTimeReal(bytes.NewReader(data[offset : offset+4])))
+	offset += 4
+
+	// Read entry type (1 byte)
+	entryType := data[offset]
+	// Convert raw entry type to enum using protocol annotations
+	setEnumFromProtocolValue(ddv1.EntryTypeDailyWorkPeriod_ENTRY_TYPE_DAILY_WORK_PERIOD_UNSPECIFIED.Descriptor(),
+		int32(entryType),
+		func(enumNum protoreflect.EnumNumber) {
+			record.SetEntryType(ddv1.EntryTypeDailyWorkPeriod(enumNum))
+		}, nil)
+	offset++
+
+	// Read daily work period country (1 byte)
+	country := data[offset]
+	// Convert raw country to enum using protocol annotations
+	setEnumFromProtocolValue(ddv1.NationNumeric_NATION_NUMERIC_UNSPECIFIED.Descriptor(),
+		int32(country),
+		func(enumNum protoreflect.EnumNumber) {
+			record.SetDailyWorkPeriodCountry(ddv1.NationNumeric(enumNum))
+		}, nil)
+	offset++
+
+	// Read daily work period region (2 bytes)
+	region := binary.BigEndian.Uint16(data[offset : offset+2])
+	record.SetDailyWorkPeriodRegion(int32(region))
+	offset += 2
+
+	// Read vehicle odometer (3 bytes)
+	odometerBytes := data[offset : offset+3]
+	record.SetVehicleOdometerKm(int32(binary.BigEndian.Uint32(append([]byte{0}, odometerBytes...))))
+	offset += 3
+
+	// Read reserved byte (1 byte) and store it for roundtrip accuracy
+	reserved := data[offset]
+	record.SetReservedByte(int32(reserved))
+
+	return record, nil
 }
 
 // parsePlaceRecord parses a single place record

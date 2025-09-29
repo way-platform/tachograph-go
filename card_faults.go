@@ -1,6 +1,7 @@
 package tachograph
 
 import (
+	"bufio"
 	"bytes"
 	"encoding/binary"
 	"fmt"
@@ -30,14 +31,25 @@ const (
 	cardFaultRecordSize = 24
 )
 
+// splitCardFaultRecord returns a SplitFunc that splits data into 24-byte fault records
+func splitCardFaultRecord(data []byte, atEOF bool) (advance int, token []byte, err error) {
+	if len(data) < cardFaultRecordSize {
+		if atEOF {
+			return 0, nil, nil // No more complete records, but not an error
+		}
+		return 0, nil, nil // Need more data
+	}
+
+	return cardFaultRecordSize, data[:cardFaultRecordSize], nil
+}
+
 func unmarshalFaultsData(data []byte) (*cardv1.FaultsData, error) {
-	r := bytes.NewReader(data)
+	scanner := bufio.NewScanner(bytes.NewReader(data))
+	scanner.Split(splitCardFaultRecord)
+
 	var records []*cardv1.FaultsData_Record
-
-	for r.Len() >= cardFaultRecordSize {
-		recordData := make([]byte, cardFaultRecordSize)
-		_, _ = r.Read(recordData) // ignore error as we're reading from in-memory buffer
-
+	for scanner.Scan() {
+		recordData := scanner.Bytes()
 		// Check if this is a valid record by examining the fault begin time (first 4 bytes after fault type)
 		// Fault type is 1 byte, so fault begin time starts at byte 1
 		faultBeginTime := binary.BigEndian.Uint32(recordData[1:5])
@@ -57,6 +69,10 @@ func unmarshalFaultsData(data []byte) (*cardv1.FaultsData, error) {
 		}
 
 		records = append(records, rec)
+	}
+
+	if err := scanner.Err(); err != nil {
+		return nil, err
 	}
 
 	var fd cardv1.FaultsData

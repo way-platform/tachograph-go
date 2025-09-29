@@ -13,6 +13,17 @@ Tachograph data files are binary data dumps from tachograph vehicle units (VU), 
 - Easy-to-use and high-fidelity protobuf data model.
 - Support for all types of tachograph files.
 
+## Project Scope
+
+To ensure a high degree of quality and alignment with the specification, this project is being developed with a phased scope.
+
+**Phase 1 (Current Focus):**
+-   Full, high-fidelity support for **Driver Card** files.
+-   Full, high-fidelity support for **Vehicle Unit (VU)** files.
+
+**Future Phases:**
+-   Support for Workshop Card, Control Card, and Company Card files is intentionally deferred. The protobuf schema has placeholders for these types, but their implementation will be addressed after the core support for Driver and VU files is complete and stable.
+
 ## Regulation
 
 A full PDF copy of the regulation is in `docs/regulation`. Relevant chapters are OCR'd into Markdown in `docs/regulation/chapters`.

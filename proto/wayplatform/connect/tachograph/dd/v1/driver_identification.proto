@@ -4,20 +4,33 @@ package wayplatform.connect.tachograph.dd.v1;
 
 import "wayplatform/connect/tachograph/dd/v1/string_value.proto";
 
-// Represents the `driverIdentification` sequence from the `CardNumber` CHOICE.
+// Represents the `driverIdentification` sequence from the `CardNumber` CHOICE,
+// which uniquely identifies a driver's card.
 //
 // See Data Dictionary, Section 2.26, `CardNumber`.
 //
 // ASN.1 Definition:
 //
 //     driverIdentification SEQUENCE {
-//         driverIdentificationNumber IA5String(SIZE(14))
+//         driverIdentificationNumber IA5String(SIZE(14)),
+//         cardReplacementIndex       CardReplacementIndex, -- IA5String(SIZE(1))
+//         cardRenewalIndex           CardRenewalIndex      -- IA5String(SIZE(1))
 //     }
 message DriverIdentification {
   // The core driver identification number string.
   //
-  // ASN.1 Definition:
+  // Corresponds to `driverIdentificationNumber`.
+  StringValue driver_identification_number = 1;
+
+  // The card replacement index.
   //
-  //     driverIdentificationNumber IA5String(SIZE(14))
-  StringValue identification_number = 1;
+  // Corresponds to `cardReplacementIndex`.
+  // See Data Dictionary, Section 2.31.
+  StringValue card_replacement_index = 2;
+
+  // The card renewal index.
+  //
+  // Corresponds to `cardRenewalIndex`.
+  // See Data Dictionary, Section 2.30.
+  StringValue card_renewal_index = 3;
 }
