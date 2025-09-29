@@ -5,22 +5,32 @@ package wayplatform.connect.tachograph.vu.v1;
 import "wayplatform/connect/tachograph/dd/v1/generation.proto";
 import "wayplatform/connect/tachograph/vu/v1/versioning.proto";
 
-// Represents the parsed version of the VU's download interface.
+// Represents the version of the VU's download interface.
 //
-// This message is a parsed representation of the `DownloadInterfaceVersion` data type.
+// This message preserves the original 2-byte OCTET STRING for lossless
+// round-trips while also providing a parsed representation.
+//
 // See Data Dictionary, Section 2.60a.
 //
 // ASN.1 Definition:
 //
 //     DownloadInterfaceVersion ::= OCTET STRING (SIZE (2))
 //
-// The two bytes of the OCTET STRING are parsed into the fields below.
+// Value Assignment (`aabb`H):
+//   - `aa` (byte 1): Generation of the VU.
+//     - `01`H: Generation 2
+//   - `bb` (byte 2): Version of the download interface.
+//     - `01`H: Version 2 of Gen2 VU
 message DownloadInterfaceVersion {
-  // The generation of the vehicle unit, parsed from the first byte.
+  // The raw, unparsed 2-byte OCTET STRING of the DownloadInterfaceVersion.
+  // This field is preserved for data fidelity and lossless round-trips.
+  bytes raw_data = 1;
+
+  // The generation of the vehicle unit, parsed from the first byte (`aa`).
   //
   // See Data Dictionary, Section 2.75, `Generation`.
-  dd.v1.Generation generation = 1;
+  dd.v1.Generation generation = 2;
 
-  // The version of the download interface, parsed from the second byte.
-  Version version = 2;
+  // The version of the download interface, parsed from the second byte (`bb`).
+  Version version = 3;
 }

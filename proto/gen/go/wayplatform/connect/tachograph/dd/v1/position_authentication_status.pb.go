@@ -26,10 +26,12 @@ const (
 //
 // ASN.1 Definition:
 //
-//	PositionAuthenticationStatus ::= INTEGER {
-//	    notAvailable(0), authenticated(1), notAuthenticated(2),
-//	    authenticationCorrupted(3)
-//	} (0..255)
+//	PositionAuthenticationStatus ::= OCTET STRING (SIZE(1))
+//
+//	Value assignment:
+//	    - 00H: Not Authenticated
+//	    - 01H: Authenticated
+//	    - 02H..FFH: RFU
 type PositionAuthenticationStatus int32
 
 const (
@@ -37,14 +39,10 @@ const (
 	PositionAuthenticationStatus_POSITION_AUTHENTICATION_STATUS_UNSPECIFIED PositionAuthenticationStatus = 0
 	// The authentication status was present but not recognized.
 	PositionAuthenticationStatus_POSITION_AUTHENTICATION_STATUS_UNRECOGNIZED PositionAuthenticationStatus = 1
-	// Authentication information is not available.
-	PositionAuthenticationStatus_POSITION_AUTHENTICATION_STATUS_NOT_AVAILABLE PositionAuthenticationStatus = 2
-	// The position has been authenticated.
-	PositionAuthenticationStatus_POSITION_AUTHENTICATED PositionAuthenticationStatus = 3
 	// The position has not been authenticated.
-	PositionAuthenticationStatus_POSITION_NOT_AUTHENTICATED PositionAuthenticationStatus = 4
-	// The authentication information is corrupted.
-	PositionAuthenticationStatus_POSITION_AUTHENTICATION_CORRUPTED PositionAuthenticationStatus = 5
+	PositionAuthenticationStatus_NOT_AUTHENTICATED PositionAuthenticationStatus = 2
+	// The position has been authenticated.
+	PositionAuthenticationStatus_AUTHENTICATED PositionAuthenticationStatus = 3
 )
 
 // Enum value maps for PositionAuthenticationStatus.
@@ -52,18 +50,14 @@ var (
 	PositionAuthenticationStatus_name = map[int32]string{
 		0: "POSITION_AUTHENTICATION_STATUS_UNSPECIFIED",
 		1: "POSITION_AUTHENTICATION_STATUS_UNRECOGNIZED",
-		2: "POSITION_AUTHENTICATION_STATUS_NOT_AVAILABLE",
-		3: "POSITION_AUTHENTICATED",
-		4: "POSITION_NOT_AUTHENTICATED",
-		5: "POSITION_AUTHENTICATION_CORRUPTED",
+		2: "NOT_AUTHENTICATED",
+		3: "AUTHENTICATED",
 	}
 	PositionAuthenticationStatus_value = map[string]int32{
-		"POSITION_AUTHENTICATION_STATUS_UNSPECIFIED":   0,
-		"POSITION_AUTHENTICATION_STATUS_UNRECOGNIZED":  1,
-		"POSITION_AUTHENTICATION_STATUS_NOT_AVAILABLE": 2,
-		"POSITION_AUTHENTICATED":                       3,
-		"POSITION_NOT_AUTHENTICATED":                   4,
-		"POSITION_AUTHENTICATION_CORRUPTED":            5,
+		"POSITION_AUTHENTICATION_STATUS_UNSPECIFIED":  0,
+		"POSITION_AUTHENTICATION_STATUS_UNRECOGNIZED": 1,
+		"NOT_AUTHENTICATED":                           2,
+		"AUTHENTICATED":                               3,
 	}
 )
 
@@ -93,14 +87,12 @@ var File_wayplatform_connect_tachograph_dd_v1_position_authentication_status_pro
 
 const file_wayplatform_connect_tachograph_dd_v1_position_authentication_status_proto_rawDesc = "" +
 	"\n" +
-	"Iwayplatform/connect/tachograph/dd/v1/position_authentication_status.proto\x12$wayplatform.connect.tachograph.dd.v1\x1a6wayplatform/connect/tachograph/dd/v1/annotations.proto*\xb0\x02\n" +
+	"Iwayplatform/connect/tachograph/dd/v1/position_authentication_status.proto\x12$wayplatform.connect.tachograph.dd.v1\x1a6wayplatform/connect/tachograph/dd/v1/annotations.proto*\xb7\x01\n" +
 	"\x1cPositionAuthenticationStatus\x12.\n" +
 	"*POSITION_AUTHENTICATION_STATUS_UNSPECIFIED\x10\x00\x12/\n" +
-	"+POSITION_AUTHENTICATION_STATUS_UNRECOGNIZED\x10\x01\x127\n" +
-	",POSITION_AUTHENTICATION_STATUS_NOT_AVAILABLE\x10\x02\x1a\x05\x98\xaf\x9c\x02\x00\x12!\n" +
-	"\x16POSITION_AUTHENTICATED\x10\x03\x1a\x05\x98\xaf\x9c\x02\x01\x12%\n" +
-	"\x1aPOSITION_NOT_AUTHENTICATED\x10\x04\x1a\x05\x98\xaf\x9c\x02\x02\x12,\n" +
-	"!POSITION_AUTHENTICATION_CORRUPTED\x10\x05\x1a\x05\x98\xaf\x9c\x02\x03B\xe0\x02\n" +
+	"+POSITION_AUTHENTICATION_STATUS_UNRECOGNIZED\x10\x01\x12\x1c\n" +
+	"\x11NOT_AUTHENTICATED\x10\x02\x1a\x05\x98\xaf\x9c\x02\x00\x12\x18\n" +
+	"\rAUTHENTICATED\x10\x03\x1a\x05\x98\xaf\x9c\x02\x01B\xe0\x02\n" +
 	"(com.wayplatform.connect.tachograph.dd.v1B!PositionAuthenticationStatusProtoP\x01Z\\github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1;ddv1\xa2\x02\x04WCTD\xaa\x02$Wayplatform.Connect.Tachograph.Dd.V1\xca\x02$Wayplatform\\Connect\\Tachograph\\Dd\\V1\xe2\x020Wayplatform\\Connect\\Tachograph\\Dd\\V1\\GPBMetadata\xea\x02(Wayplatform::Connect::Tachograph::Dd::V1b\x06proto3"
 
 var file_wayplatform_connect_tachograph_dd_v1_position_authentication_status_proto_enumTypes = make([]protoimpl.EnumInfo, 1)

@@ -597,12 +597,12 @@ func (b0 Overview_builder) Build() *Overview {
 //
 // For Gen2, this is typically part of a `VuDownloadActivityDataRecordArray`.
 type Overview_DownloadActivity struct {
-	state                            protoimpl.MessageState `protogen:"opaque.v1"`
-	xxx_hidden_DownloadingTime       *timestamppb.Timestamp `protobuf:"bytes,1,opt,name=downloading_time,json=downloadingTime"`
-	xxx_hidden_FullCardNumber        *v1.FullCardNumber     `protobuf:"bytes,2,opt,name=full_card_number,json=fullCardNumber"`
-	xxx_hidden_CompanyOrWorkshopName *v1.StringValue        `protobuf:"bytes,3,opt,name=company_or_workshop_name,json=companyOrWorkshopName"`
-	unknownFields                    protoimpl.UnknownFields
-	sizeCache                        protoimpl.SizeCache
+	state                                  protoimpl.MessageState          `protogen:"opaque.v1"`
+	xxx_hidden_DownloadingTime             *timestamppb.Timestamp          `protobuf:"bytes,1,opt,name=downloading_time,json=downloadingTime"`
+	xxx_hidden_FullCardNumberAndGeneration *v1.FullCardNumberAndGeneration `protobuf:"bytes,2,opt,name=full_card_number_and_generation,json=fullCardNumberAndGeneration"`
+	xxx_hidden_CompanyOrWorkshopName       *v1.StringValue                 `protobuf:"bytes,3,opt,name=company_or_workshop_name,json=companyOrWorkshopName"`
+	unknownFields                          protoimpl.UnknownFields
+	sizeCache                              protoimpl.SizeCache
 }
 
 func (x *Overview_DownloadActivity) Reset() {
@@ -637,9 +637,9 @@ func (x *Overview_DownloadActivity) GetDownloadingTime() *timestamppb.Timestamp 
 	return nil
 }
 
-func (x *Overview_DownloadActivity) GetFullCardNumber() *v1.FullCardNumber {
+func (x *Overview_DownloadActivity) GetFullCardNumberAndGeneration() *v1.FullCardNumberAndGeneration {
 	if x != nil {
-		return x.xxx_hidden_FullCardNumber
+		return x.xxx_hidden_FullCardNumberAndGeneration
 	}
 	return nil
 }
@@ -655,8 +655,8 @@ func (x *Overview_DownloadActivity) SetDownloadingTime(v *timestamppb.Timestamp)
 	x.xxx_hidden_DownloadingTime = v
 }
 
-func (x *Overview_DownloadActivity) SetFullCardNumber(v *v1.FullCardNumber) {
-	x.xxx_hidden_FullCardNumber = v
+func (x *Overview_DownloadActivity) SetFullCardNumberAndGeneration(v *v1.FullCardNumberAndGeneration) {
+	x.xxx_hidden_FullCardNumberAndGeneration = v
 }
 
 func (x *Overview_DownloadActivity) SetCompanyOrWorkshopName(v *v1.StringValue) {
@@ -670,11 +670,11 @@ func (x *Overview_DownloadActivity) HasDownloadingTime() bool {
 	return x.xxx_hidden_DownloadingTime != nil
 }
 
-func (x *Overview_DownloadActivity) HasFullCardNumber() bool {
+func (x *Overview_DownloadActivity) HasFullCardNumberAndGeneration() bool {
 	if x == nil {
 		return false
 	}
-	return x.xxx_hidden_FullCardNumber != nil
+	return x.xxx_hidden_FullCardNumberAndGeneration != nil
 }
 
 func (x *Overview_DownloadActivity) HasCompanyOrWorkshopName() bool {
@@ -688,8 +688,8 @@ func (x *Overview_DownloadActivity) ClearDownloadingTime() {
 	x.xxx_hidden_DownloadingTime = nil
 }
 
-func (x *Overview_DownloadActivity) ClearFullCardNumber() {
-	x.xxx_hidden_FullCardNumber = nil
+func (x *Overview_DownloadActivity) ClearFullCardNumberAndGeneration() {
+	x.xxx_hidden_FullCardNumberAndGeneration = nil
 }
 
 func (x *Overview_DownloadActivity) ClearCompanyOrWorkshopName() {
@@ -708,8 +708,11 @@ type Overview_DownloadActivity_builder struct {
 	DownloadingTime *timestamppb.Timestamp
 	// The card number of the company or workshop that performed the download.
 	//
-	// See Data Dictionary, Section 2.73, `FullCardNumber`.
-	FullCardNumber *v1.FullCardNumber
+	// The underlying `VuDownloadActivityData` record exists for both Gen1 and Gen2.
+	// To support both versions in a single field and ensure unique card
+	// identification for Gen2, this uses the `FullCardNumberAndGeneration` superset.
+	// For Gen1 records, the `generation` field will be unset.
+	FullCardNumberAndGeneration *v1.FullCardNumberAndGeneration
 	// The name of the company or workshop.
 	//
 	// See Data Dictionary, Section 2.99, `Name`.
@@ -724,7 +727,7 @@ func (b0 Overview_DownloadActivity_builder) Build() *Overview_DownloadActivity {
 	b, x := &b0, m0
 	_, _ = b, x
 	x.xxx_hidden_DownloadingTime = b.DownloadingTime
-	x.xxx_hidden_FullCardNumber = b.FullCardNumber
+	x.xxx_hidden_FullCardNumberAndGeneration = b.FullCardNumberAndGeneration
 	x.xxx_hidden_CompanyOrWorkshopName = b.CompanyOrWorkshopName
 	return m0
 }
@@ -743,14 +746,14 @@ func (b0 Overview_DownloadActivity_builder) Build() *Overview_DownloadActivity {
 //	    companyCardNumber FullCardNumber
 //	}
 type Overview_CompanyLock struct {
-	state                        protoimpl.MessageState `protogen:"opaque.v1"`
-	xxx_hidden_LockInTime        *timestamppb.Timestamp `protobuf:"bytes,1,opt,name=lock_in_time,json=lockInTime"`
-	xxx_hidden_LockOutTime       *timestamppb.Timestamp `protobuf:"bytes,2,opt,name=lock_out_time,json=lockOutTime"`
-	xxx_hidden_CompanyName       *v1.StringValue        `protobuf:"bytes,3,opt,name=company_name,json=companyName"`
-	xxx_hidden_CompanyAddress    *v1.StringValue        `protobuf:"bytes,4,opt,name=company_address,json=companyAddress"`
-	xxx_hidden_CompanyCardNumber *v1.FullCardNumber     `protobuf:"bytes,5,opt,name=company_card_number,json=companyCardNumber"`
-	unknownFields                protoimpl.UnknownFields
-	sizeCache                    protoimpl.SizeCache
+	state                                     protoimpl.MessageState          `protogen:"opaque.v1"`
+	xxx_hidden_LockInTime                     *timestamppb.Timestamp          `protobuf:"bytes,1,opt,name=lock_in_time,json=lockInTime"`
+	xxx_hidden_LockOutTime                    *timestamppb.Timestamp          `protobuf:"bytes,2,opt,name=lock_out_time,json=lockOutTime"`
+	xxx_hidden_CompanyName                    *v1.StringValue                 `protobuf:"bytes,3,opt,name=company_name,json=companyName"`
+	xxx_hidden_CompanyAddress                 *v1.StringValue                 `protobuf:"bytes,4,opt,name=company_address,json=companyAddress"`
+	xxx_hidden_CompanyCardNumberAndGeneration *v1.FullCardNumberAndGeneration `protobuf:"bytes,5,opt,name=company_card_number_and_generation,json=companyCardNumberAndGeneration"`
+	unknownFields                             protoimpl.UnknownFields
+	sizeCache                                 protoimpl.SizeCache
 }
 
 func (x *Overview_CompanyLock) Reset() {
@@ -806,9 +809,9 @@ func (x *Overview_CompanyLock) GetCompanyAddress() *v1.StringValue {
 	return nil
 }
 
-func (x *Overview_CompanyLock) GetCompanyCardNumber() *v1.FullCardNumber {
+func (x *Overview_CompanyLock) GetCompanyCardNumberAndGeneration() *v1.FullCardNumberAndGeneration {
 	if x != nil {
-		return x.xxx_hidden_CompanyCardNumber
+		return x.xxx_hidden_CompanyCardNumberAndGeneration
 	}
 	return nil
 }
@@ -829,8 +832,8 @@ func (x *Overview_CompanyLock) SetCompanyAddress(v *v1.StringValue) {
 	x.xxx_hidden_CompanyAddress = v
 }
 
-func (x *Overview_CompanyLock) SetCompanyCardNumber(v *v1.FullCardNumber) {
-	x.xxx_hidden_CompanyCardNumber = v
+func (x *Overview_CompanyLock) SetCompanyCardNumberAndGeneration(v *v1.FullCardNumberAndGeneration) {
+	x.xxx_hidden_CompanyCardNumberAndGeneration = v
 }
 
 func (x *Overview_CompanyLock) HasLockInTime() bool {
@@ -861,11 +864,11 @@ func (x *Overview_CompanyLock) HasCompanyAddress() bool {
 	return x.xxx_hidden_CompanyAddress != nil
 }
 
-func (x *Overview_CompanyLock) HasCompanyCardNumber() bool {
+func (x *Overview_CompanyLock) HasCompanyCardNumberAndGeneration() bool {
 	if x == nil {
 		return false
 	}
-	return x.xxx_hidden_CompanyCardNumber != nil
+	return x.xxx_hidden_CompanyCardNumberAndGeneration != nil
 }
 
 func (x *Overview_CompanyLock) ClearLockInTime() {
@@ -884,8 +887,8 @@ func (x *Overview_CompanyLock) ClearCompanyAddress() {
 	x.xxx_hidden_CompanyAddress = nil
 }
 
-func (x *Overview_CompanyLock) ClearCompanyCardNumber() {
-	x.xxx_hidden_CompanyCardNumber = nil
+func (x *Overview_CompanyLock) ClearCompanyCardNumberAndGeneration() {
+	x.xxx_hidden_CompanyCardNumberAndGeneration = nil
 }
 
 type Overview_CompanyLock_builder struct {
@@ -921,8 +924,11 @@ type Overview_CompanyLock_builder struct {
 	CompanyAddress *v1.StringValue
 	// The card number of the company.
 	//
-	// See Data Dictionary, Section 2.73, `FullCardNumber`.
-	CompanyCardNumber *v1.FullCardNumber
+	// The underlying `VuCompanyLocksRecord` exists for both Gen1 and Gen2.
+	// To support both versions in a single field and ensure unique card
+	// identification for Gen2, this uses the `FullCardNumberAndGeneration` superset.
+	// For Gen1 records, the `generation` field will be unset.
+	CompanyCardNumberAndGeneration *v1.FullCardNumberAndGeneration
 }
 
 func (b0 Overview_CompanyLock_builder) Build() *Overview_CompanyLock {
@@ -933,7 +939,7 @@ func (b0 Overview_CompanyLock_builder) Build() *Overview_CompanyLock {
 	x.xxx_hidden_LockOutTime = b.LockOutTime
 	x.xxx_hidden_CompanyName = b.CompanyName
 	x.xxx_hidden_CompanyAddress = b.CompanyAddress
-	x.xxx_hidden_CompanyCardNumber = b.CompanyCardNumber
+	x.xxx_hidden_CompanyCardNumberAndGeneration = b.CompanyCardNumberAndGeneration
 	return m0
 }
 
@@ -951,14 +957,14 @@ func (b0 Overview_CompanyLock_builder) Build() *Overview_CompanyLock {
 //	    downloadPeriodEndTime TimeReal
 //	}
 type Overview_ControlActivity struct {
-	state                              protoimpl.MessageState `protogen:"opaque.v1"`
-	xxx_hidden_ControlType             *v1.ControlType        `protobuf:"bytes,1,opt,name=control_type,json=controlType"`
-	xxx_hidden_ControlTime             *timestamppb.Timestamp `protobuf:"bytes,2,opt,name=control_time,json=controlTime"`
-	xxx_hidden_ControlCardNumber       *v1.FullCardNumber     `protobuf:"bytes,3,opt,name=control_card_number,json=controlCardNumber"`
-	xxx_hidden_DownloadPeriodBeginTime *timestamppb.Timestamp `protobuf:"bytes,4,opt,name=download_period_begin_time,json=downloadPeriodBeginTime"`
-	xxx_hidden_DownloadPeriodEndTime   *timestamppb.Timestamp `protobuf:"bytes,5,opt,name=download_period_end_time,json=downloadPeriodEndTime"`
-	unknownFields                      protoimpl.UnknownFields
-	sizeCache                          protoimpl.SizeCache
+	state                                     protoimpl.MessageState          `protogen:"opaque.v1"`
+	xxx_hidden_ControlType                    *v1.ControlType                 `protobuf:"bytes,1,opt,name=control_type,json=controlType"`
+	xxx_hidden_ControlTime                    *timestamppb.Timestamp          `protobuf:"bytes,2,opt,name=control_time,json=controlTime"`
+	xxx_hidden_ControlCardNumberAndGeneration *v1.FullCardNumberAndGeneration `protobuf:"bytes,3,opt,name=control_card_number_and_generation,json=controlCardNumberAndGeneration"`
+	xxx_hidden_DownloadPeriodBeginTime        *timestamppb.Timestamp          `protobuf:"bytes,4,opt,name=download_period_begin_time,json=downloadPeriodBeginTime"`
+	xxx_hidden_DownloadPeriodEndTime          *timestamppb.Timestamp          `protobuf:"bytes,5,opt,name=download_period_end_time,json=downloadPeriodEndTime"`
+	unknownFields                             protoimpl.UnknownFields
+	sizeCache                                 protoimpl.SizeCache
 }
 
 func (x *Overview_ControlActivity) Reset() {
@@ -1000,9 +1006,9 @@ func (x *Overview_ControlActivity) GetControlTime() *timestamppb.Timestamp {
 	return nil
 }
 
-func (x *Overview_ControlActivity) GetControlCardNumber() *v1.FullCardNumber {
+func (x *Overview_ControlActivity) GetControlCardNumberAndGeneration() *v1.FullCardNumberAndGeneration {
 	if x != nil {
-		return x.xxx_hidden_ControlCardNumber
+		return x.xxx_hidden_ControlCardNumberAndGeneration
 	}
 	return nil
 }
@@ -1029,8 +1035,8 @@ func (x *Overview_ControlActivity) SetControlTime(v *timestamppb.Timestamp) {
 	x.xxx_hidden_ControlTime = v
 }
 
-func (x *Overview_ControlActivity) SetControlCardNumber(v *v1.FullCardNumber) {
-	x.xxx_hidden_ControlCardNumber = v
+func (x *Overview_ControlActivity) SetControlCardNumberAndGeneration(v *v1.FullCardNumberAndGeneration) {
+	x.xxx_hidden_ControlCardNumberAndGeneration = v
 }
 
 func (x *Overview_ControlActivity) SetDownloadPeriodBeginTime(v *timestamppb.Timestamp) {
@@ -1055,11 +1061,11 @@ func (x *Overview_ControlActivity) HasControlTime() bool {
 	return x.xxx_hidden_ControlTime != nil
 }
 
-func (x *Overview_ControlActivity) HasControlCardNumber() bool {
+func (x *Overview_ControlActivity) HasControlCardNumberAndGeneration() bool {
 	if x == nil {
 		return false
 	}
-	return x.xxx_hidden_ControlCardNumber != nil
+	return x.xxx_hidden_ControlCardNumberAndGeneration != nil
 }
 
 func (x *Overview_ControlActivity) HasDownloadPeriodBeginTime() bool {
@@ -1084,8 +1090,8 @@ func (x *Overview_ControlActivity) ClearControlTime() {
 	x.xxx_hidden_ControlTime = nil
 }
 
-func (x *Overview_ControlActivity) ClearControlCardNumber() {
-	x.xxx_hidden_ControlCardNumber = nil
+func (x *Overview_ControlActivity) ClearControlCardNumberAndGeneration() {
+	x.xxx_hidden_ControlCardNumberAndGeneration = nil
 }
 
 func (x *Overview_ControlActivity) ClearDownloadPeriodBeginTime() {
@@ -1115,8 +1121,11 @@ type Overview_ControlActivity_builder struct {
 	ControlTime *timestamppb.Timestamp
 	// The card number of the control officer.
 	//
-	// See Data Dictionary, Section 2.73, `FullCardNumber`.
-	ControlCardNumber *v1.FullCardNumber
+	// The underlying `VuControlActivityRecord` exists for both Gen1 and Gen2.
+	// To support both versions in a single field and ensure unique card
+	// identification for Gen2, this uses the `FullCardNumberAndGeneration` superset.
+	// For Gen1 records, the `generation` field will be unset.
+	ControlCardNumberAndGeneration *v1.FullCardNumberAndGeneration
 	// The start of the downloaded period.
 	//
 	// See Data Dictionary, Section 2.162, `TimeReal`.
@@ -1139,7 +1148,7 @@ func (b0 Overview_ControlActivity_builder) Build() *Overview_ControlActivity {
 	_, _ = b, x
 	x.xxx_hidden_ControlType = b.ControlType
 	x.xxx_hidden_ControlTime = b.ControlTime
-	x.xxx_hidden_ControlCardNumber = b.ControlCardNumber
+	x.xxx_hidden_ControlCardNumberAndGeneration = b.ControlCardNumberAndGeneration
 	x.xxx_hidden_DownloadPeriodBeginTime = b.DownloadPeriodBeginTime
 	x.xxx_hidden_DownloadPeriodEndTime = b.DownloadPeriodEndTime
 	return m0
@@ -1149,7 +1158,7 @@ var File_wayplatform_connect_tachograph_vu_v1_overview_proto protoreflect.FileDe
 
 const file_wayplatform_connect_tachograph_vu_v1_overview_proto_rawDesc = "" +
 	"\n" +
-	"3wayplatform/connect/tachograph/vu/v1/overview.proto\x12$wayplatform.connect.tachograph.vu.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a7wayplatform/connect/tachograph/dd/v1/control_type.proto\x1a>wayplatform/connect/tachograph/dd/v1/downloadable_period.proto\x1a;wayplatform/connect/tachograph/dd/v1/full_card_number.proto\x1a5wayplatform/connect/tachograph/dd/v1/generation.proto\x1a9wayplatform/connect/tachograph/dd/v1/slot_card_type.proto\x1a7wayplatform/connect/tachograph/dd/v1/string_value.proto\x1aNwayplatform/connect/tachograph/dd/v1/vehicle_registration_identification.proto\x1a5wayplatform/connect/tachograph/vu/v1/versioning.proto\"\x9b\x14\n" +
+	"3wayplatform/connect/tachograph/vu/v1/overview.proto\x12$wayplatform.connect.tachograph.vu.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a7wayplatform/connect/tachograph/dd/v1/control_type.proto\x1a>wayplatform/connect/tachograph/dd/v1/downloadable_period.proto\x1a;wayplatform/connect/tachograph/dd/v1/full_card_number.proto\x1aJwayplatform/connect/tachograph/dd/v1/full_card_number_and_generation.proto\x1a5wayplatform/connect/tachograph/dd/v1/generation.proto\x1a9wayplatform/connect/tachograph/dd/v1/slot_card_type.proto\x1a7wayplatform/connect/tachograph/dd/v1/string_value.proto\x1aNwayplatform/connect/tachograph/dd/v1/vehicle_registration_identification.proto\x1a5wayplatform/connect/tachograph/vu/v1/versioning.proto\"\x99\x15\n" +
 	"\bOverview\x12P\n" +
 	"\n" +
 	"generation\x18\x01 \x01(\x0e20.wayplatform.connect.tachograph.dd.v1.GenerationR\n" +
@@ -1169,22 +1178,22 @@ const file_wayplatform_connect_tachograph_vu_v1_overview_proto_rawDesc = "" +
 	" vehicle_registration_with_nation\x18\r \x01(\v2G.wayplatform.connect.tachograph.dd.v1.VehicleRegistrationIdentificationR\x1dvehicleRegistrationWithNation\x12z\n" +
 	" vehicle_registration_number_only\x18\x0e \x01(\v21.wayplatform.connect.tachograph.dd.v1.StringValueR\x1dvehicleRegistrationNumberOnly\x12%\n" +
 	"\x0esignature_gen1\x18\x0f \x01(\fR\rsignatureGen1\x12%\n" +
-	"\x0esignature_gen2\x18\x10 \x01(\fR\rsignatureGen2\x1a\xa5\x02\n" +
+	"\x0esignature_gen2\x18\x10 \x01(\fR\rsignatureGen2\x1a\xcf\x02\n" +
 	"\x10DownloadActivity\x12E\n" +
-	"\x10downloading_time\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\x0fdownloadingTime\x12^\n" +
-	"\x10full_card_number\x18\x02 \x01(\v24.wayplatform.connect.tachograph.dd.v1.FullCardNumberR\x0efullCardNumber\x12j\n" +
-	"\x18company_or_workshop_name\x18\x03 \x01(\v21.wayplatform.connect.tachograph.dd.v1.StringValueR\x15companyOrWorkshopName\x1a\xa3\x03\n" +
+	"\x10downloading_time\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\x0fdownloadingTime\x12\x87\x01\n" +
+	"\x1ffull_card_number_and_generation\x18\x02 \x01(\v2A.wayplatform.connect.tachograph.dd.v1.FullCardNumberAndGenerationR\x1bfullCardNumberAndGeneration\x12j\n" +
+	"\x18company_or_workshop_name\x18\x03 \x01(\v21.wayplatform.connect.tachograph.dd.v1.StringValueR\x15companyOrWorkshopName\x1a\xcd\x03\n" +
 	"\vCompanyLock\x12<\n" +
 	"\flock_in_time\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\n" +
 	"lockInTime\x12>\n" +
 	"\rlock_out_time\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\vlockOutTime\x12T\n" +
 	"\fcompany_name\x18\x03 \x01(\v21.wayplatform.connect.tachograph.dd.v1.StringValueR\vcompanyName\x12Z\n" +
-	"\x0fcompany_address\x18\x04 \x01(\v21.wayplatform.connect.tachograph.dd.v1.StringValueR\x0ecompanyAddress\x12d\n" +
-	"\x13company_card_number\x18\x05 \x01(\v24.wayplatform.connect.tachograph.dd.v1.FullCardNumberR\x11companyCardNumber\x1a\xba\x03\n" +
+	"\x0fcompany_address\x18\x04 \x01(\v21.wayplatform.connect.tachograph.dd.v1.StringValueR\x0ecompanyAddress\x12\x8d\x01\n" +
+	"\"company_card_number_and_generation\x18\x05 \x01(\v2A.wayplatform.connect.tachograph.dd.v1.FullCardNumberAndGenerationR\x1ecompanyCardNumberAndGeneration\x1a\xe4\x03\n" +
 	"\x0fControlActivity\x12T\n" +
 	"\fcontrol_type\x18\x01 \x01(\v21.wayplatform.connect.tachograph.dd.v1.ControlTypeR\vcontrolType\x12=\n" +
-	"\fcontrol_time\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\vcontrolTime\x12d\n" +
-	"\x13control_card_number\x18\x03 \x01(\v24.wayplatform.connect.tachograph.dd.v1.FullCardNumberR\x11controlCardNumber\x12W\n" +
+	"\fcontrol_time\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\vcontrolTime\x12\x8d\x01\n" +
+	"\"control_card_number_and_generation\x18\x03 \x01(\v2A.wayplatform.connect.tachograph.dd.v1.FullCardNumberAndGenerationR\x1econtrolCardNumberAndGeneration\x12W\n" +
 	"\x1adownload_period_begin_time\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampR\x17downloadPeriodBeginTime\x12S\n" +
 	"\x18download_period_end_time\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampR\x15downloadPeriodEndTimeB\xcc\x02\n" +
 	"(com.wayplatform.connect.tachograph.vu.v1B\rOverviewProtoP\x01Z\\github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/vu/v1;vuv1\xa2\x02\x04WCTV\xaa\x02$Wayplatform.Connect.Tachograph.Vu.V1\xca\x02$Wayplatform\\Connect\\Tachograph\\Vu\\V1\xe2\x020Wayplatform\\Connect\\Tachograph\\Vu\\V1\\GPBMetadata\xea\x02(Wayplatform::Connect::Tachograph::Vu::V1b\beditionsp\xe8\a"
@@ -1202,7 +1211,7 @@ var file_wayplatform_connect_tachograph_vu_v1_overview_proto_goTypes = []any{
 	(*v1.DownloadablePeriod)(nil),                // 8: wayplatform.connect.tachograph.dd.v1.DownloadablePeriod
 	(v1.SlotCardType)(0),                         // 9: wayplatform.connect.tachograph.dd.v1.SlotCardType
 	(*v1.VehicleRegistrationIdentification)(nil), // 10: wayplatform.connect.tachograph.dd.v1.VehicleRegistrationIdentification
-	(*v1.FullCardNumber)(nil),                    // 11: wayplatform.connect.tachograph.dd.v1.FullCardNumber
+	(*v1.FullCardNumberAndGeneration)(nil),       // 11: wayplatform.connect.tachograph.dd.v1.FullCardNumberAndGeneration
 	(*v1.ControlType)(nil),                       // 12: wayplatform.connect.tachograph.dd.v1.ControlType
 }
 var file_wayplatform_connect_tachograph_vu_v1_overview_proto_depIdxs = []int32{
@@ -1219,16 +1228,16 @@ var file_wayplatform_connect_tachograph_vu_v1_overview_proto_depIdxs = []int32{
 	10, // 10: wayplatform.connect.tachograph.vu.v1.Overview.vehicle_registration_with_nation:type_name -> wayplatform.connect.tachograph.dd.v1.VehicleRegistrationIdentification
 	6,  // 11: wayplatform.connect.tachograph.vu.v1.Overview.vehicle_registration_number_only:type_name -> wayplatform.connect.tachograph.dd.v1.StringValue
 	7,  // 12: wayplatform.connect.tachograph.vu.v1.Overview.DownloadActivity.downloading_time:type_name -> google.protobuf.Timestamp
-	11, // 13: wayplatform.connect.tachograph.vu.v1.Overview.DownloadActivity.full_card_number:type_name -> wayplatform.connect.tachograph.dd.v1.FullCardNumber
+	11, // 13: wayplatform.connect.tachograph.vu.v1.Overview.DownloadActivity.full_card_number_and_generation:type_name -> wayplatform.connect.tachograph.dd.v1.FullCardNumberAndGeneration
 	6,  // 14: wayplatform.connect.tachograph.vu.v1.Overview.DownloadActivity.company_or_workshop_name:type_name -> wayplatform.connect.tachograph.dd.v1.StringValue
 	7,  // 15: wayplatform.connect.tachograph.vu.v1.Overview.CompanyLock.lock_in_time:type_name -> google.protobuf.Timestamp
 	7,  // 16: wayplatform.connect.tachograph.vu.v1.Overview.CompanyLock.lock_out_time:type_name -> google.protobuf.Timestamp
 	6,  // 17: wayplatform.connect.tachograph.vu.v1.Overview.CompanyLock.company_name:type_name -> wayplatform.connect.tachograph.dd.v1.StringValue
 	6,  // 18: wayplatform.connect.tachograph.vu.v1.Overview.CompanyLock.company_address:type_name -> wayplatform.connect.tachograph.dd.v1.StringValue
-	11, // 19: wayplatform.connect.tachograph.vu.v1.Overview.CompanyLock.company_card_number:type_name -> wayplatform.connect.tachograph.dd.v1.FullCardNumber
+	11, // 19: wayplatform.connect.tachograph.vu.v1.Overview.CompanyLock.company_card_number_and_generation:type_name -> wayplatform.connect.tachograph.dd.v1.FullCardNumberAndGeneration
 	12, // 20: wayplatform.connect.tachograph.vu.v1.Overview.ControlActivity.control_type:type_name -> wayplatform.connect.tachograph.dd.v1.ControlType
 	7,  // 21: wayplatform.connect.tachograph.vu.v1.Overview.ControlActivity.control_time:type_name -> google.protobuf.Timestamp
-	11, // 22: wayplatform.connect.tachograph.vu.v1.Overview.ControlActivity.control_card_number:type_name -> wayplatform.connect.tachograph.dd.v1.FullCardNumber
+	11, // 22: wayplatform.connect.tachograph.vu.v1.Overview.ControlActivity.control_card_number_and_generation:type_name -> wayplatform.connect.tachograph.dd.v1.FullCardNumberAndGeneration
 	7,  // 23: wayplatform.connect.tachograph.vu.v1.Overview.ControlActivity.download_period_begin_time:type_name -> google.protobuf.Timestamp
 	7,  // 24: wayplatform.connect.tachograph.vu.v1.Overview.ControlActivity.download_period_end_time:type_name -> google.protobuf.Timestamp
 	25, // [25:25] is the sub-list for method output_type

@@ -1,0 +1,27 @@
+edition = "2023";
+
+package wayplatform.connect.tachograph.dd.v1;
+
+// Represents a BCD-encoded month and year, used in types like ExtendedSerialNumber.
+//
+// This message preserves the original raw byte representation for round-trip
+// data fidelity while also providing convenient decoded integer fields for ease
+// of use by consumers.
+//
+// Source ASN.1 from Data Dictionary, Section 2.72:
+//
+//     monthYear BCDString(SIZE(2))
+message MonthYear {
+  // The raw, original BCD-encoded bytes for the month and year (e.g., `[0x09, 0x23]` for September 2023).
+  // This field is the source of truth and should always be used when marshalling
+  // the data back to its binary format.
+  bytes encoded = 1;
+
+  // The decoded month (1-12). This field is provided for
+  // consumer convenience and should be treated as a read-only, derived value.
+  int32 month = 2;
+
+  // The decoded year (e.g., 2023). This field is provided for
+  // consumer convenience and should be treated as a read-only, derived value.
+  int32 year = 3;
+}

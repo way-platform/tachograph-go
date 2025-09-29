@@ -246,7 +246,7 @@ type LoadTypeEntries_Record_builder struct {
 	// ASN.1 Definition:
 	//
 	//	LoadType ::= INTEGER {
-	//	    not-defined(0), passengers(1), goods(2)
+	//	    not-defined(0), goods(1), passengers(2)
 	//	} (0..255)
 	LoadTypeEntered *v1.LoadType
 }

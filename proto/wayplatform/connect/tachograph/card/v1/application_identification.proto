@@ -87,9 +87,14 @@ message ApplicationIdentification {
     // The number of specific condition records the card can store.
     //
     // See Data Dictionary, Section 2.112, `NoOfSpecificConditionRecords`.
-    // ASN.1 definition:
+    //
+    // ASN.1 definition (Gen1):
     //
     //     NoOfSpecificConditionRecords ::= INTEGER(0..255)
+    //
+    // ASN.1 definition (Gen2):
+    //
+    //     NoOfSpecificConditionRecords ::= INTEGER(0..65535)
     int32 specific_condition_records_count = 7;
 
     // The number of vehicle units used records the card can store.
@@ -99,14 +104,6 @@ message ApplicationIdentification {
     //
     //     NoOfCardVehicleUnitRecords ::= INTEGER(0..65535)
     int32 card_vehicle_unit_records_count = 8;
-
-    // Digital signature for the EF_Application_Identification file content.
-    //
-    // See Data Dictionary, Section 2.149, `Signature`.
-    // ASN.1 definition:
-    //
-    //     Signature ::= OCTET STRING (SIZE(128 for Gen1))
-    bytes signature = 9;
   }
 
   // Data for a workshop card. Populated if `card_type` is `WORKSHOP_CARD`.
@@ -155,9 +152,13 @@ message ApplicationIdentification {
     // The number of calibration records the card can store.
     //
     // See Data Dictionary, Section 2.102, `NoOfCalibrationRecords`.
-    // ASN.1 definition:
+    // ASN.1 definition (Gen1):
     //
     //     NoOfCalibrationRecords ::= INTEGER(0..255)
+    //
+    // ASN.1 definition (Gen2):
+    //
+    //     NoOfCalibrationRecords ::= INTEGER(0..65535)
     int32 calibration_records_count = 6;
   }
 
@@ -193,4 +194,23 @@ message ApplicationIdentification {
   Company company = 6;
   // Populated if `card_type` is `CONTROL_CARD`.
   Control control = 7;
+
+  // Signature data from the following file block, if tagged as a signature for
+  // this EF according to the card file format specification (Appendix 2).
+  //
+  // See Data Dictionary, Section 2.149, `Signature`.
+  //
+  // ASN.1 Definition (Gen1):
+  //
+  //     Signature ::= OCTET STRING (SIZE(128))
+  //
+  // ASN.1 Definition (Gen2):
+  //
+  //     Signature ::= OCTET STRING (variable size, depends on elliptic curve)
+  //
+  // Gen2 uses ECDSA signatures with variable lengths based on the curve:
+  // - 256-bit curves: ~64 bytes
+  // - 384-bit curves: ~96 bytes
+  // - 512/521-bit curves: ~128-132 bytes
+  bytes signature = 8;
 }

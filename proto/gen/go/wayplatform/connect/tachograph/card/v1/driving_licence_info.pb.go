@@ -24,7 +24,10 @@ const (
 // Represents the content of the EF_Driving_Licence_Info file, which contains the
 // card holder's driving licence information.
 //
-// The file structure is specified in Appendix 2, Section 4.2.1.
+// The file structure is defined in Appendix 2 (tables TCS_150 and TCS_154) and
+// does not contain a signature block.
+//
+// File Structure (from TCS_154):
 //
 //	EF Driving_Licence_Info
 //	└─CardDrivingLicenceInformation
@@ -196,12 +199,23 @@ type DrivingLicenceInfo_builder struct {
 	//
 	//	IA5String(SIZE(16))
 	DrivingLicenceNumber *v1.StringValue
-	// Digital signature for the EF_Driving_Licence_Info file content.
+	// Signature data from the following file block, if tagged as a signature for
+	// this EF according to the card file format specification (Appendix 2).
 	//
 	// See Data Dictionary, Section 2.149, `Signature`.
-	// ASN.1 Specification:
 	//
-	//	Signature ::= OCTET STRING (SIZE(128 for Gen1))
+	// ASN.1 Definition (Gen1):
+	//
+	//	Signature ::= OCTET STRING (SIZE(128))
+	//
+	// ASN.1 Definition (Gen2):
+	//
+	//	Signature ::= OCTET STRING (variable size, depends on elliptic curve)
+	//
+	// Gen2 uses ECDSA signatures with variable lengths based on the curve:
+	// - 256-bit curves: ~64 bytes
+	// - 384-bit curves: ~96 bytes
+	// - 512/521-bit curves: ~128-132 bytes
 	Signature []byte
 }
 

@@ -35,6 +35,7 @@ type ApplicationIdentification struct {
 	xxx_hidden_Workshop               *ApplicationIdentification_Workshop `protobuf:"bytes,5,opt,name=workshop"`
 	xxx_hidden_Company                *ApplicationIdentification_Company  `protobuf:"bytes,6,opt,name=company"`
 	xxx_hidden_Control                *ApplicationIdentification_Control  `protobuf:"bytes,7,opt,name=control"`
+	xxx_hidden_Signature              []byte                              `protobuf:"bytes,8,opt,name=signature"`
 	XXX_raceDetectHookData            protoimpl.RaceDetectHookData
 	XXX_presence                      [1]uint32
 	unknownFields                     protoimpl.UnknownFields
@@ -119,14 +120,21 @@ func (x *ApplicationIdentification) GetControl() *ApplicationIdentification_Cont
 	return nil
 }
 
+func (x *ApplicationIdentification) GetSignature() []byte {
+	if x != nil {
+		return x.xxx_hidden_Signature
+	}
+	return nil
+}
+
 func (x *ApplicationIdentification) SetCardType(v CardType) {
 	x.xxx_hidden_CardType = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 7)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 8)
 }
 
 func (x *ApplicationIdentification) SetTypeOfTachographCardId(v v1.EquipmentType) {
 	x.xxx_hidden_TypeOfTachographCardId = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 7)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 8)
 }
 
 func (x *ApplicationIdentification) SetCardStructureVersion(v *v1.CardStructureVersion) {
@@ -147,6 +155,14 @@ func (x *ApplicationIdentification) SetCompany(v *ApplicationIdentification_Comp
 
 func (x *ApplicationIdentification) SetControl(v *ApplicationIdentification_Control) {
 	x.xxx_hidden_Control = v
+}
+
+func (x *ApplicationIdentification) SetSignature(v []byte) {
+	if v == nil {
+		v = []byte{}
+	}
+	x.xxx_hidden_Signature = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 7, 8)
 }
 
 func (x *ApplicationIdentification) HasCardType() bool {
@@ -198,6 +214,13 @@ func (x *ApplicationIdentification) HasControl() bool {
 	return x.xxx_hidden_Control != nil
 }
 
+func (x *ApplicationIdentification) HasSignature() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 7)
+}
+
 func (x *ApplicationIdentification) ClearCardType() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 0)
 	x.xxx_hidden_CardType = CardType_CARD_TYPE_UNSPECIFIED
@@ -228,6 +251,11 @@ func (x *ApplicationIdentification) ClearControl() {
 	x.xxx_hidden_Control = nil
 }
 
+func (x *ApplicationIdentification) ClearSignature() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 7)
+	x.xxx_hidden_Signature = nil
+}
+
 type ApplicationIdentification_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
@@ -255,6 +283,24 @@ type ApplicationIdentification_builder struct {
 	Company *ApplicationIdentification_Company
 	// Populated if `card_type` is `CONTROL_CARD`.
 	Control *ApplicationIdentification_Control
+	// Signature data from the following file block, if tagged as a signature for
+	// this EF according to the card file format specification (Appendix 2).
+	//
+	// See Data Dictionary, Section 2.149, `Signature`.
+	//
+	// ASN.1 Definition (Gen1):
+	//
+	//	Signature ::= OCTET STRING (SIZE(128))
+	//
+	// ASN.1 Definition (Gen2):
+	//
+	//	Signature ::= OCTET STRING (variable size, depends on elliptic curve)
+	//
+	// Gen2 uses ECDSA signatures with variable lengths based on the curve:
+	// - 256-bit curves: ~64 bytes
+	// - 384-bit curves: ~96 bytes
+	// - 512/521-bit curves: ~128-132 bytes
+	Signature []byte
 }
 
 func (b0 ApplicationIdentification_builder) Build() *ApplicationIdentification {
@@ -262,11 +308,11 @@ func (b0 ApplicationIdentification_builder) Build() *ApplicationIdentification {
 	b, x := &b0, m0
 	_, _ = b, x
 	if b.CardType != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 7)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 8)
 		x.xxx_hidden_CardType = *b.CardType
 	}
 	if b.TypeOfTachographCardId != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 7)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 8)
 		x.xxx_hidden_TypeOfTachographCardId = *b.TypeOfTachographCardId
 	}
 	x.xxx_hidden_CardStructureVersion = b.CardStructureVersion
@@ -274,6 +320,10 @@ func (b0 ApplicationIdentification_builder) Build() *ApplicationIdentification {
 	x.xxx_hidden_Workshop = b.Workshop
 	x.xxx_hidden_Company = b.Company
 	x.xxx_hidden_Control = b.Control
+	if b.Signature != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 7, 8)
+		x.xxx_hidden_Signature = b.Signature
+	}
 	return m0
 }
 
@@ -289,7 +339,6 @@ type ApplicationIdentification_Driver struct {
 	xxx_hidden_GnssAdRecordsCount            int32                  `protobuf:"varint,6,opt,name=gnss_ad_records_count,json=gnssAdRecordsCount"`
 	xxx_hidden_SpecificConditionRecordsCount int32                  `protobuf:"varint,7,opt,name=specific_condition_records_count,json=specificConditionRecordsCount"`
 	xxx_hidden_CardVehicleUnitRecordsCount   int32                  `protobuf:"varint,8,opt,name=card_vehicle_unit_records_count,json=cardVehicleUnitRecordsCount"`
-	xxx_hidden_Signature                     []byte                 `protobuf:"bytes,9,opt,name=signature"`
 	XXX_raceDetectHookData                   protoimpl.RaceDetectHookData
 	XXX_presence                             [1]uint32
 	unknownFields                            protoimpl.UnknownFields
@@ -377,59 +426,44 @@ func (x *ApplicationIdentification_Driver) GetCardVehicleUnitRecordsCount() int3
 	return 0
 }
 
-func (x *ApplicationIdentification_Driver) GetSignature() []byte {
-	if x != nil {
-		return x.xxx_hidden_Signature
-	}
-	return nil
-}
-
 func (x *ApplicationIdentification_Driver) SetEventsPerTypeCount(v int32) {
 	x.xxx_hidden_EventsPerTypeCount = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 9)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 8)
 }
 
 func (x *ApplicationIdentification_Driver) SetFaultsPerTypeCount(v int32) {
 	x.xxx_hidden_FaultsPerTypeCount = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 9)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 8)
 }
 
 func (x *ApplicationIdentification_Driver) SetActivityStructureLength(v int32) {
 	x.xxx_hidden_ActivityStructureLength = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 9)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 8)
 }
 
 func (x *ApplicationIdentification_Driver) SetCardVehicleRecordsCount(v int32) {
 	x.xxx_hidden_CardVehicleRecordsCount = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 3, 9)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 3, 8)
 }
 
 func (x *ApplicationIdentification_Driver) SetCardPlaceRecordsCount(v int32) {
 	x.xxx_hidden_CardPlaceRecordsCount = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 4, 9)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 4, 8)
 }
 
 func (x *ApplicationIdentification_Driver) SetGnssAdRecordsCount(v int32) {
 	x.xxx_hidden_GnssAdRecordsCount = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 5, 9)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 5, 8)
 }
 
 func (x *ApplicationIdentification_Driver) SetSpecificConditionRecordsCount(v int32) {
 	x.xxx_hidden_SpecificConditionRecordsCount = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 6, 9)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 6, 8)
 }
 
 func (x *ApplicationIdentification_Driver) SetCardVehicleUnitRecordsCount(v int32) {
 	x.xxx_hidden_CardVehicleUnitRecordsCount = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 7, 9)
-}
-
-func (x *ApplicationIdentification_Driver) SetSignature(v []byte) {
-	if v == nil {
-		v = []byte{}
-	}
-	x.xxx_hidden_Signature = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 8, 9)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 7, 8)
 }
 
 func (x *ApplicationIdentification_Driver) HasEventsPerTypeCount() bool {
@@ -488,13 +522,6 @@ func (x *ApplicationIdentification_Driver) HasCardVehicleUnitRecordsCount() bool
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 7)
 }
 
-func (x *ApplicationIdentification_Driver) HasSignature() bool {
-	if x == nil {
-		return false
-	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 8)
-}
-
 func (x *ApplicationIdentification_Driver) ClearEventsPerTypeCount() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 0)
 	x.xxx_hidden_EventsPerTypeCount = 0
@@ -533,11 +560,6 @@ func (x *ApplicationIdentification_Driver) ClearSpecificConditionRecordsCount() 
 func (x *ApplicationIdentification_Driver) ClearCardVehicleUnitRecordsCount() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 7)
 	x.xxx_hidden_CardVehicleUnitRecordsCount = 0
-}
-
-func (x *ApplicationIdentification_Driver) ClearSignature() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 8)
-	x.xxx_hidden_Signature = nil
 }
 
 type ApplicationIdentification_Driver_builder struct {
@@ -588,9 +610,14 @@ type ApplicationIdentification_Driver_builder struct {
 	// The number of specific condition records the card can store.
 	//
 	// See Data Dictionary, Section 2.112, `NoOfSpecificConditionRecords`.
-	// ASN.1 definition:
+	//
+	// ASN.1 definition (Gen1):
 	//
 	//	NoOfSpecificConditionRecords ::= INTEGER(0..255)
+	//
+	// ASN.1 definition (Gen2):
+	//
+	//	NoOfSpecificConditionRecords ::= INTEGER(0..65535)
 	SpecificConditionRecordsCount *int32
 	// The number of vehicle units used records the card can store.
 	//
@@ -599,13 +626,6 @@ type ApplicationIdentification_Driver_builder struct {
 	//
 	//	NoOfCardVehicleUnitRecords ::= INTEGER(0..65535)
 	CardVehicleUnitRecordsCount *int32
-	// Digital signature for the EF_Application_Identification file content.
-	//
-	// See Data Dictionary, Section 2.149, `Signature`.
-	// ASN.1 definition:
-	//
-	//	Signature ::= OCTET STRING (SIZE(128 for Gen1))
-	Signature []byte
 }
 
 func (b0 ApplicationIdentification_Driver_builder) Build() *ApplicationIdentification_Driver {
@@ -613,40 +633,36 @@ func (b0 ApplicationIdentification_Driver_builder) Build() *ApplicationIdentific
 	b, x := &b0, m0
 	_, _ = b, x
 	if b.EventsPerTypeCount != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 9)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 8)
 		x.xxx_hidden_EventsPerTypeCount = *b.EventsPerTypeCount
 	}
 	if b.FaultsPerTypeCount != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 9)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 8)
 		x.xxx_hidden_FaultsPerTypeCount = *b.FaultsPerTypeCount
 	}
 	if b.ActivityStructureLength != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 9)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 8)
 		x.xxx_hidden_ActivityStructureLength = *b.ActivityStructureLength
 	}
 	if b.CardVehicleRecordsCount != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 3, 9)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 3, 8)
 		x.xxx_hidden_CardVehicleRecordsCount = *b.CardVehicleRecordsCount
 	}
 	if b.CardPlaceRecordsCount != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 4, 9)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 4, 8)
 		x.xxx_hidden_CardPlaceRecordsCount = *b.CardPlaceRecordsCount
 	}
 	if b.GnssAdRecordsCount != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 5, 9)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 5, 8)
 		x.xxx_hidden_GnssAdRecordsCount = *b.GnssAdRecordsCount
 	}
 	if b.SpecificConditionRecordsCount != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 6, 9)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 6, 8)
 		x.xxx_hidden_SpecificConditionRecordsCount = *b.SpecificConditionRecordsCount
 	}
 	if b.CardVehicleUnitRecordsCount != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 7, 9)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 7, 8)
 		x.xxx_hidden_CardVehicleUnitRecordsCount = *b.CardVehicleUnitRecordsCount
-	}
-	if b.Signature != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 8, 9)
-		x.xxx_hidden_Signature = b.Signature
 	}
 	return m0
 }
@@ -877,9 +893,13 @@ type ApplicationIdentification_Workshop_builder struct {
 	// The number of calibration records the card can store.
 	//
 	// See Data Dictionary, Section 2.102, `NoOfCalibrationRecords`.
-	// ASN.1 definition:
+	// ASN.1 definition (Gen1):
 	//
 	//	NoOfCalibrationRecords ::= INTEGER(0..255)
+	//
+	// ASN.1 definition (Gen2):
+	//
+	//	NoOfCalibrationRecords ::= INTEGER(0..65535)
 	CalibrationRecordsCount *int32
 }
 
@@ -1092,7 +1112,8 @@ const file_wayplatform_connect_tachograph_card_v1_application_identification_pro
 	"\x06driver\x18\x04 \x01(\v2H.wayplatform.connect.tachograph.card.v1.ApplicationIdentification.DriverR\x06driver\x12f\n" +
 	"\bworkshop\x18\x05 \x01(\v2J.wayplatform.connect.tachograph.card.v1.ApplicationIdentification.WorkshopR\bworkshop\x12c\n" +
 	"\acompany\x18\x06 \x01(\v2I.wayplatform.connect.tachograph.card.v1.ApplicationIdentification.CompanyR\acompany\x12c\n" +
-	"\acontrol\x18\a \x01(\v2I.wayplatform.connect.tachograph.card.v1.ApplicationIdentification.ControlR\acontrol\x1a\x80\x04\n" +
+	"\acontrol\x18\a \x01(\v2I.wayplatform.connect.tachograph.card.v1.ApplicationIdentification.ControlR\acontrol\x12\x1c\n" +
+	"\tsignature\x18\b \x01(\fR\tsignature\x1a\xe2\x03\n" +
 	"\x06Driver\x121\n" +
 	"\x15events_per_type_count\x18\x01 \x01(\x05R\x12eventsPerTypeCount\x121\n" +
 	"\x15faults_per_type_count\x18\x02 \x01(\x05R\x12faultsPerTypeCount\x12:\n" +
@@ -1101,8 +1122,7 @@ const file_wayplatform_connect_tachograph_card_v1_application_identification_pro
 	"\x18card_place_records_count\x18\x05 \x01(\x05R\x15cardPlaceRecordsCount\x121\n" +
 	"\x15gnss_ad_records_count\x18\x06 \x01(\x05R\x12gnssAdRecordsCount\x12G\n" +
 	" specific_condition_records_count\x18\a \x01(\x05R\x1dspecificConditionRecordsCount\x12D\n" +
-	"\x1fcard_vehicle_unit_records_count\x18\b \x01(\x05R\x1bcardVehicleUnitRecordsCount\x12\x1c\n" +
-	"\tsignature\x18\t \x01(\fR\tsignature\x1a\xde\x02\n" +
+	"\x1fcard_vehicle_unit_records_count\x18\b \x01(\x05R\x1bcardVehicleUnitRecordsCount\x1a\xde\x02\n" +
 	"\bWorkshop\x121\n" +
 	"\x15events_per_type_count\x18\x01 \x01(\x05R\x12eventsPerTypeCount\x121\n" +
 	"\x15faults_per_type_count\x18\x02 \x01(\x05R\x12faultsPerTypeCount\x12:\n" +

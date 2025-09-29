@@ -2,7 +2,10 @@ syntax = "proto3";
 
 package wayplatform.connect.tachograph.dd.v1;
 
-// Represents the activities carried out during a control.
+// Represents the activities carried out during a control, decoded from a bitmask.
+//
+// This message preserves the original raw byte for round-trip data fidelity
+// while also providing convenient boolean fields for ease of use by consumers.
 //
 // See Data Dictionary, Section 2.53.
 //
@@ -18,18 +21,28 @@ package wayplatform.connect.tachograph.dd.v1;
 // - 'e': roadside calibration checking (Gen2+)
 // - 'xxx': RFU
 message ControlType {
+  // The raw, original byte representing the bitmask. This field is the source
+  // of truth and should be used for any serialization operations to ensure
+  // perfect data fidelity, including the preservation of reserved bits.
+  bytes raw_value = 6;
+
   // Indicates if the card was downloaded during the control (bit 'c').
+  // This is a convenience field derived from `raw_value`.
   bool card_downloading = 1;
 
   // Indicates if the VU was downloaded during the control (bit 'v').
+  // This is a convenience field derived from `raw_value`.
   bool vu_downloading = 2;
 
   // Indicates if a printout was made during the control (bit 'p').
+  // This is a convenience field derived from `raw_value`.
   bool printing = 3;
 
   // Indicates if the display was used during the control (bit 'd').
+  // This is a convenience field derived from `raw_value`.
   bool display = 4;
 
   // Indicates if calibration parameters were checked (Gen2+ only) (bit 'e').
+  // This is a convenience field derived from `raw_value`.
   bool calibration_checking = 5;
 }

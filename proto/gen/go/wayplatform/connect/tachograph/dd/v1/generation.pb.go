@@ -21,6 +21,17 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+// Represents the generation of the tachograph card or vehicle unit.
+//
+// See Data Dictionary, Section 2.75.
+//
+// ASN.1 Definition:
+//
+//	Generation ::= INTEGER (0..255)
+//
+//	Value assignment:
+//	    - 01H: Generation 1
+//	    - 02H: Generation 2
 type Generation int32
 
 const (
@@ -86,12 +97,12 @@ var File_wayplatform_connect_tachograph_dd_v1_generation_proto protoreflect.File
 
 const file_wayplatform_connect_tachograph_dd_v1_generation_proto_rawDesc = "" +
 	"\n" +
-	"5wayplatform/connect/tachograph/dd/v1/generation.proto\x12$wayplatform.connect.tachograph.dd.v1\x1a google/protobuf/descriptor.proto*L\n" +
+	"5wayplatform/connect/tachograph/dd/v1/generation.proto\x12$wayplatform.connect.tachograph.dd.v1\x1a google/protobuf/descriptor.proto\x1a6wayplatform/connect/tachograph/dd/v1/annotations.proto*Z\n" +
 	"\n" +
 	"Generation\x12\x1a\n" +
-	"\x16GENERATION_UNSPECIFIED\x10\x00\x12\x10\n" +
-	"\fGENERATION_1\x10\x01\x12\x10\n" +
-	"\fGENERATION_2\x10\x02:u\n" +
+	"\x16GENERATION_UNSPECIFIED\x10\x00\x12\x17\n" +
+	"\fGENERATION_1\x10\x01\x1a\x05\x98\xaf\x9c\x02\x01\x12\x17\n" +
+	"\fGENERATION_2\x10\x02\x1a\x05\x98\xaf\x9c\x02\x02:u\n" +
 	"\n" +
 	"generation\x12!.google.protobuf.EnumValueOptions\x18\x80\x89\x03 \x01(\x0e20.wayplatform.connect.tachograph.dd.v1.GenerationR\n" +
 	"generationB\xce\x02\n" +
@@ -117,6 +128,7 @@ func file_wayplatform_connect_tachograph_dd_v1_generation_proto_init() {
 	if File_wayplatform_connect_tachograph_dd_v1_generation_proto != nil {
 		return
 	}
+	file_wayplatform_connect_tachograph_dd_v1_annotations_proto_init()
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

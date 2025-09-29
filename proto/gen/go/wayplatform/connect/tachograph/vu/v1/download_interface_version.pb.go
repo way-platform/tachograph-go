@@ -21,20 +21,27 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// Represents the parsed version of the VU's download interface.
+// Represents the version of the VU's download interface.
 //
-// This message is a parsed representation of the `DownloadInterfaceVersion` data type.
+// This message preserves the original 2-byte OCTET STRING for lossless
+// round-trips while also providing a parsed representation.
+//
 // See Data Dictionary, Section 2.60a.
 //
 // ASN.1 Definition:
 //
 //	DownloadInterfaceVersion ::= OCTET STRING (SIZE (2))
 //
-// The two bytes of the OCTET STRING are parsed into the fields below.
+// Value Assignment (`aabb`H):
+//   - `aa` (byte 1): Generation of the VU.
+//   - `01`H: Generation 2
+//   - `bb` (byte 2): Version of the download interface.
+//   - `01`H: Version 2 of Gen2 VU
 type DownloadInterfaceVersion struct {
 	state                  protoimpl.MessageState `protogen:"opaque.v1"`
-	xxx_hidden_Generation  v1.Generation          `protobuf:"varint,1,opt,name=generation,enum=wayplatform.connect.tachograph.dd.v1.Generation"`
-	xxx_hidden_Version     Version                `protobuf:"varint,2,opt,name=version,enum=wayplatform.connect.tachograph.vu.v1.Version"`
+	xxx_hidden_RawData     []byte                 `protobuf:"bytes,1,opt,name=raw_data,json=rawData"`
+	xxx_hidden_Generation  v1.Generation          `protobuf:"varint,2,opt,name=generation,enum=wayplatform.connect.tachograph.dd.v1.Generation"`
+	xxx_hidden_Version     Version                `protobuf:"varint,3,opt,name=version,enum=wayplatform.connect.tachograph.vu.v1.Version"`
 	XXX_raceDetectHookData protoimpl.RaceDetectHookData
 	XXX_presence           [1]uint32
 	unknownFields          protoimpl.UnknownFields
@@ -66,9 +73,16 @@ func (x *DownloadInterfaceVersion) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
+func (x *DownloadInterfaceVersion) GetRawData() []byte {
+	if x != nil {
+		return x.xxx_hidden_RawData
+	}
+	return nil
+}
+
 func (x *DownloadInterfaceVersion) GetGeneration() v1.Generation {
 	if x != nil {
-		if protoimpl.X.Present(&(x.XXX_presence[0]), 0) {
+		if protoimpl.X.Present(&(x.XXX_presence[0]), 1) {
 			return x.xxx_hidden_Generation
 		}
 	}
@@ -77,55 +91,78 @@ func (x *DownloadInterfaceVersion) GetGeneration() v1.Generation {
 
 func (x *DownloadInterfaceVersion) GetVersion() Version {
 	if x != nil {
-		if protoimpl.X.Present(&(x.XXX_presence[0]), 1) {
+		if protoimpl.X.Present(&(x.XXX_presence[0]), 2) {
 			return x.xxx_hidden_Version
 		}
 	}
 	return Version_VERSION_UNSPECIFIED
 }
 
+func (x *DownloadInterfaceVersion) SetRawData(v []byte) {
+	if v == nil {
+		v = []byte{}
+	}
+	x.xxx_hidden_RawData = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 3)
+}
+
 func (x *DownloadInterfaceVersion) SetGeneration(v v1.Generation) {
 	x.xxx_hidden_Generation = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 2)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 3)
 }
 
 func (x *DownloadInterfaceVersion) SetVersion(v Version) {
 	x.xxx_hidden_Version = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 2)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 3)
 }
 
-func (x *DownloadInterfaceVersion) HasGeneration() bool {
+func (x *DownloadInterfaceVersion) HasRawData() bool {
 	if x == nil {
 		return false
 	}
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 0)
 }
 
-func (x *DownloadInterfaceVersion) HasVersion() bool {
+func (x *DownloadInterfaceVersion) HasGeneration() bool {
 	if x == nil {
 		return false
 	}
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 1)
 }
 
-func (x *DownloadInterfaceVersion) ClearGeneration() {
+func (x *DownloadInterfaceVersion) HasVersion() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 2)
+}
+
+func (x *DownloadInterfaceVersion) ClearRawData() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 0)
+	x.xxx_hidden_RawData = nil
+}
+
+func (x *DownloadInterfaceVersion) ClearGeneration() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 1)
 	x.xxx_hidden_Generation = v1.Generation_GENERATION_UNSPECIFIED
 }
 
 func (x *DownloadInterfaceVersion) ClearVersion() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 1)
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 2)
 	x.xxx_hidden_Version = Version_VERSION_UNSPECIFIED
 }
 
 type DownloadInterfaceVersion_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
-	// The generation of the vehicle unit, parsed from the first byte.
+	// The raw, unparsed 2-byte OCTET STRING of the DownloadInterfaceVersion.
+	// This field is preserved for data fidelity and lossless round-trips.
+	RawData []byte
+	// The generation of the vehicle unit, parsed from the first byte (`aa`).
 	//
 	// See Data Dictionary, Section 2.75, `Generation`.
 	Generation *v1.Generation
-	// The version of the download interface, parsed from the second byte.
+	// The version of the download interface, parsed from the second byte (`bb`).
 	Version *Version
 }
 
@@ -133,12 +170,16 @@ func (b0 DownloadInterfaceVersion_builder) Build() *DownloadInterfaceVersion {
 	m0 := &DownloadInterfaceVersion{}
 	b, x := &b0, m0
 	_, _ = b, x
+	if b.RawData != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 3)
+		x.xxx_hidden_RawData = b.RawData
+	}
 	if b.Generation != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 2)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 3)
 		x.xxx_hidden_Generation = *b.Generation
 	}
 	if b.Version != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 2)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 3)
 		x.xxx_hidden_Version = *b.Version
 	}
 	return m0
@@ -148,12 +189,13 @@ var File_wayplatform_connect_tachograph_vu_v1_download_interface_version_proto p
 
 const file_wayplatform_connect_tachograph_vu_v1_download_interface_version_proto_rawDesc = "" +
 	"\n" +
-	"Ewayplatform/connect/tachograph/vu/v1/download_interface_version.proto\x12$wayplatform.connect.tachograph.vu.v1\x1a5wayplatform/connect/tachograph/dd/v1/generation.proto\x1a5wayplatform/connect/tachograph/vu/v1/versioning.proto\"\xb5\x01\n" +
-	"\x18DownloadInterfaceVersion\x12P\n" +
+	"Ewayplatform/connect/tachograph/vu/v1/download_interface_version.proto\x12$wayplatform.connect.tachograph.vu.v1\x1a5wayplatform/connect/tachograph/dd/v1/generation.proto\x1a5wayplatform/connect/tachograph/vu/v1/versioning.proto\"\xd0\x01\n" +
+	"\x18DownloadInterfaceVersion\x12\x19\n" +
+	"\braw_data\x18\x01 \x01(\fR\arawData\x12P\n" +
 	"\n" +
-	"generation\x18\x01 \x01(\x0e20.wayplatform.connect.tachograph.dd.v1.GenerationR\n" +
+	"generation\x18\x02 \x01(\x0e20.wayplatform.connect.tachograph.dd.v1.GenerationR\n" +
 	"generation\x12G\n" +
-	"\aversion\x18\x02 \x01(\x0e2-.wayplatform.connect.tachograph.vu.v1.VersionR\aversionB\xdc\x02\n" +
+	"\aversion\x18\x03 \x01(\x0e2-.wayplatform.connect.tachograph.vu.v1.VersionR\aversionB\xdc\x02\n" +
 	"(com.wayplatform.connect.tachograph.vu.v1B\x1dDownloadInterfaceVersionProtoP\x01Z\\github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/vu/v1;vuv1\xa2\x02\x04WCTV\xaa\x02$Wayplatform.Connect.Tachograph.Vu.V1\xca\x02$Wayplatform\\Connect\\Tachograph\\Vu\\V1\xe2\x020Wayplatform\\Connect\\Tachograph\\Vu\\V1\\GPBMetadata\xea\x02(Wayplatform::Connect::Tachograph::Vu::V1b\beditionsp\xe8\a"
 
 var file_wayplatform_connect_tachograph_vu_v1_download_interface_version_proto_msgTypes = make([]protoimpl.MessageInfo, 1)

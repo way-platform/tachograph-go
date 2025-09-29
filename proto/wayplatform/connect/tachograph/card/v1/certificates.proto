@@ -41,7 +41,7 @@ message Certificates {
   // Raw data of the link certificate for chaining root CAs (Gen2+).
   //
   // Corresponds to EF_Link_Certificate (FID 0xC109).
-  // See Data Dictionary, Section 2.90, `LinkCertificate`.
+  // See Data Dictionary, Section 2.90b, `LinkCertificate`.
   //
   // ASN.1 Specification (see DD 2.41, `Certificate`):
   //

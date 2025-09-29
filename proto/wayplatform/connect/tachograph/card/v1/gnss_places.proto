@@ -8,7 +8,9 @@ import "wayplatform/connect/tachograph/dd/v1/geo_coordinates.proto";
 // Represents the content of the EF_GNSS_Places file, containing GNSS position records for
 // accumulated driving periods.
 //
-// The file structure is specified in Appendix 2, Section 4.2.2.
+// The file structure is specified in Appendix 2, Section 4.2.2 (TCS_154). Note the
+// absence of a `Signature` block for this EF. Its authenticity is managed by the
+// separate `EF_GNSS_Places_Authentication` file.
 //
 //     EF GNSS_Places
 //     └─GNSSAccumulatedDriving
@@ -109,11 +111,22 @@ message GnssPlaces {
   // Corresponds to `gnssAccumulatedDrivingRecords`.
   repeated Record records = 2;
 
-  // Digital signature for the EF_GNSS_Places file content.
+  // Signature data from the following file block, if tagged as a signature for
+  // this EF according to the card file format specification (Appendix 2).
   //
   // See Data Dictionary, Section 2.149, `Signature`.
-  // ASN.1 Definition:
   //
-  //     Signature ::= OCTET STRING (SIZE(128 for Gen1))
+  // ASN.1 Definition (Gen1):
+  //
+  //     Signature ::= OCTET STRING (SIZE(128))
+  //
+  // ASN.1 Definition (Gen2):
+  //
+  //     Signature ::= OCTET STRING (variable size, depends on elliptic curve)
+  //
+  // Gen2 uses ECDSA signatures with variable lengths based on the curve:
+  // - 256-bit curves: ~64 bytes
+  // - 384-bit curves: ~96 bytes
+  // - 512/521-bit curves: ~128-132 bytes
   bytes signature = 3;
 }

@@ -104,10 +104,7 @@ func unmarshalDriverCardFile(input *cardv1.RawCardFile) (*cardv1.DriverCardFile,
 				return nil, err
 			}
 			if signature != nil {
-				// Set signature on the driver data if it exists
-				if driver := appId.GetDriver(); driver != nil {
-					driver.SetSignature(signature)
-				}
+				appId.SetSignature(signature)
 			}
 			output.SetApplicationIdentification(appId)
 

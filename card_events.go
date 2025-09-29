@@ -74,7 +74,9 @@ func unmarshalEventsData(data []byte) (*cardv1.EventsData, error) {
 	}
 
 	var ed cardv1.EventsData
-	ed.SetRecords(records)
+	// For now, put all records in the security_and_other_events field
+	// TODO: Categorize events by type and populate the appropriate fields
+	ed.SetSecurityAndOtherEvents(records)
 	return &ed, nil
 }
 
@@ -176,7 +178,22 @@ func unmarshalEventRecord(data []byte) (*cardv1.EventsData_Record, error) {
 //	}
 func appendEventsData(dst []byte, data *cardv1.EventsData) ([]byte, error) {
 	var err error
-	for _, r := range data.GetRecords() {
+
+	// Collect records from all event type fields
+	var allRecords []*cardv1.EventsData_Record
+	allRecords = append(allRecords, data.GetInsertionOfNonValidCardEvents()...)
+	allRecords = append(allRecords, data.GetCardConflictEvents()...)
+	allRecords = append(allRecords, data.GetTimeOverlapEvents()...)
+	allRecords = append(allRecords, data.GetDrivingWithoutAppropriateCardEvents()...)
+	allRecords = append(allRecords, data.GetCardInsertionWhileDrivingEvents()...)
+	allRecords = append(allRecords, data.GetLastCardSessionNotCorrectlyClosedEvents()...)
+	allRecords = append(allRecords, data.GetOverSpeedingEvents()...)
+	allRecords = append(allRecords, data.GetPowerSupplyInterruptionEvents()...)
+	allRecords = append(allRecords, data.GetMotionDataErrorEvents()...)
+	allRecords = append(allRecords, data.GetVehicleMotionConflictEvents()...)
+	allRecords = append(allRecords, data.GetSecurityAndOtherEvents()...)
+
+	for _, r := range allRecords {
 		dst, err = appendEventRecord(dst, r)
 		if err != nil {
 			return nil, err

@@ -20,14 +20,12 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// Represents data from EF_VU_Configuration.
-//
-// This file contains configuration data stored on the card by a Vehicle Unit.
-// The specific structure of this data is not standardized in the main regulation
-// and may be manufacturer-specific. Therefore, it is represented as raw bytes.
+// Represents data from the conditional EF_VU_Configuration file on Gen2 cards.
+// The content of this file is not fully defined in the public regulations
+// and may be subject to manufacturer-specific implementations.
 type VuConfiguration struct {
 	state                  protoimpl.MessageState `protogen:"opaque.v1"`
-	xxx_hidden_Data        []byte                 `protobuf:"bytes,1,opt,name=data"`
+	xxx_hidden_RawData     []byte                 `protobuf:"bytes,1,opt,name=raw_data,json=rawData"`
 	XXX_raceDetectHookData protoimpl.RaceDetectHookData
 	XXX_presence           [1]uint32
 	unknownFields          protoimpl.UnknownFields
@@ -59,47 +57,47 @@ func (x *VuConfiguration) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-func (x *VuConfiguration) GetData() []byte {
+func (x *VuConfiguration) GetRawData() []byte {
 	if x != nil {
-		return x.xxx_hidden_Data
+		return x.xxx_hidden_RawData
 	}
 	return nil
 }
 
-func (x *VuConfiguration) SetData(v []byte) {
+func (x *VuConfiguration) SetRawData(v []byte) {
 	if v == nil {
 		v = []byte{}
 	}
-	x.xxx_hidden_Data = v
+	x.xxx_hidden_RawData = v
 	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 1)
 }
 
-func (x *VuConfiguration) HasData() bool {
+func (x *VuConfiguration) HasRawData() bool {
 	if x == nil {
 		return false
 	}
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 0)
 }
 
-func (x *VuConfiguration) ClearData() {
+func (x *VuConfiguration) ClearRawData() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 0)
-	x.xxx_hidden_Data = nil
+	x.xxx_hidden_RawData = nil
 }
 
 type VuConfiguration_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
-	// The raw configuration data from the EF_VU_Configuration file.
-	Data []byte
+	// Raw data of the file, as its structure is not standardized.
+	RawData []byte
 }
 
 func (b0 VuConfiguration_builder) Build() *VuConfiguration {
 	m0 := &VuConfiguration{}
 	b, x := &b0, m0
 	_, _ = b, x
-	if b.Data != nil {
+	if b.RawData != nil {
 		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 1)
-		x.xxx_hidden_Data = b.Data
+		x.xxx_hidden_RawData = b.RawData
 	}
 	return m0
 }
@@ -108,9 +106,9 @@ var File_wayplatform_connect_tachograph_card_v1_vu_configuration_proto protorefl
 
 const file_wayplatform_connect_tachograph_card_v1_vu_configuration_proto_rawDesc = "" +
 	"\n" +
-	"=wayplatform/connect/tachograph/card/v1/vu_configuration.proto\x12&wayplatform.connect.tachograph.card.v1\"%\n" +
-	"\x0fVuConfiguration\x12\x12\n" +
-	"\x04data\x18\x01 \x01(\fR\x04dataB\xe1\x02\n" +
+	"=wayplatform/connect/tachograph/card/v1/vu_configuration.proto\x12&wayplatform.connect.tachograph.card.v1\",\n" +
+	"\x0fVuConfiguration\x12\x19\n" +
+	"\braw_data\x18\x01 \x01(\fR\arawDataB\xe1\x02\n" +
 	"*com.wayplatform.connect.tachograph.card.v1B\x14VuConfigurationProtoP\x01Z`github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1;cardv1\xa2\x02\x04WCTC\xaa\x02&Wayplatform.Connect.Tachograph.Card.V1\xca\x02&Wayplatform\\Connect\\Tachograph\\Card\\V1\xe2\x022Wayplatform\\Connect\\Tachograph\\Card\\V1\\GPBMetadata\xea\x02*Wayplatform::Connect::Tachograph::Card::V1b\beditionsp\xe8\a"
 
 var file_wayplatform_connect_tachograph_card_v1_vu_configuration_proto_msgTypes = make([]protoimpl.MessageInfo, 1)

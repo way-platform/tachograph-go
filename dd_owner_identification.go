@@ -40,7 +40,7 @@ func unmarshalOwnerIdentification(data []byte) (*ddv1.OwnerIdentification, error
 	if err != nil {
 		return nil, fmt.Errorf("failed to parse owner identification number: %w", err)
 	}
-	ownerID.SetIdentificationNumber(identificationNumber)
+	ownerID.SetOwnerIdentification(identificationNumber)
 
 	// Parse card consecutive index (1 byte)
 	consecutiveIndex, err := unmarshalIA5StringValue(data[13:14])
@@ -91,7 +91,7 @@ func appendOwnerIdentification(dst []byte, ownerID *ddv1.OwnerIdentification) ([
 	}
 
 	// Append owner identification number (13 bytes)
-	identificationNumber := ownerID.GetIdentificationNumber()
+	identificationNumber := ownerID.GetOwnerIdentification()
 	var err error
 	if identificationNumber != nil {
 		dst, err = appendString(dst, identificationNumber.GetDecoded(), 13)

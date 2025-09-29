@@ -82,7 +82,7 @@ func unmarshalIdentification(data []byte) (*cardv1.Identification, error) {
 		if replacementByte >= '0' && replacementByte <= '9' && renewalByte >= '0' && renewalByte <= '9' {
 			// This looks like a driver card format
 			driverID := &ddv1.DriverIdentification{}
-			driverID.SetIdentificationNumber(driverIdentification)
+			driverID.SetDriverIdentificationNumber(driverIdentification)
 			cardId.SetDriverIdentification(driverID)
 			identification.SetCardType(cardv1.CardType_DRIVER_CARD)
 		} else {
@@ -94,7 +94,7 @@ func unmarshalIdentification(data []byte) (*cardv1.Identification, error) {
 			if err != nil {
 				return nil, fmt.Errorf("failed to read owner identification: %w", err)
 			}
-			ownerID.SetIdentificationNumber(ownerIdentification)
+			ownerID.SetOwnerIdentification(ownerIdentification)
 
 			// Consecutive index (1 byte)
 			consecutiveIndex, err := unmarshalIA5StringValue(cardNumberData[13:14])
@@ -129,7 +129,7 @@ func unmarshalIdentification(data []byte) (*cardv1.Identification, error) {
 		if err != nil {
 			return nil, fmt.Errorf("failed to read owner identification: %w", err)
 		}
-		ownerID.SetIdentificationNumber(ownerIdentification)
+		ownerID.SetOwnerIdentification(ownerIdentification)
 
 		// Consecutive index (1 byte)
 		consecutiveIndex, err := unmarshalIA5StringValue(cardNumberData[13:14])
@@ -285,7 +285,7 @@ func appendCardIdentification(dst []byte, id *cardv1.Identification_Card) ([]byt
 	cardNumberBytes := make([]byte, 16)
 	if driverID := id.GetDriverIdentification(); driverID != nil {
 		// Driver card: 14 bytes identification + 1 byte replacement + 1 byte renewal
-		identification := driverID.GetIdentificationNumber()
+		identification := driverID.GetDriverIdentificationNumber()
 		if identification != nil {
 			// Pad or truncate to exactly 14 bytes
 			identStr := identification.GetDecoded()
@@ -304,7 +304,7 @@ func appendCardIdentification(dst []byte, id *cardv1.Identification_Card) ([]byt
 		cardNumberBytes[15] = 0 // Default renewal index
 	} else if ownerID := id.GetOwnerIdentification(); ownerID != nil {
 		// Other cards: 13 bytes identification + 1 byte consecutive + 1 byte replacement + 1 byte renewal
-		identification := ownerID.GetIdentificationNumber()
+		identification := ownerID.GetOwnerIdentification()
 		if identification != nil {
 			// Pad or truncate to exactly 13 bytes
 			identStr := identification.GetDecoded()

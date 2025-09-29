@@ -76,7 +76,9 @@ func unmarshalFaultsData(data []byte) (*cardv1.FaultsData, error) {
 	}
 
 	var fd cardv1.FaultsData
-	fd.SetRecords(records)
+	// For now, put all records in the card_faults field
+	// TODO: Categorize faults by type and populate the appropriate fields (vehicle_unit_faults vs card_faults)
+	fd.SetCardFaults(records)
 	return &fd, nil
 }
 
@@ -177,7 +179,13 @@ func unmarshalFaultRecord(data []byte, rec *cardv1.FaultsData_Record) error {
 //	}
 func appendFaultsData(dst []byte, data *cardv1.FaultsData) ([]byte, error) {
 	var err error
-	for _, r := range data.GetRecords() {
+
+	// Collect records from both fault type fields
+	var allRecords []*cardv1.FaultsData_Record
+	allRecords = append(allRecords, data.GetVehicleUnitFaults()...)
+	allRecords = append(allRecords, data.GetCardFaults()...)
+
+	for _, r := range allRecords {
 		dst, err = appendFaultRecord(dst, r)
 		if err != nil {
 			return nil, err

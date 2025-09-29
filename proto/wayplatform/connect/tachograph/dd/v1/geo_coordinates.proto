@@ -11,14 +11,14 @@ package wayplatform.connect.tachograph.dd.v1;
 //         longitude INTEGER(-180*3600*1000+1..180*3600*1000)
 //     }
 message GeoCoordinates {
-  // Latitude in millionths of a degree.
+  // Latitude in milliarcseconds.
   //
   // ASN.1 Definition:
   //
   //     latitude INTEGER(-90*3600*1000..90*3600*1000)
   sint32 latitude = 1;
 
-  // Longitude in millionths of a degree.
+  // Longitude in milliarcseconds.
   //
   // ASN.1 Definition:
   //

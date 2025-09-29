@@ -34,7 +34,7 @@ func unmarshalDriverIdentification(data []byte) (*ddv1.DriverIdentification, err
 	if err != nil {
 		return nil, fmt.Errorf("failed to parse driver identification number: %w", err)
 	}
-	driverID.SetIdentificationNumber(identificationNumber)
+	driverID.SetDriverIdentificationNumber(identificationNumber)
 
 	return driverID, nil
 }
@@ -58,7 +58,7 @@ func appendDriverIdentification(dst []byte, driverID *ddv1.DriverIdentification)
 	}
 
 	// Append driver identification number (14 bytes)
-	identificationNumber := driverID.GetIdentificationNumber()
+	identificationNumber := driverID.GetDriverIdentificationNumber()
 	if identificationNumber != nil {
 		return appendString(dst, identificationNumber.GetDecoded(), 14)
 	}

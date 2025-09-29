@@ -5,7 +5,8 @@ package wayplatform.connect.tachograph.dd.v1;
 import "wayplatform/connect/tachograph/dd/v1/annotations.proto";
 
 // DrivingStatus indicates single driver or crew.
-// See Data Dictionary, Section 2.1.
+// See Annex IC, Section 3.5, "Monitoring driving status".
+// The bit encoding is defined within the `ActivityChangeInfo` data type (DD 2.1).
 enum DrivingStatus {
   DRIVING_STATUS_UNSPECIFIED = 0;
   DRIVING_STATUS_UNRECOGNIZED = 1;

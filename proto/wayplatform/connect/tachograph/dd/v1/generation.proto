@@ -3,13 +3,25 @@ edition = "2023";
 package wayplatform.connect.tachograph.dd.v1;
 
 import "google/protobuf/descriptor.proto";
-
-enum Generation {
-  GENERATION_UNSPECIFIED = 0;
-  GENERATION_1 = 1;
-  GENERATION_2 = 2;
-}
+import "wayplatform/connect/tachograph/dd/v1/annotations.proto";
 
 extend google.protobuf.EnumValueOptions {
   Generation generation = 50304;
+}
+
+// Represents the generation of the tachograph card or vehicle unit.
+//
+// See Data Dictionary, Section 2.75.
+//
+// ASN.1 Definition:
+//
+//     Generation ::= INTEGER (0..255)
+//
+//     Value assignment:
+//         - 01H: Generation 1
+//         - 02H: Generation 2
+enum Generation {
+  GENERATION_UNSPECIFIED = 0;
+  GENERATION_1 = 1 [(protocol_enum_value) = 1];
+  GENERATION_2 = 2 [(protocol_enum_value) = 2];
 }

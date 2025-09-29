@@ -131,9 +131,9 @@ func unmarshalPlaceRecord(data []byte) (*cardv1.Places_Record, error) {
 		}, nil)
 	offset++
 
-	// Read daily work period region (2 bytes)
-	region := binary.BigEndian.Uint16(data[offset : offset+2])
-	record.SetDailyWorkPeriodRegion(int32(region))
+	// Read daily work period region (2 bytes) - now stored as bytes
+	regionBytes := data[offset : offset+2]
+	record.SetDailyWorkPeriodRegion(regionBytes)
 	offset += 2
 
 	// Read vehicle odometer (3 bytes)
@@ -141,9 +141,8 @@ func unmarshalPlaceRecord(data []byte) (*cardv1.Places_Record, error) {
 	record.SetVehicleOdometerKm(int32(binary.BigEndian.Uint32(append([]byte{0}, odometerBytes...))))
 	offset += 3
 
-	// Read reserved byte (1 byte) and store it for roundtrip accuracy
-	reserved := data[offset]
-	record.SetReservedByte(int32(reserved))
+	// Skip reserved byte (1 byte) - this field was removed from the proto
+	// reserved := data[offset]
 
 	return record, nil
 }
@@ -198,8 +197,14 @@ func appendPlaceRecord(dst []byte, rec *cardv1.Places_Record) ([]byte, error) {
 	countryProtocol := getProtocolValueFromEnum(rec.GetDailyWorkPeriodCountry(), 0)
 	dst = append(dst, byte(countryProtocol)) // 1 byte
 
-	dst = binary.BigEndian.AppendUint16(dst, uint16(rec.GetDailyWorkPeriodRegion())) // 2 bytes
-	dst = appendOdometer(dst, uint32(rec.GetVehicleOdometerKm()))                    // 3 bytes
-	dst = append(dst, byte(rec.GetReservedByte()))                                   // 1 byte reserved (preserved)
+	// Append region bytes directly (now stored as bytes)
+	regionBytes := rec.GetDailyWorkPeriodRegion()
+	if len(regionBytes) >= 2 {
+		dst = append(dst, regionBytes[:2]...) // 2 bytes
+	} else {
+		dst = append(dst, 0, 0) // Default if not set
+	}
+	dst = appendOdometer(dst, uint32(rec.GetVehicleOdometerKm())) // 3 bytes
+	dst = append(dst, 0)                                          // 1 byte reserved (always 0)
 	return dst, nil
 }

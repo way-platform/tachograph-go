@@ -3,58 +3,101 @@ edition = "2023";
 package wayplatform.connect.tachograph.card.v1;
 
 import "wayplatform/connect/tachograph/card/v1/card_type.proto";
-import "wayplatform/connect/tachograph/card/v1/calibration_add_data.proto";
 
 // Represents data from EF_Application_Identification_V2, which contains
 // additional capacity information for Gen2v2 cards.
-//
-// The structure of this EF depends on the type of card. This message uses a
-// tagged union pattern to represent this, where the `card_type` field indicates
-// which of the nested messages is populated.
 message ApplicationIdentificationV2 {
   // The type of card this data is from.
   CardType card_type = 1;
 
   // Data for a driver card. Populated if `card_type` is `DRIVER_CARD`.
-  // See Data Dictionary, Section 2.61a, `DriverCardApplicationIdentificationV2`.
+  //
+  // See Data Dictionary, Section 2.61a.
+  //
+  // ASN.1 Definition:
+  //
+  //     DriverCardApplicationIdentificationV2 ::= SEQUENCE {
+  //         lengthOfFollowingData LengthOfFollowingData,
+  //         noOfBorderCrossingRecords NoOfBorderCrossingRecords,
+  //         noOfLoadUnloadRecords NoOfLoadUnloadRecords,
+  //         noOfLoadTypeEntryRecords NoOfLoadTypeEntryRecords,
+  //         vuConfigurationLengthRange VuConfigurationLengthRange
+  //     }
   message Driver {
+    // The number of bytes following in the record.
+    // See Data Dictionary, Section 2.89a, `LengthOfFollowingData`.
+    int32 length_of_following_data = 1;
     // The number of border crossing records the card can store.
-    int32 border_crossing_records_count = 1;
+    int32 border_crossing_records_count = 2;
     // The number of load/unload records the card can store.
-    int32 load_unload_records_count = 2;
+    int32 load_unload_records_count = 3;
     // The number of load type entry records the card can store.
-    int32 load_type_entry_records_count = 3;
+    int32 load_type_entry_records_count = 4;
     // The number of bytes available to store VU configurations.
-    int32 vu_configuration_length_range = 4;
+    int32 vu_configuration_length_range = 5;
   }
 
   // Data for a workshop card. Populated if `card_type` is `WORKSHOP_CARD`.
-  // See Data Dictionary, Section 2.234a, `WorkshopCardApplicationIdentificationV2`.
+  //
+  // See Data Dictionary, Section 2.234a.
+  //
+  // ASN.1 Definition:
+  //
+  //     WorkshopCardApplicationIdentificationV2 ::= SEQUENCE {
+  //         lengthOfFollowingData LengthOfFollowingData,
+  //         noOfBorderCrossingRecords NoOfBorderCrossingRecords,
+  //         noOfLoadUnloadRecords NoOfLoadUnloadRecords,
+  //         noOfLoadTypeEntryRecords NoOfLoadTypeEntryRecords,
+  //         vuConfigurationLengthRange VuConfigurationLengthRange
+  //     }
   message Workshop {
+    // The number of bytes following in the record.
+    // See Data Dictionary, Section 2.89a, `LengthOfFollowingData`.
+    int32 length_of_following_data = 1;
     // The number of border crossing records the card can store.
-    int32 border_crossing_records_count = 1;
+    int32 border_crossing_records_count = 2;
     // The number of load/unload records the card can store.
-    int32 load_unload_records_count = 2;
+    int32 load_unload_records_count = 3;
     // The number of load type entry records the card can store.
-    int32 load_type_entry_records_count = 3;
+    int32 load_type_entry_records_count = 4;
     // The number of bytes available to store VU configurations.
-    int32 vu_configuration_length_range = 4;
-    // Additional calibration data for workshop cards.
-    CalibrationAddData workshop_card_calibration_add_data = 5;
+    int32 vu_configuration_length_range = 5;
   }
 
   // Data for a company card. Populated if `card_type` is `COMPANY_CARD`.
-  // See Data Dictionary, Section 2.48a, `CompanyCardApplicationIdentificationV2`.
+  //
+  // See Data Dictionary, Section 2.48a.
+  //
+  // ASN.1 Definition:
+  //
+  //     CompanyCardApplicationIdentificationV2 ::= SEQUENCE {
+  //         lengthOfFollowingData LengthOfFollowingData,
+  //         vuConfigurationLengthRange VuConfigurationLengthRange
+  //     }
   message Company {
+    // The number of bytes following in the record.
+    // See Data Dictionary, Section 2.89a, `LengthOfFollowingData`.
+    int32 length_of_following_data = 1;
     // The number of bytes available to store VU configurations.
-    int32 vu_configuration_length_range = 1;
+    int32 vu_configuration_length_range = 2;
   }
 
   // Data for a control card. Populated if `card_type` is `CONTROL_CARD`.
-  // See Data Dictionary, Section 2.50a, `ControlCardApplicationIdentificationV2`.
+  //
+  // See Data Dictionary, Section 2.50a.
+  //
+  // ASN.1 Definition:
+  //
+  //     ControlCardApplicationIdentificationV2 ::= SEQUENCE {
+  //         lengthOfFollowingData LengthOfFollowingData,
+  //         vuConfigurationLengthRange VuConfigurationLengthRange
+  //     }
   message Control {
+    // The number of bytes following in the record.
+    // See Data Dictionary, Section 2.89a, `LengthOfFollowingData`.
+    int32 length_of_following_data = 1;
     // The number of bytes available to store VU configurations.
-    int32 vu_configuration_length_range = 1;
+    int32 vu_configuration_length_range = 2;
   }
 
   // Populated if `card_type` is `DRIVER_CARD`.
@@ -66,11 +109,22 @@ message ApplicationIdentificationV2 {
   // Populated if `card_type` is `CONTROL_CARD`.
   Control control = 5;
 
-  // Digital signature for the EF_Application_Identification_V2 file content.
+  // Signature data from the following file block, if tagged as a signature for
+  // this EF according to the card file format specification (Appendix 2).
   //
   // See Data Dictionary, Section 2.149, `Signature`.
-  // ASN.1 Specification:
   //
-  //     Signature ::= OCTET STRING (SIZE(128 for Gen1))
+  // ASN.1 Definition (Gen1):
+  //
+  //     Signature ::= OCTET STRING (SIZE(128))
+  //
+  // ASN.1 Definition (Gen2):
+  //
+  //     Signature ::= OCTET STRING (variable size, depends on elliptic curve)
+  //
+  // Gen2 uses ECDSA signatures with variable lengths based on the curve:
+  // - 256-bit curves: ~64 bytes
+  // - 384-bit curves: ~96 bytes
+  // - 512/521-bit curves: ~128-132 bytes
   bytes signature = 6;
 }

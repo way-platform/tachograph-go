@@ -2,12 +2,10 @@ edition = "2023";
 
 package wayplatform.connect.tachograph.card.v1;
 
-// Represents data from EF_VU_Configuration.
-//
-// This file contains configuration data stored on the card by a Vehicle Unit.
-// The specific structure of this data is not standardized in the main regulation
-// and may be manufacturer-specific. Therefore, it is represented as raw bytes.
+// Represents data from the conditional EF_VU_Configuration file on Gen2 cards.
+// The content of this file is not fully defined in the public regulations
+// and may be subject to manufacturer-specific implementations.
 message VuConfiguration {
-  // The raw configuration data from the EF_VU_Configuration file.
-  bytes data = 1;
+  // Raw data of the file, as its structure is not standardized.
+  bytes raw_data = 1;
 }

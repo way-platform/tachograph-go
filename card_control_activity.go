@@ -60,8 +60,10 @@ func unmarshalCardControlActivityData(data []byte) (*cardv1.ControlActivityData,
 	target.SetControlTime(readTimeReal(bytes.NewReader(data[offset : offset+4])))
 	offset += 4
 
-	// Read control card number (18 bytes) - this should be parsed as a proper FullCardNumber
+	// Read control card number (18 bytes) - this should be parsed as a proper FullCardNumberAndGeneration
 	// For now, create a basic structure - this needs proper protocol parsing
+	fullCardNumberAndGeneration := &ddv1.FullCardNumberAndGeneration{}
+
 	fullCardNumber := &ddv1.FullCardNumber{}
 	fullCardNumber.SetCardType(ddv1.EquipmentType_DRIVER_CARD)
 
@@ -77,9 +79,15 @@ func unmarshalCardControlActivityData(data []byte) (*cardv1.ControlActivityData,
 
 	// Create driver identification with the card number
 	driverID := &ddv1.DriverIdentification{}
-	driverID.SetIdentificationNumber(cardNumberStr)
+	driverID.SetDriverIdentificationNumber(cardNumberStr)
 	fullCardNumber.SetDriverIdentification(driverID)
-	target.SetControlCardNumber(fullCardNumber)
+
+	// Set the full card number in the generation wrapper
+	fullCardNumberAndGeneration.SetFullCardNumber(fullCardNumber)
+	// Default to Generation 1 for now - this should be determined from context
+	fullCardNumberAndGeneration.SetGeneration(ddv1.Generation_GENERATION_1)
+
+	target.SetControlCardNumber(fullCardNumberAndGeneration)
 
 	// Read vehicle registration (15 bytes: 1 byte nation + 14 bytes number)
 	if offset+1 > len(data) {
@@ -187,7 +195,7 @@ func appendCardControlActivityData(data []byte, controlData *cardv1.ControlActiv
 
 	var err error
 	// Control card number (18 bytes)
-	data, err = appendFullCardNumberAsString(data, controlData.GetControlCardNumber(), 18)
+	data, err = appendFullCardNumberAsString(data, controlData.GetControlCardNumber().GetFullCardNumber(), 18)
 	if err != nil {
 		return nil, err
 	}

@@ -24,11 +24,16 @@ const (
 // renamed to `Date` for simplicity. This is a BCD-encoded date representation
 // of the format `yyyymmdd`.
 //
+// This message preserves the original raw byte representation for round-trip
+// data fidelity while also providing convenient decoded integer fields for ease
+// of use by consumers.
+//
 // ASN.1 Definition:
 //
 //	Datef ::= OCTET STRING (SIZE(4))
 type Date struct {
 	state                  protoimpl.MessageState `protogen:"opaque.v1"`
+	xxx_hidden_Encoded     []byte                 `protobuf:"bytes,4,opt,name=encoded"`
 	xxx_hidden_Year        int32                  `protobuf:"varint,1,opt,name=year"`
 	xxx_hidden_Month       int32                  `protobuf:"varint,2,opt,name=month"`
 	xxx_hidden_Day         int32                  `protobuf:"varint,3,opt,name=day"`
@@ -63,6 +68,13 @@ func (x *Date) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
+func (x *Date) GetEncoded() []byte {
+	if x != nil {
+		return x.xxx_hidden_Encoded
+	}
+	return nil
+}
+
 func (x *Date) GetYear() int32 {
 	if x != nil {
 		return x.xxx_hidden_Year
@@ -84,71 +96,95 @@ func (x *Date) GetDay() int32 {
 	return 0
 }
 
+func (x *Date) SetEncoded(v []byte) {
+	if v == nil {
+		v = []byte{}
+	}
+	x.xxx_hidden_Encoded = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 4)
+}
+
 func (x *Date) SetYear(v int32) {
 	x.xxx_hidden_Year = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 3)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 4)
 }
 
 func (x *Date) SetMonth(v int32) {
 	x.xxx_hidden_Month = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 3)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 4)
 }
 
 func (x *Date) SetDay(v int32) {
 	x.xxx_hidden_Day = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 3)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 3, 4)
 }
 
-func (x *Date) HasYear() bool {
+func (x *Date) HasEncoded() bool {
 	if x == nil {
 		return false
 	}
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 0)
 }
 
-func (x *Date) HasMonth() bool {
+func (x *Date) HasYear() bool {
 	if x == nil {
 		return false
 	}
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 1)
 }
 
-func (x *Date) HasDay() bool {
+func (x *Date) HasMonth() bool {
 	if x == nil {
 		return false
 	}
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 2)
 }
 
-func (x *Date) ClearYear() {
+func (x *Date) HasDay() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 3)
+}
+
+func (x *Date) ClearEncoded() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 0)
+	x.xxx_hidden_Encoded = nil
+}
+
+func (x *Date) ClearYear() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 1)
 	x.xxx_hidden_Year = 0
 }
 
 func (x *Date) ClearMonth() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 1)
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 2)
 	x.xxx_hidden_Month = 0
 }
 
 func (x *Date) ClearDay() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 2)
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 3)
 	x.xxx_hidden_Day = 0
 }
 
 type Date_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
+	// The raw, original BCD-encoded bytes for the date (`yyyymmdd`).
+	// This field is the source of truth and should always be used when marshalling
+	// the data back to its binary format to ensure perfect fidelity.
+	Encoded []byte
 	// The decoded year.
-	// Decoded from the first two bytes of the BCD octet string.
-	// Example: a value of 2023 is encoded as 0x20 0x23.
+	// This field is provided for consumer convenience and should be treated as a
+	// read-only, derived value.
 	Year *int32
 	// The decoded month.
-	// Decoded from the third byte of the BCD octet string.
-	// Example: a value of 12 (December) is encoded as 0x12.
+	// This field is provided for consumer convenience and should be treated as a
+	// read-only, derived value.
 	Month *int32
 	// The decoded day.
-	// Decoded from the fourth byte of the BCD octet string.
-	// Example: a value of 31 is encoded as 0x31.
+	// This field is provided for consumer convenience and should be treated as a
+	// read-only, derived value.
 	Day *int32
 }
 
@@ -156,16 +192,20 @@ func (b0 Date_builder) Build() *Date {
 	m0 := &Date{}
 	b, x := &b0, m0
 	_, _ = b, x
+	if b.Encoded != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 4)
+		x.xxx_hidden_Encoded = b.Encoded
+	}
 	if b.Year != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 3)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 4)
 		x.xxx_hidden_Year = *b.Year
 	}
 	if b.Month != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 3)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 4)
 		x.xxx_hidden_Month = *b.Month
 	}
 	if b.Day != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 3)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 3, 4)
 		x.xxx_hidden_Day = *b.Day
 	}
 	return m0
@@ -175,8 +215,9 @@ var File_wayplatform_connect_tachograph_dd_v1_date_proto protoreflect.FileDescri
 
 const file_wayplatform_connect_tachograph_dd_v1_date_proto_rawDesc = "" +
 	"\n" +
-	"/wayplatform/connect/tachograph/dd/v1/date.proto\x12$wayplatform.connect.tachograph.dd.v1\"B\n" +
-	"\x04Date\x12\x12\n" +
+	"/wayplatform/connect/tachograph/dd/v1/date.proto\x12$wayplatform.connect.tachograph.dd.v1\"\\\n" +
+	"\x04Date\x12\x18\n" +
+	"\aencoded\x18\x04 \x01(\fR\aencoded\x12\x12\n" +
 	"\x04year\x18\x01 \x01(\x05R\x04year\x12\x14\n" +
 	"\x05month\x18\x02 \x01(\x05R\x05month\x12\x10\n" +
 	"\x03day\x18\x03 \x01(\x05R\x03dayB\xc8\x02\n" +

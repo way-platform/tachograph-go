@@ -3,6 +3,7 @@ edition = "2023";
 package wayplatform.connect.tachograph.dd.v1;
 
 import "wayplatform/connect/tachograph/dd/v1/equipment_type.proto";
+import "wayplatform/connect/tachograph/dd/v1/month_year.proto";
 
 // Corresponds to the `ExtendedSerialNumber` data type in the Data Dictionary, Section 2.72.
 //
@@ -22,21 +23,12 @@ message ExtendedSerialNumber {
   //     serialNumber INTEGER(0..2^32-1)
   int64 serial_number = 1;
 
-  // The month of manufacturing (1-12).
-  // Parsed from the BCD-encoded `monthYear` field.
+  // The month and year of manufacturing.
   //
   // Source ASN.1 Specification:
   //
   //     monthYear BCDString(SIZE(2))
-  int32 month = 2;
-
-  // The year of manufacturing (e.g., 2023).
-  // Parsed from the BCD-encoded `monthYear` field.
-  //
-  // Source ASN.1 Specification:
-  //
-  //     monthYear BCDString(SIZE(2))
-  int32 year = 3;
+  MonthYear month_year = 2;
 
   // The type of equipment.
   //

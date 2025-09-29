@@ -425,21 +425,21 @@ func (b0 Activities_builder) Build() *Activities {
 //
 // For Gen2, `fullCardNumber` is replaced by `fullCardNumberAndGeneration`.
 type Activities_CardIWRecord struct {
-	state                             protoimpl.MessageState                       `protogen:"opaque.v1"`
-	xxx_hidden_CardHolderName         *v1.HolderName                               `protobuf:"bytes,1,opt,name=card_holder_name,json=cardHolderName"`
-	xxx_hidden_FullCardNumber         *v1.FullCardNumber                           `protobuf:"bytes,2,opt,name=full_card_number,json=fullCardNumber"`
-	xxx_hidden_CardExpiryDate         *v1.Date                                     `protobuf:"bytes,3,opt,name=card_expiry_date,json=cardExpiryDate"`
-	xxx_hidden_CardInsertionTime      *timestamppb.Timestamp                       `protobuf:"bytes,4,opt,name=card_insertion_time,json=cardInsertionTime"`
-	xxx_hidden_OdometerAtInsertionKm  int32                                        `protobuf:"varint,5,opt,name=odometer_at_insertion_km,json=odometerAtInsertionKm"`
-	xxx_hidden_CardSlotNumber         v1.CardSlotNumber                            `protobuf:"varint,6,opt,name=card_slot_number,json=cardSlotNumber,enum=wayplatform.connect.tachograph.dd.v1.CardSlotNumber"`
-	xxx_hidden_CardWithdrawalTime     *timestamppb.Timestamp                       `protobuf:"bytes,8,opt,name=card_withdrawal_time,json=cardWithdrawalTime"`
-	xxx_hidden_OdometerAtWithdrawalKm int32                                        `protobuf:"varint,9,opt,name=odometer_at_withdrawal_km,json=odometerAtWithdrawalKm"`
-	xxx_hidden_PreviousVehicleInfo    *Activities_CardIWRecord_PreviousVehicleInfo `protobuf:"bytes,10,opt,name=previous_vehicle_info,json=previousVehicleInfo"`
-	xxx_hidden_ManualInputFlag        bool                                         `protobuf:"varint,11,opt,name=manual_input_flag,json=manualInputFlag"`
-	XXX_raceDetectHookData            protoimpl.RaceDetectHookData
-	XXX_presence                      [1]uint32
-	unknownFields                     protoimpl.UnknownFields
-	sizeCache                         protoimpl.SizeCache
+	state                                  protoimpl.MessageState                       `protogen:"opaque.v1"`
+	xxx_hidden_CardHolderName              *v1.HolderName                               `protobuf:"bytes,1,opt,name=card_holder_name,json=cardHolderName"`
+	xxx_hidden_FullCardNumberAndGeneration *v1.FullCardNumberAndGeneration              `protobuf:"bytes,2,opt,name=full_card_number_and_generation,json=fullCardNumberAndGeneration"`
+	xxx_hidden_CardExpiryDate              *v1.Date                                     `protobuf:"bytes,3,opt,name=card_expiry_date,json=cardExpiryDate"`
+	xxx_hidden_CardInsertionTime           *timestamppb.Timestamp                       `protobuf:"bytes,4,opt,name=card_insertion_time,json=cardInsertionTime"`
+	xxx_hidden_OdometerAtInsertionKm       int32                                        `protobuf:"varint,5,opt,name=odometer_at_insertion_km,json=odometerAtInsertionKm"`
+	xxx_hidden_CardSlotNumber              v1.CardSlotNumber                            `protobuf:"varint,6,opt,name=card_slot_number,json=cardSlotNumber,enum=wayplatform.connect.tachograph.dd.v1.CardSlotNumber"`
+	xxx_hidden_CardWithdrawalTime          *timestamppb.Timestamp                       `protobuf:"bytes,8,opt,name=card_withdrawal_time,json=cardWithdrawalTime"`
+	xxx_hidden_OdometerAtWithdrawalKm      int32                                        `protobuf:"varint,9,opt,name=odometer_at_withdrawal_km,json=odometerAtWithdrawalKm"`
+	xxx_hidden_PreviousVehicleInfo         *Activities_CardIWRecord_PreviousVehicleInfo `protobuf:"bytes,10,opt,name=previous_vehicle_info,json=previousVehicleInfo"`
+	xxx_hidden_ManualInputFlag             bool                                         `protobuf:"varint,11,opt,name=manual_input_flag,json=manualInputFlag"`
+	XXX_raceDetectHookData                 protoimpl.RaceDetectHookData
+	XXX_presence                           [1]uint32
+	unknownFields                          protoimpl.UnknownFields
+	sizeCache                              protoimpl.SizeCache
 }
 
 func (x *Activities_CardIWRecord) Reset() {
@@ -474,9 +474,9 @@ func (x *Activities_CardIWRecord) GetCardHolderName() *v1.HolderName {
 	return nil
 }
 
-func (x *Activities_CardIWRecord) GetFullCardNumber() *v1.FullCardNumber {
+func (x *Activities_CardIWRecord) GetFullCardNumberAndGeneration() *v1.FullCardNumberAndGeneration {
 	if x != nil {
-		return x.xxx_hidden_FullCardNumber
+		return x.xxx_hidden_FullCardNumberAndGeneration
 	}
 	return nil
 }
@@ -543,8 +543,8 @@ func (x *Activities_CardIWRecord) SetCardHolderName(v *v1.HolderName) {
 	x.xxx_hidden_CardHolderName = v
 }
 
-func (x *Activities_CardIWRecord) SetFullCardNumber(v *v1.FullCardNumber) {
-	x.xxx_hidden_FullCardNumber = v
+func (x *Activities_CardIWRecord) SetFullCardNumberAndGeneration(v *v1.FullCardNumberAndGeneration) {
+	x.xxx_hidden_FullCardNumberAndGeneration = v
 }
 
 func (x *Activities_CardIWRecord) SetCardExpiryDate(v *v1.Date) {
@@ -590,11 +590,11 @@ func (x *Activities_CardIWRecord) HasCardHolderName() bool {
 	return x.xxx_hidden_CardHolderName != nil
 }
 
-func (x *Activities_CardIWRecord) HasFullCardNumber() bool {
+func (x *Activities_CardIWRecord) HasFullCardNumberAndGeneration() bool {
 	if x == nil {
 		return false
 	}
-	return x.xxx_hidden_FullCardNumber != nil
+	return x.xxx_hidden_FullCardNumberAndGeneration != nil
 }
 
 func (x *Activities_CardIWRecord) HasCardExpiryDate() bool {
@@ -657,8 +657,8 @@ func (x *Activities_CardIWRecord) ClearCardHolderName() {
 	x.xxx_hidden_CardHolderName = nil
 }
 
-func (x *Activities_CardIWRecord) ClearFullCardNumber() {
-	x.xxx_hidden_FullCardNumber = nil
+func (x *Activities_CardIWRecord) ClearFullCardNumberAndGeneration() {
+	x.xxx_hidden_FullCardNumberAndGeneration = nil
 }
 
 func (x *Activities_CardIWRecord) ClearCardExpiryDate() {
@@ -705,9 +705,11 @@ type Activities_CardIWRecord_builder struct {
 	// See Data Dictionary, Section 2.83, `HolderName`.
 	CardHolderName *v1.HolderName
 	// The full card number of the inserted card.
+	// For Gen2 records, this will include the card generation.
+	// For Gen1 records, the `generation` field within this message will be unset.
 	//
 	// See Data Dictionary, Section 2.73, `FullCardNumber` and 2.74, `FullCardNumberAndGeneration`.
-	FullCardNumber *v1.FullCardNumber
+	FullCardNumberAndGeneration *v1.FullCardNumberAndGeneration
 	// The expiry date of the card.
 	//
 	// See Data Dictionary, Section 2.57, `Datef`.
@@ -760,7 +762,7 @@ func (b0 Activities_CardIWRecord_builder) Build() *Activities_CardIWRecord {
 	b, x := &b0, m0
 	_, _ = b, x
 	x.xxx_hidden_CardHolderName = b.CardHolderName
-	x.xxx_hidden_FullCardNumber = b.FullCardNumber
+	x.xxx_hidden_FullCardNumberAndGeneration = b.FullCardNumberAndGeneration
 	x.xxx_hidden_CardExpiryDate = b.CardExpiryDate
 	x.xxx_hidden_CardInsertionTime = b.CardInsertionTime
 	if b.OdometerAtInsertionKm != nil {
@@ -1332,25 +1334,25 @@ func (b0 Activities_SpecificConditionRecord_builder) Build() *Activities_Specifi
 // ASN.1 Definition:
 //
 //	VuBorderCrossingRecord ::= SEQUENCE {
-//	    cardNumberAndGenDriverSlot FullCardNumberAndGeneration,
+//	    cardNumberAndGenDriverSlot   FullCardNumberAndGeneration,
 //	    cardNumberAndGenCodriverSlot FullCardNumberAndGeneration,
-//	    countryLeft NationNumeric,
-//	    countryEntered NationNumeric,
-//	    gnssPlaceAuthRecord GNSSPlaceAuthRecord,
-//	    vehicleOdometerValue OdometerShort
+//	    countryLeft                  NationNumeric,
+//	    countryEntered               NationNumeric,
+//	    gnssPlaceAuthRecord          GNSSPlaceAuthRecord,
+//	    vehicleOdometerValue         OdometerShort
 //	}
 type Activities_BorderCrossingRecord struct {
-	state                     protoimpl.MessageState `protogen:"opaque.v1"`
-	xxx_hidden_FullCardNumber *v1.FullCardNumber     `protobuf:"bytes,1,opt,name=full_card_number,json=fullCardNumber"`
-	xxx_hidden_CardGeneration v1.Generation          `protobuf:"varint,2,opt,name=card_generation,json=cardGeneration,enum=wayplatform.connect.tachograph.dd.v1.Generation"`
-	xxx_hidden_CountryLeft    v1.NationNumeric       `protobuf:"varint,3,opt,name=country_left,json=countryLeft,enum=wayplatform.connect.tachograph.dd.v1.NationNumeric"`
-	xxx_hidden_CountryEntered v1.NationNumeric       `protobuf:"varint,5,opt,name=country_entered,json=countryEntered,enum=wayplatform.connect.tachograph.dd.v1.NationNumeric"`
-	xxx_hidden_PlaceRecord    *Activities_GnssRecord `protobuf:"bytes,7,opt,name=place_record,json=placeRecord"`
-	xxx_hidden_OdometerKm     int32                  `protobuf:"varint,8,opt,name=odometer_km,json=odometerKm"`
-	XXX_raceDetectHookData    protoimpl.RaceDetectHookData
-	XXX_presence              [1]uint32
-	unknownFields             protoimpl.UnknownFields
-	sizeCache                 protoimpl.SizeCache
+	state                             protoimpl.MessageState          `protogen:"opaque.v1"`
+	xxx_hidden_CardNumberDriverSlot   *v1.FullCardNumberAndGeneration `protobuf:"bytes,1,opt,name=card_number_driver_slot,json=cardNumberDriverSlot"`
+	xxx_hidden_CardNumberCodriverSlot *v1.FullCardNumberAndGeneration `protobuf:"bytes,2,opt,name=card_number_codriver_slot,json=cardNumberCodriverSlot"`
+	xxx_hidden_CountryLeft            v1.NationNumeric                `protobuf:"varint,3,opt,name=country_left,json=countryLeft,enum=wayplatform.connect.tachograph.dd.v1.NationNumeric"`
+	xxx_hidden_CountryEntered         v1.NationNumeric                `protobuf:"varint,5,opt,name=country_entered,json=countryEntered,enum=wayplatform.connect.tachograph.dd.v1.NationNumeric"`
+	xxx_hidden_PlaceRecord            *Activities_GnssRecord          `protobuf:"bytes,7,opt,name=place_record,json=placeRecord"`
+	xxx_hidden_OdometerKm             int32                           `protobuf:"varint,8,opt,name=odometer_km,json=odometerKm"`
+	XXX_raceDetectHookData            protoimpl.RaceDetectHookData
+	XXX_presence                      [1]uint32
+	unknownFields                     protoimpl.UnknownFields
+	sizeCache                         protoimpl.SizeCache
 }
 
 func (x *Activities_BorderCrossingRecord) Reset() {
@@ -1378,20 +1380,18 @@ func (x *Activities_BorderCrossingRecord) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-func (x *Activities_BorderCrossingRecord) GetFullCardNumber() *v1.FullCardNumber {
+func (x *Activities_BorderCrossingRecord) GetCardNumberDriverSlot() *v1.FullCardNumberAndGeneration {
 	if x != nil {
-		return x.xxx_hidden_FullCardNumber
+		return x.xxx_hidden_CardNumberDriverSlot
 	}
 	return nil
 }
 
-func (x *Activities_BorderCrossingRecord) GetCardGeneration() v1.Generation {
+func (x *Activities_BorderCrossingRecord) GetCardNumberCodriverSlot() *v1.FullCardNumberAndGeneration {
 	if x != nil {
-		if protoimpl.X.Present(&(x.XXX_presence[0]), 1) {
-			return x.xxx_hidden_CardGeneration
-		}
+		return x.xxx_hidden_CardNumberCodriverSlot
 	}
-	return v1.Generation(0)
+	return nil
 }
 
 func (x *Activities_BorderCrossingRecord) GetCountryLeft() v1.NationNumeric {
@@ -1426,13 +1426,12 @@ func (x *Activities_BorderCrossingRecord) GetOdometerKm() int32 {
 	return 0
 }
 
-func (x *Activities_BorderCrossingRecord) SetFullCardNumber(v *v1.FullCardNumber) {
-	x.xxx_hidden_FullCardNumber = v
+func (x *Activities_BorderCrossingRecord) SetCardNumberDriverSlot(v *v1.FullCardNumberAndGeneration) {
+	x.xxx_hidden_CardNumberDriverSlot = v
 }
 
-func (x *Activities_BorderCrossingRecord) SetCardGeneration(v v1.Generation) {
-	x.xxx_hidden_CardGeneration = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 6)
+func (x *Activities_BorderCrossingRecord) SetCardNumberCodriverSlot(v *v1.FullCardNumberAndGeneration) {
+	x.xxx_hidden_CardNumberCodriverSlot = v
 }
 
 func (x *Activities_BorderCrossingRecord) SetCountryLeft(v v1.NationNumeric) {
@@ -1454,18 +1453,18 @@ func (x *Activities_BorderCrossingRecord) SetOdometerKm(v int32) {
 	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 5, 6)
 }
 
-func (x *Activities_BorderCrossingRecord) HasFullCardNumber() bool {
+func (x *Activities_BorderCrossingRecord) HasCardNumberDriverSlot() bool {
 	if x == nil {
 		return false
 	}
-	return x.xxx_hidden_FullCardNumber != nil
+	return x.xxx_hidden_CardNumberDriverSlot != nil
 }
 
-func (x *Activities_BorderCrossingRecord) HasCardGeneration() bool {
+func (x *Activities_BorderCrossingRecord) HasCardNumberCodriverSlot() bool {
 	if x == nil {
 		return false
 	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 1)
+	return x.xxx_hidden_CardNumberCodriverSlot != nil
 }
 
 func (x *Activities_BorderCrossingRecord) HasCountryLeft() bool {
@@ -1496,13 +1495,12 @@ func (x *Activities_BorderCrossingRecord) HasOdometerKm() bool {
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 5)
 }
 
-func (x *Activities_BorderCrossingRecord) ClearFullCardNumber() {
-	x.xxx_hidden_FullCardNumber = nil
+func (x *Activities_BorderCrossingRecord) ClearCardNumberDriverSlot() {
+	x.xxx_hidden_CardNumberDriverSlot = nil
 }
 
-func (x *Activities_BorderCrossingRecord) ClearCardGeneration() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 1)
-	x.xxx_hidden_CardGeneration = v1.Generation_GENERATION_UNSPECIFIED
+func (x *Activities_BorderCrossingRecord) ClearCardNumberCodriverSlot() {
+	x.xxx_hidden_CardNumberCodriverSlot = nil
 }
 
 func (x *Activities_BorderCrossingRecord) ClearCountryLeft() {
@@ -1527,14 +1525,10 @@ func (x *Activities_BorderCrossingRecord) ClearOdometerKm() {
 type Activities_BorderCrossingRecord_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
-	// Card number of the driver.
-	//
-	// See Data Dictionary, Section 2.74, `FullCardNumberAndGeneration`.
-	FullCardNumber *v1.FullCardNumber
-	// Generation of the driver's card.
-	//
-	// See Data Dictionary, Section 2.75, `Generation`.
-	CardGeneration *v1.Generation
+	// Card information for the driver slot.
+	CardNumberDriverSlot *v1.FullCardNumberAndGeneration
+	// Card information for the co-driver slot.
+	CardNumberCodriverSlot *v1.FullCardNumberAndGeneration
 	// Country the vehicle is leaving.
 	//
 	// See Data Dictionary, Section 2.101, `NationNumeric`.
@@ -1560,11 +1554,8 @@ func (b0 Activities_BorderCrossingRecord_builder) Build() *Activities_BorderCros
 	m0 := &Activities_BorderCrossingRecord{}
 	b, x := &b0, m0
 	_, _ = b, x
-	x.xxx_hidden_FullCardNumber = b.FullCardNumber
-	if b.CardGeneration != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 6)
-		x.xxx_hidden_CardGeneration = *b.CardGeneration
-	}
+	x.xxx_hidden_CardNumberDriverSlot = b.CardNumberDriverSlot
+	x.xxx_hidden_CardNumberCodriverSlot = b.CardNumberCodriverSlot
 	if b.CountryLeft != nil {
 		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 6)
 		x.xxx_hidden_CountryLeft = *b.CountryLeft
@@ -1588,24 +1579,25 @@ func (b0 Activities_BorderCrossingRecord_builder) Build() *Activities_BorderCros
 // ASN.1 Definition:
 //
 //	VuLoadUnloadRecord ::= SEQUENCE {
-//	    timeStamp TimeReal,
-//	    operationType OperationType,
-//	    cardNumberAndGenDriverSlot FullCardNumberAndGeneration,
+//	    timeStamp                    TimeReal,
+//	    operationType                OperationType,
+//	    cardNumberAndGenDriverSlot   FullCardNumberAndGeneration,
 //	    cardNumberAndGenCodriverSlot FullCardNumberAndGeneration,
-//	    gnssPlaceAuthRecord GNSSPlaceAuthRecord,
-//	    vehicleOdometerValue OdometerShort
+//	    gnssPlaceAuthRecord          GNSSPlaceAuthRecord,
+//	    vehicleOdometerValue         OdometerShort
 //	}
 type Activities_LoadUnloadRecord struct {
-	state                     protoimpl.MessageState `protogen:"opaque.v1"`
-	xxx_hidden_FullCardNumber *v1.FullCardNumber     `protobuf:"bytes,1,opt,name=full_card_number,json=fullCardNumber"`
-	xxx_hidden_CardGeneration v1.Generation          `protobuf:"varint,2,opt,name=card_generation,json=cardGeneration,enum=wayplatform.connect.tachograph.dd.v1.Generation"`
-	xxx_hidden_OperationType  v1.OperationType       `protobuf:"varint,3,opt,name=operation_type,json=operationType,enum=wayplatform.connect.tachograph.dd.v1.OperationType"`
-	xxx_hidden_PlaceRecord    *Activities_GnssRecord `protobuf:"bytes,4,opt,name=place_record,json=placeRecord"`
-	xxx_hidden_OdometerKm     int32                  `protobuf:"varint,5,opt,name=odometer_km,json=odometerKm"`
-	XXX_raceDetectHookData    protoimpl.RaceDetectHookData
-	XXX_presence              [1]uint32
-	unknownFields             protoimpl.UnknownFields
-	sizeCache                 protoimpl.SizeCache
+	state                             protoimpl.MessageState          `protogen:"opaque.v1"`
+	xxx_hidden_Timestamp              *timestamppb.Timestamp          `protobuf:"bytes,1,opt,name=timestamp"`
+	xxx_hidden_OperationType          v1.OperationType                `protobuf:"varint,2,opt,name=operation_type,json=operationType,enum=wayplatform.connect.tachograph.dd.v1.OperationType"`
+	xxx_hidden_CardNumberDriverSlot   *v1.FullCardNumberAndGeneration `protobuf:"bytes,3,opt,name=card_number_driver_slot,json=cardNumberDriverSlot"`
+	xxx_hidden_CardNumberCodriverSlot *v1.FullCardNumberAndGeneration `protobuf:"bytes,4,opt,name=card_number_codriver_slot,json=cardNumberCodriverSlot"`
+	xxx_hidden_PlaceRecord            *Activities_GnssRecord          `protobuf:"bytes,5,opt,name=place_record,json=placeRecord"`
+	xxx_hidden_OdometerKm             int32                           `protobuf:"varint,6,opt,name=odometer_km,json=odometerKm"`
+	XXX_raceDetectHookData            protoimpl.RaceDetectHookData
+	XXX_presence                      [1]uint32
+	unknownFields                     protoimpl.UnknownFields
+	sizeCache                         protoimpl.SizeCache
 }
 
 func (x *Activities_LoadUnloadRecord) Reset() {
@@ -1633,29 +1625,34 @@ func (x *Activities_LoadUnloadRecord) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-func (x *Activities_LoadUnloadRecord) GetFullCardNumber() *v1.FullCardNumber {
+func (x *Activities_LoadUnloadRecord) GetTimestamp() *timestamppb.Timestamp {
 	if x != nil {
-		return x.xxx_hidden_FullCardNumber
+		return x.xxx_hidden_Timestamp
 	}
 	return nil
 }
 
-func (x *Activities_LoadUnloadRecord) GetCardGeneration() v1.Generation {
-	if x != nil {
-		if protoimpl.X.Present(&(x.XXX_presence[0]), 1) {
-			return x.xxx_hidden_CardGeneration
-		}
-	}
-	return v1.Generation(0)
-}
-
 func (x *Activities_LoadUnloadRecord) GetOperationType() v1.OperationType {
 	if x != nil {
-		if protoimpl.X.Present(&(x.XXX_presence[0]), 2) {
+		if protoimpl.X.Present(&(x.XXX_presence[0]), 1) {
 			return x.xxx_hidden_OperationType
 		}
 	}
 	return v1.OperationType(0)
+}
+
+func (x *Activities_LoadUnloadRecord) GetCardNumberDriverSlot() *v1.FullCardNumberAndGeneration {
+	if x != nil {
+		return x.xxx_hidden_CardNumberDriverSlot
+	}
+	return nil
+}
+
+func (x *Activities_LoadUnloadRecord) GetCardNumberCodriverSlot() *v1.FullCardNumberAndGeneration {
+	if x != nil {
+		return x.xxx_hidden_CardNumberCodriverSlot
+	}
+	return nil
 }
 
 func (x *Activities_LoadUnloadRecord) GetPlaceRecord() *Activities_GnssRecord {
@@ -1672,18 +1669,21 @@ func (x *Activities_LoadUnloadRecord) GetOdometerKm() int32 {
 	return 0
 }
 
-func (x *Activities_LoadUnloadRecord) SetFullCardNumber(v *v1.FullCardNumber) {
-	x.xxx_hidden_FullCardNumber = v
-}
-
-func (x *Activities_LoadUnloadRecord) SetCardGeneration(v v1.Generation) {
-	x.xxx_hidden_CardGeneration = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 5)
+func (x *Activities_LoadUnloadRecord) SetTimestamp(v *timestamppb.Timestamp) {
+	x.xxx_hidden_Timestamp = v
 }
 
 func (x *Activities_LoadUnloadRecord) SetOperationType(v v1.OperationType) {
 	x.xxx_hidden_OperationType = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 5)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 6)
+}
+
+func (x *Activities_LoadUnloadRecord) SetCardNumberDriverSlot(v *v1.FullCardNumberAndGeneration) {
+	x.xxx_hidden_CardNumberDriverSlot = v
+}
+
+func (x *Activities_LoadUnloadRecord) SetCardNumberCodriverSlot(v *v1.FullCardNumberAndGeneration) {
+	x.xxx_hidden_CardNumberCodriverSlot = v
 }
 
 func (x *Activities_LoadUnloadRecord) SetPlaceRecord(v *Activities_GnssRecord) {
@@ -1692,28 +1692,35 @@ func (x *Activities_LoadUnloadRecord) SetPlaceRecord(v *Activities_GnssRecord) {
 
 func (x *Activities_LoadUnloadRecord) SetOdometerKm(v int32) {
 	x.xxx_hidden_OdometerKm = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 4, 5)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 5, 6)
 }
 
-func (x *Activities_LoadUnloadRecord) HasFullCardNumber() bool {
+func (x *Activities_LoadUnloadRecord) HasTimestamp() bool {
 	if x == nil {
 		return false
 	}
-	return x.xxx_hidden_FullCardNumber != nil
-}
-
-func (x *Activities_LoadUnloadRecord) HasCardGeneration() bool {
-	if x == nil {
-		return false
-	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 1)
+	return x.xxx_hidden_Timestamp != nil
 }
 
 func (x *Activities_LoadUnloadRecord) HasOperationType() bool {
 	if x == nil {
 		return false
 	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 2)
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 1)
+}
+
+func (x *Activities_LoadUnloadRecord) HasCardNumberDriverSlot() bool {
+	if x == nil {
+		return false
+	}
+	return x.xxx_hidden_CardNumberDriverSlot != nil
+}
+
+func (x *Activities_LoadUnloadRecord) HasCardNumberCodriverSlot() bool {
+	if x == nil {
+		return false
+	}
+	return x.xxx_hidden_CardNumberCodriverSlot != nil
 }
 
 func (x *Activities_LoadUnloadRecord) HasPlaceRecord() bool {
@@ -1727,21 +1734,24 @@ func (x *Activities_LoadUnloadRecord) HasOdometerKm() bool {
 	if x == nil {
 		return false
 	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 4)
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 5)
 }
 
-func (x *Activities_LoadUnloadRecord) ClearFullCardNumber() {
-	x.xxx_hidden_FullCardNumber = nil
-}
-
-func (x *Activities_LoadUnloadRecord) ClearCardGeneration() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 1)
-	x.xxx_hidden_CardGeneration = v1.Generation_GENERATION_UNSPECIFIED
+func (x *Activities_LoadUnloadRecord) ClearTimestamp() {
+	x.xxx_hidden_Timestamp = nil
 }
 
 func (x *Activities_LoadUnloadRecord) ClearOperationType() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 2)
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 1)
 	x.xxx_hidden_OperationType = v1.OperationType_OPERATION_TYPE_UNSPECIFIED
+}
+
+func (x *Activities_LoadUnloadRecord) ClearCardNumberDriverSlot() {
+	x.xxx_hidden_CardNumberDriverSlot = nil
+}
+
+func (x *Activities_LoadUnloadRecord) ClearCardNumberCodriverSlot() {
+	x.xxx_hidden_CardNumberCodriverSlot = nil
 }
 
 func (x *Activities_LoadUnloadRecord) ClearPlaceRecord() {
@@ -1749,23 +1759,21 @@ func (x *Activities_LoadUnloadRecord) ClearPlaceRecord() {
 }
 
 func (x *Activities_LoadUnloadRecord) ClearOdometerKm() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 4)
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 5)
 	x.xxx_hidden_OdometerKm = 0
 }
 
 type Activities_LoadUnloadRecord_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
-	// Card number of the driver.
-	//
-	// See Data Dictionary, Section 2.74, `FullCardNumberAndGeneration`.
-	FullCardNumber *v1.FullCardNumber
-	// Generation of the driver's card.
-	//
-	// See Data Dictionary, Section 2.75, `Generation`.
-	CardGeneration *v1.Generation
+	// Timestamp of the operation.
+	Timestamp *timestamppb.Timestamp
 	// Type of operation (load, unload, or both).
 	OperationType *v1.OperationType
+	// Card information for the driver slot.
+	CardNumberDriverSlot *v1.FullCardNumberAndGeneration
+	// Card information for the co-driver slot.
+	CardNumberCodriverSlot *v1.FullCardNumberAndGeneration
 	// Position of the vehicle at the time of the operation.
 	//
 	// See Data Dictionary, Section 2.79c, `GNSSPlaceAuthRecord`.
@@ -1783,18 +1791,16 @@ func (b0 Activities_LoadUnloadRecord_builder) Build() *Activities_LoadUnloadReco
 	m0 := &Activities_LoadUnloadRecord{}
 	b, x := &b0, m0
 	_, _ = b, x
-	x.xxx_hidden_FullCardNumber = b.FullCardNumber
-	if b.CardGeneration != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 5)
-		x.xxx_hidden_CardGeneration = *b.CardGeneration
-	}
+	x.xxx_hidden_Timestamp = b.Timestamp
 	if b.OperationType != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 5)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 6)
 		x.xxx_hidden_OperationType = *b.OperationType
 	}
+	x.xxx_hidden_CardNumberDriverSlot = b.CardNumberDriverSlot
+	x.xxx_hidden_CardNumberCodriverSlot = b.CardNumberCodriverSlot
 	x.xxx_hidden_PlaceRecord = b.PlaceRecord
 	if b.OdometerKm != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 4, 5)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 5, 6)
 		x.xxx_hidden_OdometerKm = *b.OdometerKm
 	}
 	return m0
@@ -1804,18 +1810,20 @@ func (b0 Activities_LoadUnloadRecord_builder) Build() *Activities_LoadUnloadReco
 //
 // See Data Dictionary, Section 2.118, `PreviousVehicleInfo`.
 //
-// ASN.1 Definition (Gen1):
+// ASN.1 Definition:
 //
 //	PreviousVehicleInfo ::= SEQUENCE {
 //	    vehicleRegistrationIdentification VehicleRegistrationIdentification,
-//	    cardWithdrawalTime TimeReal
+//	    cardWithdrawalTime                TimeReal,
+//	    vuGeneration                      Generation -- Gen2 only
 //	}
-//
-// For Gen2, `vuGeneration Generation` is added.
 type Activities_CardIWRecord_PreviousVehicleInfo struct {
 	state                          protoimpl.MessageState                `protogen:"opaque.v1"`
 	xxx_hidden_VehicleRegistration *v1.VehicleRegistrationIdentification `protobuf:"bytes,1,opt,name=vehicle_registration,json=vehicleRegistration"`
 	xxx_hidden_CardWithdrawalTime  *timestamppb.Timestamp                `protobuf:"bytes,2,opt,name=card_withdrawal_time,json=cardWithdrawalTime"`
+	xxx_hidden_VuGeneration        v1.Generation                         `protobuf:"varint,3,opt,name=vu_generation,json=vuGeneration,enum=wayplatform.connect.tachograph.dd.v1.Generation"`
+	XXX_raceDetectHookData         protoimpl.RaceDetectHookData
+	XXX_presence                   [1]uint32
 	unknownFields                  protoimpl.UnknownFields
 	sizeCache                      protoimpl.SizeCache
 }
@@ -1859,12 +1867,26 @@ func (x *Activities_CardIWRecord_PreviousVehicleInfo) GetCardWithdrawalTime() *t
 	return nil
 }
 
+func (x *Activities_CardIWRecord_PreviousVehicleInfo) GetVuGeneration() v1.Generation {
+	if x != nil {
+		if protoimpl.X.Present(&(x.XXX_presence[0]), 2) {
+			return x.xxx_hidden_VuGeneration
+		}
+	}
+	return v1.Generation(0)
+}
+
 func (x *Activities_CardIWRecord_PreviousVehicleInfo) SetVehicleRegistration(v *v1.VehicleRegistrationIdentification) {
 	x.xxx_hidden_VehicleRegistration = v
 }
 
 func (x *Activities_CardIWRecord_PreviousVehicleInfo) SetCardWithdrawalTime(v *timestamppb.Timestamp) {
 	x.xxx_hidden_CardWithdrawalTime = v
+}
+
+func (x *Activities_CardIWRecord_PreviousVehicleInfo) SetVuGeneration(v v1.Generation) {
+	x.xxx_hidden_VuGeneration = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 3)
 }
 
 func (x *Activities_CardIWRecord_PreviousVehicleInfo) HasVehicleRegistration() bool {
@@ -1881,12 +1903,24 @@ func (x *Activities_CardIWRecord_PreviousVehicleInfo) HasCardWithdrawalTime() bo
 	return x.xxx_hidden_CardWithdrawalTime != nil
 }
 
+func (x *Activities_CardIWRecord_PreviousVehicleInfo) HasVuGeneration() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 2)
+}
+
 func (x *Activities_CardIWRecord_PreviousVehicleInfo) ClearVehicleRegistration() {
 	x.xxx_hidden_VehicleRegistration = nil
 }
 
 func (x *Activities_CardIWRecord_PreviousVehicleInfo) ClearCardWithdrawalTime() {
 	x.xxx_hidden_CardWithdrawalTime = nil
+}
+
+func (x *Activities_CardIWRecord_PreviousVehicleInfo) ClearVuGeneration() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 2)
+	x.xxx_hidden_VuGeneration = v1.Generation_GENERATION_UNSPECIFIED
 }
 
 type Activities_CardIWRecord_PreviousVehicleInfo_builder struct {
@@ -1903,6 +1937,10 @@ type Activities_CardIWRecord_PreviousVehicleInfo_builder struct {
 	//
 	//	TimeReal ::= INTEGER (0..2^32-1)
 	CardWithdrawalTime *timestamppb.Timestamp
+	// The generation of the VU from which the card was withdrawn. (Gen2 only)
+	//
+	// See Data Dictionary, Section 2.75, `Generation`.
+	VuGeneration *v1.Generation
 }
 
 func (b0 Activities_CardIWRecord_PreviousVehicleInfo_builder) Build() *Activities_CardIWRecord_PreviousVehicleInfo {
@@ -1911,6 +1949,10 @@ func (b0 Activities_CardIWRecord_PreviousVehicleInfo_builder) Build() *Activitie
 	_, _ = b, x
 	x.xxx_hidden_VehicleRegistration = b.VehicleRegistration
 	x.xxx_hidden_CardWithdrawalTime = b.CardWithdrawalTime
+	if b.VuGeneration != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 3)
+		x.xxx_hidden_VuGeneration = *b.VuGeneration
+	}
 	return m0
 }
 
@@ -1918,7 +1960,7 @@ var File_wayplatform_connect_tachograph_vu_v1_activities_proto protoreflect.File
 
 const file_wayplatform_connect_tachograph_vu_v1_activities_proto_rawDesc = "" +
 	"\n" +
-	"5wayplatform/connect/tachograph/vu/v1/activities.proto\x12$wayplatform.connect.tachograph.vu.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a?wayplatform/connect/tachograph/dd/v1/activity_change_info.proto\x1a;wayplatform/connect/tachograph/dd/v1/card_slot_number.proto\x1a/wayplatform/connect/tachograph/dd/v1/date.proto\x1aGwayplatform/connect/tachograph/dd/v1/entry_type_daily_work_period.proto\x1a;wayplatform/connect/tachograph/dd/v1/full_card_number.proto\x1a5wayplatform/connect/tachograph/dd/v1/generation.proto\x1a:wayplatform/connect/tachograph/dd/v1/geo_coordinates.proto\x1a6wayplatform/connect/tachograph/dd/v1/holder_name.proto\x1a9wayplatform/connect/tachograph/dd/v1/nation_numeric.proto\x1a9wayplatform/connect/tachograph/dd/v1/operation_type.proto\x1aIwayplatform/connect/tachograph/dd/v1/position_authentication_status.proto\x1aBwayplatform/connect/tachograph/dd/v1/specific_condition_type.proto\x1aNwayplatform/connect/tachograph/dd/v1/vehicle_registration_identification.proto\x1a5wayplatform/connect/tachograph/vu/v1/versioning.proto\"\xff\x1e\n" +
+	"5wayplatform/connect/tachograph/vu/v1/activities.proto\x12$wayplatform.connect.tachograph.vu.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a?wayplatform/connect/tachograph/dd/v1/activity_change_info.proto\x1a;wayplatform/connect/tachograph/dd/v1/card_slot_number.proto\x1a/wayplatform/connect/tachograph/dd/v1/date.proto\x1aGwayplatform/connect/tachograph/dd/v1/entry_type_daily_work_period.proto\x1a;wayplatform/connect/tachograph/dd/v1/full_card_number.proto\x1aJwayplatform/connect/tachograph/dd/v1/full_card_number_and_generation.proto\x1a5wayplatform/connect/tachograph/dd/v1/generation.proto\x1a:wayplatform/connect/tachograph/dd/v1/geo_coordinates.proto\x1a6wayplatform/connect/tachograph/dd/v1/holder_name.proto\x1a9wayplatform/connect/tachograph/dd/v1/nation_numeric.proto\x1a9wayplatform/connect/tachograph/dd/v1/operation_type.proto\x1aIwayplatform/connect/tachograph/dd/v1/position_authentication_status.proto\x1aBwayplatform/connect/tachograph/dd/v1/specific_condition_type.proto\x1aNwayplatform/connect/tachograph/dd/v1/vehicle_registration_identification.proto\x1a5wayplatform/connect/tachograph/vu/v1/versioning.proto\"\xb4!\n" +
 	"\n" +
 	"Activities\x12P\n" +
 	"\n" +
@@ -1937,10 +1979,10 @@ const file_wayplatform_connect_tachograph_vu_v1_activities_proto_rawDesc = "" +
 	" \x03(\v2E.wayplatform.connect.tachograph.vu.v1.Activities.BorderCrossingRecordR\x0fborderCrossings\x12w\n" +
 	"\x16load_unload_operations\x18\v \x03(\v2A.wayplatform.connect.tachograph.vu.v1.Activities.LoadUnloadRecordR\x14loadUnloadOperations\x12%\n" +
 	"\x0esignature_gen1\x18\f \x01(\fR\rsignatureGen1\x12%\n" +
-	"\x0esignature_gen2\x18\r \x01(\fR\rsignatureGen2\x1a\xa4\b\n" +
+	"\x0esignature_gen2\x18\r \x01(\fR\rsignatureGen2\x1a\xa5\t\n" +
 	"\fCardIWRecord\x12Z\n" +
-	"\x10card_holder_name\x18\x01 \x01(\v20.wayplatform.connect.tachograph.dd.v1.HolderNameR\x0ecardHolderName\x12^\n" +
-	"\x10full_card_number\x18\x02 \x01(\v24.wayplatform.connect.tachograph.dd.v1.FullCardNumberR\x0efullCardNumber\x12T\n" +
+	"\x10card_holder_name\x18\x01 \x01(\v20.wayplatform.connect.tachograph.dd.v1.HolderNameR\x0ecardHolderName\x12\x87\x01\n" +
+	"\x1ffull_card_number_and_generation\x18\x02 \x01(\v2A.wayplatform.connect.tachograph.dd.v1.FullCardNumberAndGenerationR\x1bfullCardNumberAndGeneration\x12T\n" +
 	"\x10card_expiry_date\x18\x03 \x01(\v2*.wayplatform.connect.tachograph.dd.v1.DateR\x0ecardExpiryDate\x12J\n" +
 	"\x13card_insertion_time\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampR\x11cardInsertionTime\x127\n" +
 	"\x18odometer_at_insertion_km\x18\x05 \x01(\x05R\x15odometerAtInsertionKm\x12^\n" +
@@ -1949,10 +1991,11 @@ const file_wayplatform_connect_tachograph_vu_v1_activities_proto_rawDesc = "" +
 	"\x19odometer_at_withdrawal_km\x18\t \x01(\x05R\x16odometerAtWithdrawalKm\x12\x85\x01\n" +
 	"\x15previous_vehicle_info\x18\n" +
 	" \x01(\v2Q.wayplatform.connect.tachograph.vu.v1.Activities.CardIWRecord.PreviousVehicleInfoR\x13previousVehicleInfo\x12*\n" +
-	"\x11manual_input_flag\x18\v \x01(\bR\x0fmanualInputFlag\x1a\xdf\x01\n" +
+	"\x11manual_input_flag\x18\v \x01(\bR\x0fmanualInputFlag\x1a\xb6\x02\n" +
 	"\x13PreviousVehicleInfo\x12z\n" +
 	"\x14vehicle_registration\x18\x01 \x01(\v2G.wayplatform.connect.tachograph.dd.v1.VehicleRegistrationIdentificationR\x13vehicleRegistration\x12L\n" +
-	"\x14card_withdrawal_time\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\x12cardWithdrawalTime\x1a\xaf\x02\n" +
+	"\x14card_withdrawal_time\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\x12cardWithdrawalTime\x12U\n" +
+	"\rvu_generation\x18\x03 \x01(\x0e20.wayplatform.connect.tachograph.dd.v1.GenerationR\fvuGeneration\x1a\xaf\x02\n" +
 	"\vPlaceRecord\x129\n" +
 	"\n" +
 	"entry_time\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\tentryTime\x12]\n" +
@@ -1971,21 +2014,22 @@ const file_wayplatform_connect_tachograph_vu_v1_activities_proto_rawDesc = "" +
 	"\x17SpecificConditionRecord\x129\n" +
 	"\n" +
 	"entry_time\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\tentryTime\x12s\n" +
-	"\x17specific_condition_type\x18\x02 \x01(\x0e2;.wayplatform.connect.tachograph.dd.v1.SpecificConditionTypeR\x15specificConditionType\x1a\x88\x04\n" +
-	"\x14BorderCrossingRecord\x12^\n" +
-	"\x10full_card_number\x18\x01 \x01(\v24.wayplatform.connect.tachograph.dd.v1.FullCardNumberR\x0efullCardNumber\x12Y\n" +
-	"\x0fcard_generation\x18\x02 \x01(\x0e20.wayplatform.connect.tachograph.dd.v1.GenerationR\x0ecardGeneration\x12V\n" +
+	"\x17specific_condition_type\x18\x02 \x01(\x0e2;.wayplatform.connect.tachograph.dd.v1.SpecificConditionTypeR\x15specificConditionType\x1a\xc5\x04\n" +
+	"\x14BorderCrossingRecord\x12x\n" +
+	"\x17card_number_driver_slot\x18\x01 \x01(\v2A.wayplatform.connect.tachograph.dd.v1.FullCardNumberAndGenerationR\x14cardNumberDriverSlot\x12|\n" +
+	"\x19card_number_codriver_slot\x18\x02 \x01(\v2A.wayplatform.connect.tachograph.dd.v1.FullCardNumberAndGenerationR\x16cardNumberCodriverSlot\x12V\n" +
 	"\fcountry_left\x18\x03 \x01(\x0e23.wayplatform.connect.tachograph.dd.v1.NationNumericR\vcountryLeft\x12\\\n" +
 	"\x0fcountry_entered\x18\x05 \x01(\x0e23.wayplatform.connect.tachograph.dd.v1.NationNumericR\x0ecountryEntered\x12^\n" +
 	"\fplace_record\x18\a \x01(\v2;.wayplatform.connect.tachograph.vu.v1.Activities.GnssRecordR\vplaceRecord\x12\x1f\n" +
 	"\vodometer_km\x18\b \x01(\x05R\n" +
-	"odometerKm\x1a\xaa\x03\n" +
-	"\x10LoadUnloadRecord\x12^\n" +
-	"\x10full_card_number\x18\x01 \x01(\v24.wayplatform.connect.tachograph.dd.v1.FullCardNumberR\x0efullCardNumber\x12Y\n" +
-	"\x0fcard_generation\x18\x02 \x01(\x0e20.wayplatform.connect.tachograph.dd.v1.GenerationR\x0ecardGeneration\x12Z\n" +
-	"\x0eoperation_type\x18\x03 \x01(\x0e23.wayplatform.connect.tachograph.dd.v1.OperationTypeR\roperationType\x12^\n" +
-	"\fplace_record\x18\x04 \x01(\v2;.wayplatform.connect.tachograph.vu.v1.Activities.GnssRecordR\vplaceRecord\x12\x1f\n" +
-	"\vodometer_km\x18\x05 \x01(\x05R\n" +
+	"odometerKm\x1a\xa1\x04\n" +
+	"\x10LoadUnloadRecord\x128\n" +
+	"\ttimestamp\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\ttimestamp\x12Z\n" +
+	"\x0eoperation_type\x18\x02 \x01(\x0e23.wayplatform.connect.tachograph.dd.v1.OperationTypeR\roperationType\x12x\n" +
+	"\x17card_number_driver_slot\x18\x03 \x01(\v2A.wayplatform.connect.tachograph.dd.v1.FullCardNumberAndGenerationR\x14cardNumberDriverSlot\x12|\n" +
+	"\x19card_number_codriver_slot\x18\x04 \x01(\v2A.wayplatform.connect.tachograph.dd.v1.FullCardNumberAndGenerationR\x16cardNumberCodriverSlot\x12^\n" +
+	"\fplace_record\x18\x05 \x01(\v2;.wayplatform.connect.tachograph.vu.v1.Activities.GnssRecordR\vplaceRecord\x12\x1f\n" +
+	"\vodometer_km\x18\x06 \x01(\x05R\n" +
 	"odometerKmB\xce\x02\n" +
 	"(com.wayplatform.connect.tachograph.vu.v1B\x0fActivitiesProtoP\x01Z\\github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/vu/v1;vuv1\xa2\x02\x04WCTV\xaa\x02$Wayplatform.Connect.Tachograph.Vu.V1\xca\x02$Wayplatform\\Connect\\Tachograph\\Vu\\V1\xe2\x020Wayplatform\\Connect\\Tachograph\\Vu\\V1\\GPBMetadata\xea\x02(Wayplatform::Connect::Tachograph::Vu::V1b\beditionsp\xe8\a"
 
@@ -2004,7 +2048,7 @@ var file_wayplatform_connect_tachograph_vu_v1_activities_proto_goTypes = []any{
 	(*timestamppb.Timestamp)(nil),                       // 10: google.protobuf.Timestamp
 	(*v1.ActivityChangeInfo)(nil),                       // 11: wayplatform.connect.tachograph.dd.v1.ActivityChangeInfo
 	(*v1.HolderName)(nil),                               // 12: wayplatform.connect.tachograph.dd.v1.HolderName
-	(*v1.FullCardNumber)(nil),                           // 13: wayplatform.connect.tachograph.dd.v1.FullCardNumber
+	(*v1.FullCardNumberAndGeneration)(nil),              // 13: wayplatform.connect.tachograph.dd.v1.FullCardNumberAndGeneration
 	(*v1.Date)(nil),                                     // 14: wayplatform.connect.tachograph.dd.v1.Date
 	(v1.CardSlotNumber)(0),                              // 15: wayplatform.connect.tachograph.dd.v1.CardSlotNumber
 	(v1.EntryTypeDailyWorkPeriod)(0),                    // 16: wayplatform.connect.tachograph.dd.v1.EntryTypeDailyWorkPeriod
@@ -2027,7 +2071,7 @@ var file_wayplatform_connect_tachograph_vu_v1_activities_proto_depIdxs = []int32
 	5,  // 8: wayplatform.connect.tachograph.vu.v1.Activities.border_crossings:type_name -> wayplatform.connect.tachograph.vu.v1.Activities.BorderCrossingRecord
 	6,  // 9: wayplatform.connect.tachograph.vu.v1.Activities.load_unload_operations:type_name -> wayplatform.connect.tachograph.vu.v1.Activities.LoadUnloadRecord
 	12, // 10: wayplatform.connect.tachograph.vu.v1.Activities.CardIWRecord.card_holder_name:type_name -> wayplatform.connect.tachograph.dd.v1.HolderName
-	13, // 11: wayplatform.connect.tachograph.vu.v1.Activities.CardIWRecord.full_card_number:type_name -> wayplatform.connect.tachograph.dd.v1.FullCardNumber
+	13, // 11: wayplatform.connect.tachograph.vu.v1.Activities.CardIWRecord.full_card_number_and_generation:type_name -> wayplatform.connect.tachograph.dd.v1.FullCardNumberAndGeneration
 	14, // 12: wayplatform.connect.tachograph.vu.v1.Activities.CardIWRecord.card_expiry_date:type_name -> wayplatform.connect.tachograph.dd.v1.Date
 	10, // 13: wayplatform.connect.tachograph.vu.v1.Activities.CardIWRecord.card_insertion_time:type_name -> google.protobuf.Timestamp
 	15, // 14: wayplatform.connect.tachograph.vu.v1.Activities.CardIWRecord.card_slot_number:type_name -> wayplatform.connect.tachograph.dd.v1.CardSlotNumber
@@ -2041,22 +2085,24 @@ var file_wayplatform_connect_tachograph_vu_v1_activities_proto_depIdxs = []int32
 	19, // 22: wayplatform.connect.tachograph.vu.v1.Activities.GnssRecord.authentication_status:type_name -> wayplatform.connect.tachograph.dd.v1.PositionAuthenticationStatus
 	10, // 23: wayplatform.connect.tachograph.vu.v1.Activities.SpecificConditionRecord.entry_time:type_name -> google.protobuf.Timestamp
 	20, // 24: wayplatform.connect.tachograph.vu.v1.Activities.SpecificConditionRecord.specific_condition_type:type_name -> wayplatform.connect.tachograph.dd.v1.SpecificConditionType
-	13, // 25: wayplatform.connect.tachograph.vu.v1.Activities.BorderCrossingRecord.full_card_number:type_name -> wayplatform.connect.tachograph.dd.v1.FullCardNumber
-	8,  // 26: wayplatform.connect.tachograph.vu.v1.Activities.BorderCrossingRecord.card_generation:type_name -> wayplatform.connect.tachograph.dd.v1.Generation
+	13, // 25: wayplatform.connect.tachograph.vu.v1.Activities.BorderCrossingRecord.card_number_driver_slot:type_name -> wayplatform.connect.tachograph.dd.v1.FullCardNumberAndGeneration
+	13, // 26: wayplatform.connect.tachograph.vu.v1.Activities.BorderCrossingRecord.card_number_codriver_slot:type_name -> wayplatform.connect.tachograph.dd.v1.FullCardNumberAndGeneration
 	17, // 27: wayplatform.connect.tachograph.vu.v1.Activities.BorderCrossingRecord.country_left:type_name -> wayplatform.connect.tachograph.dd.v1.NationNumeric
 	17, // 28: wayplatform.connect.tachograph.vu.v1.Activities.BorderCrossingRecord.country_entered:type_name -> wayplatform.connect.tachograph.dd.v1.NationNumeric
 	3,  // 29: wayplatform.connect.tachograph.vu.v1.Activities.BorderCrossingRecord.place_record:type_name -> wayplatform.connect.tachograph.vu.v1.Activities.GnssRecord
-	13, // 30: wayplatform.connect.tachograph.vu.v1.Activities.LoadUnloadRecord.full_card_number:type_name -> wayplatform.connect.tachograph.dd.v1.FullCardNumber
-	8,  // 31: wayplatform.connect.tachograph.vu.v1.Activities.LoadUnloadRecord.card_generation:type_name -> wayplatform.connect.tachograph.dd.v1.Generation
-	21, // 32: wayplatform.connect.tachograph.vu.v1.Activities.LoadUnloadRecord.operation_type:type_name -> wayplatform.connect.tachograph.dd.v1.OperationType
-	3,  // 33: wayplatform.connect.tachograph.vu.v1.Activities.LoadUnloadRecord.place_record:type_name -> wayplatform.connect.tachograph.vu.v1.Activities.GnssRecord
-	22, // 34: wayplatform.connect.tachograph.vu.v1.Activities.CardIWRecord.PreviousVehicleInfo.vehicle_registration:type_name -> wayplatform.connect.tachograph.dd.v1.VehicleRegistrationIdentification
-	10, // 35: wayplatform.connect.tachograph.vu.v1.Activities.CardIWRecord.PreviousVehicleInfo.card_withdrawal_time:type_name -> google.protobuf.Timestamp
-	36, // [36:36] is the sub-list for method output_type
-	36, // [36:36] is the sub-list for method input_type
-	36, // [36:36] is the sub-list for extension type_name
-	36, // [36:36] is the sub-list for extension extendee
-	0,  // [0:36] is the sub-list for field type_name
+	10, // 30: wayplatform.connect.tachograph.vu.v1.Activities.LoadUnloadRecord.timestamp:type_name -> google.protobuf.Timestamp
+	21, // 31: wayplatform.connect.tachograph.vu.v1.Activities.LoadUnloadRecord.operation_type:type_name -> wayplatform.connect.tachograph.dd.v1.OperationType
+	13, // 32: wayplatform.connect.tachograph.vu.v1.Activities.LoadUnloadRecord.card_number_driver_slot:type_name -> wayplatform.connect.tachograph.dd.v1.FullCardNumberAndGeneration
+	13, // 33: wayplatform.connect.tachograph.vu.v1.Activities.LoadUnloadRecord.card_number_codriver_slot:type_name -> wayplatform.connect.tachograph.dd.v1.FullCardNumberAndGeneration
+	3,  // 34: wayplatform.connect.tachograph.vu.v1.Activities.LoadUnloadRecord.place_record:type_name -> wayplatform.connect.tachograph.vu.v1.Activities.GnssRecord
+	22, // 35: wayplatform.connect.tachograph.vu.v1.Activities.CardIWRecord.PreviousVehicleInfo.vehicle_registration:type_name -> wayplatform.connect.tachograph.dd.v1.VehicleRegistrationIdentification
+	10, // 36: wayplatform.connect.tachograph.vu.v1.Activities.CardIWRecord.PreviousVehicleInfo.card_withdrawal_time:type_name -> google.protobuf.Timestamp
+	8,  // 37: wayplatform.connect.tachograph.vu.v1.Activities.CardIWRecord.PreviousVehicleInfo.vu_generation:type_name -> wayplatform.connect.tachograph.dd.v1.Generation
+	38, // [38:38] is the sub-list for method output_type
+	38, // [38:38] is the sub-list for method input_type
+	38, // [38:38] is the sub-list for extension type_name
+	38, // [38:38] is the sub-list for extension extendee
+	0,  // [0:38] is the sub-list for field type_name
 }
 
 func init() { file_wayplatform_connect_tachograph_vu_v1_activities_proto_init() }

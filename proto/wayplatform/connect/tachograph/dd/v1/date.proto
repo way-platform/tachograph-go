@@ -6,22 +6,31 @@ package wayplatform.connect.tachograph.dd.v1;
 // renamed to `Date` for simplicity. This is a BCD-encoded date representation
 // of the format `yyyymmdd`.
 //
+// This message preserves the original raw byte representation for round-trip
+// data fidelity while also providing convenient decoded integer fields for ease
+// of use by consumers.
+//
 // ASN.1 Definition:
 //
 //     Datef ::= OCTET STRING (SIZE(4))
 message Date {
+  // The raw, original BCD-encoded bytes for the date (`yyyymmdd`).
+  // This field is the source of truth and should always be used when marshalling
+  // the data back to its binary format to ensure perfect fidelity.
+  bytes encoded = 4;
+
   // The decoded year.
-  // Decoded from the first two bytes of the BCD octet string.
-  // Example: a value of 2023 is encoded as 0x20 0x23.
+  // This field is provided for consumer convenience and should be treated as a
+  // read-only, derived value.
   int32 year = 1;
 
   // The decoded month.
-  // Decoded from the third byte of the BCD octet string.
-  // Example: a value of 12 (December) is encoded as 0x12.
+  // This field is provided for consumer convenience and should be treated as a
+  // read-only, derived value.
   int32 month = 2;
 
   // The decoded day.
-  // Decoded from the fourth byte of the BCD octet string.
-  // Example: a value of 31 is encoded as 0x31.
+  // This field is provided for consumer convenience and should be treated as a
+  // read-only, derived value.
   int32 day = 3;
 }

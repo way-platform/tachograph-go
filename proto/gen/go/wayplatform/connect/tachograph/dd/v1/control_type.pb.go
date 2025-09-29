@@ -20,7 +20,10 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// Represents the activities carried out during a control.
+// Represents the activities carried out during a control, decoded from a bitmask.
+//
+// This message preserves the original raw byte for round-trip data fidelity
+// while also providing convenient boolean fields for ease of use by consumers.
 //
 // See Data Dictionary, Section 2.53.
 //
@@ -37,6 +40,7 @@ const (
 // - 'xxx': RFU
 type ControlType struct {
 	state                          protoimpl.MessageState `protogen:"opaque.v1"`
+	xxx_hidden_RawValue            []byte                 `protobuf:"bytes,6,opt,name=raw_value,json=rawValue,proto3"`
 	xxx_hidden_CardDownloading     bool                   `protobuf:"varint,1,opt,name=card_downloading,json=cardDownloading,proto3"`
 	xxx_hidden_VuDownloading       bool                   `protobuf:"varint,2,opt,name=vu_downloading,json=vuDownloading,proto3"`
 	xxx_hidden_Printing            bool                   `protobuf:"varint,3,opt,name=printing,proto3"`
@@ -69,6 +73,13 @@ func (x *ControlType) ProtoReflect() protoreflect.Message {
 		return ms
 	}
 	return mi.MessageOf(x)
+}
+
+func (x *ControlType) GetRawValue() []byte {
+	if x != nil {
+		return x.xxx_hidden_RawValue
+	}
+	return nil
 }
 
 func (x *ControlType) GetCardDownloading() bool {
@@ -106,6 +117,13 @@ func (x *ControlType) GetCalibrationChecking() bool {
 	return false
 }
 
+func (x *ControlType) SetRawValue(v []byte) {
+	if v == nil {
+		v = []byte{}
+	}
+	x.xxx_hidden_RawValue = v
+}
+
 func (x *ControlType) SetCardDownloading(v bool) {
 	x.xxx_hidden_CardDownloading = v
 }
@@ -129,15 +147,24 @@ func (x *ControlType) SetCalibrationChecking(v bool) {
 type ControlType_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
+	// The raw, original byte representing the bitmask. This field is the source
+	// of truth and should be used for any serialization operations to ensure
+	// perfect data fidelity, including the preservation of reserved bits.
+	RawValue []byte
 	// Indicates if the card was downloaded during the control (bit 'c').
+	// This is a convenience field derived from `raw_value`.
 	CardDownloading bool
 	// Indicates if the VU was downloaded during the control (bit 'v').
+	// This is a convenience field derived from `raw_value`.
 	VuDownloading bool
 	// Indicates if a printout was made during the control (bit 'p').
+	// This is a convenience field derived from `raw_value`.
 	Printing bool
 	// Indicates if the display was used during the control (bit 'd').
+	// This is a convenience field derived from `raw_value`.
 	Display bool
 	// Indicates if calibration parameters were checked (Gen2+ only) (bit 'e').
+	// This is a convenience field derived from `raw_value`.
 	CalibrationChecking bool
 }
 
@@ -145,6 +172,7 @@ func (b0 ControlType_builder) Build() *ControlType {
 	m0 := &ControlType{}
 	b, x := &b0, m0
 	_, _ = b, x
+	x.xxx_hidden_RawValue = b.RawValue
 	x.xxx_hidden_CardDownloading = b.CardDownloading
 	x.xxx_hidden_VuDownloading = b.VuDownloading
 	x.xxx_hidden_Printing = b.Printing
@@ -157,8 +185,9 @@ var File_wayplatform_connect_tachograph_dd_v1_control_type_proto protoreflect.Fi
 
 const file_wayplatform_connect_tachograph_dd_v1_control_type_proto_rawDesc = "" +
 	"\n" +
-	"7wayplatform/connect/tachograph/dd/v1/control_type.proto\x12$wayplatform.connect.tachograph.dd.v1\"\xc8\x01\n" +
-	"\vControlType\x12)\n" +
+	"7wayplatform/connect/tachograph/dd/v1/control_type.proto\x12$wayplatform.connect.tachograph.dd.v1\"\xe5\x01\n" +
+	"\vControlType\x12\x1b\n" +
+	"\traw_value\x18\x06 \x01(\fR\brawValue\x12)\n" +
 	"\x10card_downloading\x18\x01 \x01(\bR\x0fcardDownloading\x12%\n" +
 	"\x0evu_downloading\x18\x02 \x01(\bR\rvuDownloading\x12\x1a\n" +
 	"\bprinting\x18\x03 \x01(\bR\bprinting\x12\x18\n" +

@@ -404,7 +404,12 @@ func appendOverviewGen1(buf *bytes.Buffer, overview *vuv1.Overview) {
 		} else {
 			buf.Write(appendVuString(nil, "", 36))
 		}
-		buf.Write(appendVuFullCardNumber(nil, lock.GetCompanyCardNumber(), 16)) // Card number field
+		companyCardNumberAndGeneration := lock.GetCompanyCardNumberAndGeneration()
+		var companyCardNumber *ddv1.FullCardNumber
+		if companyCardNumberAndGeneration != nil {
+			companyCardNumber = companyCardNumberAndGeneration.GetFullCardNumber()
+		}
+		buf.Write(appendVuFullCardNumber(nil, companyCardNumber, 16)) // Card number field
 	}
 
 	// VuControlActivityData - variable length
@@ -434,7 +439,12 @@ func appendOverviewGen1(buf *bytes.Buffer, overview *vuv1.Overview) {
 			buf.WriteByte(0)
 		}
 		buf.Write(appendVuTimeReal(nil, control.GetControlTime()))
-		buf.Write(appendVuFullCardNumber(nil, control.GetControlCardNumber(), 16))
+		controlCardNumberAndGeneration := control.GetControlCardNumberAndGeneration()
+		var controlCardNumber *ddv1.FullCardNumber
+		if controlCardNumberAndGeneration != nil {
+			controlCardNumber = controlCardNumberAndGeneration.GetFullCardNumber()
+		}
+		buf.Write(appendVuFullCardNumber(nil, controlCardNumber, 16))
 		buf.Write(appendVuTimeReal(nil, control.GetDownloadPeriodBeginTime()))
 		buf.Write(appendVuTimeReal(nil, control.GetDownloadPeriodEndTime()))
 	}

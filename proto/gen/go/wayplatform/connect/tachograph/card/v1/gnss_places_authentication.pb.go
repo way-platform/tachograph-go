@@ -243,15 +243,17 @@ type GnssPlacesAuthentication_Record_builder struct {
 	Timestamp *timestamppb.Timestamp
 	// Authentication status of the position.
 	//
-	// See Data Dictionary, Section 2.117a, `PositionAuthenticationStatus`.
+	// See Data Dictionary, Section 2.117a.
+	//
 	// ASN.1 Definition:
 	//
-	//	PositionAuthenticationStatus ::= INTEGER {
-	//	    notAvailable(0),
-	//	    authenticated(1),
-	//	    notAuthenticated(2),
-	//	    authenticationCorrupted(3)
-	//	} (0..255)
+	//	PositionAuthenticationStatus ::= OCTET STRING (SIZE(1))
+	//
+	// Value assignment:
+	//
+	//	'00'H: Not Authenticated
+	//	'01'H: Authenticated
+	//	'02'H-'FF'H: RFU
 	AuthenticationStatus *v1.PositionAuthenticationStatus
 }
 

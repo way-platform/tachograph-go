@@ -10,9 +10,13 @@ import "wayplatform/connect/tachograph/dd/v1/annotations.proto";
 //
 // ASN.1 Definition:
 //
-//     LoadType ::= INTEGER {
-//         not-defined(0), passengers(1), goods(2)
-//     } (0..255)
+//     LoadType ::= OCTET STRING (SIZE(1))
+//
+//     Value assignment:
+//         - 00H: Undefined load type
+//         - 01H: Goods
+//         - 02H: Passengers
+//         - 03H..FFH: RFU
 enum LoadType {
   // The load type is not specified.
   LOAD_TYPE_UNSPECIFIED = 0;
@@ -23,9 +27,9 @@ enum LoadType {
   // The load type is not defined.
   NOT_DEFINED = 2 [(protocol_enum_value) = 0];
 
-  // The vehicle is carrying passengers.
-  PASSENGERS = 3 [(protocol_enum_value) = 1];
-
   // The vehicle is carrying goods.
-  GOODS = 4 [(protocol_enum_value) = 2];
+  GOODS = 3 [(protocol_enum_value) = 1];
+
+  // The vehicle is carrying passengers.
+  PASSENGERS = 4 [(protocol_enum_value) = 2];
 }

@@ -22,6 +22,24 @@ const (
 
 // EntryTypeDailyWorkPeriod distinguishes between begin and end of a work period.
 // See Data Dictionary, Section 2.66.
+//
+// ASN.1 Definition (Gen1):
+//
+//	EntryTypeDailyWorkPeriod ::= INTEGER {
+//	    begin (0),
+//	    end (1)
+//	} (0..255)
+//
+// ASN.1 Definition (Gen2):
+//
+//	EntryTypeDailyWorkPeriod ::= INTEGER {
+//	    begin (0),
+//	    end (1),
+//	    beginGNSS (2),
+//	    endGNSS (3),
+//	    beginITS (4),
+//	    endITS (5)
+//	} (0..255)
 type EntryTypeDailyWorkPeriod int32
 
 const (
@@ -29,8 +47,10 @@ const (
 	EntryTypeDailyWorkPeriod_ENTRY_TYPE_DAILY_WORK_PERIOD_UNRECOGNIZED EntryTypeDailyWorkPeriod = 1
 	EntryTypeDailyWorkPeriod_BEGIN                                     EntryTypeDailyWorkPeriod = 2
 	EntryTypeDailyWorkPeriod_END                                       EntryTypeDailyWorkPeriod = 3
-	EntryTypeDailyWorkPeriod_RELATED_TO_GNSS                           EntryTypeDailyWorkPeriod = 4 // Gen2
-	EntryTypeDailyWorkPeriod_RELATED_TO_ITS                            EntryTypeDailyWorkPeriod = 5 // Gen2
+	EntryTypeDailyWorkPeriod_BEGIN_GNSS                                EntryTypeDailyWorkPeriod = 4 // Gen2
+	EntryTypeDailyWorkPeriod_END_GNSS                                  EntryTypeDailyWorkPeriod = 5 // Gen2
+	EntryTypeDailyWorkPeriod_BEGIN_ITS                                 EntryTypeDailyWorkPeriod = 6 // Gen2
+	EntryTypeDailyWorkPeriod_END_ITS                                   EntryTypeDailyWorkPeriod = 7 // Gen2
 )
 
 // Enum value maps for EntryTypeDailyWorkPeriod.
@@ -40,16 +60,20 @@ var (
 		1: "ENTRY_TYPE_DAILY_WORK_PERIOD_UNRECOGNIZED",
 		2: "BEGIN",
 		3: "END",
-		4: "RELATED_TO_GNSS",
-		5: "RELATED_TO_ITS",
+		4: "BEGIN_GNSS",
+		5: "END_GNSS",
+		6: "BEGIN_ITS",
+		7: "END_ITS",
 	}
 	EntryTypeDailyWorkPeriod_value = map[string]int32{
 		"ENTRY_TYPE_DAILY_WORK_PERIOD_UNSPECIFIED":  0,
 		"ENTRY_TYPE_DAILY_WORK_PERIOD_UNRECOGNIZED": 1,
-		"BEGIN":           2,
-		"END":             3,
-		"RELATED_TO_GNSS": 4,
-		"RELATED_TO_ITS":  5,
+		"BEGIN":      2,
+		"END":        3,
+		"BEGIN_GNSS": 4,
+		"END_GNSS":   5,
+		"BEGIN_ITS":  6,
+		"END_ITS":    7,
 	}
 )
 
@@ -79,14 +103,17 @@ var File_wayplatform_connect_tachograph_dd_v1_entry_type_daily_work_period_proto
 
 const file_wayplatform_connect_tachograph_dd_v1_entry_type_daily_work_period_proto_rawDesc = "" +
 	"\n" +
-	"Gwayplatform/connect/tachograph/dd/v1/entry_type_daily_work_period.proto\x12$wayplatform.connect.tachograph.dd.v1\x1a6wayplatform/connect/tachograph/dd/v1/annotations.proto*\xd0\x01\n" +
+	"Gwayplatform/connect/tachograph/dd/v1/entry_type_daily_work_period.proto\x12$wayplatform.connect.tachograph.dd.v1\x1a6wayplatform/connect/tachograph/dd/v1/annotations.proto*\xef\x01\n" +
 	"\x18EntryTypeDailyWorkPeriod\x12,\n" +
 	"(ENTRY_TYPE_DAILY_WORK_PERIOD_UNSPECIFIED\x10\x00\x12-\n" +
 	")ENTRY_TYPE_DAILY_WORK_PERIOD_UNRECOGNIZED\x10\x01\x12\x10\n" +
 	"\x05BEGIN\x10\x02\x1a\x05\x98\xaf\x9c\x02\x00\x12\x0e\n" +
-	"\x03END\x10\x03\x1a\x05\x98\xaf\x9c\x02\x01\x12\x1a\n" +
-	"\x0fRELATED_TO_GNSS\x10\x04\x1a\x05\x98\xaf\x9c\x02\x02\x12\x19\n" +
-	"\x0eRELATED_TO_ITS\x10\x05\x1a\x05\x98\xaf\x9c\x02\x03B\xdc\x02\n" +
+	"\x03END\x10\x03\x1a\x05\x98\xaf\x9c\x02\x01\x12\x15\n" +
+	"\n" +
+	"BEGIN_GNSS\x10\x04\x1a\x05\x98\xaf\x9c\x02\x02\x12\x13\n" +
+	"\bEND_GNSS\x10\x05\x1a\x05\x98\xaf\x9c\x02\x03\x12\x14\n" +
+	"\tBEGIN_ITS\x10\x06\x1a\x05\x98\xaf\x9c\x02\x04\x12\x12\n" +
+	"\aEND_ITS\x10\a\x1a\x05\x98\xaf\x9c\x02\x05B\xdc\x02\n" +
 	"(com.wayplatform.connect.tachograph.dd.v1B\x1dEntryTypeDailyWorkPeriodProtoP\x01Z\\github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1;ddv1\xa2\x02\x04WCTD\xaa\x02$Wayplatform.Connect.Tachograph.Dd.V1\xca\x02$Wayplatform\\Connect\\Tachograph\\Dd\\V1\xe2\x020Wayplatform\\Connect\\Tachograph\\Dd\\V1\\GPBMetadata\xea\x02(Wayplatform::Connect::Tachograph::Dd::V1b\beditionsp\xe8\a"
 
 var file_wayplatform_connect_tachograph_dd_v1_entry_type_daily_work_period_proto_enumTypes = make([]protoimpl.EnumInfo, 1)

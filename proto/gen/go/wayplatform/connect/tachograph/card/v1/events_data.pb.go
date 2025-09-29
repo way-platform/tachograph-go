@@ -25,25 +25,41 @@ const (
 // Represents the content of the EF_Events_Data file, which contains a log of
 // events related to the tachograph system.
 //
-// The file structure is specified in Appendix 2, Section 4.2.1.
+// The file structure is specified in Appendix 2.
 //
-//	EF Events_Data
-//	└─CardEventData
-//
-// The data type `CardEventData` is specified in the Data Dictionary, Section 2.19.
-//
-// ASN.1 Definition:
+// ASN.1 Definition (Gen1):
 //
 //	CardEventData ::= SEQUENCE (SIZE(6)) OF
 //	    cardEventRecords SET SIZE(NoOfEventsPerType) OF CardEventRecord
+//
+// ASN.1 Definition (Gen2):
+//
+//	CardEventData ::= SEQUENCE (SIZE(11)) OF
+//	    cardEventRecords SET SIZE(NoOfEventsPerType) OF CardEventRecord
+//
+// The sequence contains 6 (Gen1) or 11 (Gen2) sets of records, ordered by
+// Event-FaultType. The protobuf message maps these to the named repeated fields
+// below. For Gen1 data, fields 7-11 will be empty. The last set in each
+// generation (`security_and_other_events`) contains security breach attempts
+// and other remaining events.
 type EventsData struct {
-	state                  protoimpl.MessageState `protogen:"opaque.v1"`
-	xxx_hidden_Records     *[]*EventsData_Record  `protobuf:"bytes,1,rep,name=records"`
-	xxx_hidden_Signature   []byte                 `protobuf:"bytes,2,opt,name=signature"`
-	XXX_raceDetectHookData protoimpl.RaceDetectHookData
-	XXX_presence           [1]uint32
-	unknownFields          protoimpl.UnknownFields
-	sizeCache              protoimpl.SizeCache
+	state                                              protoimpl.MessageState `protogen:"opaque.v1"`
+	xxx_hidden_InsertionOfNonValidCardEvents           *[]*EventsData_Record  `protobuf:"bytes,1,rep,name=insertion_of_non_valid_card_events,json=insertionOfNonValidCardEvents"`
+	xxx_hidden_CardConflictEvents                      *[]*EventsData_Record  `protobuf:"bytes,2,rep,name=card_conflict_events,json=cardConflictEvents"`
+	xxx_hidden_TimeOverlapEvents                       *[]*EventsData_Record  `protobuf:"bytes,3,rep,name=time_overlap_events,json=timeOverlapEvents"`
+	xxx_hidden_DrivingWithoutAppropriateCardEvents     *[]*EventsData_Record  `protobuf:"bytes,4,rep,name=driving_without_appropriate_card_events,json=drivingWithoutAppropriateCardEvents"`
+	xxx_hidden_CardInsertionWhileDrivingEvents         *[]*EventsData_Record  `protobuf:"bytes,5,rep,name=card_insertion_while_driving_events,json=cardInsertionWhileDrivingEvents"`
+	xxx_hidden_LastCardSessionNotCorrectlyClosedEvents *[]*EventsData_Record  `protobuf:"bytes,6,rep,name=last_card_session_not_correctly_closed_events,json=lastCardSessionNotCorrectlyClosedEvents"`
+	xxx_hidden_OverSpeedingEvents                      *[]*EventsData_Record  `protobuf:"bytes,7,rep,name=over_speeding_events,json=overSpeedingEvents"`
+	xxx_hidden_PowerSupplyInterruptionEvents           *[]*EventsData_Record  `protobuf:"bytes,8,rep,name=power_supply_interruption_events,json=powerSupplyInterruptionEvents"`
+	xxx_hidden_MotionDataErrorEvents                   *[]*EventsData_Record  `protobuf:"bytes,9,rep,name=motion_data_error_events,json=motionDataErrorEvents"`
+	xxx_hidden_VehicleMotionConflictEvents             *[]*EventsData_Record  `protobuf:"bytes,10,rep,name=vehicle_motion_conflict_events,json=vehicleMotionConflictEvents"`
+	xxx_hidden_SecurityAndOtherEvents                  *[]*EventsData_Record  `protobuf:"bytes,11,rep,name=security_and_other_events,json=securityAndOtherEvents"`
+	xxx_hidden_Signature                               []byte                 `protobuf:"bytes,12,opt,name=signature"`
+	XXX_raceDetectHookData                             protoimpl.RaceDetectHookData
+	XXX_presence                                       [1]uint32
+	unknownFields                                      protoimpl.UnknownFields
+	sizeCache                                          protoimpl.SizeCache
 }
 
 func (x *EventsData) Reset() {
@@ -71,10 +87,100 @@ func (x *EventsData) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-func (x *EventsData) GetRecords() []*EventsData_Record {
+func (x *EventsData) GetInsertionOfNonValidCardEvents() []*EventsData_Record {
 	if x != nil {
-		if x.xxx_hidden_Records != nil {
-			return *x.xxx_hidden_Records
+		if x.xxx_hidden_InsertionOfNonValidCardEvents != nil {
+			return *x.xxx_hidden_InsertionOfNonValidCardEvents
+		}
+	}
+	return nil
+}
+
+func (x *EventsData) GetCardConflictEvents() []*EventsData_Record {
+	if x != nil {
+		if x.xxx_hidden_CardConflictEvents != nil {
+			return *x.xxx_hidden_CardConflictEvents
+		}
+	}
+	return nil
+}
+
+func (x *EventsData) GetTimeOverlapEvents() []*EventsData_Record {
+	if x != nil {
+		if x.xxx_hidden_TimeOverlapEvents != nil {
+			return *x.xxx_hidden_TimeOverlapEvents
+		}
+	}
+	return nil
+}
+
+func (x *EventsData) GetDrivingWithoutAppropriateCardEvents() []*EventsData_Record {
+	if x != nil {
+		if x.xxx_hidden_DrivingWithoutAppropriateCardEvents != nil {
+			return *x.xxx_hidden_DrivingWithoutAppropriateCardEvents
+		}
+	}
+	return nil
+}
+
+func (x *EventsData) GetCardInsertionWhileDrivingEvents() []*EventsData_Record {
+	if x != nil {
+		if x.xxx_hidden_CardInsertionWhileDrivingEvents != nil {
+			return *x.xxx_hidden_CardInsertionWhileDrivingEvents
+		}
+	}
+	return nil
+}
+
+func (x *EventsData) GetLastCardSessionNotCorrectlyClosedEvents() []*EventsData_Record {
+	if x != nil {
+		if x.xxx_hidden_LastCardSessionNotCorrectlyClosedEvents != nil {
+			return *x.xxx_hidden_LastCardSessionNotCorrectlyClosedEvents
+		}
+	}
+	return nil
+}
+
+func (x *EventsData) GetOverSpeedingEvents() []*EventsData_Record {
+	if x != nil {
+		if x.xxx_hidden_OverSpeedingEvents != nil {
+			return *x.xxx_hidden_OverSpeedingEvents
+		}
+	}
+	return nil
+}
+
+func (x *EventsData) GetPowerSupplyInterruptionEvents() []*EventsData_Record {
+	if x != nil {
+		if x.xxx_hidden_PowerSupplyInterruptionEvents != nil {
+			return *x.xxx_hidden_PowerSupplyInterruptionEvents
+		}
+	}
+	return nil
+}
+
+func (x *EventsData) GetMotionDataErrorEvents() []*EventsData_Record {
+	if x != nil {
+		if x.xxx_hidden_MotionDataErrorEvents != nil {
+			return *x.xxx_hidden_MotionDataErrorEvents
+		}
+	}
+	return nil
+}
+
+func (x *EventsData) GetVehicleMotionConflictEvents() []*EventsData_Record {
+	if x != nil {
+		if x.xxx_hidden_VehicleMotionConflictEvents != nil {
+			return *x.xxx_hidden_VehicleMotionConflictEvents
+		}
+	}
+	return nil
+}
+
+func (x *EventsData) GetSecurityAndOtherEvents() []*EventsData_Record {
+	if x != nil {
+		if x.xxx_hidden_SecurityAndOtherEvents != nil {
+			return *x.xxx_hidden_SecurityAndOtherEvents
 		}
 	}
 	return nil
@@ -87,8 +193,48 @@ func (x *EventsData) GetSignature() []byte {
 	return nil
 }
 
-func (x *EventsData) SetRecords(v []*EventsData_Record) {
-	x.xxx_hidden_Records = &v
+func (x *EventsData) SetInsertionOfNonValidCardEvents(v []*EventsData_Record) {
+	x.xxx_hidden_InsertionOfNonValidCardEvents = &v
+}
+
+func (x *EventsData) SetCardConflictEvents(v []*EventsData_Record) {
+	x.xxx_hidden_CardConflictEvents = &v
+}
+
+func (x *EventsData) SetTimeOverlapEvents(v []*EventsData_Record) {
+	x.xxx_hidden_TimeOverlapEvents = &v
+}
+
+func (x *EventsData) SetDrivingWithoutAppropriateCardEvents(v []*EventsData_Record) {
+	x.xxx_hidden_DrivingWithoutAppropriateCardEvents = &v
+}
+
+func (x *EventsData) SetCardInsertionWhileDrivingEvents(v []*EventsData_Record) {
+	x.xxx_hidden_CardInsertionWhileDrivingEvents = &v
+}
+
+func (x *EventsData) SetLastCardSessionNotCorrectlyClosedEvents(v []*EventsData_Record) {
+	x.xxx_hidden_LastCardSessionNotCorrectlyClosedEvents = &v
+}
+
+func (x *EventsData) SetOverSpeedingEvents(v []*EventsData_Record) {
+	x.xxx_hidden_OverSpeedingEvents = &v
+}
+
+func (x *EventsData) SetPowerSupplyInterruptionEvents(v []*EventsData_Record) {
+	x.xxx_hidden_PowerSupplyInterruptionEvents = &v
+}
+
+func (x *EventsData) SetMotionDataErrorEvents(v []*EventsData_Record) {
+	x.xxx_hidden_MotionDataErrorEvents = &v
+}
+
+func (x *EventsData) SetVehicleMotionConflictEvents(v []*EventsData_Record) {
+	x.xxx_hidden_VehicleMotionConflictEvents = &v
+}
+
+func (x *EventsData) SetSecurityAndOtherEvents(v []*EventsData_Record) {
+	x.xxx_hidden_SecurityAndOtherEvents = &v
 }
 
 func (x *EventsData) SetSignature(v []byte) {
@@ -96,27 +242,46 @@ func (x *EventsData) SetSignature(v []byte) {
 		v = []byte{}
 	}
 	x.xxx_hidden_Signature = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 2)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 11, 12)
 }
 
 func (x *EventsData) HasSignature() bool {
 	if x == nil {
 		return false
 	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 1)
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 11)
 }
 
 func (x *EventsData) ClearSignature() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 1)
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 11)
 	x.xxx_hidden_Signature = nil
 }
 
 type EventsData_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
-	// The set of event records.
-	// Corresponds to `cardEventRecords`.
-	Records []*EventsData_Record
+	// Set 1: Insertion of a non-valid card.
+	InsertionOfNonValidCardEvents []*EventsData_Record
+	// Set 2: Card conflict.
+	CardConflictEvents []*EventsData_Record
+	// Set 3: Time overlap.
+	TimeOverlapEvents []*EventsData_Record
+	// Set 4: Driving without an appropriate card.
+	DrivingWithoutAppropriateCardEvents []*EventsData_Record
+	// Set 5: Card insertion while driving.
+	CardInsertionWhileDrivingEvents []*EventsData_Record
+	// Set 6: Last card session not correctly closed.
+	LastCardSessionNotCorrectlyClosedEvents []*EventsData_Record
+	// Set 7: Over speeding. (Gen2+)
+	OverSpeedingEvents []*EventsData_Record
+	// Set 8: Power supply interruption. (Gen2+)
+	PowerSupplyInterruptionEvents []*EventsData_Record
+	// Set 9: Motion data error. (Gen2+)
+	MotionDataErrorEvents []*EventsData_Record
+	// Set 10: Vehicle Motion Conflict. (Gen2+)
+	VehicleMotionConflictEvents []*EventsData_Record
+	// Set 11: Security breach attempts and other events.
+	SecurityAndOtherEvents []*EventsData_Record
 	// Digital signature for the EF_Events_Data file content.
 	//
 	// See Data Dictionary, Section 2.149, `Signature`.
@@ -130,9 +295,19 @@ func (b0 EventsData_builder) Build() *EventsData {
 	m0 := &EventsData{}
 	b, x := &b0, m0
 	_, _ = b, x
-	x.xxx_hidden_Records = &b.Records
+	x.xxx_hidden_InsertionOfNonValidCardEvents = &b.InsertionOfNonValidCardEvents
+	x.xxx_hidden_CardConflictEvents = &b.CardConflictEvents
+	x.xxx_hidden_TimeOverlapEvents = &b.TimeOverlapEvents
+	x.xxx_hidden_DrivingWithoutAppropriateCardEvents = &b.DrivingWithoutAppropriateCardEvents
+	x.xxx_hidden_CardInsertionWhileDrivingEvents = &b.CardInsertionWhileDrivingEvents
+	x.xxx_hidden_LastCardSessionNotCorrectlyClosedEvents = &b.LastCardSessionNotCorrectlyClosedEvents
+	x.xxx_hidden_OverSpeedingEvents = &b.OverSpeedingEvents
+	x.xxx_hidden_PowerSupplyInterruptionEvents = &b.PowerSupplyInterruptionEvents
+	x.xxx_hidden_MotionDataErrorEvents = &b.MotionDataErrorEvents
+	x.xxx_hidden_VehicleMotionConflictEvents = &b.VehicleMotionConflictEvents
+	x.xxx_hidden_SecurityAndOtherEvents = &b.SecurityAndOtherEvents
 	if b.Signature != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 2)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 11, 12)
 		x.xxx_hidden_Signature = b.Signature
 	}
 	return m0
@@ -398,11 +573,22 @@ var File_wayplatform_connect_tachograph_card_v1_events_data_proto protoreflect.F
 
 const file_wayplatform_connect_tachograph_card_v1_events_data_proto_rawDesc = "" +
 	"\n" +
-	"8wayplatform/connect/tachograph/card/v1/events_data.proto\x12&wayplatform.connect.tachograph.card.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a;wayplatform/connect/tachograph/dd/v1/event_fault_type.proto\x1aNwayplatform/connect/tachograph/dd/v1/vehicle_registration_identification.proto\"\xa0\x04\n" +
+	"8wayplatform/connect/tachograph/card/v1/events_data.proto\x12&wayplatform.connect.tachograph.card.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a;wayplatform/connect/tachograph/dd/v1/event_fault_type.proto\x1aNwayplatform/connect/tachograph/dd/v1/vehicle_registration_identification.proto\"\xbe\x0e\n" +
 	"\n" +
-	"EventsData\x12S\n" +
-	"\arecords\x18\x01 \x03(\v29.wayplatform.connect.tachograph.card.v1.EventsData.RecordR\arecords\x12\x1c\n" +
-	"\tsignature\x18\x02 \x01(\fR\tsignature\x1a\x9e\x03\n" +
+	"EventsData\x12\x84\x01\n" +
+	"\"insertion_of_non_valid_card_events\x18\x01 \x03(\v29.wayplatform.connect.tachograph.card.v1.EventsData.RecordR\x1dinsertionOfNonValidCardEvents\x12k\n" +
+	"\x14card_conflict_events\x18\x02 \x03(\v29.wayplatform.connect.tachograph.card.v1.EventsData.RecordR\x12cardConflictEvents\x12i\n" +
+	"\x13time_overlap_events\x18\x03 \x03(\v29.wayplatform.connect.tachograph.card.v1.EventsData.RecordR\x11timeOverlapEvents\x12\x8f\x01\n" +
+	"'driving_without_appropriate_card_events\x18\x04 \x03(\v29.wayplatform.connect.tachograph.card.v1.EventsData.RecordR#drivingWithoutAppropriateCardEvents\x12\x87\x01\n" +
+	"#card_insertion_while_driving_events\x18\x05 \x03(\v29.wayplatform.connect.tachograph.card.v1.EventsData.RecordR\x1fcardInsertionWhileDrivingEvents\x12\x99\x01\n" +
+	"-last_card_session_not_correctly_closed_events\x18\x06 \x03(\v29.wayplatform.connect.tachograph.card.v1.EventsData.RecordR'lastCardSessionNotCorrectlyClosedEvents\x12k\n" +
+	"\x14over_speeding_events\x18\a \x03(\v29.wayplatform.connect.tachograph.card.v1.EventsData.RecordR\x12overSpeedingEvents\x12\x82\x01\n" +
+	" power_supply_interruption_events\x18\b \x03(\v29.wayplatform.connect.tachograph.card.v1.EventsData.RecordR\x1dpowerSupplyInterruptionEvents\x12r\n" +
+	"\x18motion_data_error_events\x18\t \x03(\v29.wayplatform.connect.tachograph.card.v1.EventsData.RecordR\x15motionDataErrorEvents\x12~\n" +
+	"\x1evehicle_motion_conflict_events\x18\n" +
+	" \x03(\v29.wayplatform.connect.tachograph.card.v1.EventsData.RecordR\x1bvehicleMotionConflictEvents\x12t\n" +
+	"\x19security_and_other_events\x18\v \x03(\v29.wayplatform.connect.tachograph.card.v1.EventsData.RecordR\x16securityAndOtherEvents\x12\x1c\n" +
+	"\tsignature\x18\f \x01(\fR\tsignature\x1a\x9e\x03\n" +
 	"\x06Record\x12\x14\n" +
 	"\x05valid\x18\x01 \x01(\bR\x05valid\x12S\n" +
 	"\n" +
@@ -422,16 +608,26 @@ var file_wayplatform_connect_tachograph_card_v1_events_data_proto_goTypes = []an
 	(*v1.VehicleRegistrationIdentification)(nil), // 4: wayplatform.connect.tachograph.dd.v1.VehicleRegistrationIdentification
 }
 var file_wayplatform_connect_tachograph_card_v1_events_data_proto_depIdxs = []int32{
-	1, // 0: wayplatform.connect.tachograph.card.v1.EventsData.records:type_name -> wayplatform.connect.tachograph.card.v1.EventsData.Record
-	2, // 1: wayplatform.connect.tachograph.card.v1.EventsData.Record.event_type:type_name -> wayplatform.connect.tachograph.dd.v1.EventFaultType
-	3, // 2: wayplatform.connect.tachograph.card.v1.EventsData.Record.event_begin_time:type_name -> google.protobuf.Timestamp
-	3, // 3: wayplatform.connect.tachograph.card.v1.EventsData.Record.event_end_time:type_name -> google.protobuf.Timestamp
-	4, // 4: wayplatform.connect.tachograph.card.v1.EventsData.Record.event_vehicle_registration:type_name -> wayplatform.connect.tachograph.dd.v1.VehicleRegistrationIdentification
-	5, // [5:5] is the sub-list for method output_type
-	5, // [5:5] is the sub-list for method input_type
-	5, // [5:5] is the sub-list for extension type_name
-	5, // [5:5] is the sub-list for extension extendee
-	0, // [0:5] is the sub-list for field type_name
+	1,  // 0: wayplatform.connect.tachograph.card.v1.EventsData.insertion_of_non_valid_card_events:type_name -> wayplatform.connect.tachograph.card.v1.EventsData.Record
+	1,  // 1: wayplatform.connect.tachograph.card.v1.EventsData.card_conflict_events:type_name -> wayplatform.connect.tachograph.card.v1.EventsData.Record
+	1,  // 2: wayplatform.connect.tachograph.card.v1.EventsData.time_overlap_events:type_name -> wayplatform.connect.tachograph.card.v1.EventsData.Record
+	1,  // 3: wayplatform.connect.tachograph.card.v1.EventsData.driving_without_appropriate_card_events:type_name -> wayplatform.connect.tachograph.card.v1.EventsData.Record
+	1,  // 4: wayplatform.connect.tachograph.card.v1.EventsData.card_insertion_while_driving_events:type_name -> wayplatform.connect.tachograph.card.v1.EventsData.Record
+	1,  // 5: wayplatform.connect.tachograph.card.v1.EventsData.last_card_session_not_correctly_closed_events:type_name -> wayplatform.connect.tachograph.card.v1.EventsData.Record
+	1,  // 6: wayplatform.connect.tachograph.card.v1.EventsData.over_speeding_events:type_name -> wayplatform.connect.tachograph.card.v1.EventsData.Record
+	1,  // 7: wayplatform.connect.tachograph.card.v1.EventsData.power_supply_interruption_events:type_name -> wayplatform.connect.tachograph.card.v1.EventsData.Record
+	1,  // 8: wayplatform.connect.tachograph.card.v1.EventsData.motion_data_error_events:type_name -> wayplatform.connect.tachograph.card.v1.EventsData.Record
+	1,  // 9: wayplatform.connect.tachograph.card.v1.EventsData.vehicle_motion_conflict_events:type_name -> wayplatform.connect.tachograph.card.v1.EventsData.Record
+	1,  // 10: wayplatform.connect.tachograph.card.v1.EventsData.security_and_other_events:type_name -> wayplatform.connect.tachograph.card.v1.EventsData.Record
+	2,  // 11: wayplatform.connect.tachograph.card.v1.EventsData.Record.event_type:type_name -> wayplatform.connect.tachograph.dd.v1.EventFaultType
+	3,  // 12: wayplatform.connect.tachograph.card.v1.EventsData.Record.event_begin_time:type_name -> google.protobuf.Timestamp
+	3,  // 13: wayplatform.connect.tachograph.card.v1.EventsData.Record.event_end_time:type_name -> google.protobuf.Timestamp
+	4,  // 14: wayplatform.connect.tachograph.card.v1.EventsData.Record.event_vehicle_registration:type_name -> wayplatform.connect.tachograph.dd.v1.VehicleRegistrationIdentification
+	15, // [15:15] is the sub-list for method output_type
+	15, // [15:15] is the sub-list for method input_type
+	15, // [15:15] is the sub-list for extension type_name
+	15, // [15:15] is the sub-list for extension extendee
+	0,  // [0:15] is the sub-list for field type_name
 }
 
 func init() { file_wayplatform_connect_tachograph_card_v1_events_data_proto_init() }

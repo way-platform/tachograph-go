@@ -21,7 +21,8 @@ const (
 )
 
 // Represents a change in driver activity, driving status, or card status.
-// This is a parsed representation of the `ActivityChangeInfo` bitfield.
+// This message preserves the original raw 2-byte bitfield for round-trip data
+// fidelity while also providing convenient decoded fields for ease of use.
 //
 // See Data Dictionary, Section 2.1, `ActivityChangeInfo`.
 //
@@ -29,26 +30,15 @@ const (
 //
 //	ActivityChangeInfo ::= OCTET STRING (SIZE (2))
 //
-// The 2-byte bitfield has the following structure (MSB to LSB for each byte):
-//
-// Byte 1:
-// | Bit 7 | Bit 6 | Bit 5 | Bit 4 | Bit 3 | Bit 2 | Bit 1 | Bit 0 |
-// |-------|-------|-------|-------|-------|-------|-------|-------|
-// |  t(10)|  t(9) |  t(8) |  a(1) |  a(0) |   c   |   p   |   s   |
-//
-// Byte 2:
-// | Bit 7 | Bit 6 | Bit 5 | Bit 4 | Bit 3 | Bit 2 | Bit 1 | Bit 0 |
-// |-------|-------|-------|-------|-------|-------|-------|-------|
-// |  t(7) |  t(6) |  t(5) |  t(4) |  t(3) |  t(2) |  t(1) |  t(0) |
-//
-// Field mapping:
+// The 16-bit field has the following structure: 'scpaattttttttttt'B
 // - s:           Card slot number (1 bit)
-// - p:           Card inserted status (1 bit)
 // - c:           Driving status (1 bit)
-// - a a:         Driver activity (2 bits)
-// - t...t:       Time of change in minutes since midnight (11 bits)
+// - p:           Card inserted status (1 bit)
+// - aa:          Driver activity (2 bits)
+// - ttttttttttt: Time of change in minutes since midnight (11 bits)
 type ActivityChangeInfo struct {
 	state                          protoimpl.MessageState `protogen:"opaque.v1"`
+	xxx_hidden_RawValue            []byte                 `protobuf:"bytes,10,opt,name=raw_value,json=rawValue"`
 	xxx_hidden_Slot                CardSlotNumber         `protobuf:"varint,1,opt,name=slot,enum=wayplatform.connect.tachograph.dd.v1.CardSlotNumber"`
 	xxx_hidden_DrivingStatus       DrivingStatus          `protobuf:"varint,3,opt,name=driving_status,json=drivingStatus,enum=wayplatform.connect.tachograph.dd.v1.DrivingStatus"`
 	xxx_hidden_Inserted            bool                   `protobuf:"varint,5,opt,name=inserted"`
@@ -85,9 +75,16 @@ func (x *ActivityChangeInfo) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
+func (x *ActivityChangeInfo) GetRawValue() []byte {
+	if x != nil {
+		return x.xxx_hidden_RawValue
+	}
+	return nil
+}
+
 func (x *ActivityChangeInfo) GetSlot() CardSlotNumber {
 	if x != nil {
-		if protoimpl.X.Present(&(x.XXX_presence[0]), 0) {
+		if protoimpl.X.Present(&(x.XXX_presence[0]), 1) {
 			return x.xxx_hidden_Slot
 		}
 	}
@@ -96,7 +93,7 @@ func (x *ActivityChangeInfo) GetSlot() CardSlotNumber {
 
 func (x *ActivityChangeInfo) GetDrivingStatus() DrivingStatus {
 	if x != nil {
-		if protoimpl.X.Present(&(x.XXX_presence[0]), 1) {
+		if protoimpl.X.Present(&(x.XXX_presence[0]), 2) {
 			return x.xxx_hidden_DrivingStatus
 		}
 	}
@@ -112,7 +109,7 @@ func (x *ActivityChangeInfo) GetInserted() bool {
 
 func (x *ActivityChangeInfo) GetActivity() DriverActivityValue {
 	if x != nil {
-		if protoimpl.X.Present(&(x.XXX_presence[0]), 3) {
+		if protoimpl.X.Present(&(x.XXX_presence[0]), 4) {
 			return x.xxx_hidden_Activity
 		}
 	}
@@ -126,104 +123,133 @@ func (x *ActivityChangeInfo) GetTimeOfChangeMinutes() int32 {
 	return 0
 }
 
+func (x *ActivityChangeInfo) SetRawValue(v []byte) {
+	if v == nil {
+		v = []byte{}
+	}
+	x.xxx_hidden_RawValue = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 6)
+}
+
 func (x *ActivityChangeInfo) SetSlot(v CardSlotNumber) {
 	x.xxx_hidden_Slot = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 5)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 6)
 }
 
 func (x *ActivityChangeInfo) SetDrivingStatus(v DrivingStatus) {
 	x.xxx_hidden_DrivingStatus = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 5)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 6)
 }
 
 func (x *ActivityChangeInfo) SetInserted(v bool) {
 	x.xxx_hidden_Inserted = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 5)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 3, 6)
 }
 
 func (x *ActivityChangeInfo) SetActivity(v DriverActivityValue) {
 	x.xxx_hidden_Activity = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 3, 5)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 4, 6)
 }
 
 func (x *ActivityChangeInfo) SetTimeOfChangeMinutes(v int32) {
 	x.xxx_hidden_TimeOfChangeMinutes = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 4, 5)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 5, 6)
 }
 
-func (x *ActivityChangeInfo) HasSlot() bool {
+func (x *ActivityChangeInfo) HasRawValue() bool {
 	if x == nil {
 		return false
 	}
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 0)
 }
 
-func (x *ActivityChangeInfo) HasDrivingStatus() bool {
+func (x *ActivityChangeInfo) HasSlot() bool {
 	if x == nil {
 		return false
 	}
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 1)
 }
 
-func (x *ActivityChangeInfo) HasInserted() bool {
+func (x *ActivityChangeInfo) HasDrivingStatus() bool {
 	if x == nil {
 		return false
 	}
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 2)
 }
 
-func (x *ActivityChangeInfo) HasActivity() bool {
+func (x *ActivityChangeInfo) HasInserted() bool {
 	if x == nil {
 		return false
 	}
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 3)
 }
 
-func (x *ActivityChangeInfo) HasTimeOfChangeMinutes() bool {
+func (x *ActivityChangeInfo) HasActivity() bool {
 	if x == nil {
 		return false
 	}
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 4)
 }
 
-func (x *ActivityChangeInfo) ClearSlot() {
+func (x *ActivityChangeInfo) HasTimeOfChangeMinutes() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 5)
+}
+
+func (x *ActivityChangeInfo) ClearRawValue() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 0)
+	x.xxx_hidden_RawValue = nil
+}
+
+func (x *ActivityChangeInfo) ClearSlot() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 1)
 	x.xxx_hidden_Slot = CardSlotNumber_CARD_SLOT_NUMBER_UNSPECIFIED
 }
 
 func (x *ActivityChangeInfo) ClearDrivingStatus() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 1)
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 2)
 	x.xxx_hidden_DrivingStatus = DrivingStatus_DRIVING_STATUS_UNSPECIFIED
 }
 
 func (x *ActivityChangeInfo) ClearInserted() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 2)
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 3)
 	x.xxx_hidden_Inserted = false
 }
 
 func (x *ActivityChangeInfo) ClearActivity() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 3)
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 4)
 	x.xxx_hidden_Activity = DriverActivityValue_DRIVER_ACTIVITY_UNSPECIFIED
 }
 
 func (x *ActivityChangeInfo) ClearTimeOfChangeMinutes() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 4)
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 5)
 	x.xxx_hidden_TimeOfChangeMinutes = 0
 }
 
 type ActivityChangeInfo_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
+	// The raw, original 2-byte bitfield. This field is the source of truth and
+	// should be used for any serialization operations to ensure perfect data
+	// fidelity.
+	RawValue []byte
 	// Slot of the driver/co-driver. Corresponds to bit 's'.
+	// This is a convenience field derived from `raw_value`.
 	Slot *CardSlotNumber
 	// Driving status (single or crew). Corresponds to bit 'c'.
+	// This is a convenience field derived from `raw_value`.
 	DrivingStatus *DrivingStatus
 	// Indicates if a card is inserted. Corresponds to bit 'p'.
 	// ASN.1 value `0` maps to `true`, `1` to `false`.
+	// This is a convenience field derived from `raw_value`.
 	Inserted *bool
 	// Driver's activity (break/rest, availability, work, driving). Corresponds to bits 'aa'.
+	// This is a convenience field derived from `raw_value`.
 	Activity *DriverActivityValue
 	// Time of the change in minutes since 00:00. Corresponds to bits 'ttttttttttt'.
+	// This is a convenience field derived from `raw_value`.
 	TimeOfChangeMinutes *int32
 }
 
@@ -231,24 +257,28 @@ func (b0 ActivityChangeInfo_builder) Build() *ActivityChangeInfo {
 	m0 := &ActivityChangeInfo{}
 	b, x := &b0, m0
 	_, _ = b, x
+	if b.RawValue != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 6)
+		x.xxx_hidden_RawValue = b.RawValue
+	}
 	if b.Slot != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 5)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 6)
 		x.xxx_hidden_Slot = *b.Slot
 	}
 	if b.DrivingStatus != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 5)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 6)
 		x.xxx_hidden_DrivingStatus = *b.DrivingStatus
 	}
 	if b.Inserted != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 5)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 3, 6)
 		x.xxx_hidden_Inserted = *b.Inserted
 	}
 	if b.Activity != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 3, 5)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 4, 6)
 		x.xxx_hidden_Activity = *b.Activity
 	}
 	if b.TimeOfChangeMinutes != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 4, 5)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 5, 6)
 		x.xxx_hidden_TimeOfChangeMinutes = *b.TimeOfChangeMinutes
 	}
 	return m0
@@ -258,8 +288,10 @@ var File_wayplatform_connect_tachograph_dd_v1_activity_change_info_proto protore
 
 const file_wayplatform_connect_tachograph_dd_v1_activity_change_info_proto_rawDesc = "" +
 	"\n" +
-	"?wayplatform/connect/tachograph/dd/v1/activity_change_info.proto\x12$wayplatform.connect.tachograph.dd.v1\x1a;wayplatform/connect/tachograph/dd/v1/card_slot_number.proto\x1a@wayplatform/connect/tachograph/dd/v1/driver_activity_value.proto\x1a9wayplatform/connect/tachograph/dd/v1/driving_status.proto\"\xe2\x02\n" +
-	"\x12ActivityChangeInfo\x12H\n" +
+	"?wayplatform/connect/tachograph/dd/v1/activity_change_info.proto\x12$wayplatform.connect.tachograph.dd.v1\x1a;wayplatform/connect/tachograph/dd/v1/card_slot_number.proto\x1a@wayplatform/connect/tachograph/dd/v1/driver_activity_value.proto\x1a9wayplatform/connect/tachograph/dd/v1/driving_status.proto\"\xff\x02\n" +
+	"\x12ActivityChangeInfo\x12\x1b\n" +
+	"\traw_value\x18\n" +
+	" \x01(\fR\brawValue\x12H\n" +
 	"\x04slot\x18\x01 \x01(\x0e24.wayplatform.connect.tachograph.dd.v1.CardSlotNumberR\x04slot\x12Z\n" +
 	"\x0edriving_status\x18\x03 \x01(\x0e23.wayplatform.connect.tachograph.dd.v1.DrivingStatusR\rdrivingStatus\x12\x1a\n" +
 	"\binserted\x18\x05 \x01(\bR\binserted\x12U\n" +

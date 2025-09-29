@@ -151,7 +151,7 @@ type ControllerActivityData_Record struct {
 	state                                    protoimpl.MessageState                `protogen:"opaque.v1"`
 	xxx_hidden_ControlType                   *v1.ControlType                       `protobuf:"bytes,1,opt,name=control_type,json=controlType"`
 	xxx_hidden_ControlTime                   *timestamppb.Timestamp                `protobuf:"bytes,2,opt,name=control_time,json=controlTime"`
-	xxx_hidden_ControlledCardNumber          *v1.FullCardNumber                    `protobuf:"bytes,3,opt,name=controlled_card_number,json=controlledCardNumber"`
+	xxx_hidden_ControlledCardNumber          *v1.FullCardNumberAndGeneration       `protobuf:"bytes,3,opt,name=controlled_card_number,json=controlledCardNumber"`
 	xxx_hidden_ControlledVehicleRegistration *v1.VehicleRegistrationIdentification `protobuf:"bytes,4,opt,name=controlled_vehicle_registration,json=controlledVehicleRegistration"`
 	xxx_hidden_ControlDownloadPeriodBegin    *timestamppb.Timestamp                `protobuf:"bytes,5,opt,name=control_download_period_begin,json=controlDownloadPeriodBegin"`
 	xxx_hidden_ControlDownloadPeriodEnd      *timestamppb.Timestamp                `protobuf:"bytes,6,opt,name=control_download_period_end,json=controlDownloadPeriodEnd"`
@@ -198,7 +198,7 @@ func (x *ControllerActivityData_Record) GetControlTime() *timestamppb.Timestamp 
 	return nil
 }
 
-func (x *ControllerActivityData_Record) GetControlledCardNumber() *v1.FullCardNumber {
+func (x *ControllerActivityData_Record) GetControlledCardNumber() *v1.FullCardNumberAndGeneration {
 	if x != nil {
 		return x.xxx_hidden_ControlledCardNumber
 	}
@@ -234,7 +234,7 @@ func (x *ControllerActivityData_Record) SetControlTime(v *timestamppb.Timestamp)
 	x.xxx_hidden_ControlTime = v
 }
 
-func (x *ControllerActivityData_Record) SetControlledCardNumber(v *v1.FullCardNumber) {
+func (x *ControllerActivityData_Record) SetControlledCardNumber(v *v1.FullCardNumberAndGeneration) {
 	x.xxx_hidden_ControlledCardNumber = v
 }
 
@@ -335,11 +335,13 @@ type ControllerActivityData_Record_builder struct {
 	ControlTime *timestamppb.Timestamp
 	// The full card number of the card that was controlled.
 	//
-	// See Data Dictionary, Section 2.73, `FullCardNumber`.
-	// ASN.1 Specification:
+	// The underlying record exists for both Gen1 and Gen2.
+	// To support both versions in a single field and ensure unique card
+	// identification for Gen2, this uses the `FullCardNumberAndGeneration` superset.
+	// For Gen1 records, the `generation` field will be unset.
 	//
-	//	FullCardNumber ::= SEQUENCE { ... }
-	ControlledCardNumber *v1.FullCardNumber
+	// See Data Dictionary, Sections 2.73 (`FullCardNumber`) and 2.74 (`FullCardNumberAndGeneration`).
+	ControlledCardNumber *v1.FullCardNumberAndGeneration
 	// The vehicle registration of the vehicle in which the control happened.
 	//
 	// See Data Dictionary, Section 2.166, `VehicleRegistrationIdentification`.
@@ -380,14 +382,14 @@ var File_wayplatform_connect_tachograph_card_v1_controller_activity_data_proto p
 
 const file_wayplatform_connect_tachograph_card_v1_controller_activity_data_proto_rawDesc = "" +
 	"\n" +
-	"Ewayplatform/connect/tachograph/card/v1/controller_activity_data.proto\x12&wayplatform.connect.tachograph.card.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a7wayplatform/connect/tachograph/dd/v1/control_type.proto\x1a;wayplatform/connect/tachograph/dd/v1/full_card_number.proto\x1aNwayplatform/connect/tachograph/dd/v1/vehicle_registration_identification.proto\"\x81\x06\n" +
+	"Ewayplatform/connect/tachograph/card/v1/controller_activity_data.proto\x12&wayplatform.connect.tachograph.card.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a7wayplatform/connect/tachograph/dd/v1/control_type.proto\x1a;wayplatform/connect/tachograph/dd/v1/full_card_number.proto\x1aJwayplatform/connect/tachograph/dd/v1/full_card_number_and_generation.proto\x1aNwayplatform/connect/tachograph/dd/v1/vehicle_registration_identification.proto\"\x8e\x06\n" +
 	"\x16ControllerActivityData\x12.\n" +
 	"\x13newest_record_index\x18\x01 \x01(\x05R\x11newestRecordIndex\x12_\n" +
-	"\arecords\x18\x02 \x03(\v2E.wayplatform.connect.tachograph.card.v1.ControllerActivityData.RecordR\arecords\x1a\xd5\x04\n" +
+	"\arecords\x18\x02 \x03(\v2E.wayplatform.connect.tachograph.card.v1.ControllerActivityData.RecordR\arecords\x1a\xe2\x04\n" +
 	"\x06Record\x12T\n" +
 	"\fcontrol_type\x18\x01 \x01(\v21.wayplatform.connect.tachograph.dd.v1.ControlTypeR\vcontrolType\x12=\n" +
-	"\fcontrol_time\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\vcontrolTime\x12j\n" +
-	"\x16controlled_card_number\x18\x03 \x01(\v24.wayplatform.connect.tachograph.dd.v1.FullCardNumberR\x14controlledCardNumber\x12\x8f\x01\n" +
+	"\fcontrol_time\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\vcontrolTime\x12w\n" +
+	"\x16controlled_card_number\x18\x03 \x01(\v2A.wayplatform.connect.tachograph.dd.v1.FullCardNumberAndGenerationR\x14controlledCardNumber\x12\x8f\x01\n" +
 	"\x1fcontrolled_vehicle_registration\x18\x04 \x01(\v2G.wayplatform.connect.tachograph.dd.v1.VehicleRegistrationIdentificationR\x1dcontrolledVehicleRegistration\x12]\n" +
 	"\x1dcontrol_download_period_begin\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampR\x1acontrolDownloadPeriodBegin\x12Y\n" +
 	"\x1bcontrol_download_period_end\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampR\x18controlDownloadPeriodEndB\xe8\x02\n" +
@@ -399,14 +401,14 @@ var file_wayplatform_connect_tachograph_card_v1_controller_activity_data_proto_g
 	(*ControllerActivityData_Record)(nil),        // 1: wayplatform.connect.tachograph.card.v1.ControllerActivityData.Record
 	(*v1.ControlType)(nil),                       // 2: wayplatform.connect.tachograph.dd.v1.ControlType
 	(*timestamppb.Timestamp)(nil),                // 3: google.protobuf.Timestamp
-	(*v1.FullCardNumber)(nil),                    // 4: wayplatform.connect.tachograph.dd.v1.FullCardNumber
+	(*v1.FullCardNumberAndGeneration)(nil),       // 4: wayplatform.connect.tachograph.dd.v1.FullCardNumberAndGeneration
 	(*v1.VehicleRegistrationIdentification)(nil), // 5: wayplatform.connect.tachograph.dd.v1.VehicleRegistrationIdentification
 }
 var file_wayplatform_connect_tachograph_card_v1_controller_activity_data_proto_depIdxs = []int32{
 	1, // 0: wayplatform.connect.tachograph.card.v1.ControllerActivityData.records:type_name -> wayplatform.connect.tachograph.card.v1.ControllerActivityData.Record
 	2, // 1: wayplatform.connect.tachograph.card.v1.ControllerActivityData.Record.control_type:type_name -> wayplatform.connect.tachograph.dd.v1.ControlType
 	3, // 2: wayplatform.connect.tachograph.card.v1.ControllerActivityData.Record.control_time:type_name -> google.protobuf.Timestamp
-	4, // 3: wayplatform.connect.tachograph.card.v1.ControllerActivityData.Record.controlled_card_number:type_name -> wayplatform.connect.tachograph.dd.v1.FullCardNumber
+	4, // 3: wayplatform.connect.tachograph.card.v1.ControllerActivityData.Record.controlled_card_number:type_name -> wayplatform.connect.tachograph.dd.v1.FullCardNumberAndGeneration
 	5, // 4: wayplatform.connect.tachograph.card.v1.ControllerActivityData.Record.controlled_vehicle_registration:type_name -> wayplatform.connect.tachograph.dd.v1.VehicleRegistrationIdentification
 	3, // 5: wayplatform.connect.tachograph.card.v1.ControllerActivityData.Record.control_download_period_begin:type_name -> google.protobuf.Timestamp
 	3, // 6: wayplatform.connect.tachograph.card.v1.ControllerActivityData.Record.control_download_period_end:type_name -> google.protobuf.Timestamp

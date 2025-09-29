@@ -26,9 +26,13 @@ const (
 //
 // ASN.1 Definition:
 //
-//	LoadType ::= INTEGER {
-//	    not-defined(0), passengers(1), goods(2)
-//	} (0..255)
+//	LoadType ::= OCTET STRING (SIZE(1))
+//
+//	Value assignment:
+//	    - 00H: Undefined load type
+//	    - 01H: Goods
+//	    - 02H: Passengers
+//	    - 03H..FFH: RFU
 type LoadType int32
 
 const (
@@ -38,10 +42,10 @@ const (
 	LoadType_LOAD_TYPE_UNRECOGNIZED LoadType = 1
 	// The load type is not defined.
 	LoadType_NOT_DEFINED LoadType = 2
-	// The vehicle is carrying passengers.
-	LoadType_PASSENGERS LoadType = 3
 	// The vehicle is carrying goods.
-	LoadType_GOODS LoadType = 4
+	LoadType_GOODS LoadType = 3
+	// The vehicle is carrying passengers.
+	LoadType_PASSENGERS LoadType = 4
 )
 
 // Enum value maps for LoadType.
@@ -50,15 +54,15 @@ var (
 		0: "LOAD_TYPE_UNSPECIFIED",
 		1: "LOAD_TYPE_UNRECOGNIZED",
 		2: "NOT_DEFINED",
-		3: "PASSENGERS",
-		4: "GOODS",
+		3: "GOODS",
+		4: "PASSENGERS",
 	}
 	LoadType_value = map[string]int32{
 		"LOAD_TYPE_UNSPECIFIED":  0,
 		"LOAD_TYPE_UNRECOGNIZED": 1,
 		"NOT_DEFINED":            2,
-		"PASSENGERS":             3,
-		"GOODS":                  4,
+		"GOODS":                  3,
+		"PASSENGERS":             4,
 	}
 )
 
@@ -92,10 +96,10 @@ const file_wayplatform_connect_tachograph_dd_v1_load_type_proto_rawDesc = "" +
 	"\bLoadType\x12\x19\n" +
 	"\x15LOAD_TYPE_UNSPECIFIED\x10\x00\x12\x1a\n" +
 	"\x16LOAD_TYPE_UNRECOGNIZED\x10\x01\x12\x16\n" +
-	"\vNOT_DEFINED\x10\x02\x1a\x05\x98\xaf\x9c\x02\x00\x12\x15\n" +
+	"\vNOT_DEFINED\x10\x02\x1a\x05\x98\xaf\x9c\x02\x00\x12\x10\n" +
+	"\x05GOODS\x10\x03\x1a\x05\x98\xaf\x9c\x02\x01\x12\x15\n" +
 	"\n" +
-	"PASSENGERS\x10\x03\x1a\x05\x98\xaf\x9c\x02\x01\x12\x10\n" +
-	"\x05GOODS\x10\x04\x1a\x05\x98\xaf\x9c\x02\x02B\xcc\x02\n" +
+	"PASSENGERS\x10\x04\x1a\x05\x98\xaf\x9c\x02\x02B\xcc\x02\n" +
 	"(com.wayplatform.connect.tachograph.dd.v1B\rLoadTypeProtoP\x01Z\\github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1;ddv1\xa2\x02\x04WCTD\xaa\x02$Wayplatform.Connect.Tachograph.Dd.V1\xca\x02$Wayplatform\\Connect\\Tachograph\\Dd\\V1\xe2\x020Wayplatform\\Connect\\Tachograph\\Dd\\V1\\GPBMetadata\xea\x02(Wayplatform::Connect::Tachograph::Dd::V1b\x06proto3"
 
 var file_wayplatform_connect_tachograph_dd_v1_load_type_proto_enumTypes = make([]protoimpl.EnumInfo, 1)

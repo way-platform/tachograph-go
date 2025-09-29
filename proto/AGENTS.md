@@ -14,7 +14,7 @@ Our data model is based on the protobuf schemas defined in the [`proto`](.) dire
 - **Use `StringValue` for special strings:** Many string-like types in the data dictionary are not simple UTF-8. This includes `IA5String` (which may have padding) and complex `SEQUENCE` types (like `Name` and `Address`) that contain a code page. To ensure lossless round-trips, these fields **must** use `datadictionary.v1.StringValue`. This message provides the original `encoded` bytes, the `Encoding` enum (which includes a value for `IA5`), and a `decoded` field for display.
 - **Use `Date` for BCD dates:** The `Datef` data type (DD 2.57) is an `OCTET STRING (SIZE(4))` representing a BCD-encoded `yyyymmdd` date. Any field corresponding to this type **must** use the `datadictionary.v1.Date` message, which provides decoded `year`, `month`, and `day` fields.
 - **Use `bytes` for `OCTET STRING`:** To maintain semantic fidelity with the ASN.1 specification, fields defined as `OCTET STRING` should be represented as `bytes` in Protobuf, even if they are single-byte values that could be losslessly stored in an `int32`. This makes it clear to consumers that the data is a raw byte string, not necessarily a number.
-- **Combine EF Signature:** For Elementary Files (EFs) that are followed by a signature block on the card, the signature is included as a `signature` field within the corresponding protobuf message. This provides a complete, self-contained representation of the signed data block, even though the signature is technically separate from the EF content in the raw card file structure.
+- **Combine EF Signature:** The ASN.1 definitions in the Data Dictionary describe the content of an Elementary File (EF) itself and will not include a signature. However, the physical card file structure may include signature data blocks for certain EFs. For usability, our policy is to model this by including a `bytes signature` field within the protobuf message that represents the EF. This provides a complete, self-contained representation of the signed data block when present. **Permissive Signature Policy:** Unless the source material explicitly states that a specific EF will not have a signature, we include a `signature` field in the protobuf message. The signature field should be documented to indicate that it contains signature data from the following file block, if tagged as a signature for this EF according to the card file format specification (Appendix 2). This approach ensures compatibility with real-world card data while maintaining clear documentation of the signature's source.
 
 ## ASN.1 Documentation
 
@@ -23,6 +23,7 @@ All messages, fields, and enums corresponding to a data dictionary type **must**
 **Source Material Only:** All comments and documentation within `.proto` files must be self-contained and based on first principles from the source regulations. **Do not** reference internal project documents like `AGENTS.md` or internal policies. The rationale for a design choice should be evident from the regulatory context provided in the comment itself.
 
 The comment **must** follow this structure:
+
 1.  A brief summary of the element's purpose.
 2.  A blank line.
 3.  A reference to the Data Dictionary section (e.g., `See Data Dictionary, Section 2.53.`).
@@ -32,6 +33,7 @@ The comment **must** follow this structure:
 7.  The full, indented ASN.1 definition.
 
 **Example:**
+
 ```protobuf
 // Represents the activities carried out during a control.
 //
@@ -45,23 +47,77 @@ message ControlType {
 }
 ```
 
+## File Structure Documentation
+
+To provide clear, at-a-glance context for whether a message should contain a `signature` field, any message that represents a signed Elementary File (EF) **must** include a file structure diagram in its message-level comment.
+
+This diagram should be a small, focused snippet from the tables in Appendix 2 (e.g., TCS_158), illustrating the EF's content and the explicit `Signature` block that follows it. This makes the "Combine EF Signature" design principle verifiable directly within the schema.
+
+**Example (for a signed EF):**
+
+```protobuf
+// Represents data from EF_Identification for a workshop card.
+//
+// The file structure, including the signature, is defined in Appendix 2,
+// table TCS_158.
+//
+// File Structure:
+//
+//     EF Identification
+//     ├─CardIdentification
+//     └─WorkshopCardHolderIdentification
+//     Signature
+//
+message Identification {
+  // ... fields ...
+  bytes signature = 99; // This field is present because of the structure above.
+}
+```
+
+**Example (for an unsigned EF):**
+
+```protobuf
+// Represents data from EF_Driving_Licence_Info.
+//
+// The file structure is defined in Appendix 2, table TCS_154. Note the
+// absence of a `Signature` block.
+//
+// File Structure:
+//
+//     EF Driving_Licence_Info
+//     └─CardDrivingLicenceInformation
+//
+message DrivingLicenceInfo {
+  // ... fields ...
+  // NO signature field is present.
+}
+```
+
 ## Package Structure
 
 ### [`wayplatform.connect.tachograph.v1`](./wayplatform/connect/tachograph/v1)
+
 Top-level package for all tachograph data.
+
 - `wayplatform.connect.tachograph.v1.File`: Represents any type of tachograph file.
 
 ### [`wayplatform.connect.tachograph.vu.v1`](./wayplatform/connect/tachograph/vu/v1)
+
 Package for vehicle unit (VU) data.
+
 - `wayplatform.connect.tachograph.vu.v1.VehicleUnitFile`: Represents a VU file.
 
 ### [`wayplatform.connect.tachograph.card.v1`](./wayplatform/connect/tachograph/card/v1)
+
 Package for tachograph card data.
+
 - `wayplatform.connect.tachograph.card.v1.DriverCardFile`: Represents a driver card file.
 - `wayplatform.connect.tachograph.card.v1.RawCardFile`: Represents a generic card file (TLV records).
 - Each EF (elementary file) has a corresponding top-level message named after it.
 
 ### [`wayplatform.connect.tachograph.datadictionary.v1`](./wayplatform/connect/tachograph/datadictionary/v1)
+
 Package for shared types from the data dictionary ([03-data-dictionary.md](../../docs/regulation/chapters/03-data-dictionary.md)).
+
 - Contains types used across multiple card EFs or VU data transfers.
 - Types used in only a single context should be defined inline within that message.

@@ -175,11 +175,276 @@ func (b0 Calibration_builder) Build() *Calibration {
 	return m0
 }
 
+// Represents an extended seal identifier.
+// See Data Dictionary, Section 2.71.
+type Calibration_ExtendedSealIdentifier struct {
+	state                       protoimpl.MessageState `protogen:"opaque.v1"`
+	xxx_hidden_ManufacturerCode *v1.StringValue        `protobuf:"bytes,1,opt,name=manufacturer_code,json=manufacturerCode"`
+	xxx_hidden_SealIdentifier   *v1.StringValue        `protobuf:"bytes,2,opt,name=seal_identifier,json=sealIdentifier"`
+	unknownFields               protoimpl.UnknownFields
+	sizeCache                   protoimpl.SizeCache
+}
+
+func (x *Calibration_ExtendedSealIdentifier) Reset() {
+	*x = Calibration_ExtendedSealIdentifier{}
+	mi := &file_wayplatform_connect_tachograph_card_v1_calibration_proto_msgTypes[1]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *Calibration_ExtendedSealIdentifier) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Calibration_ExtendedSealIdentifier) ProtoMessage() {}
+
+func (x *Calibration_ExtendedSealIdentifier) ProtoReflect() protoreflect.Message {
+	mi := &file_wayplatform_connect_tachograph_card_v1_calibration_proto_msgTypes[1]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+func (x *Calibration_ExtendedSealIdentifier) GetManufacturerCode() *v1.StringValue {
+	if x != nil {
+		return x.xxx_hidden_ManufacturerCode
+	}
+	return nil
+}
+
+func (x *Calibration_ExtendedSealIdentifier) GetSealIdentifier() *v1.StringValue {
+	if x != nil {
+		return x.xxx_hidden_SealIdentifier
+	}
+	return nil
+}
+
+func (x *Calibration_ExtendedSealIdentifier) SetManufacturerCode(v *v1.StringValue) {
+	x.xxx_hidden_ManufacturerCode = v
+}
+
+func (x *Calibration_ExtendedSealIdentifier) SetSealIdentifier(v *v1.StringValue) {
+	x.xxx_hidden_SealIdentifier = v
+}
+
+func (x *Calibration_ExtendedSealIdentifier) HasManufacturerCode() bool {
+	if x == nil {
+		return false
+	}
+	return x.xxx_hidden_ManufacturerCode != nil
+}
+
+func (x *Calibration_ExtendedSealIdentifier) HasSealIdentifier() bool {
+	if x == nil {
+		return false
+	}
+	return x.xxx_hidden_SealIdentifier != nil
+}
+
+func (x *Calibration_ExtendedSealIdentifier) ClearManufacturerCode() {
+	x.xxx_hidden_ManufacturerCode = nil
+}
+
+func (x *Calibration_ExtendedSealIdentifier) ClearSealIdentifier() {
+	x.xxx_hidden_SealIdentifier = nil
+}
+
+type Calibration_ExtendedSealIdentifier_builder struct {
+	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
+
+	// Code of the manufacturer of the seal.
+	ManufacturerCode *v1.StringValue
+	// Identifier for the seal, unique for the manufacturer.
+	SealIdentifier *v1.StringValue
+}
+
+func (b0 Calibration_ExtendedSealIdentifier_builder) Build() *Calibration_ExtendedSealIdentifier {
+	m0 := &Calibration_ExtendedSealIdentifier{}
+	b, x := &b0, m0
+	_, _ = b, x
+	x.xxx_hidden_ManufacturerCode = b.ManufacturerCode
+	x.xxx_hidden_SealIdentifier = b.SealIdentifier
+	return m0
+}
+
+// Represents a single seal record.
+// See Data Dictionary, Section 2.130.
+type Calibration_SealRecord struct {
+	state                             protoimpl.MessageState              `protogen:"opaque.v1"`
+	xxx_hidden_EquipmentType          v1.EquipmentType                    `protobuf:"varint,1,opt,name=equipment_type,json=equipmentType,enum=wayplatform.connect.tachograph.dd.v1.EquipmentType"`
+	xxx_hidden_ExtendedSealIdentifier *Calibration_ExtendedSealIdentifier `protobuf:"bytes,2,opt,name=extended_seal_identifier,json=extendedSealIdentifier"`
+	XXX_raceDetectHookData            protoimpl.RaceDetectHookData
+	XXX_presence                      [1]uint32
+	unknownFields                     protoimpl.UnknownFields
+	sizeCache                         protoimpl.SizeCache
+}
+
+func (x *Calibration_SealRecord) Reset() {
+	*x = Calibration_SealRecord{}
+	mi := &file_wayplatform_connect_tachograph_card_v1_calibration_proto_msgTypes[2]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *Calibration_SealRecord) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Calibration_SealRecord) ProtoMessage() {}
+
+func (x *Calibration_SealRecord) ProtoReflect() protoreflect.Message {
+	mi := &file_wayplatform_connect_tachograph_card_v1_calibration_proto_msgTypes[2]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+func (x *Calibration_SealRecord) GetEquipmentType() v1.EquipmentType {
+	if x != nil {
+		if protoimpl.X.Present(&(x.XXX_presence[0]), 0) {
+			return x.xxx_hidden_EquipmentType
+		}
+	}
+	return v1.EquipmentType(0)
+}
+
+func (x *Calibration_SealRecord) GetExtendedSealIdentifier() *Calibration_ExtendedSealIdentifier {
+	if x != nil {
+		return x.xxx_hidden_ExtendedSealIdentifier
+	}
+	return nil
+}
+
+func (x *Calibration_SealRecord) SetEquipmentType(v v1.EquipmentType) {
+	x.xxx_hidden_EquipmentType = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 2)
+}
+
+func (x *Calibration_SealRecord) SetExtendedSealIdentifier(v *Calibration_ExtendedSealIdentifier) {
+	x.xxx_hidden_ExtendedSealIdentifier = v
+}
+
+func (x *Calibration_SealRecord) HasEquipmentType() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 0)
+}
+
+func (x *Calibration_SealRecord) HasExtendedSealIdentifier() bool {
+	if x == nil {
+		return false
+	}
+	return x.xxx_hidden_ExtendedSealIdentifier != nil
+}
+
+func (x *Calibration_SealRecord) ClearEquipmentType() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 0)
+	x.xxx_hidden_EquipmentType = v1.EquipmentType_EQUIPMENT_TYPE_UNSPECIFIED
+}
+
+func (x *Calibration_SealRecord) ClearExtendedSealIdentifier() {
+	x.xxx_hidden_ExtendedSealIdentifier = nil
+}
+
+type Calibration_SealRecord_builder struct {
+	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
+
+	// Type of equipment the seal is attached to.
+	EquipmentType *v1.EquipmentType
+	// Identifier of the seal.
+	ExtendedSealIdentifier *Calibration_ExtendedSealIdentifier
+}
+
+func (b0 Calibration_SealRecord_builder) Build() *Calibration_SealRecord {
+	m0 := &Calibration_SealRecord{}
+	b, x := &b0, m0
+	_, _ = b, x
+	if b.EquipmentType != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 2)
+		x.xxx_hidden_EquipmentType = *b.EquipmentType
+	}
+	x.xxx_hidden_ExtendedSealIdentifier = b.ExtendedSealIdentifier
+	return m0
+}
+
+// Represents seal data stored on a card.
+// See Data Dictionary, Section 2.128.
+type Calibration_SealDataCard struct {
+	state                  protoimpl.MessageState     `protogen:"opaque.v1"`
+	xxx_hidden_SealRecords *[]*Calibration_SealRecord `protobuf:"bytes,1,rep,name=seal_records,json=sealRecords"`
+	unknownFields          protoimpl.UnknownFields
+	sizeCache              protoimpl.SizeCache
+}
+
+func (x *Calibration_SealDataCard) Reset() {
+	*x = Calibration_SealDataCard{}
+	mi := &file_wayplatform_connect_tachograph_card_v1_calibration_proto_msgTypes[3]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *Calibration_SealDataCard) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Calibration_SealDataCard) ProtoMessage() {}
+
+func (x *Calibration_SealDataCard) ProtoReflect() protoreflect.Message {
+	mi := &file_wayplatform_connect_tachograph_card_v1_calibration_proto_msgTypes[3]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+func (x *Calibration_SealDataCard) GetSealRecords() []*Calibration_SealRecord {
+	if x != nil {
+		if x.xxx_hidden_SealRecords != nil {
+			return *x.xxx_hidden_SealRecords
+		}
+	}
+	return nil
+}
+
+func (x *Calibration_SealDataCard) SetSealRecords(v []*Calibration_SealRecord) {
+	x.xxx_hidden_SealRecords = &v
+}
+
+type Calibration_SealDataCard_builder struct {
+	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
+
+	// The set of seal records.
+	SealRecords []*Calibration_SealRecord
+}
+
+func (b0 Calibration_SealDataCard_builder) Build() *Calibration_SealDataCard {
+	m0 := &Calibration_SealDataCard{}
+	b, x := &b0, m0
+	_, _ = b, x
+	x.xxx_hidden_SealRecords = &b.SealRecords
+	return m0
+}
+
 // Represents a single calibration record.
 //
 // The data type `WorkshopCardCalibrationRecord` is specified in the Data Dictionary, Section 2.236.
 //
-// ASN.1 Specification:
+// ASN.1 Definition (Gen1):
 //
 //	WorkshopCardCalibrationRecord ::= SEQUENCE {
 //	    calibrationPurpose CalibrationPurpose,
@@ -199,6 +464,15 @@ func (b0 Calibration_builder) Build() *Calibration {
 //	    vuSerialNumber ExtendedSerialNumber,
 //	    sensorSerialNumber SensorSerialNumber
 //	}
+//
+// ASN.1 Definition (Gen2):
+//
+//	WorkshopCardCalibrationRecord ::= SEQUENCE {
+//	    // ...all Gen1 fields plus:
+//	    sensorGNSSSerialNumber SensorGNSSSerialNumber,
+//	    rcmSerialNumber RemoteCommunicationModuleSerialNumber,
+//	    sealDataCard SealDataCard
+//	}
 type Calibration_Record struct {
 	state                                     protoimpl.MessageState                `protogen:"opaque.v1"`
 	xxx_hidden_CalibrationPurpose             v1.CalibrationPurpose                 `protobuf:"varint,1,opt,name=calibration_purpose,json=calibrationPurpose,enum=wayplatform.connect.tachograph.dd.v1.CalibrationPurpose"`
@@ -206,7 +480,7 @@ type Calibration_Record struct {
 	xxx_hidden_VehicleRegistration            *v1.VehicleRegistrationIdentification `protobuf:"bytes,4,opt,name=vehicle_registration,json=vehicleRegistration"`
 	xxx_hidden_WVehicleCharacteristicConstant int32                                 `protobuf:"varint,5,opt,name=w_vehicle_characteristic_constant,json=wVehicleCharacteristicConstant"`
 	xxx_hidden_KConstantOfRecordingEquipment  int32                                 `protobuf:"varint,6,opt,name=k_constant_of_recording_equipment,json=kConstantOfRecordingEquipment"`
-	xxx_hidden_LTyreCircumferenceMm           int32                                 `protobuf:"varint,7,opt,name=l_tyre_circumference_mm,json=lTyreCircumferenceMm"`
+	xxx_hidden_LTyreCircumferenceEighthsMm    int32                                 `protobuf:"varint,7,opt,name=l_tyre_circumference_eighths_mm,json=lTyreCircumferenceEighthsMm"`
 	xxx_hidden_TyreSize                       *v1.StringValue                       `protobuf:"bytes,8,opt,name=tyre_size,json=tyreSize"`
 	xxx_hidden_AuthorisedSpeedKmh             int32                                 `protobuf:"varint,9,opt,name=authorised_speed_kmh,json=authorisedSpeedKmh"`
 	xxx_hidden_OldOdometerKm                  int32                                 `protobuf:"varint,10,opt,name=old_odometer_km,json=oldOdometerKm"`
@@ -217,6 +491,9 @@ type Calibration_Record struct {
 	xxx_hidden_VuPartNumber                   *v1.StringValue                       `protobuf:"bytes,15,opt,name=vu_part_number,json=vuPartNumber"`
 	xxx_hidden_VuSerialNumber                 *v1.ExtendedSerialNumber              `protobuf:"bytes,16,opt,name=vu_serial_number,json=vuSerialNumber"`
 	xxx_hidden_SensorSerialNumber             *v1.ExtendedSerialNumber              `protobuf:"bytes,17,opt,name=sensor_serial_number,json=sensorSerialNumber"`
+	xxx_hidden_SensorGnssSerialNumber         *v1.ExtendedSerialNumber              `protobuf:"bytes,18,opt,name=sensor_gnss_serial_number,json=sensorGnssSerialNumber"`
+	xxx_hidden_RcmSerialNumber                *v1.ExtendedSerialNumber              `protobuf:"bytes,19,opt,name=rcm_serial_number,json=rcmSerialNumber"`
+	xxx_hidden_SealDataCard                   *Calibration_SealDataCard             `protobuf:"bytes,20,opt,name=seal_data_card,json=sealDataCard"`
 	XXX_raceDetectHookData                    protoimpl.RaceDetectHookData
 	XXX_presence                              [1]uint32
 	unknownFields                             protoimpl.UnknownFields
@@ -225,7 +502,7 @@ type Calibration_Record struct {
 
 func (x *Calibration_Record) Reset() {
 	*x = Calibration_Record{}
-	mi := &file_wayplatform_connect_tachograph_card_v1_calibration_proto_msgTypes[1]
+	mi := &file_wayplatform_connect_tachograph_card_v1_calibration_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -237,7 +514,7 @@ func (x *Calibration_Record) String() string {
 func (*Calibration_Record) ProtoMessage() {}
 
 func (x *Calibration_Record) ProtoReflect() protoreflect.Message {
-	mi := &file_wayplatform_connect_tachograph_card_v1_calibration_proto_msgTypes[1]
+	mi := &file_wayplatform_connect_tachograph_card_v1_calibration_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -285,9 +562,9 @@ func (x *Calibration_Record) GetKConstantOfRecordingEquipment() int32 {
 	return 0
 }
 
-func (x *Calibration_Record) GetLTyreCircumferenceMm() int32 {
+func (x *Calibration_Record) GetLTyreCircumferenceEighthsMm() int32 {
 	if x != nil {
-		return x.xxx_hidden_LTyreCircumferenceMm
+		return x.xxx_hidden_LTyreCircumferenceEighthsMm
 	}
 	return 0
 }
@@ -362,9 +639,30 @@ func (x *Calibration_Record) GetSensorSerialNumber() *v1.ExtendedSerialNumber {
 	return nil
 }
 
+func (x *Calibration_Record) GetSensorGnssSerialNumber() *v1.ExtendedSerialNumber {
+	if x != nil {
+		return x.xxx_hidden_SensorGnssSerialNumber
+	}
+	return nil
+}
+
+func (x *Calibration_Record) GetRcmSerialNumber() *v1.ExtendedSerialNumber {
+	if x != nil {
+		return x.xxx_hidden_RcmSerialNumber
+	}
+	return nil
+}
+
+func (x *Calibration_Record) GetSealDataCard() *Calibration_SealDataCard {
+	if x != nil {
+		return x.xxx_hidden_SealDataCard
+	}
+	return nil
+}
+
 func (x *Calibration_Record) SetCalibrationPurpose(v v1.CalibrationPurpose) {
 	x.xxx_hidden_CalibrationPurpose = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 16)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 19)
 }
 
 func (x *Calibration_Record) SetVehicleIdentificationNumber(v *v1.StringValue) {
@@ -377,17 +675,17 @@ func (x *Calibration_Record) SetVehicleRegistration(v *v1.VehicleRegistrationIde
 
 func (x *Calibration_Record) SetWVehicleCharacteristicConstant(v int32) {
 	x.xxx_hidden_WVehicleCharacteristicConstant = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 3, 16)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 3, 19)
 }
 
 func (x *Calibration_Record) SetKConstantOfRecordingEquipment(v int32) {
 	x.xxx_hidden_KConstantOfRecordingEquipment = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 4, 16)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 4, 19)
 }
 
-func (x *Calibration_Record) SetLTyreCircumferenceMm(v int32) {
-	x.xxx_hidden_LTyreCircumferenceMm = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 5, 16)
+func (x *Calibration_Record) SetLTyreCircumferenceEighthsMm(v int32) {
+	x.xxx_hidden_LTyreCircumferenceEighthsMm = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 5, 19)
 }
 
 func (x *Calibration_Record) SetTyreSize(v *v1.StringValue) {
@@ -396,17 +694,17 @@ func (x *Calibration_Record) SetTyreSize(v *v1.StringValue) {
 
 func (x *Calibration_Record) SetAuthorisedSpeedKmh(v int32) {
 	x.xxx_hidden_AuthorisedSpeedKmh = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 7, 16)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 7, 19)
 }
 
 func (x *Calibration_Record) SetOldOdometerKm(v int32) {
 	x.xxx_hidden_OldOdometerKm = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 8, 16)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 8, 19)
 }
 
 func (x *Calibration_Record) SetNewOdometerKm(v int32) {
 	x.xxx_hidden_NewOdometerKm = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 9, 16)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 9, 19)
 }
 
 func (x *Calibration_Record) SetOldTime(v *timestamppb.Timestamp) {
@@ -431,6 +729,18 @@ func (x *Calibration_Record) SetVuSerialNumber(v *v1.ExtendedSerialNumber) {
 
 func (x *Calibration_Record) SetSensorSerialNumber(v *v1.ExtendedSerialNumber) {
 	x.xxx_hidden_SensorSerialNumber = v
+}
+
+func (x *Calibration_Record) SetSensorGnssSerialNumber(v *v1.ExtendedSerialNumber) {
+	x.xxx_hidden_SensorGnssSerialNumber = v
+}
+
+func (x *Calibration_Record) SetRcmSerialNumber(v *v1.ExtendedSerialNumber) {
+	x.xxx_hidden_RcmSerialNumber = v
+}
+
+func (x *Calibration_Record) SetSealDataCard(v *Calibration_SealDataCard) {
+	x.xxx_hidden_SealDataCard = v
 }
 
 func (x *Calibration_Record) HasCalibrationPurpose() bool {
@@ -468,7 +778,7 @@ func (x *Calibration_Record) HasKConstantOfRecordingEquipment() bool {
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 4)
 }
 
-func (x *Calibration_Record) HasLTyreCircumferenceMm() bool {
+func (x *Calibration_Record) HasLTyreCircumferenceEighthsMm() bool {
 	if x == nil {
 		return false
 	}
@@ -545,6 +855,27 @@ func (x *Calibration_Record) HasSensorSerialNumber() bool {
 	return x.xxx_hidden_SensorSerialNumber != nil
 }
 
+func (x *Calibration_Record) HasSensorGnssSerialNumber() bool {
+	if x == nil {
+		return false
+	}
+	return x.xxx_hidden_SensorGnssSerialNumber != nil
+}
+
+func (x *Calibration_Record) HasRcmSerialNumber() bool {
+	if x == nil {
+		return false
+	}
+	return x.xxx_hidden_RcmSerialNumber != nil
+}
+
+func (x *Calibration_Record) HasSealDataCard() bool {
+	if x == nil {
+		return false
+	}
+	return x.xxx_hidden_SealDataCard != nil
+}
+
 func (x *Calibration_Record) ClearCalibrationPurpose() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 0)
 	x.xxx_hidden_CalibrationPurpose = v1.CalibrationPurpose_CALIBRATION_PURPOSE_UNSPECIFIED
@@ -568,9 +899,9 @@ func (x *Calibration_Record) ClearKConstantOfRecordingEquipment() {
 	x.xxx_hidden_KConstantOfRecordingEquipment = 0
 }
 
-func (x *Calibration_Record) ClearLTyreCircumferenceMm() {
+func (x *Calibration_Record) ClearLTyreCircumferenceEighthsMm() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 5)
-	x.xxx_hidden_LTyreCircumferenceMm = 0
+	x.xxx_hidden_LTyreCircumferenceEighthsMm = 0
 }
 
 func (x *Calibration_Record) ClearTyreSize() {
@@ -616,6 +947,18 @@ func (x *Calibration_Record) ClearSensorSerialNumber() {
 	x.xxx_hidden_SensorSerialNumber = nil
 }
 
+func (x *Calibration_Record) ClearSensorGnssSerialNumber() {
+	x.xxx_hidden_SensorGnssSerialNumber = nil
+}
+
+func (x *Calibration_Record) ClearRcmSerialNumber() {
+	x.xxx_hidden_RcmSerialNumber = nil
+}
+
+func (x *Calibration_Record) ClearSealDataCard() {
+	x.xxx_hidden_SealDataCard = nil
+}
+
 type Calibration_Record_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
@@ -654,13 +997,13 @@ type Calibration_Record_builder struct {
 	//
 	//	K-ConstantOfRecordingEquipment ::= INTEGER(0..65535)
 	KConstantOfRecordingEquipment *int32
-	// The tyre circumference in mm.
+	// The tyre circumference in 1/8ths of a mm.
 	//
 	// See Data Dictionary, Section 2.91, `L-TyreCircumference`.
 	// ASN.1 Definition:
 	//
 	//	L-TyreCircumference ::= INTEGER(0..65535)
-	LTyreCircumferenceMm *int32
+	LTyreCircumferenceEighthsMm *int32
 	// The tyre size designation.
 	//
 	// See Data Dictionary, Section 2.163, `TyreSize`.
@@ -731,6 +1074,15 @@ type Calibration_Record_builder struct {
 	//
 	//	SensorSerialNumber ::= ExtendedSerialNumber
 	SensorSerialNumber *v1.ExtendedSerialNumber
+	// The serial number of the external GNSS facility.
+	// See Data Dictionary, Section 2.139, `SensorGNSSSerialNumber`.
+	SensorGnssSerialNumber *v1.ExtendedSerialNumber
+	// The serial number of the remote communication module.
+	// See Data Dictionary, Section 2.123, `RemoteCommunicationModuleSerialNumber`.
+	RcmSerialNumber *v1.ExtendedSerialNumber
+	// Information about seals attached to vehicle components.
+	// See Data Dictionary, Section 2.128, `SealDataCard`.
+	SealDataCard *Calibration_SealDataCard
 }
 
 func (b0 Calibration_Record_builder) Build() *Calibration_Record {
@@ -738,34 +1090,34 @@ func (b0 Calibration_Record_builder) Build() *Calibration_Record {
 	b, x := &b0, m0
 	_, _ = b, x
 	if b.CalibrationPurpose != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 16)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 19)
 		x.xxx_hidden_CalibrationPurpose = *b.CalibrationPurpose
 	}
 	x.xxx_hidden_VehicleIdentificationNumber = b.VehicleIdentificationNumber
 	x.xxx_hidden_VehicleRegistration = b.VehicleRegistration
 	if b.WVehicleCharacteristicConstant != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 3, 16)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 3, 19)
 		x.xxx_hidden_WVehicleCharacteristicConstant = *b.WVehicleCharacteristicConstant
 	}
 	if b.KConstantOfRecordingEquipment != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 4, 16)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 4, 19)
 		x.xxx_hidden_KConstantOfRecordingEquipment = *b.KConstantOfRecordingEquipment
 	}
-	if b.LTyreCircumferenceMm != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 5, 16)
-		x.xxx_hidden_LTyreCircumferenceMm = *b.LTyreCircumferenceMm
+	if b.LTyreCircumferenceEighthsMm != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 5, 19)
+		x.xxx_hidden_LTyreCircumferenceEighthsMm = *b.LTyreCircumferenceEighthsMm
 	}
 	x.xxx_hidden_TyreSize = b.TyreSize
 	if b.AuthorisedSpeedKmh != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 7, 16)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 7, 19)
 		x.xxx_hidden_AuthorisedSpeedKmh = *b.AuthorisedSpeedKmh
 	}
 	if b.OldOdometerKm != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 8, 16)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 8, 19)
 		x.xxx_hidden_OldOdometerKm = *b.OldOdometerKm
 	}
 	if b.NewOdometerKm != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 9, 16)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 9, 19)
 		x.xxx_hidden_NewOdometerKm = *b.NewOdometerKm
 	}
 	x.xxx_hidden_OldTime = b.OldTime
@@ -774,6 +1126,9 @@ func (b0 Calibration_Record_builder) Build() *Calibration_Record {
 	x.xxx_hidden_VuPartNumber = b.VuPartNumber
 	x.xxx_hidden_VuSerialNumber = b.VuSerialNumber
 	x.xxx_hidden_SensorSerialNumber = b.SensorSerialNumber
+	x.xxx_hidden_SensorGnssSerialNumber = b.SensorGnssSerialNumber
+	x.xxx_hidden_RcmSerialNumber = b.RcmSerialNumber
+	x.xxx_hidden_SealDataCard = b.SealDataCard
 	return m0
 }
 
@@ -781,18 +1136,27 @@ var File_wayplatform_connect_tachograph_card_v1_calibration_proto protoreflect.F
 
 const file_wayplatform_connect_tachograph_card_v1_calibration_proto_rawDesc = "" +
 	"\n" +
-	"8wayplatform/connect/tachograph/card/v1/calibration.proto\x12&wayplatform.connect.tachograph.card.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a>wayplatform/connect/tachograph/dd/v1/calibration_purpose.proto\x1aAwayplatform/connect/tachograph/dd/v1/extended_serial_number.proto\x1a7wayplatform/connect/tachograph/dd/v1/string_value.proto\x1aNwayplatform/connect/tachograph/dd/v1/vehicle_registration_identification.proto\"\xbd\v\n" +
+	"8wayplatform/connect/tachograph/card/v1/calibration.proto\x12&wayplatform.connect.tachograph.card.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a>wayplatform/connect/tachograph/dd/v1/calibration_purpose.proto\x1a9wayplatform/connect/tachograph/dd/v1/equipment_type.proto\x1aAwayplatform/connect/tachograph/dd/v1/extended_serial_number.proto\x1a7wayplatform/connect/tachograph/dd/v1/string_value.proto\x1aNwayplatform/connect/tachograph/dd/v1/vehicle_registration_identification.proto\"\xcf\x12\n" +
 	"\vCalibration\x126\n" +
 	"\x17calibration_total_count\x18\x01 \x01(\x05R\x15calibrationTotalCount\x12.\n" +
 	"\x13newest_record_index\x18\x02 \x01(\x05R\x11newestRecordIndex\x12T\n" +
-	"\arecords\x18\x03 \x03(\v2:.wayplatform.connect.tachograph.card.v1.Calibration.RecordR\arecords\x1a\xef\t\n" +
+	"\arecords\x18\x03 \x03(\v2:.wayplatform.connect.tachograph.card.v1.Calibration.RecordR\arecords\x1a\xd4\x01\n" +
+	"\x16ExtendedSealIdentifier\x12^\n" +
+	"\x11manufacturer_code\x18\x01 \x01(\v21.wayplatform.connect.tachograph.dd.v1.StringValueR\x10manufacturerCode\x12Z\n" +
+	"\x0fseal_identifier\x18\x02 \x01(\v21.wayplatform.connect.tachograph.dd.v1.StringValueR\x0esealIdentifier\x1a\xef\x01\n" +
+	"\n" +
+	"SealRecord\x12Z\n" +
+	"\x0eequipment_type\x18\x01 \x01(\x0e23.wayplatform.connect.tachograph.dd.v1.EquipmentTypeR\requipmentType\x12\x84\x01\n" +
+	"\x18extended_seal_identifier\x18\x02 \x01(\v2J.wayplatform.connect.tachograph.card.v1.Calibration.ExtendedSealIdentifierR\x16extendedSealIdentifier\x1aq\n" +
+	"\fSealDataCard\x12a\n" +
+	"\fseal_records\x18\x01 \x03(\v2>.wayplatform.connect.tachograph.card.v1.Calibration.SealRecordR\vsealRecords\x1a\xc5\f\n" +
 	"\x06Record\x12i\n" +
 	"\x13calibration_purpose\x18\x01 \x01(\x0e28.wayplatform.connect.tachograph.dd.v1.CalibrationPurposeR\x12calibrationPurpose\x12u\n" +
 	"\x1dvehicle_identification_number\x18\x03 \x01(\v21.wayplatform.connect.tachograph.dd.v1.StringValueR\x1bvehicleIdentificationNumber\x12z\n" +
 	"\x14vehicle_registration\x18\x04 \x01(\v2G.wayplatform.connect.tachograph.dd.v1.VehicleRegistrationIdentificationR\x13vehicleRegistration\x12I\n" +
 	"!w_vehicle_characteristic_constant\x18\x05 \x01(\x05R\x1ewVehicleCharacteristicConstant\x12H\n" +
-	"!k_constant_of_recording_equipment\x18\x06 \x01(\x05R\x1dkConstantOfRecordingEquipment\x125\n" +
-	"\x17l_tyre_circumference_mm\x18\a \x01(\x05R\x14lTyreCircumferenceMm\x12N\n" +
+	"!k_constant_of_recording_equipment\x18\x06 \x01(\x05R\x1dkConstantOfRecordingEquipment\x12D\n" +
+	"\x1fl_tyre_circumference_eighths_mm\x18\a \x01(\x05R\x1blTyreCircumferenceEighthsMm\x12N\n" +
 	"\ttyre_size\x18\b \x01(\v21.wayplatform.connect.tachograph.dd.v1.StringValueR\btyreSize\x120\n" +
 	"\x14authorised_speed_kmh\x18\t \x01(\x05R\x12authorisedSpeedKmh\x12&\n" +
 	"\x0fold_odometer_km\x18\n" +
@@ -803,36 +1167,51 @@ const file_wayplatform_connect_tachograph_card_v1_calibration_proto_rawDesc = ""
 	"\x15next_calibration_date\x18\x0e \x01(\v2\x1a.google.protobuf.TimestampR\x13nextCalibrationDate\x12W\n" +
 	"\x0evu_part_number\x18\x0f \x01(\v21.wayplatform.connect.tachograph.dd.v1.StringValueR\fvuPartNumber\x12d\n" +
 	"\x10vu_serial_number\x18\x10 \x01(\v2:.wayplatform.connect.tachograph.dd.v1.ExtendedSerialNumberR\x0evuSerialNumber\x12l\n" +
-	"\x14sensor_serial_number\x18\x11 \x01(\v2:.wayplatform.connect.tachograph.dd.v1.ExtendedSerialNumberR\x12sensorSerialNumberB\xdd\x02\n" +
+	"\x14sensor_serial_number\x18\x11 \x01(\v2:.wayplatform.connect.tachograph.dd.v1.ExtendedSerialNumberR\x12sensorSerialNumber\x12u\n" +
+	"\x19sensor_gnss_serial_number\x18\x12 \x01(\v2:.wayplatform.connect.tachograph.dd.v1.ExtendedSerialNumberR\x16sensorGnssSerialNumber\x12f\n" +
+	"\x11rcm_serial_number\x18\x13 \x01(\v2:.wayplatform.connect.tachograph.dd.v1.ExtendedSerialNumberR\x0frcmSerialNumber\x12f\n" +
+	"\x0eseal_data_card\x18\x14 \x01(\v2@.wayplatform.connect.tachograph.card.v1.Calibration.SealDataCardR\fsealDataCardB\xdd\x02\n" +
 	"*com.wayplatform.connect.tachograph.card.v1B\x10CalibrationProtoP\x01Z`github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1;cardv1\xa2\x02\x04WCTC\xaa\x02&Wayplatform.Connect.Tachograph.Card.V1\xca\x02&Wayplatform\\Connect\\Tachograph\\Card\\V1\xe2\x022Wayplatform\\Connect\\Tachograph\\Card\\V1\\GPBMetadata\xea\x02*Wayplatform::Connect::Tachograph::Card::V1b\beditionsp\xe8\a"
 
-var file_wayplatform_connect_tachograph_card_v1_calibration_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
+var file_wayplatform_connect_tachograph_card_v1_calibration_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
 var file_wayplatform_connect_tachograph_card_v1_calibration_proto_goTypes = []any{
 	(*Calibration)(nil),                          // 0: wayplatform.connect.tachograph.card.v1.Calibration
-	(*Calibration_Record)(nil),                   // 1: wayplatform.connect.tachograph.card.v1.Calibration.Record
-	(v1.CalibrationPurpose)(0),                   // 2: wayplatform.connect.tachograph.dd.v1.CalibrationPurpose
-	(*v1.StringValue)(nil),                       // 3: wayplatform.connect.tachograph.dd.v1.StringValue
-	(*v1.VehicleRegistrationIdentification)(nil), // 4: wayplatform.connect.tachograph.dd.v1.VehicleRegistrationIdentification
-	(*timestamppb.Timestamp)(nil),                // 5: google.protobuf.Timestamp
-	(*v1.ExtendedSerialNumber)(nil),              // 6: wayplatform.connect.tachograph.dd.v1.ExtendedSerialNumber
+	(*Calibration_ExtendedSealIdentifier)(nil),   // 1: wayplatform.connect.tachograph.card.v1.Calibration.ExtendedSealIdentifier
+	(*Calibration_SealRecord)(nil),               // 2: wayplatform.connect.tachograph.card.v1.Calibration.SealRecord
+	(*Calibration_SealDataCard)(nil),             // 3: wayplatform.connect.tachograph.card.v1.Calibration.SealDataCard
+	(*Calibration_Record)(nil),                   // 4: wayplatform.connect.tachograph.card.v1.Calibration.Record
+	(*v1.StringValue)(nil),                       // 5: wayplatform.connect.tachograph.dd.v1.StringValue
+	(v1.EquipmentType)(0),                        // 6: wayplatform.connect.tachograph.dd.v1.EquipmentType
+	(v1.CalibrationPurpose)(0),                   // 7: wayplatform.connect.tachograph.dd.v1.CalibrationPurpose
+	(*v1.VehicleRegistrationIdentification)(nil), // 8: wayplatform.connect.tachograph.dd.v1.VehicleRegistrationIdentification
+	(*timestamppb.Timestamp)(nil),                // 9: google.protobuf.Timestamp
+	(*v1.ExtendedSerialNumber)(nil),              // 10: wayplatform.connect.tachograph.dd.v1.ExtendedSerialNumber
 }
 var file_wayplatform_connect_tachograph_card_v1_calibration_proto_depIdxs = []int32{
-	1,  // 0: wayplatform.connect.tachograph.card.v1.Calibration.records:type_name -> wayplatform.connect.tachograph.card.v1.Calibration.Record
-	2,  // 1: wayplatform.connect.tachograph.card.v1.Calibration.Record.calibration_purpose:type_name -> wayplatform.connect.tachograph.dd.v1.CalibrationPurpose
-	3,  // 2: wayplatform.connect.tachograph.card.v1.Calibration.Record.vehicle_identification_number:type_name -> wayplatform.connect.tachograph.dd.v1.StringValue
-	4,  // 3: wayplatform.connect.tachograph.card.v1.Calibration.Record.vehicle_registration:type_name -> wayplatform.connect.tachograph.dd.v1.VehicleRegistrationIdentification
-	3,  // 4: wayplatform.connect.tachograph.card.v1.Calibration.Record.tyre_size:type_name -> wayplatform.connect.tachograph.dd.v1.StringValue
-	5,  // 5: wayplatform.connect.tachograph.card.v1.Calibration.Record.old_time:type_name -> google.protobuf.Timestamp
-	5,  // 6: wayplatform.connect.tachograph.card.v1.Calibration.Record.new_time:type_name -> google.protobuf.Timestamp
-	5,  // 7: wayplatform.connect.tachograph.card.v1.Calibration.Record.next_calibration_date:type_name -> google.protobuf.Timestamp
-	3,  // 8: wayplatform.connect.tachograph.card.v1.Calibration.Record.vu_part_number:type_name -> wayplatform.connect.tachograph.dd.v1.StringValue
-	6,  // 9: wayplatform.connect.tachograph.card.v1.Calibration.Record.vu_serial_number:type_name -> wayplatform.connect.tachograph.dd.v1.ExtendedSerialNumber
-	6,  // 10: wayplatform.connect.tachograph.card.v1.Calibration.Record.sensor_serial_number:type_name -> wayplatform.connect.tachograph.dd.v1.ExtendedSerialNumber
-	11, // [11:11] is the sub-list for method output_type
-	11, // [11:11] is the sub-list for method input_type
-	11, // [11:11] is the sub-list for extension type_name
-	11, // [11:11] is the sub-list for extension extendee
-	0,  // [0:11] is the sub-list for field type_name
+	4,  // 0: wayplatform.connect.tachograph.card.v1.Calibration.records:type_name -> wayplatform.connect.tachograph.card.v1.Calibration.Record
+	5,  // 1: wayplatform.connect.tachograph.card.v1.Calibration.ExtendedSealIdentifier.manufacturer_code:type_name -> wayplatform.connect.tachograph.dd.v1.StringValue
+	5,  // 2: wayplatform.connect.tachograph.card.v1.Calibration.ExtendedSealIdentifier.seal_identifier:type_name -> wayplatform.connect.tachograph.dd.v1.StringValue
+	6,  // 3: wayplatform.connect.tachograph.card.v1.Calibration.SealRecord.equipment_type:type_name -> wayplatform.connect.tachograph.dd.v1.EquipmentType
+	1,  // 4: wayplatform.connect.tachograph.card.v1.Calibration.SealRecord.extended_seal_identifier:type_name -> wayplatform.connect.tachograph.card.v1.Calibration.ExtendedSealIdentifier
+	2,  // 5: wayplatform.connect.tachograph.card.v1.Calibration.SealDataCard.seal_records:type_name -> wayplatform.connect.tachograph.card.v1.Calibration.SealRecord
+	7,  // 6: wayplatform.connect.tachograph.card.v1.Calibration.Record.calibration_purpose:type_name -> wayplatform.connect.tachograph.dd.v1.CalibrationPurpose
+	5,  // 7: wayplatform.connect.tachograph.card.v1.Calibration.Record.vehicle_identification_number:type_name -> wayplatform.connect.tachograph.dd.v1.StringValue
+	8,  // 8: wayplatform.connect.tachograph.card.v1.Calibration.Record.vehicle_registration:type_name -> wayplatform.connect.tachograph.dd.v1.VehicleRegistrationIdentification
+	5,  // 9: wayplatform.connect.tachograph.card.v1.Calibration.Record.tyre_size:type_name -> wayplatform.connect.tachograph.dd.v1.StringValue
+	9,  // 10: wayplatform.connect.tachograph.card.v1.Calibration.Record.old_time:type_name -> google.protobuf.Timestamp
+	9,  // 11: wayplatform.connect.tachograph.card.v1.Calibration.Record.new_time:type_name -> google.protobuf.Timestamp
+	9,  // 12: wayplatform.connect.tachograph.card.v1.Calibration.Record.next_calibration_date:type_name -> google.protobuf.Timestamp
+	5,  // 13: wayplatform.connect.tachograph.card.v1.Calibration.Record.vu_part_number:type_name -> wayplatform.connect.tachograph.dd.v1.StringValue
+	10, // 14: wayplatform.connect.tachograph.card.v1.Calibration.Record.vu_serial_number:type_name -> wayplatform.connect.tachograph.dd.v1.ExtendedSerialNumber
+	10, // 15: wayplatform.connect.tachograph.card.v1.Calibration.Record.sensor_serial_number:type_name -> wayplatform.connect.tachograph.dd.v1.ExtendedSerialNumber
+	10, // 16: wayplatform.connect.tachograph.card.v1.Calibration.Record.sensor_gnss_serial_number:type_name -> wayplatform.connect.tachograph.dd.v1.ExtendedSerialNumber
+	10, // 17: wayplatform.connect.tachograph.card.v1.Calibration.Record.rcm_serial_number:type_name -> wayplatform.connect.tachograph.dd.v1.ExtendedSerialNumber
+	3,  // 18: wayplatform.connect.tachograph.card.v1.Calibration.Record.seal_data_card:type_name -> wayplatform.connect.tachograph.card.v1.Calibration.SealDataCard
+	19, // [19:19] is the sub-list for method output_type
+	19, // [19:19] is the sub-list for method input_type
+	19, // [19:19] is the sub-list for extension type_name
+	19, // [19:19] is the sub-list for extension extendee
+	0,  // [0:19] is the sub-list for field type_name
 }
 
 func init() { file_wayplatform_connect_tachograph_card_v1_calibration_proto_init() }
@@ -846,7 +1225,7 @@ func file_wayplatform_connect_tachograph_card_v1_calibration_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_wayplatform_connect_tachograph_card_v1_calibration_proto_rawDesc), len(file_wayplatform_connect_tachograph_card_v1_calibration_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   2,
+			NumMessages:   5,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

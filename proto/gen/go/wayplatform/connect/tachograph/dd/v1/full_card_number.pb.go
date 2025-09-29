@@ -29,6 +29,20 @@ const (
 //	    cardIssuingMemberState NationNumeric,
 //	    cardNumber CardNumber
 //	}
+//
+//	CardNumber ::= CHOICE {
+//	    driverIdentification SEQUENCE {
+//	        driverIdentification IA5String(SIZE(14)),
+//	        cardReplacementIndex CardReplacementIndex,
+//	        cardRenewalIndex CardRenewalIndex
+//	    },
+//	    ownerIdentification SEQUENCE {
+//	        ownerIdentification IA5String(SIZE(13)),
+//	        cardConsecutiveIndex CardConsecutiveIndex,
+//	        cardReplacementIndex CardReplacementIndex,
+//	        cardRenewalIndex CardRenewalIndex
+//	    }
+//	}
 type FullCardNumber struct {
 	state                             protoimpl.MessageState `protogen:"opaque.v1"`
 	xxx_hidden_CardType               EquipmentType          `protobuf:"varint,1,opt,name=card_type,json=cardType,enum=wayplatform.connect.tachograph.dd.v1.EquipmentType"`
@@ -182,7 +196,7 @@ type FullCardNumber_builder struct {
 	// It is populated when `card_type` is `DRIVER_CARD`.
 	DriverIdentification *DriverIdentification
 	// This field is part of the `CardNumber` CHOICE.
-	// It is populated when `card_type` is `WORKSHOP_CARD` or `COMPANY_CARD`.
+	// It is populated when card_type is WORKSHOP_CARD, COMPANY_CARD, or CONTROL_CARD.
 	OwnerIdentification *OwnerIdentification
 }
 

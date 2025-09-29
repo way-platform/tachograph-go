@@ -43,6 +43,9 @@ func unmarshalExtendedSerialNumber(data []byte) (*ddv1.ExtendedSerialNumber, err
 	esn.SetSerialNumber(int64(serialNum))
 
 	// Parse month/year BCD (2 bytes, MMYY format)
+	monthYear := &ddv1.MonthYear{}
+	monthYear.SetEncoded(data[4:6])
+
 	monthYearInt, err := bcdBytesToInt(data[4:6])
 	if err == nil && monthYearInt > 0 {
 		month := int32(monthYearInt / 100)
@@ -53,9 +56,11 @@ func unmarshalExtendedSerialNumber(data []byte) (*ddv1.ExtendedSerialNumber, err
 			year += 2000
 		}
 
-		esn.SetMonth(month)
-		esn.SetYear(year)
+		monthYear.SetMonth(month)
+		monthYear.SetYear(year)
 	}
+
+	esn.SetMonthYear(monthYear)
 
 	// Parse equipment type (1 byte)
 	equipmentType, err := unmarshalEquipmentType(data[6:7])
@@ -101,19 +106,29 @@ func appendExtendedSerialNumber(dst []byte, esn *ddv1.ExtendedSerialNumber) ([]b
 	dst = binary.BigEndian.AppendUint32(dst, uint32(serialNumber))
 
 	// Append month/year BCD (2 bytes, MMYY format)
-	month := esn.GetMonth()
-	year := esn.GetYear()
+	monthYear := esn.GetMonthYear()
+	if monthYear != nil && len(monthYear.GetEncoded()) >= 2 {
+		// Use the original encoded bytes for perfect round-trip fidelity
+		dst = append(dst, monthYear.GetEncoded()[:2]...)
+	} else if monthYear != nil {
+		// Fall back to encoding from decoded values
+		month := monthYear.GetMonth()
+		year := monthYear.GetYear()
 
-	// Convert 4-digit year to 2-digit for BCD encoding
-	year2Digit := year % 100
+		// Convert 4-digit year to 2-digit for BCD encoding
+		year2Digit := year % 100
 
-	// Encode month as BCD
-	monthBCD := byte(((month / 10) << 4) | (month % 10))
-	dst = append(dst, monthBCD)
+		// Encode month as BCD
+		monthBCD := byte(((month / 10) << 4) | (month % 10))
+		dst = append(dst, monthBCD)
 
-	// Encode year as BCD
-	yearBCD := byte(((year2Digit / 10) << 4) | (year2Digit % 10))
-	dst = append(dst, yearBCD)
+		// Encode year as BCD
+		yearBCD := byte(((year2Digit / 10) << 4) | (year2Digit % 10))
+		dst = append(dst, yearBCD)
+	} else {
+		// No month/year data, append zeros
+		dst = append(dst, 0, 0)
+	}
 
 	// Append equipment type (1 byte)
 	dst = appendEquipmentType(dst, esn.GetType())
@@ -140,16 +155,25 @@ func appendExtendedSerialNumberAsString(dst []byte, esn *ddv1.ExtendedSerialNumb
 		binary.BigEndian.PutUint32(serialBytes[0:4], uint32(serialNumber))
 	}
 
-	// Next byte: month (BCD)
-	month := esn.GetMonth()
-	if month != 0 {
-		serialBytes[4] = byte(((month / 10) << 4) | (month % 10))
-	}
+	// Next 2 bytes: month/year (BCD)
+	monthYear := esn.GetMonthYear()
+	if monthYear != nil && len(monthYear.GetEncoded()) >= 2 {
+		// Use the original encoded bytes for perfect round-trip fidelity
+		copy(serialBytes[4:6], monthYear.GetEncoded()[:2])
+	} else if monthYear != nil {
+		// Fall back to encoding from decoded values
+		month := monthYear.GetMonth()
+		year := monthYear.GetYear()
 
-	// Next byte: year (BCD)
-	year := esn.GetYear()
-	if year != 0 {
-		serialBytes[5] = byte(((year / 10) << 4) | (year % 10))
+		if month != 0 {
+			serialBytes[4] = byte(((month / 10) << 4) | (month % 10))
+		}
+
+		// Convert 4-digit year to 2-digit for BCD encoding
+		year2Digit := year % 100
+		if year != 0 {
+			serialBytes[5] = byte(((year2Digit / 10) << 4) | (year2Digit % 10))
+		}
 	}
 
 	// Next byte: equipment type (converted to protocol value using generic helper)

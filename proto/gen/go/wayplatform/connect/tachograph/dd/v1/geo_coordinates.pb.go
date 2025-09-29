@@ -114,13 +114,13 @@ func (x *GeoCoordinates) ClearLongitude() {
 type GeoCoordinates_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
-	// Latitude in millionths of a degree.
+	// Latitude in milliarcseconds.
 	//
 	// ASN.1 Definition:
 	//
 	//	latitude INTEGER(-90*3600*1000..90*3600*1000)
 	Latitude *int32
-	// Longitude in millionths of a degree.
+	// Longitude in milliarcseconds.
 	//
 	// ASN.1 Definition:
 	//

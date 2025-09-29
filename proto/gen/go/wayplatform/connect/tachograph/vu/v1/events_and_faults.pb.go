@@ -280,7 +280,10 @@ func (b0 EventsAndFaults_builder) Build() *EventsAndFaults {
 //
 // See Data Dictionary, Section 2.201, `VuFaultRecord`.
 //
-// ASN.1 Definition:
+// Note: This protobuf message simplifies the four card number fields from the
+// raw record into a single `card_identifier` field.
+//
+// ASN.1 Definition (Gen1):
 //
 //	VuFaultRecord ::= SEQUENCE {
 //	    faultType EventFaultType,
@@ -291,6 +294,20 @@ func (b0 EventsAndFaults_builder) Build() *EventsAndFaults {
 //	    cardNumberCodriverSlotBegin FullCardNumber,
 //	    cardNumberDriverSlotEnd FullCardNumber,
 //	    cardNumberCodriverSlotEnd FullCardNumber
+//	}
+//
+// ASN.1 Definition (Gen2):
+//
+//	VuFaultRecord ::= SEQUENCE {
+//	    faultType EventFaultType,
+//	    faultRecordPurpose EventFaultRecordPurpose,
+//	    faultBeginTime TimeReal,
+//	    faultEndTime TimeReal,
+//	    cardNumberAndGenDriverSlotBegin FullCardNumberAndGeneration,
+//	    cardNumberAndGenCodriverSlotBegin FullCardNumberAndGeneration,
+//	    cardNumberAndGenDriverSlotEnd FullCardNumberAndGeneration,
+//	    cardNumberAndGenCodriverSlotEnd FullCardNumberAndGeneration,
+//	    manufacturerSpecificEventFaultData ManufacturerSpecificEventFaultData
 //	}
 type EventsAndFaults_FaultRecord struct {
 	state                                protoimpl.MessageState          `protogen:"opaque.v1"`
@@ -568,7 +585,10 @@ func (b0 EventsAndFaults_FaultRecord_builder) Build() *EventsAndFaults_FaultReco
 //
 // See Data Dictionary, Section 2.198, `VuEventRecord`.
 //
-// ASN.1 Definition:
+// Note: This protobuf message simplifies the four card number fields from the
+// raw record into a single `card_identifier` field.
+//
+// ASN.1 Definition (Gen1):
 //
 //	VuEventRecord ::= SEQUENCE {
 //	    eventType EventFaultType,
@@ -580,6 +600,21 @@ func (b0 EventsAndFaults_FaultRecord_builder) Build() *EventsAndFaults_FaultReco
 //	    cardNumberDriverSlotEnd FullCardNumber,
 //	    cardNumberCodriverSlotEnd FullCardNumber,
 //	    similarEventsNumber SimilarEventsNumber
+//	}
+//
+// ASN.1 Definition (Gen2):
+//
+//	VuEventRecord ::= SEQUENCE {
+//	    eventType EventFaultType,
+//	    eventRecordPurpose EventFaultRecordPurpose,
+//	    eventBeginTime TimeReal,
+//	    eventEndTime TimeReal,
+//	    cardNumberAndGenDriverSlotBegin FullCardNumberAndGeneration,
+//	    cardNumberAndGenCodriverSlotBegin FullCardNumberAndGeneration,
+//	    cardNumberAndGenDriverSlotEnd FullCardNumberAndGeneration,
+//	    cardNumberAndGenCodriverSlotEnd FullCardNumberAndGeneration,
+//	    similarEventsNumber SimilarEventsNumber,
+//	    manufacturerSpecificEventFaultData ManufacturerSpecificEventFaultData
 //	}
 type EventsAndFaults_EventRecord struct {
 	state                                protoimpl.MessageState          `protogen:"opaque.v1"`
@@ -1047,7 +1082,7 @@ func (b0 EventsAndFaults_OverSpeedingControlData_builder) Build() *EventsAndFaul
 //
 // See Data Dictionary, Section 2.215, `VuOverSpeedingEventRecord`.
 //
-// ASN.1 Definition:
+// ASN.1 Definition (Gen1):
 //
 //	VuOverSpeedingEventRecord ::= SEQUENCE {
 //	    eventType EventFaultType,
@@ -1057,6 +1092,19 @@ func (b0 EventsAndFaults_OverSpeedingControlData_builder) Build() *EventsAndFaul
 //	    maxSpeedValue SpeedMax,
 //	    averageSpeedValue SpeedAverage,
 //	    cardNumberDriverSlotBegin FullCardNumber,
+//	    similarEventsNumber SimilarEventsNumber
+//	}
+//
+// ASN.1 Definition (Gen2):
+//
+//	VuOverSpeedingEventRecord ::= SEQUENCE {
+//	    eventType EventFaultType,
+//	    eventRecordPurpose EventFaultRecordPurpose,
+//	    eventBeginTime TimeReal,
+//	    eventEndTime TimeReal,
+//	    maxSpeedValue SpeedMax,
+//	    averageSpeedValue SpeedAverage,
+//	    cardNumberAndGenDriverSlotBegin FullCardNumberAndGeneration,
 //	    similarEventsNumber SimilarEventsNumber
 //	}
 type EventsAndFaults_OverSpeedingEventRecord struct {
@@ -1070,6 +1118,7 @@ type EventsAndFaults_OverSpeedingEventRecord struct {
 	xxx_hidden_MaxSpeedKmh               int32                           `protobuf:"varint,7,opt,name=max_speed_kmh,json=maxSpeedKmh"`
 	xxx_hidden_AverageSpeedKmh           int32                           `protobuf:"varint,8,opt,name=average_speed_kmh,json=averageSpeedKmh"`
 	xxx_hidden_CardIdentifier            *v1.FullCardNumberAndGeneration `protobuf:"bytes,9,opt,name=card_identifier,json=cardIdentifier"`
+	xxx_hidden_SimilarEventsNumber       int32                           `protobuf:"varint,10,opt,name=similar_events_number,json=similarEventsNumber"`
 	XXX_raceDetectHookData               protoimpl.RaceDetectHookData
 	XXX_presence                         [1]uint32
 	unknownFields                        protoimpl.UnknownFields
@@ -1168,24 +1217,31 @@ func (x *EventsAndFaults_OverSpeedingEventRecord) GetCardIdentifier() *v1.FullCa
 	return nil
 }
 
+func (x *EventsAndFaults_OverSpeedingEventRecord) GetSimilarEventsNumber() int32 {
+	if x != nil {
+		return x.xxx_hidden_SimilarEventsNumber
+	}
+	return 0
+}
+
 func (x *EventsAndFaults_OverSpeedingEventRecord) SetEventType(v v1.EventFaultType) {
 	x.xxx_hidden_EventType = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 9)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 10)
 }
 
 func (x *EventsAndFaults_OverSpeedingEventRecord) SetUnrecognizedEventType(v int32) {
 	x.xxx_hidden_UnrecognizedEventType = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 9)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 10)
 }
 
 func (x *EventsAndFaults_OverSpeedingEventRecord) SetRecordPurpose(v v1.EventFaultRecordPurpose) {
 	x.xxx_hidden_RecordPurpose = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 9)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 10)
 }
 
 func (x *EventsAndFaults_OverSpeedingEventRecord) SetUnrecognizedRecordPurpose(v int32) {
 	x.xxx_hidden_UnrecognizedRecordPurpose = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 3, 9)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 3, 10)
 }
 
 func (x *EventsAndFaults_OverSpeedingEventRecord) SetBeginTime(v *timestamppb.Timestamp) {
@@ -1198,16 +1254,21 @@ func (x *EventsAndFaults_OverSpeedingEventRecord) SetEndTime(v *timestamppb.Time
 
 func (x *EventsAndFaults_OverSpeedingEventRecord) SetMaxSpeedKmh(v int32) {
 	x.xxx_hidden_MaxSpeedKmh = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 6, 9)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 6, 10)
 }
 
 func (x *EventsAndFaults_OverSpeedingEventRecord) SetAverageSpeedKmh(v int32) {
 	x.xxx_hidden_AverageSpeedKmh = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 7, 9)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 7, 10)
 }
 
 func (x *EventsAndFaults_OverSpeedingEventRecord) SetCardIdentifier(v *v1.FullCardNumberAndGeneration) {
 	x.xxx_hidden_CardIdentifier = v
+}
+
+func (x *EventsAndFaults_OverSpeedingEventRecord) SetSimilarEventsNumber(v int32) {
+	x.xxx_hidden_SimilarEventsNumber = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 9, 10)
 }
 
 func (x *EventsAndFaults_OverSpeedingEventRecord) HasEventType() bool {
@@ -1273,6 +1334,13 @@ func (x *EventsAndFaults_OverSpeedingEventRecord) HasCardIdentifier() bool {
 	return x.xxx_hidden_CardIdentifier != nil
 }
 
+func (x *EventsAndFaults_OverSpeedingEventRecord) HasSimilarEventsNumber() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 9)
+}
+
 func (x *EventsAndFaults_OverSpeedingEventRecord) ClearEventType() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 0)
 	x.xxx_hidden_EventType = v1.EventFaultType_EVENT_FAULT_TYPE_UNSPECIFIED
@@ -1313,6 +1381,11 @@ func (x *EventsAndFaults_OverSpeedingEventRecord) ClearAverageSpeedKmh() {
 
 func (x *EventsAndFaults_OverSpeedingEventRecord) ClearCardIdentifier() {
 	x.xxx_hidden_CardIdentifier = nil
+}
+
+func (x *EventsAndFaults_OverSpeedingEventRecord) ClearSimilarEventsNumber() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 9)
+	x.xxx_hidden_SimilarEventsNumber = 0
 }
 
 type EventsAndFaults_OverSpeedingEventRecord_builder struct {
@@ -1359,13 +1432,17 @@ type EventsAndFaults_OverSpeedingEventRecord_builder struct {
 	// The card number and generation of the driver who caused the event.
 	//
 	// See Data Dictionary, Section 2.74, `FullCardNumberAndGeneration`.
+	// ASN.1 Definition (Gen2):
+	//
+	//	cardNumberAndGenDriverSlotBegin FullCardNumberAndGeneration
+	CardIdentifier *v1.FullCardNumberAndGeneration
+	// Number of similar events on the same day.
+	//
+	// See Data Dictionary, Section 2.151, `SimilarEventsNumber`.
 	// ASN.1 Definition:
 	//
-	//	FullCardNumberAndGeneration ::= SEQUENCE {
-	//	    fullcardNumber FullCardNumber,
-	//	    generation Generation
-	//	}
-	CardIdentifier *v1.FullCardNumberAndGeneration
+	//	SimilarEventsNumber ::= INTEGER(0..255)
+	SimilarEventsNumber *int32
 }
 
 func (b0 EventsAndFaults_OverSpeedingEventRecord_builder) Build() *EventsAndFaults_OverSpeedingEventRecord {
@@ -1373,32 +1450,36 @@ func (b0 EventsAndFaults_OverSpeedingEventRecord_builder) Build() *EventsAndFaul
 	b, x := &b0, m0
 	_, _ = b, x
 	if b.EventType != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 9)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 10)
 		x.xxx_hidden_EventType = *b.EventType
 	}
 	if b.UnrecognizedEventType != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 9)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 10)
 		x.xxx_hidden_UnrecognizedEventType = *b.UnrecognizedEventType
 	}
 	if b.RecordPurpose != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 9)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 10)
 		x.xxx_hidden_RecordPurpose = *b.RecordPurpose
 	}
 	if b.UnrecognizedRecordPurpose != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 3, 9)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 3, 10)
 		x.xxx_hidden_UnrecognizedRecordPurpose = *b.UnrecognizedRecordPurpose
 	}
 	x.xxx_hidden_BeginTime = b.BeginTime
 	x.xxx_hidden_EndTime = b.EndTime
 	if b.MaxSpeedKmh != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 6, 9)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 6, 10)
 		x.xxx_hidden_MaxSpeedKmh = *b.MaxSpeedKmh
 	}
 	if b.AverageSpeedKmh != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 7, 9)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 7, 10)
 		x.xxx_hidden_AverageSpeedKmh = *b.AverageSpeedKmh
 	}
 	x.xxx_hidden_CardIdentifier = b.CardIdentifier
+	if b.SimilarEventsNumber != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 9, 10)
+		x.xxx_hidden_SimilarEventsNumber = *b.SimilarEventsNumber
+	}
 	return m0
 }
 
@@ -1406,7 +1487,11 @@ func (b0 EventsAndFaults_OverSpeedingEventRecord_builder) Build() *EventsAndFaul
 //
 // See Data Dictionary, Section 2.232, `VuTimeAdjustmentRecord`.
 //
-// ASN.1 Definition:
+// Note: The ASN.1 definition in the Data Dictionary is incomplete. Annex IC,
+// requirement 125, mandates the inclusion of the workshop card's expiry date,
+// which is added to this message as `workshop_card_expiry_date`.
+//
+// ASN.1 Definition (Gen1):
 //
 //	VuTimeAdjustmentRecord ::= SEQUENCE {
 //	    oldTimeValue TimeReal,
@@ -1415,6 +1500,16 @@ func (b0 EventsAndFaults_OverSpeedingEventRecord_builder) Build() *EventsAndFaul
 //	    workshopAddress Address,
 //	    workshopCardNumber FullCardNumber
 //	}
+//
+// ASN.1 Definition (Gen2):
+//
+//	VuTimeAdjustmentRecord ::= SEQUENCE {
+//	    oldTimeValue TimeReal,
+//	    newTimeValue TimeReal,
+//	    workshopName Name,
+//	    workshopAddress Address,
+//	    workshopCardNumberAndGeneration FullCardNumberAndGeneration
+//	}
 type EventsAndFaults_TimeAdjustmentRecord struct {
 	state                             protoimpl.MessageState          `protogen:"opaque.v1"`
 	xxx_hidden_OldTime                *timestamppb.Timestamp          `protobuf:"bytes,1,opt,name=old_time,json=oldTime"`
@@ -1422,6 +1517,7 @@ type EventsAndFaults_TimeAdjustmentRecord struct {
 	xxx_hidden_WorkshopName           *v1.StringValue                 `protobuf:"bytes,3,opt,name=workshop_name,json=workshopName"`
 	xxx_hidden_WorkshopAddress        *v1.StringValue                 `protobuf:"bytes,4,opt,name=workshop_address,json=workshopAddress"`
 	xxx_hidden_WorkshopCardIdentifier *v1.FullCardNumberAndGeneration `protobuf:"bytes,5,opt,name=workshop_card_identifier,json=workshopCardIdentifier"`
+	xxx_hidden_WorkshopCardExpiryDate *timestamppb.Timestamp          `protobuf:"bytes,6,opt,name=workshop_card_expiry_date,json=workshopCardExpiryDate"`
 	unknownFields                     protoimpl.UnknownFields
 	sizeCache                         protoimpl.SizeCache
 }
@@ -1486,6 +1582,13 @@ func (x *EventsAndFaults_TimeAdjustmentRecord) GetWorkshopCardIdentifier() *v1.F
 	return nil
 }
 
+func (x *EventsAndFaults_TimeAdjustmentRecord) GetWorkshopCardExpiryDate() *timestamppb.Timestamp {
+	if x != nil {
+		return x.xxx_hidden_WorkshopCardExpiryDate
+	}
+	return nil
+}
+
 func (x *EventsAndFaults_TimeAdjustmentRecord) SetOldTime(v *timestamppb.Timestamp) {
 	x.xxx_hidden_OldTime = v
 }
@@ -1504,6 +1607,10 @@ func (x *EventsAndFaults_TimeAdjustmentRecord) SetWorkshopAddress(v *v1.StringVa
 
 func (x *EventsAndFaults_TimeAdjustmentRecord) SetWorkshopCardIdentifier(v *v1.FullCardNumberAndGeneration) {
 	x.xxx_hidden_WorkshopCardIdentifier = v
+}
+
+func (x *EventsAndFaults_TimeAdjustmentRecord) SetWorkshopCardExpiryDate(v *timestamppb.Timestamp) {
+	x.xxx_hidden_WorkshopCardExpiryDate = v
 }
 
 func (x *EventsAndFaults_TimeAdjustmentRecord) HasOldTime() bool {
@@ -1541,6 +1648,13 @@ func (x *EventsAndFaults_TimeAdjustmentRecord) HasWorkshopCardIdentifier() bool 
 	return x.xxx_hidden_WorkshopCardIdentifier != nil
 }
 
+func (x *EventsAndFaults_TimeAdjustmentRecord) HasWorkshopCardExpiryDate() bool {
+	if x == nil {
+		return false
+	}
+	return x.xxx_hidden_WorkshopCardExpiryDate != nil
+}
+
 func (x *EventsAndFaults_TimeAdjustmentRecord) ClearOldTime() {
 	x.xxx_hidden_OldTime = nil
 }
@@ -1559,6 +1673,10 @@ func (x *EventsAndFaults_TimeAdjustmentRecord) ClearWorkshopAddress() {
 
 func (x *EventsAndFaults_TimeAdjustmentRecord) ClearWorkshopCardIdentifier() {
 	x.xxx_hidden_WorkshopCardIdentifier = nil
+}
+
+func (x *EventsAndFaults_TimeAdjustmentRecord) ClearWorkshopCardExpiryDate() {
+	x.xxx_hidden_WorkshopCardExpiryDate = nil
 }
 
 type EventsAndFaults_TimeAdjustmentRecord_builder struct {
@@ -1595,13 +1713,17 @@ type EventsAndFaults_TimeAdjustmentRecord_builder struct {
 	// The card number and generation of the workshop that performed the adjustment.
 	//
 	// See Data Dictionary, Section 2.74, `FullCardNumberAndGeneration`.
+	WorkshopCardIdentifier *v1.FullCardNumberAndGeneration
+	// Expiry date of the workshop card used for the adjustment.
+	//
+	// This field is required by Annex IC, requirement 125, but is missing from the
+	// `VuTimeAdjustmentRecord` definition in Data Dictionary 2.232.
+	//
+	// See Data Dictionary, Section 2.162, `TimeReal`.
 	// ASN.1 Definition:
 	//
-	//	FullCardNumberAndGeneration ::= SEQUENCE {
-	//	    fullcardNumber FullCardNumber,
-	//	    generation Generation
-	//	}
-	WorkshopCardIdentifier *v1.FullCardNumberAndGeneration
+	//	TimeReal ::= INTEGER (0..2^32-1)
+	WorkshopCardExpiryDate *timestamppb.Timestamp
 }
 
 func (b0 EventsAndFaults_TimeAdjustmentRecord_builder) Build() *EventsAndFaults_TimeAdjustmentRecord {
@@ -1613,6 +1735,7 @@ func (b0 EventsAndFaults_TimeAdjustmentRecord_builder) Build() *EventsAndFaults_
 	x.xxx_hidden_WorkshopName = b.WorkshopName
 	x.xxx_hidden_WorkshopAddress = b.WorkshopAddress
 	x.xxx_hidden_WorkshopCardIdentifier = b.WorkshopCardIdentifier
+	x.xxx_hidden_WorkshopCardExpiryDate = b.WorkshopCardExpiryDate
 	return m0
 }
 
@@ -1620,7 +1743,7 @@ var File_wayplatform_connect_tachograph_vu_v1_events_and_faults_proto protorefle
 
 const file_wayplatform_connect_tachograph_vu_v1_events_and_faults_proto_rawDesc = "" +
 	"\n" +
-	"<wayplatform/connect/tachograph/vu/v1/events_and_faults.proto\x12$wayplatform.connect.tachograph.vu.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1aEwayplatform/connect/tachograph/dd/v1/event_fault_record_purpose.proto\x1a;wayplatform/connect/tachograph/dd/v1/event_fault_type.proto\x1aJwayplatform/connect/tachograph/dd/v1/full_card_number_and_generation.proto\x1a5wayplatform/connect/tachograph/dd/v1/generation.proto\x1a7wayplatform/connect/tachograph/dd/v1/string_value.proto\"\xad\x19\n" +
+	"<wayplatform/connect/tachograph/vu/v1/events_and_faults.proto\x12$wayplatform.connect.tachograph.vu.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1aEwayplatform/connect/tachograph/dd/v1/event_fault_record_purpose.proto\x1a;wayplatform/connect/tachograph/dd/v1/event_fault_type.proto\x1aJwayplatform/connect/tachograph/dd/v1/full_card_number_and_generation.proto\x1a5wayplatform/connect/tachograph/dd/v1/generation.proto\x1a7wayplatform/connect/tachograph/dd/v1/string_value.proto\"\xb8\x1a\n" +
 	"\x0fEventsAndFaults\x12P\n" +
 	"\n" +
 	"generation\x18\x01 \x01(\x0e20.wayplatform.connect.tachograph.dd.v1.GenerationR\n" +
@@ -1656,7 +1779,7 @@ const file_wayplatform_connect_tachograph_vu_v1_events_and_faults_proto_rawDesc 
 	"\x17OverSpeedingControlData\x12F\n" +
 	"\x11last_control_time\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\x0flastControlTime\x12f\n" +
 	"\"first_overspeed_since_last_control\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\x1efirstOverspeedSinceLastControl\x12Q\n" +
-	"&number_of_overspeed_since_last_control\x18\x03 \x01(\x05R!numberOfOverspeedSinceLastControl\x1a\xfa\x04\n" +
+	"&number_of_overspeed_since_last_control\x18\x03 \x01(\x05R!numberOfOverspeedSinceLastControl\x1a\xae\x05\n" +
 	"\x17OverSpeedingEventRecord\x12S\n" +
 	"\n" +
 	"event_type\x18\x01 \x01(\x0e24.wayplatform.connect.tachograph.dd.v1.EventFaultTypeR\teventType\x126\n" +
@@ -1668,13 +1791,16 @@ const file_wayplatform_connect_tachograph_vu_v1_events_and_faults_proto_rawDesc 
 	"\bend_time\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampR\aendTime\x12\"\n" +
 	"\rmax_speed_kmh\x18\a \x01(\x05R\vmaxSpeedKmh\x12*\n" +
 	"\x11average_speed_kmh\x18\b \x01(\x05R\x0faverageSpeedKmh\x12j\n" +
-	"\x0fcard_identifier\x18\t \x01(\v2A.wayplatform.connect.tachograph.dd.v1.FullCardNumberAndGenerationR\x0ecardIdentifier\x1a\xb7\x03\n" +
+	"\x0fcard_identifier\x18\t \x01(\v2A.wayplatform.connect.tachograph.dd.v1.FullCardNumberAndGenerationR\x0ecardIdentifier\x122\n" +
+	"\x15similar_events_number\x18\n" +
+	" \x01(\x05R\x13similarEventsNumber\x1a\x8e\x04\n" +
 	"\x14TimeAdjustmentRecord\x125\n" +
 	"\bold_time\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\aoldTime\x125\n" +
 	"\bnew_time\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\anewTime\x12V\n" +
 	"\rworkshop_name\x18\x03 \x01(\v21.wayplatform.connect.tachograph.dd.v1.StringValueR\fworkshopName\x12\\\n" +
 	"\x10workshop_address\x18\x04 \x01(\v21.wayplatform.connect.tachograph.dd.v1.StringValueR\x0fworkshopAddress\x12{\n" +
-	"\x18workshop_card_identifier\x18\x05 \x01(\v2A.wayplatform.connect.tachograph.dd.v1.FullCardNumberAndGenerationR\x16workshopCardIdentifierB\xd3\x02\n" +
+	"\x18workshop_card_identifier\x18\x05 \x01(\v2A.wayplatform.connect.tachograph.dd.v1.FullCardNumberAndGenerationR\x16workshopCardIdentifier\x12U\n" +
+	"\x19workshop_card_expiry_date\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampR\x16workshopCardExpiryDateB\xd3\x02\n" +
 	"(com.wayplatform.connect.tachograph.vu.v1B\x14EventsAndFaultsProtoP\x01Z\\github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/vu/v1;vuv1\xa2\x02\x04WCTV\xaa\x02$Wayplatform.Connect.Tachograph.Vu.V1\xca\x02$Wayplatform\\Connect\\Tachograph\\Vu\\V1\xe2\x020Wayplatform\\Connect\\Tachograph\\Vu\\V1\\GPBMetadata\xea\x02(Wayplatform::Connect::Tachograph::Vu::V1b\beditionsp\xe8\a"
 
 var file_wayplatform_connect_tachograph_vu_v1_events_and_faults_proto_msgTypes = make([]protoimpl.MessageInfo, 6)
@@ -1721,11 +1847,12 @@ var file_wayplatform_connect_tachograph_vu_v1_events_and_faults_proto_depIdxs = 
 	11, // 25: wayplatform.connect.tachograph.vu.v1.EventsAndFaults.TimeAdjustmentRecord.workshop_name:type_name -> wayplatform.connect.tachograph.dd.v1.StringValue
 	11, // 26: wayplatform.connect.tachograph.vu.v1.EventsAndFaults.TimeAdjustmentRecord.workshop_address:type_name -> wayplatform.connect.tachograph.dd.v1.StringValue
 	10, // 27: wayplatform.connect.tachograph.vu.v1.EventsAndFaults.TimeAdjustmentRecord.workshop_card_identifier:type_name -> wayplatform.connect.tachograph.dd.v1.FullCardNumberAndGeneration
-	28, // [28:28] is the sub-list for method output_type
-	28, // [28:28] is the sub-list for method input_type
-	28, // [28:28] is the sub-list for extension type_name
-	28, // [28:28] is the sub-list for extension extendee
-	0,  // [0:28] is the sub-list for field type_name
+	9,  // 28: wayplatform.connect.tachograph.vu.v1.EventsAndFaults.TimeAdjustmentRecord.workshop_card_expiry_date:type_name -> google.protobuf.Timestamp
+	29, // [29:29] is the sub-list for method output_type
+	29, // [29:29] is the sub-list for method input_type
+	29, // [29:29] is the sub-list for extension type_name
+	29, // [29:29] is the sub-list for extension extendee
+	0,  // [0:29] is the sub-list for field type_name
 }
 
 func init() { file_wayplatform_connect_tachograph_vu_v1_events_and_faults_proto_init() }

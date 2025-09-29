@@ -22,6 +22,10 @@ const (
 
 // Represents the BCD-encoded card structure version.
 //
+// This message preserves the original raw byte representation for round-trip
+// data fidelity while also providing convenient decoded integer fields for ease
+// of use by consumers.
+//
 // See Data Dictionary, Section 2.36, `CardStructureVersion`.
 //
 // ASN.1 Definition:
@@ -32,6 +36,7 @@ const (
 // e.g., version '01.02' is coded as '0102'H.
 type CardStructureVersion struct {
 	state                  protoimpl.MessageState `protogen:"opaque.v1"`
+	xxx_hidden_RawVersion  []byte                 `protobuf:"bytes,3,opt,name=raw_version,json=rawVersion"`
 	xxx_hidden_Major       int32                  `protobuf:"varint,1,opt,name=major"`
 	xxx_hidden_Minor       int32                  `protobuf:"varint,2,opt,name=minor"`
 	XXX_raceDetectHookData protoimpl.RaceDetectHookData
@@ -65,6 +70,13 @@ func (x *CardStructureVersion) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
+func (x *CardStructureVersion) GetRawVersion() []byte {
+	if x != nil {
+		return x.xxx_hidden_RawVersion
+	}
+	return nil
+}
+
 func (x *CardStructureVersion) GetMajor() int32 {
 	if x != nil {
 		return x.xxx_hidden_Major
@@ -79,44 +91,72 @@ func (x *CardStructureVersion) GetMinor() int32 {
 	return 0
 }
 
+func (x *CardStructureVersion) SetRawVersion(v []byte) {
+	if v == nil {
+		v = []byte{}
+	}
+	x.xxx_hidden_RawVersion = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 3)
+}
+
 func (x *CardStructureVersion) SetMajor(v int32) {
 	x.xxx_hidden_Major = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 2)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 3)
 }
 
 func (x *CardStructureVersion) SetMinor(v int32) {
 	x.xxx_hidden_Minor = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 2)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 3)
 }
 
-func (x *CardStructureVersion) HasMajor() bool {
+func (x *CardStructureVersion) HasRawVersion() bool {
 	if x == nil {
 		return false
 	}
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 0)
 }
 
-func (x *CardStructureVersion) HasMinor() bool {
+func (x *CardStructureVersion) HasMajor() bool {
 	if x == nil {
 		return false
 	}
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 1)
 }
 
-func (x *CardStructureVersion) ClearMajor() {
+func (x *CardStructureVersion) HasMinor() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 2)
+}
+
+func (x *CardStructureVersion) ClearRawVersion() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 0)
+	x.xxx_hidden_RawVersion = nil
+}
+
+func (x *CardStructureVersion) ClearMajor() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 1)
 	x.xxx_hidden_Major = 0
 }
 
 func (x *CardStructureVersion) ClearMinor() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 1)
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 2)
 	x.xxx_hidden_Minor = 0
 }
 
 type CardStructureVersion_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
+	// The raw, original BCD-encoded bytes for the version. This field is the
+	// source of truth and should be used for any serialization operations to ensure
+	// perfect data fidelity.
+	RawVersion []byte
+	// The decoded major version number.
+	// This is a convenience field derived from `raw_version`.
 	Major *int32
+	// The decoded minor version number.
+	// This is a convenience field derived from `raw_version`.
 	Minor *int32
 }
 
@@ -124,12 +164,16 @@ func (b0 CardStructureVersion_builder) Build() *CardStructureVersion {
 	m0 := &CardStructureVersion{}
 	b, x := &b0, m0
 	_, _ = b, x
+	if b.RawVersion != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 3)
+		x.xxx_hidden_RawVersion = b.RawVersion
+	}
 	if b.Major != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 2)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 3)
 		x.xxx_hidden_Major = *b.Major
 	}
 	if b.Minor != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 2)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 3)
 		x.xxx_hidden_Minor = *b.Minor
 	}
 	return m0
@@ -139,8 +183,10 @@ var File_wayplatform_connect_tachograph_dd_v1_card_structure_version_proto proto
 
 const file_wayplatform_connect_tachograph_dd_v1_card_structure_version_proto_rawDesc = "" +
 	"\n" +
-	"Awayplatform/connect/tachograph/dd/v1/card_structure_version.proto\x12$wayplatform.connect.tachograph.dd.v1\"B\n" +
-	"\x14CardStructureVersion\x12\x14\n" +
+	"Awayplatform/connect/tachograph/dd/v1/card_structure_version.proto\x12$wayplatform.connect.tachograph.dd.v1\"c\n" +
+	"\x14CardStructureVersion\x12\x1f\n" +
+	"\vraw_version\x18\x03 \x01(\fR\n" +
+	"rawVersion\x12\x14\n" +
 	"\x05major\x18\x01 \x01(\x05R\x05major\x12\x14\n" +
 	"\x05minor\x18\x02 \x01(\x05R\x05minorB\xd8\x02\n" +
 	"(com.wayplatform.connect.tachograph.dd.v1B\x19CardStructureVersionProtoP\x01Z\\github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1;ddv1\xa2\x02\x04WCTD\xaa\x02$Wayplatform.Connect.Tachograph.Dd.V1\xca\x02$Wayplatform\\Connect\\Tachograph\\Dd\\V1\xe2\x020Wayplatform\\Connect\\Tachograph\\Dd\\V1\\GPBMetadata\xea\x02(Wayplatform::Connect::Tachograph::Dd::V1b\beditionsp\xe8\a"

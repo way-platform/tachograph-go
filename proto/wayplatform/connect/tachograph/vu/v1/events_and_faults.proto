@@ -22,7 +22,10 @@ message EventsAndFaults {
   //
   // See Data Dictionary, Section 2.201, `VuFaultRecord`.
   //
-  // ASN.1 Definition:
+  // Note: This protobuf message simplifies the four card number fields from the
+  // raw record into a single `card_identifier` field.
+  //
+  // ASN.1 Definition (Gen1):
   //
   //     VuFaultRecord ::= SEQUENCE {
   //         faultType EventFaultType,
@@ -33,6 +36,20 @@ message EventsAndFaults {
   //         cardNumberCodriverSlotBegin FullCardNumber,
   //         cardNumberDriverSlotEnd FullCardNumber,
   //         cardNumberCodriverSlotEnd FullCardNumber
+  //     }
+  //
+  // ASN.1 Definition (Gen2):
+  //
+  //     VuFaultRecord ::= SEQUENCE {
+  //         faultType EventFaultType,
+  //         faultRecordPurpose EventFaultRecordPurpose,
+  //         faultBeginTime TimeReal,
+  //         faultEndTime TimeReal,
+  //         cardNumberAndGenDriverSlotBegin FullCardNumberAndGeneration,
+  //         cardNumberAndGenCodriverSlotBegin FullCardNumberAndGeneration,
+  //         cardNumberAndGenDriverSlotEnd FullCardNumberAndGeneration,
+  //         cardNumberAndGenCodriverSlotEnd FullCardNumberAndGeneration,
+  //         manufacturerSpecificEventFaultData ManufacturerSpecificEventFaultData
   //     }
   message FaultRecord {
     // Type of the fault.
@@ -80,7 +97,10 @@ message EventsAndFaults {
   //
   // See Data Dictionary, Section 2.198, `VuEventRecord`.
   //
-  // ASN.1 Definition:
+  // Note: This protobuf message simplifies the four card number fields from the
+  // raw record into a single `card_identifier` field.
+  //
+  // ASN.1 Definition (Gen1):
   //
   //     VuEventRecord ::= SEQUENCE {
   //         eventType EventFaultType,
@@ -92,6 +112,21 @@ message EventsAndFaults {
   //         cardNumberDriverSlotEnd FullCardNumber,
   //         cardNumberCodriverSlotEnd FullCardNumber,
   //         similarEventsNumber SimilarEventsNumber
+  //     }
+  //
+  // ASN.1 Definition (Gen2):
+  //
+  //     VuEventRecord ::= SEQUENCE {
+  //         eventType EventFaultType,
+  //         eventRecordPurpose EventFaultRecordPurpose,
+  //         eventBeginTime TimeReal,
+  //         eventEndTime TimeReal,
+  //         cardNumberAndGenDriverSlotBegin FullCardNumberAndGeneration,
+  //         cardNumberAndGenCodriverSlotBegin FullCardNumberAndGeneration,
+  //         cardNumberAndGenDriverSlotEnd FullCardNumberAndGeneration,
+  //         cardNumberAndGenCodriverSlotEnd FullCardNumberAndGeneration,
+  //         similarEventsNumber SimilarEventsNumber,
+  //         manufacturerSpecificEventFaultData ManufacturerSpecificEventFaultData
   //     }
   message EventRecord {
     // Type of the event.
@@ -184,7 +219,7 @@ message EventsAndFaults {
   //
   // See Data Dictionary, Section 2.215, `VuOverSpeedingEventRecord`.
   //
-  // ASN.1 Definition:
+  // ASN.1 Definition (Gen1):
   //
   //     VuOverSpeedingEventRecord ::= SEQUENCE {
   //         eventType EventFaultType,
@@ -194,6 +229,19 @@ message EventsAndFaults {
   //         maxSpeedValue SpeedMax,
   //         averageSpeedValue SpeedAverage,
   //         cardNumberDriverSlotBegin FullCardNumber,
+  //         similarEventsNumber SimilarEventsNumber
+  //     }
+  //
+  // ASN.1 Definition (Gen2):
+  //
+  //     VuOverSpeedingEventRecord ::= SEQUENCE {
+  //         eventType EventFaultType,
+  //         eventRecordPurpose EventFaultRecordPurpose,
+  //         eventBeginTime TimeReal,
+  //         eventEndTime TimeReal,
+  //         maxSpeedValue SpeedMax,
+  //         averageSpeedValue SpeedAverage,
+  //         cardNumberAndGenDriverSlotBegin FullCardNumberAndGeneration,
   //         similarEventsNumber SimilarEventsNumber
   //     }
   message OverSpeedingEventRecord {
@@ -244,20 +292,29 @@ message EventsAndFaults {
     // The card number and generation of the driver who caused the event.
     //
     // See Data Dictionary, Section 2.74, `FullCardNumberAndGeneration`.
+    // ASN.1 Definition (Gen2):
+    //
+    //     cardNumberAndGenDriverSlotBegin FullCardNumberAndGeneration
+    dd.v1.FullCardNumberAndGeneration card_identifier = 9;
+
+    // Number of similar events on the same day.
+    //
+    // See Data Dictionary, Section 2.151, `SimilarEventsNumber`.
     // ASN.1 Definition:
     //
-    //     FullCardNumberAndGeneration ::= SEQUENCE {
-    //         fullcardNumber FullCardNumber,
-    //         generation Generation
-    //     }
-    dd.v1.FullCardNumberAndGeneration card_identifier = 9;
+    //     SimilarEventsNumber ::= INTEGER(0..255)
+    int32 similar_events_number = 10;
   }
 
   // Represents a time adjustment record.
   //
   // See Data Dictionary, Section 2.232, `VuTimeAdjustmentRecord`.
   //
-  // ASN.1 Definition:
+  // Note: The ASN.1 definition in the Data Dictionary is incomplete. Annex IC,
+  // requirement 125, mandates the inclusion of the workshop card's expiry date,
+  // which is added to this message as `workshop_card_expiry_date`.
+  //
+  // ASN.1 Definition (Gen1):
   //
   //     VuTimeAdjustmentRecord ::= SEQUENCE {
   //         oldTimeValue TimeReal,
@@ -265,6 +322,16 @@ message EventsAndFaults {
   //         workshopName Name,
   //         workshopAddress Address,
   //         workshopCardNumber FullCardNumber
+  //     }
+  //
+  // ASN.1 Definition (Gen2):
+  //
+  //     VuTimeAdjustmentRecord ::= SEQUENCE {
+  //         oldTimeValue TimeReal,
+  //         newTimeValue TimeReal,
+  //         workshopName Name,
+  //         workshopAddress Address,
+  //         workshopCardNumberAndGeneration FullCardNumberAndGeneration
   //     }
   message TimeAdjustmentRecord {
     // Time value before adjustment.
@@ -302,13 +369,18 @@ message EventsAndFaults {
     // The card number and generation of the workshop that performed the adjustment.
     //
     // See Data Dictionary, Section 2.74, `FullCardNumberAndGeneration`.
+    dd.v1.FullCardNumberAndGeneration workshop_card_identifier = 5;
+
+    // Expiry date of the workshop card used for the adjustment.
+    //
+    // This field is required by Annex IC, requirement 125, but is missing from the
+    // `VuTimeAdjustmentRecord` definition in Data Dictionary 2.232.
+    //
+    // See Data Dictionary, Section 2.162, `TimeReal`.
     // ASN.1 Definition:
     //
-    //     FullCardNumberAndGeneration ::= SEQUENCE {
-    //         fullcardNumber FullCardNumber,
-    //         generation Generation
-    //     }
-    dd.v1.FullCardNumberAndGeneration workshop_card_identifier = 5;
+    //     TimeReal ::= INTEGER (0..2^32-1)
+    google.protobuf.Timestamp workshop_card_expiry_date = 6;
   }
 
   // All faults stored or on-going in the VU.

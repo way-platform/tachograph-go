@@ -255,10 +255,23 @@ type Identification_builder struct {
 	// Holder identification for a company card.
 	// Populated only if card_type is COMPANY_CARD.
 	CompanyCardHolder *Identification_CompanyCardHolder
-	// Digital signature for the EF_Identification file content.
+	// Signature data from the following file block, if tagged as a signature for
+	// this EF according to the card file format specification (Appendix 2).
 	//
 	// See Data Dictionary, Section 2.149, `Signature`.
-	// ASN.1 Specification: Signature ::= OCTET STRING (SIZE(128 for Gen1))
+	//
+	// ASN.1 Definition (Gen1):
+	//
+	//	Signature ::= OCTET STRING (SIZE(128))
+	//
+	// ASN.1 Definition (Gen2):
+	//
+	//	Signature ::= OCTET STRING (variable size, depends on elliptic curve)
+	//
+	// Gen2 uses ECDSA signatures with variable lengths based on the curve:
+	// - 256-bit curves: ~64 bytes
+	// - 384-bit curves: ~96 bytes
+	// - 512/521-bit curves: ~128-132 bytes
 	Signature []byte
 }
 
@@ -506,7 +519,7 @@ type Identification_Card_builder struct {
 	// It is populated when `card_type` is `DRIVER_CARD`.
 	DriverIdentification *v1.DriverIdentification
 	// This field is part of the `CardNumber` CHOICE.
-	// It is populated when `card_type` is `WORKSHOP_CARD` or `COMPANY_CARD`.
+	// It is populated when card_type is WORKSHOP_CARD, COMPANY_CARD, or CONTROL_CARD.
 	OwnerIdentification *v1.OwnerIdentification
 	// The name of the authority that issued the card.
 	//

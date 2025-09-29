@@ -295,7 +295,11 @@ func unmarshalVuCardIWRecord(data []byte) (*vuv1.Activities_CardIWRecord, error)
 	if err != nil {
 		return nil, fmt.Errorf("failed to unmarshal full card number: %w", err)
 	}
-	record.SetFullCardNumber(fullCardNumber)
+	// Create FullCardNumberAndGeneration wrapper
+	fullCardNumberAndGeneration := &ddv1.FullCardNumberAndGeneration{}
+	fullCardNumberAndGeneration.SetFullCardNumber(fullCardNumber)
+	fullCardNumberAndGeneration.SetGeneration(ddv1.Generation_GENERATION_1) // Default to Gen1
+	record.SetFullCardNumberAndGeneration(fullCardNumberAndGeneration)
 
 	// Parse cardExpiryDate (Datef - 4 bytes)
 	datefData := data[91:95]
@@ -815,7 +819,11 @@ func parseVuCardIWRecordGen2(data []byte, offset int) (*vuv1.Activities_CardIWRe
 	}
 	// Note: The protobuf might not have this field yet, so we'll set the regular fullCardNumber
 	// This is a limitation of the current schema that should be addressed
-	record.SetFullCardNumber(&ddv1.FullCardNumber{}) // Placeholder
+	// Create placeholder FullCardNumberAndGeneration
+	placeholder := &ddv1.FullCardNumberAndGeneration{}
+	placeholder.SetFullCardNumber(&ddv1.FullCardNumber{})
+	placeholder.SetGeneration(ddv1.Generation_GENERATION_1)
+	record.SetFullCardNumberAndGeneration(placeholder)
 
 	// Parse cardExpiryDate (Datef - 4 bytes)
 	datefData, offset, err := readBytesFromBytes(data, offset, 4)
@@ -1361,7 +1369,10 @@ func unmarshalVuBorderCrossingRecord(data []byte) (*vuv1.Activities_BorderCrossi
 		return nil, fmt.Errorf("failed to unmarshal driver card data: %w", err)
 	}
 	// Note: Schema limitation - using placeholder for now
-	record.SetFullCardNumber(&ddv1.FullCardNumber{})
+	driverPlaceholder := &ddv1.FullCardNumberAndGeneration{}
+	driverPlaceholder.SetFullCardNumber(&ddv1.FullCardNumber{})
+	driverPlaceholder.SetGeneration(ddv1.Generation_GENERATION_1)
+	record.SetCardNumberDriverSlot(driverPlaceholder)
 
 	// Parse cardNumberAndGenCodriverSlot (FullCardNumberAndGeneration - 20 bytes)
 	codriverCardData := data[20:40]
@@ -1370,7 +1381,10 @@ func unmarshalVuBorderCrossingRecord(data []byte) (*vuv1.Activities_BorderCrossi
 		return nil, fmt.Errorf("failed to unmarshal codriver card data: %w", err)
 	}
 	// Note: Schema limitation - using placeholder for now
-	record.SetFullCardNumber(&ddv1.FullCardNumber{})
+	codriverPlaceholder := &ddv1.FullCardNumberAndGeneration{}
+	codriverPlaceholder.SetFullCardNumber(&ddv1.FullCardNumber{})
+	codriverPlaceholder.SetGeneration(ddv1.Generation_GENERATION_1)
+	record.SetCardNumberCodriverSlot(codriverPlaceholder)
 
 	// Parse countryLeft (NationNumeric - 1 byte)
 	countryLeft := data[40]
@@ -1550,7 +1564,10 @@ func unmarshalVuLoadUnloadRecord(data []byte) (*vuv1.Activities_LoadUnloadRecord
 		return nil, fmt.Errorf("failed to unmarshal driver card data: %w", err)
 	}
 	// Note: Schema limitation - using placeholder for now
-	record.SetFullCardNumber(&ddv1.FullCardNumber{})
+	driverPlaceholder := &ddv1.FullCardNumberAndGeneration{}
+	driverPlaceholder.SetFullCardNumber(&ddv1.FullCardNumber{})
+	driverPlaceholder.SetGeneration(ddv1.Generation_GENERATION_1)
+	record.SetCardNumberDriverSlot(driverPlaceholder)
 
 	// Parse cardNumberAndGenCodriverSlot (FullCardNumberAndGeneration - 20 bytes)
 	codriverCardData := data[20:40]
@@ -1558,6 +1575,11 @@ func unmarshalVuLoadUnloadRecord(data []byte) (*vuv1.Activities_LoadUnloadRecord
 	if err != nil {
 		return nil, fmt.Errorf("failed to unmarshal codriver card data: %w", err)
 	}
+	// Note: Schema limitation - using placeholder for now
+	codriverPlaceholder := &ddv1.FullCardNumberAndGeneration{}
+	codriverPlaceholder.SetFullCardNumber(&ddv1.FullCardNumber{})
+	codriverPlaceholder.SetGeneration(ddv1.Generation_GENERATION_1)
+	record.SetCardNumberCodriverSlot(codriverPlaceholder)
 
 	// Parse operationType (OperationType - 1 byte)
 	operationType := data[40]
@@ -1879,7 +1901,11 @@ func appendVuCardIWRecord(dst []byte, record *vuv1.Activities_CardIWRecord) ([]b
 	}
 
 	// Append fullCardNumber (FullCardNumber - 19 bytes)
-	fullCardNumber := record.GetFullCardNumber()
+	fullCardNumberAndGeneration := record.GetFullCardNumberAndGeneration()
+	var fullCardNumber *ddv1.FullCardNumber
+	if fullCardNumberAndGeneration != nil {
+		fullCardNumber = fullCardNumberAndGeneration.GetFullCardNumber()
+	}
 	if fullCardNumber != nil {
 		dst, err = appendFullCardNumber(dst, fullCardNumber)
 		if err != nil {

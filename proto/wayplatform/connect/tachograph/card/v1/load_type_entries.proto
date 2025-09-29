@@ -46,7 +46,7 @@ message LoadTypeEntries {
     // ASN.1 Definition:
     //
     //     LoadType ::= INTEGER {
-    //         not-defined(0), passengers(1), goods(2)
+    //         not-defined(0), goods(1), passengers(2)
     //     } (0..255)
     wayplatform.connect.tachograph.dd.v1.LoadType load_type_entered = 2;
   }

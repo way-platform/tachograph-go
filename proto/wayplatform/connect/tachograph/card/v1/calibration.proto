@@ -4,6 +4,7 @@ package wayplatform.connect.tachograph.card.v1;
 
 import "google/protobuf/timestamp.proto";
 import "wayplatform/connect/tachograph/dd/v1/calibration_purpose.proto";
+import "wayplatform/connect/tachograph/dd/v1/equipment_type.proto";
 import "wayplatform/connect/tachograph/dd/v1/extended_serial_number.proto";
 import "wayplatform/connect/tachograph/dd/v1/string_value.proto";
 import "wayplatform/connect/tachograph/dd/v1/vehicle_registration_identification.proto";
@@ -25,11 +26,36 @@ import "wayplatform/connect/tachograph/dd/v1/vehicle_registration_identification
 //         calibrationRecords SET SIZE(NoOfCalibrationRecords) OF WorkshopCardCalibrationRecord
 //     }
 message Calibration {
+  // Represents an extended seal identifier.
+  // See Data Dictionary, Section 2.71.
+  message ExtendedSealIdentifier {
+    // Code of the manufacturer of the seal.
+    dd.v1.StringValue manufacturer_code = 1;
+    // Identifier for the seal, unique for the manufacturer.
+    dd.v1.StringValue seal_identifier = 2;
+  }
+
+  // Represents a single seal record.
+  // See Data Dictionary, Section 2.130.
+  message SealRecord {
+    // Type of equipment the seal is attached to.
+    dd.v1.EquipmentType equipment_type = 1;
+    // Identifier of the seal.
+    ExtendedSealIdentifier extended_seal_identifier = 2;
+  }
+
+  // Represents seal data stored on a card.
+  // See Data Dictionary, Section 2.128.
+  message SealDataCard {
+    // The set of seal records.
+    repeated SealRecord seal_records = 1;
+  }
+
   // Represents a single calibration record.
   //
   // The data type `WorkshopCardCalibrationRecord` is specified in the Data Dictionary, Section 2.236.
   //
-  // ASN.1 Specification:
+  // ASN.1 Definition (Gen1):
   //
   //     WorkshopCardCalibrationRecord ::= SEQUENCE {
   //         calibrationPurpose CalibrationPurpose,
@@ -48,6 +74,15 @@ message Calibration {
   //         vuPartNumber VuPartNumber,
   //         vuSerialNumber ExtendedSerialNumber,
   //         sensorSerialNumber SensorSerialNumber
+  //     }
+  //
+  // ASN.1 Definition (Gen2):
+  //
+  //     WorkshopCardCalibrationRecord ::= SEQUENCE {
+  //         // ...all Gen1 fields plus:
+  //         sensorGNSSSerialNumber SensorGNSSSerialNumber,
+  //         rcmSerialNumber RemoteCommunicationModuleSerialNumber,
+  //         sealDataCard SealDataCard
   //     }
   message Record {
     // The purpose of the calibration.
@@ -90,13 +125,13 @@ message Calibration {
     //     K-ConstantOfRecordingEquipment ::= INTEGER(0..65535)
     int32 k_constant_of_recording_equipment = 6;
 
-    // The tyre circumference in mm.
+    // The tyre circumference in 1/8ths of a mm.
     //
     // See Data Dictionary, Section 2.91, `L-TyreCircumference`.
     // ASN.1 Definition:
     //
     //     L-TyreCircumference ::= INTEGER(0..65535)
-    int32 l_tyre_circumference_mm = 7;
+    int32 l_tyre_circumference_eighths_mm = 7;
 
     // The tyre size designation.
     //
@@ -177,6 +212,20 @@ message Calibration {
     //
     //     SensorSerialNumber ::= ExtendedSerialNumber
     dd.v1.ExtendedSerialNumber sensor_serial_number = 17;
+
+    // --- Gen2+ fields ---
+
+    // The serial number of the external GNSS facility.
+    // See Data Dictionary, Section 2.139, `SensorGNSSSerialNumber`.
+    dd.v1.ExtendedSerialNumber sensor_gnss_serial_number = 18;
+
+    // The serial number of the remote communication module.
+    // See Data Dictionary, Section 2.123, `RemoteCommunicationModuleSerialNumber`.
+    dd.v1.ExtendedSerialNumber rcm_serial_number = 19;
+
+    // Information about seals attached to vehicle components.
+    // See Data Dictionary, Section 2.128, `SealDataCard`.
+    SealDataCard seal_data_card = 20;
   }
 
   // Total number of calibrations performed with the card.

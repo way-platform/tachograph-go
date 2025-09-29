@@ -6,11 +6,37 @@ import "wayplatform/connect/tachograph/dd/v1/annotations.proto";
 
 // SpecificConditionType indicates special circumstances like ferry crossings.
 // See Data Dictionary, Section 2.154.
+//
+// ASN.1 Definition (Gen1):
+//
+//     SpecificConditionType ::= INTEGER {
+//         rfu(0),
+//         out-of-scope-begin(1),
+//         out-of-scope-end(2),
+//         ferry-train-crossing(3)
+//         -- 4..255 RFU
+//     } (0..255)
+//
+// ASN.1 Definition (Gen2):
+//
+//     SpecificConditionType ::= INTEGER {
+//         rfu(0),
+//         out-of-scope-begin(1),
+//         out-of-scope-end(2),
+//         ferry-train-crossing-begin(3),
+//         ferry-train-crossing-end(4)
+//         -- 5..255 RFU
+//     } (0..255)
+//
+// The Gen1 `ferry-train-crossing` and Gen2 `ferry-train-crossing-begin` types
+// share the same underlying value (3). This enum uses FERRY_TRAIN_CROSSING_BEGIN
+// to represent this value for both generations.
 enum SpecificConditionType {
   SPECIFIC_CONDITION_TYPE_UNSPECIFIED = 0;
   SPECIFIC_CONDITION_TYPE_UNRECOGNIZED = 1;
   RFU = 2 [(protocol_enum_value) = 0];
   OUT_OF_SCOPE_BEGIN = 3 [(protocol_enum_value) = 1];
   OUT_OF_SCOPE_END = 4 [(protocol_enum_value) = 2];
-  FERRY_TRAIN_CROSSING = 5 [(protocol_enum_value) = 3];
+  FERRY_TRAIN_CROSSING_BEGIN = 5 [(protocol_enum_value) = 3];
+  FERRY_TRAIN_CROSSING_END = 6 [(protocol_enum_value) = 4];
 }

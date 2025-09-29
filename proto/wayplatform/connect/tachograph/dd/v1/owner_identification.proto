@@ -10,19 +10,26 @@ import "wayplatform/connect/tachograph/dd/v1/string_value.proto";
 //
 // ASN.1 Definition:
 //
-//     ownerIdentification SEQUENCE {
-//         ownerIdentificationNumber IA5String(SIZE(13)),
-//         cardConsecutiveIndex CardConsecutiveIndex,
-//         cardReplacementIndex CardReplacementIndex,
-//         cardRenewalIndex CardRenewalIndex
+//     CardNumber ::= CHOICE {
+//         driverIdentification SEQUENCE {
+//             driverIdentification IA5String(SIZE(14)),
+//             cardReplacementIndex CardReplacementIndex,
+//             cardRenewalIndex CardRenewalIndex
+//         },
+//         ownerIdentification SEQUENCE {
+//             ownerIdentification IA5String(SIZE(13)),
+//             cardConsecutiveIndex CardConsecutiveIndex,
+//             cardReplacementIndex CardReplacementIndex,
+//             cardRenewalIndex CardRenewalIndex
+//         }
 //     }
 message OwnerIdentification {
   // The unique identification for the owner.
   //
   // ASN.1 Definition:
   //
-  //     ownerIdentificationNumber IA5String(SIZE(13))
-  StringValue identification_number = 1;
+  //     ownerIdentification IA5String(SIZE(13))
+  StringValue owner_identification = 1;
 
   // A single-digit index for the card.
   //

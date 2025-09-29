@@ -31,19 +31,23 @@ const (
 //	└─CardFaultData
 //
 // The data type `CardFaultData` is specified in the Data Dictionary, Section 2.21.
+// It is defined as a sequence of two sets of records. Per DD 2.70, the first
+// set contains Recording Equipment (VU) faults (type '3x'h) and the second
+// contains Card faults (type '4x'h).
 //
 // ASN.1 Definition:
 //
 //	CardFaultData ::= SEQUENCE (SIZE(2)) OF
 //	    cardFaultRecords SET SIZE(NoOfFaultsPerType) OF CardFaultRecord
 type FaultsData struct {
-	state                  protoimpl.MessageState `protogen:"opaque.v1"`
-	xxx_hidden_Records     *[]*FaultsData_Record  `protobuf:"bytes,1,rep,name=records"`
-	xxx_hidden_Signature   []byte                 `protobuf:"bytes,2,opt,name=signature"`
-	XXX_raceDetectHookData protoimpl.RaceDetectHookData
-	XXX_presence           [1]uint32
-	unknownFields          protoimpl.UnknownFields
-	sizeCache              protoimpl.SizeCache
+	state                        protoimpl.MessageState `protogen:"opaque.v1"`
+	xxx_hidden_VehicleUnitFaults *[]*FaultsData_Record  `protobuf:"bytes,1,rep,name=vehicle_unit_faults,json=vehicleUnitFaults"`
+	xxx_hidden_CardFaults        *[]*FaultsData_Record  `protobuf:"bytes,2,rep,name=card_faults,json=cardFaults"`
+	xxx_hidden_Signature         []byte                 `protobuf:"bytes,3,opt,name=signature"`
+	XXX_raceDetectHookData       protoimpl.RaceDetectHookData
+	XXX_presence                 [1]uint32
+	unknownFields                protoimpl.UnknownFields
+	sizeCache                    protoimpl.SizeCache
 }
 
 func (x *FaultsData) Reset() {
@@ -71,10 +75,19 @@ func (x *FaultsData) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-func (x *FaultsData) GetRecords() []*FaultsData_Record {
+func (x *FaultsData) GetVehicleUnitFaults() []*FaultsData_Record {
 	if x != nil {
-		if x.xxx_hidden_Records != nil {
-			return *x.xxx_hidden_Records
+		if x.xxx_hidden_VehicleUnitFaults != nil {
+			return *x.xxx_hidden_VehicleUnitFaults
+		}
+	}
+	return nil
+}
+
+func (x *FaultsData) GetCardFaults() []*FaultsData_Record {
+	if x != nil {
+		if x.xxx_hidden_CardFaults != nil {
+			return *x.xxx_hidden_CardFaults
 		}
 	}
 	return nil
@@ -87,8 +100,12 @@ func (x *FaultsData) GetSignature() []byte {
 	return nil
 }
 
-func (x *FaultsData) SetRecords(v []*FaultsData_Record) {
-	x.xxx_hidden_Records = &v
+func (x *FaultsData) SetVehicleUnitFaults(v []*FaultsData_Record) {
+	x.xxx_hidden_VehicleUnitFaults = &v
+}
+
+func (x *FaultsData) SetCardFaults(v []*FaultsData_Record) {
+	x.xxx_hidden_CardFaults = &v
 }
 
 func (x *FaultsData) SetSignature(v []byte) {
@@ -96,27 +113,30 @@ func (x *FaultsData) SetSignature(v []byte) {
 		v = []byte{}
 	}
 	x.xxx_hidden_Signature = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 2)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 3)
 }
 
 func (x *FaultsData) HasSignature() bool {
 	if x == nil {
 		return false
 	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 1)
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 2)
 }
 
 func (x *FaultsData) ClearSignature() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 1)
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 2)
 	x.xxx_hidden_Signature = nil
 }
 
 type FaultsData_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
-	// The set of fault records.
-	// Corresponds to `cardFaultRecords`.
-	Records []*FaultsData_Record
+	// A set of fault records related to the recording equipment (the VU).
+	// These correspond to `EventFaultType` codes in the '3x'h range.
+	VehicleUnitFaults []*FaultsData_Record
+	// A set of fault records related to the card itself.
+	// These correspond to `EventFaultType` codes in the '4x'h range.
+	CardFaults []*FaultsData_Record
 	// Digital signature for the EF_Faults_Data file content.
 	//
 	// See Data Dictionary, Section 2.149, `Signature`.
@@ -130,9 +150,10 @@ func (b0 FaultsData_builder) Build() *FaultsData {
 	m0 := &FaultsData{}
 	b, x := &b0, m0
 	_, _ = b, x
-	x.xxx_hidden_Records = &b.Records
+	x.xxx_hidden_VehicleUnitFaults = &b.VehicleUnitFaults
+	x.xxx_hidden_CardFaults = &b.CardFaults
 	if b.Signature != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 2)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 3)
 		x.xxx_hidden_Signature = b.Signature
 	}
 	return m0
@@ -398,11 +419,13 @@ var File_wayplatform_connect_tachograph_card_v1_faults_data_proto protoreflect.F
 
 const file_wayplatform_connect_tachograph_card_v1_faults_data_proto_rawDesc = "" +
 	"\n" +
-	"8wayplatform/connect/tachograph/card/v1/faults_data.proto\x12&wayplatform.connect.tachograph.card.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a;wayplatform/connect/tachograph/dd/v1/event_fault_type.proto\x1aNwayplatform/connect/tachograph/dd/v1/vehicle_registration_identification.proto\"\xa0\x04\n" +
+	"8wayplatform/connect/tachograph/card/v1/faults_data.proto\x12&wayplatform.connect.tachograph.card.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a;wayplatform/connect/tachograph/dd/v1/event_fault_type.proto\x1aNwayplatform/connect/tachograph/dd/v1/vehicle_registration_identification.proto\"\x92\x05\n" +
 	"\n" +
-	"FaultsData\x12S\n" +
-	"\arecords\x18\x01 \x03(\v29.wayplatform.connect.tachograph.card.v1.FaultsData.RecordR\arecords\x12\x1c\n" +
-	"\tsignature\x18\x02 \x01(\fR\tsignature\x1a\x9e\x03\n" +
+	"FaultsData\x12i\n" +
+	"\x13vehicle_unit_faults\x18\x01 \x03(\v29.wayplatform.connect.tachograph.card.v1.FaultsData.RecordR\x11vehicleUnitFaults\x12Z\n" +
+	"\vcard_faults\x18\x02 \x03(\v29.wayplatform.connect.tachograph.card.v1.FaultsData.RecordR\n" +
+	"cardFaults\x12\x1c\n" +
+	"\tsignature\x18\x03 \x01(\fR\tsignature\x1a\x9e\x03\n" +
 	"\x06Record\x12\x14\n" +
 	"\x05valid\x18\x01 \x01(\bR\x05valid\x12S\n" +
 	"\n" +
@@ -422,16 +445,17 @@ var file_wayplatform_connect_tachograph_card_v1_faults_data_proto_goTypes = []an
 	(*v1.VehicleRegistrationIdentification)(nil), // 4: wayplatform.connect.tachograph.dd.v1.VehicleRegistrationIdentification
 }
 var file_wayplatform_connect_tachograph_card_v1_faults_data_proto_depIdxs = []int32{
-	1, // 0: wayplatform.connect.tachograph.card.v1.FaultsData.records:type_name -> wayplatform.connect.tachograph.card.v1.FaultsData.Record
-	2, // 1: wayplatform.connect.tachograph.card.v1.FaultsData.Record.fault_type:type_name -> wayplatform.connect.tachograph.dd.v1.EventFaultType
-	3, // 2: wayplatform.connect.tachograph.card.v1.FaultsData.Record.fault_begin_time:type_name -> google.protobuf.Timestamp
-	3, // 3: wayplatform.connect.tachograph.card.v1.FaultsData.Record.fault_end_time:type_name -> google.protobuf.Timestamp
-	4, // 4: wayplatform.connect.tachograph.card.v1.FaultsData.Record.fault_vehicle_registration:type_name -> wayplatform.connect.tachograph.dd.v1.VehicleRegistrationIdentification
-	5, // [5:5] is the sub-list for method output_type
-	5, // [5:5] is the sub-list for method input_type
-	5, // [5:5] is the sub-list for extension type_name
-	5, // [5:5] is the sub-list for extension extendee
-	0, // [0:5] is the sub-list for field type_name
+	1, // 0: wayplatform.connect.tachograph.card.v1.FaultsData.vehicle_unit_faults:type_name -> wayplatform.connect.tachograph.card.v1.FaultsData.Record
+	1, // 1: wayplatform.connect.tachograph.card.v1.FaultsData.card_faults:type_name -> wayplatform.connect.tachograph.card.v1.FaultsData.Record
+	2, // 2: wayplatform.connect.tachograph.card.v1.FaultsData.Record.fault_type:type_name -> wayplatform.connect.tachograph.dd.v1.EventFaultType
+	3, // 3: wayplatform.connect.tachograph.card.v1.FaultsData.Record.fault_begin_time:type_name -> google.protobuf.Timestamp
+	3, // 4: wayplatform.connect.tachograph.card.v1.FaultsData.Record.fault_end_time:type_name -> google.protobuf.Timestamp
+	4, // 5: wayplatform.connect.tachograph.card.v1.FaultsData.Record.fault_vehicle_registration:type_name -> wayplatform.connect.tachograph.dd.v1.VehicleRegistrationIdentification
+	6, // [6:6] is the sub-list for method output_type
+	6, // [6:6] is the sub-list for method input_type
+	6, // [6:6] is the sub-list for extension type_name
+	6, // [6:6] is the sub-list for extension extendee
+	0, // [0:6] is the sub-list for field type_name
 }
 
 func init() { file_wayplatform_connect_tachograph_card_v1_faults_data_proto_init() }

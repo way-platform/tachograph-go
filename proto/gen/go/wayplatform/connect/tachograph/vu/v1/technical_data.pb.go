@@ -914,13 +914,13 @@ type TechnicalData_CalibrationRecord struct {
 	xxx_hidden_UnrecognizedPurpose            int32                                 `protobuf:"varint,2,opt,name=unrecognized_purpose,json=unrecognizedPurpose"`
 	xxx_hidden_WorkshopName                   *v1.StringValue                       `protobuf:"bytes,3,opt,name=workshop_name,json=workshopName"`
 	xxx_hidden_WorkshopAddress                *v1.StringValue                       `protobuf:"bytes,4,opt,name=workshop_address,json=workshopAddress"`
-	xxx_hidden_WorkshopCardNumber             *v1.FullCardNumber                    `protobuf:"bytes,5,opt,name=workshop_card_number,json=workshopCardNumber"`
+	xxx_hidden_WorkshopCardNumber             *v1.FullCardNumberAndGeneration       `protobuf:"bytes,5,opt,name=workshop_card_number,json=workshopCardNumber"`
 	xxx_hidden_WorkshopCardExpiryDate         *v1.Date                              `protobuf:"bytes,6,opt,name=workshop_card_expiry_date,json=workshopCardExpiryDate"`
 	xxx_hidden_Vin                            *v1.StringValue                       `protobuf:"bytes,7,opt,name=vin"`
 	xxx_hidden_VehicleRegistration            *v1.VehicleRegistrationIdentification `protobuf:"bytes,8,opt,name=vehicle_registration,json=vehicleRegistration"`
 	xxx_hidden_WVehicleCharacteristicConstant int32                                 `protobuf:"varint,9,opt,name=w_vehicle_characteristic_constant,json=wVehicleCharacteristicConstant"`
 	xxx_hidden_KConstantOfRecordingEquipment  int32                                 `protobuf:"varint,10,opt,name=k_constant_of_recording_equipment,json=kConstantOfRecordingEquipment"`
-	xxx_hidden_LTyreCircumferenceMm           int32                                 `protobuf:"varint,11,opt,name=l_tyre_circumference_mm,json=lTyreCircumferenceMm"`
+	xxx_hidden_LTyreCircumferenceEighthsMm    int32                                 `protobuf:"varint,11,opt,name=l_tyre_circumference_eighths_mm,json=lTyreCircumferenceEighthsMm"`
 	xxx_hidden_TyreSize                       *v1.StringValue                       `protobuf:"bytes,12,opt,name=tyre_size,json=tyreSize"`
 	xxx_hidden_AuthorisedSpeedKmh             int32                                 `protobuf:"varint,13,opt,name=authorised_speed_kmh,json=authorisedSpeedKmh"`
 	xxx_hidden_OldOdometerValueKm             int32                                 `protobuf:"varint,14,opt,name=old_odometer_value_km,json=oldOdometerValueKm"`
@@ -989,7 +989,7 @@ func (x *TechnicalData_CalibrationRecord) GetWorkshopAddress() *v1.StringValue {
 	return nil
 }
 
-func (x *TechnicalData_CalibrationRecord) GetWorkshopCardNumber() *v1.FullCardNumber {
+func (x *TechnicalData_CalibrationRecord) GetWorkshopCardNumber() *v1.FullCardNumberAndGeneration {
 	if x != nil {
 		return x.xxx_hidden_WorkshopCardNumber
 	}
@@ -1031,9 +1031,9 @@ func (x *TechnicalData_CalibrationRecord) GetKConstantOfRecordingEquipment() int
 	return 0
 }
 
-func (x *TechnicalData_CalibrationRecord) GetLTyreCircumferenceMm() int32 {
+func (x *TechnicalData_CalibrationRecord) GetLTyreCircumferenceEighthsMm() int32 {
 	if x != nil {
-		return x.xxx_hidden_LTyreCircumferenceMm
+		return x.xxx_hidden_LTyreCircumferenceEighthsMm
 	}
 	return 0
 }
@@ -1105,7 +1105,7 @@ func (x *TechnicalData_CalibrationRecord) SetWorkshopAddress(v *v1.StringValue) 
 	x.xxx_hidden_WorkshopAddress = v
 }
 
-func (x *TechnicalData_CalibrationRecord) SetWorkshopCardNumber(v *v1.FullCardNumber) {
+func (x *TechnicalData_CalibrationRecord) SetWorkshopCardNumber(v *v1.FullCardNumberAndGeneration) {
 	x.xxx_hidden_WorkshopCardNumber = v
 }
 
@@ -1131,8 +1131,8 @@ func (x *TechnicalData_CalibrationRecord) SetKConstantOfRecordingEquipment(v int
 	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 9, 18)
 }
 
-func (x *TechnicalData_CalibrationRecord) SetLTyreCircumferenceMm(v int32) {
-	x.xxx_hidden_LTyreCircumferenceMm = v
+func (x *TechnicalData_CalibrationRecord) SetLTyreCircumferenceEighthsMm(v int32) {
+	x.xxx_hidden_LTyreCircumferenceEighthsMm = v
 	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 10, 18)
 }
 
@@ -1237,7 +1237,7 @@ func (x *TechnicalData_CalibrationRecord) HasKConstantOfRecordingEquipment() boo
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 9)
 }
 
-func (x *TechnicalData_CalibrationRecord) HasLTyreCircumferenceMm() bool {
+func (x *TechnicalData_CalibrationRecord) HasLTyreCircumferenceEighthsMm() bool {
 	if x == nil {
 		return false
 	}
@@ -1337,9 +1337,9 @@ func (x *TechnicalData_CalibrationRecord) ClearKConstantOfRecordingEquipment() {
 	x.xxx_hidden_KConstantOfRecordingEquipment = 0
 }
 
-func (x *TechnicalData_CalibrationRecord) ClearLTyreCircumferenceMm() {
+func (x *TechnicalData_CalibrationRecord) ClearLTyreCircumferenceEighthsMm() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 10)
-	x.xxx_hidden_LTyreCircumferenceMm = 0
+	x.xxx_hidden_LTyreCircumferenceEighthsMm = 0
 }
 
 func (x *TechnicalData_CalibrationRecord) ClearTyreSize() {
@@ -1397,8 +1397,13 @@ type TechnicalData_CalibrationRecord_builder struct {
 	WorkshopAddress *v1.StringValue
 	// The card number of the workshop.
 	//
-	// See Data Dictionary, Section 2.73, `FullCardNumber`.
-	WorkshopCardNumber *v1.FullCardNumber
+	// The underlying `VuCalibrationRecord` exists for both Gen1 and Gen2.
+	// To support both versions in a single field and ensure unique card
+	// identification for Gen2, this uses the `FullCardNumberAndGeneration` superset.
+	// For Gen1 records, the `generation` field will be unset.
+	//
+	// See Data Dictionary, Sections 2.73 (`FullCardNumber`) and 2.74 (`FullCardNumberAndGeneration`).
+	WorkshopCardNumber *v1.FullCardNumberAndGeneration
 	// The expiry date of the workshop card.
 	//
 	// See Data Dictionary, Section 2.57, `Datef`.
@@ -1432,13 +1437,13 @@ type TechnicalData_CalibrationRecord_builder struct {
 	//
 	//	K-ConstantOfRecordingEquipment ::= INTEGER(0..65535)
 	KConstantOfRecordingEquipment *int32
-	// The tyre circumference in mm.
+	// The tyre circumference in 1/8ths of a mm.
 	//
 	// See Data Dictionary, Section 2.91, `L-TyreCircumference`.
 	// ASN.1 Definition:
 	//
 	//	L-TyreCircumference ::= INTEGER(0..65535)
-	LTyreCircumferenceMm *int32
+	LTyreCircumferenceEighthsMm *int32
 	// The tyre size designation.
 	//
 	// See Data Dictionary, Section 2.163, `TyreSize`.
@@ -1517,9 +1522,9 @@ func (b0 TechnicalData_CalibrationRecord_builder) Build() *TechnicalData_Calibra
 		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 9, 18)
 		x.xxx_hidden_KConstantOfRecordingEquipment = *b.KConstantOfRecordingEquipment
 	}
-	if b.LTyreCircumferenceMm != nil {
+	if b.LTyreCircumferenceEighthsMm != nil {
 		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 10, 18)
-		x.xxx_hidden_LTyreCircumferenceMm = *b.LTyreCircumferenceMm
+		x.xxx_hidden_LTyreCircumferenceEighthsMm = *b.LTyreCircumferenceEighthsMm
 	}
 	x.xxx_hidden_TyreSize = b.TyreSize
 	if b.AuthorisedSpeedKmh != nil {
@@ -1548,20 +1553,19 @@ func (b0 TechnicalData_CalibrationRecord_builder) Build() *TechnicalData_Calibra
 //
 //	VuCardRecord ::= SEQUENCE {
 //	    cardNumberAndGenerationInformation FullCardNumberAndGeneration,
-//	    cardExtendedSerialNumber ExtendedSerialNumber,
-//	    cardStructureVersion CardStructureVersion,
-//	    cardNumber CardNumber
+//	    cardExtendedSerialNumber           ExtendedSerialNumber,
+//	    cardStructureVersion               CardStructureVersion,
+//	    cardNumber                         CardNumber
 //	}
 type TechnicalData_CardRecord struct {
-	state                           protoimpl.MessageState   `protogen:"opaque.v1"`
-	xxx_hidden_FullCardNumber       *v1.FullCardNumber       `protobuf:"bytes,1,opt,name=full_card_number,json=fullCardNumber"`
-	xxx_hidden_CardStructureVersion *v1.CardStructureVersion `protobuf:"bytes,2,opt,name=card_structure_version,json=cardStructureVersion"`
-	xxx_hidden_CardType             v1.EquipmentType         `protobuf:"varint,3,opt,name=card_type,json=cardType,enum=wayplatform.connect.tachograph.dd.v1.EquipmentType"`
-	xxx_hidden_UnrecognizedCardType int32                    `protobuf:"varint,4,opt,name=unrecognized_card_type,json=unrecognizedCardType"`
-	XXX_raceDetectHookData          protoimpl.RaceDetectHookData
-	XXX_presence                    [1]uint32
-	unknownFields                   protoimpl.UnknownFields
-	sizeCache                       protoimpl.SizeCache
+	state                               protoimpl.MessageState          `protogen:"opaque.v1"`
+	xxx_hidden_CardNumberAndGeneration  *v1.FullCardNumberAndGeneration `protobuf:"bytes,1,opt,name=card_number_and_generation,json=cardNumberAndGeneration"`
+	xxx_hidden_CardExtendedSerialNumber *v1.ExtendedSerialNumber        `protobuf:"bytes,2,opt,name=card_extended_serial_number,json=cardExtendedSerialNumber"`
+	xxx_hidden_CardStructureVersion     *v1.CardStructureVersion        `protobuf:"bytes,3,opt,name=card_structure_version,json=cardStructureVersion"`
+	xxx_hidden_DriverIdentification     *v1.DriverIdentification        `protobuf:"bytes,4,opt,name=driver_identification,json=driverIdentification"`
+	xxx_hidden_OwnerIdentification      *v1.OwnerIdentification         `protobuf:"bytes,5,opt,name=owner_identification,json=ownerIdentification"`
+	unknownFields                       protoimpl.UnknownFields
+	sizeCache                           protoimpl.SizeCache
 }
 
 func (x *TechnicalData_CardRecord) Reset() {
@@ -1589,9 +1593,16 @@ func (x *TechnicalData_CardRecord) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-func (x *TechnicalData_CardRecord) GetFullCardNumber() *v1.FullCardNumber {
+func (x *TechnicalData_CardRecord) GetCardNumberAndGeneration() *v1.FullCardNumberAndGeneration {
 	if x != nil {
-		return x.xxx_hidden_FullCardNumber
+		return x.xxx_hidden_CardNumberAndGeneration
+	}
+	return nil
+}
+
+func (x *TechnicalData_CardRecord) GetCardExtendedSerialNumber() *v1.ExtendedSerialNumber {
+	if x != nil {
+		return x.xxx_hidden_CardExtendedSerialNumber
 	}
 	return nil
 }
@@ -1603,45 +1614,52 @@ func (x *TechnicalData_CardRecord) GetCardStructureVersion() *v1.CardStructureVe
 	return nil
 }
 
-func (x *TechnicalData_CardRecord) GetCardType() v1.EquipmentType {
+func (x *TechnicalData_CardRecord) GetDriverIdentification() *v1.DriverIdentification {
 	if x != nil {
-		if protoimpl.X.Present(&(x.XXX_presence[0]), 2) {
-			return x.xxx_hidden_CardType
-		}
+		return x.xxx_hidden_DriverIdentification
 	}
-	return v1.EquipmentType(0)
+	return nil
 }
 
-func (x *TechnicalData_CardRecord) GetUnrecognizedCardType() int32 {
+func (x *TechnicalData_CardRecord) GetOwnerIdentification() *v1.OwnerIdentification {
 	if x != nil {
-		return x.xxx_hidden_UnrecognizedCardType
+		return x.xxx_hidden_OwnerIdentification
 	}
-	return 0
+	return nil
 }
 
-func (x *TechnicalData_CardRecord) SetFullCardNumber(v *v1.FullCardNumber) {
-	x.xxx_hidden_FullCardNumber = v
+func (x *TechnicalData_CardRecord) SetCardNumberAndGeneration(v *v1.FullCardNumberAndGeneration) {
+	x.xxx_hidden_CardNumberAndGeneration = v
+}
+
+func (x *TechnicalData_CardRecord) SetCardExtendedSerialNumber(v *v1.ExtendedSerialNumber) {
+	x.xxx_hidden_CardExtendedSerialNumber = v
 }
 
 func (x *TechnicalData_CardRecord) SetCardStructureVersion(v *v1.CardStructureVersion) {
 	x.xxx_hidden_CardStructureVersion = v
 }
 
-func (x *TechnicalData_CardRecord) SetCardType(v v1.EquipmentType) {
-	x.xxx_hidden_CardType = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 4)
+func (x *TechnicalData_CardRecord) SetDriverIdentification(v *v1.DriverIdentification) {
+	x.xxx_hidden_DriverIdentification = v
 }
 
-func (x *TechnicalData_CardRecord) SetUnrecognizedCardType(v int32) {
-	x.xxx_hidden_UnrecognizedCardType = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 3, 4)
+func (x *TechnicalData_CardRecord) SetOwnerIdentification(v *v1.OwnerIdentification) {
+	x.xxx_hidden_OwnerIdentification = v
 }
 
-func (x *TechnicalData_CardRecord) HasFullCardNumber() bool {
+func (x *TechnicalData_CardRecord) HasCardNumberAndGeneration() bool {
 	if x == nil {
 		return false
 	}
-	return x.xxx_hidden_FullCardNumber != nil
+	return x.xxx_hidden_CardNumberAndGeneration != nil
+}
+
+func (x *TechnicalData_CardRecord) HasCardExtendedSerialNumber() bool {
+	if x == nil {
+		return false
+	}
+	return x.xxx_hidden_CardExtendedSerialNumber != nil
 }
 
 func (x *TechnicalData_CardRecord) HasCardStructureVersion() bool {
@@ -1651,72 +1669,88 @@ func (x *TechnicalData_CardRecord) HasCardStructureVersion() bool {
 	return x.xxx_hidden_CardStructureVersion != nil
 }
 
-func (x *TechnicalData_CardRecord) HasCardType() bool {
+func (x *TechnicalData_CardRecord) HasDriverIdentification() bool {
 	if x == nil {
 		return false
 	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 2)
+	return x.xxx_hidden_DriverIdentification != nil
 }
 
-func (x *TechnicalData_CardRecord) HasUnrecognizedCardType() bool {
+func (x *TechnicalData_CardRecord) HasOwnerIdentification() bool {
 	if x == nil {
 		return false
 	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 3)
+	return x.xxx_hidden_OwnerIdentification != nil
 }
 
-func (x *TechnicalData_CardRecord) ClearFullCardNumber() {
-	x.xxx_hidden_FullCardNumber = nil
+func (x *TechnicalData_CardRecord) ClearCardNumberAndGeneration() {
+	x.xxx_hidden_CardNumberAndGeneration = nil
+}
+
+func (x *TechnicalData_CardRecord) ClearCardExtendedSerialNumber() {
+	x.xxx_hidden_CardExtendedSerialNumber = nil
 }
 
 func (x *TechnicalData_CardRecord) ClearCardStructureVersion() {
 	x.xxx_hidden_CardStructureVersion = nil
 }
 
-func (x *TechnicalData_CardRecord) ClearCardType() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 2)
-	x.xxx_hidden_CardType = v1.EquipmentType_EQUIPMENT_TYPE_UNSPECIFIED
+func (x *TechnicalData_CardRecord) ClearDriverIdentification() {
+	x.xxx_hidden_DriverIdentification = nil
 }
 
-func (x *TechnicalData_CardRecord) ClearUnrecognizedCardType() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 3)
-	x.xxx_hidden_UnrecognizedCardType = 0
+func (x *TechnicalData_CardRecord) ClearOwnerIdentification() {
+	x.xxx_hidden_OwnerIdentification = nil
 }
 
 type TechnicalData_CardRecord_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
-	// The full card number.
+	// The full card number and generation of the card used.
 	//
-	// See Data Dictionary, Section 2.74, `FullCardNumberAndGeneration`.
-	FullCardNumber *v1.FullCardNumber
-	// The structure version of the card.
+	// Corresponds to `cardNumberAndGenerationInformation`.
+	// See Data Dictionary, Section 2.74.
+	CardNumberAndGeneration *v1.FullCardNumberAndGeneration
+	// The extended serial number of the card, from the card's EF_ICC file.
+	//
+	// Corresponds to `cardExtendedSerialNumber`.
+	// See Data Dictionary, Section 2.72.
+	CardExtendedSerialNumber *v1.ExtendedSerialNumber
+	// The structure version of the card, from the card's EF_Application_Identification file.
+	//
+	// Corresponds to `cardStructureVersion`.
+	// See Data Dictionary, Section 2.36.
 	CardStructureVersion *v1.CardStructureVersion
-	// The type of the card.
+	// The card number, as read from the card's EF_Identification file.
+	// This is a CHOICE type in the ASN.1 spec, so only one of the following
+	// two fields will be populated.
 	//
-	// See Data Dictionary, Section 2.67, `EquipmentType`.
-	CardType             *v1.EquipmentType
-	UnrecognizedCardType *int32
+	// Corresponds to `cardNumber`.
+	// See Data Dictionary, Section 2.26.
+	//
+	// ASN.1 Definition:
+	//
+	//	CardNumber ::= CHOICE {
+	//	    driverIdentification   SEQUENCE { ... },
+	//	    ownerIdentification    SEQUENCE { ... }
+	//	}
+	DriverIdentification *v1.DriverIdentification
+	OwnerIdentification  *v1.OwnerIdentification
 }
 
 func (b0 TechnicalData_CardRecord_builder) Build() *TechnicalData_CardRecord {
 	m0 := &TechnicalData_CardRecord{}
 	b, x := &b0, m0
 	_, _ = b, x
-	x.xxx_hidden_FullCardNumber = b.FullCardNumber
+	x.xxx_hidden_CardNumberAndGeneration = b.CardNumberAndGeneration
+	x.xxx_hidden_CardExtendedSerialNumber = b.CardExtendedSerialNumber
 	x.xxx_hidden_CardStructureVersion = b.CardStructureVersion
-	if b.CardType != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 4)
-		x.xxx_hidden_CardType = *b.CardType
-	}
-	if b.UnrecognizedCardType != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 3, 4)
-		x.xxx_hidden_UnrecognizedCardType = *b.UnrecognizedCardType
-	}
+	x.xxx_hidden_DriverIdentification = b.DriverIdentification
+	x.xxx_hidden_OwnerIdentification = b.OwnerIdentification
 	return m0
 }
 
-// Represents a record of ITS consent status for a card.
+// Represents a record of ITS consent status for a card (Gen2 only).
 //
 // See Data Dictionary, Section 2.207, `VuITSConsentRecord`.
 //
@@ -1724,16 +1758,16 @@ func (b0 TechnicalData_CardRecord_builder) Build() *TechnicalData_CardRecord {
 //
 //	VuITSConsentRecord ::= SEQUENCE {
 //	    cardNumberAndGen FullCardNumberAndGeneration,
-//	    consent BOOLEAN
+//	    consent          BOOLEAN
 //	}
 type TechnicalData_ItsConsentRecord struct {
-	state                     protoimpl.MessageState `protogen:"opaque.v1"`
-	xxx_hidden_FullCardNumber *v1.FullCardNumber     `protobuf:"bytes,1,opt,name=full_card_number,json=fullCardNumber"`
-	xxx_hidden_ConsentStatus  bool                   `protobuf:"varint,2,opt,name=consent_status,json=consentStatus"`
-	XXX_raceDetectHookData    protoimpl.RaceDetectHookData
-	XXX_presence              [1]uint32
-	unknownFields             protoimpl.UnknownFields
-	sizeCache                 protoimpl.SizeCache
+	state                                  protoimpl.MessageState          `protogen:"opaque.v1"`
+	xxx_hidden_FullCardNumberAndGeneration *v1.FullCardNumberAndGeneration `protobuf:"bytes,1,opt,name=full_card_number_and_generation,json=fullCardNumberAndGeneration"`
+	xxx_hidden_ConsentStatus               bool                            `protobuf:"varint,2,opt,name=consent_status,json=consentStatus"`
+	XXX_raceDetectHookData                 protoimpl.RaceDetectHookData
+	XXX_presence                           [1]uint32
+	unknownFields                          protoimpl.UnknownFields
+	sizeCache                              protoimpl.SizeCache
 }
 
 func (x *TechnicalData_ItsConsentRecord) Reset() {
@@ -1761,9 +1795,9 @@ func (x *TechnicalData_ItsConsentRecord) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-func (x *TechnicalData_ItsConsentRecord) GetFullCardNumber() *v1.FullCardNumber {
+func (x *TechnicalData_ItsConsentRecord) GetFullCardNumberAndGeneration() *v1.FullCardNumberAndGeneration {
 	if x != nil {
-		return x.xxx_hidden_FullCardNumber
+		return x.xxx_hidden_FullCardNumberAndGeneration
 	}
 	return nil
 }
@@ -1775,8 +1809,8 @@ func (x *TechnicalData_ItsConsentRecord) GetConsentStatus() bool {
 	return false
 }
 
-func (x *TechnicalData_ItsConsentRecord) SetFullCardNumber(v *v1.FullCardNumber) {
-	x.xxx_hidden_FullCardNumber = v
+func (x *TechnicalData_ItsConsentRecord) SetFullCardNumberAndGeneration(v *v1.FullCardNumberAndGeneration) {
+	x.xxx_hidden_FullCardNumberAndGeneration = v
 }
 
 func (x *TechnicalData_ItsConsentRecord) SetConsentStatus(v bool) {
@@ -1784,11 +1818,11 @@ func (x *TechnicalData_ItsConsentRecord) SetConsentStatus(v bool) {
 	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 2)
 }
 
-func (x *TechnicalData_ItsConsentRecord) HasFullCardNumber() bool {
+func (x *TechnicalData_ItsConsentRecord) HasFullCardNumberAndGeneration() bool {
 	if x == nil {
 		return false
 	}
-	return x.xxx_hidden_FullCardNumber != nil
+	return x.xxx_hidden_FullCardNumberAndGeneration != nil
 }
 
 func (x *TechnicalData_ItsConsentRecord) HasConsentStatus() bool {
@@ -1798,8 +1832,8 @@ func (x *TechnicalData_ItsConsentRecord) HasConsentStatus() bool {
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 1)
 }
 
-func (x *TechnicalData_ItsConsentRecord) ClearFullCardNumber() {
-	x.xxx_hidden_FullCardNumber = nil
+func (x *TechnicalData_ItsConsentRecord) ClearFullCardNumberAndGeneration() {
+	x.xxx_hidden_FullCardNumberAndGeneration = nil
 }
 
 func (x *TechnicalData_ItsConsentRecord) ClearConsentStatus() {
@@ -1810,10 +1844,11 @@ func (x *TechnicalData_ItsConsentRecord) ClearConsentStatus() {
 type TechnicalData_ItsConsentRecord_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
-	// The full card number.
+	// The full card number and generation of the card holder.
 	//
-	// See Data Dictionary, Section 2.74, `FullCardNumberAndGeneration`.
-	FullCardNumber *v1.FullCardNumber
+	// This is a Gen2-only record and the specification explicitly requires
+	// `FullCardNumberAndGeneration`.
+	FullCardNumberAndGeneration *v1.FullCardNumberAndGeneration
 	// The consent status for ITS data provision.
 	//
 	// ASN.1 Definition:
@@ -1826,7 +1861,7 @@ func (b0 TechnicalData_ItsConsentRecord_builder) Build() *TechnicalData_ItsConse
 	m0 := &TechnicalData_ItsConsentRecord{}
 	b, x := &b0, m0
 	_, _ = b, x
-	x.xxx_hidden_FullCardNumber = b.FullCardNumber
+	x.xxx_hidden_FullCardNumberAndGeneration = b.FullCardNumberAndGeneration
 	if b.ConsentStatus != nil {
 		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 2)
 		x.xxx_hidden_ConsentStatus = *b.ConsentStatus
@@ -1982,7 +2017,7 @@ var File_wayplatform_connect_tachograph_vu_v1_technical_data_proto protoreflect.
 
 const file_wayplatform_connect_tachograph_vu_v1_technical_data_proto_rawDesc = "" +
 	"\n" +
-	"9wayplatform/connect/tachograph/vu/v1/technical_data.proto\x12$wayplatform.connect.tachograph.vu.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a>wayplatform/connect/tachograph/dd/v1/calibration_purpose.proto\x1a;wayplatform/connect/tachograph/dd/v1/card_slot_number.proto\x1aAwayplatform/connect/tachograph/dd/v1/card_structure_version.proto\x1a/wayplatform/connect/tachograph/dd/v1/date.proto\x1a9wayplatform/connect/tachograph/dd/v1/equipment_type.proto\x1aAwayplatform/connect/tachograph/dd/v1/extended_serial_number.proto\x1a;wayplatform/connect/tachograph/dd/v1/full_card_number.proto\x1a5wayplatform/connect/tachograph/dd/v1/generation.proto\x1a9wayplatform/connect/tachograph/dd/v1/nation_numeric.proto\x1aBwayplatform/connect/tachograph/dd/v1/software_identification.proto\x1a7wayplatform/connect/tachograph/dd/v1/string_value.proto\x1aNwayplatform/connect/tachograph/dd/v1/vehicle_registration_identification.proto\x1a5wayplatform/connect/tachograph/vu/v1/versioning.proto\"\x86#\n" +
+	"9wayplatform/connect/tachograph/vu/v1/technical_data.proto\x12$wayplatform.connect.tachograph.vu.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a>wayplatform/connect/tachograph/dd/v1/calibration_purpose.proto\x1a;wayplatform/connect/tachograph/dd/v1/card_slot_number.proto\x1aAwayplatform/connect/tachograph/dd/v1/card_structure_version.proto\x1a/wayplatform/connect/tachograph/dd/v1/date.proto\x1a@wayplatform/connect/tachograph/dd/v1/driver_identification.proto\x1a9wayplatform/connect/tachograph/dd/v1/equipment_type.proto\x1aAwayplatform/connect/tachograph/dd/v1/extended_serial_number.proto\x1a;wayplatform/connect/tachograph/dd/v1/full_card_number.proto\x1aJwayplatform/connect/tachograph/dd/v1/full_card_number_and_generation.proto\x1a5wayplatform/connect/tachograph/dd/v1/generation.proto\x1a9wayplatform/connect/tachograph/dd/v1/nation_numeric.proto\x1a?wayplatform/connect/tachograph/dd/v1/owner_identification.proto\x1aBwayplatform/connect/tachograph/dd/v1/software_identification.proto\x1a7wayplatform/connect/tachograph/dd/v1/string_value.proto\x1aNwayplatform/connect/tachograph/dd/v1/vehicle_registration_identification.proto\x1a5wayplatform/connect/tachograph/vu/v1/versioning.proto\"\xbe%\n" +
 	"\rTechnicalData\x12P\n" +
 	"\n" +
 	"generation\x18\x01 \x01(\x0e20.wayplatform.connect.tachograph.dd.v1.GenerationR\n" +
@@ -2014,36 +2049,36 @@ const file_wayplatform_connect_tachograph_vu_v1_technical_data_proto_rawDesc = "
 	"\vCoupledGnss\x12_\n" +
 	"\rserial_number\x18\x01 \x01(\v2:.wayplatform.connect.tachograph.dd.v1.ExtendedSerialNumberR\fserialNumber\x12Z\n" +
 	"\x0fapproval_number\x18\x02 \x01(\v21.wayplatform.connect.tachograph.dd.v1.StringValueR\x0eapprovalNumber\x12?\n" +
-	"\rcoupling_date\x18\x03 \x01(\v2\x1a.google.protobuf.TimestampR\fcouplingDate\x1a\xe8\n" +
-	"\n" +
+	"\rcoupling_date\x18\x03 \x01(\v2\x1a.google.protobuf.TimestampR\fcouplingDate\x1a\x84\v\n" +
 	"\x11CalibrationRecord\x12R\n" +
 	"\apurpose\x18\x01 \x01(\x0e28.wayplatform.connect.tachograph.dd.v1.CalibrationPurposeR\apurpose\x121\n" +
 	"\x14unrecognized_purpose\x18\x02 \x01(\x05R\x13unrecognizedPurpose\x12V\n" +
 	"\rworkshop_name\x18\x03 \x01(\v21.wayplatform.connect.tachograph.dd.v1.StringValueR\fworkshopName\x12\\\n" +
-	"\x10workshop_address\x18\x04 \x01(\v21.wayplatform.connect.tachograph.dd.v1.StringValueR\x0fworkshopAddress\x12f\n" +
-	"\x14workshop_card_number\x18\x05 \x01(\v24.wayplatform.connect.tachograph.dd.v1.FullCardNumberR\x12workshopCardNumber\x12e\n" +
+	"\x10workshop_address\x18\x04 \x01(\v21.wayplatform.connect.tachograph.dd.v1.StringValueR\x0fworkshopAddress\x12s\n" +
+	"\x14workshop_card_number\x18\x05 \x01(\v2A.wayplatform.connect.tachograph.dd.v1.FullCardNumberAndGenerationR\x12workshopCardNumber\x12e\n" +
 	"\x19workshop_card_expiry_date\x18\x06 \x01(\v2*.wayplatform.connect.tachograph.dd.v1.DateR\x16workshopCardExpiryDate\x12C\n" +
 	"\x03vin\x18\a \x01(\v21.wayplatform.connect.tachograph.dd.v1.StringValueR\x03vin\x12z\n" +
 	"\x14vehicle_registration\x18\b \x01(\v2G.wayplatform.connect.tachograph.dd.v1.VehicleRegistrationIdentificationR\x13vehicleRegistration\x12I\n" +
 	"!w_vehicle_characteristic_constant\x18\t \x01(\x05R\x1ewVehicleCharacteristicConstant\x12H\n" +
 	"!k_constant_of_recording_equipment\x18\n" +
-	" \x01(\x05R\x1dkConstantOfRecordingEquipment\x125\n" +
-	"\x17l_tyre_circumference_mm\x18\v \x01(\x05R\x14lTyreCircumferenceMm\x12N\n" +
+	" \x01(\x05R\x1dkConstantOfRecordingEquipment\x12D\n" +
+	"\x1fl_tyre_circumference_eighths_mm\x18\v \x01(\x05R\x1blTyreCircumferenceEighthsMm\x12N\n" +
 	"\ttyre_size\x18\f \x01(\v21.wayplatform.connect.tachograph.dd.v1.StringValueR\btyreSize\x120\n" +
 	"\x14authorised_speed_kmh\x18\r \x01(\x05R\x12authorisedSpeedKmh\x121\n" +
 	"\x15old_odometer_value_km\x18\x0e \x01(\x05R\x12oldOdometerValueKm\x121\n" +
 	"\x15new_odometer_value_km\x18\x0f \x01(\x05R\x12newOdometerValueKm\x12@\n" +
 	"\x0eold_time_value\x18\x10 \x01(\v2\x1a.google.protobuf.TimestampR\foldTimeValue\x12@\n" +
 	"\x0enew_time_value\x18\x11 \x01(\v2\x1a.google.protobuf.TimestampR\fnewTimeValue\x12N\n" +
-	"\x15next_calibration_date\x18\x12 \x01(\v2\x1a.google.protobuf.TimestampR\x13nextCalibrationDate\x1a\xe6\x02\n" +
+	"\x15next_calibration_date\x18\x12 \x01(\v2\x1a.google.protobuf.TimestampR\x13nextCalibrationDate\x1a\xd8\x04\n" +
 	"\n" +
-	"CardRecord\x12^\n" +
-	"\x10full_card_number\x18\x01 \x01(\v24.wayplatform.connect.tachograph.dd.v1.FullCardNumberR\x0efullCardNumber\x12p\n" +
-	"\x16card_structure_version\x18\x02 \x01(\v2:.wayplatform.connect.tachograph.dd.v1.CardStructureVersionR\x14cardStructureVersion\x12P\n" +
-	"\tcard_type\x18\x03 \x01(\x0e23.wayplatform.connect.tachograph.dd.v1.EquipmentTypeR\bcardType\x124\n" +
-	"\x16unrecognized_card_type\x18\x04 \x01(\x05R\x14unrecognizedCardType\x1a\x99\x01\n" +
-	"\x10ItsConsentRecord\x12^\n" +
-	"\x10full_card_number\x18\x01 \x01(\v24.wayplatform.connect.tachograph.dd.v1.FullCardNumberR\x0efullCardNumber\x12%\n" +
+	"CardRecord\x12~\n" +
+	"\x1acard_number_and_generation\x18\x01 \x01(\v2A.wayplatform.connect.tachograph.dd.v1.FullCardNumberAndGenerationR\x17cardNumberAndGeneration\x12y\n" +
+	"\x1bcard_extended_serial_number\x18\x02 \x01(\v2:.wayplatform.connect.tachograph.dd.v1.ExtendedSerialNumberR\x18cardExtendedSerialNumber\x12p\n" +
+	"\x16card_structure_version\x18\x03 \x01(\v2:.wayplatform.connect.tachograph.dd.v1.CardStructureVersionR\x14cardStructureVersion\x12o\n" +
+	"\x15driver_identification\x18\x04 \x01(\v2:.wayplatform.connect.tachograph.dd.v1.DriverIdentificationR\x14driverIdentification\x12l\n" +
+	"\x14owner_identification\x18\x05 \x01(\v29.wayplatform.connect.tachograph.dd.v1.OwnerIdentificationR\x13ownerIdentification\x1a\xc3\x01\n" +
+	"\x10ItsConsentRecord\x12\x87\x01\n" +
+	"\x1ffull_card_number_and_generation\x18\x01 \x01(\v2A.wayplatform.connect.tachograph.dd.v1.FullCardNumberAndGenerationR\x1bfullCardNumberAndGeneration\x12%\n" +
 	"\x0econsent_status\x18\x02 \x01(\bR\rconsentStatus\x1a\xfc\x01\n" +
 	"\x1dPowerSupplyInterruptionRecord\x128\n" +
 	"\ttimestamp\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\ttimestamp\x12^\n" +
@@ -2067,12 +2102,13 @@ var file_wayplatform_connect_tachograph_vu_v1_technical_data_proto_goTypes = []a
 	(*v1.SoftwareIdentification)(nil),                   // 11: wayplatform.connect.tachograph.dd.v1.SoftwareIdentification
 	(*timestamppb.Timestamp)(nil),                       // 12: google.protobuf.Timestamp
 	(v1.CalibrationPurpose)(0),                          // 13: wayplatform.connect.tachograph.dd.v1.CalibrationPurpose
-	(*v1.FullCardNumber)(nil),                           // 14: wayplatform.connect.tachograph.dd.v1.FullCardNumber
+	(*v1.FullCardNumberAndGeneration)(nil),              // 14: wayplatform.connect.tachograph.dd.v1.FullCardNumberAndGeneration
 	(*v1.Date)(nil),                                     // 15: wayplatform.connect.tachograph.dd.v1.Date
 	(*v1.VehicleRegistrationIdentification)(nil),        // 16: wayplatform.connect.tachograph.dd.v1.VehicleRegistrationIdentification
 	(*v1.CardStructureVersion)(nil),                     // 17: wayplatform.connect.tachograph.dd.v1.CardStructureVersion
-	(v1.EquipmentType)(0),                               // 18: wayplatform.connect.tachograph.dd.v1.EquipmentType
-	(v1.CardSlotNumber)(0),                              // 19: wayplatform.connect.tachograph.dd.v1.CardSlotNumber
+	(*v1.DriverIdentification)(nil),                     // 18: wayplatform.connect.tachograph.dd.v1.DriverIdentification
+	(*v1.OwnerIdentification)(nil),                      // 19: wayplatform.connect.tachograph.dd.v1.OwnerIdentification
+	(v1.CardSlotNumber)(0),                              // 20: wayplatform.connect.tachograph.dd.v1.CardSlotNumber
 }
 var file_wayplatform_connect_tachograph_vu_v1_technical_data_proto_depIdxs = []int32{
 	8,  // 0: wayplatform.connect.tachograph.vu.v1.TechnicalData.generation:type_name -> wayplatform.connect.tachograph.dd.v1.Generation
@@ -2100,7 +2136,7 @@ var file_wayplatform_connect_tachograph_vu_v1_technical_data_proto_depIdxs = []i
 	13, // 22: wayplatform.connect.tachograph.vu.v1.TechnicalData.CalibrationRecord.purpose:type_name -> wayplatform.connect.tachograph.dd.v1.CalibrationPurpose
 	9,  // 23: wayplatform.connect.tachograph.vu.v1.TechnicalData.CalibrationRecord.workshop_name:type_name -> wayplatform.connect.tachograph.dd.v1.StringValue
 	9,  // 24: wayplatform.connect.tachograph.vu.v1.TechnicalData.CalibrationRecord.workshop_address:type_name -> wayplatform.connect.tachograph.dd.v1.StringValue
-	14, // 25: wayplatform.connect.tachograph.vu.v1.TechnicalData.CalibrationRecord.workshop_card_number:type_name -> wayplatform.connect.tachograph.dd.v1.FullCardNumber
+	14, // 25: wayplatform.connect.tachograph.vu.v1.TechnicalData.CalibrationRecord.workshop_card_number:type_name -> wayplatform.connect.tachograph.dd.v1.FullCardNumberAndGeneration
 	15, // 26: wayplatform.connect.tachograph.vu.v1.TechnicalData.CalibrationRecord.workshop_card_expiry_date:type_name -> wayplatform.connect.tachograph.dd.v1.Date
 	9,  // 27: wayplatform.connect.tachograph.vu.v1.TechnicalData.CalibrationRecord.vin:type_name -> wayplatform.connect.tachograph.dd.v1.StringValue
 	16, // 28: wayplatform.connect.tachograph.vu.v1.TechnicalData.CalibrationRecord.vehicle_registration:type_name -> wayplatform.connect.tachograph.dd.v1.VehicleRegistrationIdentification
@@ -2108,17 +2144,19 @@ var file_wayplatform_connect_tachograph_vu_v1_technical_data_proto_depIdxs = []i
 	12, // 30: wayplatform.connect.tachograph.vu.v1.TechnicalData.CalibrationRecord.old_time_value:type_name -> google.protobuf.Timestamp
 	12, // 31: wayplatform.connect.tachograph.vu.v1.TechnicalData.CalibrationRecord.new_time_value:type_name -> google.protobuf.Timestamp
 	12, // 32: wayplatform.connect.tachograph.vu.v1.TechnicalData.CalibrationRecord.next_calibration_date:type_name -> google.protobuf.Timestamp
-	14, // 33: wayplatform.connect.tachograph.vu.v1.TechnicalData.CardRecord.full_card_number:type_name -> wayplatform.connect.tachograph.dd.v1.FullCardNumber
-	17, // 34: wayplatform.connect.tachograph.vu.v1.TechnicalData.CardRecord.card_structure_version:type_name -> wayplatform.connect.tachograph.dd.v1.CardStructureVersion
-	18, // 35: wayplatform.connect.tachograph.vu.v1.TechnicalData.CardRecord.card_type:type_name -> wayplatform.connect.tachograph.dd.v1.EquipmentType
-	14, // 36: wayplatform.connect.tachograph.vu.v1.TechnicalData.ItsConsentRecord.full_card_number:type_name -> wayplatform.connect.tachograph.dd.v1.FullCardNumber
-	12, // 37: wayplatform.connect.tachograph.vu.v1.TechnicalData.PowerSupplyInterruptionRecord.timestamp:type_name -> google.protobuf.Timestamp
-	19, // 38: wayplatform.connect.tachograph.vu.v1.TechnicalData.PowerSupplyInterruptionRecord.card_slot_number:type_name -> wayplatform.connect.tachograph.dd.v1.CardSlotNumber
-	39, // [39:39] is the sub-list for method output_type
-	39, // [39:39] is the sub-list for method input_type
-	39, // [39:39] is the sub-list for extension type_name
-	39, // [39:39] is the sub-list for extension extendee
-	0,  // [0:39] is the sub-list for field type_name
+	14, // 33: wayplatform.connect.tachograph.vu.v1.TechnicalData.CardRecord.card_number_and_generation:type_name -> wayplatform.connect.tachograph.dd.v1.FullCardNumberAndGeneration
+	10, // 34: wayplatform.connect.tachograph.vu.v1.TechnicalData.CardRecord.card_extended_serial_number:type_name -> wayplatform.connect.tachograph.dd.v1.ExtendedSerialNumber
+	17, // 35: wayplatform.connect.tachograph.vu.v1.TechnicalData.CardRecord.card_structure_version:type_name -> wayplatform.connect.tachograph.dd.v1.CardStructureVersion
+	18, // 36: wayplatform.connect.tachograph.vu.v1.TechnicalData.CardRecord.driver_identification:type_name -> wayplatform.connect.tachograph.dd.v1.DriverIdentification
+	19, // 37: wayplatform.connect.tachograph.vu.v1.TechnicalData.CardRecord.owner_identification:type_name -> wayplatform.connect.tachograph.dd.v1.OwnerIdentification
+	14, // 38: wayplatform.connect.tachograph.vu.v1.TechnicalData.ItsConsentRecord.full_card_number_and_generation:type_name -> wayplatform.connect.tachograph.dd.v1.FullCardNumberAndGeneration
+	12, // 39: wayplatform.connect.tachograph.vu.v1.TechnicalData.PowerSupplyInterruptionRecord.timestamp:type_name -> google.protobuf.Timestamp
+	20, // 40: wayplatform.connect.tachograph.vu.v1.TechnicalData.PowerSupplyInterruptionRecord.card_slot_number:type_name -> wayplatform.connect.tachograph.dd.v1.CardSlotNumber
+	41, // [41:41] is the sub-list for method output_type
+	41, // [41:41] is the sub-list for method input_type
+	41, // [41:41] is the sub-list for extension type_name
+	41, // [41:41] is the sub-list for extension extendee
+	0,  // [0:41] is the sub-list for field type_name
 }
 
 func init() { file_wayplatform_connect_tachograph_vu_v1_technical_data_proto_init() }

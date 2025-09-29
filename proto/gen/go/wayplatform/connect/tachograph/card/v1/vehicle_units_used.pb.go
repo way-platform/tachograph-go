@@ -22,9 +22,12 @@ const (
 )
 
 // Represents the content of the EF_VehicleUnits_Used file, which contains data
-// about the vehicle units used by the card holder.
+// about the vehicle units used by the card holder. This is a Gen2-only file.
 //
-// The file structure is specified in Appendix 2, Section 4.2.2.
+// The file structure is defined in Appendix 2 (e.g., table TCS_152 for driver
+// cards). Note the absence of a `Signature` block.
+//
+// File Structure:
 //
 //	EF VehicleUnits_Used
 //	└─CardVehicleUnitsUsed
@@ -151,12 +154,23 @@ type VehicleUnitsUsed_builder struct {
 	// The set of records for vehicle units used.
 	// Corresponds to `cardVehicleUnitRecords`.
 	Records []*VehicleUnitsUsed_Record
-	// Digital signature for the EF_VehicleUnits_Used file content.
+	// Signature data from the following file block, if tagged as a signature for
+	// this EF according to the card file format specification (Appendix 2).
 	//
 	// See Data Dictionary, Section 2.149, `Signature`.
-	// ASN.1 Definition:
 	//
-	//	Signature ::= OCTET STRING (SIZE(128 for Gen1))
+	// ASN.1 Definition (Gen1):
+	//
+	//	Signature ::= OCTET STRING (SIZE(128))
+	//
+	// ASN.1 Definition (Gen2):
+	//
+	//	Signature ::= OCTET STRING (variable size, depends on elliptic curve)
+	//
+	// Gen2 uses ECDSA signatures with variable lengths based on the curve:
+	// - 256-bit curves: ~64 bytes
+	// - 384-bit curves: ~96 bytes
+	// - 512/521-bit curves: ~128-132 bytes
 	Signature []byte
 }
 

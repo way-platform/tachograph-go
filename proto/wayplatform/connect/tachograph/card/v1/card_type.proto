@@ -18,6 +18,28 @@ enum CardType {
 
   // A driver card.
   // Corresponds to EquipmentType value 1.
+  //
+  // See Appendix 2, TCS_150 (Gen1) and TCS_154 (Gen2).
+  //
+  // Gen1 File Structure (DF_TACHOGRAPH):
+  // -------------------------------------------------------------------------------------
+  // | File Name                       | FID    | Structure   | Size      | Read AC         | Update AC       |
+  // |---------------------------------|--------|-------------|-----------|-----------------|-----------------|
+  // | EF Application_Identification   | 0501h  | Transparent | 10 bytes  | ALW             | NEV             |
+  // | EF Card_Certificate             | C108h  | Transparent | 194 bytes | ALW             | NEV             |
+  // | EF CA_Certificate               | C100h  | Transparent | 194 bytes | ALW             | NEV             |
+  // | EF Identification               | 0520h  | Transparent | 143 bytes | SM-R-ENC-MAC-G1 | SM-C-MAC-G1     |
+  // | EF Card_Download                | 050Eh  | Transparent | 4 bytes   | SM-R-ENC-MAC-G1 | SM-C-MAC-G1     |
+  // | EF Driving_Licence_Info         | 0522h  | Transparent | 91 bytes  | SM-R-ENC-MAC-G1 | SM-C-MAC-G1     |
+  // | EF Events_Data                  | 0502h  | Transparent | 864 bytes | SM-R-ENC-MAC-G1 | SM-C-MAC-G1     |
+  // | EF Faults_Data                  | 0503h  | Transparent | 576 bytes | SM-R-ENC-MAC-G1 | SM-C-MAC-G1     |
+  // | EF Driver_Activity_Data         | 0504h  | Transparent | 5548 bytes| SM-R-ENC-MAC-G1 | SM-C-MAC-G1     |
+  // | EF Vehicles_Used                | 0505h  | Transparent | 1764 bytes| SM-R-ENC-MAC-G1 | SM-C-MAC-G1     |
+  // | EF Places                       | 0506h  | Transparent | 462 bytes | SM-R-ENC-MAC-G1 | SM-C-MAC-G1     |
+  // | EF Current_Usage                | 0507h  | Transparent | 19 bytes  | SM-R-ENC-MAC-G1 | SM-C-MAC-G1     |
+  // | EF Control_Activity_Data        | 0508h  | Transparent | 46 bytes  | SM-R-ENC-MAC-G1 | SM-C-MAC-G1     |
+  // | EF Specific_Conditions          | 0521h  | Transparent | 56 bytes  | SM-R-ENC-MAC-G1 | SM-C-MAC-G1     |
+  // -------------------------------------------------------------------------------------
   DRIVER_CARD = 1 [(file_structure) = {
     type: MF
     files: [
@@ -176,6 +198,10 @@ enum CardType {
           {
             type: EF
             ef: EF_VEHICLE_UNITS_USED
+          },
+          {
+            type: EF
+            ef: EF_COMPANY_ACTIVITY_DATA
           },
           {
             type: EF
@@ -392,6 +418,10 @@ enum CardType {
           },
           {
             type: EF
+            ef: EF_COMPANY_ACTIVITY_DATA
+          },
+          {
+            type: EF
             ef: EF_GNSS_PLACES
           },
           {
@@ -506,6 +536,10 @@ enum CardType {
           },
           {
             type: EF
+            ef: EF_CARD_SIGN_CERTIFICATE
+          },
+          {
+            type: EF
             ef: EF_CA_CERTIFICATE
           },
           {
@@ -599,6 +633,10 @@ enum CardType {
           {
             type: EF
             ef: EF_CARD_CERTIFICATE
+          },
+          {
+            type: EF
+            ef: EF_CARD_SIGN_CERTIFICATE
           },
           {
             type: EF

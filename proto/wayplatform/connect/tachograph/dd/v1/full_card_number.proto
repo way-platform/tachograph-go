@@ -17,6 +17,20 @@ import "wayplatform/connect/tachograph/dd/v1/string_value.proto";
 //         cardIssuingMemberState NationNumeric,
 //         cardNumber CardNumber
 //     }
+//
+//     CardNumber ::= CHOICE {
+//         driverIdentification SEQUENCE {
+//             driverIdentification IA5String(SIZE(14)),
+//             cardReplacementIndex CardReplacementIndex,
+//             cardRenewalIndex CardRenewalIndex
+//         },
+//         ownerIdentification SEQUENCE {
+//             ownerIdentification IA5String(SIZE(13)),
+//             cardConsecutiveIndex CardConsecutiveIndex,
+//             cardReplacementIndex CardReplacementIndex,
+//             cardRenewalIndex CardRenewalIndex
+//         }
+//     }
 message FullCardNumber {
   // The type of the tachograph card. This field acts as the discriminant for the
   // `CardNumber` CHOICE, determining which of the fields below is populated.
@@ -35,19 +49,12 @@ message FullCardNumber {
 
   // --- Inlined CardNumber (DD 2.26) ---
   // The following fields represent the `CardNumber` ASN.1 CHOICE.
-  //
-  // ASN.1 Definition:
-  //
-  //     CardNumber ::= CHOICE {
-  //         driverIdentification   SEQUENCE { ... },
-  //         ownerIdentification    SEQUENCE { ... }
-  //     }
 
   // This field is part of the `CardNumber` CHOICE.
   // It is populated when `card_type` is `DRIVER_CARD`.
   DriverIdentification driver_identification = 3;
 
   // This field is part of the `CardNumber` CHOICE.
-  // It is populated when `card_type` is `WORKSHOP_CARD` or `COMPANY_CARD`.
+  // It is populated when card_type is WORKSHOP_CARD, COMPANY_CARD, or CONTROL_CARD.
   OwnerIdentification owner_identification = 4;
 }

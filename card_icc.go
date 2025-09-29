@@ -70,6 +70,10 @@ func unmarshalIcc(data []byte) (*cardv1.Icc, error) {
 
 		// Next 2 bytes: month/year BCD (MMYY format)
 		if len(serialBytes) > 5 {
+			// Create MonthYear message with both raw and decoded data
+			monthYear := &ddv1.MonthYear{}
+			monthYear.SetEncoded(serialBytes[4:6])
+
 			// Decode BCD month/year as 4-digit number MMYY
 			monthYearInt, err := bcdBytesToInt(serialBytes[4:6])
 			if err == nil && monthYearInt > 0 {
@@ -81,9 +85,11 @@ func unmarshalIcc(data []byte) (*cardv1.Icc, error) {
 					year += 2000
 				}
 
-				esn.SetMonth(month)
-				esn.SetYear(year)
+				monthYear.SetMonth(month)
+				monthYear.SetYear(year)
 			}
+
+			esn.SetMonthYear(monthYear)
 		}
 
 		// Next byte: equipment type (convert from protocol value using generic helper)

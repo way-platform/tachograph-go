@@ -21,7 +21,8 @@ const (
 )
 
 // DrivingStatus indicates single driver or crew.
-// See Data Dictionary, Section 2.1.
+// See Annex IC, Section 3.5, "Monitoring driving status".
+// The bit encoding is defined within the `ActivityChangeInfo` data type (DD 2.1).
 type DrivingStatus int32
 
 const (

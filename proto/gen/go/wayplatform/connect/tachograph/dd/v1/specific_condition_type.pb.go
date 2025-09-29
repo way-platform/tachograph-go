@@ -22,6 +22,31 @@ const (
 
 // SpecificConditionType indicates special circumstances like ferry crossings.
 // See Data Dictionary, Section 2.154.
+//
+// ASN.1 Definition (Gen1):
+//
+//	SpecificConditionType ::= INTEGER {
+//	    rfu(0),
+//	    out-of-scope-begin(1),
+//	    out-of-scope-end(2),
+//	    ferry-train-crossing(3)
+//	    -- 4..255 RFU
+//	} (0..255)
+//
+// ASN.1 Definition (Gen2):
+//
+//	SpecificConditionType ::= INTEGER {
+//	    rfu(0),
+//	    out-of-scope-begin(1),
+//	    out-of-scope-end(2),
+//	    ferry-train-crossing-begin(3),
+//	    ferry-train-crossing-end(4)
+//	    -- 5..255 RFU
+//	} (0..255)
+//
+// The Gen1 `ferry-train-crossing` and Gen2 `ferry-train-crossing-begin` types
+// share the same underlying value (3). This enum uses FERRY_TRAIN_CROSSING_BEGIN
+// to represent this value for both generations.
 type SpecificConditionType int32
 
 const (
@@ -30,7 +55,8 @@ const (
 	SpecificConditionType_RFU                                  SpecificConditionType = 2
 	SpecificConditionType_OUT_OF_SCOPE_BEGIN                   SpecificConditionType = 3
 	SpecificConditionType_OUT_OF_SCOPE_END                     SpecificConditionType = 4
-	SpecificConditionType_FERRY_TRAIN_CROSSING                 SpecificConditionType = 5
+	SpecificConditionType_FERRY_TRAIN_CROSSING_BEGIN           SpecificConditionType = 5
+	SpecificConditionType_FERRY_TRAIN_CROSSING_END             SpecificConditionType = 6
 )
 
 // Enum value maps for SpecificConditionType.
@@ -41,7 +67,8 @@ var (
 		2: "RFU",
 		3: "OUT_OF_SCOPE_BEGIN",
 		4: "OUT_OF_SCOPE_END",
-		5: "FERRY_TRAIN_CROSSING",
+		5: "FERRY_TRAIN_CROSSING_BEGIN",
+		6: "FERRY_TRAIN_CROSSING_END",
 	}
 	SpecificConditionType_value = map[string]int32{
 		"SPECIFIC_CONDITION_TYPE_UNSPECIFIED":  0,
@@ -49,7 +76,8 @@ var (
 		"RFU":                                  2,
 		"OUT_OF_SCOPE_BEGIN":                   3,
 		"OUT_OF_SCOPE_END":                     4,
-		"FERRY_TRAIN_CROSSING":                 5,
+		"FERRY_TRAIN_CROSSING_BEGIN":           5,
+		"FERRY_TRAIN_CROSSING_END":             6,
 	}
 )
 
@@ -79,14 +107,15 @@ var File_wayplatform_connect_tachograph_dd_v1_specific_condition_type_proto prot
 
 const file_wayplatform_connect_tachograph_dd_v1_specific_condition_type_proto_rawDesc = "" +
 	"\n" +
-	"Bwayplatform/connect/tachograph/dd/v1/specific_condition_type.proto\x12$wayplatform.connect.tachograph.dd.v1\x1a6wayplatform/connect/tachograph/dd/v1/annotations.proto*\xd7\x01\n" +
+	"Bwayplatform/connect/tachograph/dd/v1/specific_condition_type.proto\x12$wayplatform.connect.tachograph.dd.v1\x1a6wayplatform/connect/tachograph/dd/v1/annotations.proto*\x82\x02\n" +
 	"\x15SpecificConditionType\x12'\n" +
 	"#SPECIFIC_CONDITION_TYPE_UNSPECIFIED\x10\x00\x12(\n" +
 	"$SPECIFIC_CONDITION_TYPE_UNRECOGNIZED\x10\x01\x12\x0e\n" +
 	"\x03RFU\x10\x02\x1a\x05\x98\xaf\x9c\x02\x00\x12\x1d\n" +
 	"\x12OUT_OF_SCOPE_BEGIN\x10\x03\x1a\x05\x98\xaf\x9c\x02\x01\x12\x1b\n" +
-	"\x10OUT_OF_SCOPE_END\x10\x04\x1a\x05\x98\xaf\x9c\x02\x02\x12\x1f\n" +
-	"\x14FERRY_TRAIN_CROSSING\x10\x05\x1a\x05\x98\xaf\x9c\x02\x03B\xd9\x02\n" +
+	"\x10OUT_OF_SCOPE_END\x10\x04\x1a\x05\x98\xaf\x9c\x02\x02\x12%\n" +
+	"\x1aFERRY_TRAIN_CROSSING_BEGIN\x10\x05\x1a\x05\x98\xaf\x9c\x02\x03\x12#\n" +
+	"\x18FERRY_TRAIN_CROSSING_END\x10\x06\x1a\x05\x98\xaf\x9c\x02\x04B\xd9\x02\n" +
 	"(com.wayplatform.connect.tachograph.dd.v1B\x1aSpecificConditionTypeProtoP\x01Z\\github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1;ddv1\xa2\x02\x04WCTD\xaa\x02$Wayplatform.Connect.Tachograph.Dd.V1\xca\x02$Wayplatform\\Connect\\Tachograph\\Dd\\V1\xe2\x020Wayplatform\\Connect\\Tachograph\\Dd\\V1\\GPBMetadata\xea\x02(Wayplatform::Connect::Tachograph::Dd::V1b\beditionsp\xe8\a"
 
 var file_wayplatform_connect_tachograph_dd_v1_specific_condition_type_proto_enumTypes = make([]protoimpl.EnumInfo, 1)

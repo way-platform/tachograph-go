@@ -24,7 +24,7 @@ const (
 
 // Represents an authenticated GNSS position record.
 //
-// See Data Dictionary, Section 2.79c, `GNSSPlaceAuthRecord`.
+// See Data Dictionary, Section 2.79c.
 //
 // ASN.1 Definition:
 //
@@ -32,12 +32,8 @@ const (
 //	    timeStamp TimeReal,
 //	    gnssAccuracy GNSSAccuracy,
 //	    geoCoordinates GeoCoordinates,
-//	    posAuthStatus PositionAuthenticationStatus
+//	    authenticationStatus PositionAuthenticationStatus
 //	}
-//
-// Note: The Data Dictionary at 2.79c appears to have a typo, listing `longitude`
-// and `latitude` as separate fields of type `GeoCoordinates`. The definition
-// above, taken from the original proto file, is assumed to be correct.
 type GnssPlaceAuthRecord struct {
 	state                           protoimpl.MessageState          `protogen:"opaque.v1"`
 	xxx_hidden_Timestamp            *timestamppb.Timestamp          `protobuf:"bytes,1,opt,name=timestamp"`
@@ -192,15 +188,17 @@ type GnssPlaceAuthRecord_builder struct {
 	GeoCoordinates *v1.GeoCoordinates
 	// The authentication status of the position.
 	//
-	// See Data Dictionary, Section 2.117a, `PositionAuthenticationStatus`.
+	// See Data Dictionary, Section 2.117a.
+	//
 	// ASN.1 Definition:
 	//
-	//	PositionAuthenticationStatus ::= INTEGER {
-	//	    notAvailable(0),
-	//	    authenticated(1),
-	//	    notAuthenticated(2),
-	//	    authenticationCorrupted(3)
-	//	} (0..255)
+	//	PositionAuthenticationStatus ::= OCTET STRING (SIZE(1))
+	//
+	// Value assignment:
+	//
+	//	'00'H: Not Authenticated
+	//	'01'H: Authenticated
+	//	'02'H-'FF'H: RFU
 	AuthenticationStatus *v1.PositionAuthenticationStatus
 }
 
