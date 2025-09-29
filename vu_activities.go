@@ -202,10 +202,24 @@ func unmarshalVuActivitiesGen2(data []byte, offset int, target *vuv1.Activities)
 // These are simplified implementations - in a full implementation,
 // each would need to properly handle the record array format
 
+// splitVuCardIWRecord splits data into 126-byte VuCardIWRecord records
+func splitVuCardIWRecord(data []byte, atEOF bool) (advance int, token []byte, err error) {
+	const cardIWRecordSize = 126
+
+	if len(data) < cardIWRecordSize {
+		if atEOF {
+			return 0, nil, nil
+		}
+		return 0, nil, nil
+	}
+
+	return cardIWRecordSize, data[:cardIWRecordSize], nil
+}
+
 func parseVuCardIWData(data []byte, offset int) ([]*vuv1.Activities_CardIWRecord, int, error) {
 	// VuCardIWData ::= SEQUENCE {
 	//     noOfIWRecords INTEGER(0..255),
-	//     vuCardIWRecords SET SIZE(noOfIWRecords) OF VuCardIWRecord
+	//     vuCardIWRecords SET SIZE(noOfIWRecords) OF VuCardIWRecord -- 126 bytes each
 	// }
 
 	// Read number of records (1 byte)
@@ -214,25 +228,42 @@ func parseVuCardIWData(data []byte, offset int) ([]*vuv1.Activities_CardIWRecord
 		return nil, offset, fmt.Errorf("failed to read number of IW records: %w", err)
 	}
 
-	var records []*vuv1.Activities_CardIWRecord
+	// Use bufio.Scanner to parse the records
+	recordsData := data[offset:]
+	scanner := bufio.NewScanner(bytes.NewReader(recordsData))
+	scanner.Split(splitVuCardIWRecord)
 
-	// Parse each VuCardIWRecord
-	for i := 0; i < int(noOfRecords); i++ {
-		record, newOffset, err := parseVuCardIWRecord(data, offset)
+	var records []*vuv1.Activities_CardIWRecord
+	recordCount := 0
+
+	for scanner.Scan() {
+		if recordCount >= int(noOfRecords) {
+			break
+		}
+
+		recordData := scanner.Bytes()
+		record, err := unmarshalVuCardIWRecord(recordData)
 		if err != nil {
-			return nil, offset, fmt.Errorf("failed to parse IW record %d: %w", i, err)
+			return nil, offset, fmt.Errorf("failed to parse IW record %d: %w", recordCount, err)
 		}
 		records = append(records, record)
-		offset = newOffset
+		recordCount++
 	}
+
+	if err := scanner.Err(); err != nil {
+		return nil, offset, fmt.Errorf("scanner error: %w", err)
+	}
+
+	// Update offset to reflect consumed data
+	offset += recordCount * 126
 
 	return records, offset, nil
 }
 
-// parseVuCardIWRecord parses a single VuCardIWRecord
-func parseVuCardIWRecord(data []byte, offset int) (*vuv1.Activities_CardIWRecord, int, error) {
+// unmarshalVuCardIWRecord parses a single VuCardIWRecord from a byte slice
+func unmarshalVuCardIWRecord(data []byte) (*vuv1.Activities_CardIWRecord, error) {
 	// VuCardIWRecord ::= SEQUENCE {
-	//     cardHolderName HolderName,                    -- Variable length
+	//     cardHolderName HolderName,                    -- 72 bytes
 	//     fullCardNumber FullCardNumber,                -- 19 bytes
 	//     cardExpiryDate Datef,                         -- 4 bytes
 	//     cardInsertionTime TimeReal,                   -- 4 bytes
@@ -240,101 +271,85 @@ func parseVuCardIWRecord(data []byte, offset int) (*vuv1.Activities_CardIWRecord
 	//     cardSlotNumber CardSlotNumber,                -- 1 byte
 	//     cardWithdrawalTime TimeReal,                  -- 4 bytes
 	//     vehicleOdometerValueAtWithdrawal OdometerShort, -- 3 bytes
-	//     previousVehicleInfo PreviousVehicleInfo,      -- Variable length
+	//     previousVehicleInfo PreviousVehicleInfo,      -- 15 bytes
 	//     manualInputFlag ManualInputFlag               -- 1 byte
 	// }
 
+	if len(data) < 126 {
+		return nil, fmt.Errorf("insufficient data for card IW record: got %d, need 126", len(data))
+	}
+
 	record := &vuv1.Activities_CardIWRecord{}
 
-	// Parse cardHolderName (HolderName - variable length)
-	// HolderName is typically 72 bytes (36 for surname + 36 for first names)
-	holderNameData, offset, err := readBytesFromBytes(data, offset, 72)
-	if err != nil {
-		return nil, offset, fmt.Errorf("failed to read card holder name: %w", err)
-	}
+	// Parse cardHolderName (HolderName - 72 bytes)
+	holderNameData := data[0:72]
 	holderName, err := unmarshalHolderName(holderNameData)
 	if err != nil {
-		return nil, offset, fmt.Errorf("failed to unmarshal holder name: %w", err)
+		return nil, fmt.Errorf("failed to unmarshal holder name: %w", err)
 	}
 	record.SetCardHolderName(holderName)
 
 	// Parse fullCardNumber (FullCardNumber - 19 bytes)
-	fullCardNumberData, offset, err := readBytesFromBytes(data, offset, 19)
-	if err != nil {
-		return nil, offset, fmt.Errorf("failed to read full card number: %w", err)
-	}
+	fullCardNumberData := data[72:91]
 	fullCardNumber, err := unmarshalFullCardNumber(fullCardNumberData)
 	if err != nil {
-		return nil, offset, fmt.Errorf("failed to unmarshal full card number: %w", err)
+		return nil, fmt.Errorf("failed to unmarshal full card number: %w", err)
 	}
 	record.SetFullCardNumber(fullCardNumber)
 
 	// Parse cardExpiryDate (Datef - 4 bytes)
-	datefData, offset, err := readBytesFromBytes(data, offset, 4)
-	if err != nil {
-		return nil, offset, fmt.Errorf("failed to read card expiry date: %w", err)
-	}
+	datefData := data[91:95]
 	cardExpiryDate, err := readDatef(bytes.NewReader(datefData))
 	if err != nil {
-		return nil, offset, fmt.Errorf("failed to parse card expiry date: %w", err)
+		return nil, fmt.Errorf("failed to parse card expiry date: %w", err)
 	}
 	record.SetCardExpiryDate(cardExpiryDate)
 
 	// Parse cardInsertionTime (TimeReal - 4 bytes)
-	insertionTime, offset, err := readVuTimeRealFromBytes(data, offset)
+	insertionTime, _, err := readVuTimeRealFromBytes(data, 95)
 	if err != nil {
-		return nil, offset, fmt.Errorf("failed to read card insertion time: %w", err)
+		return nil, fmt.Errorf("failed to read card insertion time: %w", err)
 	}
 	record.SetCardInsertionTime(timestamppb.New(time.Unix(insertionTime, 0)))
 
 	// Parse vehicleOdometerValueAtInsertion (OdometerShort - 3 bytes)
-	odometerAtInsertion, offset, err := readOdometerFromBytes(data, offset)
+	odometerAtInsertion, _, err := readOdometerFromBytes(data, 99)
 	if err != nil {
-		return nil, offset, fmt.Errorf("failed to read odometer at insertion: %w", err)
+		return nil, fmt.Errorf("failed to read odometer at insertion: %w", err)
 	}
 	record.SetOdometerAtInsertionKm(int32(odometerAtInsertion))
 
 	// Parse cardSlotNumber (CardSlotNumber - 1 byte)
-	slotNumber, offset, err := readUint8FromBytes(data, offset)
-	if err != nil {
-		return nil, offset, fmt.Errorf("failed to read card slot number: %w", err)
-	}
+	slotNumber := data[102]
 	record.SetCardSlotNumber(ddv1.CardSlotNumber(slotNumber))
 
 	// Parse cardWithdrawalTime (TimeReal - 4 bytes)
-	withdrawalTime, offset, err := readVuTimeRealFromBytes(data, offset)
+	withdrawalTime, _, err := readVuTimeRealFromBytes(data, 103)
 	if err != nil {
-		return nil, offset, fmt.Errorf("failed to read card withdrawal time: %w", err)
+		return nil, fmt.Errorf("failed to read card withdrawal time: %w", err)
 	}
 	record.SetCardWithdrawalTime(timestamppb.New(time.Unix(withdrawalTime, 0)))
 
 	// Parse vehicleOdometerValueAtWithdrawal (OdometerShort - 3 bytes)
-	odometerAtWithdrawal, offset, err := readOdometerFromBytes(data, offset)
+	odometerAtWithdrawal, _, err := readOdometerFromBytes(data, 107)
 	if err != nil {
-		return nil, offset, fmt.Errorf("failed to read odometer at withdrawal: %w", err)
+		return nil, fmt.Errorf("failed to read odometer at withdrawal: %w", err)
 	}
 	record.SetOdometerAtWithdrawalKm(int32(odometerAtWithdrawal))
 
-	// Parse previousVehicleInfo (PreviousVehicleInfo - variable length)
-	// This is typically 15 bytes (VehicleRegistrationIdentification)
-	previousVehicleData, offset, err := readBytesFromBytes(data, offset, 15)
-	if err != nil {
-		return nil, offset, fmt.Errorf("failed to read previous vehicle info: %w", err)
-	}
+	// Parse previousVehicleInfo (PreviousVehicleInfo - 15 bytes)
+	previousVehicleData := data[110:125]
 	previousVehicleInfo, err := parsePreviousVehicleInfo(previousVehicleData)
 	if err != nil {
-		return nil, offset, fmt.Errorf("failed to parse previous vehicle info: %w", err)
+		return nil, fmt.Errorf("failed to parse previous vehicle info: %w", err)
 	}
 	record.SetPreviousVehicleInfo(previousVehicleInfo)
 
 	// Parse manualInputFlag (ManualInputFlag - 1 byte)
-	manualInputFlag, offset, err := readUint8FromBytes(data, offset)
-	if err != nil {
-		return nil, offset, fmt.Errorf("failed to read manual input flag: %w", err)
-	}
+	manualInputFlag := data[125]
 	record.SetManualInputFlag(manualInputFlag != 0)
 
-	return record, offset, nil
+	return record, nil
 }
 
 // parsePreviousVehicleInfo parses PreviousVehicleInfo structure
@@ -1031,12 +1046,26 @@ func parseVuPlaceDailyWorkPeriodRecordArray(data []byte, offset int) ([]*vuv1.Ac
 	return records, offset, nil
 }
 
+// splitVuGNSSADRecord splits data into 14-byte VuGNSSADRecord records
+func splitVuGNSSADRecord(data []byte, atEOF bool) (advance int, token []byte, err error) {
+	const gnssRecordSize = 14
+
+	if len(data) < gnssRecordSize {
+		if atEOF {
+			return 0, nil, nil
+		}
+		return 0, nil, nil
+	}
+
+	return gnssRecordSize, data[:gnssRecordSize], nil
+}
+
 func parseVuGNSSADRecordArray(data []byte, offset int) ([]*vuv1.Activities_GnssRecord, int, error) {
 	// VuGNSSADRecordArray ::= SEQUENCE {
 	//     recordType INTEGER(1..65535),           -- 2 bytes
 	//     recordSize INTEGER(0..65535),           -- 2 bytes
 	//     noOfRecords INTEGER(0..65535),          -- 2 bytes
-	//     records SET SIZE(noOfRecords) OF VuGNSSADRecord -- Variable size each
+	//     records SET SIZE(noOfRecords) OF VuGNSSADRecord -- 14 bytes each
 	// }
 
 	// Read record array header (6 bytes total)
@@ -1061,23 +1090,45 @@ func parseVuGNSSADRecordArray(data []byte, offset int) ([]*vuv1.Activities_GnssR
 		return nil, offset, fmt.Errorf("unexpected record type: got %d, expected 22 (VuGNSSADRecord)", recordType)
 	}
 
-	var records []*vuv1.Activities_GnssRecord
+	// Validate record size (should be 14 bytes for VuGNSSADRecord)
+	if recordSize != 14 {
+		return nil, offset, fmt.Errorf("unexpected record size: got %d, expected 14", recordSize)
+	}
 
-	// Parse each VuGNSSADRecord
-	for i := 0; i < int(noOfRecords); i++ {
-		record, newOffset, err := parseVuGNSSADRecord(data, offset, int(recordSize))
+	// Use bufio.Scanner to parse the records
+	recordsData := data[offset:]
+	scanner := bufio.NewScanner(bytes.NewReader(recordsData))
+	scanner.Split(splitVuGNSSADRecord)
+
+	var records []*vuv1.Activities_GnssRecord
+	recordCount := 0
+
+	for scanner.Scan() {
+		if recordCount >= int(noOfRecords) {
+			break
+		}
+
+		recordData := scanner.Bytes()
+		record, err := unmarshalVuGNSSADRecord(recordData)
 		if err != nil {
-			return nil, offset, fmt.Errorf("failed to parse VuGNSSADRecord %d: %w", i, err)
+			return nil, offset, fmt.Errorf("failed to parse VuGNSSADRecord %d: %w", recordCount, err)
 		}
 		records = append(records, record)
-		offset = newOffset
+		recordCount++
 	}
+
+	if err := scanner.Err(); err != nil {
+		return nil, offset, fmt.Errorf("scanner error: %w", err)
+	}
+
+	// Update offset to reflect consumed data
+	offset += recordCount * 14
 
 	return records, offset, nil
 }
 
-// parseVuGNSSADRecord parses a single VuGNSSADRecord
-func parseVuGNSSADRecord(data []byte, offset int, recordSize int) (*vuv1.Activities_GnssRecord, int, error) {
+// unmarshalVuGNSSADRecord parses a single VuGNSSADRecord from a byte slice
+func unmarshalVuGNSSADRecord(data []byte) (*vuv1.Activities_GnssRecord, error) {
 	// VuGNSSADRecord ::= SEQUENCE {
 	//     timeStamp TimeReal,                    -- 4 bytes
 	//     gnssAccuracy GNSSAccuracy,            -- 1 byte
@@ -1085,36 +1136,31 @@ func parseVuGNSSADRecord(data []byte, offset int, recordSize int) (*vuv1.Activit
 	//     positionAuthenticationStatus PositionAuthenticationStatus -- 1 byte
 	// }
 
-	if offset+recordSize > len(data) {
-		return nil, offset, fmt.Errorf("insufficient data for GNSS record: got %d, need %d", len(data)-offset, recordSize)
+	if len(data) < 14 {
+		return nil, fmt.Errorf("insufficient data for GNSS record: got %d, need 14", len(data))
 	}
 
 	record := &vuv1.Activities_GnssRecord{}
 
 	// Parse timeStamp (TimeReal - 4 bytes)
-	timestamp, offset, err := readVuTimeRealFromBytes(data, offset)
+	timestamp, _, err := readVuTimeRealFromBytes(data, 0)
 	if err != nil {
-		return nil, offset, fmt.Errorf("failed to read timestamp: %w", err)
+		return nil, fmt.Errorf("failed to read timestamp: %w", err)
 	}
 	record.SetTimestamp(timestamppb.New(time.Unix(timestamp, 0)))
 
 	// Parse gnssAccuracy (GNSSAccuracy - 1 byte)
-	accuracy, offset, err := readUint8FromBytes(data, offset)
-	if err != nil {
-		return nil, offset, fmt.Errorf("failed to read GNSS accuracy: %w", err)
-	}
+	accuracy := data[4]
 	record.SetGnssAccuracy(int32(accuracy))
 
 	// Parse geoCoordinates (GeoCoordinates - 8 bytes: 4 bytes latitude + 4 bytes longitude)
 	// Latitude (4 bytes, signed integer)
-	latBytes := data[offset : offset+4]
+	latBytes := data[5:9]
 	latitude := int32(binary.BigEndian.Uint32(latBytes))
-	offset += 4
 
 	// Longitude (4 bytes, signed integer)
-	lonBytes := data[offset : offset+4]
+	lonBytes := data[9:13]
 	longitude := int32(binary.BigEndian.Uint32(lonBytes))
-	offset += 4
 
 	// Create GeoCoordinates
 	geoCoords := &ddv1.GeoCoordinates{}
@@ -1123,13 +1169,10 @@ func parseVuGNSSADRecord(data []byte, offset int, recordSize int) (*vuv1.Activit
 	record.SetGeoCoordinates(geoCoords)
 
 	// Parse positionAuthenticationStatus (PositionAuthenticationStatus - 1 byte)
-	authStatus, offset, err := readUint8FromBytes(data, offset)
-	if err != nil {
-		return nil, offset, fmt.Errorf("failed to read authentication status: %w", err)
-	}
+	authStatus := data[13]
 	record.SetAuthenticationStatus(ddv1.PositionAuthenticationStatus(authStatus))
 
-	return record, offset, nil
+	return record, nil
 }
 
 // splitSpecificConditionRecord splits data into 5-byte SpecificConditionRecord records
@@ -1213,12 +1256,26 @@ func parseVuSpecificConditionRecordArray(data []byte, offset int) ([]*vuv1.Activ
 	return records, offset, nil
 }
 
+// splitVuBorderCrossingRecord splits data into 59-byte VuBorderCrossingRecord records
+func splitVuBorderCrossingRecord(data []byte, atEOF bool) (advance int, token []byte, err error) {
+	const borderCrossingRecordSize = 59
+
+	if len(data) < borderCrossingRecordSize {
+		if atEOF {
+			return 0, nil, nil
+		}
+		return 0, nil, nil
+	}
+
+	return borderCrossingRecordSize, data[:borderCrossingRecordSize], nil
+}
+
 func parseVuBorderCrossingRecordArray(data []byte, offset int) ([]*vuv1.Activities_BorderCrossingRecord, int, error) {
 	// VuBorderCrossingRecordArray ::= SEQUENCE {
 	//     recordType INTEGER(1..65535),           -- 2 bytes
 	//     recordSize INTEGER(0..65535),           -- 2 bytes
 	//     noOfRecords INTEGER(0..65535),          -- 2 bytes
-	//     records SET SIZE(noOfRecords) OF VuBorderCrossingRecord -- Variable size each
+	//     records SET SIZE(noOfRecords) OF VuBorderCrossingRecord -- 59 bytes each
 	// }
 
 	// Read record array header (6 bytes total)
@@ -1243,23 +1300,45 @@ func parseVuBorderCrossingRecordArray(data []byte, offset int) ([]*vuv1.Activiti
 		return nil, offset, fmt.Errorf("unexpected record type: got %d, expected 23 (VuBorderCrossingRecord)", recordType)
 	}
 
-	var records []*vuv1.Activities_BorderCrossingRecord
+	// Validate record size (should be 59 bytes for VuBorderCrossingRecord)
+	if recordSize != 59 {
+		return nil, offset, fmt.Errorf("unexpected record size: got %d, expected 59", recordSize)
+	}
 
-	// Parse each VuBorderCrossingRecord
-	for i := 0; i < int(noOfRecords); i++ {
-		record, newOffset, err := parseVuBorderCrossingRecord(data, offset, int(recordSize))
+	// Use bufio.Scanner to parse the records
+	recordsData := data[offset:]
+	scanner := bufio.NewScanner(bytes.NewReader(recordsData))
+	scanner.Split(splitVuBorderCrossingRecord)
+
+	var records []*vuv1.Activities_BorderCrossingRecord
+	recordCount := 0
+
+	for scanner.Scan() {
+		if recordCount >= int(noOfRecords) {
+			break
+		}
+
+		recordData := scanner.Bytes()
+		record, err := unmarshalVuBorderCrossingRecord(recordData)
 		if err != nil {
-			return nil, offset, fmt.Errorf("failed to parse VuBorderCrossingRecord %d: %w", i, err)
+			return nil, offset, fmt.Errorf("failed to parse VuBorderCrossingRecord %d: %w", recordCount, err)
 		}
 		records = append(records, record)
-		offset = newOffset
+		recordCount++
 	}
+
+	if err := scanner.Err(); err != nil {
+		return nil, offset, fmt.Errorf("scanner error: %w", err)
+	}
+
+	// Update offset to reflect consumed data
+	offset += recordCount * 59
 
 	return records, offset, nil
 }
 
-// parseVuBorderCrossingRecord parses a single VuBorderCrossingRecord
-func parseVuBorderCrossingRecord(data []byte, offset int, recordSize int) (*vuv1.Activities_BorderCrossingRecord, int, error) {
+// unmarshalVuBorderCrossingRecord parses a single VuBorderCrossingRecord from a byte slice
+func unmarshalVuBorderCrossingRecord(data []byte) (*vuv1.Activities_BorderCrossingRecord, error) {
 	// VuBorderCrossingRecord ::= SEQUENCE {
 	//     cardNumberAndGenDriverSlot FullCardNumberAndGeneration, -- 20 bytes
 	//     cardNumberAndGenCodriverSlot FullCardNumberAndGeneration, -- 20 bytes
@@ -1269,67 +1348,58 @@ func parseVuBorderCrossingRecord(data []byte, offset int, recordSize int) (*vuv1
 	//     odometerValue OdometerShort                             -- 3 bytes
 	// }
 
-	if offset+recordSize > len(data) {
-		return nil, offset, fmt.Errorf("insufficient data for border crossing record: got %d, need %d", len(data)-offset, recordSize)
+	if len(data) < 59 {
+		return nil, fmt.Errorf("insufficient data for border crossing record: got %d, need 59", len(data))
 	}
 
 	record := &vuv1.Activities_BorderCrossingRecord{}
 
 	// Parse cardNumberAndGenDriverSlot (FullCardNumberAndGeneration - 20 bytes)
-	driverCardData, offset, err := readBytesFromBytes(data, offset, 20)
+	driverCardData := data[0:20]
+	_, err := unmarshalFullCardNumberAndGeneration(driverCardData)
 	if err != nil {
-		return nil, offset, fmt.Errorf("failed to read driver card data: %w", err)
-	}
-	_, err = unmarshalFullCardNumberAndGeneration(driverCardData)
-	if err != nil {
-		return nil, offset, fmt.Errorf("failed to unmarshal driver card data: %w", err)
+		return nil, fmt.Errorf("failed to unmarshal driver card data: %w", err)
 	}
 	// Note: Schema limitation - using placeholder for now
 	record.SetFullCardNumber(&ddv1.FullCardNumber{})
 
 	// Parse cardNumberAndGenCodriverSlot (FullCardNumberAndGeneration - 20 bytes)
-	codriverCardData, offset, err := readBytesFromBytes(data, offset, 20)
-	if err != nil {
-		return nil, offset, fmt.Errorf("failed to read codriver card data: %w", err)
-	}
+	codriverCardData := data[20:40]
 	_, err = unmarshalFullCardNumberAndGeneration(codriverCardData)
 	if err != nil {
-		return nil, offset, fmt.Errorf("failed to unmarshal codriver card data: %w", err)
+		return nil, fmt.Errorf("failed to unmarshal codriver card data: %w", err)
 	}
+	// Note: Schema limitation - using placeholder for now
+	record.SetFullCardNumber(&ddv1.FullCardNumber{})
 
 	// Parse countryLeft (NationNumeric - 1 byte)
-	countryLeft, offset, err := readUint8FromBytes(data, offset)
-	if err != nil {
-		return nil, offset, fmt.Errorf("failed to read country left: %w", err)
-	}
+	countryLeft := data[40]
 	record.SetCountryLeft(ddv1.NationNumeric(countryLeft))
 
 	// Parse countryEntered (NationNumeric - 1 byte)
-	countryEntered, offset, err := readUint8FromBytes(data, offset)
-	if err != nil {
-		return nil, offset, fmt.Errorf("failed to read country entered: %w", err)
-	}
+	countryEntered := data[41]
 	record.SetCountryEntered(ddv1.NationNumeric(countryEntered))
 
-	// Parse placeRecord (GNSSPlaceRecord - 14 bytes: 4 timestamp + 1 accuracy + 8 coords + 1 auth)
-	placeRecord, offset, err := parseGNSSPlaceRecord(data, offset)
+	// Parse placeRecord (GNSSPlaceRecord - 14 bytes)
+	placeData := data[42:56]
+	placeRecord, err := unmarshalGNSSPlaceRecord(placeData)
 	if err != nil {
-		return nil, offset, fmt.Errorf("failed to parse place record: %w", err)
+		return nil, fmt.Errorf("failed to unmarshal place record: %w", err)
 	}
 	record.SetPlaceRecord(placeRecord)
 
 	// Parse odometerValue (OdometerShort - 3 bytes)
-	odometerValue, offset, err := readOdometerFromBytes(data, offset)
+	odometerValue, _, err := readOdometerFromBytes(data, 56)
 	if err != nil {
-		return nil, offset, fmt.Errorf("failed to read odometer value: %w", err)
+		return nil, fmt.Errorf("failed to read odometer value: %w", err)
 	}
 	record.SetOdometerKm(int32(odometerValue))
 
-	return record, offset, nil
+	return record, nil
 }
 
-// parseGNSSPlaceRecord parses a GNSSPlaceRecord (simplified version)
-func parseGNSSPlaceRecord(data []byte, offset int) (*vuv1.Activities_GnssRecord, int, error) {
+// unmarshalGNSSPlaceRecord parses a single GNSSPlaceRecord from a byte slice
+func unmarshalGNSSPlaceRecord(data []byte) (*vuv1.Activities_GnssRecord, error) {
 	// GNSSPlaceRecord ::= SEQUENCE {
 	//     timeStamp TimeReal,                    -- 4 bytes
 	//     gnssAccuracy GNSSAccuracy,            -- 1 byte
@@ -1337,32 +1407,31 @@ func parseGNSSPlaceRecord(data []byte, offset int) (*vuv1.Activities_GnssRecord,
 	//     positionAuthenticationStatus PositionAuthenticationStatus -- 1 byte
 	// }
 
+	if len(data) < 14 {
+		return nil, fmt.Errorf("insufficient data for GNSS place record: got %d, need 14", len(data))
+	}
+
 	record := &vuv1.Activities_GnssRecord{}
 
 	// Parse timeStamp (TimeReal - 4 bytes)
-	timestamp, offset, err := readVuTimeRealFromBytes(data, offset)
+	timestamp, _, err := readVuTimeRealFromBytes(data, 0)
 	if err != nil {
-		return nil, offset, fmt.Errorf("failed to read timestamp: %w", err)
+		return nil, fmt.Errorf("failed to read timestamp: %w", err)
 	}
 	record.SetTimestamp(timestamppb.New(time.Unix(timestamp, 0)))
 
 	// Parse gnssAccuracy (GNSSAccuracy - 1 byte)
-	accuracy, offset, err := readUint8FromBytes(data, offset)
-	if err != nil {
-		return nil, offset, fmt.Errorf("failed to read GNSS accuracy: %w", err)
-	}
+	accuracy := data[4]
 	record.SetGnssAccuracy(int32(accuracy))
 
 	// Parse geoCoordinates (GeoCoordinates - 8 bytes: 4 bytes latitude + 4 bytes longitude)
 	// Latitude (4 bytes, signed integer)
-	latBytes := data[offset : offset+4]
+	latBytes := data[5:9]
 	latitude := int32(binary.BigEndian.Uint32(latBytes))
-	offset += 4
 
 	// Longitude (4 bytes, signed integer)
-	lonBytes := data[offset : offset+4]
+	lonBytes := data[9:13]
 	longitude := int32(binary.BigEndian.Uint32(lonBytes))
-	offset += 4
 
 	// Create GeoCoordinates
 	geoCoords := &ddv1.GeoCoordinates{}
@@ -1371,13 +1440,24 @@ func parseGNSSPlaceRecord(data []byte, offset int) (*vuv1.Activities_GnssRecord,
 	record.SetGeoCoordinates(geoCoords)
 
 	// Parse positionAuthenticationStatus (PositionAuthenticationStatus - 1 byte)
-	authStatus, offset, err := readUint8FromBytes(data, offset)
-	if err != nil {
-		return nil, offset, fmt.Errorf("failed to read authentication status: %w", err)
-	}
+	authStatus := data[13]
 	record.SetAuthenticationStatus(ddv1.PositionAuthenticationStatus(authStatus))
 
-	return record, offset, nil
+	return record, nil
+}
+
+// splitVuLoadUnloadRecord splits data into 58-byte VuLoadUnloadRecord records
+func splitVuLoadUnloadRecord(data []byte, atEOF bool) (advance int, token []byte, err error) {
+	const loadUnloadRecordSize = 58
+
+	if len(data) < loadUnloadRecordSize {
+		if atEOF {
+			return 0, nil, nil
+		}
+		return 0, nil, nil
+	}
+
+	return loadUnloadRecordSize, data[:loadUnloadRecordSize], nil
 }
 
 func parseVuLoadUnloadRecordArray(data []byte, offset int) ([]*vuv1.Activities_LoadUnloadRecord, int, error) {
@@ -1385,7 +1465,7 @@ func parseVuLoadUnloadRecordArray(data []byte, offset int) ([]*vuv1.Activities_L
 	//     recordType INTEGER(1..65535),           -- 2 bytes
 	//     recordSize INTEGER(0..65535),           -- 2 bytes
 	//     noOfRecords INTEGER(0..65535),          -- 2 bytes
-	//     records SET SIZE(noOfRecords) OF VuLoadUnloadRecord -- Variable size each
+	//     records SET SIZE(noOfRecords) OF VuLoadUnloadRecord -- 58 bytes each
 	// }
 
 	// Read record array header (6 bytes total)
@@ -1410,23 +1490,45 @@ func parseVuLoadUnloadRecordArray(data []byte, offset int) ([]*vuv1.Activities_L
 		return nil, offset, fmt.Errorf("unexpected record type: got %d, expected 24 (VuLoadUnloadRecord)", recordType)
 	}
 
-	var records []*vuv1.Activities_LoadUnloadRecord
+	// Validate record size (should be 58 bytes for VuLoadUnloadRecord)
+	if recordSize != 58 {
+		return nil, offset, fmt.Errorf("unexpected record size: got %d, expected 58", recordSize)
+	}
 
-	// Parse each VuLoadUnloadRecord
-	for i := 0; i < int(noOfRecords); i++ {
-		record, newOffset, err := parseVuLoadUnloadRecord(data, offset, int(recordSize))
+	// Use bufio.Scanner to parse the records
+	recordsData := data[offset:]
+	scanner := bufio.NewScanner(bytes.NewReader(recordsData))
+	scanner.Split(splitVuLoadUnloadRecord)
+
+	var records []*vuv1.Activities_LoadUnloadRecord
+	recordCount := 0
+
+	for scanner.Scan() {
+		if recordCount >= int(noOfRecords) {
+			break
+		}
+
+		recordData := scanner.Bytes()
+		record, err := unmarshalVuLoadUnloadRecord(recordData)
 		if err != nil {
-			return nil, offset, fmt.Errorf("failed to parse VuLoadUnloadRecord %d: %w", i, err)
+			return nil, offset, fmt.Errorf("failed to parse VuLoadUnloadRecord %d: %w", recordCount, err)
 		}
 		records = append(records, record)
-		offset = newOffset
+		recordCount++
 	}
+
+	if err := scanner.Err(); err != nil {
+		return nil, offset, fmt.Errorf("scanner error: %w", err)
+	}
+
+	// Update offset to reflect consumed data
+	offset += recordCount * 58
 
 	return records, offset, nil
 }
 
-// parseVuLoadUnloadRecord parses a single VuLoadUnloadRecord
-func parseVuLoadUnloadRecord(data []byte, offset int, recordSize int) (*vuv1.Activities_LoadUnloadRecord, int, error) {
+// unmarshalVuLoadUnloadRecord parses a single VuLoadUnloadRecord from a byte slice
+func unmarshalVuLoadUnloadRecord(data []byte) (*vuv1.Activities_LoadUnloadRecord, error) {
 	// VuLoadUnloadRecord ::= SEQUENCE {
 	//     cardNumberAndGenDriverSlot FullCardNumberAndGeneration, -- 20 bytes
 	//     cardNumberAndGenCodriverSlot FullCardNumberAndGeneration, -- 20 bytes
@@ -1435,56 +1537,79 @@ func parseVuLoadUnloadRecord(data []byte, offset int, recordSize int) (*vuv1.Act
 	//     odometerValue OdometerShort                             -- 3 bytes
 	// }
 
-	if offset+recordSize > len(data) {
-		return nil, offset, fmt.Errorf("insufficient data for load/unload record: got %d, need %d", len(data)-offset, recordSize)
+	if len(data) < 58 {
+		return nil, fmt.Errorf("insufficient data for load/unload record: got %d, need 58", len(data))
 	}
 
 	record := &vuv1.Activities_LoadUnloadRecord{}
 
 	// Parse cardNumberAndGenDriverSlot (FullCardNumberAndGeneration - 20 bytes)
-	driverCardData, offset, err := readBytesFromBytes(data, offset, 20)
+	driverCardData := data[0:20]
+	_, err := unmarshalFullCardNumberAndGeneration(driverCardData)
 	if err != nil {
-		return nil, offset, fmt.Errorf("failed to read driver card data: %w", err)
-	}
-	_, err = unmarshalFullCardNumberAndGeneration(driverCardData)
-	if err != nil {
-		return nil, offset, fmt.Errorf("failed to unmarshal driver card data: %w", err)
+		return nil, fmt.Errorf("failed to unmarshal driver card data: %w", err)
 	}
 	// Note: Schema limitation - using placeholder for now
 	record.SetFullCardNumber(&ddv1.FullCardNumber{})
 
 	// Parse cardNumberAndGenCodriverSlot (FullCardNumberAndGeneration - 20 bytes)
-	codriverCardData, offset, err := readBytesFromBytes(data, offset, 20)
-	if err != nil {
-		return nil, offset, fmt.Errorf("failed to read codriver card data: %w", err)
-	}
+	codriverCardData := data[20:40]
 	_, err = unmarshalFullCardNumberAndGeneration(codriverCardData)
 	if err != nil {
-		return nil, offset, fmt.Errorf("failed to unmarshal codriver card data: %w", err)
+		return nil, fmt.Errorf("failed to unmarshal codriver card data: %w", err)
 	}
 
 	// Parse operationType (OperationType - 1 byte)
-	operationType, offset, err := readUint8FromBytes(data, offset)
-	if err != nil {
-		return nil, offset, fmt.Errorf("failed to read operation type: %w", err)
-	}
+	operationType := data[40]
 	record.SetOperationType(ddv1.OperationType(operationType))
 
 	// Parse placeRecord (GNSSPlaceRecord - 14 bytes)
-	placeRecord, offset, err := parseGNSSPlaceRecord(data, offset)
+	placeData := data[41:55]
+	placeRecord, err := unmarshalGNSSPlaceRecord(placeData)
 	if err != nil {
-		return nil, offset, fmt.Errorf("failed to parse place record: %w", err)
+		return nil, fmt.Errorf("failed to unmarshal place record: %w", err)
 	}
 	record.SetPlaceRecord(placeRecord)
 
 	// Parse odometerValue (OdometerShort - 3 bytes)
-	odometerValue, offset, err := readOdometerFromBytes(data, offset)
+	odometerValue, _, err := readOdometerFromBytes(data, 55)
 	if err != nil {
-		return nil, offset, fmt.Errorf("failed to read odometer value: %w", err)
+		return nil, fmt.Errorf("failed to read odometer value: %w", err)
 	}
 	record.SetOdometerKm(int32(odometerValue))
 
-	return record, offset, nil
+	return record, nil
+}
+
+// splitSignatureRecord splits data into variable-length Signature records
+func splitSignatureRecord(data []byte, atEOF bool) (advance int, token []byte, err error) {
+	// We need at least 6 bytes for the record array header
+	if len(data) < 6 {
+		if atEOF {
+			return 0, nil, nil
+		}
+		return 0, nil, nil
+	}
+
+	// Read recordSize from the header (bytes 2-3)
+	recordSize := binary.BigEndian.Uint16(data[2:4])
+
+	// Validate record size
+	if recordSize == 0 {
+		return 0, nil, fmt.Errorf("invalid record size: got 0")
+	}
+
+	// Total record size = header (6 bytes) + signature data (recordSize bytes)
+	totalSize := 6 + int(recordSize)
+
+	if len(data) < totalSize {
+		if atEOF {
+			return 0, nil, nil
+		}
+		return 0, nil, nil
+	}
+
+	return totalSize, data[:totalSize], nil
 }
 
 func parseSignatureRecordArray(data []byte, offset int) ([]byte, int, error) {
@@ -1495,42 +1620,32 @@ func parseSignatureRecordArray(data []byte, offset int) ([]byte, int, error) {
 	//     records SET SIZE(noOfRecords) OF Signature -- Variable size each
 	// }
 
-	// Read record array header (6 bytes total)
-	if offset+6 > len(data) {
-		return nil, offset, fmt.Errorf("insufficient data for signature record array header: got %d, need 6", len(data)-offset)
+	// Use bufio.Scanner to parse the signature record
+	recordsData := data[offset:]
+	scanner := bufio.NewScanner(bytes.NewReader(recordsData))
+	scanner.Split(splitSignatureRecord)
+
+	if !scanner.Scan() {
+		if err := scanner.Err(); err != nil {
+			return nil, offset, fmt.Errorf("scanner error: %w", err)
+		}
+		return nil, offset, fmt.Errorf("no signature record found")
 	}
 
-	// Read recordType (2 bytes)
-	recordType := binary.BigEndian.Uint16(data[offset:])
-	offset += 2
-
-	// Read recordSize (2 bytes)
-	recordSize := binary.BigEndian.Uint16(data[offset:])
-	offset += 2
-
-	// Read noOfRecords (2 bytes) - not used for single signature
-	_ = binary.BigEndian.Uint16(data[offset:])
-	offset += 2
+	recordData := scanner.Bytes()
 
 	// Validate record type (should be 0x08 for Signature)
+	recordType := binary.BigEndian.Uint16(recordData[0:2])
 	if recordType != 0x08 {
 		return nil, offset, fmt.Errorf("unexpected record type: got %d, expected 8 (Signature)", recordType)
 	}
 
-	// For Gen2, signatures are typically ECC (64 bytes) or RSA (128 bytes)
-	// We'll use the recordSize to determine the actual signature size
-	if recordSize == 0 {
-		return nil, offset, fmt.Errorf("invalid record size: got 0")
-	}
+	// Extract signature data (skip 6-byte header)
+	signature := make([]byte, len(recordData)-6)
+	copy(signature, recordData[6:])
 
-	// Read the signature data
-	if offset+int(recordSize) > len(data) {
-		return nil, offset, fmt.Errorf("insufficient data for signature: got %d, need %d", len(data)-offset, recordSize)
-	}
-
-	signature := make([]byte, recordSize)
-	copy(signature, data[offset:offset+int(recordSize)])
-	offset += int(recordSize)
+	// Update offset to reflect consumed data
+	offset += len(recordData)
 
 	return signature, offset, nil
 }

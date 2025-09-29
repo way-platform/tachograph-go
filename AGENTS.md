@@ -285,6 +285,51 @@ Roundtrip tests exist but are currently in a failing state and should not be rel
 
 Leave all version control and git to the user/developer. If you see a build error related to having a git diff, this is normal.
 
+### Bufio Scanner Pattern for Record Parsing
+
+Use `bufio.Scanner` with custom `SplitFunc` for all contiguous binary data parsing that advances forward through memory.
+
+**Use for:** Fixed-size records, variable-length records, record arrays, complex structures
+**Avoid for:** Backward iteration, linked lists with pointers, non-contiguous data, cyclic buffers
+
+**Guidelines:**
+
+- Co-locate `SplitFunc` in same file with descriptive name (e.g., `splitVuBorderCrossingRecord`)
+- Never reuse `SplitFunc` across different record types
+- Use `unmarshal<ProtoMessage>` naming for parsing functions
+- Return errors for invalid data in `SplitFunc` (fail-fast)
+- Include proper size validation
+
+**Pattern:**
+
+```go
+func splitRecordType(data []byte, atEOF bool) (advance int, token []byte, err error) {
+    const recordSize = 59
+    if len(data) < recordSize {
+        if atEOF { return 0, nil, nil }
+        return 0, nil, nil
+    }
+    return recordSize, data[:recordSize], nil
+}
+
+func parseRecordArray(data []byte, offset int) ([]*Type, int, error) {
+    scanner := bufio.NewScanner(bytes.NewReader(data[offset:]))
+    scanner.Split(splitRecordType)
+    var records []*Type
+    for scanner.Scan() {
+        record, err := unmarshalRecordType(scanner.Bytes())
+        if err != nil { return nil, offset, err }
+        records = append(records, record)
+    }
+    if err := scanner.Err(); err != nil {
+        return nil, offset, err
+    }
+    return records, offset + len(data[offset:]), nil
+}
+```
+
+**Benefits:** Cleaner code, better error handling, efficient memory usage, easier testing.
+
 ### Code Quality
 
 - **No `//nolint` comments**: Never suppress linter warnings with `//nolint` comments. Instead, fix the underlying issues by removing unused code, implementing missing functionality, or restructuring the code properly.
