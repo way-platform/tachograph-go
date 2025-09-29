@@ -68,22 +68,93 @@ func unmarshalIdentification(data []byte) (*cardv1.Identification, error) {
 	cardNumberData := data[offset : offset+16]
 	offset += 16
 
-	// For now, we'll assume driver card format (14 + 1 + 1)
-	// In a more complete implementation, we'd need to know the card type from context
-	driverID := &ddv1.DriverIdentification{}
+	// Determine card type based on the data structure
+	// Driver cards have 14 bytes for identification, other cards have 13 bytes
+	// We can detect this by checking if the 14th byte is a valid IA5String character
+	// and if the 15th and 16th bytes are single digits (replacement/renewal indices)
 
-	// Driver identification (14 bytes)
+	// Try to parse as driver card first (14 + 1 + 1 format)
 	driverIdentification, err := unmarshalIA5StringValue(cardNumberData[0:14])
-	if err != nil {
-		return nil, fmt.Errorf("failed to read driver identification: %w", err)
+	if err == nil {
+		// Check if bytes 14 and 15 are single digits (0-9)
+		replacementByte := cardNumberData[14]
+		renewalByte := cardNumberData[15]
+		if replacementByte >= '0' && replacementByte <= '9' && renewalByte >= '0' && renewalByte <= '9' {
+			// This looks like a driver card format
+			driverID := &ddv1.DriverIdentification{}
+			driverID.SetIdentificationNumber(driverIdentification)
+			cardId.SetDriverIdentification(driverID)
+			identification.SetCardType(cardv1.CardType_DRIVER_CARD)
+		} else {
+			// Fall back to other card format
+			ownerID := &ddv1.OwnerIdentification{}
+
+			// Owner identification (13 bytes)
+			ownerIdentification, err := unmarshalIA5StringValue(cardNumberData[0:13])
+			if err != nil {
+				return nil, fmt.Errorf("failed to read owner identification: %w", err)
+			}
+			ownerID.SetIdentificationNumber(ownerIdentification)
+
+			// Consecutive index (1 byte)
+			consecutiveIndex, err := unmarshalIA5StringValue(cardNumberData[13:14])
+			if err != nil {
+				return nil, fmt.Errorf("failed to read consecutive index: %w", err)
+			}
+			ownerID.SetConsecutiveIndex(consecutiveIndex)
+
+			// Replacement index (1 byte)
+			replacementIndex, err := unmarshalIA5StringValue(cardNumberData[14:15])
+			if err != nil {
+				return nil, fmt.Errorf("failed to read replacement index: %w", err)
+			}
+			ownerID.SetReplacementIndex(replacementIndex)
+
+			// Renewal index (1 byte)
+			renewalIndex, err := unmarshalIA5StringValue(cardNumberData[15:16])
+			if err != nil {
+				return nil, fmt.Errorf("failed to read renewal index: %w", err)
+			}
+			ownerID.SetRenewalIndex(renewalIndex)
+
+			cardId.SetOwnerIdentification(ownerID)
+			identification.SetCardType(cardv1.CardType_WORKSHOP_CARD) // Default to workshop card
+		}
+	} else {
+		// Try to parse as other card format (13 + 1 + 1 + 1 format)
+		ownerID := &ddv1.OwnerIdentification{}
+
+		// Owner identification (13 bytes)
+		ownerIdentification, err := unmarshalIA5StringValue(cardNumberData[0:13])
+		if err != nil {
+			return nil, fmt.Errorf("failed to read owner identification: %w", err)
+		}
+		ownerID.SetIdentificationNumber(ownerIdentification)
+
+		// Consecutive index (1 byte)
+		consecutiveIndex, err := unmarshalIA5StringValue(cardNumberData[13:14])
+		if err != nil {
+			return nil, fmt.Errorf("failed to read consecutive index: %w", err)
+		}
+		ownerID.SetConsecutiveIndex(consecutiveIndex)
+
+		// Replacement index (1 byte)
+		replacementIndex, err := unmarshalIA5StringValue(cardNumberData[14:15])
+		if err != nil {
+			return nil, fmt.Errorf("failed to read replacement index: %w", err)
+		}
+		ownerID.SetReplacementIndex(replacementIndex)
+
+		// Renewal index (1 byte)
+		renewalIndex, err := unmarshalIA5StringValue(cardNumberData[15:16])
+		if err != nil {
+			return nil, fmt.Errorf("failed to read renewal index: %w", err)
+		}
+		ownerID.SetRenewalIndex(renewalIndex)
+
+		cardId.SetOwnerIdentification(ownerID)
+		identification.SetCardType(cardv1.CardType_WORKSHOP_CARD) // Default to workshop card
 	}
-	driverID.SetIdentificationNumber(driverIdentification)
-
-	// Note: The current protobuf schema doesn't include replacement and renewal indices
-	// for DriverIdentification, so we can't store them. This is a limitation of the
-	// current schema that would need to be addressed in a future update.
-
-	cardId.SetDriverIdentification(driverID)
 
 	// Authority name (36 bytes)
 	if offset+36 > len(data) {
@@ -118,9 +189,6 @@ func unmarshalIdentification(data []byte) (*cardv1.Identification, error) {
 	offset += 4
 
 	identification.SetCard(cardId)
-
-	// Set card type to DRIVER_CARD for driver cards
-	identification.SetCardType(cardv1.CardType_DRIVER_CARD)
 
 	// Create and populate DriverCardHolderIdentification part (78 bytes)
 	holderId := &cardv1.Identification_DriverCardHolder{}

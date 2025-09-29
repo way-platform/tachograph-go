@@ -97,3 +97,44 @@ func appendVuTechnicalData(buf *bytes.Buffer, technicalData *vuv1.TechnicalData)
 
 	return nil
 }
+
+// appendVuTechnicalDataBytes appends VU technical data to a byte slice
+func appendVuTechnicalDataBytes(dst []byte, technicalData *vuv1.TechnicalData) ([]byte, error) {
+	if technicalData == nil {
+		return dst, nil
+	}
+
+	if technicalData.GetGeneration() == ddv1.Generation_GENERATION_1 {
+		return appendVuTechnicalDataGen1Bytes(dst, technicalData)
+	} else {
+		return appendVuTechnicalDataGen2Bytes(dst, technicalData)
+	}
+}
+
+// appendVuTechnicalDataGen1Bytes appends Generation 1 VU technical data
+func appendVuTechnicalDataGen1Bytes(dst []byte, technicalData *vuv1.TechnicalData) ([]byte, error) {
+	// For now, implement a simplified version that just writes signature data
+	// This matches the current unmarshal behavior which reads all data as signature
+	// This ensures the interface is complete while allowing for future enhancement
+
+	signature := technicalData.GetSignatureGen1()
+	if len(signature) > 0 {
+		dst = append(dst, signature...)
+	}
+
+	return dst, nil
+}
+
+// appendVuTechnicalDataGen2Bytes appends Generation 2 VU technical data
+func appendVuTechnicalDataGen2Bytes(dst []byte, technicalData *vuv1.TechnicalData) ([]byte, error) {
+	// For now, implement a simplified version that just writes signature data
+	// This matches the current unmarshal behavior which reads all data as signature
+	// This ensures the interface is complete while allowing for future enhancement
+
+	signature := technicalData.GetSignatureGen2()
+	if len(signature) > 0 {
+		dst = append(dst, signature...)
+	}
+
+	return dst, nil
+}

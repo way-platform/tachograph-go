@@ -89,3 +89,44 @@ func appendVuDetailedSpeed(buf *bytes.Buffer, detailedSpeed *vuv1.DetailedSpeed)
 
 	return nil
 }
+
+// appendVuDetailedSpeedBytes appends VU detailed speed data to a byte slice
+func appendVuDetailedSpeedBytes(dst []byte, detailedSpeed *vuv1.DetailedSpeed) ([]byte, error) {
+	if detailedSpeed == nil {
+		return dst, nil
+	}
+
+	if detailedSpeed.GetGeneration() == ddv1.Generation_GENERATION_1 {
+		return appendVuDetailedSpeedGen1Bytes(dst, detailedSpeed)
+	} else {
+		return appendVuDetailedSpeedGen2Bytes(dst, detailedSpeed)
+	}
+}
+
+// appendVuDetailedSpeedGen1Bytes appends Generation 1 VU detailed speed data
+func appendVuDetailedSpeedGen1Bytes(dst []byte, detailedSpeed *vuv1.DetailedSpeed) ([]byte, error) {
+	// For now, implement a simplified version that just writes signature data
+	// This matches the current unmarshal behavior which reads all data as signature
+	// This ensures the interface is complete while allowing for future enhancement
+
+	signature := detailedSpeed.GetSignatureGen1()
+	if len(signature) > 0 {
+		dst = append(dst, signature...)
+	}
+
+	return dst, nil
+}
+
+// appendVuDetailedSpeedGen2Bytes appends Generation 2 VU detailed speed data
+func appendVuDetailedSpeedGen2Bytes(dst []byte, detailedSpeed *vuv1.DetailedSpeed) ([]byte, error) {
+	// For now, implement a simplified version that just writes signature data
+	// This matches the current unmarshal behavior which reads all data as signature
+	// This ensures the interface is complete while allowing for future enhancement
+
+	signature := detailedSpeed.GetSignatureGen2()
+	if len(signature) > 0 {
+		dst = append(dst, signature...)
+	}
+
+	return dst, nil
+}

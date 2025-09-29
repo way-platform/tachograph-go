@@ -102,3 +102,44 @@ func appendVuEventsAndFaults(buf *bytes.Buffer, eventsAndFaults *vuv1.EventsAndF
 
 	return nil
 }
+
+// appendVuEventsAndFaultsBytes appends VU events and faults data to a byte slice
+func appendVuEventsAndFaultsBytes(dst []byte, eventsAndFaults *vuv1.EventsAndFaults) ([]byte, error) {
+	if eventsAndFaults == nil {
+		return dst, nil
+	}
+
+	if eventsAndFaults.GetGeneration() == ddv1.Generation_GENERATION_1 {
+		return appendVuEventsAndFaultsGen1Bytes(dst, eventsAndFaults)
+	} else {
+		return appendVuEventsAndFaultsGen2Bytes(dst, eventsAndFaults)
+	}
+}
+
+// appendVuEventsAndFaultsGen1Bytes appends Generation 1 VU events and faults data
+func appendVuEventsAndFaultsGen1Bytes(dst []byte, eventsAndFaults *vuv1.EventsAndFaults) ([]byte, error) {
+	// For now, implement a simplified version that just writes signature data
+	// This matches the current unmarshal behavior which reads all data as signature
+	// This ensures the interface is complete while allowing for future enhancement
+
+	signature := eventsAndFaults.GetSignatureGen1()
+	if len(signature) > 0 {
+		dst = append(dst, signature...)
+	}
+
+	return dst, nil
+}
+
+// appendVuEventsAndFaultsGen2Bytes appends Generation 2 VU events and faults data
+func appendVuEventsAndFaultsGen2Bytes(dst []byte, eventsAndFaults *vuv1.EventsAndFaults) ([]byte, error) {
+	// For now, implement a simplified version that just writes signature data
+	// This matches the current unmarshal behavior which reads all data as signature
+	// This ensures the interface is complete while allowing for future enhancement
+
+	signature := eventsAndFaults.GetSignatureGen2()
+	if len(signature) > 0 {
+		dst = append(dst, signature...)
+	}
+
+	return dst, nil
+}

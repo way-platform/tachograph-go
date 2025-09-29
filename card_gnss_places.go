@@ -74,8 +74,70 @@ func appendCardGnssPlaces(data []byte, gnssPlaces *cardv1.GnssPlaces) ([]byte, e
 		data = append(data, 0x00, 0x00)
 	}
 
-	// For now, skip the complex record structures
-	// This provides a basic implementation that satisfies the interface
+	// Write GNSS place records
+	records := gnssPlaces.GetRecords()
+	if len(records) > 0 {
+		// Write number of records (1 byte)
+		if len(records) > 255 {
+			return nil, fmt.Errorf("too many GNSS place records: %d", len(records))
+		}
+		data = append(data, byte(len(records)))
+
+		// Write each record
+		for _, record := range records {
+			var err error
+			data, err = appendCardGnssPlaceRecord(data, record)
+			if err != nil {
+				return nil, fmt.Errorf("failed to append GNSS place record: %w", err)
+			}
+		}
+	} else {
+		// Write 0 records
+		data = append(data, 0x00)
+	}
 
 	return data, nil
+}
+
+// appendCardGnssPlaceRecord appends a single GNSS place record to dst
+func appendCardGnssPlaceRecord(dst []byte, record *cardv1.GnssPlaces_Record) ([]byte, error) {
+	if record == nil {
+		return dst, nil
+	}
+
+	// Entry time (TimeReal - 4 bytes)
+	dst = appendTimeReal(dst, record.GetTimestamp())
+
+	// GNSS place accuracy (1 byte)
+	gnssPlace := record.GetGnssPlace()
+	if gnssPlace != nil {
+		accuracy := gnssPlace.GetGnssAccuracy()
+		if accuracy < 0 || accuracy > 255 {
+			return nil, fmt.Errorf("invalid GNSS accuracy: %d", accuracy)
+		}
+		dst = append(dst, byte(accuracy))
+	} else {
+		dst = append(dst, 0x00)
+	}
+
+	// Geo coordinates (8 bytes: 4 bytes longitude + 4 bytes latitude)
+	if gnssPlace != nil && gnssPlace.GetGeoCoordinates() != nil {
+		var err error
+		dst, err = appendGeoCoordinates(dst, gnssPlace.GetGeoCoordinates())
+		if err != nil {
+			return nil, fmt.Errorf("failed to append geo coordinates: %w", err)
+		}
+	} else {
+		// Append default values (8 zero bytes)
+		dst = append(dst, make([]byte, 8)...)
+	}
+
+	// Vehicle odometer value (OdometerShort - 3 bytes)
+	odometer := record.GetVehicleOdometerKm()
+	if odometer < 0 || odometer > 999999 {
+		return nil, fmt.Errorf("invalid odometer value: %d", odometer)
+	}
+	dst = appendOdometer(dst, uint32(odometer))
+
+	return dst, nil
 }

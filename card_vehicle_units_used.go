@@ -82,8 +82,71 @@ func appendCardVehicleUnitsUsed(data []byte, vehicleUnits *cardv1.VehicleUnitsUs
 		data = append(data, 0x00, 0x00)
 	}
 
-	// For now, skip the complex record structures
-	// This provides a basic implementation that satisfies the interface
+	// Write vehicle unit records
+	records := vehicleUnits.GetRecords()
+	if len(records) > 0 {
+		// Write number of records (1 byte)
+		if len(records) > 255 {
+			return nil, fmt.Errorf("too many vehicle unit records: %d", len(records))
+		}
+		data = append(data, byte(len(records)))
+
+		// Write each record
+		for _, record := range records {
+			var err error
+			data, err = appendCardVehicleUnitRecord(data, record)
+			if err != nil {
+				return nil, fmt.Errorf("failed to append vehicle unit record: %w", err)
+			}
+		}
+	} else {
+		// Write 0 records
+		data = append(data, 0x00)
+	}
 
 	return data, nil
+}
+
+// appendCardVehicleUnitRecord appends a single vehicle unit record to dst
+func appendCardVehicleUnitRecord(dst []byte, record *cardv1.VehicleUnitsUsed_Record) ([]byte, error) {
+	if record == nil {
+		return dst, nil
+	}
+
+	// Timestamp (TimeReal - 4 bytes)
+	dst = appendTimeReal(dst, record.GetTimestamp())
+
+	// Manufacturer code (1 byte)
+	manufacturerCode := record.GetManufacturerCode()
+	if manufacturerCode < 0 || manufacturerCode > 255 {
+		return nil, fmt.Errorf("invalid manufacturer code: %d", manufacturerCode)
+	}
+	dst = append(dst, byte(manufacturerCode))
+
+	// Device ID (1 byte)
+	deviceID := record.GetDeviceId()
+	if len(deviceID) > 1 {
+		return nil, fmt.Errorf("device ID too long: %d bytes", len(deviceID))
+	}
+	if len(deviceID) == 1 {
+		dst = append(dst, deviceID[0])
+	} else {
+		dst = append(dst, 0x00)
+	}
+
+	// VU software version (4 bytes)
+	vuSoftwareVersion := record.GetVuSoftwareVersion()
+	if len(vuSoftwareVersion) > 4 {
+		return nil, fmt.Errorf("VU software version too long: %d bytes", len(vuSoftwareVersion))
+	}
+	if len(vuSoftwareVersion) == 4 {
+		dst = append(dst, vuSoftwareVersion...)
+	} else {
+		// Pad with zeros if shorter than 4 bytes
+		padded := make([]byte, 4)
+		copy(padded, vuSoftwareVersion)
+		dst = append(dst, padded...)
+	}
+
+	return dst, nil
 }
