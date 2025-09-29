@@ -64,7 +64,7 @@ func unmarshalVuActivitiesGen1(data []byte, offset int, target *vuv1.Activities)
 	target.SetDateOfDay(timestamppb.New(time.Unix(timeReal, 0)))
 
 	// Read OdometerValueMidnight (3 bytes)
-	odometerValue, offset, err := readVuOdometerFromBytes(data, offset)
+	odometerValue, offset, err := readOdometerFromBytes(data, offset)
 	if err != nil {
 		return 0, fmt.Errorf("failed to read odometer value midnight: %w", err)
 	}
@@ -287,7 +287,7 @@ func parseVuCardIWRecord(data []byte, offset int) (*vuv1.Activities_CardIWRecord
 	record.SetCardInsertionTime(timestamppb.New(time.Unix(insertionTime, 0)))
 
 	// Parse vehicleOdometerValueAtInsertion (OdometerShort - 3 bytes)
-	odometerAtInsertion, offset, err := readVuOdometerFromBytes(data, offset)
+	odometerAtInsertion, offset, err := readOdometerFromBytes(data, offset)
 	if err != nil {
 		return nil, offset, fmt.Errorf("failed to read odometer at insertion: %w", err)
 	}
@@ -308,7 +308,7 @@ func parseVuCardIWRecord(data []byte, offset int) (*vuv1.Activities_CardIWRecord
 	record.SetCardWithdrawalTime(timestamppb.New(time.Unix(withdrawalTime, 0)))
 
 	// Parse vehicleOdometerValueAtWithdrawal (OdometerShort - 3 bytes)
-	odometerAtWithdrawal, offset, err := readVuOdometerFromBytes(data, offset)
+	odometerAtWithdrawal, offset, err := readOdometerFromBytes(data, offset)
 	if err != nil {
 		return nil, offset, fmt.Errorf("failed to read odometer at withdrawal: %w", err)
 	}
@@ -521,7 +521,7 @@ func parseVuPlaceRecord(data []byte, offset int) (*vuv1.Activities_PlaceRecord, 
 	record.SetRegion([]byte{region})
 
 	// Parse vehicleOdometerValue (OdometerShort - 3 bytes)
-	odometerValue, offset, err := readVuOdometerFromBytes(data, offset)
+	odometerValue, offset, err := readOdometerFromBytes(data, offset)
 	if err != nil {
 		return nil, offset, fmt.Errorf("failed to read odometer value: %w", err)
 	}
@@ -678,7 +678,7 @@ func parseOdometerValueMidnightRecordArray(data []byte, offset int) ([]int32, in
 
 	// Parse each OdometerShort record
 	for i := 0; i < int(noOfRecords); i++ {
-		odometerValue, newOffset, err := readVuOdometerFromBytes(data, offset)
+		odometerValue, newOffset, err := readOdometerFromBytes(data, offset)
 		if err != nil {
 			return nil, offset, fmt.Errorf("failed to read OdometerShort record %d: %w", i, err)
 		}
@@ -798,7 +798,7 @@ func parseVuCardIWRecordGen2(data []byte, offset int) (*vuv1.Activities_CardIWRe
 	record.SetCardInsertionTime(timestamppb.New(time.Unix(insertionTime, 0)))
 
 	// Parse vehicleOdometerValueAtInsertion (OdometerShort - 3 bytes)
-	odometerAtInsertion, offset, err := readVuOdometerFromBytes(data, offset)
+	odometerAtInsertion, offset, err := readOdometerFromBytes(data, offset)
 	if err != nil {
 		return nil, offset, fmt.Errorf("failed to read odometer at insertion: %w", err)
 	}
@@ -819,7 +819,7 @@ func parseVuCardIWRecordGen2(data []byte, offset int) (*vuv1.Activities_CardIWRe
 	record.SetCardWithdrawalTime(timestamppb.New(time.Unix(withdrawalTime, 0)))
 
 	// Parse vehicleOdometerValueAtWithdrawal (OdometerShort - 3 bytes)
-	odometerAtWithdrawal, offset, err := readVuOdometerFromBytes(data, offset)
+	odometerAtWithdrawal, offset, err := readOdometerFromBytes(data, offset)
 	if err != nil {
 		return nil, offset, fmt.Errorf("failed to read odometer at withdrawal: %w", err)
 	}
@@ -1203,7 +1203,7 @@ func parseVuBorderCrossingRecord(data []byte, offset int, recordSize int) (*vuv1
 	record.SetPlaceRecord(placeRecord)
 
 	// Parse odometerValue (OdometerShort - 3 bytes)
-	odometerValue, offset, err := readVuOdometerFromBytes(data, offset)
+	odometerValue, offset, err := readOdometerFromBytes(data, offset)
 	if err != nil {
 		return nil, offset, fmt.Errorf("failed to read odometer value: %w", err)
 	}
@@ -1362,7 +1362,7 @@ func parseVuLoadUnloadRecord(data []byte, offset int, recordSize int) (*vuv1.Act
 	record.SetPlaceRecord(placeRecord)
 
 	// Parse odometerValue (OdometerShort - 3 bytes)
-	odometerValue, offset, err := readVuOdometerFromBytes(data, offset)
+	odometerValue, offset, err := readOdometerFromBytes(data, offset)
 	if err != nil {
 		return nil, offset, fmt.Errorf("failed to read odometer value: %w", err)
 	}

@@ -5,7 +5,8 @@ import (
 	"io"
 )
 
-// VU-specific helper functions for parsing byte slice data
+// VU-specific binary parsing functions for reading structured data from byte slices
+// These functions are used across multiple VU-related files for consistent data parsing
 
 // readUint8FromBytes reads a single byte from a byte slice at the given offset
 func readUint8FromBytes(data []byte, offset int) (uint8, int, error) {
@@ -35,12 +36,3 @@ func readVuTimeRealFromBytes(data []byte, offset int) (int64, int, error) {
 	return int64(value), offset + 4, nil
 }
 
-// readVuOdometerFromBytes reads an odometer value (3 bytes)
-func readVuOdometerFromBytes(data []byte, offset int) (uint32, int, error) {
-	if offset+3 > len(data) {
-		return 0, offset, io.ErrUnexpectedEOF
-	}
-	// Convert 3-byte big-endian to uint32
-	value := uint32(data[offset])<<16 | uint32(data[offset+1])<<8 | uint32(data[offset+2])
-	return value, offset + 3, nil
-}

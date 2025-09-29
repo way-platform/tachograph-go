@@ -7,6 +7,9 @@ import (
 	ddv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
 )
 
+// Data dictionary string parsing and serialization functions
+// These functions are used across multiple files for consistent string handling
+
 // readString reads a fixed-length string from a bytes.Reader
 func readString(r *bytes.Reader, len int) string {
 	b := make([]byte, len)
