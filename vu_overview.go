@@ -160,14 +160,114 @@ func unmarshalOverviewGen1(data []byte, offset int, overview *vuv1.Overview, sta
 }
 
 func unmarshalOverviewGen2(data []byte, offset int, overview *vuv1.Overview, startOffset int) (int, error) {
-	// Gen2 Overview structure - more complex, implement basic version for now
-	// This would need detailed implementation based on the specific Gen2 structure
+	// Gen2 Overview structure - uses record arrays instead of fixed fields
+	// VuOverviewSecondGen ::= SEQUENCE {
+	//     memberStateCertificateRecordArray    MemberStateCertificateRecordArray,
+	//     vuCertificateRecordArray             VuCertificateRecordArray,
+	//     vehicleIdentificationNumberRecordArray VehicleIdentificationNumberRecordArray,
+	//     vehicleRegistrationIdentificationRecordArray VehicleRegistrationIdentificationRecordArray,
+	//     currentDateTimeRecordArray           CurrentDateTimeRecordArray,
+	//     vuDownloadablePeriodRecordArray      VuDownloadablePeriodRecordArray,
+	//     cardSlotsStatusRecordArray           CardSlotsStatusRecordArray,
+	//     vuDownloadActivityDataRecordArray    VuDownloadActivityDataRecordArray,
+	//     vuCompanyLocksRecordArray            VuCompanyLocksRecordArray,
+	//     vuControlActivityRecordArray         VuControlActivityRecordArray,
+	//     signatureRecordArray                 SignatureRecordArray
+	// }
 
-	// For now, just read a minimal amount to avoid errors
-	// In a full implementation, this would parse the complete Gen2 structure
+	// Parse MemberStateCertificateRecordArray
+	memberStateCerts, offset, err := parseMemberStateCertificateRecordArray(data, offset)
+	if err != nil {
+		return 0, fmt.Errorf("failed to parse member state certificate record array: %w", err)
+	}
+	if len(memberStateCerts) > 0 {
+		overview.SetMemberStateCertificate(memberStateCerts[0]) // Use first certificate
+	}
 
-	bytesRead := offset - startOffset
-	return bytesRead, nil
+	// Parse VuCertificateRecordArray
+	vuCerts, offset, err := parseVuCertificateRecordArray(data, offset)
+	if err != nil {
+		return 0, fmt.Errorf("failed to parse VU certificate record array: %w", err)
+	}
+	if len(vuCerts) > 0 {
+		overview.SetVuCertificate(vuCerts[0]) // Use first certificate
+	}
+
+	// Parse VehicleIdentificationNumberRecordArray
+	vins, offset, err := parseVehicleIdentificationNumberRecordArray(data, offset)
+	if err != nil {
+		return 0, fmt.Errorf("failed to parse vehicle identification number record array: %w", err)
+	}
+	if len(vins) > 0 {
+		overview.SetVehicleIdentificationNumber(vins[0]) // Use first VIN
+	}
+
+	// Parse VehicleRegistrationIdentificationRecordArray
+	vehicleRegs, offset, err := parseVehicleRegistrationIdentificationRecordArray(data, offset)
+	if err != nil {
+		return 0, fmt.Errorf("failed to parse vehicle registration identification record array: %w", err)
+	}
+	if len(vehicleRegs) > 0 {
+		overview.SetVehicleRegistrationWithNation(vehicleRegs[0]) // Use first registration
+	}
+
+	// Parse CurrentDateTimeRecordArray
+	currentDateTimes, offset, err := parseCurrentDateTimeRecordArray(data, offset)
+	if err != nil {
+		return 0, fmt.Errorf("failed to parse current date time record array: %w", err)
+	}
+	if len(currentDateTimes) > 0 {
+		overview.SetCurrentDateTime(currentDateTimes[0]) // Use first date time
+	}
+
+	// Parse VuDownloadablePeriodRecordArray
+	downloadablePeriods, offset, err := parseVuDownloadablePeriodRecordArray(data, offset)
+	if err != nil {
+		return 0, fmt.Errorf("failed to parse VU downloadable period record array: %w", err)
+	}
+	if len(downloadablePeriods) > 0 {
+		overview.SetDownloadablePeriod(downloadablePeriods[0]) // Use first period
+	}
+
+	// Parse CardSlotsStatusRecordArray
+	cardSlotsStatuses, offset, err := parseCardSlotsStatusRecordArray(data, offset)
+	if err != nil {
+		return 0, fmt.Errorf("failed to parse card slots status record array: %w", err)
+	}
+	if len(cardSlotsStatuses) > 0 {
+		overview.SetDriverSlotCard(cardSlotsStatuses[0].DriverSlotCardStatus)
+		overview.SetCoDriverSlotCard(cardSlotsStatuses[0].CodriverSlotCardStatus)
+	}
+
+	// Parse VuDownloadActivityDataRecordArray
+	downloadActivityData, offset, err := parseVuDownloadActivityDataRecordArray(data, offset)
+	if err != nil {
+		return 0, fmt.Errorf("failed to parse VU download activity data record array: %w", err)
+	}
+	overview.SetDownloadActivities(downloadActivityData)
+
+	// Parse VuCompanyLocksRecordArray
+	companyLocks, offset, err := parseVuCompanyLocksRecordArray(data, offset)
+	if err != nil {
+		return 0, fmt.Errorf("failed to parse VU company locks record array: %w", err)
+	}
+	overview.SetCompanyLocks(companyLocks)
+
+	// Parse VuControlActivityRecordArray
+	controlActivities, offset, err := parseVuControlActivityRecordArray(data, offset)
+	if err != nil {
+		return 0, fmt.Errorf("failed to parse VU control activity record array: %w", err)
+	}
+	overview.SetControlActivities(controlActivities)
+
+	// Parse SignatureRecordArray
+	signature, offset, err := parseSignatureRecordArray(data, offset)
+	if err != nil {
+		return 0, fmt.Errorf("failed to parse signature record array: %w", err)
+	}
+	overview.SetSignatureGen2(signature)
+
+	return offset - startOffset, nil
 }
 
 // AppendOverview marshals VU overview data for different generations
@@ -349,12 +449,89 @@ func appendOverviewGen1(buf *bytes.Buffer, overview *vuv1.Overview) {
 }
 
 func appendOverviewGen2(buf *bytes.Buffer, overview *vuv1.Overview) {
-	// Gen2 Overview structure - more complex
-	// For now, implement a basic version
-	// In a full implementation, this would marshal the complete Gen2 structure
+	// Gen2 Overview structure - uses record arrays instead of fixed fields
+	// VuOverviewSecondGen ::= SEQUENCE {
+	//     memberStateCertificateRecordArray    MemberStateCertificateRecordArray,
+	//     vuCertificateRecordArray             VuCertificateRecordArray,
+	//     vehicleIdentificationNumberRecordArray VehicleIdentificationNumberRecordArray,
+	//     vehicleRegistrationIdentificationRecordArray VehicleRegistrationIdentificationRecordArray,
+	//     currentDateTimeRecordArray           CurrentDateTimeRecordArray,
+	//     vuDownloadablePeriodRecordArray      VuDownloadablePeriodRecordArray,
+	//     cardSlotsStatusRecordArray           CardSlotsStatusRecordArray,
+	//     vuDownloadActivityDataRecordArray    VuDownloadActivityDataRecordArray,
+	//     vuCompanyLocksRecordArray            VuCompanyLocksRecordArray,
+	//     vuControlActivityRecordArray         VuControlActivityRecordArray,
+	//     signatureRecordArray                 SignatureRecordArray
+	// }
 
-	// Add basic Gen2 fields as they become available
-	// This is a placeholder for future Gen2 implementation
+	// Append MemberStateCertificateRecordArray
+	memberStateCert := overview.GetMemberStateCertificate()
+	if len(memberStateCert) > 0 {
+		appendMemberStateCertificateRecordArray(buf, [][]byte{memberStateCert})
+	}
+
+	// Append VuCertificateRecordArray
+	vuCert := overview.GetVuCertificate()
+	if len(vuCert) > 0 {
+		appendVuCertificateRecordArray(buf, [][]byte{vuCert})
+	}
+
+	// Append VehicleIdentificationNumberRecordArray
+	vin := overview.GetVehicleIdentificationNumber()
+	if vin != nil {
+		appendVehicleIdentificationNumberRecordArray(buf, []*ddv1.StringValue{vin})
+	}
+
+	// Append VehicleRegistrationIdentificationRecordArray
+	vehicleReg := overview.GetVehicleRegistrationWithNation()
+	if vehicleReg != nil {
+		appendVehicleRegistrationIdentificationRecordArray(buf, []*ddv1.VehicleRegistrationIdentification{vehicleReg})
+	}
+
+	// Append CurrentDateTimeRecordArray
+	currentDateTime := overview.GetCurrentDateTime()
+	if currentDateTime != nil {
+		appendCurrentDateTimeRecordArray(buf, []*timestamppb.Timestamp{currentDateTime})
+	}
+
+	// Append VuDownloadablePeriodRecordArray
+	downloadablePeriod := overview.GetDownloadablePeriod()
+	if downloadablePeriod != nil {
+		appendVuDownloadablePeriodRecordArray(buf, []*ddv1.DownloadablePeriod{downloadablePeriod})
+	}
+
+	// Append CardSlotsStatusRecordArray
+	driverSlotCard := overview.GetDriverSlotCard()
+	coDriverSlotCard := overview.GetCoDriverSlotCard()
+	cardSlotsStatus := &CardSlotsStatus{
+		DriverSlotCardStatus:   driverSlotCard,
+		CodriverSlotCardStatus: coDriverSlotCard,
+	}
+	appendCardSlotsStatusRecordArray(buf, []*CardSlotsStatus{cardSlotsStatus})
+
+	// Append VuDownloadActivityDataRecordArray
+	downloadActivityData := overview.GetDownloadActivities()
+	if len(downloadActivityData) > 0 {
+		appendVuDownloadActivityDataRecordArray(buf, downloadActivityData)
+	}
+
+	// Append VuCompanyLocksRecordArray
+	companyLocks := overview.GetCompanyLocks()
+	if len(companyLocks) > 0 {
+		appendVuCompanyLocksRecordArray(buf, companyLocks)
+	}
+
+	// Append VuControlActivityRecordArray
+	controlActivities := overview.GetControlActivities()
+	if len(controlActivities) > 0 {
+		appendVuControlActivityRecordArray(buf, controlActivities)
+	}
+
+	// Append SignatureRecordArray
+	signature := overview.GetSignatureGen2()
+	if len(signature) > 0 {
+		buf.Write(signature)
+	}
 }
 
 func mapSlotCardTypeToUint8(cardType ddv1.SlotCardType) uint8 {
@@ -407,4 +584,226 @@ func appendVuFullCardNumber(dst []byte, cardNumber *ddv1.FullCardNumber, length 
 	}
 	// TODO: Implement proper FullCardNumber serialization
 	return append(dst, make([]byte, length)...)
+}
+
+// Gen2 Overview Record Array Helper Functions
+
+// parseMemberStateCertificateRecordArray parses MemberStateCertificateRecordArray
+func parseMemberStateCertificateRecordArray(data []byte, offset int) ([][]byte, int, error) {
+	// For now, implement a simplified version that reads a single certificate
+	// In a full implementation, this would parse the record array header and multiple certificates
+	if offset+194 > len(data) {
+		return nil, offset, fmt.Errorf("insufficient data for member state certificate")
+	}
+	cert := make([]byte, 194)
+	copy(cert, data[offset:offset+194])
+	return [][]byte{cert}, offset + 194, nil
+}
+
+// appendMemberStateCertificateRecordArray appends MemberStateCertificateRecordArray
+func appendMemberStateCertificateRecordArray(buf *bytes.Buffer, certs [][]byte) {
+	// For now, implement a simplified version that writes a single certificate
+	// In a full implementation, this would write the record array header and multiple certificates
+	if len(certs) > 0 {
+		buf.Write(certs[0])
+	}
+}
+
+// parseVuCertificateRecordArray parses VuCertificateRecordArray
+func parseVuCertificateRecordArray(data []byte, offset int) ([][]byte, int, error) {
+	// For now, implement a simplified version that reads a single certificate
+	if offset+194 > len(data) {
+		return nil, offset, fmt.Errorf("insufficient data for VU certificate")
+	}
+	cert := make([]byte, 194)
+	copy(cert, data[offset:offset+194])
+	return [][]byte{cert}, offset + 194, nil
+}
+
+// appendVuCertificateRecordArray appends VuCertificateRecordArray
+func appendVuCertificateRecordArray(buf *bytes.Buffer, certs [][]byte) {
+	// For now, implement a simplified version that writes a single certificate
+	if len(certs) > 0 {
+		buf.Write(certs[0])
+	}
+}
+
+// parseVehicleIdentificationNumberRecordArray parses VehicleIdentificationNumberRecordArray
+func parseVehicleIdentificationNumberRecordArray(data []byte, offset int) ([]*ddv1.StringValue, int, error) {
+	// For now, implement a simplified version that reads a single VIN
+	if offset+17 > len(data) {
+		return nil, offset, fmt.Errorf("insufficient data for vehicle identification number")
+	}
+	vinBytes := data[offset : offset+17]
+	vin, err := unmarshalIA5StringValue(vinBytes)
+	if err != nil {
+		return nil, offset, fmt.Errorf("failed to parse VIN: %w", err)
+	}
+	return []*ddv1.StringValue{vin}, offset + 17, nil
+}
+
+// appendVehicleIdentificationNumberRecordArray appends VehicleIdentificationNumberRecordArray
+func appendVehicleIdentificationNumberRecordArray(buf *bytes.Buffer, vins []*ddv1.StringValue) {
+	// For now, implement a simplified version that writes a single VIN
+	if len(vins) > 0 && vins[0] != nil {
+		vinBytes := make([]byte, 17)
+		copy(vinBytes, []byte(vins[0].GetDecoded()))
+		buf.Write(vinBytes)
+	}
+}
+
+// parseVehicleRegistrationIdentificationRecordArray parses VehicleRegistrationIdentificationRecordArray
+func parseVehicleRegistrationIdentificationRecordArray(data []byte, offset int) ([]*ddv1.VehicleRegistrationIdentification, int, error) {
+	// For now, implement a simplified version that reads a single registration
+	if offset+15 > len(data) {
+		return nil, offset, fmt.Errorf("insufficient data for vehicle registration identification")
+	}
+	nation := ddv1.NationNumeric(data[offset])
+	regNumBytes := data[offset+1 : offset+15]
+	regNum, err := unmarshalIA5StringValue(regNumBytes[1:]) // Skip codepage byte
+	if err != nil {
+		return nil, offset, fmt.Errorf("failed to parse registration number: %w", err)
+	}
+	vehicleReg := &ddv1.VehicleRegistrationIdentification{}
+	vehicleReg.SetNation(nation)
+	vehicleReg.SetNumber(regNum)
+	return []*ddv1.VehicleRegistrationIdentification{vehicleReg}, offset + 15, nil
+}
+
+// appendVehicleRegistrationIdentificationRecordArray appends VehicleRegistrationIdentificationRecordArray
+func appendVehicleRegistrationIdentificationRecordArray(buf *bytes.Buffer, regs []*ddv1.VehicleRegistrationIdentification) {
+	// For now, implement a simplified version that writes a single registration
+	if len(regs) > 0 && regs[0] != nil {
+		reg := regs[0]
+		buf.WriteByte(byte(reg.GetNation()))
+		regBytes := make([]byte, 14)
+		regBytes[0] = 0 // Codepage
+		copy(regBytes[1:], []byte(reg.GetNumber().GetDecoded()))
+		buf.Write(regBytes)
+	}
+}
+
+// parseCurrentDateTimeRecordArray parses CurrentDateTimeRecordArray
+func parseCurrentDateTimeRecordArray(data []byte, offset int) ([]*timestamppb.Timestamp, int, error) {
+	// For now, implement a simplified version that reads a single timestamp
+	if offset+4 > len(data) {
+		return nil, offset, fmt.Errorf("insufficient data for current date time")
+	}
+	timeValue, offset, err := readVuTimeRealFromBytes(data, offset)
+	if err != nil {
+		return nil, offset, fmt.Errorf("failed to read current date time: %w", err)
+	}
+	timestamp := timestamppb.New(time.Unix(timeValue, 0))
+	return []*timestamppb.Timestamp{timestamp}, offset, nil
+}
+
+// appendCurrentDateTimeRecordArray appends CurrentDateTimeRecordArray
+func appendCurrentDateTimeRecordArray(buf *bytes.Buffer, timestamps []*timestamppb.Timestamp) {
+	// For now, implement a simplified version that writes a single timestamp
+	if len(timestamps) > 0 && timestamps[0] != nil {
+		timeBytes := appendVuTimeReal(nil, timestamps[0])
+		buf.Write(timeBytes)
+	}
+}
+
+// parseVuDownloadablePeriodRecordArray parses VuDownloadablePeriodRecordArray
+func parseVuDownloadablePeriodRecordArray(data []byte, offset int) ([]*ddv1.DownloadablePeriod, int, error) {
+	// For now, implement a simplified version that reads a single period
+	if offset+8 > len(data) {
+		return nil, offset, fmt.Errorf("insufficient data for VU downloadable period")
+	}
+	// Parse downloadable period (8 bytes: 4 bytes start + 4 bytes end)
+	startTime, offset, err := readVuTimeRealFromBytes(data, offset)
+	if err != nil {
+		return nil, offset, fmt.Errorf("failed to read start time: %w", err)
+	}
+	endTime, offset, err := readVuTimeRealFromBytes(data, offset)
+	if err != nil {
+		return nil, offset, fmt.Errorf("failed to read end time: %w", err)
+	}
+	period := &ddv1.DownloadablePeriod{}
+	period.SetMinTime(timestamppb.New(time.Unix(startTime, 0)))
+	period.SetMaxTime(timestamppb.New(time.Unix(endTime, 0)))
+	return []*ddv1.DownloadablePeriod{period}, offset, nil
+}
+
+// appendVuDownloadablePeriodRecordArray appends VuDownloadablePeriodRecordArray
+func appendVuDownloadablePeriodRecordArray(buf *bytes.Buffer, periods []*ddv1.DownloadablePeriod) {
+	// For now, implement a simplified version that writes a single period
+	if len(periods) > 0 && periods[0] != nil {
+		period := periods[0]
+		beginBytes := appendVuTimeReal(nil, period.GetMinTime())
+		endBytes := appendVuTimeReal(nil, period.GetMaxTime())
+		buf.Write(beginBytes)
+		buf.Write(endBytes)
+	}
+}
+
+// CardSlotsStatus represents card slot status information
+type CardSlotsStatus struct {
+	DriverSlotCardStatus   ddv1.SlotCardType
+	CodriverSlotCardStatus ddv1.SlotCardType
+}
+
+// parseCardSlotsStatusRecordArray parses CardSlotsStatusRecordArray
+func parseCardSlotsStatusRecordArray(data []byte, offset int) ([]*CardSlotsStatus, int, error) {
+	// For now, implement a simplified version that reads a single status
+	if offset+2 > len(data) {
+		return nil, offset, fmt.Errorf("insufficient data for card slots status")
+	}
+	// Parse card slots status (2 bytes)
+	status := &CardSlotsStatus{
+		DriverSlotCardStatus:   ddv1.SlotCardType(data[offset]),
+		CodriverSlotCardStatus: ddv1.SlotCardType(data[offset+1]),
+	}
+	return []*CardSlotsStatus{status}, offset + 2, nil
+}
+
+// appendCardSlotsStatusRecordArray appends CardSlotsStatusRecordArray
+func appendCardSlotsStatusRecordArray(buf *bytes.Buffer, statuses []*CardSlotsStatus) {
+	// For now, implement a simplified version that writes a single status
+	if len(statuses) > 0 && statuses[0] != nil {
+		status := statuses[0]
+		buf.WriteByte(byte(status.DriverSlotCardStatus))
+		buf.WriteByte(byte(status.CodriverSlotCardStatus))
+	}
+}
+
+// parseVuDownloadActivityDataRecordArray parses VuDownloadActivityDataRecordArray
+func parseVuDownloadActivityDataRecordArray(data []byte, offset int) ([]*vuv1.Overview_DownloadActivity, int, error) {
+	// For now, implement a simplified version that reads a single data record
+	// This is a placeholder - the actual structure would need to be defined
+	return []*vuv1.Overview_DownloadActivity{}, offset, nil
+}
+
+// appendVuDownloadActivityDataRecordArray appends VuDownloadActivityDataRecordArray
+func appendVuDownloadActivityDataRecordArray(buf *bytes.Buffer, data []*vuv1.Overview_DownloadActivity) {
+	// For now, implement a simplified version that writes a single data record
+	// This is a placeholder - the actual structure would need to be defined
+}
+
+// parseVuCompanyLocksRecordArray parses VuCompanyLocksRecordArray
+func parseVuCompanyLocksRecordArray(data []byte, offset int) ([]*vuv1.Overview_CompanyLock, int, error) {
+	// For now, implement a simplified version that reads a single locks record
+	// This is a placeholder - the actual structure would need to be defined
+	return []*vuv1.Overview_CompanyLock{}, offset, nil
+}
+
+// appendVuCompanyLocksRecordArray appends VuCompanyLocksRecordArray
+func appendVuCompanyLocksRecordArray(buf *bytes.Buffer, locks []*vuv1.Overview_CompanyLock) {
+	// For now, implement a simplified version that writes a single locks record
+	// This is a placeholder - the actual structure would need to be defined
+}
+
+// parseVuControlActivityRecordArray parses VuControlActivityRecordArray
+func parseVuControlActivityRecordArray(data []byte, offset int) ([]*vuv1.Overview_ControlActivity, int, error) {
+	// For now, implement a simplified version that reads a single control activity record
+	// This is a placeholder - the actual structure would need to be defined
+	return []*vuv1.Overview_ControlActivity{}, offset, nil
+}
+
+// appendVuControlActivityRecordArray appends VuControlActivityRecordArray
+func appendVuControlActivityRecordArray(buf *bytes.Buffer, activities []*vuv1.Overview_ControlActivity) {
+	// For now, implement a simplified version that writes a single control activity record
+	// This is a placeholder - the actual structure would need to be defined
 }
