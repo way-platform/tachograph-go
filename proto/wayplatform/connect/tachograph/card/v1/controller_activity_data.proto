@@ -5,6 +5,7 @@ package wayplatform.connect.tachograph.card.v1;
 import "google/protobuf/timestamp.proto";
 import "wayplatform/connect/tachograph/dd/v1/control_type.proto";
 import "wayplatform/connect/tachograph/dd/v1/full_card_number.proto";
+import "wayplatform/connect/tachograph/dd/v1/full_card_number_and_generation.proto";
 import "wayplatform/connect/tachograph/dd/v1/vehicle_registration_identification.proto";
 
 // Represents the content of the EF_Controller_Activity_Data file.
@@ -52,11 +53,13 @@ message ControllerActivityData {
 
     // The full card number of the card that was controlled.
     //
-    // See Data Dictionary, Section 2.73, `FullCardNumber`.
-    // ASN.1 Specification:
+    // The underlying record exists for both Gen1 and Gen2.
+    // To support both versions in a single field and ensure unique card
+    // identification for Gen2, this uses the `FullCardNumberAndGeneration` superset.
+    // For Gen1 records, the `generation` field will be unset.
     //
-    //     FullCardNumber ::= SEQUENCE { ... }
-    dd.v1.FullCardNumber controlled_card_number = 3;
+    // See Data Dictionary, Sections 2.73 (`FullCardNumber`) and 2.74 (`FullCardNumberAndGeneration`).
+    dd.v1.FullCardNumberAndGeneration controlled_card_number = 3;
 
     // The vehicle registration of the vehicle in which the control happened.
     //

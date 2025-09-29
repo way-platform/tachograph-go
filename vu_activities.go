@@ -1,6 +1,7 @@
 package tachograph
 
 import (
+	"bufio"
 	"bytes"
 	"encoding/binary"
 	"fmt"
@@ -390,8 +391,8 @@ func parseVuActivityDailyData(data []byte, offset int) ([]*ddv1.ActivityChangeIn
 	return changes, offset, nil
 }
 
-// parseActivityChangeInfo parses a single ActivityChangeInfo record
-func parseActivityChangeInfo(data []byte, offset int) (*ddv1.ActivityChangeInfo, int, error) {
+// unmarshalActivityChangeInfo parses a single ActivityChangeInfo record from a byte slice
+func unmarshalActivityChangeInfo(data []byte) (*ddv1.ActivityChangeInfo, error) {
 	// ActivityChangeInfo ::= OCTET STRING (SIZE (2))
 	// Bit-packed format: 'scpaattttttttttt'B (16 bits)
 	// s: Slot (0=DRIVER, 1=CO-DRIVER)
@@ -400,13 +401,12 @@ func parseActivityChangeInfo(data []byte, offset int) (*ddv1.ActivityChangeInfo,
 	// aa: Activity (00=BREAK/REST, 01=AVAILABILITY, 10=WORK, 11=DRIVING)
 	// ttttttttttt: Time (11 bits for time in minutes)
 
-	if offset+2 > len(data) {
-		return nil, offset, fmt.Errorf("insufficient data for activity change info: got %d, need 2", len(data)-offset)
+	if len(data) < 2 {
+		return nil, fmt.Errorf("insufficient data for activity change info: got %d, need 2", len(data))
 	}
 
 	// Read 2 bytes
-	value := uint16(data[offset])<<8 | uint16(data[offset+1])
-	offset += 2
+	value := uint16(data[0])<<8 | uint16(data[1])
 
 	// Extract bit fields
 	slot := (value >> 15) & 0x1          // bit 15
@@ -450,7 +450,16 @@ func parseActivityChangeInfo(data []byte, offset int) (*ddv1.ActivityChangeInfo,
 	// Set time (in minutes)
 	change.SetTimeOfChangeMinutes(int32(timeMinutes))
 
-	return change, offset, nil
+	return change, nil
+}
+
+// parseActivityChangeInfo parses a single ActivityChangeInfo record (legacy function for Gen1)
+func parseActivityChangeInfo(data []byte, offset int) (*ddv1.ActivityChangeInfo, int, error) {
+	change, err := unmarshalActivityChangeInfo(data[offset : offset+2])
+	if err != nil {
+		return nil, offset, err
+	}
+	return change, offset + 2, nil
 }
 
 func parseVuPlaceDailyWorkPeriodData(data []byte, offset int) ([]*vuv1.Activities_PlaceRecord, int, error) {
@@ -480,8 +489,8 @@ func parseVuPlaceDailyWorkPeriodData(data []byte, offset int) ([]*vuv1.Activitie
 	return records, offset, nil
 }
 
-// parseVuPlaceRecord parses a single PlaceRecord
-func parseVuPlaceRecord(data []byte, offset int) (*vuv1.Activities_PlaceRecord, int, error) {
+// unmarshalVuPlaceRecord parses a single VuPlaceRecord from a byte slice
+func unmarshalVuPlaceRecord(data []byte) (*vuv1.Activities_PlaceRecord, error) {
 	// PlaceRecord ::= SEQUENCE {
 	//     entryTime TimeReal,                           -- 4 bytes
 	//     entryTypeDailyWorkPeriod EntryTypeDailyWorkPeriod, -- 1 byte
@@ -490,44 +499,48 @@ func parseVuPlaceRecord(data []byte, offset int) (*vuv1.Activities_PlaceRecord, 
 	//     vehicleOdometerValue OdometerShort            -- 3 bytes
 	// }
 
+	if len(data) < 10 {
+		return nil, fmt.Errorf("insufficient data for place record: got %d, need 10", len(data))
+	}
+
 	record := &vuv1.Activities_PlaceRecord{}
 
 	// Parse entryTime (TimeReal - 4 bytes)
-	entryTime, offset, err := readVuTimeRealFromBytes(data, offset)
+	entryTime, _, err := readVuTimeRealFromBytes(data, 0)
 	if err != nil {
-		return nil, offset, fmt.Errorf("failed to read entry time: %w", err)
+		return nil, fmt.Errorf("failed to read entry time: %w", err)
 	}
 	record.SetEntryTime(timestamppb.New(time.Unix(entryTime, 0)))
 
 	// Parse entryTypeDailyWorkPeriod (1 byte)
-	entryType, offset, err := readUint8FromBytes(data, offset)
-	if err != nil {
-		return nil, offset, fmt.Errorf("failed to read entry type: %w", err)
-	}
+	entryType := data[4]
 	record.SetEntryType(ddv1.EntryTypeDailyWorkPeriod(entryType))
 
 	// Parse dailyWorkPeriodCountry (NationNumeric - 1 byte)
-	country, offset, err := readUint8FromBytes(data, offset)
-	if err != nil {
-		return nil, offset, fmt.Errorf("failed to read country: %w", err)
-	}
+	country := data[5]
 	record.SetCountry(ddv1.NationNumeric(country))
 
 	// Parse dailyWorkPeriodRegion (RegionNumeric - 1 byte)
-	region, offset, err := readUint8FromBytes(data, offset)
-	if err != nil {
-		return nil, offset, fmt.Errorf("failed to read region: %w", err)
-	}
+	region := data[6]
 	record.SetRegion([]byte{region})
 
 	// Parse vehicleOdometerValue (OdometerShort - 3 bytes)
-	odometerValue, offset, err := readOdometerFromBytes(data, offset)
+	odometerValue, _, err := readOdometerFromBytes(data, 7)
 	if err != nil {
-		return nil, offset, fmt.Errorf("failed to read odometer value: %w", err)
+		return nil, fmt.Errorf("failed to read odometer value: %w", err)
 	}
 	record.SetOdometerKm(int32(odometerValue))
 
-	return record, offset, nil
+	return record, nil
+}
+
+// parseVuPlaceRecord parses a single PlaceRecord (legacy function for Gen1)
+func parseVuPlaceRecord(data []byte, offset int) (*vuv1.Activities_PlaceRecord, int, error) {
+	record, err := unmarshalVuPlaceRecord(data[offset : offset+10])
+	if err != nil {
+		return nil, offset, err
+	}
+	return record, offset + 10, nil
 }
 
 func parseVuSpecificConditionData(data []byte, offset int) ([]*vuv1.Activities_SpecificConditionRecord, int, error) {
@@ -557,30 +570,40 @@ func parseVuSpecificConditionData(data []byte, offset int) ([]*vuv1.Activities_S
 	return records, offset, nil
 }
 
-// parseVuSpecificConditionRecord parses a single SpecificConditionRecord
-func parseVuSpecificConditionRecord(data []byte, offset int) (*vuv1.Activities_SpecificConditionRecord, int, error) {
+// unmarshalSpecificConditionRecord parses a single SpecificConditionRecord from a byte slice
+func unmarshalSpecificConditionRecord(data []byte) (*vuv1.Activities_SpecificConditionRecord, error) {
 	// SpecificConditionRecord ::= SEQUENCE {
 	//     entryTime TimeReal,                    -- 4 bytes
 	//     specificConditionType SpecificConditionType -- 1 byte
 	// }
 
+	if len(data) < 5 {
+		return nil, fmt.Errorf("insufficient data for specific condition record: got %d, need 5", len(data))
+	}
+
 	record := &vuv1.Activities_SpecificConditionRecord{}
 
 	// Parse entryTime (TimeReal - 4 bytes)
-	entryTime, offset, err := readVuTimeRealFromBytes(data, offset)
+	entryTime, _, err := readVuTimeRealFromBytes(data, 0)
 	if err != nil {
-		return nil, offset, fmt.Errorf("failed to read entry time: %w", err)
+		return nil, fmt.Errorf("failed to read entry time: %w", err)
 	}
 	record.SetEntryTime(timestamppb.New(time.Unix(entryTime, 0)))
 
 	// Parse specificConditionType (1 byte)
-	conditionType, offset, err := readUint8FromBytes(data, offset)
-	if err != nil {
-		return nil, offset, fmt.Errorf("failed to read specific condition type: %w", err)
-	}
+	conditionType := data[4]
 	record.SetSpecificConditionType(ddv1.SpecificConditionType(conditionType))
 
-	return record, offset, nil
+	return record, nil
+}
+
+// parseVuSpecificConditionRecord parses a single SpecificConditionRecord (legacy function for Gen1)
+func parseVuSpecificConditionRecord(data []byte, offset int) (*vuv1.Activities_SpecificConditionRecord, int, error) {
+	record, err := unmarshalSpecificConditionRecord(data[offset : offset+5])
+	if err != nil {
+		return nil, offset, err
+	}
+	return record, offset + 5, nil
 }
 
 // Gen2 record array parsers
@@ -846,6 +869,20 @@ func parseVuCardIWRecordGen2(data []byte, offset int) (*vuv1.Activities_CardIWRe
 	return record, offset, nil
 }
 
+// splitActivityChangeInfoRecord splits data into 2-byte ActivityChangeInfo records
+func splitActivityChangeInfoRecord(data []byte, atEOF bool) (advance int, token []byte, err error) {
+	const activityChangeInfoRecordSize = 2
+
+	if len(data) < activityChangeInfoRecordSize {
+		if atEOF {
+			return 0, nil, nil
+		}
+		return 0, nil, nil
+	}
+
+	return activityChangeInfoRecordSize, data[:activityChangeInfoRecordSize], nil
+}
+
 func parseVuActivityDailyRecordArray(data []byte, offset int) ([]*ddv1.ActivityChangeInfo, int, error) {
 	// VuActivityDailyRecordArray ::= SEQUENCE {
 	//     recordType INTEGER(1..65535),           -- 2 bytes
@@ -881,19 +918,50 @@ func parseVuActivityDailyRecordArray(data []byte, offset int) ([]*ddv1.ActivityC
 		return nil, offset, fmt.Errorf("unexpected record size: got %d, expected 2", recordSize)
 	}
 
-	var changes []*ddv1.ActivityChangeInfo
+	// Use bufio.Scanner to parse the records
+	recordsData := data[offset:]
+	scanner := bufio.NewScanner(bytes.NewReader(recordsData))
+	scanner.Split(splitActivityChangeInfoRecord)
 
-	// Parse each ActivityChangeInfo record
-	for i := 0; i < int(noOfRecords); i++ {
-		change, newOffset, err := parseActivityChangeInfo(data, offset)
+	var changes []*ddv1.ActivityChangeInfo
+	recordCount := 0
+
+	for scanner.Scan() {
+		if recordCount >= int(noOfRecords) {
+			break
+		}
+
+		recordData := scanner.Bytes()
+		change, err := unmarshalActivityChangeInfo(recordData)
 		if err != nil {
-			return nil, offset, fmt.Errorf("failed to parse ActivityChangeInfo record %d: %w", i, err)
+			return nil, offset, fmt.Errorf("failed to parse ActivityChangeInfo record %d: %w", recordCount, err)
 		}
 		changes = append(changes, change)
-		offset = newOffset
+		recordCount++
 	}
 
+	if err := scanner.Err(); err != nil {
+		return nil, offset, fmt.Errorf("scanner error: %w", err)
+	}
+
+	// Update offset to reflect consumed data
+	offset += recordCount * 2
+
 	return changes, offset, nil
+}
+
+// splitVuPlaceRecord splits data into 10-byte VuPlaceRecord records
+func splitVuPlaceRecord(data []byte, atEOF bool) (advance int, token []byte, err error) {
+	const placeRecordSize = 10
+
+	if len(data) < placeRecordSize {
+		if atEOF {
+			return 0, nil, nil
+		}
+		return 0, nil, nil
+	}
+
+	return placeRecordSize, data[:placeRecordSize], nil
 }
 
 func parseVuPlaceDailyWorkPeriodRecordArray(data []byte, offset int) ([]*vuv1.Activities_PlaceRecord, int, error) {
@@ -931,17 +999,34 @@ func parseVuPlaceDailyWorkPeriodRecordArray(data []byte, offset int) ([]*vuv1.Ac
 		return nil, offset, fmt.Errorf("unexpected record size: got %d, expected 10", recordSize)
 	}
 
-	var records []*vuv1.Activities_PlaceRecord
+	// Use bufio.Scanner to parse the records
+	recordsData := data[offset:]
+	scanner := bufio.NewScanner(bytes.NewReader(recordsData))
+	scanner.Split(splitVuPlaceRecord)
 
-	// Parse each PlaceRecord
-	for i := 0; i < int(noOfRecords); i++ {
-		record, newOffset, err := parseVuPlaceRecord(data, offset)
+	var records []*vuv1.Activities_PlaceRecord
+	recordCount := 0
+
+	for scanner.Scan() {
+		if recordCount >= int(noOfRecords) {
+			break
+		}
+
+		recordData := scanner.Bytes()
+		record, err := unmarshalVuPlaceRecord(recordData)
 		if err != nil {
-			return nil, offset, fmt.Errorf("failed to parse PlaceRecord %d: %w", i, err)
+			return nil, offset, fmt.Errorf("failed to parse PlaceRecord %d: %w", recordCount, err)
 		}
 		records = append(records, record)
-		offset = newOffset
+		recordCount++
 	}
+
+	if err := scanner.Err(); err != nil {
+		return nil, offset, fmt.Errorf("scanner error: %w", err)
+	}
+
+	// Update offset to reflect consumed data
+	offset += recordCount * 10
 
 	return records, offset, nil
 }
@@ -1047,6 +1132,20 @@ func parseVuGNSSADRecord(data []byte, offset int, recordSize int) (*vuv1.Activit
 	return record, offset, nil
 }
 
+// splitSpecificConditionRecord splits data into 5-byte SpecificConditionRecord records
+func splitSpecificConditionRecord(data []byte, atEOF bool) (advance int, token []byte, err error) {
+	const specificConditionRecordSize = 5
+
+	if len(data) < specificConditionRecordSize {
+		if atEOF {
+			return 0, nil, nil
+		}
+		return 0, nil, nil
+	}
+
+	return specificConditionRecordSize, data[:specificConditionRecordSize], nil
+}
+
 func parseVuSpecificConditionRecordArray(data []byte, offset int) ([]*vuv1.Activities_SpecificConditionRecord, int, error) {
 	// VuSpecificConditionRecordArray ::= SEQUENCE {
 	//     recordType INTEGER(1..65535),           -- 2 bytes
@@ -1082,17 +1181,34 @@ func parseVuSpecificConditionRecordArray(data []byte, offset int) ([]*vuv1.Activ
 		return nil, offset, fmt.Errorf("unexpected record size: got %d, expected 5", recordSize)
 	}
 
-	var records []*vuv1.Activities_SpecificConditionRecord
+	// Use bufio.Scanner to parse the records
+	recordsData := data[offset:]
+	scanner := bufio.NewScanner(bytes.NewReader(recordsData))
+	scanner.Split(splitSpecificConditionRecord)
 
-	// Parse each SpecificConditionRecord
-	for i := 0; i < int(noOfRecords); i++ {
-		record, newOffset, err := parseVuSpecificConditionRecord(data, offset)
+	var records []*vuv1.Activities_SpecificConditionRecord
+	recordCount := 0
+
+	for scanner.Scan() {
+		if recordCount >= int(noOfRecords) {
+			break
+		}
+
+		recordData := scanner.Bytes()
+		record, err := unmarshalSpecificConditionRecord(recordData)
 		if err != nil {
-			return nil, offset, fmt.Errorf("failed to parse SpecificConditionRecord %d: %w", i, err)
+			return nil, offset, fmt.Errorf("failed to parse SpecificConditionRecord %d: %w", recordCount, err)
 		}
 		records = append(records, record)
-		offset = newOffset
+		recordCount++
 	}
+
+	if err := scanner.Err(); err != nil {
+		return nil, offset, fmt.Errorf("scanner error: %w", err)
+	}
+
+	// Update offset to reflect consumed data
+	offset += recordCount * 5
 
 	return records, offset, nil
 }

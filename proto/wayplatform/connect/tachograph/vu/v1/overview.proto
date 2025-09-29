@@ -6,6 +6,7 @@ import "google/protobuf/timestamp.proto";
 import "wayplatform/connect/tachograph/dd/v1/control_type.proto";
 import "wayplatform/connect/tachograph/dd/v1/downloadable_period.proto";
 import "wayplatform/connect/tachograph/dd/v1/full_card_number.proto";
+import "wayplatform/connect/tachograph/dd/v1/full_card_number_and_generation.proto";
 import "wayplatform/connect/tachograph/dd/v1/generation.proto";
 import "wayplatform/connect/tachograph/dd/v1/slot_card_type.proto";
 import "wayplatform/connect/tachograph/dd/v1/string_value.proto";
@@ -42,8 +43,11 @@ message Overview {
 
     // The card number of the company or workshop that performed the download.
     //
-    // See Data Dictionary, Section 2.73, `FullCardNumber`.
-    dd.v1.FullCardNumber full_card_number = 2;
+    // The underlying `VuDownloadActivityData` record exists for both Gen1 and Gen2.
+    // To support both versions in a single field and ensure unique card
+    // identification for Gen2, this uses the `FullCardNumberAndGeneration` superset.
+    // For Gen1 records, the `generation` field will be unset.
+    dd.v1.FullCardNumberAndGeneration full_card_number_and_generation = 2;
 
     // The name of the company or workshop.
     //
@@ -102,8 +106,11 @@ message Overview {
 
     // The card number of the company.
     //
-    // See Data Dictionary, Section 2.73, `FullCardNumber`.
-    dd.v1.FullCardNumber company_card_number = 5;
+    // The underlying `VuCompanyLocksRecord` exists for both Gen1 and Gen2.
+    // To support both versions in a single field and ensure unique card
+    // identification for Gen2, this uses the `FullCardNumberAndGeneration` superset.
+    // For Gen1 records, the `generation` field will be unset.
+    dd.v1.FullCardNumberAndGeneration company_card_number_and_generation = 5;
   }
 
   // Represents a control activity record.
@@ -138,8 +145,11 @@ message Overview {
 
     // The card number of the control officer.
     //
-    // See Data Dictionary, Section 2.73, `FullCardNumber`.
-    dd.v1.FullCardNumber control_card_number = 3;
+    // The underlying `VuControlActivityRecord` exists for both Gen1 and Gen2.
+    // To support both versions in a single field and ensure unique card
+    // identification for Gen2, this uses the `FullCardNumberAndGeneration` superset.
+    // For Gen1 records, the `generation` field will be unset.
+    dd.v1.FullCardNumberAndGeneration control_card_number_and_generation = 3;
 
     // The start of the downloaded period.
     //
