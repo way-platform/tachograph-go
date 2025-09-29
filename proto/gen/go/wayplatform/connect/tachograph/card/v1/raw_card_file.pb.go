@@ -7,6 +7,7 @@
 package cardv1
 
 import (
+	v1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -92,7 +93,7 @@ type RawCardFile_Record struct {
 	state                  protoimpl.MessageState `protogen:"opaque.v1"`
 	xxx_hidden_Tag         int32                  `protobuf:"varint,1,opt,name=tag"`
 	xxx_hidden_File        ElementaryFileType     `protobuf:"varint,2,opt,name=file,enum=wayplatform.connect.tachograph.card.v1.ElementaryFileType"`
-	xxx_hidden_Generation  ApplicationGeneration  `protobuf:"varint,3,opt,name=generation,enum=wayplatform.connect.tachograph.card.v1.ApplicationGeneration"`
+	xxx_hidden_Generation  v1.Generation          `protobuf:"varint,3,opt,name=generation,enum=wayplatform.connect.tachograph.dd.v1.Generation"`
 	xxx_hidden_ContentType ContentType            `protobuf:"varint,4,opt,name=content_type,json=contentType,enum=wayplatform.connect.tachograph.card.v1.ContentType"`
 	xxx_hidden_Length      int32                  `protobuf:"varint,5,opt,name=length"`
 	xxx_hidden_Value       []byte                 `protobuf:"bytes,6,opt,name=value"`
@@ -143,13 +144,13 @@ func (x *RawCardFile_Record) GetFile() ElementaryFileType {
 	return ElementaryFileType_ELEMENTARY_FILE_UNSPECIFIED
 }
 
-func (x *RawCardFile_Record) GetGeneration() ApplicationGeneration {
+func (x *RawCardFile_Record) GetGeneration() v1.Generation {
 	if x != nil {
 		if protoimpl.X.Present(&(x.XXX_presence[0]), 2) {
 			return x.xxx_hidden_Generation
 		}
 	}
-	return ApplicationGeneration_APPLICATION_GENERATION_UNSPECIFIED
+	return v1.Generation(0)
 }
 
 func (x *RawCardFile_Record) GetContentType() ContentType {
@@ -185,7 +186,7 @@ func (x *RawCardFile_Record) SetFile(v ElementaryFileType) {
 	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 6)
 }
 
-func (x *RawCardFile_Record) SetGeneration(v ApplicationGeneration) {
+func (x *RawCardFile_Record) SetGeneration(v v1.Generation) {
 	x.xxx_hidden_Generation = v
 	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 6)
 }
@@ -262,7 +263,7 @@ func (x *RawCardFile_Record) ClearFile() {
 
 func (x *RawCardFile_Record) ClearGeneration() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 2)
-	x.xxx_hidden_Generation = ApplicationGeneration_APPLICATION_GENERATION_UNSPECIFIED
+	x.xxx_hidden_Generation = v1.Generation_GENERATION_UNSPECIFIED
 }
 
 func (x *RawCardFile_Record) ClearContentType() {
@@ -288,7 +289,9 @@ type RawCardFile_Record_builder struct {
 	// The elementary file type, inferred from the tag.
 	File *ElementaryFileType
 	// The application generation (Gen1 or Gen2), inferred from the tag.
-	Generation *ApplicationGeneration
+	//
+	// See Data Dictionary, Section 2.75, `Generation`.
+	Generation *v1.Generation
 	// The content type of the value (data or signature), inferred from the tag.
 	ContentType *ContentType
 	// The length of the record's value in bytes.
@@ -332,14 +335,14 @@ var File_wayplatform_connect_tachograph_card_v1_raw_card_file_proto protoreflect
 
 const file_wayplatform_connect_tachograph_card_v1_raw_card_file_proto_rawDesc = "" +
 	"\n" +
-	":wayplatform/connect/tachograph/card/v1/raw_card_file.proto\x12&wayplatform.connect.tachograph.card.v1\x1aCwayplatform/connect/tachograph/card/v1/application_generation.proto\x1a9wayplatform/connect/tachograph/card/v1/content_type.proto\x1aAwayplatform/connect/tachograph/card/v1/elementary_file_type.proto\"\xb5\x03\n" +
+	":wayplatform/connect/tachograph/card/v1/raw_card_file.proto\x12&wayplatform.connect.tachograph.card.v1\x1a5wayplatform/connect/tachograph/dd/v1/generation.proto\x1a9wayplatform/connect/tachograph/card/v1/content_type.proto\x1aAwayplatform/connect/tachograph/card/v1/elementary_file_type.proto\"\xa8\x03\n" +
 	"\vRawCardFile\x12T\n" +
-	"\arecords\x18\x01 \x03(\v2:.wayplatform.connect.tachograph.card.v1.RawCardFile.RecordR\arecords\x1a\xcf\x02\n" +
+	"\arecords\x18\x01 \x03(\v2:.wayplatform.connect.tachograph.card.v1.RawCardFile.RecordR\arecords\x1a\xc2\x02\n" +
 	"\x06Record\x12\x10\n" +
 	"\x03tag\x18\x01 \x01(\x05R\x03tag\x12N\n" +
-	"\x04file\x18\x02 \x01(\x0e2:.wayplatform.connect.tachograph.card.v1.ElementaryFileTypeR\x04file\x12]\n" +
+	"\x04file\x18\x02 \x01(\x0e2:.wayplatform.connect.tachograph.card.v1.ElementaryFileTypeR\x04file\x12P\n" +
 	"\n" +
-	"generation\x18\x03 \x01(\x0e2=.wayplatform.connect.tachograph.card.v1.ApplicationGenerationR\n" +
+	"generation\x18\x03 \x01(\x0e20.wayplatform.connect.tachograph.dd.v1.GenerationR\n" +
 	"generation\x12V\n" +
 	"\fcontent_type\x18\x04 \x01(\x0e23.wayplatform.connect.tachograph.card.v1.ContentTypeR\vcontentType\x12\x16\n" +
 	"\x06length\x18\x05 \x01(\x05R\x06length\x12\x14\n" +
@@ -351,13 +354,13 @@ var file_wayplatform_connect_tachograph_card_v1_raw_card_file_proto_goTypes = []
 	(*RawCardFile)(nil),        // 0: wayplatform.connect.tachograph.card.v1.RawCardFile
 	(*RawCardFile_Record)(nil), // 1: wayplatform.connect.tachograph.card.v1.RawCardFile.Record
 	(ElementaryFileType)(0),    // 2: wayplatform.connect.tachograph.card.v1.ElementaryFileType
-	(ApplicationGeneration)(0), // 3: wayplatform.connect.tachograph.card.v1.ApplicationGeneration
+	(v1.Generation)(0),         // 3: wayplatform.connect.tachograph.dd.v1.Generation
 	(ContentType)(0),           // 4: wayplatform.connect.tachograph.card.v1.ContentType
 }
 var file_wayplatform_connect_tachograph_card_v1_raw_card_file_proto_depIdxs = []int32{
 	1, // 0: wayplatform.connect.tachograph.card.v1.RawCardFile.records:type_name -> wayplatform.connect.tachograph.card.v1.RawCardFile.Record
 	2, // 1: wayplatform.connect.tachograph.card.v1.RawCardFile.Record.file:type_name -> wayplatform.connect.tachograph.card.v1.ElementaryFileType
-	3, // 2: wayplatform.connect.tachograph.card.v1.RawCardFile.Record.generation:type_name -> wayplatform.connect.tachograph.card.v1.ApplicationGeneration
+	3, // 2: wayplatform.connect.tachograph.card.v1.RawCardFile.Record.generation:type_name -> wayplatform.connect.tachograph.dd.v1.Generation
 	4, // 3: wayplatform.connect.tachograph.card.v1.RawCardFile.Record.content_type:type_name -> wayplatform.connect.tachograph.card.v1.ContentType
 	4, // [4:4] is the sub-list for method output_type
 	4, // [4:4] is the sub-list for method input_type
@@ -371,7 +374,6 @@ func file_wayplatform_connect_tachograph_card_v1_raw_card_file_proto_init() {
 	if File_wayplatform_connect_tachograph_card_v1_raw_card_file_proto != nil {
 		return
 	}
-	file_wayplatform_connect_tachograph_card_v1_application_generation_proto_init()
 	file_wayplatform_connect_tachograph_card_v1_content_type_proto_init()
 	file_wayplatform_connect_tachograph_card_v1_elementary_file_type_proto_init()
 	type x struct{}

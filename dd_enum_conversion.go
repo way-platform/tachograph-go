@@ -50,12 +50,17 @@ func setEnumFromProtocolValue(enumDesc protoreflect.EnumDescriptor, rawValue int
 	if enumNumber, found := setEnumFromProtocolValueInternal(enumDesc, rawValue); found {
 		setEnum(enumNumber)
 	} else {
-		// For unknown values, use the first available enum value as default
+		// For unknown values, use UNRECOGNIZED instead of UNSPECIFIED
+		// UNRECOGNIZED is typically the second enum value (index 1)
 		values := enumDesc.Values()
-		if values.Len() > 0 {
+		if values.Len() > 1 {
+			// Use the UNRECOGNIZED value (typically index 1)
+			setEnum(values.Get(1).Number())
+		} else if values.Len() > 0 {
+			// Fallback to first value if UNRECOGNIZED doesn't exist
 			setEnum(values.Get(0).Number())
 		}
-		// Only call setUnrecognized if it's not nil (for backwards compatibility)
+		// Call setUnrecognized to preserve the raw value for data fidelity
 		if setUnrecognized != nil {
 			setUnrecognized(rawValue)
 		}

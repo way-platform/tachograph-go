@@ -2,7 +2,7 @@ edition = "2023";
 
 package wayplatform.connect.tachograph.card.v1;
 
-import "wayplatform/connect/tachograph/card/v1/application_generation.proto";
+import "wayplatform/connect/tachograph/dd/v1/generation.proto";
 import "wayplatform/connect/tachograph/card/v1/content_type.proto";
 import "wayplatform/connect/tachograph/card/v1/elementary_file_type.proto";
 
@@ -23,7 +23,9 @@ message RawCardFile {
     ElementaryFileType file = 2;
 
     // The application generation (Gen1 or Gen2), inferred from the tag.
-    ApplicationGeneration generation = 3;
+    //
+    // See Data Dictionary, Section 2.75, `Generation`.
+    dd.v1.Generation generation = 3;
 
     // The content type of the value (data or signature), inferred from the tag.
     ContentType content_type = 4;

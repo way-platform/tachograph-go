@@ -8,6 +8,7 @@ import (
 	"google.golang.org/protobuf/proto"
 
 	cardv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1"
+	ddv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
 )
 
 // unmarshalRawCardFile unmarshals a raw card file from binary data.
@@ -55,9 +56,9 @@ func unmarshalRawCardFileRecord(input []byte) (*cardv1.RawCardFile_Record, error
 	output.SetValue(value)
 	// Extract generation from bit 1 of appendix byte
 	if appendix&0x02 != 0 { // bit 1 = 1
-		output.SetGeneration(cardv1.ApplicationGeneration_GENERATION_2)
+		output.SetGeneration(ddv1.Generation_GENERATION_2)
 	} else { // bit 1 = 0
-		output.SetGeneration(cardv1.ApplicationGeneration_GENERATION_1)
+		output.SetGeneration(ddv1.Generation_GENERATION_1)
 	}
 	// Extract content type from bit 0 of appendix byte
 	if appendix&0x01 != 0 { // bit 0 = 1

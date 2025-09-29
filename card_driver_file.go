@@ -10,6 +10,7 @@ import (
 	"google.golang.org/protobuf/reflect/protoreflect"
 
 	cardv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1"
+	ddv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
 	tachographv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/v1"
 )
 
@@ -159,10 +160,12 @@ func unmarshalDriverCardFile(input *cardv1.RawCardFile) (*cardv1.DriverCardFile,
 			output.SetVehiclesUsed(vehiclesUsed)
 
 		case cardv1.ElementaryFileType_EF_PLACES:
-			places, err := unmarshalCardPlaces(record.GetValue())
+			places, err := unmarshalCardPlaces(record.GetValue(), record.GetGeneration())
 			if err != nil {
 				return nil, err
 			}
+			// Store the generation in the Places message itself
+			places.SetGeneration(record.GetGeneration())
 			if signature != nil {
 				places.SetSignature(signature)
 			}
@@ -340,7 +343,15 @@ func appendDriverCard(dst []byte, card *cardv1.DriverCardFile) ([]byte, error) {
 		return nil, err
 	}
 
-	dst, err = appendTlv(dst, cardv1.ElementaryFileType_EF_PLACES, card.GetPlaces(), appendPlaces)
+	dst, err = appendTlv(dst, cardv1.ElementaryFileType_EF_PLACES, card.GetPlaces(), func(dst []byte, places *cardv1.Places) ([]byte, error) {
+		// Use the generation stored in the Places message itself
+		generation := places.GetGeneration()
+		if generation == ddv1.Generation_GENERATION_UNSPECIFIED {
+			// Default to Generation 1 if not specified
+			generation = ddv1.Generation_GENERATION_1
+		}
+		return appendPlaces(dst, places, generation)
+	})
 	if err != nil {
 		return nil, err
 	}

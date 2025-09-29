@@ -99,6 +99,27 @@ When using a unified "superset" protobuf message to represent data that differs 
 
 This ensures that we provide a rich, easy-to-use in-memory data model while maintaining perfect binary compliance and fidelity for the serialized output.
 
+### Principle: Be Aware of Generation and Version in All Parsing and Marshalling
+
+Tachograph specifications evolve, and data structures frequently differ between generations (Gen1 vs. Gen2) or even minor versions. It is a critical principle of this SDK to handle these differences correctly to ensure data fidelity.
+
+**Never assume a single, fixed structure for a given data element.** Always consider the card/VU generation when parsing or marshalling data.
+
+**Example: `EF_Places`**
+
+A clear example of this principle is the `EF_Places` file on a driver card.
+
+*   **Gen1 `PlaceRecord`:** Has a fixed size of 12 bytes.
+*   **Gen2 `PlaceRecord`:** Extends the record to 22 bytes to include GNSS location data.
+
+A parser that assumes a fixed 12-byte size will fail to correctly read Gen2 card data, leading to data corruption and loss. The correct implementation must:
+
+1.  Determine the card generation *before* parsing `EF_Places`.
+2.  Use the generation to select the correct record size and parsing logic.
+3.  The protobuf model must be a "superset" capable of holding data from both generations.
+
+This principle applies to all data structures, not just `EF_Places`. Always verify the structure against the specification for all relevant generations.
+
 ### Marshalling and Unmarshalling
 
 To ensure the codebase remains maintainable and easy to extend, we follow a specific structure for marshalling and unmarshalling logic within this package.

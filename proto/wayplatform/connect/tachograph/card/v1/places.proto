@@ -4,6 +4,8 @@ package wayplatform.connect.tachograph.card.v1;
 
 import "google/protobuf/timestamp.proto";
 import "wayplatform/connect/tachograph/dd/v1/entry_type_daily_work_period.proto";
+import "wayplatform/connect/tachograph/dd/v1/generation.proto";
+import "wayplatform/connect/tachograph/dd/v1/geo_coordinates.proto";
 import "wayplatform/connect/tachograph/dd/v1/nation_numeric.proto";
 
 // Represents the content of the EF_Places file, where daily work periods begin and/or end.
@@ -22,27 +24,69 @@ import "wayplatform/connect/tachograph/dd/v1/nation_numeric.proto";
 //         placeRecords SET SIZE(NoOfCardPlaceRecords) OF PlaceRecord
 //     }
 message Places {
-  // Represents a single place record.
+  // Represents a GNSS-assisted place record, exclusive to Gen2 cards.
   //
-  // The data type `PlaceRecord` is specified in the Data Dictionary, Section 2.117.
+  // See Data Dictionary, Section 2.86a, `GNSSPlaceRecord`.
   //
   // ASN.1 Definition:
   //
-  //     PlaceRecord ::= SEQUENCE {
-  //         entryTime TimeReal,
-  //         entryTypeDailyWorkPeriod EntryTypeDailyWorkPeriod,
-  //         dailyWorkPeriodCountry NationNumeric,
-  //         dailyWorkPeriodRegion RegionNumeric,
-  //         vehicleOdometerValue OdometerShort
+  //     GNSSPlaceRecord ::= SEQUENCE {
+  //         geoCoordinates GeoCoordinates,
+  //         timeStamp TimeReal
   //     }
+  message GnssPlaceRecord {
+    // Geographic coordinates of the place.
+    //
+    // See Data Dictionary, Section 2.86, `GeoCoordinates`.
+    dd.v1.GeoCoordinates geo_coordinates = 1;
+
+    // Timestamp of the GNSS fix.
+    //
+    // See Data Dictionary, Section 2.162, `TimeReal`.
+    google.protobuf.Timestamp timestamp = 2;
+  }
+
+  // Represents a single place record.
+  //
+  // The data type `PlaceRecord` is specified in the Data Dictionary, Section 2.117.
+  // The structure differs between Gen1 and Gen2 cards.
+  //
+  // ASN.1 Definition / Binary Structure (Gen1): 10 bytes
+  //
+  //     PlaceRecord ::= SEQUENCE {
+  //         entryTime                    (4 bytes) TimeReal,
+  //         entryTypeDailyWorkPeriod     (1 byte)  EntryTypeDailyWorkPeriod,
+  //         dailyWorkPeriodCountry       (1 byte)  NationNumeric,
+  //         dailyWorkPeriodRegion        (1 byte)  RegionNumeric,
+  //         vehicleOdometerValue         (3 bytes) OdometerShort
+  //     }
+  //
+  // ASN.1 Definition / Binary Structure (Gen2): 22 bytes
+  //
+  //     PlaceRecord_G2 ::= SEQUENCE {
+  //         entryTime                    (4 bytes) TimeReal,
+  //         entryTypeDailyWorkPeriod     (1 byte)  EntryTypeDailyWorkPeriod,
+  //         dailyWorkPeriodCountry       (1 byte)  NationNumeric,
+  //         dailyWorkPeriodRegion        (1 byte)  RegionNumeric,
+  //         vehicleOdometerValue         (3 bytes) OdometerShort,
+  //         gnssPlaceRecord              (12 bytes) GNSSPlaceRecord
+  //     }
+  //
   message Record {
+    // If true, the fields below are populated with parsed, semantic data.
+    // If false, the 'raw_data' field contains the original, unprocessed record
+    // bytes.
+    bool valid = 1;
+
+    // --- Fields for a valid record (when valid = true) ---
+
     // Time of the entry.
     //
     // See Data Dictionary, Section 2.162, `TimeReal`.
     // ASN.1 Definition:
     //
     //     TimeReal ::= INTEGER (0..2^32-1)
-    google.protobuf.Timestamp entry_time = 1;
+    google.protobuf.Timestamp entry_time = 2;
 
     // The condition of the entry, distinguishing between a manual entry (begin/end),
     // a GNSS-assisted entry, or an ITS-assisted entry.
@@ -66,7 +110,12 @@ message Places {
     //         beginITS (4),
     //         endITS (5)
     //     } (0..255)
-    dd.v1.EntryTypeDailyWorkPeriod entry_type = 2;
+    dd.v1.EntryTypeDailyWorkPeriod entry_type = 3;
+
+    // Raw protocol value for entry_type when the value is not recognized.
+    // This field preserves the original byte value for perfect data fidelity
+    // and allows consumers to handle unknown enum values.
+    int32 unrecognized_entry_type = 4;
 
     // Country code.
     //
@@ -74,7 +123,12 @@ message Places {
     // ASN.1 Definition:
     //
     //     NationNumeric ::= INTEGER(0..255)
-    dd.v1.NationNumeric daily_work_period_country = 4;
+    dd.v1.NationNumeric daily_work_period_country = 5;
+
+    // Raw protocol value for daily_work_period_country when the value is not recognized.
+    // This field preserves the original byte value for perfect data fidelity
+    // and allows consumers to handle unknown enum values.
+    int32 unrecognized_daily_work_period_country = 6;
 
     // Region code.
     //
@@ -86,7 +140,7 @@ message Places {
     // ASN.1 Definition:
     //
     //     RegionNumeric ::= OCTET STRING (SIZE (1))
-    bytes daily_work_period_region = 6;
+    bytes daily_work_period_region = 7;
 
     // Odometer at the time of entry in kilometers.
     //
@@ -94,7 +148,17 @@ message Places {
     // ASN.1 Definition:
     //
     //     OdometerShort ::= INTEGER(0..999999)
-    int32 vehicle_odometer_km = 7;
+    int32 vehicle_odometer_km = 8;
+
+    // --- Field for a non-valid record (when valid = false) ---
+    // Holds the raw bytes of the original record.
+    // Size is 10 bytes for Gen1, 22 bytes for Gen2.
+    bytes raw_data = 9;
+
+    // --- Gen2-specific fields ---
+
+    // GNSS data associated with the place record, present only on Gen2 cards.
+    GnssPlaceRecord gnss_place_record = 10;
   }
 
   // Index of the last updated place record.
@@ -113,6 +177,12 @@ message Places {
   // Trailing bytes that don't form complete records (for roundtrip accuracy).
   bytes trailing_bytes = 3;
 
+  // Generation of this EF, extracted from bit 1 of the TLV tag's appendix byte.
+  // This determines the binary format used for place records (10 bytes for Gen1, 22 bytes for Gen2).
+  //
+  // See Data Dictionary, Section 2.75, `Generation`.
+  dd.v1.Generation generation = 4;
+
   // Signature data from the following file block, if tagged as a signature for
   // this EF according to the card file format specification (Appendix 2).
   //
@@ -130,5 +200,5 @@ message Places {
   // - 256-bit curves: ~64 bytes
   // - 384-bit curves: ~96 bytes
   // - 512/521-bit curves: ~128-132 bytes
-  bytes signature = 4;
+  bytes signature = 5;
 }
