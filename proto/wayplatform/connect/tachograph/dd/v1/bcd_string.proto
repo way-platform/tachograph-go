@@ -5,20 +5,31 @@ package wayplatform.connect.tachograph.dd.v1;
 // BcdString provides a canonical representation for Binary Coded Decimal (BCD)
 // strings found in the tachograph regulations.
 //
-// The BCD format represents decimal digits in 4-bit nibbles. This type is
-// necessary because a direct conversion to a standard integer type (like int32)
-// can be lossy. While the numeric value might be preserved, the exact
-// byte representation may not be, especially in cases involving non-canonical
-// padding or other vendor-specific quirks.
+// The BCD format represents decimal digits in 4-bit nibbles, with each byte
+// containing two decimal digits. The regulation specifies canonical encoding,
+// making BCD strings fully deterministic from their numeric value and length.
 //
-// For example, the number 123 could be represented as `[0x01, 0x23]` by one
-// system, but as `[0xF1, 0x23]` by another that uses 'F' as a padding nibble.
-// Both decode to 123, but only storing the integer loses the original byte
-// pattern.
+// From Data Dictionary, Section 2.7:
 //
-// This message solves the problem by storing both the original raw bytes for
-// perfect fidelity (essential for round-tripping and signature validation) and
-// the numeric value for ease of use.
+//   "BCDString is applied for Binary Code Decimal (BCD) representation. This
+//    data type is used to represent one decimal digit in one semi octet (4
+//    bits). BCDString is based on the ISO/IEC 8824-1 'CharacterStringType'.
+//
+//    BCDString uses an 'hstring' notation. The leftmost hexadecimal digit
+//    shall be the most significant semi octet of the first octet. To produce a
+//    multiple of octets, zero trailing semi octets shall be inserted, as
+//    needed, from the leftmost semi octet position in the first octet.
+//
+//    Permitted digits are: 0, 1, .. 9."
+//
+// This specification makes encoding deterministic:
+//  - Only digits 0-9 are permitted (no vendor-specific values)
+//  - Padding uses zero nibbles (canonical, not 0xF or other values)
+//  - All BCDString usages have explicit SIZE constraints (e.g.,
+//    DailyPresenceCounter ::= BCDString(SIZE(2)))
+//
+// Therefore, perfect round-trip fidelity is achieved by storing only the
+// numeric value and length, without needing to preserve raw bytes.
 //
 // See Data Dictionary, Section 2.7.
 //
@@ -26,12 +37,10 @@ package wayplatform.connect.tachograph.dd.v1;
 //
 //     BCDString ::= CharacterStringType
 message BcdString {
-  // The raw, original BCD-encoded bytes. This field is the source of truth
-  // and should always be used when marshalling the data back to its binary
-  // format.
-  bytes raw_data = 1;
+  // The numeric value of the BCD string.
+  int32 value = 1;
 
-  // The numeric value of the BCD string. This field is provided for
-  // consumer convenience and should be treated as a read-only, derived value.
-  int32 value = 2;
+  // The length in bytes as specified in the ASN.1 SIZE constraint.
+  // For example, DailyPresenceCounter ::= BCDString(SIZE(2)) has length 2.
+  int32 length = 2;
 }

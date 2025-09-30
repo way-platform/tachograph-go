@@ -387,16 +387,17 @@ func appendParsedDailyRecord(dst []byte, rec *cardv1.DriverActivityData_DailyRec
 	// Normal record processing - serialize content to temporary buffer first
 	contentBuf := make([]byte, 0, 2048)
 
-	// Activity record date (4 bytes BCD)
+	// Activity record date (4 bytes TimeReal)
 	var err error
-	contentBuf, err = dd.AppendDatef(contentBuf, rec.GetActivityRecordDate())
+	contentBuf, err = dd.AppendTimeReal(contentBuf, rec.GetActivityRecordDate())
 	if err != nil {
 		return nil, fmt.Errorf("failed to append activity record date: %w", err)
 	}
 
 	// Activity daily presence counter (2 bytes BCD)
-	if bcdCounter := rec.GetActivityDailyPresenceCounter(); bcdCounter != nil {
-		contentBuf = append(contentBuf, bcdCounter.GetRawData()...)
+	contentBuf, err = dd.AppendBcdString(contentBuf, rec.GetActivityDailyPresenceCounter())
+	if err != nil {
+		return nil, fmt.Errorf("failed to append activity daily presence counter: %w", err)
 	}
 
 	// Activity day distance (2 bytes)

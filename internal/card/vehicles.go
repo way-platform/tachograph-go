@@ -231,8 +231,9 @@ func appendVehicleRecord(dst []byte, rec *cardv1.VehiclesUsed_Record) ([]byte, e
 	if err != nil {
 		return nil, err
 	}
-	if bcdCounter := rec.GetVuDataBlockCounter(); bcdCounter != nil {
-		dst = append(dst, bcdCounter.GetRawData()...)
+	dst, err = dd.AppendBcdString(dst, rec.GetVuDataBlockCounter())
+	if err != nil {
+		return nil, fmt.Errorf("failed to append vu data block counter: %w", err)
 	}
 	return dst, nil
 }

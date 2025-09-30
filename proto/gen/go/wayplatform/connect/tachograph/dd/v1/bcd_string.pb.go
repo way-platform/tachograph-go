@@ -23,20 +23,31 @@ const (
 // BcdString provides a canonical representation for Binary Coded Decimal (BCD)
 // strings found in the tachograph regulations.
 //
-// The BCD format represents decimal digits in 4-bit nibbles. This type is
-// necessary because a direct conversion to a standard integer type (like int32)
-// can be lossy. While the numeric value might be preserved, the exact
-// byte representation may not be, especially in cases involving non-canonical
-// padding or other vendor-specific quirks.
+// The BCD format represents decimal digits in 4-bit nibbles, with each byte
+// containing two decimal digits. The regulation specifies canonical encoding,
+// making BCD strings fully deterministic from their numeric value and length.
 //
-// For example, the number 123 could be represented as `[0x01, 0x23]` by one
-// system, but as `[0xF1, 0x23]` by another that uses 'F' as a padding nibble.
-// Both decode to 123, but only storing the integer loses the original byte
-// pattern.
+// From Data Dictionary, Section 2.7:
 //
-// This message solves the problem by storing both the original raw bytes for
-// perfect fidelity (essential for round-tripping and signature validation) and
-// the numeric value for ease of use.
+//	"BCDString is applied for Binary Code Decimal (BCD) representation. This
+//	 data type is used to represent one decimal digit in one semi octet (4
+//	 bits). BCDString is based on the ISO/IEC 8824-1 'CharacterStringType'.
+//
+//	 BCDString uses an 'hstring' notation. The leftmost hexadecimal digit
+//	 shall be the most significant semi octet of the first octet. To produce a
+//	 multiple of octets, zero trailing semi octets shall be inserted, as
+//	 needed, from the leftmost semi octet position in the first octet.
+//
+//	 Permitted digits are: 0, 1, .. 9."
+//
+// This specification makes encoding deterministic:
+//   - Only digits 0-9 are permitted (no vendor-specific values)
+//   - Padding uses zero nibbles (canonical, not 0xF or other values)
+//   - All BCDString usages have explicit SIZE constraints (e.g.,
+//     DailyPresenceCounter ::= BCDString(SIZE(2)))
+//
+// Therefore, perfect round-trip fidelity is achieved by storing only the
+// numeric value and length, without needing to preserve raw bytes.
 //
 // See Data Dictionary, Section 2.7.
 //
@@ -45,8 +56,8 @@ const (
 //	BCDString ::= CharacterStringType
 type BcdString struct {
 	state                  protoimpl.MessageState `protogen:"opaque.v1"`
-	xxx_hidden_RawData     []byte                 `protobuf:"bytes,1,opt,name=raw_data,json=rawData"`
-	xxx_hidden_Value       int32                  `protobuf:"varint,2,opt,name=value"`
+	xxx_hidden_Value       int32                  `protobuf:"varint,1,opt,name=value"`
+	xxx_hidden_Length      int32                  `protobuf:"varint,2,opt,name=length"`
 	XXX_raceDetectHookData protoimpl.RaceDetectHookData
 	XXX_presence           [1]uint32
 	unknownFields          protoimpl.UnknownFields
@@ -78,13 +89,6 @@ func (x *BcdString) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-func (x *BcdString) GetRawData() []byte {
-	if x != nil {
-		return x.xxx_hidden_RawData
-	}
-	return nil
-}
-
 func (x *BcdString) GetValue() int32 {
 	if x != nil {
 		return x.xxx_hidden_Value
@@ -92,66 +96,68 @@ func (x *BcdString) GetValue() int32 {
 	return 0
 }
 
-func (x *BcdString) SetRawData(v []byte) {
-	if v == nil {
-		v = []byte{}
+func (x *BcdString) GetLength() int32 {
+	if x != nil {
+		return x.xxx_hidden_Length
 	}
-	x.xxx_hidden_RawData = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 2)
+	return 0
 }
 
 func (x *BcdString) SetValue(v int32) {
 	x.xxx_hidden_Value = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 2)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 2)
 }
 
-func (x *BcdString) HasRawData() bool {
-	if x == nil {
-		return false
-	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 0)
+func (x *BcdString) SetLength(v int32) {
+	x.xxx_hidden_Length = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 2)
 }
 
 func (x *BcdString) HasValue() bool {
 	if x == nil {
 		return false
 	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 0)
+}
+
+func (x *BcdString) HasLength() bool {
+	if x == nil {
+		return false
+	}
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 1)
 }
 
-func (x *BcdString) ClearRawData() {
+func (x *BcdString) ClearValue() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 0)
-	x.xxx_hidden_RawData = nil
+	x.xxx_hidden_Value = 0
 }
 
-func (x *BcdString) ClearValue() {
+func (x *BcdString) ClearLength() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 1)
-	x.xxx_hidden_Value = 0
+	x.xxx_hidden_Length = 0
 }
 
 type BcdString_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
-	// The raw, original BCD-encoded bytes. This field is the source of truth
-	// and should always be used when marshalling the data back to its binary
-	// format.
-	RawData []byte
-	// The numeric value of the BCD string. This field is provided for
-	// consumer convenience and should be treated as a read-only, derived value.
+	// The numeric value of the BCD string.
 	Value *int32
+	// The length in bytes as specified in the ASN.1 SIZE constraint.
+	// For example, DailyPresenceCounter ::= BCDString(SIZE(2)) has length 2.
+	Length *int32
 }
 
 func (b0 BcdString_builder) Build() *BcdString {
 	m0 := &BcdString{}
 	b, x := &b0, m0
 	_, _ = b, x
-	if b.RawData != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 2)
-		x.xxx_hidden_RawData = b.RawData
-	}
 	if b.Value != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 2)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 2)
 		x.xxx_hidden_Value = *b.Value
+	}
+	if b.Length != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 2)
+		x.xxx_hidden_Length = *b.Length
 	}
 	return m0
 }
@@ -160,10 +166,10 @@ var File_wayplatform_connect_tachograph_dd_v1_bcd_string_proto protoreflect.File
 
 const file_wayplatform_connect_tachograph_dd_v1_bcd_string_proto_rawDesc = "" +
 	"\n" +
-	"5wayplatform/connect/tachograph/dd/v1/bcd_string.proto\x12$wayplatform.connect.tachograph.dd.v1\"<\n" +
-	"\tBcdString\x12\x19\n" +
-	"\braw_data\x18\x01 \x01(\fR\arawData\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\x05R\x05valueB\xcd\x02\n" +
+	"5wayplatform/connect/tachograph/dd/v1/bcd_string.proto\x12$wayplatform.connect.tachograph.dd.v1\"9\n" +
+	"\tBcdString\x12\x14\n" +
+	"\x05value\x18\x01 \x01(\x05R\x05value\x12\x16\n" +
+	"\x06length\x18\x02 \x01(\x05R\x06lengthB\xcd\x02\n" +
 	"(com.wayplatform.connect.tachograph.dd.v1B\x0eBcdStringProtoP\x01Z\\github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1;ddv1\xa2\x02\x04WCTD\xaa\x02$Wayplatform.Connect.Tachograph.Dd.V1\xca\x02$Wayplatform\\Connect\\Tachograph\\Dd\\V1\xe2\x020Wayplatform\\Connect\\Tachograph\\Dd\\V1\\GPBMetadata\xea\x02(Wayplatform::Connect::Tachograph::Dd::V1b\beditionsp\xe8\a"
 
 var file_wayplatform_connect_tachograph_dd_v1_bcd_string_proto_msgTypes = make([]protoimpl.MessageInfo, 1)

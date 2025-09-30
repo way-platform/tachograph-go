@@ -6,7 +6,7 @@ import (
 	ddv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
 )
 
-// unmarshalBcdString parses BCD string data.
+// UnmarshalBcdString parses BCD string data.
 //
 // The data type `BcdString` is specified in the Data Dictionary, Section 2.7.
 //
@@ -16,17 +16,17 @@ import (
 //
 // Binary Layout (variable length):
 //   - BCD String (variable): BCD-encoded bytes
-func UnmarshalBcdString(data []byte) (*ddv1.BcdString, error) {
-	if len(data) == 0 {
-		return nil, fmt.Errorf("insufficient data for BcdString: got %d, want at least 1", len(data))
+func UnmarshalBcdString(input []byte) (*ddv1.BcdString, error) {
+	if len(input) == 0 {
+		return nil, fmt.Errorf("insufficient data for BcdString: got %d, want at least 1", len(input))
 	}
-	decoded, err := decodeBCD(data)
+	value, err := decodeBCD(input)
 	if err != nil {
 		return nil, err
 	}
 	var output ddv1.BcdString
-	output.SetRawData(data)
-	output.SetValue(int32(decoded))
+	output.SetValue(int32(value))
+	output.SetLength(int32(len(input)))
 	return &output, nil
 }
 
@@ -40,52 +40,20 @@ func UnmarshalBcdString(data []byte) (*ddv1.BcdString, error) {
 //
 // Binary Layout (variable length):
 //   - BCD String (variable): BCD-encoded bytes
+//
+// The regulation specifies canonical encoding: digits 0-9 only, with zero
+// padding. This makes encoding deterministic from value + length.
 func AppendBcdString(dst []byte, bcdString *ddv1.BcdString) ([]byte, error) {
-	// Handle nil BcdString - return empty (nothing to append)
 	if bcdString == nil {
 		return dst, nil
 	}
-
-	// Get the semantic value
 	value := bcdString.GetValue()
-	intValue := int(value)
-	if intValue < 0 {
+	if value < 0 {
 		return nil, fmt.Errorf("cannot encode negative BCD value: %d", value)
 	}
-
-	// Use raw_data as canvas if available (raw data painting approach)
-	rawData := bcdString.GetRawData()
-	if len(rawData) > 0 {
-		// Paint semantic value over raw_data canvas
-		// Use raw_data length to preserve the exact byte count (may include padding)
-		encodedBytes, err := encodeBCD(intValue, len(rawData))
-		if err != nil {
-			return nil, fmt.Errorf("failed to encode BCD value %d into %d bytes: %w", intValue, len(rawData), err)
-		}
-		return append(dst, encodedBytes...), nil
+	length := bcdString.GetLength()
+	if length <= 0 {
+		return nil, fmt.Errorf("invalid BCD string length: %d", length)
 	}
-
-	// Fall back to encoding from value with minimal byte count
-	// Count digits (each byte holds 2 digits)
-	// For zero, we need 1 digit
-	digitCount := 1
-	if intValue > 0 {
-		digitCount = 0
-		temp := intValue
-		for temp > 0 {
-			digitCount++
-			temp /= 10
-		}
-	}
-
-	// Calculate required bytes (round up to nearest byte)
-	byteCount := (digitCount + 1) / 2
-
-	// Encode the value
-	encodedBytes, err := encodeBCD(intValue, byteCount)
-	if err != nil {
-		return nil, fmt.Errorf("failed to encode BCD string: %w", err)
-	}
-
-	return append(dst, encodedBytes...), nil
+	return appendBCD(dst, int(value), int(length))
 }

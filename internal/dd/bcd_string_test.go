@@ -9,41 +9,41 @@ import (
 
 func TestUnmarshalBcdString(t *testing.T) {
 	tests := []struct {
-		name        string
-		input       []byte
-		wantDecoded int32
-		wantEncoded []byte
-		wantErr     bool
+		name       string
+		input      []byte
+		wantValue  int32
+		wantLength int32
+		wantErr    bool
 	}{
 		{
-			name:        "two-byte BCD",
-			input:       []byte{0x12, 0x34},
-			wantDecoded: 1234,
-			wantEncoded: []byte{0x12, 0x34},
+			name:       "two-byte BCD",
+			input:      []byte{0x12, 0x34},
+			wantValue:  1234,
+			wantLength: 2,
 		},
 		{
-			name:        "three-byte BCD",
-			input:       []byte{0x12, 0x34, 0x56},
-			wantDecoded: 123456,
-			wantEncoded: []byte{0x12, 0x34, 0x56},
+			name:       "three-byte BCD",
+			input:      []byte{0x12, 0x34, 0x56},
+			wantValue:  123456,
+			wantLength: 3,
 		},
 		{
-			name:        "single byte",
-			input:       []byte{0x99},
-			wantDecoded: 99,
-			wantEncoded: []byte{0x99},
+			name:       "single byte",
+			input:      []byte{0x99},
+			wantValue:  99,
+			wantLength: 1,
 		},
 		{
-			name:        "zero value",
-			input:       []byte{0x00},
-			wantDecoded: 0,
-			wantEncoded: []byte{0x00},
+			name:       "zero value",
+			input:      []byte{0x00},
+			wantValue:  0,
+			wantLength: 1,
 		},
 		{
-			name:        "leading zeros",
-			input:       []byte{0x00, 0x42},
-			wantDecoded: 42,
-			wantEncoded: []byte{0x00, 0x42},
+			name:       "leading zeros",
+			input:      []byte{0x00, 0x42},
+			wantValue:  42,
+			wantLength: 2,
 		},
 		{
 			name:    "empty input",
@@ -76,11 +76,11 @@ func TestUnmarshalBcdString(t *testing.T) {
 			if got == nil {
 				t.Fatal("UnmarshalBcdString() returned nil")
 			}
-			if got.GetValue() != tt.wantDecoded {
-				t.Errorf("UnmarshalBcdString().GetValue() = %v, want %v", got.GetValue(), tt.wantDecoded)
+			if got.GetValue() != tt.wantValue {
+				t.Errorf("UnmarshalBcdString().GetValue() = %v, want %v", got.GetValue(), tt.wantValue)
 			}
-			if diff := cmp.Diff(tt.wantEncoded, got.GetRawData()); diff != "" {
-				t.Errorf("UnmarshalBcdString().GetRawData() mismatch (-want +got):\n%s", diff)
+			if got.GetLength() != tt.wantLength {
+				t.Errorf("UnmarshalBcdString().GetLength() = %v, want %v", got.GetLength(), tt.wantLength)
 			}
 		})
 	}
@@ -173,83 +173,105 @@ func TestBcdStringRoundTrip(t *testing.T) {
 	}
 }
 
-func TestAppendBcdString_SemanticFallback(t *testing.T) {
+func TestAppendBcdString_WithLength(t *testing.T) {
 	tests := []struct {
-		name        string
-		decoded     int32
-		wantBytes   []byte
-		wantErr     bool
-		description string
+		name      string
+		value     int32
+		length    int32
+		wantBytes []byte
+		wantErr   bool
 	}{
 		{
-			name:        "single digit",
-			decoded:     5,
-			wantBytes:   []byte{0x05},
-			description: "5 should encode to 0x05 (1 byte, minimal)",
+			name:      "value 5 in 1 byte",
+			value:     5,
+			length:    1,
+			wantBytes: []byte{0x05},
 		},
 		{
-			name:        "two digits",
-			decoded:     42,
-			wantBytes:   []byte{0x42},
-			description: "42 should encode to 0x42 (1 byte)",
+			name:      "value 42 in 1 byte",
+			value:     42,
+			length:    1,
+			wantBytes: []byte{0x42},
 		},
 		{
-			name:        "three digits",
-			decoded:     123,
-			wantBytes:   []byte{0x01, 0x23},
-			description: "123 should encode to 0x01 0x23 (2 bytes, minimal)",
+			name:      "value 123 in 2 bytes (with leading zero padding)",
+			value:     123,
+			length:    2,
+			wantBytes: []byte{0x01, 0x23},
 		},
 		{
-			name:        "four digits",
-			decoded:     1234,
-			wantBytes:   []byte{0x12, 0x34},
-			description: "1234 should encode to 0x12 0x34 (2 bytes)",
+			name:      "value 1234 in 2 bytes",
+			value:     1234,
+			length:    2,
+			wantBytes: []byte{0x12, 0x34},
 		},
 		{
-			name:        "five digits",
-			decoded:     12345,
-			wantBytes:   []byte{0x01, 0x23, 0x45},
-			description: "12345 should encode to 0x01 0x23 0x45 (3 bytes, minimal)",
+			name:      "value 42 in 2 bytes (with zero padding)",
+			value:     42,
+			length:    2,
+			wantBytes: []byte{0x00, 0x42},
 		},
 		{
-			name:        "zero",
-			decoded:     0,
-			wantBytes:   []byte{0x00},
-			description: "0 should encode to 0x00 (1 byte)",
+			name:      "value 0 in 1 byte",
+			value:     0,
+			length:    1,
+			wantBytes: []byte{0x00},
+		},
+		{
+			name:      "value 9999 in 2 bytes (DailyPresenceCounter max)",
+			value:     9999,
+			length:    2,
+			wantBytes: []byte{0x99, 0x99},
+		},
+		{
+			name:    "value too large for length",
+			value:   12345,
+			length:  2,
+			wantErr: true,
+		},
+		{
+			name:    "negative value",
+			value:   -1,
+			length:  1,
+			wantErr: true,
+		},
+		{
+			name:    "zero length",
+			value:   5,
+			length:  0,
+			wantErr: true,
 		},
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			// Create BCD string with only value (no raw_data)
 			bcdString := &ddv1.BcdString{}
-			bcdString.SetValue(tt.decoded)
-			// Explicitly ensure raw_data is empty to test fallback
-			// (protobuf will return empty bytes by default, but let's be explicit)
+			bcdString.SetValue(tt.value)
+			bcdString.SetLength(tt.length)
 
 			dst := []byte{}
 			got, err := AppendBcdString(dst, bcdString)
 			if tt.wantErr {
 				if err == nil {
-					t.Errorf("AppendBcdString() expected error for %s, got nil", tt.description)
+					t.Errorf("AppendBcdString() expected error, got nil")
 				}
 				return
 			}
 			if err != nil {
-				t.Fatalf("AppendBcdString() unexpected error for %s: %v", tt.description, err)
+				t.Fatalf("AppendBcdString() unexpected error: %v", err)
 			}
 
 			if diff := cmp.Diff(tt.wantBytes, got); diff != "" {
-				t.Errorf("AppendBcdString() for %s mismatch (-want +got):\n%s", tt.description, diff)
+				t.Errorf("AppendBcdString() mismatch (-want +got):\n%s", diff)
 			}
 
-			// Verify it can be decoded back
+			// Verify it can be decoded back to the same value
 			decoded, err := decodeBCD(got)
 			if err != nil {
 				t.Fatalf("decodeBCD() failed: %v", err)
 			}
-			if int32(decoded) != tt.decoded {
-				t.Errorf("Decoded value = %d, want %d", decoded, tt.decoded)
+			if int32(decoded) != tt.value {
+				t.Errorf("Decoded value = %d, want %d", decoded, tt.value)
 			}
 		})
 	}
