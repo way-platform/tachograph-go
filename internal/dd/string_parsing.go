@@ -3,8 +3,6 @@ package dd
 import (
 	"bytes"
 	"fmt"
-
-	ddv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
 )
 
 // Data dictionary string parsing and serialization functions
@@ -64,41 +62,9 @@ func AppendString(dst []byte, s string, length int) ([]byte, error) {
 	return append(dst, result...), nil
 }
 
-// appendStringValue appends a fixed-length string from a StringValue, padding with spaces.
-func AppendStringValue(dst []byte, sv *ddv1.StringValue, length int) ([]byte, error) {
-	if sv == nil {
-		return AppendString(dst, "", length)
-	}
-	// Use the decoded string if available, otherwise use the encoded bytes as string
-	s := sv.GetDecoded()
-	if s == "" {
-		s = string(sv.GetEncoded())
-	}
-	return AppendString(dst, s, length)
-}
-
 // appendBCDNation appends a BCD-encoded nation number.
 func AppendBCDNation(dst []byte, nation string) ([]byte, error) {
 	// This is a placeholder. A real implementation would convert the nation string
 	// to its numeric code and then to BCD.
 	return append(dst, 0), nil // Append a single zero byte for now
-}
-
-// appendVehicleRegistration appends vehicle registration from VehicleRegistrationIdentification
-func AppendVehicleRegistration(dst []byte, vehicleReg *ddv1.VehicleRegistrationIdentification) ([]byte, error) {
-	if vehicleReg == nil {
-		// Append default values: 1 byte nation (0xFF) + 14 bytes registration number (spaces)
-		dst = append(dst, 0xFF)
-		return AppendString(dst, "", 14)
-	}
-
-	// Append nation (1 byte)
-	dst = append(dst, byte(vehicleReg.GetNation()))
-
-	// Append registration number (14 bytes, padded with spaces)
-	number := vehicleReg.GetNumber()
-	if number != nil {
-		return AppendString(dst, number.GetDecoded(), 14)
-	}
-	return AppendString(dst, "", 14)
 }

@@ -141,31 +141,15 @@ func unmarshalFaultRecord(data []byte, rec *cardv1.FaultsData_Record) error {
 	rec.SetFaultEndTime(faultEndTime)
 	offset += 4
 
-	// Read vehicle registration nation (1 byte)
-	if offset+1 > len(data) {
-		return fmt.Errorf("insufficient data for vehicle registration nation")
+	// Read vehicle registration (15 bytes: 1 byte nation + 14 bytes number)
+	if offset+15 > len(data) {
+		return fmt.Errorf("insufficient data for vehicle registration")
 	}
-	nationByte := data[offset]
-	offset++
-
-	// Create VehicleRegistrationIdentification structure
-	vehicleReg := &ddv1.VehicleRegistrationIdentification{}
-	if enumNum, found := dd.GetEnumForProtocolValue(ddv1.NationNumeric_NATION_NUMERIC_UNSPECIFIED.Descriptor(), int32(nationByte)); found {
-		vehicleReg.SetNation(ddv1.NationNumeric(enumNum))
-	} else {
-		vehicleReg.SetNation(ddv1.NationNumeric_NATION_NUMERIC_UNRECOGNIZED)
-	}
-
-	// Read vehicle registration number (14 bytes)
-	if offset+14 > len(data) {
-		return fmt.Errorf("insufficient data for vehicle registration number")
-	}
-	regNumber, err := dd.UnmarshalIA5StringValue(data[offset : offset+14])
+	vehicleReg, err := dd.UnmarshalVehicleRegistration(data[offset : offset+15])
 	if err != nil {
-		return fmt.Errorf("failed to read vehicle registration number: %w", err)
+		return fmt.Errorf("failed to parse vehicle registration: %w", err)
 	}
-	// offset += 14 // Not needed as this is the last field
-	vehicleReg.SetNumber(regNumber)
+	// offset += 15 // Not needed as this is the last field
 	rec.SetFaultVehicleRegistration(vehicleReg)
 	return nil
 }

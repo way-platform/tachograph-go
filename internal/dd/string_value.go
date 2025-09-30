@@ -188,13 +188,127 @@ func decodeWithCodePage(codePage byte, data []byte) (string, error) {
 	return trimmed, nil
 }
 
-// CreateStringValue creates a StringValue message from a string
-func CreateStringValue(s string) *ddv1.StringValue {
-	stringValue := &ddv1.StringValue{}
-	stringValue.SetDecoded(s)
-	return stringValue
+// AppendStringValue appends a StringValue to dst.
+//
+// This function handles two ASN.1 formats based on the encoding:
+//
+//  1. IA5String format (Encoding_IA5):
+//     Fixed-length ASCII strings defined as:
+//     IA5String ::= OCTET STRING (SIZE(N))
+//     Binary Layout: stringData (N bytes, space-padded)
+//
+//  2. Code-paged format (other encodings):
+//     Variable-length strings with code page prefix, defined as:
+//     StringValue ::= SEQUENCE {
+//     codePage    OCTET STRING (SIZE(1)),
+//     stringData  OCTET STRING (SIZE(0..255))
+//     }
+//     Binary Layout: codePage (1 byte) + stringData (variable bytes)
+//
+// The function prefers to use 'encoded' bytes if available (for round-trip fidelity),
+// otherwise it encodes the 'decoded' string using the specified encoding.
+func AppendStringValue(dst []byte, sv *ddv1.StringValue, length int) ([]byte, error) {
+	// Handle IA5String format (fixed-length, no code page)
+	if sv != nil && sv.GetEncoding() == ddv1.Encoding_IA5 {
+		// Prefer encoded bytes if available and of correct length
+		if encoded := sv.GetEncoded(); len(encoded) == length {
+			return append(dst, encoded...), nil
+		}
+
+		// Fallback: use decoded string and pad with spaces
+		return AppendString(dst, sv.GetDecoded(), length)
+	}
+
+	// Handle nil for IA5 case - must check length to determine format
+	if sv == nil && length > 0 {
+		// This is likely an IA5String field that's nil
+		return AppendString(dst, "", length)
+	}
+
+	// Handle code-paged format (variable-length with code page byte)
+	if sv == nil {
+		// Empty string value: code page 255 (EMPTY) + no data
+		return append(dst, 0xFF), nil
+	}
+
+	// Determine the code page byte
+	codePage := getCodePageFromEncoding(sv.GetEncoding())
+
+	// Prefer encoded bytes if available (round-trip fidelity)
+	if encoded := sv.GetEncoded(); len(encoded) > 0 {
+		dst = append(dst, codePage)
+		return append(dst, encoded...), nil
+	}
+
+	// Fallback: encode the decoded string
+	decoded := sv.GetDecoded()
+	if decoded == "" {
+		// Empty string
+		return append(dst, codePage), nil
+	}
+
+	// For now, we only support encoding to ISO-8859-1 and IA5 (ASCII)
+	// More sophisticated encoding would require charmap encoding
+	encoded, err := encodeWithCodePage(codePage, decoded)
+	if err != nil {
+		return nil, fmt.Errorf("failed to encode string with code page %d: %w", codePage, err)
+	}
+
+	dst = append(dst, codePage)
+	return append(dst, encoded...), nil
 }
 
+// getCodePageFromEncoding maps an Encoding enum to a code page byte.
+func getCodePageFromEncoding(encoding ddv1.Encoding) byte {
+	switch encoding {
+	case ddv1.Encoding_ENCODING_DEFAULT:
+		return 0
+	case ddv1.Encoding_ISO_8859_1:
+		return 1
+	case ddv1.Encoding_ISO_8859_2:
+		return 2
+	case ddv1.Encoding_ISO_8859_3:
+		return 3
+	case ddv1.Encoding_ISO_8859_5:
+		return 5
+	case ddv1.Encoding_ISO_8859_7:
+		return 7
+	case ddv1.Encoding_ISO_8859_9:
+		return 9
+	case ddv1.Encoding_ISO_8859_13:
+		return 13
+	case ddv1.Encoding_ISO_8859_15:
+		return 15
+	case ddv1.Encoding_ISO_8859_16:
+		return 16
+	case ddv1.Encoding_KOI8_R:
+		return 80
+	case ddv1.Encoding_KOI8_U:
+		return 85
+	case ddv1.Encoding_IA5:
+		return 0 // IA5 uses default encoding (ASCII-compatible)
+	case ddv1.Encoding_ENCODING_EMPTY, ddv1.Encoding_ENCODING_UNSPECIFIED, ddv1.Encoding_ENCODING_UNRECOGNIZED:
+		return 255
+	default:
+		return 255
+	}
+}
 
+// encodeWithCodePage encodes a string to bytes using the specified code page.
+// For now, this is a simple implementation that only handles ASCII-compatible encodings.
+func encodeWithCodePage(codePage byte, s string) ([]byte, error) {
+	// For code page 255 (empty), return empty bytes
+	if codePage == 255 {
+		return []byte{}, nil
+	}
 
+	// For ASCII-compatible code pages (0, 1), we can just convert to bytes
+	// TODO: Implement proper encoding for other code pages using charmap.Encoder
+	if codePage == 0 || codePage == 1 {
+		return []byte(s), nil
+	}
 
+	// For now, fall back to ISO-8859-1 encoding for other code pages
+	// This is a simplification and should be enhanced for full support
+	return []byte(s), nil
+}

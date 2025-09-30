@@ -8,7 +8,6 @@ import (
 	"github.com/way-platform/tachograph-go/internal/dd"
 
 	cardv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1"
-	ddv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
 )
 
 // unmarshalCardVehiclesUsed unmarshals vehicles used data from a card EF.
@@ -120,24 +119,14 @@ func parseVehicleRecord(r *bytes.Reader, recordSize int) (*cardv1.VehiclesUsed_R
 	record.SetVehicleLastUse(vehicleLastUse)
 
 	// Read vehicle registration (15 bytes: 1 byte nation + 14 bytes registration number)
-	var nation byte
-	if err := binary.Read(r, binary.BigEndian, &nation); err != nil {
-		return nil, fmt.Errorf("failed to read vehicle registration nation: %w", err)
+	vehicleRegBytes := make([]byte, 15)
+	if _, err := r.Read(vehicleRegBytes); err != nil {
+		return nil, fmt.Errorf("failed to read vehicle registration: %w", err)
 	}
-	// Create VehicleRegistrationIdentification structure
-	vehicleReg := &ddv1.VehicleRegistrationIdentification{}
-	vehicleReg.SetNation(ddv1.NationNumeric(nation))
-
-	// Read vehicle registration number (14 bytes)
-	regNumberBytes := make([]byte, 14)
-	if _, err := r.Read(regNumberBytes); err != nil {
-		return nil, fmt.Errorf("failed to read vehicle registration number: %w", err)
-	}
-	regNumber, err := dd.UnmarshalIA5StringValue(regNumberBytes)
+	vehicleReg, err := dd.UnmarshalVehicleRegistration(vehicleRegBytes)
 	if err != nil {
-		return nil, fmt.Errorf("failed to parse vehicle registration number: %w", err)
+		return nil, fmt.Errorf("failed to parse vehicle registration: %w", err)
 	}
-	vehicleReg.SetNumber(regNumber)
 	record.SetVehicleRegistration(vehicleReg)
 
 	// Read VU data block counter (2 bytes)
@@ -155,13 +144,17 @@ func parseVehicleRecord(r *bytes.Reader, recordSize int) (*cardv1.VehiclesUsed_R
 	}
 	record.SetVuDataBlockCounter(bcdCounter)
 
-	// For Gen2 records, read VIN (17 bytes)
+	// For Gen2 records, read VIN (17 bytes IA5String)
 	if recordSize == 48 {
 		vinBytes := make([]byte, 17)
 		if _, err := r.Read(vinBytes); err != nil {
 			return nil, fmt.Errorf("failed to read vehicle identification number: %w", err)
 		}
-		record.SetVehicleIdentificationNumber(dd.CreateStringValue(dd.ReadString(bytes.NewReader(vinBytes), 17)))
+		vin, err := dd.UnmarshalIA5StringValue(vinBytes)
+		if err != nil {
+			return nil, fmt.Errorf("failed to parse vehicle identification number: %w", err)
+		}
+		record.SetVehicleIdentificationNumber(vin)
 	}
 
 	return record, nil
