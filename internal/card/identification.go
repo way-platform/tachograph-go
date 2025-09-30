@@ -302,7 +302,7 @@ func appendCardIdentification(dst []byte, id *cardv1.Identification_Card) ([]byt
 		identification := driverID.GetDriverIdentificationNumber()
 		if identification != nil {
 			// Pad or truncate to exactly 14 bytes
-			identStr := identification.GetDecoded()
+			identStr := identification.GetValue()
 			if len(identStr) > 14 {
 				identStr = identStr[:14]
 			}
@@ -321,7 +321,7 @@ func appendCardIdentification(dst []byte, id *cardv1.Identification_Card) ([]byt
 		identification := ownerID.GetOwnerIdentification()
 		if identification != nil {
 			// Pad or truncate to exactly 13 bytes
-			identStr := identification.GetDecoded()
+			identStr := identification.GetValue()
 			if len(identStr) > 13 {
 				identStr = identStr[:13]
 			}
@@ -334,7 +334,7 @@ func appendCardIdentification(dst []byte, id *cardv1.Identification_Card) ([]byt
 		consecutive := ownerID.GetConsecutiveIndex()
 		if consecutive != nil {
 			// Convert string to byte value
-			consecutiveStr := consecutive.GetDecoded()
+			consecutiveStr := consecutive.GetValue()
 			if len(consecutiveStr) > 0 {
 				cardNumberBytes[13] = consecutiveStr[0]
 			}
@@ -342,7 +342,7 @@ func appendCardIdentification(dst []byte, id *cardv1.Identification_Card) ([]byt
 		replacement := ownerID.GetReplacementIndex()
 		if replacement != nil {
 			// Convert string to byte value
-			replacementStr := replacement.GetDecoded()
+			replacementStr := replacement.GetValue()
 			if len(replacementStr) > 0 {
 				cardNumberBytes[14] = replacementStr[0]
 			}
@@ -350,7 +350,7 @@ func appendCardIdentification(dst []byte, id *cardv1.Identification_Card) ([]byt
 		renewal := ownerID.GetRenewalIndex()
 		if renewal != nil {
 			// Convert string to byte value
-			renewalStr := renewal.GetDecoded()
+			renewalStr := renewal.GetValue()
 			if len(renewalStr) > 0 {
 				cardNumberBytes[15] = renewalStr[0]
 			}
@@ -359,7 +359,7 @@ func appendCardIdentification(dst []byte, id *cardv1.Identification_Card) ([]byt
 	dst = append(dst, cardNumberBytes...)
 	authorityName := id.GetCardIssuingAuthorityName()
 	if authorityName != nil {
-		dst, err = dd.AppendString(dst, authorityName.GetDecoded(), 36)
+		dst, err = dd.AppendString(dst, authorityName.GetValue(), 36)
 	} else {
 		dst, err = dd.AppendString(dst, "", 36)
 	}
@@ -392,7 +392,7 @@ func appendDriverCardHolderIdentification(dst []byte, h *cardv1.Identification_D
 	nameBlock := make([]byte, 0, 72)
 	surname := h.GetCardHolderSurname()
 	if surname != nil {
-		nameBlock, err = dd.AppendString(nameBlock, surname.GetDecoded(), 36)
+		nameBlock, err = dd.AppendString(nameBlock, surname.GetValue(), 36)
 	} else {
 		nameBlock, err = dd.AppendString(nameBlock, "", 36)
 	}
@@ -401,7 +401,7 @@ func appendDriverCardHolderIdentification(dst []byte, h *cardv1.Identification_D
 	}
 	firstNames := h.GetCardHolderFirstNames()
 	if firstNames != nil {
-		nameBlock, err = dd.AppendString(nameBlock, firstNames.GetDecoded(), 36)
+		nameBlock, err = dd.AppendString(nameBlock, firstNames.GetValue(), 36)
 	} else {
 		nameBlock, err = dd.AppendString(nameBlock, "", 36)
 	}
@@ -420,7 +420,7 @@ func appendDriverCardHolderIdentification(dst []byte, h *cardv1.Identification_D
 
 	preferredLanguage := h.GetCardHolderPreferredLanguage()
 	if preferredLanguage != nil {
-		dst, err = dd.AppendString(dst, preferredLanguage.GetDecoded(), 2)
+		dst, err = dd.AppendString(dst, preferredLanguage.GetValue(), 2)
 	} else {
 		dst, err = dd.AppendString(dst, "", 2)
 	}

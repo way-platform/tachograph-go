@@ -1966,7 +1966,7 @@ func appendVuCardIWRecord(dst []byte, record *vuv1.Activities_CardIWRecord) ([]b
 			// Registration number (14 bytes)
 			regNumber := vehicleReg.GetNumber()
 			if regNumber != nil {
-				regStr := regNumber.GetDecoded()
+				regStr := regNumber.GetValue()
 				if len(regStr) > 14 {
 					regStr = regStr[:14]
 				}

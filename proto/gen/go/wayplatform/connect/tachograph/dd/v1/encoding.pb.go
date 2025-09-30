@@ -162,7 +162,7 @@ const file_wayplatform_connect_tachograph_dd_v1_encoding_proto_rawDesc = "" +
 	"\vISO_8859_16\x10\r\x1a\x05\xa0\xaf\x9c\x02\x10\x12\x11\n" +
 	"\x06KOI8_R\x10\x0e\x1a\x05\xa0\xaf\x9c\x02P\x12\x11\n" +
 	"\x06KOI8_U\x10\x0f\x1a\x05\xa0\xaf\x9c\x02UB\xcc\x02\n" +
-	"(com.wayplatform.connect.tachograph.dd.v1B\rEncodingProtoP\x01Z\\github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1;ddv1\xa2\x02\x04WCTD\xaa\x02$Wayplatform.Connect.Tachograph.Dd.V1\xca\x02$Wayplatform\\Connect\\Tachograph\\Dd\\V1\xe2\x020Wayplatform\\Connect\\Tachograph\\Dd\\V1\\GPBMetadata\xea\x02(Wayplatform::Connect::Tachograph::Dd::V1b\x06proto3"
+	"(com.wayplatform.connect.tachograph.dd.v1B\rEncodingProtoP\x01Z\\github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1;ddv1\xa2\x02\x04WCTD\xaa\x02$Wayplatform.Connect.Tachograph.Dd.V1\xca\x02$Wayplatform\\Connect\\Tachograph\\Dd\\V1\xe2\x020Wayplatform\\Connect\\Tachograph\\Dd\\V1\\GPBMetadata\xea\x02(Wayplatform::Connect::Tachograph::Dd::V1b\beditionsp\xe8\a"
 
 var file_wayplatform_connect_tachograph_dd_v1_encoding_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
 var file_wayplatform_connect_tachograph_dd_v1_encoding_proto_goTypes = []any{

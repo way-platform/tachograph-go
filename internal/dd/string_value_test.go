@@ -92,12 +92,12 @@ func TestUnmarshalStringValue(t *testing.T) {
 				t.Errorf("UnmarshalStringValue().GetEncoding() = %v, want %v", got.GetEncoding(), tt.wantEncoding)
 			}
 
-			if diff := cmp.Diff(tt.wantEncoded, got.GetEncoded()); diff != "" {
-				t.Errorf("UnmarshalStringValue().GetEncoded() mismatch (-want +got):\n%s", diff)
+			if diff := cmp.Diff(tt.wantEncoded, got.GetRawData()); diff != "" {
+				t.Errorf("UnmarshalStringValue().GetRawData() mismatch (-want +got):\n%s", diff)
 			}
 
-			if got.GetDecoded() != tt.wantDecoded {
-				t.Errorf("UnmarshalStringValue().GetDecoded() = %q, want %q", got.GetDecoded(), tt.wantDecoded)
+			if got.GetValue() != tt.wantDecoded {
+				t.Errorf("UnmarshalStringValue().GetValue() = %q, want %q", got.GetValue(), tt.wantDecoded)
 			}
 		})
 	}
@@ -181,12 +181,12 @@ func TestUnmarshalIA5StringValue(t *testing.T) {
 				t.Errorf("UnmarshalIA5StringValue().GetEncoding() = %v, want %v", got.GetEncoding(), ddv1.Encoding_IA5)
 			}
 
-			if diff := cmp.Diff(tt.wantEncoded, got.GetEncoded()); diff != "" {
-				t.Errorf("UnmarshalIA5StringValue().GetEncoded() mismatch (-want +got):\n%s", diff)
+			if diff := cmp.Diff(tt.wantEncoded, got.GetRawData()); diff != "" {
+				t.Errorf("UnmarshalIA5StringValue().GetRawData() mismatch (-want +got):\n%s", diff)
 			}
 
-			if got.GetDecoded() != tt.wantDecoded {
-				t.Errorf("UnmarshalIA5StringValue().GetDecoded() = %q, want %q", got.GetDecoded(), tt.wantDecoded)
+			if got.GetValue() != tt.wantDecoded {
+				t.Errorf("UnmarshalIA5StringValue().GetValue() = %q, want %q", got.GetValue(), tt.wantDecoded)
 			}
 		})
 	}
@@ -203,8 +203,8 @@ func TestAppendStringValue_CodePaged(t *testing.T) {
 			stringValue: func() *ddv1.StringValue {
 				sv := &ddv1.StringValue{}
 				sv.SetEncoding(ddv1.Encoding_ISO_8859_1)
-				sv.SetEncoded([]byte{0x4A, 0x6F, 0x68, 0x6E})
-				sv.SetDecoded("John")
+				sv.SetRawData([]byte{0x4A, 0x6F, 0x68, 0x6E})
+				sv.SetValue("John")
 				return sv
 			}(),
 			want: []byte{0x01, 0x4A, 0x6F, 0x68, 0x6E},
@@ -214,7 +214,7 @@ func TestAppendStringValue_CodePaged(t *testing.T) {
 			stringValue: func() *ddv1.StringValue {
 				sv := &ddv1.StringValue{}
 				sv.SetEncoding(ddv1.Encoding_ENCODING_DEFAULT)
-				sv.SetDecoded("Hello")
+				sv.SetValue("Hello")
 				return sv
 			}(),
 			want: []byte{0x00, 0x48, 0x65, 0x6C, 0x6C, 0x6F},
@@ -224,7 +224,7 @@ func TestAppendStringValue_CodePaged(t *testing.T) {
 			stringValue: func() *ddv1.StringValue {
 				sv := &ddv1.StringValue{}
 				sv.SetEncoding(ddv1.Encoding_ENCODING_DEFAULT)
-				sv.SetDecoded("")
+				sv.SetValue("")
 				return sv
 			}(),
 			want: []byte{0x00},
@@ -234,7 +234,7 @@ func TestAppendStringValue_CodePaged(t *testing.T) {
 			stringValue: func() *ddv1.StringValue {
 				sv := &ddv1.StringValue{}
 				sv.SetEncoding(ddv1.Encoding_ENCODING_EMPTY)
-				sv.SetDecoded("")
+				sv.SetValue("")
 				return sv
 			}(),
 			want: []byte{0xFF},
@@ -249,7 +249,7 @@ func TestAppendStringValue_CodePaged(t *testing.T) {
 			stringValue: func() *ddv1.StringValue {
 				sv := &ddv1.StringValue{}
 				sv.SetEncoding(ddv1.Encoding_ISO_8859_15)
-				sv.SetDecoded("Test")
+				sv.SetValue("Test")
 				return sv
 			}(),
 			want: []byte{0x0F, 0x54, 0x65, 0x73, 0x74},
@@ -259,8 +259,8 @@ func TestAppendStringValue_CodePaged(t *testing.T) {
 			stringValue: func() *ddv1.StringValue {
 				sv := &ddv1.StringValue{}
 				sv.SetEncoding(ddv1.Encoding_ISO_8859_1)
-				sv.SetEncoded([]byte{0x41, 0x42, 0x43})
-				sv.SetDecoded("XYZ") // Should be ignored
+				sv.SetRawData([]byte{0x41, 0x42, 0x43})
+				sv.SetValue("XYZ") // Should be ignored
 				return sv
 			}(),
 			want: []byte{0x01, 0x41, 0x42, 0x43},
@@ -269,7 +269,7 @@ func TestAppendStringValue_CodePaged(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := AppendStringValue(nil, tt.stringValue, 0)
+			got, err := AppendStringValue(nil, tt.stringValue)
 			if err != nil {
 				t.Fatalf("AppendStringValue() unexpected error: %v", err)
 			}
@@ -287,54 +287,59 @@ func TestAppendStringValue_IA5(t *testing.T) {
 		stringValue *ddv1.StringValue
 		length      int
 		want        []byte
+		wantErr     bool
 	}{
 		{
 			name: "simple string with padding",
 			stringValue: func() *ddv1.StringValue {
 				sv := &ddv1.StringValue{}
 				sv.SetEncoding(ddv1.Encoding_IA5)
-				sv.SetDecoded("ABC")
+				sv.SetLength(10)
+				sv.SetValue("ABC")
 				return sv
 			}(),
 			length: 10,
 			want:   []byte{0x41, 0x42, 0x43, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20},
 		},
 		{
-			name: "prefer encoded bytes if correct length",
+			name: "prefer raw_data bytes if correct length",
 			stringValue: func() *ddv1.StringValue {
 				sv := &ddv1.StringValue{}
 				sv.SetEncoding(ddv1.Encoding_IA5)
-				sv.SetEncoded([]byte{0x41, 0x42, 0x43, 0x20, 0x20})
-				sv.SetDecoded("XYZ") // Should be ignored
+				sv.SetLength(5)
+				sv.SetRawData([]byte{0x41, 0x42, 0x43, 0x20, 0x20})
+				sv.SetValue("XYZ") // Should be ignored
 				return sv
 			}(),
 			length: 5,
 			want:   []byte{0x41, 0x42, 0x43, 0x20, 0x20},
 		},
 		{
-			name: "use decoded if encoded is wrong length",
+			name: "error if raw_data length disagrees with length field",
 			stringValue: func() *ddv1.StringValue {
 				sv := &ddv1.StringValue{}
 				sv.SetEncoding(ddv1.Encoding_IA5)
-				sv.SetEncoded([]byte{0x41, 0x42}) // Wrong length
-				sv.SetDecoded("Test")
+				sv.SetLength(10)
+				sv.SetRawData([]byte{0x41, 0x42}) // Wrong length - should error
+				sv.SetValue("Test")
 				return sv
 			}(),
-			length: 10,
-			want:   []byte{0x54, 0x65, 0x73, 0x74, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20},
+			length:  10,
+			wantErr: true,
 		},
 		{
 			name:        "nil string value",
 			stringValue: nil,
 			length:      5,
-			want:        []byte{0x20, 0x20, 0x20, 0x20, 0x20},
+			want:        []byte{0xFF}, // Nil returns EMPTY code page
 		},
 		{
 			name: "full length string",
 			stringValue: func() *ddv1.StringValue {
 				sv := &ddv1.StringValue{}
 				sv.SetEncoding(ddv1.Encoding_IA5)
-				sv.SetDecoded("1234567890")
+				sv.SetLength(10)
+				sv.SetValue("1234567890")
 				return sv
 			}(),
 			length: 10,
@@ -345,7 +350,8 @@ func TestAppendStringValue_IA5(t *testing.T) {
 			stringValue: func() *ddv1.StringValue {
 				sv := &ddv1.StringValue{}
 				sv.SetEncoding(ddv1.Encoding_IA5)
-				sv.SetDecoded("")
+				sv.SetLength(3)
+				sv.SetValue("")
 				return sv
 			}(),
 			length: 3,
@@ -355,7 +361,13 @@ func TestAppendStringValue_IA5(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := AppendStringValue(nil, tt.stringValue, tt.length)
+			got, err := AppendStringValue(nil, tt.stringValue)
+			if tt.wantErr {
+				if err == nil {
+					t.Fatalf("AppendStringValue() expected error, got nil")
+				}
+				return
+			}
 			if err != nil {
 				t.Fatalf("AppendStringValue() unexpected error: %v", err)
 			}
@@ -406,8 +418,8 @@ func TestStringValueRoundTrip(t *testing.T) {
 				t.Fatal("UnmarshalStringValue() returned nil")
 			}
 
-			// Marshal back (length=0 for code-paged format)
-			got, err := AppendStringValue(nil, sv, 0)
+			// Marshal back (code-paged format)
+			got, err := AppendStringValue(nil, sv)
 			if err != nil {
 				t.Fatalf("AppendStringValue() error: %v", err)
 			}
@@ -461,9 +473,9 @@ func TestIA5StringValueRoundTrip(t *testing.T) {
 			}
 
 			// Marshal back
-			got, err := AppendStringValue(nil, sv, tt.length)
+			got, err := AppendStringValue(nil, sv)
 			if err != nil {
-				t.Fatalf("AppendIA5StringValue() error: %v", err)
+				t.Fatalf("AppendStringValue() error: %v", err)
 			}
 
 			// Verify round-trip
@@ -479,9 +491,10 @@ func TestAppendStringValue_WithExistingData(t *testing.T) {
 
 	sv := &ddv1.StringValue{}
 	sv.SetEncoding(ddv1.Encoding_IA5)
-	sv.SetDecoded("Test")
+	sv.SetLength(10)
+	sv.SetValue("Test")
 
-	got, err := AppendStringValue(existing, sv, 10)
+	got, err := AppendStringValue(existing, sv)
 	if err != nil {
 		t.Fatalf("AppendStringValue() unexpected error: %v", err)
 	}

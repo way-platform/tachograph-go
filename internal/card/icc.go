@@ -122,14 +122,14 @@ func unmarshalIcc(data []byte) (*cardv1.Icc, error) {
 		// Store as hex string to avoid UTF-8 validation issues with binary data
 		countryCode := &ddv1.StringValue{}
 		countryCode.SetEncoding(ddv1.Encoding_IA5)
-		countryCode.SetEncoded([]byte(fmt.Sprintf("%02X%02X", embedder[0], embedder[1])))
-		countryCode.SetDecoded(fmt.Sprintf("%02X%02X", embedder[0], embedder[1]))
+		countryCode.SetRawData([]byte(fmt.Sprintf("%02X%02X", embedder[0], embedder[1])))
+		countryCode.SetValue(fmt.Sprintf("%02X%02X", embedder[0], embedder[1]))
 		eia.SetCountryCode(countryCode)
 
 		moduleEmbedder := &ddv1.StringValue{}
 		moduleEmbedder.SetEncoding(ddv1.Encoding_IA5)
-		moduleEmbedder.SetEncoded([]byte(fmt.Sprintf("%02X%02X", embedder[2], embedder[3])))
-		moduleEmbedder.SetDecoded(fmt.Sprintf("%02X%02X", embedder[2], embedder[3]))
+		moduleEmbedder.SetRawData([]byte(fmt.Sprintf("%02X%02X", embedder[2], embedder[3])))
+		moduleEmbedder.SetValue(fmt.Sprintf("%02X%02X", embedder[2], embedder[3]))
 		eia.SetModuleEmbedder(moduleEmbedder)
 
 		eia.SetManufacturerInformation(int32(embedder[4]))
@@ -181,7 +181,7 @@ func appendIcc(dst []byte, icc *cardv1.Icc) ([]byte, error) {
 	}
 
 	// Append card approval number (8 bytes)
-	dst, err = dd.AppendStringValue(dst, icc.GetCardApprovalNumber(), lenCardApprovalNumber)
+	dst, err = dd.AppendStringValue(dst, icc.GetCardApprovalNumber())
 	if err != nil {
 		return nil, err
 	}

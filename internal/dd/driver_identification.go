@@ -60,7 +60,7 @@ func AppendDriverIdentification(dst []byte, driverID *ddv1.DriverIdentification)
 	// Append driver identification number (14 bytes)
 	identificationNumber := driverID.GetDriverIdentificationNumber()
 	if identificationNumber != nil {
-		return AppendString(dst, identificationNumber.GetDecoded(), 14)
+		return AppendString(dst, identificationNumber.GetValue(), 14)
 	}
 	return AppendString(dst, "", 14)
 }

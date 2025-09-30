@@ -136,7 +136,7 @@ func AppendFullCardNumberAsString(dst []byte, cardNumber *ddv1.FullCardNumber, m
 			// Build the full driver identification string
 			driverStr := ""
 			if identification != nil {
-				driverStr += identification.GetDecoded()
+				driverStr += identification.GetValue()
 			}
 			return AppendString(dst, driverStr, maxLen)
 		}
@@ -144,7 +144,7 @@ func AppendFullCardNumberAsString(dst []byte, cardNumber *ddv1.FullCardNumber, m
 		if ownerID := cardNumber.GetOwnerIdentification(); ownerID != nil {
 			identification := ownerID.GetOwnerIdentification()
 			if identification != nil {
-				return AppendString(dst, identification.GetDecoded(), maxLen)
+				return AppendString(dst, identification.GetValue(), maxLen)
 			}
 		}
 	}

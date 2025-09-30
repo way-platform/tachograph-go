@@ -40,12 +40,14 @@ const (
 // - 'xxx': RFU
 type ControlType struct {
 	state                          protoimpl.MessageState `protogen:"opaque.v1"`
-	xxx_hidden_RawValue            []byte                 `protobuf:"bytes,6,opt,name=raw_value,json=rawValue,proto3"`
-	xxx_hidden_CardDownloading     bool                   `protobuf:"varint,1,opt,name=card_downloading,json=cardDownloading,proto3"`
-	xxx_hidden_VuDownloading       bool                   `protobuf:"varint,2,opt,name=vu_downloading,json=vuDownloading,proto3"`
-	xxx_hidden_Printing            bool                   `protobuf:"varint,3,opt,name=printing,proto3"`
-	xxx_hidden_Display             bool                   `protobuf:"varint,4,opt,name=display,proto3"`
-	xxx_hidden_CalibrationChecking bool                   `protobuf:"varint,5,opt,name=calibration_checking,json=calibrationChecking,proto3"`
+	xxx_hidden_RawValue            []byte                 `protobuf:"bytes,6,opt,name=raw_value,json=rawValue"`
+	xxx_hidden_CardDownloading     bool                   `protobuf:"varint,1,opt,name=card_downloading,json=cardDownloading"`
+	xxx_hidden_VuDownloading       bool                   `protobuf:"varint,2,opt,name=vu_downloading,json=vuDownloading"`
+	xxx_hidden_Printing            bool                   `protobuf:"varint,3,opt,name=printing"`
+	xxx_hidden_Display             bool                   `protobuf:"varint,4,opt,name=display"`
+	xxx_hidden_CalibrationChecking bool                   `protobuf:"varint,5,opt,name=calibration_checking,json=calibrationChecking"`
+	XXX_raceDetectHookData         protoimpl.RaceDetectHookData
+	XXX_presence                   [1]uint32
 	unknownFields                  protoimpl.UnknownFields
 	sizeCache                      protoimpl.SizeCache
 }
@@ -122,26 +124,104 @@ func (x *ControlType) SetRawValue(v []byte) {
 		v = []byte{}
 	}
 	x.xxx_hidden_RawValue = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 6)
 }
 
 func (x *ControlType) SetCardDownloading(v bool) {
 	x.xxx_hidden_CardDownloading = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 6)
 }
 
 func (x *ControlType) SetVuDownloading(v bool) {
 	x.xxx_hidden_VuDownloading = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 6)
 }
 
 func (x *ControlType) SetPrinting(v bool) {
 	x.xxx_hidden_Printing = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 3, 6)
 }
 
 func (x *ControlType) SetDisplay(v bool) {
 	x.xxx_hidden_Display = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 4, 6)
 }
 
 func (x *ControlType) SetCalibrationChecking(v bool) {
 	x.xxx_hidden_CalibrationChecking = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 5, 6)
+}
+
+func (x *ControlType) HasRawValue() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 0)
+}
+
+func (x *ControlType) HasCardDownloading() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 1)
+}
+
+func (x *ControlType) HasVuDownloading() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 2)
+}
+
+func (x *ControlType) HasPrinting() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 3)
+}
+
+func (x *ControlType) HasDisplay() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 4)
+}
+
+func (x *ControlType) HasCalibrationChecking() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 5)
+}
+
+func (x *ControlType) ClearRawValue() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 0)
+	x.xxx_hidden_RawValue = nil
+}
+
+func (x *ControlType) ClearCardDownloading() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 1)
+	x.xxx_hidden_CardDownloading = false
+}
+
+func (x *ControlType) ClearVuDownloading() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 2)
+	x.xxx_hidden_VuDownloading = false
+}
+
+func (x *ControlType) ClearPrinting() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 3)
+	x.xxx_hidden_Printing = false
+}
+
+func (x *ControlType) ClearDisplay() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 4)
+	x.xxx_hidden_Display = false
+}
+
+func (x *ControlType) ClearCalibrationChecking() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 5)
+	x.xxx_hidden_CalibrationChecking = false
 }
 
 type ControlType_builder struct {
@@ -153,31 +233,49 @@ type ControlType_builder struct {
 	RawValue []byte
 	// Indicates if the card was downloaded during the control (bit 'c').
 	// This is a convenience field derived from `raw_value`.
-	CardDownloading bool
+	CardDownloading *bool
 	// Indicates if the VU was downloaded during the control (bit 'v').
 	// This is a convenience field derived from `raw_value`.
-	VuDownloading bool
+	VuDownloading *bool
 	// Indicates if a printout was made during the control (bit 'p').
 	// This is a convenience field derived from `raw_value`.
-	Printing bool
+	Printing *bool
 	// Indicates if the display was used during the control (bit 'd').
 	// This is a convenience field derived from `raw_value`.
-	Display bool
+	Display *bool
 	// Indicates if calibration parameters were checked (Gen2+ only) (bit 'e').
 	// This is a convenience field derived from `raw_value`.
-	CalibrationChecking bool
+	CalibrationChecking *bool
 }
 
 func (b0 ControlType_builder) Build() *ControlType {
 	m0 := &ControlType{}
 	b, x := &b0, m0
 	_, _ = b, x
-	x.xxx_hidden_RawValue = b.RawValue
-	x.xxx_hidden_CardDownloading = b.CardDownloading
-	x.xxx_hidden_VuDownloading = b.VuDownloading
-	x.xxx_hidden_Printing = b.Printing
-	x.xxx_hidden_Display = b.Display
-	x.xxx_hidden_CalibrationChecking = b.CalibrationChecking
+	if b.RawValue != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 6)
+		x.xxx_hidden_RawValue = b.RawValue
+	}
+	if b.CardDownloading != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 6)
+		x.xxx_hidden_CardDownloading = *b.CardDownloading
+	}
+	if b.VuDownloading != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 6)
+		x.xxx_hidden_VuDownloading = *b.VuDownloading
+	}
+	if b.Printing != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 3, 6)
+		x.xxx_hidden_Printing = *b.Printing
+	}
+	if b.Display != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 4, 6)
+		x.xxx_hidden_Display = *b.Display
+	}
+	if b.CalibrationChecking != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 5, 6)
+		x.xxx_hidden_CalibrationChecking = *b.CalibrationChecking
+	}
 	return m0
 }
 
@@ -193,7 +291,7 @@ const file_wayplatform_connect_tachograph_dd_v1_control_type_proto_rawDesc = "" 
 	"\bprinting\x18\x03 \x01(\bR\bprinting\x12\x18\n" +
 	"\adisplay\x18\x04 \x01(\bR\adisplay\x121\n" +
 	"\x14calibration_checking\x18\x05 \x01(\bR\x13calibrationCheckingB\xcf\x02\n" +
-	"(com.wayplatform.connect.tachograph.dd.v1B\x10ControlTypeProtoP\x01Z\\github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1;ddv1\xa2\x02\x04WCTD\xaa\x02$Wayplatform.Connect.Tachograph.Dd.V1\xca\x02$Wayplatform\\Connect\\Tachograph\\Dd\\V1\xe2\x020Wayplatform\\Connect\\Tachograph\\Dd\\V1\\GPBMetadata\xea\x02(Wayplatform::Connect::Tachograph::Dd::V1b\x06proto3"
+	"(com.wayplatform.connect.tachograph.dd.v1B\x10ControlTypeProtoP\x01Z\\github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1;ddv1\xa2\x02\x04WCTD\xaa\x02$Wayplatform.Connect.Tachograph.Dd.V1\xca\x02$Wayplatform\\Connect\\Tachograph\\Dd\\V1\xe2\x020Wayplatform\\Connect\\Tachograph\\Dd\\V1\\GPBMetadata\xea\x02(Wayplatform::Connect::Tachograph::Dd::V1b\beditionsp\xe8\a"
 
 var file_wayplatform_connect_tachograph_dd_v1_control_type_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_wayplatform_connect_tachograph_dd_v1_control_type_proto_goTypes = []any{

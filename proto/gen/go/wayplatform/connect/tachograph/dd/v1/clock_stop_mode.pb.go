@@ -113,7 +113,7 @@ const file_wayplatform_connect_tachograph_dd_v1_clock_stop_mode_proto_rawDesc = 
 	"\x1cALLOWED_HIGH_LEVEL_PREFERRED\x10\x05\x1a\x05\x98\xaf\x9c\x02\x03\x12!\n" +
 	"\x16ALLOWED_ONLY_LOW_LEVEL\x10\x06\x1a\x05\x98\xaf\x9c\x02\x04\x12&\n" +
 	"\x1bALLOWED_LOW_LEVEL_PREFERRED\x10\a\x1a\x05\x98\xaf\x9c\x02\x05B\xd1\x02\n" +
-	"(com.wayplatform.connect.tachograph.dd.v1B\x12ClockStopModeProtoP\x01Z\\github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1;ddv1\xa2\x02\x04WCTD\xaa\x02$Wayplatform.Connect.Tachograph.Dd.V1\xca\x02$Wayplatform\\Connect\\Tachograph\\Dd\\V1\xe2\x020Wayplatform\\Connect\\Tachograph\\Dd\\V1\\GPBMetadata\xea\x02(Wayplatform::Connect::Tachograph::Dd::V1b\x06proto3"
+	"(com.wayplatform.connect.tachograph.dd.v1B\x12ClockStopModeProtoP\x01Z\\github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1;ddv1\xa2\x02\x04WCTD\xaa\x02$Wayplatform.Connect.Tachograph.Dd.V1\xca\x02$Wayplatform\\Connect\\Tachograph\\Dd\\V1\xe2\x020Wayplatform\\Connect\\Tachograph\\Dd\\V1\\GPBMetadata\xea\x02(Wayplatform::Connect::Tachograph::Dd::V1b\beditionsp\xe8\a"
 
 var file_wayplatform_connect_tachograph_dd_v1_clock_stop_mode_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
 var file_wayplatform_connect_tachograph_dd_v1_clock_stop_mode_proto_goTypes = []any{

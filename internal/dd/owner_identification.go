@@ -94,7 +94,7 @@ func AppendOwnerIdentification(dst []byte, ownerID *ddv1.OwnerIdentification) ([
 	identificationNumber := ownerID.GetOwnerIdentification()
 	var err error
 	if identificationNumber != nil {
-		dst, err = AppendString(dst, identificationNumber.GetDecoded(), 13)
+		dst, err = AppendString(dst, identificationNumber.GetValue(), 13)
 	} else {
 		dst, err = AppendString(dst, "", 13)
 	}
@@ -105,7 +105,7 @@ func AppendOwnerIdentification(dst []byte, ownerID *ddv1.OwnerIdentification) ([
 	// Append card consecutive index (1 byte)
 	consecutiveIndex := ownerID.GetConsecutiveIndex()
 	if consecutiveIndex != nil {
-		dst, err = AppendString(dst, consecutiveIndex.GetDecoded(), 1)
+		dst, err = AppendString(dst, consecutiveIndex.GetValue(), 1)
 	} else {
 		dst, err = AppendString(dst, "", 1)
 	}
@@ -116,7 +116,7 @@ func AppendOwnerIdentification(dst []byte, ownerID *ddv1.OwnerIdentification) ([
 	// Append card replacement index (1 byte)
 	replacementIndex := ownerID.GetReplacementIndex()
 	if replacementIndex != nil {
-		dst, err = AppendString(dst, replacementIndex.GetDecoded(), 1)
+		dst, err = AppendString(dst, replacementIndex.GetValue(), 1)
 	} else {
 		dst, err = AppendString(dst, "", 1)
 	}
@@ -127,7 +127,7 @@ func AppendOwnerIdentification(dst []byte, ownerID *ddv1.OwnerIdentification) ([
 	// Append card renewal index (1 byte)
 	renewalIndex := ownerID.GetRenewalIndex()
 	if renewalIndex != nil {
-		dst, err = AppendString(dst, renewalIndex.GetDecoded(), 1)
+		dst, err = AppendString(dst, renewalIndex.GetValue(), 1)
 	} else {
 		dst, err = AppendString(dst, "", 1)
 	}

@@ -94,7 +94,7 @@ func AppendHolderName(dst []byte, holderName *ddv1.HolderName) ([]byte, error) {
 	surname := holderName.GetHolderSurname()
 	if surname != nil {
 		dst = append(dst, byte(surname.GetEncoding()))
-		nameBytes := []byte(surname.GetDecoded())
+		nameBytes := []byte(surname.GetValue())
 		dst = append(dst, byte(len(nameBytes)))
 		dst = append(dst, nameBytes...)
 	} else {
@@ -105,7 +105,7 @@ func AppendHolderName(dst []byte, holderName *ddv1.HolderName) ([]byte, error) {
 	firstNames := holderName.GetHolderFirstNames()
 	if firstNames != nil {
 		dst = append(dst, byte(firstNames.GetEncoding()))
-		nameBytes := []byte(firstNames.GetDecoded())
+		nameBytes := []byte(firstNames.GetValue())
 		dst = append(dst, byte(len(nameBytes)))
 		dst = append(dst, nameBytes...)
 	} else {

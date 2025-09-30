@@ -33,14 +33,15 @@ func UnmarshalStringValue(input []byte) (*ddv1.StringValue, error) {
 
 	var output ddv1.StringValue
 	output.SetEncoding(getEncodingFromCodePage(codePage))
-	output.SetEncoded(data)
+	output.SetRawData(data)
+	output.SetLength(uint32(len(data)))
 
 	// Decode the string based on the code page
 	decoded, err := decodeWithCodePage(codePage, data)
 	if err != nil {
 		return nil, fmt.Errorf("failed to decode string with code page %d: %w", codePage, err)
 	}
-	output.SetDecoded(decoded)
+	output.SetValue(decoded)
 
 	return &output, nil
 }
@@ -60,7 +61,8 @@ func UnmarshalIA5StringValue(input []byte) (*ddv1.StringValue, error) {
 
 	var output ddv1.StringValue
 	output.SetEncoding(ddv1.Encoding_IA5)
-	output.SetEncoded(input)
+	output.SetRawData(input)
+	output.SetLength(uint32(len(input))) // Store the length for self-describing marshalling
 
 	// Decode and trim the input bytes
 	trimmed := trimSpaceAndZeroBytes(input)
@@ -72,9 +74,93 @@ func UnmarshalIA5StringValue(input []byte) (*ddv1.StringValue, error) {
 		decoded = strings.ToValidUTF8(decoded, string(utf8.RuneError))
 	}
 
-	output.SetDecoded(decoded)
+	output.SetValue(decoded)
 
 	return &output, nil
+}
+
+// AppendStringValue appends a StringValue to dst.
+//
+// This function handles two ASN.1 formats based on the encoding:
+//
+//  1. IA5String format (Encoding_IA5):
+//     Fixed-length ASCII strings defined as:
+//     IA5String ::= OCTET STRING (SIZE(N))
+//     Binary Layout: stringData (N bytes, space-padded)
+//     The length is taken from the StringValue's 'length' field.
+//
+//  2. Code-paged format (other encodings):
+//     Variable-length strings with code page prefix, defined as:
+//     StringValue ::= SEQUENCE {
+//     codePage    OCTET STRING (SIZE(1)),
+//     stringData  OCTET STRING (SIZE(0..255))
+//     }
+//     Binary Layout: codePage (1 byte) + stringData (variable bytes)
+//
+// The function prefers to use 'raw_data' bytes if available (for round-trip fidelity),
+// otherwise it encodes the 'value' string using the specified encoding.
+//
+// If both raw_data and length are provided, they must agree or an error is returned.
+func AppendStringValue(dst []byte, sv *ddv1.StringValue) ([]byte, error) {
+	// Handle nil
+	if sv == nil {
+		// Empty string value: code page 255 (EMPTY) + no data
+		return append(dst, 0xFF), nil
+	}
+
+	// Validate that raw_data and length agree if both are provided
+	if sv.HasRawData() && sv.HasLength() {
+		rawData := sv.GetRawData()
+		length := int(sv.GetLength())
+		if len(rawData) != length {
+			return nil, fmt.Errorf("raw_data length (%d) does not match length field (%d)", len(rawData), length)
+		}
+	}
+
+	// Handle IA5String format (fixed-length, no code page)
+	if sv.GetEncoding() == ddv1.Encoding_IA5 {
+		if !sv.HasLength() {
+			return nil, fmt.Errorf("IA5String requires length field to be set")
+		}
+
+		length := int(sv.GetLength())
+
+		// Prefer raw bytes if available and of correct length
+		if sv.HasRawData() && len(sv.GetRawData()) == length {
+			return append(dst, sv.GetRawData()...), nil
+		}
+
+		// Fallback: use value string and pad with spaces
+		return AppendString(dst, sv.GetValue(), length)
+	}
+
+	// Handle code-paged format (variable-length with code page byte)
+
+	// Determine the code page byte
+	codePage := getCodePageFromEncoding(sv.GetEncoding())
+
+	// Prefer raw bytes if available (round-trip fidelity)
+	if raw := sv.GetRawData(); len(raw) > 0 {
+		dst = append(dst, codePage)
+		return append(dst, raw...), nil
+	}
+
+	// Fallback: encode the value string
+	value := sv.GetValue()
+	if value == "" {
+		// Empty string
+		return append(dst, codePage), nil
+	}
+
+	// For now, we only support encoding to ISO-8859-1 and IA5 (ASCII)
+	// More sophisticated encoding would require charmap encoding
+	encoded, err := encodeWithCodePage(codePage, value)
+	if err != nil {
+		return nil, fmt.Errorf("failed to encode string with code page %d: %w", codePage, err)
+	}
+
+	dst = append(dst, codePage)
+	return append(dst, encoded...), nil
 }
 
 // getEncodingFromCodePage maps a code page byte to the corresponding Encoding enum.
@@ -186,76 +272,6 @@ func decodeWithCodePage(codePage byte, data []byte) (string, error) {
 	}
 
 	return trimmed, nil
-}
-
-// AppendStringValue appends a StringValue to dst.
-//
-// This function handles two ASN.1 formats based on the encoding:
-//
-//  1. IA5String format (Encoding_IA5):
-//     Fixed-length ASCII strings defined as:
-//     IA5String ::= OCTET STRING (SIZE(N))
-//     Binary Layout: stringData (N bytes, space-padded)
-//
-//  2. Code-paged format (other encodings):
-//     Variable-length strings with code page prefix, defined as:
-//     StringValue ::= SEQUENCE {
-//     codePage    OCTET STRING (SIZE(1)),
-//     stringData  OCTET STRING (SIZE(0..255))
-//     }
-//     Binary Layout: codePage (1 byte) + stringData (variable bytes)
-//
-// The function prefers to use 'encoded' bytes if available (for round-trip fidelity),
-// otherwise it encodes the 'decoded' string using the specified encoding.
-func AppendStringValue(dst []byte, sv *ddv1.StringValue, length int) ([]byte, error) {
-	// Handle IA5String format (fixed-length, no code page)
-	if sv != nil && sv.GetEncoding() == ddv1.Encoding_IA5 {
-		// Prefer encoded bytes if available and of correct length
-		if encoded := sv.GetEncoded(); len(encoded) == length {
-			return append(dst, encoded...), nil
-		}
-
-		// Fallback: use decoded string and pad with spaces
-		return AppendString(dst, sv.GetDecoded(), length)
-	}
-
-	// Handle nil for IA5 case - must check length to determine format
-	if sv == nil && length > 0 {
-		// This is likely an IA5String field that's nil
-		return AppendString(dst, "", length)
-	}
-
-	// Handle code-paged format (variable-length with code page byte)
-	if sv == nil {
-		// Empty string value: code page 255 (EMPTY) + no data
-		return append(dst, 0xFF), nil
-	}
-
-	// Determine the code page byte
-	codePage := getCodePageFromEncoding(sv.GetEncoding())
-
-	// Prefer encoded bytes if available (round-trip fidelity)
-	if encoded := sv.GetEncoded(); len(encoded) > 0 {
-		dst = append(dst, codePage)
-		return append(dst, encoded...), nil
-	}
-
-	// Fallback: encode the decoded string
-	decoded := sv.GetDecoded()
-	if decoded == "" {
-		// Empty string
-		return append(dst, codePage), nil
-	}
-
-	// For now, we only support encoding to ISO-8859-1 and IA5 (ASCII)
-	// More sophisticated encoding would require charmap encoding
-	encoded, err := encodeWithCodePage(codePage, decoded)
-	if err != nil {
-		return nil, fmt.Errorf("failed to encode string with code page %d: %w", codePage, err)
-	}
-
-	dst = append(dst, codePage)
-	return append(dst, encoded...), nil
 }
 
 // getCodePageFromEncoding maps an Encoding enum to a code page byte.

@@ -336,7 +336,7 @@ func appendOverviewGen1(buf *bytes.Buffer, overview *vuv1.Overview) {
 	// VehicleIdentificationNumber (17 bytes)
 	vin := overview.GetVehicleIdentificationNumber()
 	if vin != nil {
-		buf.Write(appendVuString(nil, vin.GetDecoded(), 17))
+		buf.Write(appendVuString(nil, vin.GetValue(), 17))
 	} else {
 		buf.Write(appendVuString(nil, "", 17))
 	}
@@ -350,7 +350,7 @@ func appendOverviewGen1(buf *bytes.Buffer, overview *vuv1.Overview) {
 		// Registration number (13 bytes)
 		number := vehicleReg.GetNumber()
 		if number != nil {
-			buf.Write(appendVuString(nil, number.GetDecoded(), 13))
+			buf.Write(appendVuString(nil, number.GetValue(), 13))
 		} else {
 			buf.Write(appendVuString(nil, "", 13))
 		}
@@ -396,13 +396,13 @@ func appendOverviewGen1(buf *bytes.Buffer, overview *vuv1.Overview) {
 		buf.Write(appendVuTimeReal(nil, lock.GetLockOutTime()))
 		companyName := lock.GetCompanyName()
 		if companyName != nil {
-			buf.Write(appendVuString(nil, companyName.GetDecoded(), 36))
+			buf.Write(appendVuString(nil, companyName.GetValue(), 36))
 		} else {
 			buf.Write(appendVuString(nil, "", 36))
 		}
 		companyAddress := lock.GetCompanyAddress()
 		if companyAddress != nil {
-			buf.Write(appendVuString(nil, companyAddress.GetDecoded(), 36))
+			buf.Write(appendVuString(nil, companyAddress.GetValue(), 36))
 		} else {
 			buf.Write(appendVuString(nil, "", 36))
 		}
@@ -650,7 +650,7 @@ func appendVehicleIdentificationNumberRecordArray(buf *bytes.Buffer, vins []*ddv
 	// For now, implement a simplified version that writes a single VIN
 	if len(vins) > 0 && vins[0] != nil {
 		vinBytes := make([]byte, 17)
-		copy(vinBytes, []byte(vins[0].GetDecoded()))
+		copy(vinBytes, []byte(vins[0].GetValue()))
 		buf.Write(vinBytes)
 	}
 }
@@ -683,7 +683,7 @@ func appendVehicleRegistrationIdentificationRecordArray(buf *bytes.Buffer, regs 
 		buf.WriteByte(byte(reg.GetNation()))
 		regBytes := make([]byte, 14)
 		regBytes[0] = 0 // Codepage
-		copy(regBytes[1:], []byte(reg.GetNumber().GetDecoded()))
+		copy(regBytes[1:], []byte(reg.GetNumber().GetValue()))
 		buf.Write(regBytes)
 	}
 }

@@ -100,7 +100,7 @@ const file_wayplatform_connect_tachograph_dd_v1_load_type_proto_rawDesc = "" +
 	"\x05GOODS\x10\x03\x1a\x05\x98\xaf\x9c\x02\x01\x12\x15\n" +
 	"\n" +
 	"PASSENGERS\x10\x04\x1a\x05\x98\xaf\x9c\x02\x02B\xcc\x02\n" +
-	"(com.wayplatform.connect.tachograph.dd.v1B\rLoadTypeProtoP\x01Z\\github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1;ddv1\xa2\x02\x04WCTD\xaa\x02$Wayplatform.Connect.Tachograph.Dd.V1\xca\x02$Wayplatform\\Connect\\Tachograph\\Dd\\V1\xe2\x020Wayplatform\\Connect\\Tachograph\\Dd\\V1\\GPBMetadata\xea\x02(Wayplatform::Connect::Tachograph::Dd::V1b\x06proto3"
+	"(com.wayplatform.connect.tachograph.dd.v1B\rLoadTypeProtoP\x01Z\\github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1;ddv1\xa2\x02\x04WCTD\xaa\x02$Wayplatform.Connect.Tachograph.Dd.V1\xca\x02$Wayplatform\\Connect\\Tachograph\\Dd\\V1\xe2\x020Wayplatform\\Connect\\Tachograph\\Dd\\V1\\GPBMetadata\xea\x02(Wayplatform::Connect::Tachograph::Dd::V1b\beditionsp\xe8\a"
 
 var file_wayplatform_connect_tachograph_dd_v1_load_type_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
 var file_wayplatform_connect_tachograph_dd_v1_load_type_proto_goTypes = []any{
