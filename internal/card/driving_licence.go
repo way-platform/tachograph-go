@@ -48,10 +48,10 @@ func unmarshalDrivingLicenceInfo(data []byte) (*cardv1.DrivingLicenceInfo, error
 	if offset+1 > len(data) {
 		return nil, fmt.Errorf("insufficient data for driving licence issuing nation")
 	}
-	nationByte := data[offset]
-	if enumNum, found := dd.GetEnumForProtocolValue(ddv1.NationNumeric_NATION_NUMERIC_UNSPECIFIED.Descriptor(), int32(nationByte)); found {
-		dli.SetDrivingLicenceIssuingNation(ddv1.NationNumeric(enumNum))
+	if nation, err := dd.UnmarshalEnum[ddv1.NationNumeric](data[offset]); err == nil {
+		dli.SetDrivingLicenceIssuingNation(nation)
 	} else {
+		// Value not recognized - set UNRECOGNIZED (no unrecognized field for this type)
 		dli.SetDrivingLicenceIssuingNation(ddv1.NationNumeric_NATION_NUMERIC_UNRECOGNIZED)
 	}
 	offset++

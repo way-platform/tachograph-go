@@ -226,7 +226,8 @@ func TestAppendVehicleRegistration(t *testing.T) {
 				vr.SetNumber(num)
 				return vr
 			}(),
-			want: []byte{0xFF, 0x41, 0x42, 0x43, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20},
+			want:    nil,
+			wantErr: true, // UNSPECIFIED has no protocol_enum_value
 		},
 		{
 			name: "Unrecognized nation",
@@ -240,7 +241,8 @@ func TestAppendVehicleRegistration(t *testing.T) {
 				vr.SetNumber(num)
 				return vr
 			}(),
-			want: []byte{0xFF, 0x54, 0x45, 0x53, 0x54, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20},
+			want:    nil,
+			wantErr: true, // UNRECOGNIZED requires unrecognized_ field (not present)
 		},
 		{
 			name:       "nil vehicle registration",

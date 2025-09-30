@@ -23,6 +23,20 @@ const (
 
 // Represents information about the previous vehicle used by a driver.
 //
+// This message is used in VU downloads (VuCardIWRecord) to track the vehicle
+// a driver was using before inserting their card into the current vehicle.
+//
+// Binary Layout:
+//
+//	Gen1: 19 bytes
+//	  - vehicleRegistrationIdentification: 15 bytes (1 nation + 14 registration)
+//	  - cardWithdrawalTime: 4 bytes
+//
+//	Gen2: 20 bytes
+//	  - vehicleRegistrationIdentification: 15 bytes (1 nation + 14 registration)
+//	  - cardWithdrawalTime: 4 bytes
+//	  - vuGeneration: 1 byte
+//
 // See Data Dictionary, Section 2.118, `PreviousVehicleInfo`.
 //
 // ASN.1 Definition (Gen1):

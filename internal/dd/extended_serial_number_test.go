@@ -157,7 +157,8 @@ func TestAppendExtendedSerialNumber(t *testing.T) {
 				esn.SetManufacturerCode(0)
 				return esn
 			}(),
-			want: []byte{0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00},
+			want:    nil,
+			wantErr: true, // UNSPECIFIED has no protocol_enum_value
 		},
 	}
 

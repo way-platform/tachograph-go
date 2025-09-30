@@ -231,6 +231,9 @@ message Activities {
     //
     // See Data Dictionary, Section 2.117a, `PositionAuthenticationStatus`.
     dd.v1.PositionAuthenticationStatus authentication_status = 5;
+
+    // Preserved raw protocol value when authentication_status is UNRECOGNIZED.
+    int32 unrecognized_authentication_status = 6;
   }
 
   // Represents a border crossing record (Gen2v2+).

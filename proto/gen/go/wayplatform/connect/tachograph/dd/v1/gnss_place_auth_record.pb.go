@@ -43,15 +43,16 @@ const (
 //	    authenticationStatus PositionAuthenticationStatus
 //	}
 type GNSSPlaceAuthRecord struct {
-	state                           protoimpl.MessageState       `protogen:"opaque.v1"`
-	xxx_hidden_Timestamp            *timestamppb.Timestamp       `protobuf:"bytes,1,opt,name=timestamp"`
-	xxx_hidden_GnssAccuracy         int32                        `protobuf:"varint,2,opt,name=gnss_accuracy,json=gnssAccuracy"`
-	xxx_hidden_GeoCoordinates       *GeoCoordinates              `protobuf:"bytes,3,opt,name=geo_coordinates,json=geoCoordinates"`
-	xxx_hidden_AuthenticationStatus PositionAuthenticationStatus `protobuf:"varint,4,opt,name=authentication_status,json=authenticationStatus,enum=wayplatform.connect.tachograph.dd.v1.PositionAuthenticationStatus"`
-	XXX_raceDetectHookData          protoimpl.RaceDetectHookData
-	XXX_presence                    [1]uint32
-	unknownFields                   protoimpl.UnknownFields
-	sizeCache                       protoimpl.SizeCache
+	state                                       protoimpl.MessageState       `protogen:"opaque.v1"`
+	xxx_hidden_Timestamp                        *timestamppb.Timestamp       `protobuf:"bytes,1,opt,name=timestamp"`
+	xxx_hidden_GnssAccuracy                     int32                        `protobuf:"varint,2,opt,name=gnss_accuracy,json=gnssAccuracy"`
+	xxx_hidden_GeoCoordinates                   *GeoCoordinates              `protobuf:"bytes,3,opt,name=geo_coordinates,json=geoCoordinates"`
+	xxx_hidden_AuthenticationStatus             PositionAuthenticationStatus `protobuf:"varint,4,opt,name=authentication_status,json=authenticationStatus,enum=wayplatform.connect.tachograph.dd.v1.PositionAuthenticationStatus"`
+	xxx_hidden_UnrecognizedAuthenticationStatus int32                        `protobuf:"varint,5,opt,name=unrecognized_authentication_status,json=unrecognizedAuthenticationStatus"`
+	XXX_raceDetectHookData                      protoimpl.RaceDetectHookData
+	XXX_presence                                [1]uint32
+	unknownFields                               protoimpl.UnknownFields
+	sizeCache                                   protoimpl.SizeCache
 }
 
 func (x *GNSSPlaceAuthRecord) Reset() {
@@ -109,13 +110,20 @@ func (x *GNSSPlaceAuthRecord) GetAuthenticationStatus() PositionAuthenticationSt
 	return PositionAuthenticationStatus_POSITION_AUTHENTICATION_STATUS_UNSPECIFIED
 }
 
+func (x *GNSSPlaceAuthRecord) GetUnrecognizedAuthenticationStatus() int32 {
+	if x != nil {
+		return x.xxx_hidden_UnrecognizedAuthenticationStatus
+	}
+	return 0
+}
+
 func (x *GNSSPlaceAuthRecord) SetTimestamp(v *timestamppb.Timestamp) {
 	x.xxx_hidden_Timestamp = v
 }
 
 func (x *GNSSPlaceAuthRecord) SetGnssAccuracy(v int32) {
 	x.xxx_hidden_GnssAccuracy = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 4)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 5)
 }
 
 func (x *GNSSPlaceAuthRecord) SetGeoCoordinates(v *GeoCoordinates) {
@@ -124,7 +132,12 @@ func (x *GNSSPlaceAuthRecord) SetGeoCoordinates(v *GeoCoordinates) {
 
 func (x *GNSSPlaceAuthRecord) SetAuthenticationStatus(v PositionAuthenticationStatus) {
 	x.xxx_hidden_AuthenticationStatus = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 3, 4)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 3, 5)
+}
+
+func (x *GNSSPlaceAuthRecord) SetUnrecognizedAuthenticationStatus(v int32) {
+	x.xxx_hidden_UnrecognizedAuthenticationStatus = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 4, 5)
 }
 
 func (x *GNSSPlaceAuthRecord) HasTimestamp() bool {
@@ -155,6 +168,13 @@ func (x *GNSSPlaceAuthRecord) HasAuthenticationStatus() bool {
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 3)
 }
 
+func (x *GNSSPlaceAuthRecord) HasUnrecognizedAuthenticationStatus() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 4)
+}
+
 func (x *GNSSPlaceAuthRecord) ClearTimestamp() {
 	x.xxx_hidden_Timestamp = nil
 }
@@ -171,6 +191,11 @@ func (x *GNSSPlaceAuthRecord) ClearGeoCoordinates() {
 func (x *GNSSPlaceAuthRecord) ClearAuthenticationStatus() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 3)
 	x.xxx_hidden_AuthenticationStatus = PositionAuthenticationStatus_POSITION_AUTHENTICATION_STATUS_UNSPECIFIED
+}
+
+func (x *GNSSPlaceAuthRecord) ClearUnrecognizedAuthenticationStatus() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 4)
+	x.xxx_hidden_UnrecognizedAuthenticationStatus = 0
 }
 
 type GNSSPlaceAuthRecord_builder struct {
@@ -195,6 +220,8 @@ type GNSSPlaceAuthRecord_builder struct {
 	//
 	// See Data Dictionary, Section 2.117a, `PositionAuthenticationStatus`.
 	AuthenticationStatus *PositionAuthenticationStatus
+	// Preserved raw protocol value when authentication_status is UNRECOGNIZED.
+	UnrecognizedAuthenticationStatus *int32
 }
 
 func (b0 GNSSPlaceAuthRecord_builder) Build() *GNSSPlaceAuthRecord {
@@ -203,13 +230,17 @@ func (b0 GNSSPlaceAuthRecord_builder) Build() *GNSSPlaceAuthRecord {
 	_, _ = b, x
 	x.xxx_hidden_Timestamp = b.Timestamp
 	if b.GnssAccuracy != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 4)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 5)
 		x.xxx_hidden_GnssAccuracy = *b.GnssAccuracy
 	}
 	x.xxx_hidden_GeoCoordinates = b.GeoCoordinates
 	if b.AuthenticationStatus != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 3, 4)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 3, 5)
 		x.xxx_hidden_AuthenticationStatus = *b.AuthenticationStatus
+	}
+	if b.UnrecognizedAuthenticationStatus != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 4, 5)
+		x.xxx_hidden_UnrecognizedAuthenticationStatus = *b.UnrecognizedAuthenticationStatus
 	}
 	return m0
 }
@@ -218,12 +249,13 @@ var File_wayplatform_connect_tachograph_dd_v1_gnss_place_auth_record_proto proto
 
 const file_wayplatform_connect_tachograph_dd_v1_gnss_place_auth_record_proto_rawDesc = "" +
 	"\n" +
-	"Awayplatform/connect/tachograph/dd/v1/gnss_place_auth_record.proto\x12$wayplatform.connect.tachograph.dd.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a:wayplatform/connect/tachograph/dd/v1/geo_coordinates.proto\x1aIwayplatform/connect/tachograph/dd/v1/position_authentication_status.proto\"\xcc\x02\n" +
+	"Awayplatform/connect/tachograph/dd/v1/gnss_place_auth_record.proto\x12$wayplatform.connect.tachograph.dd.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a:wayplatform/connect/tachograph/dd/v1/geo_coordinates.proto\x1aIwayplatform/connect/tachograph/dd/v1/position_authentication_status.proto\"\x9a\x03\n" +
 	"\x13GNSSPlaceAuthRecord\x128\n" +
 	"\ttimestamp\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\ttimestamp\x12#\n" +
 	"\rgnss_accuracy\x18\x02 \x01(\x05R\fgnssAccuracy\x12]\n" +
 	"\x0fgeo_coordinates\x18\x03 \x01(\v24.wayplatform.connect.tachograph.dd.v1.GeoCoordinatesR\x0egeoCoordinates\x12w\n" +
-	"\x15authentication_status\x18\x04 \x01(\x0e2B.wayplatform.connect.tachograph.dd.v1.PositionAuthenticationStatusR\x14authenticationStatusB\xd7\x02\n" +
+	"\x15authentication_status\x18\x04 \x01(\x0e2B.wayplatform.connect.tachograph.dd.v1.PositionAuthenticationStatusR\x14authenticationStatus\x12L\n" +
+	"\"unrecognized_authentication_status\x18\x05 \x01(\x05R unrecognizedAuthenticationStatusB\xd7\x02\n" +
 	"(com.wayplatform.connect.tachograph.dd.v1B\x18GnssPlaceAuthRecordProtoP\x01Z\\github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1;ddv1\xa2\x02\x04WCTD\xaa\x02$Wayplatform.Connect.Tachograph.Dd.V1\xca\x02$Wayplatform\\Connect\\Tachograph\\Dd\\V1\xe2\x020Wayplatform\\Connect\\Tachograph\\Dd\\V1\\GPBMetadata\xea\x02(Wayplatform::Connect::Tachograph::Dd::V1b\beditionsp\xe8\a"
 
 var file_wayplatform_connect_tachograph_dd_v1_gnss_place_auth_record_proto_msgTypes = make([]protoimpl.MessageInfo, 1)

@@ -3,8 +3,6 @@ package dd
 import (
 	"fmt"
 
-	"google.golang.org/protobuf/reflect/protoreflect"
-
 	ddv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
 )
 
@@ -63,28 +61,20 @@ func (opts UnmarshalOptions) UnmarshalPlaceRecord(data []byte) (*ddv1.PlaceRecor
 	record.SetEntryTime(entryTime)
 
 	// Parse entryTypeDailyWorkPeriod (1 byte)
-	SetEnumFromProtocolValueGeneric(
-		ddv1.EntryTypeDailyWorkPeriod_ENTRY_TYPE_DAILY_WORK_PERIOD_UNSPECIFIED.Descriptor(),
-		int32(data[idxEntryType]),
-		func(enumNum protoreflect.EnumNumber) {
-			record.SetEntryTypeDailyWorkPeriod(ddv1.EntryTypeDailyWorkPeriod(enumNum))
-		},
-		func(rawValue int32) {
-			record.SetUnrecognizedEntryTypeDailyWorkPeriod(rawValue)
-		},
-	)
+	if entryType, err := UnmarshalEnum[ddv1.EntryTypeDailyWorkPeriod](data[idxEntryType]); err == nil {
+		record.SetEntryTypeDailyWorkPeriod(entryType)
+	} else {
+		record.SetEntryTypeDailyWorkPeriod(ddv1.EntryTypeDailyWorkPeriod_ENTRY_TYPE_DAILY_WORK_PERIOD_UNRECOGNIZED)
+		record.SetUnrecognizedEntryTypeDailyWorkPeriod(int32(data[idxEntryType]))
+	}
 
 	// Parse dailyWorkPeriodCountry (NationNumeric - 1 byte)
-	SetEnumFromProtocolValueGeneric(
-		ddv1.NationNumeric_NATION_NUMERIC_UNSPECIFIED.Descriptor(),
-		int32(data[idxCountry]),
-		func(enumNum protoreflect.EnumNumber) {
-			record.SetDailyWorkPeriodCountry(ddv1.NationNumeric(enumNum))
-		},
-		func(rawValue int32) {
-			record.SetUnrecognizedDailyWorkPeriodCountry(rawValue)
-		},
-	)
+	if country, err := UnmarshalEnum[ddv1.NationNumeric](data[idxCountry]); err == nil {
+		record.SetDailyWorkPeriodCountry(country)
+	} else {
+		record.SetDailyWorkPeriodCountry(ddv1.NationNumeric_NATION_NUMERIC_UNRECOGNIZED)
+		record.SetUnrecognizedDailyWorkPeriodCountry(int32(data[idxCountry]))
+	}
 
 	// Parse dailyWorkPeriodRegion (RegionNumeric - 1 byte)
 	record.SetDailyWorkPeriodRegion([]byte{data[idxRegion]})
@@ -178,12 +168,30 @@ func AppendPlaceRecord(dst []byte, record *ddv1.PlaceRecord) ([]byte, error) {
 	copy(canvas[idxEntryTime:idxEntryTime+4], timeBytes)
 
 	// Paint entryTypeDailyWorkPeriod (1 byte)
-	entryTypeValue, _ := GetProtocolValueForEnum(record.GetEntryTypeDailyWorkPeriod())
-	canvas[idxEntryType] = byte(entryTypeValue)
+	var entryTypeValue byte
+	if record.GetEntryTypeDailyWorkPeriod() == ddv1.EntryTypeDailyWorkPeriod_ENTRY_TYPE_DAILY_WORK_PERIOD_UNRECOGNIZED {
+		entryTypeValue = byte(record.GetUnrecognizedEntryTypeDailyWorkPeriod())
+	} else {
+		var err error
+		entryTypeValue, err = MarshalEnum(record.GetEntryTypeDailyWorkPeriod())
+		if err != nil {
+			return nil, fmt.Errorf("failed to marshal entry type: %w", err)
+		}
+	}
+	canvas[idxEntryType] = entryTypeValue
 
 	// Paint dailyWorkPeriodCountry (1 byte)
-	countryValue, _ := GetProtocolValueForEnum(record.GetDailyWorkPeriodCountry())
-	canvas[idxCountry] = byte(countryValue)
+	var countryValue byte
+	if record.GetDailyWorkPeriodCountry() == ddv1.NationNumeric_NATION_NUMERIC_UNRECOGNIZED {
+		countryValue = byte(record.GetUnrecognizedDailyWorkPeriodCountry())
+	} else {
+		var err error
+		countryValue, err = MarshalEnum(record.GetDailyWorkPeriodCountry())
+		if err != nil {
+			return nil, fmt.Errorf("failed to marshal country: %w", err)
+		}
+	}
+	canvas[idxCountry] = countryValue
 
 	// Paint dailyWorkPeriodRegion (1 byte)
 	region := record.GetDailyWorkPeriodRegion()

@@ -36,11 +36,11 @@ func (opts UnmarshalOptions) UnmarshalFullCardNumberAndGeneration(data []byte) (
 	}
 
 	// Parse generation (last byte)
-	generation, err := opts.UnmarshalGeneration(data[len(data)-1:])
-	if err != nil {
+	if generation, err := UnmarshalEnum[ddv1.Generation](data[len(data)-1]); err == nil {
+		fullCardNumberAndGen.SetGeneration(generation)
+	} else {
 		return nil, fmt.Errorf("failed to parse generation: %w", err)
 	}
-	fullCardNumberAndGen.SetGeneration(generation)
 
 	// Parse full card number (everything except the last byte)
 	fullCardNumberData := data[:len(data)-1]
@@ -85,8 +85,11 @@ func AppendFullCardNumberAndGeneration(dst []byte, fullCardNumberAndGen *ddv1.Fu
 	}
 
 	// Append generation (1 byte)
-	generation := fullCardNumberAndGen.GetGeneration()
-	dst = append(dst, byte(generation))
+	generationByte, err := MarshalEnum(fullCardNumberAndGen.GetGeneration())
+	if err != nil {
+		return nil, fmt.Errorf("failed to append generation: %w", err)
+	}
+	dst = append(dst, generationByte)
 
 	return dst, nil
 }

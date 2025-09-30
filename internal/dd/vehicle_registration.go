@@ -30,10 +30,10 @@ func (opts UnmarshalOptions) UnmarshalVehicleRegistration(data []byte) (*ddv1.Ve
 	vehicleReg := &ddv1.VehicleRegistrationIdentification{}
 
 	// Read nation code (1 byte) and convert using protocol annotations
-	nationByte := data[0]
-	if enumNum, found := GetEnumForProtocolValue(ddv1.NationNumeric_NATION_NUMERIC_UNSPECIFIED.Descriptor(), int32(nationByte)); found {
-		vehicleReg.SetNation(ddv1.NationNumeric(enumNum))
+	if nation, err := UnmarshalEnum[ddv1.NationNumeric](data[0]); err == nil {
+		vehicleReg.SetNation(nation)
 	} else {
+		// Value not recognized - set UNRECOGNIZED (no unrecognized field for this type)
 		vehicleReg.SetNation(ddv1.NationNumeric_NATION_NUMERIC_UNRECOGNIZED)
 	}
 
@@ -68,12 +68,18 @@ func AppendVehicleRegistration(dst []byte, vehicleReg *ddv1.VehicleRegistrationI
 
 	// Append nation (1 byte) - get protocol value from enum
 	nation := vehicleReg.GetNation()
-	if protocolValue, found := GetProtocolValueForEnum(nation); found {
-		dst = append(dst, byte(protocolValue))
+	var nationByte byte
+	if nation == ddv1.NationNumeric_NATION_NUMERIC_UNRECOGNIZED {
+		// UNRECOGNIZED values should not occur during marshalling
+		return nil, fmt.Errorf("cannot marshal UNRECOGNIZED nation (no unrecognized field)")
 	} else {
-		// Default to 0xFF (EMPTY) for unspecified/unrecognized
-		dst = append(dst, 0xFF)
+		var err error
+		nationByte, err = MarshalEnum(nation)
+		if err != nil {
+			return nil, fmt.Errorf("failed to marshal nation: %w", err)
+		}
 	}
+	dst = append(dst, nationByte)
 
 	// Append registration number (14 bytes, padded with spaces)
 	number := vehicleReg.GetNumber()

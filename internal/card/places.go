@@ -9,7 +9,6 @@ import (
 
 	cardv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1"
 	ddv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
-	"google.golang.org/protobuf/reflect/protoreflect"
 )
 
 // unmarshalCardPlaces unmarshals places data from a card EF, handling both Gen1 and Gen2 formats.
@@ -204,24 +203,26 @@ func unmarshalPlaceRecord(data []byte, opts dd.UnmarshalOptions) (*ddv1.PlaceRec
 	record.SetEntryTime(entryTime)
 
 	// Read entry type (1 byte)
-	entryType, _ := r.ReadByte()
-	dd.SetEnumFromProtocolValueGeneric(ddv1.EntryTypeDailyWorkPeriod_ENTRY_TYPE_DAILY_WORK_PERIOD_UNSPECIFIED.Descriptor(),
-		int32(entryType),
-		func(enumNum protoreflect.EnumNumber) {
-			record.SetEntryTypeDailyWorkPeriod(ddv1.EntryTypeDailyWorkPeriod(enumNum))
-		}, func(rawValue int32) {
-			record.SetUnrecognizedEntryTypeDailyWorkPeriod(rawValue)
-		})
+	entryTypeByte, _ := r.ReadByte()
+	entryType, err := dd.UnmarshalEnum[ddv1.EntryTypeDailyWorkPeriod](entryTypeByte)
+	if err != nil {
+		// Value not recognized - set UNRECOGNIZED and save raw value
+		record.SetEntryTypeDailyWorkPeriod(ddv1.EntryTypeDailyWorkPeriod_ENTRY_TYPE_DAILY_WORK_PERIOD_UNRECOGNIZED)
+		record.SetUnrecognizedEntryTypeDailyWorkPeriod(int32(entryTypeByte))
+	} else {
+		record.SetEntryTypeDailyWorkPeriod(entryType)
+	}
 
 	// Read daily work period country (1 byte)
-	country, _ := r.ReadByte()
-	dd.SetEnumFromProtocolValueGeneric(ddv1.NationNumeric_NATION_NUMERIC_UNSPECIFIED.Descriptor(),
-		int32(country),
-		func(enumNum protoreflect.EnumNumber) {
-			record.SetDailyWorkPeriodCountry(ddv1.NationNumeric(enumNum))
-		}, func(rawValue int32) {
-			record.SetUnrecognizedDailyWorkPeriodCountry(rawValue)
-		})
+	countryByte, _ := r.ReadByte()
+	country, err := dd.UnmarshalEnum[ddv1.NationNumeric](countryByte)
+	if err != nil {
+		// Value not recognized - set UNRECOGNIZED and save raw value
+		record.SetDailyWorkPeriodCountry(ddv1.NationNumeric_NATION_NUMERIC_UNRECOGNIZED)
+		record.SetUnrecognizedDailyWorkPeriodCountry(int32(countryByte))
+	} else {
+		record.SetDailyWorkPeriodCountry(country)
+	}
 
 	// Read daily work period region (1 byte for both Gen1 and Gen2 as per spec)
 	region, _ := r.ReadByte()
@@ -293,11 +294,21 @@ func appendPlaceRecord(dst []byte, rec *ddv1.PlaceRecord, generation ddv1.Genera
 		return nil, fmt.Errorf("failed to append entry time: %w", err)
 	}
 
-	entryTypeProtocol, _ := dd.GetProtocolValueForEnum(rec.GetEntryTypeDailyWorkPeriod())
-	dst = append(dst, byte(entryTypeProtocol)) // 1 byte
+	var entryTypeProtocol byte
+	if rec.GetEntryTypeDailyWorkPeriod() == ddv1.EntryTypeDailyWorkPeriod_ENTRY_TYPE_DAILY_WORK_PERIOD_UNRECOGNIZED {
+		entryTypeProtocol = byte(rec.GetUnrecognizedEntryTypeDailyWorkPeriod())
+	} else {
+		entryTypeProtocol, _ = dd.MarshalEnum(rec.GetEntryTypeDailyWorkPeriod())
+	}
+	dst = append(dst, entryTypeProtocol) // 1 byte
 
-	countryProtocol, _ := dd.GetProtocolValueForEnum(rec.GetDailyWorkPeriodCountry())
-	dst = append(dst, byte(countryProtocol)) // 1 byte
+	var countryProtocol byte
+	if rec.GetDailyWorkPeriodCountry() == ddv1.NationNumeric_NATION_NUMERIC_UNRECOGNIZED {
+		countryProtocol = byte(rec.GetUnrecognizedDailyWorkPeriodCountry())
+	} else {
+		countryProtocol, _ = dd.MarshalEnum(rec.GetDailyWorkPeriodCountry())
+	}
+	dst = append(dst, countryProtocol) // 1 byte
 
 	// Append region byte (1 byte)
 	regionBytes := rec.GetDailyWorkPeriodRegion()

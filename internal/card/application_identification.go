@@ -48,8 +48,10 @@ func unmarshalCardApplicationIdentification(data []byte) (*cardv1.ApplicationIde
 		return nil, fmt.Errorf("failed to read card type: %w", err)
 	}
 	// Convert raw card type to enum using protocol annotations
-	if enumNum, found := dd.GetEnumForProtocolValue(ddv1.EquipmentType_EQUIPMENT_TYPE_UNSPECIFIED.Descriptor(), int32(cardType)); found {
-		target.SetTypeOfTachographCardId(ddv1.EquipmentType(enumNum))
+	if equipmentType, err := dd.UnmarshalEnum[ddv1.EquipmentType](cardType); err == nil {
+		target.SetTypeOfTachographCardId(equipmentType)
+	} else {
+		return nil, fmt.Errorf("invalid equipment type: %w", err)
 	}
 
 	// Read card structure version (2 bytes)
@@ -157,8 +159,8 @@ func appendCardApplicationIdentification(data []byte, appId *cardv1.ApplicationI
 
 	// Type of tachograph card ID (1 byte)
 	if appId.HasTypeOfTachographCardId() {
-		protocolValue, _ := dd.GetProtocolValueForEnum(appId.GetTypeOfTachographCardId())
-		data = append(data, byte(protocolValue))
+		protocolValue, _ := dd.MarshalEnum(appId.GetTypeOfTachographCardId())
+		data = append(data, protocolValue)
 	} else {
 		data = append(data, 0x00)
 	}

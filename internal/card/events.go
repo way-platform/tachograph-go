@@ -113,10 +113,10 @@ func unmarshalEventRecord(data []byte) (*cardv1.EventsData_Record, error) {
 	if offset+1 > len(data) {
 		return nil, fmt.Errorf("insufficient data for event type")
 	}
-	eventType := data[offset]
-	enumDesc := ddv1.EventFaultType_EVENT_FAULT_TYPE_UNSPECIFIED.Descriptor()
-	if enumNum, found := dd.GetEnumForProtocolValue(enumDesc, int32(eventType)); found {
-		rec.SetEventType(ddv1.EventFaultType(enumNum))
+	if eventTypeEnum, err := dd.UnmarshalEnum[ddv1.EventFaultType](data[offset]); err == nil {
+		rec.SetEventType(eventTypeEnum)
+	} else {
+		return nil, fmt.Errorf("invalid event type: %w", err)
 	}
 	offset++
 
@@ -199,8 +199,8 @@ func appendEventRecord(dst []byte, record *cardv1.EventsData_Record) ([]byte, er
 		return append(dst, record.GetRawData()...), nil
 	}
 
-	protocolValue := dd.GetEventFaultTypeProtocolValue(record.GetEventType(), 0)
-	dst = append(dst, byte(protocolValue))
+	protocolValue, _ := dd.MarshalEnum(record.GetEventType())
+	dst = append(dst, protocolValue)
 
 	var err error
 	dst, err = dd.AppendTimeReal(dst, record.GetEventBeginTime())

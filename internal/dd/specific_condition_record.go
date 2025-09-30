@@ -3,8 +3,6 @@ package dd
 import (
 	"fmt"
 
-	"google.golang.org/protobuf/reflect/protoreflect"
-
 	ddv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
 )
 
@@ -39,16 +37,12 @@ func (opts UnmarshalOptions) UnmarshalSpecificConditionRecord(data []byte) (*ddv
 	record.SetEntryTime(entryTime)
 
 	// Parse specificConditionType (1 byte)
-	SetEnumFromProtocolValueGeneric(
-		ddv1.SpecificConditionType_SPECIFIC_CONDITION_TYPE_UNSPECIFIED.Descriptor(),
-		int32(data[idxSpecificConditionType]),
-		func(enumNum protoreflect.EnumNumber) {
-			record.SetSpecificConditionType(ddv1.SpecificConditionType(enumNum))
-		},
-		func(rawValue int32) {
-			record.SetUnrecognizedSpecificConditionType(rawValue)
-		},
-	)
+	if conditionType, err := UnmarshalEnum[ddv1.SpecificConditionType](data[idxSpecificConditionType]); err == nil {
+		record.SetSpecificConditionType(conditionType)
+	} else {
+		record.SetSpecificConditionType(ddv1.SpecificConditionType_SPECIFIC_CONDITION_TYPE_UNRECOGNIZED)
+		record.SetUnrecognizedSpecificConditionType(int32(data[idxSpecificConditionType]))
+	}
 
 	return record, nil
 }
@@ -81,8 +75,17 @@ func AppendSpecificConditionRecord(dst []byte, record *ddv1.SpecificConditionRec
 	}
 
 	// Append specificConditionType (1 byte)
-	conditionType, _ := GetProtocolValueForEnum(record.GetSpecificConditionType())
-	dst = append(dst, byte(conditionType))
+	var conditionType byte
+	if record.GetSpecificConditionType() == ddv1.SpecificConditionType_SPECIFIC_CONDITION_TYPE_UNRECOGNIZED {
+		conditionType = byte(record.GetUnrecognizedSpecificConditionType())
+	} else {
+		var err error
+		conditionType, err = MarshalEnum(record.GetSpecificConditionType())
+		if err != nil {
+			return nil, fmt.Errorf("failed to marshal condition type: %w", err)
+		}
+	}
+	dst = append(dst, conditionType)
 
 	return dst, nil
 }

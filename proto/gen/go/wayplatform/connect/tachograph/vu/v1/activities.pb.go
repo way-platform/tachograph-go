@@ -1073,15 +1073,16 @@ func (b0 Activities_PlaceRecord_builder) Build() *Activities_PlaceRecord {
 //	    authenticationStatus PositionAuthenticationStatus
 //	}
 type Activities_GnssRecord struct {
-	state                           protoimpl.MessageState          `protogen:"opaque.v1"`
-	xxx_hidden_Timestamp            *timestamppb.Timestamp          `protobuf:"bytes,1,opt,name=timestamp"`
-	xxx_hidden_GnssAccuracy         int32                           `protobuf:"varint,2,opt,name=gnss_accuracy,json=gnssAccuracy"`
-	xxx_hidden_GeoCoordinates       *v1.GeoCoordinates              `protobuf:"bytes,3,opt,name=geo_coordinates,json=geoCoordinates"`
-	xxx_hidden_AuthenticationStatus v1.PositionAuthenticationStatus `protobuf:"varint,5,opt,name=authentication_status,json=authenticationStatus,enum=wayplatform.connect.tachograph.dd.v1.PositionAuthenticationStatus"`
-	XXX_raceDetectHookData          protoimpl.RaceDetectHookData
-	XXX_presence                    [1]uint32
-	unknownFields                   protoimpl.UnknownFields
-	sizeCache                       protoimpl.SizeCache
+	state                                       protoimpl.MessageState          `protogen:"opaque.v1"`
+	xxx_hidden_Timestamp                        *timestamppb.Timestamp          `protobuf:"bytes,1,opt,name=timestamp"`
+	xxx_hidden_GnssAccuracy                     int32                           `protobuf:"varint,2,opt,name=gnss_accuracy,json=gnssAccuracy"`
+	xxx_hidden_GeoCoordinates                   *v1.GeoCoordinates              `protobuf:"bytes,3,opt,name=geo_coordinates,json=geoCoordinates"`
+	xxx_hidden_AuthenticationStatus             v1.PositionAuthenticationStatus `protobuf:"varint,5,opt,name=authentication_status,json=authenticationStatus,enum=wayplatform.connect.tachograph.dd.v1.PositionAuthenticationStatus"`
+	xxx_hidden_UnrecognizedAuthenticationStatus int32                           `protobuf:"varint,6,opt,name=unrecognized_authentication_status,json=unrecognizedAuthenticationStatus"`
+	XXX_raceDetectHookData                      protoimpl.RaceDetectHookData
+	XXX_presence                                [1]uint32
+	unknownFields                               protoimpl.UnknownFields
+	sizeCache                                   protoimpl.SizeCache
 }
 
 func (x *Activities_GnssRecord) Reset() {
@@ -1139,13 +1140,20 @@ func (x *Activities_GnssRecord) GetAuthenticationStatus() v1.PositionAuthenticat
 	return v1.PositionAuthenticationStatus(0)
 }
 
+func (x *Activities_GnssRecord) GetUnrecognizedAuthenticationStatus() int32 {
+	if x != nil {
+		return x.xxx_hidden_UnrecognizedAuthenticationStatus
+	}
+	return 0
+}
+
 func (x *Activities_GnssRecord) SetTimestamp(v *timestamppb.Timestamp) {
 	x.xxx_hidden_Timestamp = v
 }
 
 func (x *Activities_GnssRecord) SetGnssAccuracy(v int32) {
 	x.xxx_hidden_GnssAccuracy = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 4)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 5)
 }
 
 func (x *Activities_GnssRecord) SetGeoCoordinates(v *v1.GeoCoordinates) {
@@ -1154,7 +1162,12 @@ func (x *Activities_GnssRecord) SetGeoCoordinates(v *v1.GeoCoordinates) {
 
 func (x *Activities_GnssRecord) SetAuthenticationStatus(v v1.PositionAuthenticationStatus) {
 	x.xxx_hidden_AuthenticationStatus = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 3, 4)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 3, 5)
+}
+
+func (x *Activities_GnssRecord) SetUnrecognizedAuthenticationStatus(v int32) {
+	x.xxx_hidden_UnrecognizedAuthenticationStatus = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 4, 5)
 }
 
 func (x *Activities_GnssRecord) HasTimestamp() bool {
@@ -1185,6 +1198,13 @@ func (x *Activities_GnssRecord) HasAuthenticationStatus() bool {
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 3)
 }
 
+func (x *Activities_GnssRecord) HasUnrecognizedAuthenticationStatus() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 4)
+}
+
 func (x *Activities_GnssRecord) ClearTimestamp() {
 	x.xxx_hidden_Timestamp = nil
 }
@@ -1201,6 +1221,11 @@ func (x *Activities_GnssRecord) ClearGeoCoordinates() {
 func (x *Activities_GnssRecord) ClearAuthenticationStatus() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 3)
 	x.xxx_hidden_AuthenticationStatus = v1.PositionAuthenticationStatus_POSITION_AUTHENTICATION_STATUS_UNSPECIFIED
+}
+
+func (x *Activities_GnssRecord) ClearUnrecognizedAuthenticationStatus() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 4)
+	x.xxx_hidden_UnrecognizedAuthenticationStatus = 0
 }
 
 type Activities_GnssRecord_builder struct {
@@ -1222,6 +1247,8 @@ type Activities_GnssRecord_builder struct {
 	//
 	// See Data Dictionary, Section 2.117a, `PositionAuthenticationStatus`.
 	AuthenticationStatus *v1.PositionAuthenticationStatus
+	// Preserved raw protocol value when authentication_status is UNRECOGNIZED.
+	UnrecognizedAuthenticationStatus *int32
 }
 
 func (b0 Activities_GnssRecord_builder) Build() *Activities_GnssRecord {
@@ -1230,13 +1257,17 @@ func (b0 Activities_GnssRecord_builder) Build() *Activities_GnssRecord {
 	_, _ = b, x
 	x.xxx_hidden_Timestamp = b.Timestamp
 	if b.GnssAccuracy != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 4)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 5)
 		x.xxx_hidden_GnssAccuracy = *b.GnssAccuracy
 	}
 	x.xxx_hidden_GeoCoordinates = b.GeoCoordinates
 	if b.AuthenticationStatus != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 3, 4)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 3, 5)
 		x.xxx_hidden_AuthenticationStatus = *b.AuthenticationStatus
+	}
+	if b.UnrecognizedAuthenticationStatus != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 4, 5)
+		x.xxx_hidden_UnrecognizedAuthenticationStatus = *b.UnrecognizedAuthenticationStatus
 	}
 	return m0
 }
@@ -1740,7 +1771,7 @@ var File_wayplatform_connect_tachograph_vu_v1_activities_proto protoreflect.File
 
 const file_wayplatform_connect_tachograph_vu_v1_activities_proto_rawDesc = "" +
 	"\n" +
-	"5wayplatform/connect/tachograph/vu/v1/activities.proto\x12$wayplatform.connect.tachograph.vu.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a?wayplatform/connect/tachograph/dd/v1/activity_change_info.proto\x1a;wayplatform/connect/tachograph/dd/v1/card_slot_number.proto\x1a/wayplatform/connect/tachograph/dd/v1/date.proto\x1aGwayplatform/connect/tachograph/dd/v1/entry_type_daily_work_period.proto\x1a;wayplatform/connect/tachograph/dd/v1/full_card_number.proto\x1aJwayplatform/connect/tachograph/dd/v1/full_card_number_and_generation.proto\x1a5wayplatform/connect/tachograph/dd/v1/generation.proto\x1a:wayplatform/connect/tachograph/dd/v1/geo_coordinates.proto\x1a6wayplatform/connect/tachograph/dd/v1/holder_name.proto\x1a9wayplatform/connect/tachograph/dd/v1/nation_numeric.proto\x1a9wayplatform/connect/tachograph/dd/v1/operation_type.proto\x1aIwayplatform/connect/tachograph/dd/v1/position_authentication_status.proto\x1a@wayplatform/connect/tachograph/dd/v1/previous_vehicle_info.proto\x1aDwayplatform/connect/tachograph/dd/v1/specific_condition_record.proto\x1aBwayplatform/connect/tachograph/dd/v1/specific_condition_type.proto\x1aNwayplatform/connect/tachograph/dd/v1/vehicle_registration_identification.proto\x1a2wayplatform/connect/tachograph/dd/v1/version.proto\"\x8b\x1d\n" +
+	"5wayplatform/connect/tachograph/vu/v1/activities.proto\x12$wayplatform.connect.tachograph.vu.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a?wayplatform/connect/tachograph/dd/v1/activity_change_info.proto\x1a;wayplatform/connect/tachograph/dd/v1/card_slot_number.proto\x1a/wayplatform/connect/tachograph/dd/v1/date.proto\x1aGwayplatform/connect/tachograph/dd/v1/entry_type_daily_work_period.proto\x1a;wayplatform/connect/tachograph/dd/v1/full_card_number.proto\x1aJwayplatform/connect/tachograph/dd/v1/full_card_number_and_generation.proto\x1a5wayplatform/connect/tachograph/dd/v1/generation.proto\x1a:wayplatform/connect/tachograph/dd/v1/geo_coordinates.proto\x1a6wayplatform/connect/tachograph/dd/v1/holder_name.proto\x1a9wayplatform/connect/tachograph/dd/v1/nation_numeric.proto\x1a9wayplatform/connect/tachograph/dd/v1/operation_type.proto\x1aIwayplatform/connect/tachograph/dd/v1/position_authentication_status.proto\x1a@wayplatform/connect/tachograph/dd/v1/previous_vehicle_info.proto\x1aDwayplatform/connect/tachograph/dd/v1/specific_condition_record.proto\x1aBwayplatform/connect/tachograph/dd/v1/specific_condition_type.proto\x1aNwayplatform/connect/tachograph/dd/v1/vehicle_registration_identification.proto\x1a2wayplatform/connect/tachograph/dd/v1/version.proto\"\xd9\x1d\n" +
 	"\n" +
 	"Activities\x12P\n" +
 	"\n" +
@@ -1780,13 +1811,14 @@ const file_wayplatform_connect_tachograph_vu_v1_activities_proto_rawDesc = "" +
 	"\acountry\x18\x04 \x01(\x0e23.wayplatform.connect.tachograph.dd.v1.NationNumericR\acountry\x12\x16\n" +
 	"\x06region\x18\x06 \x01(\fR\x06region\x12\x1f\n" +
 	"\vodometer_km\x18\a \x01(\x05R\n" +
-	"odometerKm\x1a\xc3\x02\n" +
+	"odometerKm\x1a\x91\x03\n" +
 	"\n" +
 	"GnssRecord\x128\n" +
 	"\ttimestamp\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\ttimestamp\x12#\n" +
 	"\rgnss_accuracy\x18\x02 \x01(\x05R\fgnssAccuracy\x12]\n" +
 	"\x0fgeo_coordinates\x18\x03 \x01(\v24.wayplatform.connect.tachograph.dd.v1.GeoCoordinatesR\x0egeoCoordinates\x12w\n" +
-	"\x15authentication_status\x18\x05 \x01(\x0e2B.wayplatform.connect.tachograph.dd.v1.PositionAuthenticationStatusR\x14authenticationStatus\x1a\xc5\x04\n" +
+	"\x15authentication_status\x18\x05 \x01(\x0e2B.wayplatform.connect.tachograph.dd.v1.PositionAuthenticationStatusR\x14authenticationStatus\x12L\n" +
+	"\"unrecognized_authentication_status\x18\x06 \x01(\x05R unrecognizedAuthenticationStatus\x1a\xc5\x04\n" +
 	"\x14BorderCrossingRecord\x12x\n" +
 	"\x17card_number_driver_slot\x18\x01 \x01(\v2A.wayplatform.connect.tachograph.dd.v1.FullCardNumberAndGenerationR\x14cardNumberDriverSlot\x12|\n" +
 	"\x19card_number_codriver_slot\x18\x02 \x01(\v2A.wayplatform.connect.tachograph.dd.v1.FullCardNumberAndGenerationR\x16cardNumberCodriverSlot\x12V\n" +

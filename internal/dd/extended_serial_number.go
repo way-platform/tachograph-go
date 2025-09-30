@@ -50,11 +50,12 @@ func (opts UnmarshalOptions) UnmarshalExtendedSerialNumber(data []byte) (*ddv1.E
 	esn.SetMonthYear(monthYear)
 
 	// Parse equipment type (1 byte)
-	equipmentType, err := opts.UnmarshalEquipmentType(data[6:7])
-	if err != nil {
-		return nil, fmt.Errorf("failed to parse equipment type: %w", err)
+	if equipmentType, err := UnmarshalEnum[ddv1.EquipmentType](data[6]); err == nil {
+		esn.SetType(equipmentType)
+	} else {
+		// Return UNRECOGNIZED for unknown values
+		esn.SetType(ddv1.EquipmentType_EQUIPMENT_TYPE_UNRECOGNIZED)
 	}
-	esn.SetType(equipmentType)
 
 	// Parse manufacturer code (1 byte)
 	esn.SetManufacturerCode(int32(data[7]))
@@ -99,7 +100,11 @@ func AppendExtendedSerialNumber(dst []byte, esn *ddv1.ExtendedSerialNumber) ([]b
 	}
 
 	// Append equipment type (1 byte)
-	dst = AppendEquipmentType(dst, esn.GetType())
+	equipmentTypeByte, err := MarshalEnum(esn.GetType())
+	if err != nil {
+		return nil, fmt.Errorf("failed to append equipment type: %w", err)
+	}
+	dst = append(dst, equipmentTypeByte)
 
 	// Append manufacturer code (1 byte)
 	dst = append(dst, byte(esn.GetManufacturerCode()))
@@ -136,9 +141,11 @@ func AppendExtendedSerialNumberAsString(dst []byte, esn *ddv1.ExtendedSerialNumb
 
 	// Next byte: equipment type (converted to protocol value using generic helper)
 	if esn.GetType() != ddv1.EquipmentType_EQUIPMENT_TYPE_UNSPECIFIED {
-		if protocolValue, ok := GetProtocolValueForEnum(esn.GetType()); ok {
-			serialBytes[6] = byte(protocolValue)
+		protocolValue, err := MarshalEnum(esn.GetType())
+		if err != nil {
+			return nil, fmt.Errorf("failed to marshal equipment type: %w", err)
 		}
+		serialBytes[6] = protocolValue
 	}
 
 	// Last byte: manufacturer code

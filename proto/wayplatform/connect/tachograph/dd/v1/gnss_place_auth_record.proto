@@ -50,4 +50,7 @@ message GNSSPlaceAuthRecord {
   //
   // See Data Dictionary, Section 2.117a, `PositionAuthenticationStatus`.
   PositionAuthenticationStatus authentication_status = 4;
+
+  // Preserved raw protocol value when authentication_status is UNRECOGNIZED.
+  int32 unrecognized_authentication_status = 5;
 }

@@ -51,10 +51,10 @@ func unmarshalIdentification(data []byte) (*cardv1.Identification, error) {
 	if offset+1 > len(data) {
 		return nil, fmt.Errorf("insufficient data for card issuing member state")
 	}
-	nationByte := data[offset]
-	if enumNum, found := dd.GetEnumForProtocolValue(ddv1.NationNumeric_NATION_NUMERIC_UNSPECIFIED.Descriptor(), int32(nationByte)); found {
-		cardId.SetCardIssuingMemberState(ddv1.NationNumeric(enumNum))
+	if nation, err := dd.UnmarshalEnum[ddv1.NationNumeric](data[offset]); err == nil {
+		cardId.SetCardIssuingMemberState(nation)
 	} else {
+		// Value not recognized - set UNRECOGNIZED (no unrecognized field for this type)
 		cardId.SetCardIssuingMemberState(ddv1.NationNumeric_NATION_NUMERIC_UNRECOGNIZED)
 	}
 	offset++
@@ -277,12 +277,18 @@ func appendCardIdentification(dst []byte, id *cardv1.Identification_Card) ([]byt
 	}
 	// Append cardIssuingMemberState (1 byte) - get protocol value from enum
 	memberState := id.GetCardIssuingMemberState()
-	if protocolValue, found := dd.GetProtocolValueForEnum(memberState); found {
-		dst = append(dst, byte(protocolValue))
+	var memberStateByte byte
+	if memberState == ddv1.NationNumeric_NATION_NUMERIC_UNRECOGNIZED {
+		// UNRECOGNIZED values should not occur during marshalling
+		return nil, fmt.Errorf("cannot marshal UNRECOGNIZED member state (no unrecognized field)")
 	} else {
-		// Default to 0xFF (EMPTY) for unspecified/unrecognized
-		dst = append(dst, 0xFF)
+		var err error
+		memberStateByte, err = dd.MarshalEnum(memberState)
+		if err != nil {
+			return nil, fmt.Errorf("failed to marshal member state: %w", err)
+		}
 	}
+	dst = append(dst, memberStateByte)
 	var err error
 	// Handle the CardNumber CHOICE type
 	// CardNumber ::= CHOICE {

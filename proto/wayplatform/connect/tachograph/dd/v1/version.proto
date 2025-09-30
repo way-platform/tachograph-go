@@ -20,3 +20,4 @@ enum Version {
 extend google.protobuf.EnumValueOptions {
   Version version = 50305;
 }
+

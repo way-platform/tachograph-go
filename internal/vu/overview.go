@@ -129,11 +129,19 @@ func unmarshalOverviewGen1(data []byte, offset int, overview *vuv1.Overview, sta
 		return 0, err
 	}
 	// Extract driver and co-driver slot info from the byte
-	driverSlot := (slotsStatus >> 4) & 0x0F
-	coDriverSlot := slotsStatus & 0x0F
+	driverSlot := uint8((slotsStatus >> 4) & 0x0F)
+	coDriverSlot := uint8(slotsStatus & 0x0F)
 
-	overview.SetDriverSlotCard(dd.MapSlotCardType(driverSlot))
-	overview.SetCoDriverSlotCard(dd.MapSlotCardType(coDriverSlot))
+	if driverSlotEnum, err := dd.UnmarshalEnum[ddv1.SlotCardType](driverSlot); err == nil {
+		overview.SetDriverSlotCard(driverSlotEnum)
+	} else {
+		overview.SetDriverSlotCard(ddv1.SlotCardType_SLOT_CARD_TYPE_UNRECOGNIZED)
+	}
+	if coDriverSlotEnum, err := dd.UnmarshalEnum[ddv1.SlotCardType](coDriverSlot); err == nil {
+		overview.SetCoDriverSlotCard(coDriverSlotEnum)
+	} else {
+		overview.SetCoDriverSlotCard(ddv1.SlotCardType_SLOT_CARD_TYPE_UNRECOGNIZED)
+	}
 
 	// VuDownloadActivityData (4 bytes - last download time)
 	lastDownloadTime, offset, err := readVuTimeRealFromBytes(data, offset)
@@ -376,8 +384,14 @@ func appendOverviewGen1(buf *bytes.Buffer, overview *vuv1.Overview) {
 	}
 
 	// CardSlotsStatus (1 byte - driver and co-driver slots)
-	driverSlot := MapSlotCardTypeToUint8(overview.GetDriverSlotCard())
-	coDriverSlot := MapSlotCardTypeToUint8(overview.GetCoDriverSlotCard())
+	driverSlot, err := dd.MarshalEnum(overview.GetDriverSlotCard())
+	if err != nil {
+		driverSlot = 0 // Default to NO_CARD on error
+	}
+	coDriverSlot, err := dd.MarshalEnum(overview.GetCoDriverSlotCard())
+	if err != nil {
+		coDriverSlot = 0 // Default to NO_CARD on error
+	}
 	slotsStatus := (driverSlot << 4) | (coDriverSlot & 0x0F)
 	buf.WriteByte(slotsStatus)
 
@@ -525,23 +539,6 @@ func appendOverviewGen2(buf *bytes.Buffer, overview *vuv1.Overview) {
 	}
 }
 
-//nolint:unused
-func MapSlotCardTypeToUint8(cardType ddv1.SlotCardType) uint8 {
-	switch cardType {
-	case ddv1.SlotCardType_NO_CARD:
-		return 0
-	case ddv1.SlotCardType_DRIVER_CARD_INSERTED:
-		return 1
-	case ddv1.SlotCardType_WORKSHOP_CARD_INSERTED:
-		return 2
-	case ddv1.SlotCardType_CONTROL_CARD_INSERTED:
-		return 3
-	case ddv1.SlotCardType_COMPANY_CARD_INSERTED:
-		return 4
-	default:
-		return 0
-	}
-}
 
 // VU-specific helper functions for binary operations
 

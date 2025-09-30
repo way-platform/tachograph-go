@@ -113,10 +113,10 @@ func unmarshalFaultRecord(data []byte, rec *cardv1.FaultsData_Record) error {
 	if offset+1 > len(data) {
 		return fmt.Errorf("insufficient data for fault type")
 	}
-	faultType := data[offset]
-	enumDesc := ddv1.EventFaultType_EVENT_FAULT_TYPE_UNSPECIFIED.Descriptor()
-	if enumNum, found := dd.GetEnumForProtocolValue(enumDesc, int32(faultType)); found {
-		rec.SetFaultType(ddv1.EventFaultType(enumNum))
+	if faultTypeEnum, err := dd.UnmarshalEnum[ddv1.EventFaultType](data[offset]); err == nil {
+		rec.SetFaultType(faultTypeEnum)
+	} else {
+		return fmt.Errorf("invalid fault type: %w", err)
 	}
 	offset++
 
@@ -199,8 +199,8 @@ func appendFaultRecord(dst []byte, record *cardv1.FaultsData_Record) ([]byte, er
 		return append(dst, record.GetRawData()...), nil
 	}
 
-	protocolValue := dd.GetEventFaultTypeProtocolValue(record.GetFaultType(), 0)
-	dst = append(dst, byte(protocolValue))
+	protocolValue, _ := dd.MarshalEnum(record.GetFaultType())
+	dst = append(dst, protocolValue)
 
 	var err error
 	dst, err = dd.AppendTimeReal(dst, record.GetFaultBeginTime())

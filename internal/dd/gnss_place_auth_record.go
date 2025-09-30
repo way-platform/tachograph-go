@@ -3,8 +3,6 @@ package dd
 import (
 	"fmt"
 
-	"google.golang.org/protobuf/reflect/protoreflect"
-
 	ddv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
 )
 
@@ -60,14 +58,12 @@ func (opts UnmarshalOptions) UnmarshalGNSSPlaceAuthRecord(data []byte) (*ddv1.GN
 	record.SetGeoCoordinates(geoCoords)
 
 	// Parse authenticationStatus (1 byte)
-	SetEnumFromProtocolValueGeneric(
-		ddv1.PositionAuthenticationStatus_POSITION_AUTHENTICATION_STATUS_UNSPECIFIED.Descriptor(),
-		int32(data[idxAuthStatus]),
-		func(enumNum protoreflect.EnumNumber) {
-			record.SetAuthenticationStatus(ddv1.PositionAuthenticationStatus(enumNum))
-		},
-		nil, // No unrecognized field for this enum
-	)
+	if authStatus, err := UnmarshalEnum[ddv1.PositionAuthenticationStatus](data[idxAuthStatus]); err == nil {
+		record.SetAuthenticationStatus(authStatus)
+	} else {
+		record.SetAuthenticationStatus(ddv1.PositionAuthenticationStatus_POSITION_AUTHENTICATION_STATUS_UNRECOGNIZED)
+		record.SetUnrecognizedAuthenticationStatus(int32(data[idxAuthStatus]))
+	}
 
 	return record, nil
 }
@@ -120,8 +116,17 @@ func AppendGNSSPlaceAuthRecord(dst []byte, record *ddv1.GNSSPlaceAuthRecord) ([]
 	}
 
 	// Append authenticationStatus (1 byte)
-	authStatus, _ := GetProtocolValueForEnum(record.GetAuthenticationStatus())
-	dst = append(dst, byte(authStatus))
+	var authStatus byte
+	if record.GetAuthenticationStatus() == ddv1.PositionAuthenticationStatus_POSITION_AUTHENTICATION_STATUS_UNRECOGNIZED {
+		authStatus = byte(record.GetUnrecognizedAuthenticationStatus())
+	} else {
+		var err error
+		authStatus, err = MarshalEnum(record.GetAuthenticationStatus())
+		if err != nil {
+			return nil, fmt.Errorf("failed to marshal authentication status: %w", err)
+		}
+	}
+	dst = append(dst, authStatus)
 
 	return dst, nil
 }

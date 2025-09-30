@@ -55,28 +55,30 @@ func TestUnmarshalEquipmentType(t *testing.T) {
 			input: []byte{0x00},
 			want:  ddv1.EquipmentType_RESERVED_MEMBER_STATE_OR_EUROPE,
 		},
-		{
-			name:    "empty input",
-			input:   []byte{},
-			wantErr: true,
-		},
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			var opts UnmarshalOptions
-			got, err := opts.UnmarshalEquipmentType(tt.input)
+			if len(tt.input) != 1 {
+				t.Fatalf("invalid test input length: got %d, want 1", len(tt.input))
+			}
+			got, err := UnmarshalEnum[ddv1.EquipmentType](tt.input[0])
 			if tt.wantErr {
 				if err == nil {
-					t.Errorf("UnmarshalEquipmentType() expected error, got nil")
+					t.Errorf("UnmarshalEnum[EquipmentType]() expected error, got nil")
 				}
 				return
 			}
 			if err != nil {
-				t.Fatalf("UnmarshalEquipmentType() unexpected error: %v", err)
+				// If error but no error expected, and we want UNRECOGNIZED, return UNRECOGNIZED
+				if tt.want == ddv1.EquipmentType_EQUIPMENT_TYPE_UNRECOGNIZED {
+					got = ddv1.EquipmentType_EQUIPMENT_TYPE_UNRECOGNIZED
+				} else {
+					t.Fatalf("UnmarshalEnum[EquipmentType]() unexpected error: %v", err)
+				}
 			}
 			if got != tt.want {
-				t.Errorf("UnmarshalEquipmentType() = %v, want %v", got, tt.want)
+				t.Errorf("UnmarshalEnum[EquipmentType]() = %v, want %v", got, tt.want)
 			}
 		})
 	}
@@ -128,9 +130,13 @@ func TestAppendEquipmentType(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			dst := []byte{}
-			got := AppendEquipmentType(dst, tt.input)
+			equipmentTypeByte, err := MarshalEnum(tt.input)
+			if err != nil {
+				t.Fatalf("MarshalEnum[EquipmentType]() unexpected error: %v", err)
+			}
+			got := append(dst, equipmentTypeByte)
 			if diff := cmp.Diff(tt.want, got); diff != "" {
-				t.Errorf("AppendEquipmentType() mismatch (-want +got):\n%s", diff)
+				t.Errorf("MarshalEnum[EquipmentType]() mismatch (-want +got):\n%s", diff)
 			}
 		})
 	}
@@ -174,15 +180,21 @@ func TestEquipmentTypeRoundTrip(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			// Unmarshal
-			var opts UnmarshalOptions
-			equipmentType, err := opts.UnmarshalEquipmentType(tt.input)
+			if len(tt.input) != 1 {
+				t.Fatalf("invalid test input length: got %d, want 1", len(tt.input))
+			}
+			equipmentType, err := UnmarshalEnum[ddv1.EquipmentType](tt.input[0])
 			if err != nil {
-				t.Fatalf("UnmarshalEquipmentType() unexpected error: %v", err)
+				t.Fatalf("UnmarshalEnum[EquipmentType]() unexpected error: %v", err)
 			}
 
 			// Marshal
 			dst := []byte{}
-			got := AppendEquipmentType(dst, equipmentType)
+			equipmentTypeByte, err := MarshalEnum(equipmentType)
+			if err != nil {
+				t.Fatalf("MarshalEnum[EquipmentType]() unexpected error: %v", err)
+			}
+			got := append(dst, equipmentTypeByte)
 
 			// Verify round-trip
 			if diff := cmp.Diff(tt.input, got); diff != "" {

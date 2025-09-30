@@ -47,11 +47,11 @@ func unmarshalIcc(data []byte) (*cardv1.Icc, error) {
 	if offset+1 > len(data) {
 		return nil, fmt.Errorf("insufficient data for clock stop")
 	}
-	clockStop := data[offset]
 	// Convert clock stop byte to ClockStopMode enum using generic helper
-	enumDesc := ddv1.ClockStopMode_CLOCK_STOP_MODE_UNSPECIFIED.Descriptor()
-	if enumNum, found := dd.GetEnumForProtocolValue(enumDesc, int32(clockStop)); found {
-		icc.SetClockStop(ddv1.ClockStopMode(enumNum))
+	if clockStopMode, err := dd.UnmarshalEnum[ddv1.ClockStopMode](data[offset]); err == nil {
+		icc.SetClockStop(clockStopMode)
+	} else {
+		return nil, fmt.Errorf("invalid clock stop mode: %w", err)
 	}
 	offset++
 
@@ -80,9 +80,10 @@ func unmarshalIcc(data []byte) (*cardv1.Icc, error) {
 
 		// Next byte: equipment type (convert from protocol value using generic helper)
 		if len(serialBytes) > 6 {
-			enumDesc := ddv1.EquipmentType_EQUIPMENT_TYPE_UNSPECIFIED.Descriptor()
-			if enumNum, found := dd.GetEnumForProtocolValue(enumDesc, int32(serialBytes[6])); found {
-				esn.SetType(ddv1.EquipmentType(enumNum))
+			if equipmentType, err := dd.UnmarshalEnum[ddv1.EquipmentType](serialBytes[6]); err == nil {
+				esn.SetType(equipmentType)
+			} else {
+				return nil, fmt.Errorf("invalid equipment type in extended serial number: %w", err)
 			}
 		}
 
