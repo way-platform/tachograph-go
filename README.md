@@ -11,19 +11,28 @@ This SDK implements parsing of downloaded tachograph data, according to [the req
 > [!CAUTION]
 > This SDK is under active development and not yet ready for widespread use.
 
-* Simple interface:
-    * `tachograph.UnmarshalFile` to parse a Tachograph file
-    * `tachograph.MarshalFile` to serialize a Tachograph file
+- Simple interface:
 
-* Easy to use CLI tool
-    * `tachograph parse [...file]`
+  - `tachograph.UnmarshalFile` to parse a Tachograph file
+  - `tachograph.MarshalFile` to serialize a Tachograph file
 
-* Support for generation 1 and 2 (including v2)
+- Easy to use CLI tool
 
-* Protobuf-based data model with high usability and full fidelity
+  - `tachograph parse [...file]`
 
-* 100% binary marshal/unmarshal round-trip accuracy
+- Support for generation 1 and 2 (including v2)
 
-* Anonymization of .DDD files (for test data)
+- Protobuf-based data model with high usability and full fidelity
 
-* Optional signature validation
+- 100% binary marshal/unmarshal round-trip accuracy
+
+- Anonymization of .DDD files (for test data)
+
+- Optional signature validation
+
+## Alternatives
+
+This SDK draws inspiration from other tachograph SDKs, including:
+
+- [traconiq/tachoparser](https://github.com/traconiq/tachoparser)
+- [jugglingcats/tachograph-reader](https://github.com/jugglingcats/tachograph-reader)
