@@ -18,7 +18,7 @@ import (
 //	    sessionOpenTime                   TimeReal,
 //	    sessionOpenVehicle                VehicleRegistrationIdentification
 //	}
-func unmarshalCardCurrentUsage(data []byte) (*cardv1.CurrentUsage, error) {
+func (opts UnmarshalOptions) unmarshalCurrentUsage(data []byte) (*cardv1.CurrentUsage, error) {
 	const (
 		lenCardCurrentUse = 19 // 4 bytes time + 15 bytes vehicle registration
 	)
@@ -26,7 +26,6 @@ func unmarshalCardCurrentUsage(data []byte) (*cardv1.CurrentUsage, error) {
 	if len(data) < lenCardCurrentUse {
 		return nil, fmt.Errorf("insufficient data for current usage")
 	}
-	var opts dd.UnmarshalOptions
 	var target cardv1.CurrentUsage
 	offset := 0
 

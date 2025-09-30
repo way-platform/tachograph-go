@@ -23,7 +23,7 @@ import (
 //	    latitude                     Latitude,
 //	    vehicleOdometerValue         OdometerShort
 //	}
-func unmarshalCardGnssPlaces(data []byte) (*cardv1.GnssPlaces, error) {
+func (opts UnmarshalOptions) unmarshalGnssPlaces(data []byte) (*cardv1.GnssPlaces, error) {
 	const (
 		lenMinEfGnssPlaces = 2 // Minimum EF_GNSSPlaces record size
 	)

@@ -21,7 +21,7 @@ import (
 //	    drivingLicenceIssuingNation        NationNumeric,
 //	    drivingLicenceNumber               Name
 //	}
-func unmarshalDrivingLicenceInfo(data []byte) (*cardv1.DrivingLicenceInfo, error) {
+func (opts UnmarshalOptions) unmarshalDrivingLicenceInfo(data []byte) (*cardv1.DrivingLicenceInfo, error) {
 	const (
 		lenCardDrivingLicenceInformation = 53 // CardDrivingLicenceInformation total size
 	)
@@ -29,7 +29,6 @@ func unmarshalDrivingLicenceInfo(data []byte) (*cardv1.DrivingLicenceInfo, error
 	if len(data) < lenCardDrivingLicenceInformation {
 		return nil, errors.New("not enough data for DrivingLicenceInfo")
 	}
-	var opts dd.UnmarshalOptions
 	var dli cardv1.DrivingLicenceInfo
 	offset := 0
 

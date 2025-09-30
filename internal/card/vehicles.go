@@ -26,7 +26,7 @@ import (
 //	    vehicleRegistrationNation    NationNumeric OPTIONAL,
 //	    vehicleRegistrationNumber    RegistrationNumber OPTIONAL
 //	}
-func unmarshalCardVehiclesUsed(data []byte) (*cardv1.VehiclesUsed, error) {
+func (opts UnmarshalOptions) unmarshalVehiclesUsed(data []byte) (*cardv1.VehiclesUsed, error) {
 	const (
 		lenMinEfVehiclesUsed = 2 // Minimum EF_VehiclesUsed record size
 	)
@@ -35,7 +35,6 @@ func unmarshalCardVehiclesUsed(data []byte) (*cardv1.VehiclesUsed, error) {
 		return nil, fmt.Errorf("insufficient data for vehicles used: got %d bytes, need at least %d", len(data), lenMinEfVehiclesUsed)
 	}
 
-	var opts dd.UnmarshalOptions
 	var target cardv1.VehiclesUsed
 	r := bytes.NewReader(data)
 
@@ -52,7 +51,7 @@ func unmarshalCardVehiclesUsed(data []byte) (*cardv1.VehiclesUsed, error) {
 	recordSize := determineVehicleRecordSize(data)
 
 	for r.Len() >= recordSize {
-		record, err := parseVehicleRecord(opts, r, recordSize)
+		record, err := parseVehicleRecord(opts.UnmarshalOptions, r, recordSize)
 		if err != nil {
 			break // Stop parsing on error, but return what we have
 		}

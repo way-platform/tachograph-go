@@ -11,7 +11,7 @@ import (
 	ddv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
 )
 
-// unmarshalCardApplicationIdentification parses the binary data for an EF_ApplicationIdentification record.
+// unmarshalApplicationIdentification parses the binary data for an EF_ApplicationIdentification record.
 //
 // The data type `ApplicationIdentification` is specified in the Data Dictionary, Section 2.2.
 //
@@ -29,7 +29,7 @@ import (
 //	    noOfSpecificConditionRecords INTEGER(0..255) OPTIONAL,
 //	    noOfCardVehicleUnitRecords   INTEGER(0..255) OPTIONAL
 //	}
-func unmarshalCardApplicationIdentification(data []byte) (*cardv1.ApplicationIdentification, error) {
+func (opts UnmarshalOptions) unmarshalApplicationIdentification(data []byte) (*cardv1.ApplicationIdentification, error) {
 	const (
 		lenMinEfApplicationIdentification = 7 // Minimum EF_ApplicationIdentification record size
 	)
@@ -39,7 +39,6 @@ func unmarshalCardApplicationIdentification(data []byte) (*cardv1.ApplicationIde
 	}
 
 	target := &cardv1.ApplicationIdentification{}
-	var opts dd.UnmarshalOptions
 	r := bytes.NewReader(data)
 
 	// Read type of tachograph card ID (1 byte)

@@ -27,7 +27,7 @@ import (
 //	    deviceID                           DeviceID,
 //	    vuSoftwareVersion                  VuSoftwareVersion
 //	}
-func unmarshalCardVehicleUnitsUsed(data []byte) (*cardv1.VehicleUnitsUsed, error) {
+func (opts UnmarshalOptions) unmarshalVehicleUnitsUsed(data []byte) (*cardv1.VehicleUnitsUsed, error) {
 	const (
 		lenCardVehicleUnitsUsedHeader = 2 // CardVehicleUnitsUsed header size
 	)

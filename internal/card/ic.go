@@ -17,7 +17,7 @@ import (
 //	    icSerialNumber              OCTET STRING (SIZE(4)),
 //	    icManufacturingReferences   OCTET STRING (SIZE(4))
 //	}
-func unmarshalCardIc(data []byte) (*cardv1.Ic, error) {
+func (opts UnmarshalOptions) unmarshalIc(data []byte) (*cardv1.Ic, error) {
 	const (
 		lenIcSerialNumber            = 4
 		lenIcManufacturingReferences = 4

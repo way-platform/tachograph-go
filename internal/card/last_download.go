@@ -15,7 +15,7 @@ import (
 // ASN.1 Definition:
 //
 //	CardDownloadDriver ::= TimeReal
-func unmarshalCardLastDownload(data []byte) (*cardv1.CardDownloadDriver, error) {
+func (opts UnmarshalOptions) unmarshalLastDownload(data []byte) (*cardv1.CardDownloadDriver, error) {
 	const (
 		lenCardDownloadDriver = 4 // CardDownloadDriver total size
 	)
@@ -24,7 +24,6 @@ func unmarshalCardLastDownload(data []byte) (*cardv1.CardDownloadDriver, error) 
 		return nil, fmt.Errorf("insufficient data for last card download")
 	}
 
-	var opts dd.UnmarshalOptions
 	var target cardv1.CardDownloadDriver
 
 	// Read timestamp (4 bytes)

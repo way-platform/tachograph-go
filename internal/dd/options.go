@@ -33,3 +33,38 @@ type UnmarshalOptions struct {
 	// This field is reserved for future use as new versions are introduced.
 	Version ddv1.Version
 }
+
+// SetFromCardStructureVersion updates the generation and version fields based on
+// a CardStructureVersion value.
+//
+// Per Data Dictionary Section 2.36, card structure versions are encoded as major.minor:
+// - Major byte: 00H for Gen1, 01H for Gen2
+// - Minor byte: 00H for Gen1, 00H for Gen2v1, 01H for Gen2v2
+//
+// Examples from the regulation:
+// - {00 00} = Generation 1
+// - {01 00} = Generation 2, Version 1
+// - {01 01} = Generation 2, Version 2
+//
+// This method can be used by card and VU packages to extract generation/version
+// context from CardStructureVersion fields.
+func (opts *UnmarshalOptions) SetFromCardStructureVersion(csv *ddv1.CardStructureVersion) {
+	switch csv.GetMajor() {
+	case 0:
+		opts.Generation = ddv1.Generation_GENERATION_1
+		opts.Version = ddv1.Version_VERSION_1
+	case 1:
+		opts.Generation = ddv1.Generation_GENERATION_2
+		switch csv.GetMinor() {
+		case 0:
+			opts.Version = ddv1.Version_VERSION_1
+		case 1:
+			opts.Version = ddv1.Version_VERSION_2
+		default:
+			opts.Version = ddv1.Version_VERSION_UNSPECIFIED
+		}
+	default:
+		opts.Generation = ddv1.Generation_GENERATION_UNSPECIFIED
+		opts.Version = ddv1.Version_VERSION_UNSPECIFIED
+	}
+}

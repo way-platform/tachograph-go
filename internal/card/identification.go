@@ -31,7 +31,7 @@ import (
 //	    cardHolderBirthDate          Datef,
 //	    cardHolderPreferredLanguage  Language
 //	}
-func unmarshalIdentification(data []byte) (*cardv1.Identification, error) {
+func (opts UnmarshalOptions) unmarshalIdentification(data []byte) (*cardv1.Identification, error) {
 	const (
 		lenMinIdentification = 143 // Minimum size for EF_Identification
 	)
@@ -40,7 +40,6 @@ func unmarshalIdentification(data []byte) (*cardv1.Identification, error) {
 		return nil, errors.New("not enough data for EF_Identification")
 	}
 
-	var opts dd.UnmarshalOptions
 	var identification cardv1.Identification
 	offset := 0
 

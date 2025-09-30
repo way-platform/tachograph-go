@@ -41,14 +41,9 @@ const (
 	lenMinEfPlaces      = 2 // Minimum EF_Places file size (for the pointer)
 )
 
-func unmarshalCardPlaces(data []byte, generation ddv1.Generation) (*cardv1.Places, error) {
+func (opts UnmarshalOptions) unmarshalPlaces(data []byte) (*cardv1.Places, error) {
 	if len(data) < lenMinEfPlaces {
 		return nil, fmt.Errorf("insufficient data for places: got %d bytes, need at least %d", len(data), lenMinEfPlaces)
-	}
-
-	// Create unmarshal options from generation
-	opts := dd.UnmarshalOptions{
-		Generation: generation,
 	}
 
 	var target cardv1.Places
@@ -76,7 +71,7 @@ func unmarshalCardPlaces(data []byte, generation ddv1.Generation) (*cardv1.Place
 
 // parseCircularPlaceRecords parses place records from a circular buffer, starting from the oldest valid record.
 // It returns the parsed records and any trailing bytes that do not form a complete record.
-func parseCircularPlaceRecords(data []byte, newestRecordIndex int, opts dd.UnmarshalOptions) ([]*ddv1.PlaceRecord, []byte) {
+func parseCircularPlaceRecords(data []byte, newestRecordIndex int, opts UnmarshalOptions) ([]*ddv1.PlaceRecord, []byte) {
 	recordSize := placeRecordSizeGen1
 	if opts.Generation == ddv1.Generation_GENERATION_2 {
 		recordSize = placeRecordSizeGen2
@@ -132,7 +127,7 @@ func parseCircularPlaceRecords(data []byte, newestRecordIndex int, opts dd.Unmar
 }
 
 // unmarshalPlaceRecordWithValidation parses a place record and validates it
-func unmarshalPlaceRecordWithValidation(data []byte, opts dd.UnmarshalOptions) (*ddv1.PlaceRecord, bool) {
+func unmarshalPlaceRecordWithValidation(data []byte, opts UnmarshalOptions) (*ddv1.PlaceRecord, bool) {
 	record, err := unmarshalPlaceRecord(data, opts)
 	if err != nil {
 		// If parsing fails, treat as invalid but keep raw data
@@ -178,7 +173,7 @@ func isValidPlaceRecord(record *ddv1.PlaceRecord) bool {
 }
 
 // unmarshalPlaceRecord parses a single place record from a byte slice based on card generation.
-func unmarshalPlaceRecord(data []byte, opts dd.UnmarshalOptions) (*ddv1.PlaceRecord, error) {
+func unmarshalPlaceRecord(data []byte, opts UnmarshalOptions) (*ddv1.PlaceRecord, error) {
 	recordSize := placeRecordSizeGen1
 	if opts.Generation == ddv1.Generation_GENERATION_2 {
 		recordSize = placeRecordSizeGen2

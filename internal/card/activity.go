@@ -33,7 +33,7 @@ import (
 //	}
 //
 //	ActivityChangeInfo ::= OCTET STRING (SIZE (2))
-func unmarshalDriverActivityData(data []byte) (*cardv1.DriverActivityData, error) {
+func (opts UnmarshalOptions) unmarshalDriverActivityData(data []byte) (*cardv1.DriverActivityData, error) {
 	const (
 		lenCardDriverActivityHeader = 4 // 2 bytes oldest + 2 bytes newest pointer
 	)
@@ -68,7 +68,7 @@ func unmarshalDriverActivityData(data []byte) (*cardv1.DriverActivityData, error
 	target.SetRawData(activityData)
 
 	// Parse records using the iterator
-	dailyRecords, err := parseActivityRecordsWithIterator(activityData, int(newestDayRecordPointer))
+	dailyRecords, err := opts.parseActivityRecordsWithIterator(activityData, int(newestDayRecordPointer))
 	if err != nil {
 		return nil, fmt.Errorf("failed to parse cyclic activity daily records: %w", err)
 	}
@@ -80,7 +80,7 @@ func unmarshalDriverActivityData(data []byte) (*cardv1.DriverActivityData, error
 // parseActivityRecordsWithIterator parses activity records using the CyclicRecordIterator.
 // This separates the complex traversal logic from the parsing logic, improving maintainability
 // and enabling the buffer painting strategy for perfect round-trip fidelity.
-func parseActivityRecordsWithIterator(buffer []byte, startPos int) ([]*cardv1.DriverActivityData_DailyRecord, error) {
+func (opts UnmarshalOptions) parseActivityRecordsWithIterator(buffer []byte, startPos int) ([]*cardv1.DriverActivityData_DailyRecord, error) {
 	var records []*cardv1.DriverActivityData_DailyRecord
 
 	iterator := NewCyclicRecordIterator(buffer, startPos)
@@ -88,7 +88,7 @@ func parseActivityRecordsWithIterator(buffer []byte, startPos int) ([]*cardv1.Dr
 		recordBytes, _, _ := iterator.Record()
 
 		// Try to parse the record semantically
-		parsedRecord, err := parseSingleActivityDailyRecord(recordBytes)
+		parsedRecord, err := opts.parseSingleActivityDailyRecord(recordBytes)
 		dailyRecord := &cardv1.DriverActivityData_DailyRecord{}
 
 		if err != nil {
@@ -124,7 +124,7 @@ func parseActivityRecordsWithIterator(buffer []byte, startPos int) ([]*cardv1.Dr
 }
 
 // parseSingleActivityDailyRecord parses a single daily record byte slice.
-func parseSingleActivityDailyRecord(data []byte) (*cardv1.DriverActivityData_DailyRecord, error) {
+func (opts UnmarshalOptions) parseSingleActivityDailyRecord(data []byte) (*cardv1.DriverActivityData_DailyRecord, error) {
 	const (
 		lenMinDailyRecord = 12 // Minimum size: 4 bytes header + 4 bytes date + 2 bytes counter + 2 bytes distance
 	)
@@ -148,7 +148,6 @@ func parseSingleActivityDailyRecord(data []byte) (*cardv1.DriverActivityData_Dai
 	if offset+4 > len(data) {
 		return nil, fmt.Errorf("insufficient data for activity record date")
 	}
-	var opts dd.UnmarshalOptions
 	date, err := opts.UnmarshalTimeReal(data[offset : offset+4])
 	if err != nil {
 		return nil, fmt.Errorf("failed to parse activity record date: %w", err)

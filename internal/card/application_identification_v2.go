@@ -8,7 +8,7 @@ import (
 	cardv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1"
 )
 
-// unmarshalCardApplicationIdentificationV2 parses the binary data for an EF_ApplicationIdentificationV2 record.
+// unmarshalApplicationIdentificationV2 parses the binary data for an EF_ApplicationIdentificationV2 record.
 //
 // The data type `ApplicationIdentificationV2` is specified in the Data Dictionary, Section 2.2.
 //
@@ -20,7 +20,7 @@ import (
 //	    noOfLoadTypeEntryRecords     INTEGER(0..255),
 //	    vuConfigurationLengthRange   INTEGER(0..255)
 //	}
-func unmarshalCardApplicationIdentificationV2(data []byte) (*cardv1.ApplicationIdentificationV2, error) {
+func (opts UnmarshalOptions) unmarshalApplicationIdentificationV2(data []byte) (*cardv1.ApplicationIdentificationV2, error) {
 	const (
 		lenEfApplicationIdentificationV2 = 4 // EF_ApplicationIdentificationV2 record size
 	)

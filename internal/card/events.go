@@ -43,7 +43,7 @@ func splitCardEventRecord(data []byte, atEOF bool) (advance int, token []byte, e
 	return cardEventRecordSize, data[:cardEventRecordSize], nil
 }
 
-func unmarshalEventsData(data []byte) (*cardv1.EventsData, error) {
+func (opts UnmarshalOptions) unmarshalEventsData(data []byte) (*cardv1.EventsData, error) {
 	scanner := bufio.NewScanner(bytes.NewReader(data))
 	scanner.Split(splitCardEventRecord)
 
@@ -61,7 +61,7 @@ func unmarshalEventsData(data []byte) (*cardv1.EventsData, error) {
 			records = append(records, rec)
 		} else {
 			// Valid record: parse semantic data
-			rec, err := unmarshalEventRecord(recordData)
+			rec, err := opts.unmarshalEventRecord(recordData)
 			if err != nil {
 				return nil, err
 			}
@@ -92,7 +92,7 @@ func unmarshalEventsData(data []byte) (*cardv1.EventsData, error) {
 //	    eventEndTime                TimeReal,                         -- 4 bytes
 //	    eventVehicleRegistration    VehicleRegistrationIdentification -- 15 bytes
 //	}
-func unmarshalEventRecord(data []byte) (*cardv1.EventsData_Record, error) {
+func (opts UnmarshalOptions) unmarshalEventRecord(data []byte) (*cardv1.EventsData_Record, error) {
 	const (
 		lenEventType                = 1
 		lenEventBeginTime           = 4
@@ -105,7 +105,6 @@ func unmarshalEventRecord(data []byte) (*cardv1.EventsData_Record, error) {
 		return nil, fmt.Errorf("insufficient data for event record: got %d bytes, need %d", len(data), lenCardEventRecord)
 	}
 
-	var opts dd.UnmarshalOptions
 	var rec cardv1.EventsData_Record
 	offset := 0
 

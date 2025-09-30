@@ -25,7 +25,7 @@ import (
 //	    embedderIcAssemblerId       EmbedderIcAssemblerId,   -- 5 bytes
 //	    icIdentifier                OCTET STRING (SIZE(2))
 //	}
-func unmarshalIcc(data []byte) (*cardv1.Icc, error) {
+func (opts UnmarshalOptions) unmarshalIcc(data []byte) (*cardv1.Icc, error) {
 	const (
 		lenClockStop                = 1
 		lenCardExtendedSerialNumber = 8
@@ -40,7 +40,6 @@ func unmarshalIcc(data []byte) (*cardv1.Icc, error) {
 	if len(data) < lenCardIccIdentification {
 		return nil, errors.New("not enough data for IccIdentification")
 	}
-	var opts dd.UnmarshalOptions
 	offset := 0
 
 	// Read clock stop (1 byte)

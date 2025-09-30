@@ -19,10 +19,9 @@ import (
 //	    entryTime                TimeReal,
 //	    specificConditionType    SpecificConditionType
 //	}
-func unmarshalCardSpecificConditions(data []byte) (*cardv1.SpecificConditions, error) {
+func (opts UnmarshalOptions) unmarshalSpecificConditions(data []byte) (*cardv1.SpecificConditions, error) {
 	const lenSpecificConditionRecord = 5
 
-	var opts dd.UnmarshalOptions
 	if len(data) == 0 {
 		// Empty data is valid - no specific conditions
 		var target cardv1.SpecificConditions

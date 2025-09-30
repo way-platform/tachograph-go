@@ -43,7 +43,7 @@ func splitCardFaultRecord(data []byte, atEOF bool) (advance int, token []byte, e
 	return cardFaultRecordSize, data[:cardFaultRecordSize], nil
 }
 
-func unmarshalFaultsData(data []byte) (*cardv1.FaultsData, error) {
+func (opts UnmarshalOptions) unmarshalFaultsData(data []byte) (*cardv1.FaultsData, error) {
 	scanner := bufio.NewScanner(bytes.NewReader(data))
 	scanner.Split(splitCardFaultRecord)
 
@@ -63,7 +63,7 @@ func unmarshalFaultsData(data []byte) (*cardv1.FaultsData, error) {
 		} else {
 			// Valid record: parse semantic data
 			rec.SetValid(true)
-			if err := unmarshalFaultRecord(recordData, rec); err != nil {
+			if err := opts.unmarshalFaultRecord(recordData, rec); err != nil {
 				return nil, err
 			}
 		}
@@ -93,7 +93,7 @@ func unmarshalFaultsData(data []byte) (*cardv1.FaultsData, error) {
 //	    faultEndTime                TimeReal,                         -- 4 bytes
 //	    faultVehicleRegistration    VehicleRegistrationIdentification -- 15 bytes
 //	}
-func unmarshalFaultRecord(data []byte, rec *cardv1.FaultsData_Record) error {
+func (opts UnmarshalOptions) unmarshalFaultRecord(data []byte, rec *cardv1.FaultsData_Record) error {
 	const (
 		lenFaultType                = 1
 		lenFaultBeginTime           = 4
@@ -106,7 +106,6 @@ func unmarshalFaultRecord(data []byte, rec *cardv1.FaultsData_Record) error {
 		return fmt.Errorf("insufficient data for fault record: got %d bytes, need %d", len(data), lenCardFaultRecord)
 	}
 
-	var opts dd.UnmarshalOptions
 	offset := 0
 
 	// Read fault type (1 byte) and convert using generic enum helper

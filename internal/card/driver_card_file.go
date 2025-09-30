@@ -248,7 +248,11 @@ func getAllElementaryFiles(desc *cardv1.FileDescriptor) []cardv1.ElementaryFileT
 //	    certificates                     Certificates
 //	}
 func unmarshalDriverCardFile(input *cardv1.RawCardFile) (*cardv1.DriverCardFile, error) {
+	// Initialize with default generation/version (Gen1, Version1)
+	// This will be updated when we encounter EF_Application_Identification
+	var opts UnmarshalOptions
 	var output cardv1.DriverCardFile
+
 	for i := 0; i < len(input.GetRecords()); i++ {
 		record := input.GetRecords()[i]
 		if record.GetContentType() != cardv1.ContentType_DATA {
@@ -276,7 +280,7 @@ func unmarshalDriverCardFile(input *cardv1.RawCardFile) (*cardv1.DriverCardFile,
 		}
 		switch record.GetFile() {
 		case cardv1.ElementaryFileType_EF_ICC:
-			icc, err := unmarshalIcc(record.GetValue())
+			icc, err := opts.unmarshalIcc(record.GetValue())
 			if err != nil {
 				return nil, err
 			}
@@ -286,7 +290,7 @@ func unmarshalDriverCardFile(input *cardv1.RawCardFile) (*cardv1.DriverCardFile,
 			output.SetIcc(icc)
 
 		case cardv1.ElementaryFileType_EF_IC:
-			ic, err := unmarshalCardIc(record.GetValue())
+			ic, err := opts.unmarshalIc(record.GetValue())
 			if err != nil {
 				return nil, err
 			}
@@ -296,7 +300,7 @@ func unmarshalDriverCardFile(input *cardv1.RawCardFile) (*cardv1.DriverCardFile,
 			output.SetIc(ic)
 
 		case cardv1.ElementaryFileType_EF_IDENTIFICATION:
-			identification, err := unmarshalIdentification(record.GetValue())
+			identification, err := opts.unmarshalIdentification(record.GetValue())
 			if err != nil {
 				return nil, err
 			}
@@ -306,7 +310,7 @@ func unmarshalDriverCardFile(input *cardv1.RawCardFile) (*cardv1.DriverCardFile,
 			output.SetIdentification(identification)
 
 		case cardv1.ElementaryFileType_EF_APPLICATION_IDENTIFICATION:
-			appId, err := unmarshalCardApplicationIdentification(record.GetValue())
+			appId, err := opts.unmarshalApplicationIdentification(record.GetValue())
 			if err != nil {
 				return nil, err
 			}
@@ -315,8 +319,11 @@ func unmarshalDriverCardFile(input *cardv1.RawCardFile) (*cardv1.DriverCardFile,
 			}
 			output.SetApplicationIdentification(appId)
 
+			// Update opts with the actual generation/version for subsequent EFs
+			opts.SetFromCardStructureVersion(appId.GetCardStructureVersion())
+
 		case cardv1.ElementaryFileType_EF_DRIVING_LICENCE_INFO:
-			drivingLicenceInfo, err := unmarshalDrivingLicenceInfo(record.GetValue())
+			drivingLicenceInfo, err := opts.unmarshalDrivingLicenceInfo(record.GetValue())
 			if err != nil {
 				return nil, err
 			}
@@ -326,7 +333,7 @@ func unmarshalDriverCardFile(input *cardv1.RawCardFile) (*cardv1.DriverCardFile,
 			output.SetDrivingLicenceInfo(drivingLicenceInfo)
 
 		case cardv1.ElementaryFileType_EF_EVENTS_DATA:
-			eventsData, err := unmarshalEventsData(record.GetValue())
+			eventsData, err := opts.unmarshalEventsData(record.GetValue())
 			if err != nil {
 				return nil, err
 			}
@@ -336,7 +343,7 @@ func unmarshalDriverCardFile(input *cardv1.RawCardFile) (*cardv1.DriverCardFile,
 			output.SetEventsData(eventsData)
 
 		case cardv1.ElementaryFileType_EF_FAULTS_DATA:
-			faultsData, err := unmarshalFaultsData(record.GetValue())
+			faultsData, err := opts.unmarshalFaultsData(record.GetValue())
 			if err != nil {
 				return nil, err
 			}
@@ -346,7 +353,7 @@ func unmarshalDriverCardFile(input *cardv1.RawCardFile) (*cardv1.DriverCardFile,
 			output.SetFaultsData(faultsData)
 
 		case cardv1.ElementaryFileType_EF_DRIVER_ACTIVITY_DATA:
-			activityData, err := unmarshalDriverActivityData(record.GetValue())
+			activityData, err := opts.unmarshalDriverActivityData(record.GetValue())
 			if err != nil {
 				return nil, err
 			}
@@ -356,7 +363,7 @@ func unmarshalDriverCardFile(input *cardv1.RawCardFile) (*cardv1.DriverCardFile,
 			output.SetDriverActivityData(activityData)
 
 		case cardv1.ElementaryFileType_EF_VEHICLES_USED:
-			vehiclesUsed, err := unmarshalCardVehiclesUsed(record.GetValue())
+			vehiclesUsed, err := opts.unmarshalVehiclesUsed(record.GetValue())
 			if err != nil {
 				return nil, err
 			}
@@ -366,19 +373,19 @@ func unmarshalDriverCardFile(input *cardv1.RawCardFile) (*cardv1.DriverCardFile,
 			output.SetVehiclesUsed(vehiclesUsed)
 
 		case cardv1.ElementaryFileType_EF_PLACES:
-			places, err := unmarshalCardPlaces(record.GetValue(), record.GetGeneration())
+			places, err := opts.unmarshalPlaces(record.GetValue())
 			if err != nil {
 				return nil, err
 			}
-			// Store the generation in the Places message itself
-			places.SetGeneration(record.GetGeneration())
+			// Store the generation in the Places message itself (from opts now, not record)
+			places.SetGeneration(opts.Generation)
 			if signature != nil {
 				places.SetSignature(signature)
 			}
 			output.SetPlaces(places)
 
 		case cardv1.ElementaryFileType_EF_CURRENT_USAGE:
-			currentUsage, err := unmarshalCardCurrentUsage(record.GetValue())
+			currentUsage, err := opts.unmarshalCurrentUsage(record.GetValue())
 			if err != nil {
 				return nil, err
 			}
@@ -388,7 +395,7 @@ func unmarshalDriverCardFile(input *cardv1.RawCardFile) (*cardv1.DriverCardFile,
 			output.SetCurrentUsage(currentUsage)
 
 		case cardv1.ElementaryFileType_EF_CONTROL_ACTIVITY_DATA:
-			controlActivity, err := unmarshalCardControlActivityData(record.GetValue())
+			controlActivity, err := opts.unmarshalControlActivityData(record.GetValue())
 			if err != nil {
 				return nil, err
 			}
@@ -398,7 +405,7 @@ func unmarshalDriverCardFile(input *cardv1.RawCardFile) (*cardv1.DriverCardFile,
 			output.SetControlActivityData(controlActivity)
 
 		case cardv1.ElementaryFileType_EF_SPECIFIC_CONDITIONS:
-			specificConditions, err := unmarshalCardSpecificConditions(record.GetValue())
+			specificConditions, err := opts.unmarshalSpecificConditions(record.GetValue())
 			if err != nil {
 				return nil, err
 			}
@@ -408,7 +415,7 @@ func unmarshalDriverCardFile(input *cardv1.RawCardFile) (*cardv1.DriverCardFile,
 			output.SetSpecificConditions(specificConditions)
 
 		case cardv1.ElementaryFileType_EF_CARD_DOWNLOAD_DRIVER:
-			lastDownload, err := unmarshalCardLastDownload(record.GetValue())
+			lastDownload, err := opts.unmarshalLastDownload(record.GetValue())
 			if err != nil {
 				return nil, err
 			}
@@ -418,7 +425,7 @@ func unmarshalDriverCardFile(input *cardv1.RawCardFile) (*cardv1.DriverCardFile,
 			output.SetCardDownloadDriver(lastDownload)
 
 		case cardv1.ElementaryFileType_EF_VEHICLE_UNITS_USED:
-			vehicleUnits, err := unmarshalCardVehicleUnitsUsed(record.GetValue())
+			vehicleUnits, err := opts.unmarshalVehicleUnitsUsed(record.GetValue())
 			if err != nil {
 				return nil, err
 			}
@@ -428,7 +435,7 @@ func unmarshalDriverCardFile(input *cardv1.RawCardFile) (*cardv1.DriverCardFile,
 			output.SetVehicleUnitsUsed(vehicleUnits)
 
 		case cardv1.ElementaryFileType_EF_GNSS_PLACES:
-			gnssPlaces, err := unmarshalCardGnssPlaces(record.GetValue())
+			gnssPlaces, err := opts.unmarshalGnssPlaces(record.GetValue())
 			if err != nil {
 				return nil, err
 			}
@@ -438,7 +445,7 @@ func unmarshalDriverCardFile(input *cardv1.RawCardFile) (*cardv1.DriverCardFile,
 			output.SetGnssPlaces(gnssPlaces)
 
 		case cardv1.ElementaryFileType_EF_APPLICATION_IDENTIFICATION_V2:
-			appIdV2, err := unmarshalCardApplicationIdentificationV2(record.GetValue())
+			appIdV2, err := opts.unmarshalApplicationIdentificationV2(record.GetValue())
 			if err != nil {
 				return nil, err
 			}

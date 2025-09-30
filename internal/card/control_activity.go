@@ -24,7 +24,7 @@ import (
 //	    controlDownloadPeriodBegin         TimeReal,
 //	    controlDownloadPeriodEnd           TimeReal
 //	}
-func unmarshalCardControlActivityData(data []byte) (*cardv1.ControlActivityData, error) {
+func (opts UnmarshalOptions) unmarshalControlActivityData(data []byte) (*cardv1.ControlActivityData, error) {
 	const (
 		lenCardControlActivityDataRecord = 46 // CardControlActivityDataRecord total size
 	)
@@ -41,7 +41,6 @@ func unmarshalCardControlActivityData(data []byte) (*cardv1.ControlActivityData,
 	}
 	target.SetValid(true)
 
-	var opts dd.UnmarshalOptions
 	offset := 0
 
 	// Read control type (1 byte)
