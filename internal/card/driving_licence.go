@@ -90,11 +90,9 @@ func appendDrivingLicenceInfo(dst []byte, dli *cardv1.DrivingLicenceInfo) ([]byt
 		return nil, err
 	}
 	dst = append(dst, byte(dli.GetDrivingLicenceIssuingNation()))
-	if licenceNumber := dli.GetDrivingLicenceNumber(); licenceNumber != nil {
-		dst, err = dd.AppendString(dst, licenceNumber.GetValue(), 16)
-	}
+	dst, err = dd.AppendStringValue(dst, dli.GetDrivingLicenceNumber())
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to append driving licence number: %w", err)
 	}
 	return dst, nil
 }

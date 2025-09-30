@@ -37,7 +37,6 @@ func appendBCD(dst []byte, value int, length int) ([]byte, error) {
 	for len(s) < maxDigits {
 		s = "0" + s
 	}
-	// Decode hex string directly into dst (eliminates intermediate allocation)
 	result, err := hex.AppendDecode(dst, []byte(s))
 	if err != nil {
 		return nil, fmt.Errorf("failed to encode BCD: %w", err)

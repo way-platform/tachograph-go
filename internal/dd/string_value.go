@@ -131,7 +131,16 @@ func AppendStringValue(dst []byte, sv *ddv1.StringValue) ([]byte, error) {
 		}
 
 		// Fallback: use value string and pad with spaces
-		return AppendString(dst, sv.GetValue(), length)
+		value := sv.GetValue()
+		if len(value) > length {
+			return nil, fmt.Errorf("string value '%s' is longer than the allowed length %d", value, length)
+		}
+		result := make([]byte, length)
+		copy(result, []byte(value))
+		for i := len(value); i < length; i++ {
+			result[i] = ' '
+		}
+		return append(dst, result...), nil
 	}
 
 	// Handle code-paged format (variable-length with code page byte)

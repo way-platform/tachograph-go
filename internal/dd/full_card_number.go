@@ -130,24 +130,13 @@ func AppendFullCardNumberAsString(dst []byte, cardNumber *ddv1.FullCardNumber, m
 	switch cardNumber.GetCardType() {
 	case ddv1.EquipmentType_DRIVER_CARD:
 		if driverID := cardNumber.GetDriverIdentification(); driverID != nil {
-			// Concatenate the driver identification components
-			identification := driverID.GetDriverIdentificationNumber()
-
-			// Build the full driver identification string
-			driverStr := ""
-			if identification != nil {
-				driverStr += identification.GetValue()
-			}
-			return AppendString(dst, driverStr, maxLen)
+			return AppendStringValue(dst, driverID.GetDriverIdentificationNumber())
 		}
 	case ddv1.EquipmentType_WORKSHOP_CARD, ddv1.EquipmentType_COMPANY_CARD:
 		if ownerID := cardNumber.GetOwnerIdentification(); ownerID != nil {
-			identification := ownerID.GetOwnerIdentification()
-			if identification != nil {
-				return AppendString(dst, identification.GetValue(), maxLen)
-			}
+			return AppendStringValue(dst, ownerID.GetOwnerIdentification())
 		}
 	}
 
-	return AppendString(dst, "", maxLen)
+	return AppendStringValue(dst, nil)
 }

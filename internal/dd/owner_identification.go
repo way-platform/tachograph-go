@@ -90,46 +90,26 @@ func AppendOwnerIdentification(dst []byte, ownerID *ddv1.OwnerIdentification) ([
 	}
 
 	// Append owner identification number (13 bytes)
-	identificationNumber := ownerID.GetOwnerIdentification()
 	var err error
-	if identificationNumber != nil {
-		dst, err = AppendString(dst, identificationNumber.GetValue(), 13)
-	} else {
-		dst, err = AppendString(dst, "", 13)
-	}
+	dst, err = AppendStringValue(dst, ownerID.GetOwnerIdentification())
 	if err != nil {
 		return nil, fmt.Errorf("failed to append owner identification number: %w", err)
 	}
 
 	// Append card consecutive index (1 byte)
-	consecutiveIndex := ownerID.GetConsecutiveIndex()
-	if consecutiveIndex != nil {
-		dst, err = AppendString(dst, consecutiveIndex.GetValue(), 1)
-	} else {
-		dst, err = AppendString(dst, "", 1)
-	}
+	dst, err = AppendStringValue(dst, ownerID.GetConsecutiveIndex())
 	if err != nil {
 		return nil, fmt.Errorf("failed to append card consecutive index: %w", err)
 	}
 
 	// Append card replacement index (1 byte)
-	replacementIndex := ownerID.GetReplacementIndex()
-	if replacementIndex != nil {
-		dst, err = AppendString(dst, replacementIndex.GetValue(), 1)
-	} else {
-		dst, err = AppendString(dst, "", 1)
-	}
+	dst, err = AppendStringValue(dst, ownerID.GetReplacementIndex())
 	if err != nil {
 		return nil, fmt.Errorf("failed to append card replacement index: %w", err)
 	}
 
 	// Append card renewal index (1 byte)
-	renewalIndex := ownerID.GetRenewalIndex()
-	if renewalIndex != nil {
-		dst, err = AppendString(dst, renewalIndex.GetValue(), 1)
-	} else {
-		dst, err = AppendString(dst, "", 1)
-	}
+	dst, err = AppendStringValue(dst, ownerID.GetRenewalIndex())
 	if err != nil {
 		return nil, fmt.Errorf("failed to append card renewal index: %w", err)
 	}

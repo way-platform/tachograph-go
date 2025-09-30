@@ -21,17 +21,15 @@ func UnmarshalGeneration(data []byte) (ddv1.Generation, error) {
 		return ddv1.Generation_GENERATION_UNSPECIFIED, fmt.Errorf("invalid data length for Generation: got %d, want 1", len(data))
 	}
 
-	generationByte := data[0]
+	protocolValue := int32(data[0])
 
-	// Map generation byte to enum
-	switch generationByte {
-	case 1:
-		return ddv1.Generation_GENERATION_1, nil
-	case 2:
-		return ddv1.Generation_GENERATION_2, nil
-	default:
-		return ddv1.Generation_GENERATION_UNSPECIFIED, fmt.Errorf("invalid generation value: %d", generationByte)
+	// Use reflection to find matching enum value by protocol_enum_value annotation
+	enumDesc := ddv1.Generation_GENERATION_1.Descriptor()
+	if enumNumber, found := GetEnumForProtocolValue(enumDesc, protocolValue); found {
+		return ddv1.Generation(enumNumber), nil
 	}
+
+	return ddv1.Generation_GENERATION_UNSPECIFIED, fmt.Errorf("invalid generation value: %d", protocolValue)
 }
 
 // AppendGeneration appends generation as a single byte.
@@ -45,13 +43,9 @@ func UnmarshalGeneration(data []byte) (ddv1.Generation, error) {
 // Binary Layout (1 byte):
 //   - Generation (1 byte): Raw integer value (1-2)
 func AppendGeneration(dst []byte, generation ddv1.Generation) []byte {
-	// Map enum to generation byte
-	switch generation {
-	case ddv1.Generation_GENERATION_1:
-		return append(dst, 1)
-	case ddv1.Generation_GENERATION_2:
-		return append(dst, 2)
-	default:
-		return append(dst, 0) // Default to 0 for unspecified
+	if protocolValue, found := GetProtocolValueForEnum(generation); found {
+		return append(dst, byte(protocolValue))
 	}
+	// Default to 0 for unspecified/unrecognized
+	return append(dst, 0)
 }

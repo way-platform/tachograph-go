@@ -274,11 +274,15 @@ func appendCardIdentification(dst []byte, id *cardv1.Identification_Card) ([]byt
 	if id == nil {
 		return dst, nil
 	}
-	var err error
-	dst, err = dd.AppendBCDNation(dst, fmt.Sprintf("%d", int32(id.GetCardIssuingMemberState()))) // NationNumeric is BCD-encoded
-	if err != nil {
-		return nil, err
+	// Append cardIssuingMemberState (1 byte) - get protocol value from enum
+	memberState := id.GetCardIssuingMemberState()
+	if protocolValue, found := dd.GetProtocolValueForEnum(memberState); found {
+		dst = append(dst, byte(protocolValue))
+	} else {
+		// Default to 0xFF (EMPTY) for unspecified/unrecognized
+		dst = append(dst, 0xFF)
 	}
+	var err error
 	// Handle the CardNumber CHOICE type
 	// CardNumber ::= CHOICE {
 	//     -- Driver Card
@@ -357,14 +361,9 @@ func appendCardIdentification(dst []byte, id *cardv1.Identification_Card) ([]byt
 		}
 	}
 	dst = append(dst, cardNumberBytes...)
-	authorityName := id.GetCardIssuingAuthorityName()
-	if authorityName != nil {
-		dst, err = dd.AppendString(dst, authorityName.GetValue(), 36)
-	} else {
-		dst, err = dd.AppendString(dst, "", 36)
-	}
+	dst, err = dd.AppendStringValue(dst, id.GetCardIssuingAuthorityName())
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to append card issuing authority name: %w", err)
 	}
 	dst, err = dd.AppendTimeReal(dst, id.GetCardIssueDate())
 	if err != nil {
@@ -399,23 +398,13 @@ func appendDriverCardHolderIdentification(dst []byte, h *cardv1.Identification_D
 	}
 	var err error
 	nameBlock := make([]byte, 0, 72)
-	surname := h.GetCardHolderSurname()
-	if surname != nil {
-		nameBlock, err = dd.AppendString(nameBlock, surname.GetValue(), 36)
-	} else {
-		nameBlock, err = dd.AppendString(nameBlock, "", 36)
-	}
+	nameBlock, err = dd.AppendStringValue(nameBlock, h.GetCardHolderSurname())
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to append card holder surname: %w", err)
 	}
-	firstNames := h.GetCardHolderFirstNames()
-	if firstNames != nil {
-		nameBlock, err = dd.AppendString(nameBlock, firstNames.GetValue(), 36)
-	} else {
-		nameBlock, err = dd.AppendString(nameBlock, "", 36)
-	}
+	nameBlock, err = dd.AppendStringValue(nameBlock, h.GetCardHolderFirstNames())
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to append card holder first names: %w", err)
 	}
 	dst = append(dst, nameBlock...)
 
@@ -430,14 +419,9 @@ func appendDriverCardHolderIdentification(dst []byte, h *cardv1.Identification_D
 		dst = append(dst, 0x00, 0x00, 0x00, 0x00)
 	}
 
-	preferredLanguage := h.GetCardHolderPreferredLanguage()
-	if preferredLanguage != nil {
-		dst, err = dd.AppendString(dst, preferredLanguage.GetValue(), 2)
-	} else {
-		dst, err = dd.AppendString(dst, "", 2)
-	}
+	dst, err = dd.AppendStringValue(dst, h.GetCardHolderPreferredLanguage())
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to append preferred language: %w", err)
 	}
 	return dst, nil
 }

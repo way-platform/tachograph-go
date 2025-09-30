@@ -77,8 +77,12 @@ func AppendVehicleRegistration(dst []byte, vehicleReg *ddv1.VehicleRegistrationI
 
 	// Append registration number (14 bytes, padded with spaces)
 	number := vehicleReg.GetNumber()
-	if number != nil {
-		return AppendString(dst, number.GetValue(), 14)
+	if number == nil {
+		// Create empty StringValue with correct length for VehicleRegistrationNumber (SIZE(14))
+		number = &ddv1.StringValue{}
+		number.SetValue("")
+		number.SetLength(14)
+		number.SetEncoding(ddv1.Encoding_IA5)
 	}
-	return AppendString(dst, "", 14)
+	return AppendStringValue(dst, number)
 }

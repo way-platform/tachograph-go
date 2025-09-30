@@ -141,6 +141,8 @@ func TestAppendVehicleRegistration(t *testing.T) {
 				vr.SetNation(ddv1.NationNumeric_FINLAND)
 				num := &ddv1.StringValue{}
 				num.SetValue("FPA-829")
+				num.SetLength(14)
+				num.SetEncoding(ddv1.Encoding_IA5)
 				vr.SetNumber(num)
 				return vr
 			}(),
@@ -153,6 +155,8 @@ func TestAppendVehicleRegistration(t *testing.T) {
 				vr.SetNation(ddv1.NationNumeric_SPAIN)
 				num := &ddv1.StringValue{}
 				num.SetValue("ABC-1234")
+				num.SetLength(14)
+				num.SetEncoding(ddv1.Encoding_IA5)
 				vr.SetNumber(num)
 				return vr
 			}(),
@@ -165,6 +169,8 @@ func TestAppendVehicleRegistration(t *testing.T) {
 				vr.SetNation(ddv1.NationNumeric_GERMANY)
 				num := &ddv1.StringValue{}
 				num.SetValue("ABC")
+				num.SetLength(14)
+				num.SetEncoding(ddv1.Encoding_IA5)
 				vr.SetNumber(num)
 				return vr
 			}(),
@@ -177,6 +183,8 @@ func TestAppendVehicleRegistration(t *testing.T) {
 				vr.SetNation(ddv1.NationNumeric_ITALY)
 				num := &ddv1.StringValue{}
 				num.SetValue("")
+				num.SetLength(14)
+				num.SetEncoding(ddv1.Encoding_IA5)
 				vr.SetNumber(num)
 				return vr
 			}(),
@@ -198,6 +206,8 @@ func TestAppendVehicleRegistration(t *testing.T) {
 				vr.SetNation(ddv1.NationNumeric_NATION_NUMERIC_EMPTY)
 				num := &ddv1.StringValue{}
 				num.SetValue("TEST")
+				num.SetLength(14)
+				num.SetEncoding(ddv1.Encoding_IA5)
 				vr.SetNumber(num)
 				return vr
 			}(),
@@ -210,6 +220,8 @@ func TestAppendVehicleRegistration(t *testing.T) {
 				vr.SetNation(ddv1.NationNumeric_NATION_NUMERIC_UNSPECIFIED)
 				num := &ddv1.StringValue{}
 				num.SetValue("ABC")
+				num.SetLength(14)
+				num.SetEncoding(ddv1.Encoding_IA5)
 				vr.SetNumber(num)
 				return vr
 			}(),
@@ -222,6 +234,8 @@ func TestAppendVehicleRegistration(t *testing.T) {
 				vr.SetNation(ddv1.NationNumeric_NATION_NUMERIC_UNRECOGNIZED)
 				num := &ddv1.StringValue{}
 				num.SetValue("TEST")
+				num.SetLength(14)
+				num.SetEncoding(ddv1.Encoding_IA5)
 				vr.SetNumber(num)
 				return vr
 			}(),
@@ -261,6 +275,8 @@ func TestAppendVehicleRegistration_WithExistingData(t *testing.T) {
 	vr.SetNation(ddv1.NationNumeric_SWEDEN)
 	num := &ddv1.StringValue{}
 	num.SetValue("ABC123")
+	num.SetLength(14)
+	num.SetEncoding(ddv1.Encoding_IA5)
 	vr.SetNumber(num)
 
 	got, err := AppendVehicleRegistration(existing, vr)

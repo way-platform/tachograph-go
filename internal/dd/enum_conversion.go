@@ -107,8 +107,3 @@ func GetDriverActivityValueProtocolValue(activity ddv1.DriverActivityValue, unre
 func GetEventFaultTypeProtocolValue(eventType ddv1.EventFaultType, unrecognizedValue int32) int32 {
 	return GetProtocolValueFromEnumGeneric(eventType, unrecognizedValue)
 }
-
-
-
-
-
