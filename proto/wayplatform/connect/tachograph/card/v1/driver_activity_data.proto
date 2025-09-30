@@ -132,7 +132,7 @@ message DriverActivityData {
   // ASN.1 Specification:
   //
   //     OCTET STRING (SIZE(CardActivityLengthRange))
-  bytes raw_cyclic_buffer = 5;
+  bytes raw_data = 5;
 
   // Digital signature for the EF_Driver_Activity_Data file content.
   //

@@ -1,0 +1,80 @@
+edition = "2023";
+
+package wayplatform.connect.tachograph.dd.v1;
+
+import "google/protobuf/timestamp.proto";
+import "wayplatform/connect/tachograph/dd/v1/entry_type_daily_work_period.proto";
+import "wayplatform/connect/tachograph/dd/v1/gnss_place_record.proto";
+import "wayplatform/connect/tachograph/dd/v1/nation_numeric.proto";
+
+// Represents information related to a place where a daily work period begins or
+// ends.
+//
+// See Data Dictionary, Section 2.117, `PlaceRecord`.
+//
+// ASN.1 Definition (Gen1):
+//
+//     PlaceRecord ::= SEQUENCE {
+//         entryTime TimeReal,
+//         entryTypeDailyWorkPeriod EntryTypeDailyWorkPeriod,
+//         dailyWorkPeriodCountry NationNumeric,
+//         dailyWorkPeriodRegion RegionNumeric,
+//         vehicleOdometerValue OdometerShort
+//     }
+//
+// For Gen2, the following component is added:
+//
+//     entryGNSSPlaceRecord GNSSPlaceRecord
+message PlaceRecord {
+  // The date and time related to the entry.
+  //
+  // See Data Dictionary, Section 2.162, `TimeReal`.
+  google.protobuf.Timestamp entry_time = 1;
+
+  // The type of entry (begin or end of daily work period).
+  //
+  // See Data Dictionary, Section 2.66, `EntryTypeDailyWorkPeriod`.
+  EntryTypeDailyWorkPeriod entry_type_daily_work_period = 2;
+
+  // Stores the raw protocol value when an unrecognized enum value is
+  // encountered during parsing.
+  int32 unrecognized_entry_type_daily_work_period = 3;
+
+  // The country entered.
+  //
+  // See Data Dictionary, Section 2.101, `NationNumeric`.
+  NationNumeric daily_work_period_country = 4;
+
+  // Stores the raw protocol value when an unrecognized enum value is
+  // encountered during parsing.
+  int32 unrecognized_daily_work_period_country = 5;
+
+  // The region entered.
+  //
+  // The name `RegionNumeric` is a misnomer; it distinguishes this type from
+  // `RegionAlpha`. The value is an opaque byte whose meaning is defined by
+  // an external enumeration.
+  //
+  // For Gen2, the list of codes for each country is maintained by the EU's
+  // Joint Research Centre (JRC) and can be looked up on their website:
+  // https://dtlab.jrc.ec.europa.eu/
+  //
+  // See Data Dictionary, Section 2.122, `RegionNumeric`.
+  // ASN.1 Definition:
+  //
+  //     RegionNumeric ::= OCTET STRING (SIZE (1))
+  bytes daily_work_period_region = 6;
+
+  // The odometer value at the time of place entry in kilometers.
+  //
+  // See Data Dictionary, Section 2.113, `OdometerShort`.
+  // ASN.1 Definition:
+  //
+  //     OdometerShort ::= INTEGER(0..999999)
+  int32 vehicle_odometer_km = 7;
+
+  // The recorded GNSS location and time (Gen2+ only).
+  //
+  // See Data Dictionary, Section 2.80, `GNSSPlaceRecord`.
+  GNSSPlaceRecord entry_gnss_place_record = 8;
+}

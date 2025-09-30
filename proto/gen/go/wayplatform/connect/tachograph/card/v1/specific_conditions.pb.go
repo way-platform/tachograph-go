@@ -10,7 +10,6 @@ import (
 	v1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
-	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
 	reflect "reflect"
 	unsafe "unsafe"
 )
@@ -39,9 +38,9 @@ const (
 //
 //	SpecificConditions ::= SET SIZE(NoOfSpecificConditionRecords) OF SpecificConditionRecord
 type SpecificConditions struct {
-	state                  protoimpl.MessageState        `protogen:"opaque.v1"`
-	xxx_hidden_Records     *[]*SpecificConditions_Record `protobuf:"bytes,1,rep,name=records"`
-	xxx_hidden_Signature   []byte                        `protobuf:"bytes,2,opt,name=signature"`
+	state                  protoimpl.MessageState         `protogen:"opaque.v1"`
+	xxx_hidden_Records     *[]*v1.SpecificConditionRecord `protobuf:"bytes,1,rep,name=records"`
+	xxx_hidden_Signature   []byte                         `protobuf:"bytes,2,opt,name=signature"`
 	XXX_raceDetectHookData protoimpl.RaceDetectHookData
 	XXX_presence           [1]uint32
 	unknownFields          protoimpl.UnknownFields
@@ -73,7 +72,7 @@ func (x *SpecificConditions) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-func (x *SpecificConditions) GetRecords() []*SpecificConditions_Record {
+func (x *SpecificConditions) GetRecords() []*v1.SpecificConditionRecord {
 	if x != nil {
 		if x.xxx_hidden_Records != nil {
 			return *x.xxx_hidden_Records
@@ -89,7 +88,7 @@ func (x *SpecificConditions) GetSignature() []byte {
 	return nil
 }
 
-func (x *SpecificConditions) SetRecords(v []*SpecificConditions_Record) {
+func (x *SpecificConditions) SetRecords(v []*v1.SpecificConditionRecord) {
 	x.xxx_hidden_Records = &v
 }
 
@@ -117,7 +116,9 @@ type SpecificConditions_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
 	// The set of specific condition records.
-	Records []*SpecificConditions_Record
+	//
+	// See Data Dictionary, Section 2.152, `SpecificConditionRecord`.
+	Records []*v1.SpecificConditionRecord
 	// Signature data from the following file block, if tagged as a signature for
 	// this EF according to the card file format specification (Appendix 2).
 	//
@@ -150,176 +151,28 @@ func (b0 SpecificConditions_builder) Build() *SpecificConditions {
 	return m0
 }
 
-// Represents a single specific condition record.
-//
-// The data type `SpecificConditionRecord` is specified in the Data Dictionary, Section 2.152.
-//
-// ASN.1 Definition:
-//
-//	SpecificConditionRecord ::= SEQUENCE {
-//	    entryTime TimeReal,
-//	    specificConditionType SpecificConditionType
-//	}
-type SpecificConditions_Record struct {
-	state                            protoimpl.MessageState   `protogen:"opaque.v1"`
-	xxx_hidden_EntryTime             *timestamppb.Timestamp   `protobuf:"bytes,1,opt,name=entry_time,json=entryTime"`
-	xxx_hidden_SpecificConditionType v1.SpecificConditionType `protobuf:"varint,2,opt,name=specific_condition_type,json=specificConditionType,enum=wayplatform.connect.tachograph.dd.v1.SpecificConditionType"`
-	XXX_raceDetectHookData           protoimpl.RaceDetectHookData
-	XXX_presence                     [1]uint32
-	unknownFields                    protoimpl.UnknownFields
-	sizeCache                        protoimpl.SizeCache
-}
-
-func (x *SpecificConditions_Record) Reset() {
-	*x = SpecificConditions_Record{}
-	mi := &file_wayplatform_connect_tachograph_card_v1_specific_conditions_proto_msgTypes[1]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *SpecificConditions_Record) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*SpecificConditions_Record) ProtoMessage() {}
-
-func (x *SpecificConditions_Record) ProtoReflect() protoreflect.Message {
-	mi := &file_wayplatform_connect_tachograph_card_v1_specific_conditions_proto_msgTypes[1]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-func (x *SpecificConditions_Record) GetEntryTime() *timestamppb.Timestamp {
-	if x != nil {
-		return x.xxx_hidden_EntryTime
-	}
-	return nil
-}
-
-func (x *SpecificConditions_Record) GetSpecificConditionType() v1.SpecificConditionType {
-	if x != nil {
-		if protoimpl.X.Present(&(x.XXX_presence[0]), 1) {
-			return x.xxx_hidden_SpecificConditionType
-		}
-	}
-	return v1.SpecificConditionType(0)
-}
-
-func (x *SpecificConditions_Record) SetEntryTime(v *timestamppb.Timestamp) {
-	x.xxx_hidden_EntryTime = v
-}
-
-func (x *SpecificConditions_Record) SetSpecificConditionType(v v1.SpecificConditionType) {
-	x.xxx_hidden_SpecificConditionType = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 2)
-}
-
-func (x *SpecificConditions_Record) HasEntryTime() bool {
-	if x == nil {
-		return false
-	}
-	return x.xxx_hidden_EntryTime != nil
-}
-
-func (x *SpecificConditions_Record) HasSpecificConditionType() bool {
-	if x == nil {
-		return false
-	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 1)
-}
-
-func (x *SpecificConditions_Record) ClearEntryTime() {
-	x.xxx_hidden_EntryTime = nil
-}
-
-func (x *SpecificConditions_Record) ClearSpecificConditionType() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 1)
-	x.xxx_hidden_SpecificConditionType = v1.SpecificConditionType_SPECIFIC_CONDITION_TYPE_UNSPECIFIED
-}
-
-type SpecificConditions_Record_builder struct {
-	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
-
-	// The timestamp of the entry.
-	//
-	// See Data Dictionary, Section 2.162, `TimeReal`.
-	// ASN.1 Definition:
-	//
-	//	TimeReal ::= INTEGER (0..2^32-1)
-	EntryTime *timestamppb.Timestamp
-	// The type of the specific condition.
-	//
-	// See Data Dictionary, Section 2.154, `SpecificConditionType`.
-	//
-	// ASN.1 Definition (Gen1):
-	//
-	//	SpecificConditionType ::= INTEGER {
-	//	    rfu(0),
-	//	    out-of-scope-begin(1),
-	//	    out-of-scope-end(2),
-	//	    ferry-train-crossing(3)
-	//	} (0..255)
-	//
-	// ASN.1 Definition (Gen2):
-	//
-	//	SpecificConditionType ::= INTEGER {
-	//	    rfu(0),
-	//	    out-of-scope-begin(1),
-	//	    out-of-scope-end(2),
-	//	    ferry-train-crossing-begin(3),
-	//	    ferry-train-crossing-end(4)
-	//	} (0..255)
-	SpecificConditionType *v1.SpecificConditionType
-}
-
-func (b0 SpecificConditions_Record_builder) Build() *SpecificConditions_Record {
-	m0 := &SpecificConditions_Record{}
-	b, x := &b0, m0
-	_, _ = b, x
-	x.xxx_hidden_EntryTime = b.EntryTime
-	if b.SpecificConditionType != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 2)
-		x.xxx_hidden_SpecificConditionType = *b.SpecificConditionType
-	}
-	return m0
-}
-
 var File_wayplatform_connect_tachograph_card_v1_specific_conditions_proto protoreflect.FileDescriptor
 
 const file_wayplatform_connect_tachograph_card_v1_specific_conditions_proto_rawDesc = "" +
 	"\n" +
-	"@wayplatform/connect/tachograph/card/v1/specific_conditions.proto\x12&wayplatform.connect.tachograph.card.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1aBwayplatform/connect/tachograph/dd/v1/specific_condition_type.proto\"\xca\x02\n" +
-	"\x12SpecificConditions\x12[\n" +
-	"\arecords\x18\x01 \x03(\v2A.wayplatform.connect.tachograph.card.v1.SpecificConditions.RecordR\arecords\x12\x1c\n" +
-	"\tsignature\x18\x02 \x01(\fR\tsignature\x1a\xb8\x01\n" +
-	"\x06Record\x129\n" +
-	"\n" +
-	"entry_time\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\tentryTime\x12s\n" +
-	"\x17specific_condition_type\x18\x02 \x01(\x0e2;.wayplatform.connect.tachograph.dd.v1.SpecificConditionTypeR\x15specificConditionTypeB\xe4\x02\n" +
+	"@wayplatform/connect/tachograph/card/v1/specific_conditions.proto\x12&wayplatform.connect.tachograph.card.v1\x1aDwayplatform/connect/tachograph/dd/v1/specific_condition_record.proto\"\x8b\x01\n" +
+	"\x12SpecificConditions\x12W\n" +
+	"\arecords\x18\x01 \x03(\v2=.wayplatform.connect.tachograph.dd.v1.SpecificConditionRecordR\arecords\x12\x1c\n" +
+	"\tsignature\x18\x02 \x01(\fR\tsignatureB\xe4\x02\n" +
 	"*com.wayplatform.connect.tachograph.card.v1B\x17SpecificConditionsProtoP\x01Z`github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1;cardv1\xa2\x02\x04WCTC\xaa\x02&Wayplatform.Connect.Tachograph.Card.V1\xca\x02&Wayplatform\\Connect\\Tachograph\\Card\\V1\xe2\x022Wayplatform\\Connect\\Tachograph\\Card\\V1\\GPBMetadata\xea\x02*Wayplatform::Connect::Tachograph::Card::V1b\beditionsp\xe8\a"
 
-var file_wayplatform_connect_tachograph_card_v1_specific_conditions_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
+var file_wayplatform_connect_tachograph_card_v1_specific_conditions_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_wayplatform_connect_tachograph_card_v1_specific_conditions_proto_goTypes = []any{
-	(*SpecificConditions)(nil),        // 0: wayplatform.connect.tachograph.card.v1.SpecificConditions
-	(*SpecificConditions_Record)(nil), // 1: wayplatform.connect.tachograph.card.v1.SpecificConditions.Record
-	(*timestamppb.Timestamp)(nil),     // 2: google.protobuf.Timestamp
-	(v1.SpecificConditionType)(0),     // 3: wayplatform.connect.tachograph.dd.v1.SpecificConditionType
+	(*SpecificConditions)(nil),         // 0: wayplatform.connect.tachograph.card.v1.SpecificConditions
+	(*v1.SpecificConditionRecord)(nil), // 1: wayplatform.connect.tachograph.dd.v1.SpecificConditionRecord
 }
 var file_wayplatform_connect_tachograph_card_v1_specific_conditions_proto_depIdxs = []int32{
-	1, // 0: wayplatform.connect.tachograph.card.v1.SpecificConditions.records:type_name -> wayplatform.connect.tachograph.card.v1.SpecificConditions.Record
-	2, // 1: wayplatform.connect.tachograph.card.v1.SpecificConditions.Record.entry_time:type_name -> google.protobuf.Timestamp
-	3, // 2: wayplatform.connect.tachograph.card.v1.SpecificConditions.Record.specific_condition_type:type_name -> wayplatform.connect.tachograph.dd.v1.SpecificConditionType
-	3, // [3:3] is the sub-list for method output_type
-	3, // [3:3] is the sub-list for method input_type
-	3, // [3:3] is the sub-list for extension type_name
-	3, // [3:3] is the sub-list for extension extendee
-	0, // [0:3] is the sub-list for field type_name
+	1, // 0: wayplatform.connect.tachograph.card.v1.SpecificConditions.records:type_name -> wayplatform.connect.tachograph.dd.v1.SpecificConditionRecord
+	1, // [1:1] is the sub-list for method output_type
+	1, // [1:1] is the sub-list for method input_type
+	1, // [1:1] is the sub-list for extension type_name
+	1, // [1:1] is the sub-list for extension extendee
+	0, // [0:1] is the sub-list for field type_name
 }
 
 func init() { file_wayplatform_connect_tachograph_card_v1_specific_conditions_proto_init() }
@@ -333,7 +186,7 @@ func file_wayplatform_connect_tachograph_card_v1_specific_conditions_proto_init(
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_wayplatform_connect_tachograph_card_v1_specific_conditions_proto_rawDesc), len(file_wayplatform_connect_tachograph_card_v1_specific_conditions_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   2,
+			NumMessages:   1,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

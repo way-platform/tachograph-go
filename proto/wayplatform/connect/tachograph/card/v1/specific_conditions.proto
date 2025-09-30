@@ -2,8 +2,7 @@ edition = "2023";
 
 package wayplatform.connect.tachograph.card.v1;
 
-import "google/protobuf/timestamp.proto";
-import "wayplatform/connect/tachograph/dd/v1/specific_condition_type.proto";
+import "wayplatform/connect/tachograph/dd/v1/specific_condition_record.proto";
 
 // Represents the content of the EF_Specific_Conditions file, which contains a log
 // of specific conditions (e.g., Ferry/Train crossing).
@@ -23,52 +22,10 @@ import "wayplatform/connect/tachograph/dd/v1/specific_condition_type.proto";
 //     SpecificConditions ::= SET SIZE(NoOfSpecificConditionRecords) OF SpecificConditionRecord
 //
 message SpecificConditions {
-  // Represents a single specific condition record.
-  //
-  // The data type `SpecificConditionRecord` is specified in the Data Dictionary, Section 2.152.
-  //
-  // ASN.1 Definition:
-  //
-  //     SpecificConditionRecord ::= SEQUENCE {
-  //         entryTime TimeReal,
-  //         specificConditionType SpecificConditionType
-  //     }
-  message Record {
-    // The timestamp of the entry.
-    //
-    // See Data Dictionary, Section 2.162, `TimeReal`.
-    // ASN.1 Definition:
-    //
-    //     TimeReal ::= INTEGER (0..2^32-1)
-    google.protobuf.Timestamp entry_time = 1;
-
-    // The type of the specific condition.
-    //
-    // See Data Dictionary, Section 2.154, `SpecificConditionType`.
-    //
-    // ASN.1 Definition (Gen1):
-    //
-    //     SpecificConditionType ::= INTEGER {
-    //         rfu(0),
-    //         out-of-scope-begin(1),
-    //         out-of-scope-end(2),
-    //         ferry-train-crossing(3)
-    //     } (0..255)
-    //
-    // ASN.1 Definition (Gen2):
-    //
-    //     SpecificConditionType ::= INTEGER {
-    //         rfu(0),
-    //         out-of-scope-begin(1),
-    //         out-of-scope-end(2),
-    //         ferry-train-crossing-begin(3),
-    //         ferry-train-crossing-end(4)
-    //     } (0..255)
-    dd.v1.SpecificConditionType specific_condition_type = 2;
-  }
-
   // The set of specific condition records.
-  repeated Record records = 1;
+  //
+  // See Data Dictionary, Section 2.152, `SpecificConditionRecord`.
+  repeated dd.v1.SpecificConditionRecord records = 1;
 
   // Signature data from the following file block, if tagged as a signature for
   // this EF according to the card file format specification (Appendix 2).

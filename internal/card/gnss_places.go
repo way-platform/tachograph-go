@@ -114,28 +114,19 @@ func appendCardGnssPlaceRecord(dst []byte, record *cardv1.GnssPlaces_Record) ([]
 		return nil, fmt.Errorf("failed to append timestamp: %w", err)
 	}
 
-	// GNSS place accuracy (1 byte)
-	gnssPlace := record.GetGnssPlace()
-	if gnssPlace != nil {
-		accuracy := gnssPlace.GetGnssAccuracy()
-		if accuracy < 0 || accuracy > 255 {
-			return nil, fmt.Errorf("invalid GNSS accuracy: %d", accuracy)
-		}
-		dst = append(dst, byte(accuracy))
-	} else {
-		dst = append(dst, 0x00)
-	}
-
-	// Geo coordinates (8 bytes: 4 bytes longitude + 4 bytes latitude)
-	if gnssPlace != nil && gnssPlace.GetGeoCoordinates() != nil {
+	// GNSS place record (GNSSPlaceRecord from DD)
+	gnssPlaceRecord := record.GetGnssPlaceRecord()
+	if gnssPlaceRecord != nil {
+		// Append the GNSS place record using DD function
 		var err error
-		dst, err = dd.AppendGeoCoordinates(dst, gnssPlace.GetGeoCoordinates())
+		dst, err = dd.AppendGNSSPlaceRecord(dst, gnssPlaceRecord)
 		if err != nil {
-			return nil, fmt.Errorf("failed to append geo coordinates: %w", err)
+			return nil, fmt.Errorf("failed to append GNSS place record: %w", err)
 		}
 	} else {
-		// Append default values (8 zero bytes)
-		dst = append(dst, make([]byte, 8)...)
+		// Append default values (12 bytes: 4 timestamp + 1 accuracy + 8 geo coords - 1 = 13 bytes total)
+		// Actually the full GNSSPlaceRecord is 13 bytes: 4 (timestamp) + 1 (accuracy) + 8 (coords)
+		dst = append(dst, make([]byte, 13)...)
 	}
 
 	// Vehicle odometer value (OdometerShort - 3 bytes)

@@ -43,7 +43,7 @@ type DriverActivityData struct {
 	xxx_hidden_OldestDayRecordIndex int32                              `protobuf:"varint,1,opt,name=oldest_day_record_index,json=oldestDayRecordIndex"`
 	xxx_hidden_NewestDayRecordIndex int32                              `protobuf:"varint,2,opt,name=newest_day_record_index,json=newestDayRecordIndex"`
 	xxx_hidden_DailyRecords         *[]*DriverActivityData_DailyRecord `protobuf:"bytes,3,rep,name=daily_records,json=dailyRecords"`
-	xxx_hidden_RawCyclicBuffer      []byte                             `protobuf:"bytes,5,opt,name=raw_cyclic_buffer,json=rawCyclicBuffer"`
+	xxx_hidden_RawData              []byte                             `protobuf:"bytes,5,opt,name=raw_data,json=rawData"`
 	xxx_hidden_Signature            []byte                             `protobuf:"bytes,4,opt,name=signature"`
 	XXX_raceDetectHookData          protoimpl.RaceDetectHookData
 	XXX_presence                    [1]uint32
@@ -99,9 +99,9 @@ func (x *DriverActivityData) GetDailyRecords() []*DriverActivityData_DailyRecord
 	return nil
 }
 
-func (x *DriverActivityData) GetRawCyclicBuffer() []byte {
+func (x *DriverActivityData) GetRawData() []byte {
 	if x != nil {
-		return x.xxx_hidden_RawCyclicBuffer
+		return x.xxx_hidden_RawData
 	}
 	return nil
 }
@@ -127,11 +127,11 @@ func (x *DriverActivityData) SetDailyRecords(v []*DriverActivityData_DailyRecord
 	x.xxx_hidden_DailyRecords = &v
 }
 
-func (x *DriverActivityData) SetRawCyclicBuffer(v []byte) {
+func (x *DriverActivityData) SetRawData(v []byte) {
 	if v == nil {
 		v = []byte{}
 	}
-	x.xxx_hidden_RawCyclicBuffer = v
+	x.xxx_hidden_RawData = v
 	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 3, 5)
 }
 
@@ -157,7 +157,7 @@ func (x *DriverActivityData) HasNewestDayRecordIndex() bool {
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 1)
 }
 
-func (x *DriverActivityData) HasRawCyclicBuffer() bool {
+func (x *DriverActivityData) HasRawData() bool {
 	if x == nil {
 		return false
 	}
@@ -181,9 +181,9 @@ func (x *DriverActivityData) ClearNewestDayRecordIndex() {
 	x.xxx_hidden_NewestDayRecordIndex = 0
 }
 
-func (x *DriverActivityData) ClearRawCyclicBuffer() {
+func (x *DriverActivityData) ClearRawData() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 3)
-	x.xxx_hidden_RawCyclicBuffer = nil
+	x.xxx_hidden_RawData = nil
 }
 
 func (x *DriverActivityData) ClearSignature() {
@@ -227,7 +227,7 @@ type DriverActivityData_builder struct {
 	// ASN.1 Specification:
 	//
 	//	OCTET STRING (SIZE(CardActivityLengthRange))
-	RawCyclicBuffer []byte
+	RawData []byte
 	// Digital signature for the EF_Driver_Activity_Data file content.
 	//
 	// See Data Dictionary, Section 2.149, `Signature`.
@@ -250,9 +250,9 @@ func (b0 DriverActivityData_builder) Build() *DriverActivityData {
 		x.xxx_hidden_NewestDayRecordIndex = *b.NewestDayRecordIndex
 	}
 	x.xxx_hidden_DailyRecords = &b.DailyRecords
-	if b.RawCyclicBuffer != nil {
+	if b.RawData != nil {
 		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 3, 5)
-		x.xxx_hidden_RawCyclicBuffer = b.RawCyclicBuffer
+		x.xxx_hidden_RawData = b.RawData
 	}
 	if b.Signature != nil {
 		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 4, 5)
@@ -580,12 +580,12 @@ var File_wayplatform_connect_tachograph_card_v1_driver_activity_data_proto proto
 
 const file_wayplatform_connect_tachograph_card_v1_driver_activity_data_proto_rawDesc = "" +
 	"\n" +
-	"Awayplatform/connect/tachograph/card/v1/driver_activity_data.proto\x12&wayplatform.connect.tachograph.card.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a?wayplatform/connect/tachograph/dd/v1/activity_change_info.proto\x1a5wayplatform/connect/tachograph/dd/v1/bcd_string.proto\"\xdd\x06\n" +
+	"Awayplatform/connect/tachograph/card/v1/driver_activity_data.proto\x12&wayplatform.connect.tachograph.card.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a?wayplatform/connect/tachograph/dd/v1/activity_change_info.proto\x1a5wayplatform/connect/tachograph/dd/v1/bcd_string.proto\"\xcc\x06\n" +
 	"\x12DriverActivityData\x125\n" +
 	"\x17oldest_day_record_index\x18\x01 \x01(\x05R\x14oldestDayRecordIndex\x125\n" +
 	"\x17newest_day_record_index\x18\x02 \x01(\x05R\x14newestDayRecordIndex\x12k\n" +
-	"\rdaily_records\x18\x03 \x03(\v2F.wayplatform.connect.tachograph.card.v1.DriverActivityData.DailyRecordR\fdailyRecords\x12*\n" +
-	"\x11raw_cyclic_buffer\x18\x05 \x01(\fR\x0frawCyclicBuffer\x12\x1c\n" +
+	"\rdaily_records\x18\x03 \x03(\v2F.wayplatform.connect.tachograph.card.v1.DriverActivityData.DailyRecordR\fdailyRecords\x12\x19\n" +
+	"\braw_data\x18\x05 \x01(\fR\arawData\x12\x1c\n" +
 	"\tsignature\x18\x04 \x01(\fR\tsignature\x1a\xa1\x04\n" +
 	"\vDailyRecord\x12\x14\n" +
 	"\x05valid\x18\x01 \x01(\bR\x05valid\x12E\n" +

@@ -65,7 +65,7 @@ func unmarshalDriverActivityData(data []byte) (*cardv1.DriverActivityData, error
 	}
 
 	// Store the raw cyclic buffer for round-trip fidelity
-	target.SetRawCyclicBuffer(activityData)
+	target.SetRawData(activityData)
 
 	// Parse records using the iterator
 	dailyRecords, err := parseActivityRecordsWithIterator(activityData, int(newestDayRecordPointer))
@@ -231,7 +231,7 @@ func appendDriverActivity(dst []byte, activity *cardv1.DriverActivityData) ([]by
 	dst = binary.BigEndian.AppendUint16(dst, uint16(activity.GetNewestDayRecordIndex()))
 
 	// Use buffer painting strategy for perfect fidelity when raw buffer is available
-	if rawBuffer := activity.GetRawCyclicBuffer(); len(rawBuffer) > 0 {
+	if rawBuffer := activity.GetRawData(); len(rawBuffer) > 0 {
 		bufferCopy := make([]byte, len(rawBuffer))
 		copy(bufferCopy, rawBuffer)
 

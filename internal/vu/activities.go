@@ -359,7 +359,7 @@ func unmarshalVuCardIWRecord(data []byte) (*vuv1.Activities_CardIWRecord, error)
 }
 
 // parsePreviousVehicleInfo parses PreviousVehicleInfo structure
-func parsePreviousVehicleInfo(data []byte) (*vuv1.Activities_CardIWRecord_PreviousVehicleInfo, error) {
+func parsePreviousVehicleInfo(data []byte) (*ddv1.PreviousVehicleInfo, error) {
 	// PreviousVehicleInfo ::= SEQUENCE {
 	//     vehicleRegistrationIdentification VehicleRegistrationIdentification -- 15 bytes
 	// }
@@ -379,7 +379,7 @@ func parsePreviousVehicleInfo(data []byte) (*vuv1.Activities_CardIWRecord_Previo
 	vehicleReg.SetNation(nation)
 	vehicleReg.SetNumber(regNumber)
 
-	info := &vuv1.Activities_CardIWRecord_PreviousVehicleInfo{}
+	info := &ddv1.PreviousVehicleInfo{}
 	info.SetVehicleRegistration(vehicleReg)
 
 	return info, nil
@@ -502,7 +502,7 @@ func parseVuPlaceRecord(data []byte, offset int) (*vuv1.Activities_PlaceRecord, 
 	return record, offset + 10, nil
 }
 
-func parseVuSpecificConditionData(data []byte, offset int) ([]*vuv1.Activities_SpecificConditionRecord, int, error) {
+func parseVuSpecificConditionData(data []byte, offset int) ([]*ddv1.SpecificConditionRecord, int, error) {
 	// VuSpecificConditionData ::= SEQUENCE {
 	//     noOfSpecificConditionRecords INTEGER(0..255),
 	//     specificConditionRecords SET SIZE(noOfSpecificConditionRecords) OF SpecificConditionRecord
@@ -514,7 +514,7 @@ func parseVuSpecificConditionData(data []byte, offset int) ([]*vuv1.Activities_S
 		return nil, offset, fmt.Errorf("failed to read number of specific condition records: %w", err)
 	}
 
-	var records []*vuv1.Activities_SpecificConditionRecord
+	var records []*ddv1.SpecificConditionRecord
 
 	// Parse each SpecificConditionRecord
 	for i := 0; i < int(noOfRecords); i++ {
@@ -529,36 +529,9 @@ func parseVuSpecificConditionData(data []byte, offset int) ([]*vuv1.Activities_S
 	return records, offset, nil
 }
 
-// unmarshalSpecificConditionRecord parses a single SpecificConditionRecord from a byte slice
-func unmarshalSpecificConditionRecord(data []byte) (*vuv1.Activities_SpecificConditionRecord, error) {
-	// SpecificConditionRecord ::= SEQUENCE {
-	//     entryTime TimeReal,                    -- 4 bytes
-	//     specificConditionType SpecificConditionType -- 1 byte
-	// }
-
-	if len(data) < 5 {
-		return nil, fmt.Errorf("insufficient data for specific condition record: got %d, need 5", len(data))
-	}
-
-	record := &vuv1.Activities_SpecificConditionRecord{}
-
-	// Parse entryTime (TimeReal - 4 bytes)
-	entryTime, _, err := readVuTimeRealFromBytes(data, 0)
-	if err != nil {
-		return nil, fmt.Errorf("failed to read entry time: %w", err)
-	}
-	record.SetEntryTime(timestamppb.New(time.Unix(entryTime, 0)))
-
-	// Parse specificConditionType (1 byte)
-	conditionType := data[4]
-	record.SetSpecificConditionType(ddv1.SpecificConditionType(conditionType))
-
-	return record, nil
-}
-
 // parseVuSpecificConditionRecord parses a single SpecificConditionRecord (legacy function for Gen1)
-func parseVuSpecificConditionRecord(data []byte, offset int) (*vuv1.Activities_SpecificConditionRecord, int, error) {
-	record, err := unmarshalSpecificConditionRecord(data[offset : offset+5])
+func parseVuSpecificConditionRecord(data []byte, offset int) (*ddv1.SpecificConditionRecord, int, error) {
+	record, err := dd.UnmarshalSpecificConditionRecord(data[offset : offset+5])
 	if err != nil {
 		return nil, offset, err
 	}
@@ -1139,7 +1112,7 @@ func splitSpecificConditionRecord(data []byte, atEOF bool) (advance int, token [
 	return specificConditionRecordSize, data[:specificConditionRecordSize], nil
 }
 
-func parseVuSpecificConditionRecordArray(data []byte, offset int) ([]*vuv1.Activities_SpecificConditionRecord, int, error) {
+func parseVuSpecificConditionRecordArray(data []byte, offset int) ([]*ddv1.SpecificConditionRecord, int, error) {
 	// VuSpecificConditionRecordArray ::= SEQUENCE {
 	//     recordType INTEGER(1..65535),           -- 2 bytes
 	//     recordSize INTEGER(0..65535),           -- 2 bytes
@@ -1179,7 +1152,7 @@ func parseVuSpecificConditionRecordArray(data []byte, offset int) ([]*vuv1.Activ
 	scanner := bufio.NewScanner(bytes.NewReader(recordsData))
 	scanner.Split(splitSpecificConditionRecord)
 
-	var records []*vuv1.Activities_SpecificConditionRecord
+	var records []*ddv1.SpecificConditionRecord
 	recordCount := 0
 
 	for scanner.Scan() {
@@ -1188,7 +1161,7 @@ func parseVuSpecificConditionRecordArray(data []byte, offset int) ([]*vuv1.Activ
 		}
 
 		recordData := scanner.Bytes()
-		record, err := unmarshalSpecificConditionRecord(recordData)
+		record, err := dd.UnmarshalSpecificConditionRecord(recordData)
 		if err != nil {
 			return nil, offset, fmt.Errorf("failed to parse SpecificConditionRecord %d: %w", recordCount, err)
 		}
@@ -2031,7 +2004,7 @@ func appendVuPlaceRecord(dst []byte, place *vuv1.Activities_PlaceRecord) ([]byte
 }
 
 // appendVuSpecificConditionData appends VuSpecificConditionData to dst
-func appendVuSpecificConditionData(dst []byte, specificConditions []*vuv1.Activities_SpecificConditionRecord) ([]byte, error) {
+func appendVuSpecificConditionData(dst []byte, specificConditions []*ddv1.SpecificConditionRecord) ([]byte, error) {
 	if specificConditions == nil {
 		// Write number of specific condition records (1 byte) as 0
 		return append(dst, 0), nil
@@ -2043,40 +2016,14 @@ func appendVuSpecificConditionData(dst []byte, specificConditions []*vuv1.Activi
 	}
 	dst = append(dst, byte(len(specificConditions)))
 
-	// Write each specific condition record
+	// Write each specific condition record using the dd package
 	for _, condition := range specificConditions {
 		var err error
-		dst, err = appendVuSpecificConditionRecord(dst, condition)
+		dst, err = dd.AppendSpecificConditionRecord(dst, condition)
 		if err != nil {
 			return nil, fmt.Errorf("failed to append specific condition record: %w", err)
 		}
 	}
-
-	return dst, nil
-}
-
-// appendVuSpecificConditionRecord appends a single SpecificConditionRecord to dst
-func appendVuSpecificConditionRecord(dst []byte, condition *vuv1.Activities_SpecificConditionRecord) ([]byte, error) {
-	if condition == nil {
-		return dst, nil
-	}
-
-	// SpecificConditionRecord ::= SEQUENCE {
-	//     entryTime TimeReal,                    -- 4 bytes
-	//     specificConditionType SpecificConditionType -- 1 byte
-	// }
-
-	// Append entryTime (TimeReal - 4 bytes)
-	entryTime := condition.GetEntryTime()
-	if entryTime != nil {
-		dst = appendVuTimeReal(dst, entryTime)
-	} else {
-		// Append default time (00000000)
-		dst = append(dst, 0x00, 0x00, 0x00, 0x00)
-	}
-
-	// Append specificConditionType (1 byte)
-	dst = append(dst, byte(condition.GetSpecificConditionType()))
 
 	return dst, nil
 }
@@ -2306,7 +2253,7 @@ func appendVuGNSSADRecord(dst []byte, record *vuv1.Activities_GnssRecord) ([]byt
 }
 
 // appendVuSpecificConditionRecordArray appends VuSpecificConditionRecordArray to dst
-func appendVuSpecificConditionRecordArray(dst []byte, specificConditions []*vuv1.Activities_SpecificConditionRecord) ([]byte, error) {
+func appendVuSpecificConditionRecordArray(dst []byte, specificConditions []*ddv1.SpecificConditionRecord) ([]byte, error) {
 	// VuSpecificConditionRecordArray ::= SEQUENCE {
 	//     recordType INTEGER(1..65535),           -- 2 bytes
 	//     recordSize INTEGER(0..65535),           -- 2 bytes
@@ -2323,10 +2270,10 @@ func appendVuSpecificConditionRecordArray(dst []byte, specificConditions []*vuv1
 	dst = binary.BigEndian.AppendUint16(dst, recordSize)
 	dst = binary.BigEndian.AppendUint16(dst, noOfRecords)
 
-	// Write each SpecificConditionRecord
+	// Write each SpecificConditionRecord using the dd package
 	for _, condition := range specificConditions {
 		var err error
-		dst, err = appendVuSpecificConditionRecord(dst, condition)
+		dst, err = dd.AppendSpecificConditionRecord(dst, condition)
 		if err != nil {
 			return nil, fmt.Errorf("failed to append specific condition record: %w", err)
 		}

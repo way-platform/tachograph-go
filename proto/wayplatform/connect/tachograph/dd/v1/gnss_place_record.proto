@@ -1,0 +1,52 @@
+edition = "2023";
+
+package wayplatform.connect.tachograph.dd.v1;
+
+import "google/protobuf/timestamp.proto";
+import "wayplatform/connect/tachograph/dd/v1/geo_coordinates.proto";
+
+// Represents a GNSS position recorded at a specific place.
+//
+// See Data Dictionary, Section 2.80, `GNSSPlaceRecord`.
+//
+// ASN.1 Definition:
+//
+//     GNSSPlaceRecord ::= SEQUENCE {
+//         timeStamp TimeReal,
+//         gnssAccuracy GNSSAccuracy,
+//         geoCoordinates GeoCoordinates
+//     }
+//
+// IMPORTANT: Binary Format Variations
+//
+// The standard DD definition (13 bytes) is:
+//   - timeStamp (4 bytes) at offset 0
+//   - gnssAccuracy (1 byte) at offset 4
+//   - geoCoordinates (8 bytes) at offset 5
+//
+// However, the card file format for PlaceRecord Gen2 uses a different layout (12 bytes):
+//   - geoCoordinates (8 bytes) at offset 0 (DIFFERENT ORDER)
+//   - timeStamp (4 bytes) at offset 8 (DIFFERENT ORDER)
+//   - NO gnssAccuracy field (OMITTED)
+//
+// This protobuf message represents the superset and is used for both variants.
+// The parsing/marshalling code must handle both binary layouts appropriately.
+message GNSSPlaceRecord {
+  // The timestamp when the GNSS position was recorded.
+  //
+  // See Data Dictionary, Section 2.162, `TimeReal`.
+  google.protobuf.Timestamp timestamp = 1;
+
+  // The accuracy of the GNSS fix.
+  //
+  // See Data Dictionary, Section 2.77, `GNSSAccuracy`.
+  // ASN.1 Definition:
+  //
+  //     GNSSAccuracy ::= INTEGER (1..100)
+  int32 gnss_accuracy = 2;
+
+  // The geographic coordinates of the position.
+  //
+  // See Data Dictionary, Section 2.76, `GeoCoordinates`.
+  GeoCoordinates geo_coordinates = 3;
+}

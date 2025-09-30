@@ -15,6 +15,8 @@ import "wayplatform/connect/tachograph/dd/v1/holder_name.proto";
 import "wayplatform/connect/tachograph/dd/v1/nation_numeric.proto";
 import "wayplatform/connect/tachograph/dd/v1/operation_type.proto";
 import "wayplatform/connect/tachograph/dd/v1/position_authentication_status.proto";
+import "wayplatform/connect/tachograph/dd/v1/previous_vehicle_info.proto";
+import "wayplatform/connect/tachograph/dd/v1/specific_condition_record.proto";
 import "wayplatform/connect/tachograph/dd/v1/specific_condition_type.proto";
 import "wayplatform/connect/tachograph/dd/v1/vehicle_registration_identification.proto";
 import "wayplatform/connect/tachograph/vu/v1/versioning.proto";
@@ -45,41 +47,10 @@ message Activities {
   //
   // For Gen2, `fullCardNumber` is replaced by `fullCardNumberAndGeneration`.
   message CardIWRecord {
-    // Represents information about the previous vehicle used by the driver.
-    //
-    // See Data Dictionary, Section 2.118, `PreviousVehicleInfo`.
-    //
-    // ASN.1 Definition:
-    //
-    //     PreviousVehicleInfo ::= SEQUENCE {
-    //         vehicleRegistrationIdentification VehicleRegistrationIdentification,
-    //         cardWithdrawalTime                TimeReal,
-    //         vuGeneration                      Generation -- Gen2 only
-    //     }
-    message PreviousVehicleInfo {
-      // The registration of the previous vehicle.
-      //
-      // See Data Dictionary, Section 2.166, `VehicleRegistrationIdentification`.
-      dd.v1.VehicleRegistrationIdentification vehicle_registration = 1;
-
-      // The time the card was withdrawn from the previous vehicle.
-      //
-      // See Data Dictionary, Section 2.162, `TimeReal`.
-      // ASN.1 Definition:
-      //
-      //     TimeReal ::= INTEGER (0..2^32-1)
-      google.protobuf.Timestamp card_withdrawal_time = 2;
-
-      // The generation of the VU from which the card was withdrawn. (Gen2 only)
-      //
-      // See Data Dictionary, Section 2.75, `Generation`.
-      dd.v1.Generation vu_generation = 3;
-    }
-
     // The name of the card holder.
     //
     // See Data Dictionary, Section 2.83, `HolderName`.
-    wayplatform.connect.tachograph.dd.v1.HolderName card_holder_name = 1;
+    dd.v1.HolderName card_holder_name = 1;
 
     // The full card number of the inserted card.
     // For Gen2 records, this will include the card generation.
@@ -94,7 +65,7 @@ message Activities {
     // ASN.1 Definition:
     //
     //     Datef ::= OCTET STRING(SIZE(4))
-    wayplatform.connect.tachograph.dd.v1.Date card_expiry_date = 3;
+    dd.v1.Date card_expiry_date = 3;
 
     // The time the card was inserted.
     //
@@ -134,7 +105,9 @@ message Activities {
     int32 odometer_at_withdrawal_km = 9;
 
     // Information about the previous vehicle used.
-    PreviousVehicleInfo previous_vehicle_info = 10;
+    //
+    // See Data Dictionary, Section 2.118, `PreviousVehicleInfo`.
+    dd.v1.PreviousVehicleInfo previous_vehicle_info = 10;
 
     // Indicates if manual entries were made.
     //
@@ -228,31 +201,6 @@ message Activities {
     //
     // See Data Dictionary, Section 2.117a, `PositionAuthenticationStatus`.
     dd.v1.PositionAuthenticationStatus authentication_status = 5;
-  }
-
-  // Represents a specific condition record (e.g., Ferry/Train crossing).
-  //
-  // See Data Dictionary, Section 2.152, `SpecificConditionRecord`.
-  //
-  // ASN.1 Definition:
-  //
-  //     SpecificConditionRecord ::= SEQUENCE {
-  //         entryTime TimeReal,
-  //         specificConditionType SpecificConditionType
-  //     }
-  message SpecificConditionRecord {
-    // Time of the entry.
-    //
-    // See Data Dictionary, Section 2.162, `TimeReal`.
-    // ASN.1 Definition:
-    //
-    //     TimeReal ::= INTEGER (0..2^32-1)
-    google.protobuf.Timestamp entry_time = 1;
-
-    // Type of specific condition.
-    //
-    // See Data Dictionary, Section 2.154, `SpecificConditionType`.
-    dd.v1.SpecificConditionType specific_condition_type = 2;
   }
 
   // Represents a border crossing record (Gen2v2+).
@@ -379,7 +327,9 @@ message Activities {
 
   // Specific conditions data.
   // Corresponds to `VuSpecificConditionData` (DD 2.227) or `VuSpecificConditionRecordArray` (DD 2.228).
-  repeated SpecificConditionRecord specific_conditions = 8;
+  //
+  // See Data Dictionary, Section 2.152, `SpecificConditionRecord`.
+  repeated dd.v1.SpecificConditionRecord specific_conditions = 8;
 
   // Gen2+ Fields: GNSS positions recorded at 3-hour accumulated driving time intervals.
   // Corresponds to `VuGNSSADRecordArray` (DD 2.204).
