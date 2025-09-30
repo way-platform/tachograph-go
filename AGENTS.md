@@ -42,11 +42,11 @@ Key chapters:
 
 ## API overview
 
-The API is designed for simplicity and orthogonality. Non-essential types, functions, or methods should be private.
+The API is designed for simplicity and orthogonality. The top-level package contains only the main entry points, with all implementation details organized into internal packages.
 
 ### `tachograph.UnmarshalFile(data []byte) (*tachographv1.File, error)`
 
-Main entry point for parsing a tachograph data file. It delegates to private, type-specific unmarshal functions.
+Main entry point for parsing a tachograph data file. It delegates to type-specific unmarshal functions in the internal packages (`internal/vu`, `internal/card`, `internal/dd`).
 
 Usage:
 
@@ -60,7 +60,7 @@ fmt.Println(protojson.Format(file))
 
 ### `tachograph.MarshalFile(file *tachographv1.File) ([]byte, error)`
 
-Main entry point for serializing a tachograph file. It delegates to private, type-specific append functions that use the `encoding.BinaryAppender` pattern.
+Main entry point for serializing a tachograph file. It delegates to type-specific marshal functions in the internal packages that use the `encoding.BinaryAppender` pattern.
 
 Usage:
 
@@ -75,6 +75,46 @@ os.WriteFile("tachograph.DDD", data, 0600)
 
 - **[Protobuf Schemas](./proto/AGENTS.md)**: Guidelines for developing the protobuf schemas.
 - **[Development Tools](./tools/AGENTS.md)**: Guidance on build scripts and build targets.
+
+### Package Organization
+
+The codebase is organized into a clean, modular structure with clear separation of concerns:
+
+#### Top-Level Package (`github.com/way-platform/tachograph-go`)
+
+Contains only the main public API entry points:
+
+- `UnmarshalFile(data []byte) (*tachographv1.File, error)`: Main parsing entry point
+- `MarshalFile(file *tachographv1.File) ([]byte, error)`: Main serialization entry point
+
+All implementation details are delegated to internal packages.
+
+#### Internal Packages
+
+**`internal/vu`**: Vehicle Unit (VU) file processing
+
+- `UnmarshalVehicleUnitFile(data []byte) (*vuv1.File, error)`: VU-specific unmarshaling
+- `MarshalVehicleUnitFile(file *vuv1.File) ([]byte, error)`: VU-specific marshaling
+- Private functions for VU-specific data structures and logic
+
+**`internal/card`**: Tachograph card file processing
+
+- `UnmarshalDriverCardFile(data []byte) (*cardv1.DriverFile, error)`: Card-specific unmarshaling
+- `MarshalDriverCardFile(file *cardv1.DriverFile) ([]byte, error)`: Card-specific marshaling
+- Private functions for card-specific data structures and logic
+
+**`internal/dd`**: Data Dictionary types and utilities
+
+- Public `Unmarshal*` and `Append*` functions for data dictionary types
+- These functions are used by both `internal/vu` and `internal/card` packages
+- Contains shared parsing logic for common ASN.1 data structures
+
+#### Visibility Rules
+
+- **Top-level package**: Only `UnmarshalFile` and `MarshalFile` are public
+- **`internal/vu`**: Only `UnmarshalVehicleUnitFile` and `MarshalVehicleUnitFile` are public
+- **`internal/card`**: Only card file marshal/unmarshal functions are public
+- **`internal/dd`**: Most `Unmarshal*` and `Append*` functions are public since they're shared between VU and card packages
 
 ### VU Data Modeling for Gen1 and Gen2
 
@@ -109,12 +149,12 @@ Tachograph specifications evolve, and data structures frequently differ between 
 
 A clear example of this principle is the `EF_Places` file on a driver card.
 
-*   **Gen1 `PlaceRecord`:** Has a fixed size of 12 bytes.
-*   **Gen2 `PlaceRecord`:** Extends the record to 22 bytes to include GNSS location data.
+- **Gen1 `PlaceRecord`:** Has a fixed size of 12 bytes.
+- **Gen2 `PlaceRecord`:** Extends the record to 22 bytes to include GNSS location data.
 
 A parser that assumes a fixed 12-byte size will fail to correctly read Gen2 card data, leading to data corruption and loss. The correct implementation must:
 
-1.  Determine the card generation *before* parsing `EF_Places`.
+1.  Determine the card generation _before_ parsing `EF_Places`.
 2.  Use the generation to select the correct record size and parsing logic.
 3.  The protobuf model must be a "superset" capable of holding data from both generations.
 
@@ -122,37 +162,59 @@ This principle applies to all data structures, not just `EF_Places`. Always veri
 
 ### Marshalling and Unmarshalling
 
-To ensure the codebase remains maintainable and easy to extend, we follow a specific structure for marshalling and unmarshalling logic within this package.
+To ensure the codebase remains maintainable and easy to extend, we follow a specific structure for marshalling and unmarshalling logic organized by internal packages.
 
 #### File Structure
 
-The core principle is to organize files by type rather than by operation, with a direct correspondence to the protobuf schema definitions. For each protobuf file that defines a major entity (e.g., `card/v1/activity.proto`), there should be one corresponding file in the top-level package:
+The core principle is to organize files by type rather than by operation, with a direct correspondence to the protobuf schema definitions. Each internal package contains files that correspond to protobuf message types:
 
-- `(vu|card|dd)_<typename>.go`: Handles both marshalling and unmarshalling for the corresponding protobuf message types. The prefix indicates the parent package (`vu` for vehicle unit, `card` for card data, `dd` for data dictionary).
+**`internal/vu/`**: For each VU-related protobuf file (e.g., `vu/v1/activities.proto`), there should be one corresponding file:
 
-This convention improves locality of context by keeping related marshalling and unmarshalling logic together, making it easier to spot inconsistencies and ensuring the operations stay in sync. The lexical ordering of files by package prefix also groups related functionality together.
+- `<typename>.go`: Handles both marshalling and unmarshalling for VU-specific protobuf message types
 
-**Migration Note**: The existing codebase uses the old convention of separate `unmarshal_*` and `append_*` files. As we refactor the codebase, we will consolidate these into the new `(vu|card|dd)_<typename>.go` structure. This migration should be done incrementally, one proto file at a time.
+**`internal/card/`**: For each card-related protobuf file (e.g., `card/v1/activity.proto`), there should be one corresponding file:
+
+- `<typename>.go`: Handles both marshalling and unmarshalling for card-specific protobuf message types
+
+**`internal/dd/`**: For each data dictionary protobuf file (e.g., `dd/v1/time.proto`), there should be one corresponding file:
+
+- `<typename>.go`: Handles both marshalling and unmarshalling for data dictionary types
+
+This convention improves locality of context by keeping related marshalling and unmarshalling logic together, making it easier to spot inconsistencies and ensuring the operations stay in sync.
+
+**Migration Note**: The existing codebase uses files in the top-level package with `(vu|card|dd)_` prefixes. As we refactor the codebase, we will move these into the appropriate internal packages and remove the prefixes. This migration should be done incrementally, one proto file at a time.
 
 #### Marshalling Pattern
 
-Marshalling is implemented using a two-level approach to balance efficiency and simplicity:
+Marshalling is implemented using a multi-level approach to balance efficiency and simplicity:
 
-1.  **Top-Level Functions (`MarshalFile`)**: The main entry point, `tachograph.MarshalFile`, conforms to the standard `encoding.BinaryMarshaler` interface. It is responsible for allocating a sufficiently large `[]byte` buffer and orchestrating the overall serialization process.
+1.  **Top-Level Function (`MarshalFile`)**: The main entry point, `tachograph.MarshalFile`, conforms to the standard `encoding.BinaryMarshaler` interface. It determines the file type and delegates to the appropriate internal package.
 
-2.  **Appending Functions (`append_*`)**: The detailed work of writing data is delegated to `append_*` functions that follow the `BinaryAppender` pattern. They take a pre-allocated `[]byte` slice and append their binary representation to it, returning the updated slice. This approach avoids multiple small allocations and is more efficient.
+2.  **Package-Level Functions**: Each internal package provides its own marshal function (e.g., `vu.MarshalVehicleUnitFile`, `card.MarshalDriverCardFile`). These functions are responsible for allocating a sufficiently large `[]byte` buffer and orchestrating the serialization process for their specific file type.
+
+3.  **Appending Functions (`Append*`)**: The detailed work of writing data is delegated to `Append*` functions (primarily in `internal/dd`) that follow the `BinaryAppender` pattern. They take a pre-allocated `[]byte` slice and append their binary representation to it, returning the updated slice. This approach avoids multiple small allocations and is more efficient.
 
 #### Unmarshalling Pattern
 
-Unmarshalling functions (`unmarshal_*`) are responsible for parsing a `[]byte` slice (or a sub-slice) into the target protobuf message. Each function takes the binary data as input and returns the populated struct and any error encountered.
+Unmarshalling is implemented with a similar multi-level approach:
+
+1.  **Top-Level Function (`UnmarshalFile`)**: The main entry point determines the file type and delegates to the appropriate internal package.
+
+2.  **Package-Level Functions**: Each internal package provides its own unmarshal function (e.g., `vu.UnmarshalVehicleUnitFile`, `card.UnmarshalDriverCardFile`).
+
+3.  **Unmarshalling Functions (`Unmarshal*`)**: These functions (primarily in `internal/dd`) are responsible for parsing a `[]byte` slice (or a sub-slice) into the target protobuf message. Each function takes the binary data as input and returns the populated struct and any error encountered.
 
 ### Helper Functions and Code Co-location
 
 To maintain clarity and prevent the accumulation of disconnected utility functions, we avoid creating generic "helper" or "utility" files. Files with names like `helpers.go`, `utils.go`, or the existing `append_helpers.go`, `append_vu_helpers.go`, and `enum_helpers.go` are examples of a pattern we seek to avoid in new code.
 
-The preferred approach is to co-locate helper functions with the code that uses them. If a function is only used within a single `(vu|card|dd)_*.go` file, it should be a private function within that same file.
+The preferred approach is to co-locate helper functions with the code that uses them:
 
-If a helper function is needed across multiple, related files (e.g., for handling a specific data type that appears in different structures), it should be placed in a file with a clear, semantic name that describes its purpose (e.g., `dd_time.go` for time-parsing helpers). This makes the codebase easier to navigate and understand.
+- **Package-specific helpers**: If a function is only used within a single file in an internal package, it should be a private function within that same file.
+- **Cross-package helpers**: Functions needed across packages should generally be placed in `internal/dd` with public visibility, since this package serves as the shared foundation for data dictionary types.
+- **Package-wide helpers**: If a helper function is needed across multiple files within the same internal package, it should be placed in a file with a clear, semantic name that describes its purpose (e.g., `time.go` for time-parsing helpers within `internal/dd`).
+
+This approach maintains clear boundaries between packages while ensuring shared functionality is accessible where needed.
 
 ### Using Protobuf Reflection for Annotations
 
@@ -169,7 +231,7 @@ import (
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/reflect/protoreflect"
 
-	datadictionaryv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/datadictionary/v1"
+	ddv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
 )
 
 // GetProtocolValueFromEnum retrieves the custom 'protocol_enum_value' annotation
@@ -184,12 +246,12 @@ func GetProtocolValueFromEnum(enumValue protoreflect.Enum) (int32, bool) {
 
 	// Get the options for that value descriptor.
 	opts := valueDesc.Options()
-	if !proto.HasExtension(opts, datadictionaryv1.E_ProtocolEnumValue) {
+	if !proto.HasExtension(opts, ddv1.E_ProtocolEnumValue) {
 		return 0, false
 	}
 
 	// Retrieve the value of the custom extension.
-	protocolValue := proto.GetExtension(opts, datadictionaryv1.E_ProtocolEnumValue).(int32)
+	protocolValue := proto.GetExtension(opts, ddv1.E_ProtocolEnumValue).(int32)
 	return protocolValue, true
 }
 
@@ -197,14 +259,13 @@ func GetProtocolValueFromEnum(enumValue protoreflect.Enum) (int32, bool) {
 // Example usage:
 import (
     "fmt"
-    datadictionaryv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/datadictionary/v1"
+    ddv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
 )
 
 func main() {
-    activity := datadictionaryv1.DriverActivityValue_DRIVING
+    activity := ddv1.DriverActivityValue_DRIVING
     if val, ok := GetProtocolValueFromEnum(activity); ok {
-        fmt.Printf("The protocol value for %s is %d
-", activity.String(), val)
+        fmt.Printf("The protocol value for %s is %d\n", activity.String(), val)
         // Output: The protocol value for DRIVING is 3
     }
 }
@@ -228,7 +289,7 @@ Avoid using "magic numbers" for sizes and offsets. Instead, define a `const` blo
 **Example (Fixed-Length):**
 
 ```go
-// unmarshalCardIccIdentification parses the CardIccIdentification structure.
+// UnmarshalCardIccIdentification parses the CardIccIdentification structure.
 //
 // The data type `CardIccIdentification` is specified in the Data Dictionary, Section 2.23.
 //
@@ -242,7 +303,7 @@ Avoid using "magic numbers" for sizes and offsets. Instead, define a `const` blo
 //         embedderIcAssemblerId       EmbedderIcAssemblerId,   -- 5 bytes
 //         icIdentifier                OCTET STRING (SIZE(2))
 //     }
-func unmarshalCardIccIdentification(data []byte) (*cardv1.Icc, error) {
+func UnmarshalCardIccIdentification(data []byte) (*cardv1.Icc, error) {
     const (
         idxClockStop              = 0
         idxExtendedSerialNumber   = 1
@@ -267,14 +328,14 @@ Some data structures have a variable length, often specified as a range (e.g., `
 **Example (Variable-Length):**
 
 ```go
-// unmarshalVuApprovalNumber parses the VuApprovalNumber.
+// UnmarshalVuApprovalNumber parses the VuApprovalNumber.
 //
 // The data type `VuApprovalNumber` is specified in the Data Dictionary, Section 2.172.
 //
 // ASN.1 Specification:
 //
 //     VuApprovalNumber ::= IA5String(SIZE(8 | 16))
-func unmarshalVuApprovalNumber(data []byte) (*datadictionaryv1.StringValue, error) {
+func UnmarshalVuApprovalNumber(data []byte) (*ddv1.StringValue, error) {
     const (
         lenGen1 = 8
         lenGen2 = 16

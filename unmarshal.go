@@ -6,6 +6,8 @@ import (
 	"fmt"
 	"io"
 
+	"github.com/way-platform/tachograph-go/internal/card"
+	"github.com/way-platform/tachograph-go/internal/vu"
 	cardv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1"
 	tachographv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/v1"
 )
@@ -20,7 +22,7 @@ func UnmarshalFile(data []byte) (*tachographv1.File, error) {
 
 	// Vehicle unit file (starts with TREP prefix).
 	case data[0] == 0x76:
-		vehicleUnitFile, err := unmarshalVehicleUnitFile(data)
+		vehicleUnitFile, err := vu.UnmarshalVehicleUnitFile(data)
 		if err != nil {
 			return nil, err
 		}
@@ -30,32 +32,31 @@ func UnmarshalFile(data []byte) (*tachographv1.File, error) {
 
 	// Card file (starts with EF_ICC prefix).
 	case binary.BigEndian.Uint16(data[0:2]) == 0x0002:
-		rawCardFile, err := unmarshalRawCardFile(data)
+		rawCardFile, err := card.UnmarshalRawCardFile(data)
 		if err != nil {
 			return nil, err
 		}
-		switch fileType := inferCardFileType(rawCardFile); fileType {
+
+		// Infer the card type
+		cardType := card.InferCardFileType(rawCardFile)
+
+		// Parse structured card data based on type
+		switch cardType {
 		case cardv1.CardType_DRIVER_CARD:
-			driverCardFile, err := unmarshalDriverCardFile(rawCardFile)
+			driverCard, err := card.UnmarshalDriverCardFile(rawCardFile)
 			if err != nil {
-				return nil, err
+				return nil, fmt.Errorf("failed to parse driver card: %w", err)
 			}
 			output.SetType(tachographv1.File_DRIVER_CARD)
-			output.SetDriverCard(driverCardFile)
-		case cardv1.CardType_WORKSHOP_CARD:
-			// TODO: Implement workshop card.
-			fallthrough
-		case cardv1.CardType_CONTROL_CARD:
-			// TODO: Implement control card.
-			fallthrough
-		case cardv1.CardType_COMPANY_CARD:
-			// TODO: Implement company card.
-			fallthrough
+			output.SetDriverCard(driverCard)
+			return &output, nil
 		default:
+			// For unsupported card types, return raw card data
 			output.SetType(tachographv1.File_RAW_CARD)
 			output.SetRawCard(rawCardFile)
+			return &output, nil
 		}
-		return &output, nil
+
 	default:
 		return nil, errors.New("unknown or unsupported file type")
 	}
@@ -65,11 +66,11 @@ func UnmarshalFile(data []byte) (*tachographv1.File, error) {
 func MarshalFile(file *tachographv1.File) ([]byte, error) {
 	switch file.GetType() {
 	case tachographv1.File_DRIVER_CARD:
-		return appendCard(nil, file)
+		return card.MarshalDriverCardFile(file.GetDriverCard())
 	case tachographv1.File_VEHICLE_UNIT:
-		return AppendVU(nil, file.GetVehicleUnit())
+		return vu.MarshalVehicleUnitFile(file.GetVehicleUnit())
 	case tachographv1.File_RAW_CARD:
-		return appendCard(nil, file) // Raw cards use the same format as driver cards
+		return card.MarshalRawCardFile(file.GetRawCard())
 	default:
 		return nil, fmt.Errorf("unsupported file type for marshaling: %v", file.GetType())
 	}
