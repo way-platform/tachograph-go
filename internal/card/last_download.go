@@ -49,7 +49,11 @@ func appendCardLastDownload(data []byte, lastDownload *cardv1.CardDownloadDriver
 	}
 
 	// Timestamp (4 bytes)
-	data = dd.AppendTimeReal(data, lastDownload.GetTimestamp())
+	var err error
+	data, err = dd.AppendTimeReal(data, lastDownload.GetTimestamp())
+	if err != nil {
+		return nil, fmt.Errorf("failed to append timestamp: %w", err)
+	}
 
 	return data, nil
 }

@@ -106,9 +106,10 @@ func TestUnmarshalExtendedSerialNumber(t *testing.T) {
 
 func TestAppendExtendedSerialNumber(t *testing.T) {
 	tests := []struct {
-		name  string
-		input *ddv1.ExtendedSerialNumber
-		want  []byte
+		name    string
+		input   *ddv1.ExtendedSerialNumber
+		want    []byte
+		wantErr bool
 	}{
 		{
 			name: "valid extended serial number",
@@ -142,9 +143,9 @@ func TestAppendExtendedSerialNumber(t *testing.T) {
 			want: []byte{0x00, 0x00, 0x00, 0x01, 0x01, 0x24, 0x01, 0x05},
 		},
 		{
-			name:  "nil input",
-			input: nil,
-			want:  []byte{0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00},
+			name:    "nil input",
+			input:   nil,
+			wantErr: true, // Errors because it calls nested AppendMonthYear
 		},
 		{
 			name: "zero values",
@@ -163,6 +164,12 @@ func TestAppendExtendedSerialNumber(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			dst := []byte{}
 			got, err := AppendExtendedSerialNumber(dst, tt.input)
+			if tt.wantErr {
+				if err == nil {
+					t.Errorf("AppendExtendedSerialNumber() expected error, got nil")
+				}
+				return
+			}
 			if err != nil {
 				t.Fatalf("AppendExtendedSerialNumber() unexpected error: %v", err)
 			}

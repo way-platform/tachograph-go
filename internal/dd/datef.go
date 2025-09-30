@@ -15,10 +15,9 @@ import (
 // ASN.1 Definition:
 //
 //	Datef ::= OCTET STRING (SIZE(4))
-func AppendDatef(dst []byte, ts *timestamppb.Timestamp) []byte {
-	if ts == nil {
-		return append(dst, 0, 0, 0, 0)
-	}
+func AppendDatef(dst []byte, ts *timestamppb.Timestamp) ([]byte, error) {
+	// No nil check needed - protobuf returns zero time for nil (Unix epoch), which is valid
+	// This function only reads time values via AsTime()
 	year := ts.AsTime().Year()
 	month := int(ts.AsTime().Month())
 	day := ts.AsTime().Day()
@@ -27,5 +26,5 @@ func AppendDatef(dst []byte, ts *timestamppb.Timestamp) []byte {
 	dst = append(dst, byte((year/10)%10<<4|year%10))
 	dst = append(dst, byte((month/10)%10<<4|month%10))
 	dst = append(dst, byte((day/10)%10<<4|day%10))
-	return dst
+	return dst, nil
 }

@@ -84,32 +84,21 @@ func UnmarshalHolderName(data []byte) (*ddv1.HolderName, error) {
 //   - Holder First Names (variable): Name structure
 func AppendHolderName(dst []byte, holderName *ddv1.HolderName) ([]byte, error) {
 	if holderName == nil {
-		// Append default values: empty name structures
-		dst = append(dst, 0, 0) // Empty surname
-		dst = append(dst, 0, 0) // Empty first names
-		return dst, nil
+		return nil, fmt.Errorf("holderName cannot be nil")
 	}
 
+	var err error
+
 	// Append holder surname (Name structure)
-	surname := holderName.GetHolderSurname()
-	if surname != nil {
-		dst = append(dst, byte(surname.GetEncoding()))
-		nameBytes := []byte(surname.GetValue())
-		dst = append(dst, byte(len(nameBytes)))
-		dst = append(dst, nameBytes...)
-	} else {
-		dst = append(dst, 0, 0) // Empty surname
+	dst, err = AppendStringValue(dst, holderName.GetHolderSurname())
+	if err != nil {
+		return nil, fmt.Errorf("failed to append holder surname: %w", err)
 	}
 
 	// Append holder first names (Name structure)
-	firstNames := holderName.GetHolderFirstNames()
-	if firstNames != nil {
-		dst = append(dst, byte(firstNames.GetEncoding()))
-		nameBytes := []byte(firstNames.GetValue())
-		dst = append(dst, byte(len(nameBytes)))
-		dst = append(dst, nameBytes...)
-	} else {
-		dst = append(dst, 0, 0) // Empty first names
+	dst, err = AppendStringValue(dst, holderName.GetHolderFirstNames())
+	if err != nil {
+		return nil, fmt.Errorf("failed to append holder first names: %w", err)
 	}
 
 	return dst, nil

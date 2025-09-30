@@ -23,8 +23,8 @@ import (
 func UnmarshalVehicleRegistration(data []byte) (*ddv1.VehicleRegistrationIdentification, error) {
 	const lenVehicleRegistration = 15
 
-	if len(data) < lenVehicleRegistration {
-		return nil, fmt.Errorf("insufficient data for VehicleRegistrationIdentification: got %d, want %d", len(data), lenVehicleRegistration)
+	if len(data) != lenVehicleRegistration {
+		return nil, fmt.Errorf("invalid data length for VehicleRegistrationIdentification: got %d, want %d", len(data), lenVehicleRegistration)
 	}
 
 	vehicleReg := &ddv1.VehicleRegistrationIdentification{}
@@ -63,9 +63,7 @@ func UnmarshalVehicleRegistration(data []byte) (*ddv1.VehicleRegistrationIdentif
 //   - Registration number (14 bytes): IA5String
 func AppendVehicleRegistration(dst []byte, vehicleReg *ddv1.VehicleRegistrationIdentification) ([]byte, error) {
 	if vehicleReg == nil {
-		// Append default values: 1 byte nation (0xFF = EMPTY) + 14 bytes registration number (spaces)
-		dst = append(dst, 0xFF)
-		return AppendString(dst, "", 14)
+		return nil, fmt.Errorf("vehicleRegistration cannot be nil")
 	}
 
 	// Append nation (1 byte) - get protocol value from enum

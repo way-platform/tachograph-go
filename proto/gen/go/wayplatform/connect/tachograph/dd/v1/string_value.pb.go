@@ -198,7 +198,7 @@ type StringValue_builder struct {
 	// is typically unset (or 0), as the length is determined by the actual
 	// data in 'raw_data'.
 	//
-	// VALIDATION: If both 'raw_data' and 'length' are present, their lengths
+	// If both 'raw_data' and 'length' are present, their lengths
 	// must agree. Marshalling will fail with an error if they don't match,
 	// ensuring data integrity.
 	//

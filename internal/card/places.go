@@ -285,7 +285,11 @@ func appendPlaceRecord(dst []byte, rec *cardv1.Places_Record, generation ddv1.Ge
 		return append(dst, make([]byte, recordSize)...), nil
 	}
 
-	dst = dd.AppendTimeReal(dst, rec.GetEntryTime()) // 4 bytes
+	var err error
+	dst, err = dd.AppendTimeReal(dst, rec.GetEntryTime()) // 4 bytes
+	if err != nil {
+		return nil, fmt.Errorf("failed to append entry time: %w", err)
+	}
 
 	entryTypeProtocol, _ := dd.GetProtocolValueForEnum(rec.GetEntryType())
 	dst = append(dst, byte(entryTypeProtocol)) // 1 byte
@@ -311,7 +315,10 @@ func appendPlaceRecord(dst []byte, rec *cardv1.Places_Record, generation ddv1.Ge
 			if err != nil {
 				return nil, fmt.Errorf("failed to append geo coordinates: %w", err)
 			}
-			dst = dd.AppendTimeReal(dst, gnssRecord.GetTimestamp()) // 4 bytes
+			dst, err = dd.AppendTimeReal(dst, gnssRecord.GetTimestamp()) // 4 bytes
+			if err != nil {
+				return nil, fmt.Errorf("failed to append GNSS timestamp: %w", err)
+			}
 		} else {
 			// Append 12 zero bytes if GNSS data is missing for a Gen2 record
 			dst = append(dst, make([]byte, 12)...)

@@ -184,7 +184,10 @@ func TestAppendDate(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			dst := []byte{}
-			got := AppendDate(dst, tt.date)
+			got, err := AppendDate(dst, tt.date)
+			if err != nil {
+				t.Fatalf("AppendDate() unexpected error: %v", err)
+			}
 			if diff := cmp.Diff(tt.want, got); diff != "" {
 				t.Errorf("AppendDate() mismatch (-want +got):\n%s", diff)
 			}
@@ -228,7 +231,10 @@ func TestDateRoundTrip(t *testing.T) {
 
 			// Marshal
 			dst := []byte{}
-			got := AppendDate(dst, date)
+			got, err := AppendDate(dst, date)
+			if err != nil {
+				t.Fatalf("AppendDate() error: %v", err)
+			}
 
 			// Verify round-trip
 			if diff := cmp.Diff(tt.input, got); diff != "" {

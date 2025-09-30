@@ -462,6 +462,89 @@ func parseRecordArray(data []byte, offset int) ([]*Type, int, error) {
 
 **Benefits:** Cleaner code, better error handling, efficient memory usage, easier testing.
 
+### Nil Handling Policy
+
+The binary tachograph protocol has no concept of `nil` or null values. Every field in the protocol is either present with valid data or absent (which is represented by specific zero/empty patterns in the binary format).
+
+**Policy for `Append*` functions in `internal/dd`:**
+
+- `Append*` functions **must error** when receiving a `nil` protobuf message parameter **if** the function needs to call nested `Append*` functions or access complex fields
+- For functions that only read primitive fields (integers, bytes) where zero is a valid protocol value, **skip the nil check** and rely on protobuf's zero-value behavior
+- Exception: `AppendStringValue` accepts `nil` and encodes it as an empty string (code page 255), as this is a valid protocol state
+- When appending optional data, the caller should pass a properly initialized message with empty/zero values, not `nil`
+
+**Rationale:** This policy catches bugs early by failing fast when data is missing, rather than silently writing incorrect/default values to the binary output. It ensures that marshalling code explicitly handles all cases and doesn't accidentally omit required data.
+
+**Examples:**
+
+```go
+// BAD: Silently writes zeros for nil without validation
+func AppendComplexRecord(dst []byte, record *Record) []byte {
+    if record == nil {
+        return append(dst, make([]byte, 10)...) // Wrong! Hides bugs
+    }
+    // ...
+}
+
+// GOOD: Errors on nil when calling nested functions
+func AppendComplexRecord(dst []byte, record *Record) ([]byte, error) {
+    if record == nil {
+        return nil, fmt.Errorf("record cannot be nil")
+    }
+    // Needs nil check because it calls nested Append* functions
+    dst, err := AppendHolderName(dst, record.GetName())
+    if err != nil {
+        return nil, err
+    }
+    // ...
+}
+
+// ALSO GOOD: No nil check when only reading primitives
+func AppendGeoCoordinates(dst []byte, geoCoords *GeoCoordinates) ([]byte, error) {
+    // No nil check needed - protobuf returns 0 for nil, which is valid
+    latitude := geoCoords.GetLatitude()   // Returns 0 if geoCoords is nil
+    longitude := geoCoords.GetLongitude() // Returns 0 if geoCoords is nil
+    dst = binary.BigEndian.AppendUint32(dst, uint32(latitude))
+    dst = binary.BigEndian.AppendUint32(dst, uint32(longitude))
+    return dst, nil
+}
+```
+
+### Exact Length Validation Policy
+
+When parsing fixed-size binary structures, we must validate that the input data length exactly matches the expected size. The protocol is strictly defined - if we expect N bytes and receive a different amount, something has already gone wrong upstream and we should fail early.
+
+**Policy for `Unmarshal*` functions in `internal/dd`:**
+
+- For fixed-size structures, validate with `len(data) == expectedSize`, not `len(data) >= expectedSize`
+- For variable-size structures with known minimums, validate with `len(data) < expectedSize` only when consuming from a stream
+- When unmarshalling a complete structure from a byte slice, the slice should contain exactly the expected bytes
+- Extra bytes indicate a parsing error upstream (incorrect offset calculation, wrong structure interpretation, etc.)
+
+**Rationale:** Strict validation catches bugs early. If a 4-byte timestamp gets 5 bytes, that's an error that should be caught immediately, not silently ignored. This makes debugging easier and prevents subtle corruption from propagating through the codebase.
+
+**Example:**
+
+```go
+// BAD: Accepts extra bytes
+func UnmarshalTimeReal(data []byte) (*timestamppb.Timestamp, error) {
+    const lenTimeReal = 4
+    if len(data) < lenTimeReal {  // Wrong! Should be !=
+        return nil, fmt.Errorf("insufficient data")
+    }
+    // ...
+}
+
+// GOOD: Requires exact length
+func UnmarshalTimeReal(data []byte) (*timestamppb.Timestamp, error) {
+    const lenTimeReal = 4
+    if len(data) != lenTimeReal {  // Correct! Exact match required
+        return nil, fmt.Errorf("invalid data length for TimeReal: got %d, want %d", len(data), lenTimeReal)
+    }
+    // ...
+}
+```
+
 ### Code Quality
 
 - **No `//nolint` comments**: Never suppress linter warnings with `//nolint` comments. Instead, fix the underlying issues by removing unused code, implementing missing functionality, or restructuring the code properly.

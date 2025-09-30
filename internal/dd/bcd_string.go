@@ -41,10 +41,9 @@ func UnmarshalBcdString(data []byte) (*ddv1.BcdString, error) {
 // Binary Layout (variable length):
 //   - BCD String (variable): BCD-encoded bytes
 func AppendBcdString(dst []byte, bcdString *ddv1.BcdString) ([]byte, error) {
-	if bcdString == nil {
-		// Append empty BCD string (0 bytes)
-		return dst, nil
-	}
+	// No nil check needed - protobuf returns empty bytes for nil, which is valid
+	// This function only reads the encoded bytes field
+
 	// Append the raw BCD-encoded bytes
 	encoded := bcdString.GetEncoded()
 	if encoded != nil {

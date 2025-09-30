@@ -214,11 +214,19 @@ func appendVehicleRecord(dst []byte, rec *cardv1.VehiclesUsed_Record) ([]byte, e
 	}
 	dst = dd.AppendOdometer(dst, uint32(rec.GetVehicleOdometerBeginKm()))
 	dst = dd.AppendOdometer(dst, uint32(rec.GetVehicleOdometerEndKm()))
-	dst = dd.AppendTimeReal(dst, rec.GetVehicleFirstUse())
-	dst = dd.AppendTimeReal(dst, rec.GetVehicleLastUse())
+
+	var err error
+	dst, err = dd.AppendTimeReal(dst, rec.GetVehicleFirstUse())
+	if err != nil {
+		return nil, fmt.Errorf("failed to append vehicle first use: %w", err)
+	}
+	dst, err = dd.AppendTimeReal(dst, rec.GetVehicleLastUse())
+	if err != nil {
+		return nil, fmt.Errorf("failed to append vehicle last use: %w", err)
+	}
+
 	// Vehicle registration (15 bytes total: 1 byte nation + 14 bytes number)
 	// Note: Odometer fields are 3 bytes each (OdometerShort) for Gen1 cards
-	var err error
 	dst, err = dd.AppendVehicleRegistration(dst, rec.GetVehicleRegistration())
 	if err != nil {
 		return nil, err

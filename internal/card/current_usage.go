@@ -69,12 +69,15 @@ func appendCurrentUsage(data []byte, currentUsage *cardv1.CurrentUsage) ([]byte,
 	}
 
 	// Session open time (4 bytes)
-	data = dd.AppendTimeReal(data, currentUsage.GetSessionOpenTime())
+	var err error
+	data, err = dd.AppendTimeReal(data, currentUsage.GetSessionOpenTime())
+	if err != nil {
+		return data, fmt.Errorf("failed to append session open time: %w", err)
+	}
 
 	// Session open vehicle registration (15 bytes total: 1 byte nation + 14 bytes number)
 	vehicleReg := currentUsage.GetSessionOpenVehicle()
 	if vehicleReg != nil {
-		var err error
 		data, err = dd.AppendVehicleRegistration(data, vehicleReg)
 		if err != nil {
 			return nil, err

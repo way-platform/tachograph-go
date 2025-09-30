@@ -21,8 +21,8 @@ import (
 //
 //nolint:unused
 func UnmarshalSlotCardType(data []byte) (ddv1.SlotCardType, error) {
-	if len(data) < 1 {
-		return ddv1.SlotCardType_SLOT_CARD_TYPE_UNSPECIFIED, fmt.Errorf("insufficient data for SlotCardType: got %d, want 1", len(data))
+	if len(data) != 1 {
+		return ddv1.SlotCardType_SLOT_CARD_TYPE_UNSPECIFIED, fmt.Errorf("invalid data length for SlotCardType: got %d, want 1", len(data))
 	}
 	rawValue := int32(data[0])
 	// Use the protocol enum value mapping

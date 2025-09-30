@@ -20,8 +20,8 @@ import (
 func UnmarshalMonthYear(data []byte) (*ddv1.MonthYear, error) {
 	const lenMonthYear = 2
 
-	if len(data) < lenMonthYear {
-		return nil, fmt.Errorf("insufficient data for MonthYear: got %d, want %d", len(data), lenMonthYear)
+	if len(data) != lenMonthYear {
+		return nil, fmt.Errorf("invalid data length for MonthYear: got %d, want %d", len(data), lenMonthYear)
 	}
 
 	monthYear := &ddv1.MonthYear{}
@@ -59,10 +59,8 @@ func UnmarshalMonthYear(data []byte) (*ddv1.MonthYear, error) {
 func AppendMonthYear(dst []byte, monthYear *ddv1.MonthYear) ([]byte, error) {
 	const lenMonthYear = 2
 
-	if monthYear == nil {
-		// Append zeros
-		return append(dst, 0, 0), nil
-	}
+	// No nil check needed - protobuf returns zero values for nil, which are valid
+	// This function only reads primitive int32 fields (month, year) and bytes
 
 	// Prefer the original encoded bytes for perfect round-trip fidelity
 	if encoded := monthYear.GetEncoded(); len(encoded) >= lenMonthYear {

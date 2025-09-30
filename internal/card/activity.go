@@ -388,7 +388,11 @@ func appendParsedDailyRecord(dst []byte, rec *cardv1.DriverActivityData_DailyRec
 	contentBuf := make([]byte, 0, 2048)
 
 	// Activity record date (4 bytes BCD)
-	contentBuf = dd.AppendDatef(contentBuf, rec.GetActivityRecordDate())
+	var err error
+	contentBuf, err = dd.AppendDatef(contentBuf, rec.GetActivityRecordDate())
+	if err != nil {
+		return nil, fmt.Errorf("failed to append activity record date: %w", err)
+	}
 
 	// Activity daily presence counter (2 bytes BCD)
 	if bcdCounter := rec.GetActivityDailyPresenceCounter(); bcdCounter != nil {

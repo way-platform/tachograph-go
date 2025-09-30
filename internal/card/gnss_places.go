@@ -1,10 +1,11 @@
 package card
 
 import (
-	"github.com/way-platform/tachograph-go/internal/dd"
 	"bytes"
 	"encoding/binary"
 	"fmt"
+
+	"github.com/way-platform/tachograph-go/internal/dd"
 
 	cardv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1"
 )
@@ -107,7 +108,11 @@ func appendCardGnssPlaceRecord(dst []byte, record *cardv1.GnssPlaces_Record) ([]
 	}
 
 	// Entry time (TimeReal - 4 bytes)
-	dst = dd.AppendTimeReal(dst, record.GetTimestamp())
+	var err error
+	dst, err = dd.AppendTimeReal(dst, record.GetTimestamp())
+	if err != nil {
+		return nil, fmt.Errorf("failed to append timestamp: %w", err)
+	}
 
 	// GNSS place accuracy (1 byte)
 	gnssPlace := record.GetGnssPlace()

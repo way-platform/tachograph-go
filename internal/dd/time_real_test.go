@@ -124,7 +124,10 @@ func TestAppendTimeReal(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			dst := []byte{}
-			got := AppendTimeReal(dst, tt.timestamp)
+			got, err := AppendTimeReal(dst, tt.timestamp)
+			if err != nil {
+				t.Fatalf("AppendTimeReal() unexpected error: %v", err)
+			}
 			if diff := cmp.Diff(tt.want, got); diff != "" {
 				t.Errorf("AppendTimeReal() mismatch (-want +got):\n%s", diff)
 			}
@@ -168,7 +171,10 @@ func TestTimeRealRoundTrip(t *testing.T) {
 
 			// Marshal
 			dst := []byte{}
-			got := AppendTimeReal(dst, ts)
+			got, err := AppendTimeReal(dst, ts)
+			if err != nil {
+				t.Fatalf("AppendTimeReal() error: %v", err)
+			}
 
 			// Verify round-trip
 			if diff := cmp.Diff(tt.input, got); diff != "" {

@@ -32,8 +32,8 @@ func UnmarshalExtendedSerialNumber(data []byte) (*ddv1.ExtendedSerialNumber, err
 		lenExtendedSerialNumber = 8
 	)
 
-	if len(data) < lenExtendedSerialNumber {
-		return nil, fmt.Errorf("insufficient data for ExtendedSerialNumber: got %d, want %d", len(data), lenExtendedSerialNumber)
+	if len(data) != lenExtendedSerialNumber {
+		return nil, fmt.Errorf("invalid data length for ExtendedSerialNumber: got %d, want %d", len(data), lenExtendedSerialNumber)
 	}
 
 	esn := &ddv1.ExtendedSerialNumber{}
@@ -84,8 +84,7 @@ func UnmarshalExtendedSerialNumber(data []byte) (*ddv1.ExtendedSerialNumber, err
 //nolint:unused
 func AppendExtendedSerialNumber(dst []byte, esn *ddv1.ExtendedSerialNumber) ([]byte, error) {
 	if esn == nil {
-		// Append default values (8 zero bytes)
-		return append(dst, make([]byte, 8)...), nil
+		return nil, fmt.Errorf("extendedSerialNumber cannot be nil")
 	}
 
 	// Append serial number (4 bytes, big-endian)
@@ -112,7 +111,7 @@ func AppendExtendedSerialNumber(dst []byte, esn *ddv1.ExtendedSerialNumber) ([]b
 // This function maintains compatibility with existing code that expects a string representation.
 func AppendExtendedSerialNumberAsString(dst []byte, esn *ddv1.ExtendedSerialNumber, maxLen int) ([]byte, error) {
 	if esn == nil {
-		return append(dst, make([]byte, maxLen)...), nil
+		return nil, fmt.Errorf("extendedSerialNumber cannot be nil")
 	}
 
 	// Create a byte slice for the extended serial number

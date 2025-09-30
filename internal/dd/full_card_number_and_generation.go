@@ -71,9 +71,7 @@ func UnmarshalFullCardNumberAndGeneration(data []byte) (*ddv1.FullCardNumberAndG
 //nolint:unused
 func AppendFullCardNumberAndGeneration(dst []byte, fullCardNumberAndGen *ddv1.FullCardNumberAndGeneration) ([]byte, error) {
 	if fullCardNumberAndGen == nil {
-		// Append default values (empty FullCardNumber + default generation)
-		dst = append(dst, 0) // Default generation
-		return dst, nil
+		return nil, fmt.Errorf("fullCardNumberAndGeneration cannot be nil")
 	}
 
 	// Append full card number (variable length)

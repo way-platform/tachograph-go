@@ -200,9 +200,19 @@ func appendFaultRecord(dst []byte, record *cardv1.FaultsData_Record) ([]byte, er
 
 	protocolValue := dd.GetEventFaultTypeProtocolValue(record.GetFaultType(), 0)
 	dst = append(dst, byte(protocolValue))
-	dst = dd.AppendTimeReal(dst, record.GetFaultBeginTime())
-	dst = dd.AppendTimeReal(dst, record.GetFaultEndTime())
-	dst, err := dd.AppendVehicleRegistration(dst, record.GetFaultVehicleRegistration())
+
+	var err error
+	dst, err = dd.AppendTimeReal(dst, record.GetFaultBeginTime())
+	if err != nil {
+		return nil, fmt.Errorf("failed to append fault begin time: %w", err)
+	}
+
+	dst, err = dd.AppendTimeReal(dst, record.GetFaultEndTime())
+	if err != nil {
+		return nil, fmt.Errorf("failed to append fault end time: %w", err)
+	}
+
+	dst, err = dd.AppendVehicleRegistration(dst, record.GetFaultVehicleRegistration())
 	if err != nil {
 		return nil, err
 	}

@@ -69,13 +69,13 @@ func TestUnmarshalMonthYear(t *testing.T) {
 			name:       "insufficient data - 1 byte",
 			input:      []byte{0x01},
 			wantErr:    true,
-			errMessage: "insufficient data for MonthYear",
+			errMessage: "invalid data length for MonthYear",
 		},
 		{
 			name:       "insufficient data - 0 bytes",
 			input:      []byte{},
 			wantErr:    true,
-			errMessage: "insufficient data for MonthYear",
+			errMessage: "invalid data length for MonthYear",
 		},
 		{
 			name:      "invalid BCD (0xAB, 0xCD) - should still preserve encoded bytes",

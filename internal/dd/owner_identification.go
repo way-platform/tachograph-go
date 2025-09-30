@@ -29,8 +29,8 @@ func UnmarshalOwnerIdentification(data []byte) (*ddv1.OwnerIdentification, error
 		lenOwnerIdentification = 16 // 13 + 1 + 1 + 1
 	)
 
-	if len(data) < lenOwnerIdentification {
-		return nil, fmt.Errorf("insufficient data for OwnerIdentification: got %d, want %d", len(data), lenOwnerIdentification)
+	if len(data) != lenOwnerIdentification {
+		return nil, fmt.Errorf("invalid data length for OwnerIdentification: got %d, want %d", len(data), lenOwnerIdentification)
 	}
 
 	ownerID := &ddv1.OwnerIdentification{}
@@ -86,8 +86,7 @@ func UnmarshalOwnerIdentification(data []byte) (*ddv1.OwnerIdentification, error
 //   - Card Renewal Index (1 byte): IA5String
 func AppendOwnerIdentification(dst []byte, ownerID *ddv1.OwnerIdentification) ([]byte, error) {
 	if ownerID == nil {
-		// Append default values (16 zero bytes)
-		return append(dst, make([]byte, 16)...), nil
+		return nil, fmt.Errorf("ownerID cannot be nil")
 	}
 
 	// Append owner identification number (13 bytes)

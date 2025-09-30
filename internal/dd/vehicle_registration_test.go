@@ -75,19 +75,19 @@ func TestUnmarshalVehicleRegistration(t *testing.T) {
 			name:       "insufficient data - 14 bytes",
 			input:      []byte{0x12, 0x46, 0x50, 0x41, 0x2D, 0x38, 0x32, 0x39, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20},
 			wantErr:    true,
-			errMessage: "insufficient data for VehicleRegistrationIdentification",
+			errMessage: "invalid data length for VehicleRegistrationIdentification",
 		},
 		{
 			name:       "insufficient data - 10 bytes",
 			input:      []byte{0x12, 0x46, 0x50, 0x41, 0x2D, 0x38, 0x32, 0x39, 0x20, 0x20},
 			wantErr:    true,
-			errMessage: "insufficient data for VehicleRegistrationIdentification",
+			errMessage: "invalid data length for VehicleRegistrationIdentification",
 		},
 		{
 			name:       "insufficient data - 0 bytes",
 			input:      []byte{},
 			wantErr:    true,
-			errMessage: "insufficient data for VehicleRegistrationIdentification",
+			errMessage: "invalid data length for VehicleRegistrationIdentification",
 		},
 	}
 
@@ -132,6 +132,7 @@ func TestAppendVehicleRegistration(t *testing.T) {
 		name       string
 		vehicleReg *ddv1.VehicleRegistrationIdentification
 		want       []byte
+		wantErr    bool
 	}{
 		{
 			name: "Finland with registration FPA-829",
@@ -229,13 +230,19 @@ func TestAppendVehicleRegistration(t *testing.T) {
 		{
 			name:       "nil vehicle registration",
 			vehicleReg: nil,
-			want:       []byte{0xFF, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20},
+			wantErr:    true, // Errors because it calls nested AppendStringValue
 		},
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			got, err := AppendVehicleRegistration(nil, tt.vehicleReg)
+			if tt.wantErr {
+				if err == nil {
+					t.Errorf("AppendVehicleRegistration() expected error, got nil")
+				}
+				return
+			}
 			if err != nil {
 				t.Fatalf("AppendVehicleRegistration() unexpected error: %v", err)
 			}

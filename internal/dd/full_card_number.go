@@ -87,7 +87,7 @@ func UnmarshalFullCardNumber(data []byte) (*ddv1.FullCardNumber, error) {
 //   - Card Number (variable): CardNumber CHOICE based on card type
 func AppendFullCardNumber(dst []byte, cardNumber *ddv1.FullCardNumber) ([]byte, error) {
 	if cardNumber == nil {
-		return dst, nil
+		return nil, fmt.Errorf("cardNumber cannot be nil")
 	}
 
 	// Append card type (1 byte)
@@ -123,7 +123,7 @@ func AppendFullCardNumber(dst []byte, cardNumber *ddv1.FullCardNumber) ([]byte, 
 // This is used for display purposes and has a maximum length constraint.
 func AppendFullCardNumberAsString(dst []byte, cardNumber *ddv1.FullCardNumber, maxLen int) ([]byte, error) {
 	if cardNumber == nil {
-		return AppendString(dst, "", maxLen)
+		return nil, fmt.Errorf("cardNumber cannot be nil")
 	}
 
 	// Handle the CardNumber CHOICE based on card type

@@ -34,8 +34,8 @@ func AppendOdometer(dst []byte, odometer uint32) []byte {
 func UnmarshalOdometer(data []byte) (uint32, error) {
 	const lenOdometerShort = 3
 
-	if len(data) < lenOdometerShort {
-		return 0, fmt.Errorf("insufficient data for OdometerShort: got %d, want %d", len(data), lenOdometerShort)
+	if len(data) != lenOdometerShort {
+		return 0, fmt.Errorf("invalid data length for OdometerShort: got %d, want %d", len(data), lenOdometerShort)
 	}
 
 	// Convert 3-byte big-endian to uint32

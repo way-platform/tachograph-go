@@ -200,9 +200,19 @@ func appendEventRecord(dst []byte, record *cardv1.EventsData_Record) ([]byte, er
 
 	protocolValue := dd.GetEventFaultTypeProtocolValue(record.GetEventType(), 0)
 	dst = append(dst, byte(protocolValue))
-	dst = dd.AppendTimeReal(dst, record.GetEventBeginTime())
-	dst = dd.AppendTimeReal(dst, record.GetEventEndTime())
-	dst, err := dd.AppendVehicleRegistration(dst, record.GetEventVehicleRegistration())
+
+	var err error
+	dst, err = dd.AppendTimeReal(dst, record.GetEventBeginTime())
+	if err != nil {
+		return nil, fmt.Errorf("failed to append event begin time: %w", err)
+	}
+
+	dst, err = dd.AppendTimeReal(dst, record.GetEventEndTime())
+	if err != nil {
+		return nil, fmt.Errorf("failed to append event end time: %w", err)
+	}
+
+	dst, err = dd.AppendVehicleRegistration(dst, record.GetEventVehicleRegistration())
 	if err != nil {
 		return nil, err
 	}

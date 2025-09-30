@@ -20,8 +20,8 @@ import (
 //   - Seconds since Unix epoch (4 bytes): Big-endian uint32
 func UnmarshalTimeReal(data []byte) (*timestamppb.Timestamp, error) {
 	const lenTimeReal = 4
-	if len(data) < lenTimeReal {
-		return nil, fmt.Errorf("insufficient data for TimeReal: got %d, want %d", len(data), lenTimeReal)
+	if len(data) != lenTimeReal {
+		return nil, fmt.Errorf("invalid data length for TimeReal: got %d, want %d", len(data), lenTimeReal)
 	}
 	timeVal := binary.BigEndian.Uint32(data[:lenTimeReal])
 	if timeVal == 0 {
@@ -40,9 +40,9 @@ func UnmarshalTimeReal(data []byte) (*timestamppb.Timestamp, error) {
 //
 // Binary Layout (4 bytes):
 //   - Seconds since Unix epoch (4 bytes): Big-endian uint32
-func AppendTimeReal(dst []byte, ts *timestamppb.Timestamp) []byte {
-	if ts == nil {
-		return append(dst, 0, 0, 0, 0)
+func AppendTimeReal(dst []byte, ts *timestamppb.Timestamp) ([]byte, error) {
+	if ts.GetNanos() > 0 {
+		return nil, fmt.Errorf("nanosecond resolution is not supported for TimeReal")
 	}
-	return binary.BigEndian.AppendUint32(dst, uint32(ts.GetSeconds()))
+	return binary.BigEndian.AppendUint32(dst, uint32(ts.GetSeconds())), nil
 }

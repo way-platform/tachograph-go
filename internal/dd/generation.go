@@ -17,8 +17,8 @@ import (
 // Binary Layout (1 byte):
 //   - Generation (1 byte): Raw integer value (1-2)
 func UnmarshalGeneration(data []byte) (ddv1.Generation, error) {
-	if len(data) < 1 {
-		return ddv1.Generation_GENERATION_UNSPECIFIED, fmt.Errorf("insufficient data for Generation: got %d, want 1", len(data))
+	if len(data) != 1 {
+		return ddv1.Generation_GENERATION_UNSPECIFIED, fmt.Errorf("invalid data length for Generation: got %d, want 1", len(data))
 	}
 
 	generationByte := data[0]
@@ -55,8 +55,3 @@ func AppendGeneration(dst []byte, generation ddv1.Generation) []byte {
 		return append(dst, 0) // Default to 0 for unspecified
 	}
 }
-
-
-
-
-

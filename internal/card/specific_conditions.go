@@ -110,7 +110,11 @@ func appendCardSpecificConditions(data []byte, conditions *cardv1.SpecificCondit
 		}
 
 		// Entry time (4 bytes)
-		data = dd.AppendTimeReal(data, record.GetEntryTime())
+		var err error
+		data, err = dd.AppendTimeReal(data, record.GetEntryTime())
+		if err != nil {
+			return nil, fmt.Errorf("failed to append entry time: %w", err)
+		}
 
 		// Specific condition type (1 byte) - convert enum to protocol value
 		conditionTypeProtocol, _ := dd.GetProtocolValueForEnum(record.GetSpecificConditionType())

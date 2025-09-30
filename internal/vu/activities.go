@@ -1923,7 +1923,11 @@ func appendVuCardIWRecord(dst []byte, record *vuv1.Activities_CardIWRecord) ([]b
 	// Append cardExpiryDate (Datef - 4 bytes)
 	cardExpiryDate := record.GetCardExpiryDate()
 	if cardExpiryDate != nil {
-		dst = dd.AppendDate(dst, cardExpiryDate)
+		var err error
+		dst, err = dd.AppendDate(dst, cardExpiryDate)
+		if err != nil {
+			return nil, fmt.Errorf("failed to append card expiry date: %w", err)
+		}
 	} else {
 		// Append default date (00000000)
 		dst = append(dst, 0x00, 0x00, 0x00, 0x00)

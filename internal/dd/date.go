@@ -21,8 +21,8 @@ import (
 func UnmarshalDate(data []byte) (*ddv1.Date, error) {
 	const lenDatef = 4
 
-	if len(data) < lenDatef {
-		return nil, fmt.Errorf("insufficient data for Date: got %d, want %d", len(data), lenDatef)
+	if len(data) != lenDatef {
+		return nil, fmt.Errorf("invalid data length for Date: got %d, want %d", len(data), lenDatef)
 	}
 
 	date := &ddv1.Date{}
@@ -65,26 +65,19 @@ func UnmarshalDate(data []byte) (*ddv1.Date, error) {
 //   - Year (2 bytes): BCD-encoded YYYY
 //   - Month (1 byte): BCD-encoded MM
 //   - Day (1 byte): BCD-encoded DD
-func AppendDate(dst []byte, date *ddv1.Date) []byte {
+func AppendDate(dst []byte, date *ddv1.Date) ([]byte, error) {
 	const lenDatef = 4
-
-	if date == nil {
-		return append(dst, 0, 0, 0, 0)
-	}
-
 	// Prefer the original encoded bytes for perfect round-trip fidelity
 	if encoded := date.GetEncoded(); len(encoded) >= lenDatef {
-		return append(dst, encoded[:lenDatef]...)
+		return append(dst, encoded[:lenDatef]...), nil
 	}
-
 	// Fall back to encoding from decoded values
 	year := int(date.GetYear())
 	month := int(date.GetMonth())
 	day := int(date.GetDay())
-
 	dst = append(dst, byte((year/1000)%10<<4|(year/100)%10))
 	dst = append(dst, byte((year/10)%10<<4|year%10))
 	dst = append(dst, byte((month/10)%10<<4|month%10))
 	dst = append(dst, byte((day/10)%10<<4|day%10))
-	return dst
+	return dst, nil
 }

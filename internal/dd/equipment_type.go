@@ -19,8 +19,8 @@ import (
 //
 //nolint:unused
 func UnmarshalEquipmentType(data []byte) (ddv1.EquipmentType, error) {
-	if len(data) < 1 {
-		return ddv1.EquipmentType_EQUIPMENT_TYPE_UNSPECIFIED, fmt.Errorf("insufficient data for EquipmentType: got %d, want 1", len(data))
+	if len(data) != 1 {
+		return ddv1.EquipmentType_EQUIPMENT_TYPE_UNSPECIFIED, fmt.Errorf("invalid data length for EquipmentType: got %d, want 1", len(data))
 	}
 	rawValue := int32(data[0])
 	if enumNumber, found := GetEnumForProtocolValue(ddv1.EquipmentType_EQUIPMENT_TYPE_UNSPECIFIED.Descriptor(), rawValue); found {

@@ -189,10 +189,14 @@ func appendCardControlActivityData(data []byte, controlData *cardv1.ControlActiv
 	}
 	data = append(data, controlTypeByte)
 
-	// Control time (4 bytes)
-	data = dd.AppendTimeReal(data, controlData.GetControlTime())
-
 	var err error
+
+	// Control time (4 bytes)
+	data, err = dd.AppendTimeReal(data, controlData.GetControlTime())
+	if err != nil {
+		return nil, fmt.Errorf("failed to append control time: %w", err)
+	}
+
 	// Control card number (18 bytes)
 	data, err = dd.AppendFullCardNumberAsString(data, controlData.GetControlCardNumber().GetFullCardNumber(), 18)
 	if err != nil {
@@ -206,10 +210,16 @@ func appendCardControlActivityData(data []byte, controlData *cardv1.ControlActiv
 	}
 
 	// Control download period begin (4 bytes)
-	data = dd.AppendTimeReal(data, controlData.GetControlDownloadPeriodBegin())
+	data, err = dd.AppendTimeReal(data, controlData.GetControlDownloadPeriodBegin())
+	if err != nil {
+		return nil, fmt.Errorf("failed to append download period begin: %w", err)
+	}
 
 	// Control download period end (4 bytes)
-	data = dd.AppendTimeReal(data, controlData.GetControlDownloadPeriodEnd())
+	data, err = dd.AppendTimeReal(data, controlData.GetControlDownloadPeriodEnd())
+	if err != nil {
+		return nil, fmt.Errorf("failed to append download period end: %w", err)
+	}
 
 	return data, nil
 }

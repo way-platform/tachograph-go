@@ -366,9 +366,18 @@ func appendCardIdentification(dst []byte, id *cardv1.Identification_Card) ([]byt
 	if err != nil {
 		return nil, err
 	}
-	dst = dd.AppendTimeReal(dst, id.GetCardIssueDate())
-	dst = dd.AppendTimeReal(dst, id.GetCardValidityBegin())
-	dst = dd.AppendTimeReal(dst, id.GetCardExpiryDate())
+	dst, err = dd.AppendTimeReal(dst, id.GetCardIssueDate())
+	if err != nil {
+		return nil, fmt.Errorf("failed to append card issue date: %w", err)
+	}
+	dst, err = dd.AppendTimeReal(dst, id.GetCardValidityBegin())
+	if err != nil {
+		return nil, fmt.Errorf("failed to append card validity begin: %w", err)
+	}
+	dst, err = dd.AppendTimeReal(dst, id.GetCardExpiryDate())
+	if err != nil {
+		return nil, fmt.Errorf("failed to append card expiry date: %w", err)
+	}
 	return dst, nil
 }
 
@@ -412,7 +421,10 @@ func appendDriverCardHolderIdentification(dst []byte, h *cardv1.Identification_D
 
 	birthDate := h.GetCardHolderBirthDate()
 	if birthDate != nil {
-		dst = dd.AppendDate(dst, birthDate)
+		dst, err = dd.AppendDate(dst, birthDate)
+		if err != nil {
+			return nil, fmt.Errorf("failed to append birth date: %w", err)
+		}
 	} else {
 		// Append default date (00000000)
 		dst = append(dst, 0x00, 0x00, 0x00, 0x00)

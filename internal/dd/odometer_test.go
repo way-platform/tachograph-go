@@ -45,27 +45,28 @@ func TestUnmarshalOdometer(t *testing.T) {
 			want:  65535,
 		},
 		{
-			name:  "buffer larger than needed - should use first 3 bytes",
-			input: []byte{0x01, 0xE2, 0x40, 0xFF, 0xFF},
-			want:  123456,
+			name:       "buffer larger than needed - exact length required",
+			input:      []byte{0x01, 0xE2, 0x40, 0xFF, 0xFF},
+			wantErr:    true,
+			errMessage: "invalid data length for OdometerShort",
 		},
 		{
 			name:       "insufficient data - 2 bytes",
 			input:      []byte{0x01, 0x02},
 			wantErr:    true,
-			errMessage: "insufficient data for OdometerShort",
+			errMessage: "invalid data length for OdometerShort",
 		},
 		{
 			name:       "insufficient data - 1 byte",
 			input:      []byte{0x01},
 			wantErr:    true,
-			errMessage: "insufficient data for OdometerShort",
+			errMessage: "invalid data length for OdometerShort",
 		},
 		{
 			name:       "insufficient data - 0 bytes",
 			input:      []byte{},
 			wantErr:    true,
-			errMessage: "insufficient data for OdometerShort",
+			errMessage: "invalid data length for OdometerShort",
 		},
 	}
 
