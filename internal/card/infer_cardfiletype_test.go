@@ -10,6 +10,14 @@ import (
 )
 
 func TestInferCardFileType(t *testing.T) {
+	// Check if testdata directory exists
+	if _, err := os.Stat("../../testdata/card"); err != nil {
+		if os.IsNotExist(err) {
+			t.Skip("testdata/card directory not present (proprietary test files not available)")
+		}
+		t.Fatalf("Failed to access testdata/card directory: %v", err)
+	}
+
 	expectedCardTypes := map[string]cardv1.CardType{
 		"driver":   cardv1.CardType_DRIVER_CARD,
 		"workshop": cardv1.CardType_WORKSHOP_CARD,

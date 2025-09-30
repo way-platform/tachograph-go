@@ -270,10 +270,10 @@ func appendPlaceRecord(dst []byte, rec *cardv1.Places_Record, generation ddv1.Ge
 
 	dst = dd.AppendTimeReal(dst, rec.GetEntryTime()) // 4 bytes
 
-	entryTypeProtocol, _ := dd.GetProtocolValueFromEnum(rec.GetEntryType())
+	entryTypeProtocol, _ := dd.GetProtocolValueForEnum(rec.GetEntryType())
 	dst = append(dst, byte(entryTypeProtocol)) // 1 byte
 
-	countryProtocol, _ := dd.GetProtocolValueFromEnum(rec.GetDailyWorkPeriodCountry())
+	countryProtocol, _ := dd.GetProtocolValueForEnum(rec.GetDailyWorkPeriodCountry())
 	dst = append(dst, byte(countryProtocol)) // 1 byte
 
 	// Append region byte (1 byte)

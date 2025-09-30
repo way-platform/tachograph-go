@@ -7,9 +7,9 @@ import (
 	ddv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
 )
 
-// GetProtocolValueFromEnum returns the protocol value for an enum using protobuf reflection.
+// GetProtocolValueForEnum returns the protocol value for an enum using protobuf reflection.
 // This replaces all the hardcoded Get*ProtocolValue functions in enum_helpers.go.
-func GetProtocolValueFromEnum(enumValue protoreflect.Enum) (int32, bool) {
+func GetProtocolValueForEnum(enumValue protoreflect.Enum) (int32, bool) {
 	enumDesc := enumValue.Descriptor()
 	valueDesc := enumDesc.Values().ByNumber(enumValue.Number())
 	if valueDesc == nil {
@@ -25,9 +25,9 @@ func GetProtocolValueFromEnum(enumValue protoreflect.Enum) (int32, bool) {
 	return protocolValue, true
 }
 
-// SetEnumFromProtocolValue sets an enum from a protocol value using protobuf reflection.
+// GetEnumForProtocolValue sets an enum from a protocol value using protobuf reflection.
 // This replaces all the hardcoded Set* functions in enum_helpers.go.
-func SetEnumFromProtocolValue(enumDesc protoreflect.EnumDescriptor, rawValue int32) (protoreflect.EnumNumber, bool) {
+func GetEnumForProtocolValue(enumDesc protoreflect.EnumDescriptor, rawValue int32) (protoreflect.EnumNumber, bool) {
 	values := enumDesc.Values()
 	for i := 0; i < values.Len(); i++ {
 		valueDesc := values.Get(i)
@@ -47,7 +47,7 @@ func SetEnumFromProtocolValue(enumDesc protoreflect.EnumDescriptor, rawValue int
 // SetEnumFromProtocolValueGeneric is a generic helper that converts a raw protocol value to any enum type.
 // Usage: SetEnumFromProtocolValueGeneric(enumDesc, rawValue, setEnum, setUnrecognized)
 func SetEnumFromProtocolValueGeneric(enumDesc protoreflect.EnumDescriptor, rawValue int32, setEnum func(protoreflect.EnumNumber), setUnrecognized func(int32)) {
-	if enumNumber, found := SetEnumFromProtocolValue(enumDesc, rawValue); found {
+	if enumNumber, found := GetEnumForProtocolValue(enumDesc, rawValue); found {
 		setEnum(enumNumber)
 	} else {
 		// For unknown values, use UNRECOGNIZED instead of UNSPECIFIED
@@ -75,7 +75,7 @@ func GetProtocolValueFromEnumGeneric(enumValue protoreflect.Enum, unrecognizedVa
 		return unrecognizedValue
 	}
 
-	if protocolValue, ok := GetProtocolValueFromEnum(enumValue); ok {
+	if protocolValue, ok := GetProtocolValueForEnum(enumValue); ok {
 		return protocolValue
 	}
 
@@ -107,4 +107,5 @@ func GetDriverActivityValueProtocolValue(activity ddv1.DriverActivityValue, unre
 func GetEventFaultTypeProtocolValue(eventType ddv1.EventFaultType, unrecognizedValue int32) int32 {
 	return GetProtocolValueFromEnumGeneric(eventType, unrecognizedValue)
 }
+
 

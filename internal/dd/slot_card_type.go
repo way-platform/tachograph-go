@@ -24,18 +24,13 @@ func UnmarshalSlotCardType(data []byte) (ddv1.SlotCardType, error) {
 	if len(data) < 1 {
 		return ddv1.SlotCardType_SLOT_CARD_TYPE_UNSPECIFIED, fmt.Errorf("insufficient data for SlotCardType: got %d, want 1", len(data))
 	}
-
 	rawValue := int32(data[0])
-
 	// Use the protocol enum value mapping
-	slotCardType := ddv1.SlotCardType_SLOT_CARD_TYPE_UNSPECIFIED
-	if enumNumber, found := SetEnumFromProtocolValue(ddv1.SlotCardType_SLOT_CARD_TYPE_UNSPECIFIED.Descriptor(), rawValue); found {
-		slotCardType = ddv1.SlotCardType(enumNumber)
+	if enumNumber, found := GetEnumForProtocolValue(ddv1.SlotCardType_SLOT_CARD_TYPE_UNSPECIFIED.Descriptor(), rawValue); found {
+		return ddv1.SlotCardType(enumNumber), nil
 	} else {
-		slotCardType = ddv1.SlotCardType_SLOT_CARD_TYPE_UNRECOGNIZED
+		return ddv1.SlotCardType_SLOT_CARD_TYPE_UNRECOGNIZED, nil
 	}
-
-	return slotCardType, nil
 }
 
 // appendSlotCardType appends slot card type as a single byte.
@@ -54,7 +49,7 @@ func UnmarshalSlotCardType(data []byte) (ddv1.SlotCardType, error) {
 //nolint:unused
 func AppendSlotCardType(dst []byte, slotCardType ddv1.SlotCardType) []byte {
 	// Get the protocol value for the enum
-	if protocolValue, ok := GetProtocolValueFromEnum(slotCardType); ok {
+	if protocolValue, ok := GetProtocolValueForEnum(slotCardType); ok {
 		return append(dst, byte(protocolValue))
 	}
 	return append(dst, 0) // Default to 0 if not found

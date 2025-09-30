@@ -221,19 +221,6 @@ func getAllElementaryFiles(desc *cardv1.FileDescriptor) []cardv1.ElementaryFileT
 	return files
 }
 
-// hasEF checks if a specific elementary file is present
-func hasEF(desc *cardv1.FileDescriptor, targetEF cardv1.ElementaryFileType) bool {
-	if desc.GetType() == cardv1.FileType_EF && desc.GetEf() == targetEF {
-		return true
-	}
-	for _, child := range desc.GetFiles() {
-		if hasEF(child, targetEF) {
-			return true
-		}
-	}
-	return false
-}
-
 // unmarshalDriverCardFile unmarshals a driver card file from raw card file data.
 //
 // The data type `DriverCardFile` represents a complete driver card file structure.
