@@ -70,25 +70,10 @@ func unmarshalIcc(data []byte) (*cardv1.Icc, error) {
 
 		// Next 2 bytes: month/year BCD (MMYY format)
 		if len(serialBytes) > 5 {
-			// Create MonthYear message with both raw and decoded data
-			monthYear := &ddv1.MonthYear{}
-			monthYear.SetEncoded(serialBytes[4:6])
-
-			// Decode BCD month/year as 4-digit number MMYY
-			monthYearInt, err := dd.BcdBytesToInt(serialBytes[4:6])
-			if err == nil && monthYearInt > 0 {
-				month := int32(monthYearInt / 100)
-				year := int32(monthYearInt % 100)
-
-				// Convert 2-digit year to 4-digit (assuming 20xx for years 00-99)
-				if year >= 0 && year <= 99 {
-					year += 2000
-				}
-
-				monthYear.SetMonth(month)
-				monthYear.SetYear(year)
+			monthYear, err := dd.UnmarshalMonthYear(serialBytes[4:6])
+			if err != nil {
+				return nil, fmt.Errorf("failed to parse month/year: %w", err)
 			}
-
 			esn.SetMonthYear(monthYear)
 		}
 

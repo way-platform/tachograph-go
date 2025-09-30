@@ -1,9 +1,9 @@
 package card
 
 import (
-	"github.com/way-platform/tachograph-go/internal/dd"
-	"bytes"
 	"fmt"
+
+	"github.com/way-platform/tachograph-go/internal/dd"
 
 	cardv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1"
 	ddv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
@@ -34,22 +34,27 @@ func unmarshalCardCurrentUsage(data []byte) (*cardv1.CurrentUsage, error) {
 	if offset+4 > len(data) {
 		return nil, fmt.Errorf("insufficient data for session open time")
 	}
-	target.SetSessionOpenTime(dd.ReadTimeReal(bytes.NewReader(data[offset : offset+4])))
+	sessionOpenTime, err := dd.UnmarshalTimeReal(data[offset : offset+4])
+	if err != nil {
+		return nil, fmt.Errorf("failed to parse session open time: %w", err)
+	}
+	target.SetSessionOpenTime(sessionOpenTime)
 	offset += 4
 
 	// Read session open vehicle registration (15 bytes: 1 byte nation + 14 bytes number)
 	if offset+1 > len(data) {
 		return nil, fmt.Errorf("insufficient data for vehicle registration nation")
 	}
-	nation, err := dd.UnmarshalNationNumeric(data[offset : offset+1])
-	if err != nil {
-		return nil, fmt.Errorf("failed to read vehicle registration nation: %w", err)
-	}
+	nationByte := data[offset]
 	offset++
 
 	// Create VehicleRegistrationIdentification structure
 	vehicleReg := &ddv1.VehicleRegistrationIdentification{}
-	vehicleReg.SetNation(nation)
+	if enumNum, found := dd.GetEnumForProtocolValue(ddv1.NationNumeric_NATION_NUMERIC_UNSPECIFIED.Descriptor(), int32(nationByte)); found {
+		vehicleReg.SetNation(ddv1.NationNumeric(enumNum))
+	} else {
+		vehicleReg.SetNation(ddv1.NationNumeric_NATION_NUMERIC_UNRECOGNIZED)
+	}
 
 	if offset+14 > len(data) {
 		return nil, fmt.Errorf("insufficient data for vehicle registration number")

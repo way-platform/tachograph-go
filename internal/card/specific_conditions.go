@@ -65,7 +65,15 @@ func parseSpecificConditionRecord(r *bytes.Reader) (*cardv1.SpecificConditions_R
 	record := &cardv1.SpecificConditions_Record{}
 
 	// Read entry time (4 bytes)
-	record.SetEntryTime(dd.ReadTimeReal(r))
+	entryTimeBytes := make([]byte, 4)
+	if _, err := r.Read(entryTimeBytes); err != nil {
+		return nil, fmt.Errorf("failed to read entry time: %w", err)
+	}
+	entryTime, err := dd.UnmarshalTimeReal(entryTimeBytes)
+	if err != nil {
+		return nil, fmt.Errorf("failed to parse entry time: %w", err)
+	}
+	record.SetEntryTime(entryTime)
 
 	// Read specific condition type (1 byte)
 	var conditionType byte

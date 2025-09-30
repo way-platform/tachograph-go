@@ -1,10 +1,11 @@
 package card
 
 import (
-	"github.com/way-platform/tachograph-go/internal/dd"
 	"bytes"
 	"encoding/binary"
 	"fmt"
+
+	"github.com/way-platform/tachograph-go/internal/dd"
 
 	cardv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1"
 	ddv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
@@ -97,10 +98,26 @@ func parseVehicleRecord(r *bytes.Reader, recordSize int) (*cardv1.VehiclesUsed_R
 	record.SetVehicleOdometerEndKm(int32(binary.BigEndian.Uint32(append([]byte{0}, odometerEndBytes...))))
 
 	// Read vehicle first use (4 bytes)
-	record.SetVehicleFirstUse(dd.ReadTimeReal(r))
+	firstUseBytes := make([]byte, 4)
+	if _, err := r.Read(firstUseBytes); err != nil {
+		return nil, fmt.Errorf("failed to read vehicle first use: %w", err)
+	}
+	vehicleFirstUse, err := dd.UnmarshalTimeReal(firstUseBytes)
+	if err != nil {
+		return nil, fmt.Errorf("failed to parse vehicle first use: %w", err)
+	}
+	record.SetVehicleFirstUse(vehicleFirstUse)
 
 	// Read vehicle last use (4 bytes)
-	record.SetVehicleLastUse(dd.ReadTimeReal(r))
+	lastUseBytes := make([]byte, 4)
+	if _, err := r.Read(lastUseBytes); err != nil {
+		return nil, fmt.Errorf("failed to read vehicle last use: %w", err)
+	}
+	vehicleLastUse, err := dd.UnmarshalTimeReal(lastUseBytes)
+	if err != nil {
+		return nil, fmt.Errorf("failed to parse vehicle last use: %w", err)
+	}
+	record.SetVehicleLastUse(vehicleLastUse)
 
 	// Read vehicle registration (15 bytes: 1 byte nation + 14 bytes registration number)
 	var nation byte
@@ -132,7 +149,7 @@ func parseVehicleRecord(r *bytes.Reader, recordSize int) (*cardv1.VehiclesUsed_R
 	// Convert to BCD bytes (2 bytes)
 	bcdBytes := make([]byte, 2)
 	binary.BigEndian.PutUint16(bcdBytes, vuDataBlockCounter)
-	bcdCounter, err := dd.CreateBcdString(bcdBytes)
+	bcdCounter, err := dd.UnmarshalBcdString(bcdBytes)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create BCD string for VU data block counter: %w", err)
 	}

@@ -1,10 +1,10 @@
 package card
 
 import (
-	"github.com/way-platform/tachograph-go/internal/dd"
-	"bytes"
 	"encoding/binary"
 	"fmt"
+
+	"github.com/way-platform/tachograph-go/internal/dd"
 
 	cardv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1"
 	ddv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
@@ -58,7 +58,11 @@ func unmarshalCardControlActivityData(data []byte) (*cardv1.ControlActivityData,
 	if offset+4 > len(data) {
 		return nil, fmt.Errorf("insufficient data for control time")
 	}
-	target.SetControlTime(dd.ReadTimeReal(bytes.NewReader(data[offset : offset+4])))
+	controlTimestamp, err2 := dd.UnmarshalTimeReal(data[offset : offset+4])
+	if err2 != nil {
+		return nil, fmt.Errorf("failed to parse control time: %w", err2)
+	}
+	target.SetControlTime(controlTimestamp)
 	offset += 4
 
 	// Read control card number (18 bytes) - this should be parsed as a proper FullCardNumberAndGeneration
@@ -94,15 +98,16 @@ func unmarshalCardControlActivityData(data []byte) (*cardv1.ControlActivityData,
 	if offset+1 > len(data) {
 		return nil, fmt.Errorf("insufficient data for vehicle registration nation")
 	}
-	nation, err := dd.UnmarshalNationNumeric(data[offset : offset+1])
-	if err != nil {
-		return nil, fmt.Errorf("failed to read vehicle registration nation: %w", err)
-	}
+	nationByte := data[offset]
 	offset++
 
 	// Create VehicleRegistrationIdentification structure
 	vehicleReg := &ddv1.VehicleRegistrationIdentification{}
-	vehicleReg.SetNation(nation)
+	if enumNum, found := dd.GetEnumForProtocolValue(ddv1.NationNumeric_NATION_NUMERIC_UNSPECIFIED.Descriptor(), int32(nationByte)); found {
+		vehicleReg.SetNation(ddv1.NationNumeric(enumNum))
+	} else {
+		vehicleReg.SetNation(ddv1.NationNumeric_NATION_NUMERIC_UNRECOGNIZED)
+	}
 
 	if offset+14 > len(data) {
 		return nil, fmt.Errorf("insufficient data for vehicle registration number")
@@ -119,14 +124,22 @@ func unmarshalCardControlActivityData(data []byte) (*cardv1.ControlActivityData,
 	if offset+4 > len(data) {
 		return nil, fmt.Errorf("insufficient data for control download period begin")
 	}
-	target.SetControlDownloadPeriodBegin(dd.ReadTimeReal(bytes.NewReader(data[offset : offset+4])))
+	controlDownloadPeriodBegin, err3 := dd.UnmarshalTimeReal(data[offset : offset+4])
+	if err3 != nil {
+		return nil, fmt.Errorf("failed to parse control download period begin: %w", err3)
+	}
+	target.SetControlDownloadPeriodBegin(controlDownloadPeriodBegin)
 	offset += 4
 
 	// Read control download period end (4 bytes)
 	if offset+4 > len(data) {
 		return nil, fmt.Errorf("insufficient data for control download period end")
 	}
-	target.SetControlDownloadPeriodEnd(dd.ReadTimeReal(bytes.NewReader(data[offset : offset+4])))
+	controlDownloadPeriodEnd, err4 := dd.UnmarshalTimeReal(data[offset : offset+4])
+	if err4 != nil {
+		return nil, fmt.Errorf("failed to parse control download period end: %w", err4)
+	}
+	target.SetControlDownloadPeriodEnd(controlDownloadPeriodEnd)
 	// offset += 4 // Not needed as this is the last field
 
 	return &target, nil

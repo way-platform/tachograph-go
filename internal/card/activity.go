@@ -148,7 +148,10 @@ func parseSingleActivityDailyRecord(data []byte) (*cardv1.DriverActivityData_Dai
 	if offset+4 > len(data) {
 		return nil, fmt.Errorf("insufficient data for activity record date")
 	}
-	date := dd.ReadTimeReal(bytes.NewReader(data[offset : offset+4]))
+	date, err := dd.UnmarshalTimeReal(data[offset : offset+4])
+	if err != nil {
+		return nil, fmt.Errorf("failed to parse activity record date: %w", err)
+	}
 	record.SetActivityRecordDate(date)
 	offset += 4
 
@@ -156,7 +159,7 @@ func parseSingleActivityDailyRecord(data []byte) (*cardv1.DriverActivityData_Dai
 	if offset+2 > len(data) {
 		return nil, fmt.Errorf("insufficient data for presence counter")
 	}
-	bcdCounter, err := dd.CreateBcdString(data[offset : offset+2])
+	bcdCounter, err := dd.UnmarshalBcdString(data[offset : offset+2])
 	if err != nil {
 		return nil, fmt.Errorf("failed to create BCD string for presence counter: %w", err)
 	}

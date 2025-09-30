@@ -67,10 +67,11 @@ func unmarshalVuActivitiesGen1(data []byte, offset int, target *vuv1.Activities)
 	target.SetDateOfDay(timestamppb.New(time.Unix(timeReal, 0)))
 
 	// Read OdometerValueMidnight (3 bytes)
-	odometerValue, offset, err := dd.ReadOdometerFromBytes(data, offset)
+	odometerValue, err := dd.UnmarshalOdometer(data[offset : offset+3])
 	if err != nil {
 		return 0, fmt.Errorf("failed to read odometer value midnight: %w", err)
 	}
+	offset += 3
 	target.SetOdometerMidnightKm(int32(odometerValue))
 
 	// Parse VuCardIWData
@@ -304,8 +305,7 @@ func unmarshalVuCardIWRecord(data []byte) (*vuv1.Activities_CardIWRecord, error)
 	record.SetFullCardNumberAndGeneration(fullCardNumberAndGeneration)
 
 	// Parse cardExpiryDate (Datef - 4 bytes)
-	datefData := data[91:95]
-	cardExpiryDate, err := dd.ReadDatef(bytes.NewReader(datefData))
+	cardExpiryDate, err := dd.UnmarshalDate(data[91:95])
 	if err != nil {
 		return nil, fmt.Errorf("failed to parse card expiry date: %w", err)
 	}
@@ -319,7 +319,7 @@ func unmarshalVuCardIWRecord(data []byte) (*vuv1.Activities_CardIWRecord, error)
 	record.SetCardInsertionTime(timestamppb.New(time.Unix(insertionTime, 0)))
 
 	// Parse vehicleOdometerValueAtInsertion (OdometerShort - 3 bytes)
-	odometerAtInsertion, _, err := dd.ReadOdometerFromBytes(data, 99)
+	odometerAtInsertion, err := dd.UnmarshalOdometer(data[99 : 99+3])
 	if err != nil {
 		return nil, fmt.Errorf("failed to read odometer at insertion: %w", err)
 	}
@@ -337,7 +337,7 @@ func unmarshalVuCardIWRecord(data []byte) (*vuv1.Activities_CardIWRecord, error)
 	record.SetCardWithdrawalTime(timestamppb.New(time.Unix(withdrawalTime, 0)))
 
 	// Parse vehicleOdometerValueAtWithdrawal (OdometerShort - 3 bytes)
-	odometerAtWithdrawal, _, err := dd.ReadOdometerFromBytes(data, 107)
+	odometerAtWithdrawal, err := dd.UnmarshalOdometer(data[107 : 107+3])
 	if err != nil {
 		return nil, fmt.Errorf("failed to read odometer at withdrawal: %w", err)
 	}
@@ -546,7 +546,7 @@ func unmarshalVuPlaceRecord(data []byte) (*vuv1.Activities_PlaceRecord, error) {
 	record.SetRegion([]byte{region})
 
 	// Parse vehicleOdometerValue (OdometerShort - 3 bytes)
-	odometerValue, _, err := dd.ReadOdometerFromBytes(data, 7)
+	odometerValue, err := dd.UnmarshalOdometer(data[7 : 7+3])
 	if err != nil {
 		return nil, fmt.Errorf("failed to read odometer value: %w", err)
 	}
@@ -722,13 +722,13 @@ func parseOdometerValueMidnightRecordArray(data []byte, offset int) ([]int32, in
 
 	// Parse each OdometerShort record
 	for i := 0; i < int(noOfRecords); i++ {
-		odometerValue, newOffset, err := dd.ReadOdometerFromBytes(data, offset)
+		odometerValue, err := dd.UnmarshalOdometer(data[offset : offset+3])
 		if err != nil {
 			return nil, offset, fmt.Errorf("failed to read OdometerShort record %d: %w", i, err)
 		}
 
 		odometerValues = append(odometerValues, int32(odometerValue))
-		offset = newOffset
+		offset += 3
 	}
 
 	return odometerValues, offset, nil
@@ -828,14 +828,14 @@ func parseVuCardIWRecordGen2(data []byte, offset int) (*vuv1.Activities_CardIWRe
 	record.SetFullCardNumberAndGeneration(placeholder)
 
 	// Parse cardExpiryDate (Datef - 4 bytes)
-	datefData, offset, err := readBytesFromBytes(data, offset, 4)
-	if err != nil {
-		return nil, offset, fmt.Errorf("failed to read card expiry date: %w", err)
+	if offset+4 > len(data) {
+		return nil, offset, fmt.Errorf("insufficient data for card expiry date")
 	}
-	cardExpiryDate, err := dd.ReadDatef(bytes.NewReader(datefData))
+	cardExpiryDate, err := dd.UnmarshalDate(data[offset : offset+4])
 	if err != nil {
 		return nil, offset, fmt.Errorf("failed to parse card expiry date: %w", err)
 	}
+	offset += 4
 	record.SetCardExpiryDate(cardExpiryDate)
 
 	// Parse cardInsertionTime (TimeReal - 4 bytes)
@@ -846,10 +846,11 @@ func parseVuCardIWRecordGen2(data []byte, offset int) (*vuv1.Activities_CardIWRe
 	record.SetCardInsertionTime(timestamppb.New(time.Unix(insertionTime, 0)))
 
 	// Parse vehicleOdometerValueAtInsertion (OdometerShort - 3 bytes)
-	odometerAtInsertion, offset, err := dd.ReadOdometerFromBytes(data, offset)
+	odometerAtInsertion, err := dd.UnmarshalOdometer(data[offset : offset+3])
 	if err != nil {
 		return nil, offset, fmt.Errorf("failed to read odometer at insertion: %w", err)
 	}
+	offset += 3
 	record.SetOdometerAtInsertionKm(int32(odometerAtInsertion))
 
 	// Parse cardSlotNumber (CardSlotNumber - 1 byte)
@@ -867,10 +868,11 @@ func parseVuCardIWRecordGen2(data []byte, offset int) (*vuv1.Activities_CardIWRe
 	record.SetCardWithdrawalTime(timestamppb.New(time.Unix(withdrawalTime, 0)))
 
 	// Parse vehicleOdometerValueAtWithdrawal (OdometerShort - 3 bytes)
-	odometerAtWithdrawal, offset, err := dd.ReadOdometerFromBytes(data, offset)
+	odometerAtWithdrawal, err := dd.UnmarshalOdometer(data[offset : offset+3])
 	if err != nil {
 		return nil, offset, fmt.Errorf("failed to read odometer at withdrawal: %w", err)
 	}
+	offset += 3
 	record.SetOdometerAtWithdrawalKm(int32(odometerAtWithdrawal))
 
 	// Parse previousVehicleInfo (PreviousVehicleInfo - 15 bytes)
@@ -1405,7 +1407,7 @@ func unmarshalVuBorderCrossingRecord(data []byte) (*vuv1.Activities_BorderCrossi
 	record.SetPlaceRecord(placeRecord)
 
 	// Parse odometerValue (OdometerShort - 3 bytes)
-	odometerValue, _, err := dd.ReadOdometerFromBytes(data, 56)
+	odometerValue, err := dd.UnmarshalOdometer(data[56 : 56+3])
 	if err != nil {
 		return nil, fmt.Errorf("failed to read odometer value: %w", err)
 	}
@@ -1596,7 +1598,7 @@ func unmarshalVuLoadUnloadRecord(data []byte) (*vuv1.Activities_LoadUnloadRecord
 	record.SetPlaceRecord(placeRecord)
 
 	// Parse odometerValue (OdometerShort - 3 bytes)
-	odometerValue, _, err := dd.ReadOdometerFromBytes(data, 55)
+	odometerValue, err := dd.UnmarshalOdometer(data[55 : 55+3])
 	if err != nil {
 		return nil, fmt.Errorf("failed to read odometer value: %w", err)
 	}

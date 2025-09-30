@@ -1,7 +1,6 @@
 package dd
 
 import (
-	"bytes"
 	"testing"
 	"time"
 
@@ -9,12 +8,13 @@ import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
-func TestReadTimeReal(t *testing.T) {
+func TestUnmarshalTimeReal(t *testing.T) {
 	tests := []struct {
 		name      string
 		input     []byte
 		wantUnix  int64
 		wantIsNil bool
+		wantErr   bool
 	}{
 		{
 			name:     "2025-09-30 10:00:00 UTC",
@@ -27,7 +27,7 @@ func TestReadTimeReal(t *testing.T) {
 			wantUnix: 1704067200,
 		},
 		{
-			name:     "Unix epoch",
+			name:     "Unix epoch + 1",
 			input:    []byte{0x00, 0x00, 0x00, 0x01},
 			wantUnix: 1,
 		},
@@ -37,29 +37,52 @@ func TestReadTimeReal(t *testing.T) {
 			wantIsNil: true,
 		},
 		{
-			name:     "2038-01-19 03:14:07 UTC (near max int32)",
+			name:     "2038-01-19 03:14:07 UTC (max int32)",
 			input:    []byte{0x7F, 0xFF, 0xFF, 0xFF},
 			wantUnix: 2147483647,
+		},
+		{
+			name:     "value beyond int32 max",
+			input:    []byte{0x80, 0x00, 0x00, 0x00},
+			wantUnix: 2147483648,
+		},
+		{
+			name:    "insufficient data (3 bytes)",
+			input:   []byte{0x68, 0xDB, 0xAA},
+			wantErr: true,
+		},
+		{
+			name:    "empty input",
+			input:   []byte{},
+			wantErr: true,
 		},
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			r := bytes.NewReader(tt.input)
-			got := ReadTimeReal(r)
+			got, err := UnmarshalTimeReal(tt.input)
+			if tt.wantErr {
+				if err == nil {
+					t.Errorf("UnmarshalTimeReal() expected error, got nil")
+				}
+				return
+			}
+			if err != nil {
+				t.Fatalf("UnmarshalTimeReal() unexpected error: %v", err)
+			}
 
 			if tt.wantIsNil {
 				if got != nil {
-					t.Errorf("ReadTimeReal() = %v, want nil", got)
+					t.Errorf("UnmarshalTimeReal() = %v, want nil", got)
 				}
 				return
 			}
 
 			if got == nil {
-				t.Fatal("ReadTimeReal() returned nil")
+				t.Fatal("UnmarshalTimeReal() returned nil")
 			}
 			if got.GetSeconds() != tt.wantUnix {
-				t.Errorf("ReadTimeReal().GetSeconds() = %v, want %v", got.GetSeconds(), tt.wantUnix)
+				t.Errorf("UnmarshalTimeReal().GetSeconds() = %v, want %v", got.GetSeconds(), tt.wantUnix)
 			}
 		})
 	}
@@ -135,10 +158,12 @@ func TestTimeRealRoundTrip(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			// Unmarshal
-			r := bytes.NewReader(tt.input)
-			ts := ReadTimeReal(r)
+			ts, err := UnmarshalTimeReal(tt.input)
+			if err != nil {
+				t.Fatalf("UnmarshalTimeReal() unexpected error: %v", err)
+			}
 			if ts == nil {
-				t.Fatal("ReadTimeReal() returned nil")
+				t.Fatal("UnmarshalTimeReal() returned nil")
 			}
 
 			// Marshal

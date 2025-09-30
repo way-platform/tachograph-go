@@ -1,9 +1,9 @@
 package card
 
 import (
-	"github.com/way-platform/tachograph-go/internal/dd"
-	"bytes"
 	"fmt"
+
+	"github.com/way-platform/tachograph-go/internal/dd"
 
 	cardv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1"
 )
@@ -25,10 +25,13 @@ func unmarshalCardLastDownload(data []byte) (*cardv1.CardDownloadDriver, error) 
 	}
 
 	var target cardv1.CardDownloadDriver
-	r := bytes.NewReader(data)
 
 	// Read timestamp (4 bytes)
-	target.SetTimestamp(dd.ReadTimeReal(r))
+	timestamp, err := dd.UnmarshalTimeReal(data[:lenCardDownloadDriver])
+	if err != nil {
+		return nil, fmt.Errorf("failed to parse timestamp: %w", err)
+	}
+	target.SetTimestamp(timestamp)
 
 	return &target, nil
 }

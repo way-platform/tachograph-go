@@ -1,9 +1,10 @@
 package card
 
 import (
-	"github.com/way-platform/tachograph-go/internal/dd"
 	"errors"
 	"fmt"
+
+	"github.com/way-platform/tachograph-go/internal/dd"
 
 	cardv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1"
 	ddv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
@@ -46,11 +47,12 @@ func unmarshalDrivingLicenceInfo(data []byte) (*cardv1.DrivingLicenceInfo, error
 	if offset+1 > len(data) {
 		return nil, fmt.Errorf("insufficient data for driving licence issuing nation")
 	}
-	nation, err := dd.UnmarshalNationNumeric(data[offset : offset+1])
-	if err != nil {
-		return nil, fmt.Errorf("failed to read driving licence issuing nation: %w", err)
+	nationByte := data[offset]
+	if enumNum, found := dd.GetEnumForProtocolValue(ddv1.NationNumeric_NATION_NUMERIC_UNSPECIFIED.Descriptor(), int32(nationByte)); found {
+		dli.SetDrivingLicenceIssuingNation(ddv1.NationNumeric(enumNum))
+	} else {
+		dli.SetDrivingLicenceIssuingNation(ddv1.NationNumeric_NATION_NUMERIC_UNRECOGNIZED)
 	}
-	dli.SetDrivingLicenceIssuingNation(ddv1.NationNumeric(nation))
 	offset++
 
 	// Read driving licence number (16 bytes)

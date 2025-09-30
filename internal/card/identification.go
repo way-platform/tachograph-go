@@ -1,10 +1,10 @@
 package card
 
 import (
-	"github.com/way-platform/tachograph-go/internal/dd"
-	"bytes"
 	"errors"
 	"fmt"
+
+	"github.com/way-platform/tachograph-go/internal/dd"
 
 	cardv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1"
 	ddv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
@@ -50,11 +50,12 @@ func unmarshalIdentification(data []byte) (*cardv1.Identification, error) {
 	if offset+1 > len(data) {
 		return nil, fmt.Errorf("insufficient data for card issuing member state")
 	}
-	nation, err := dd.UnmarshalNationNumeric(data[offset : offset+1])
-	if err != nil {
-		return nil, fmt.Errorf("failed to read card issuing member state: %w", err)
+	nationByte := data[offset]
+	if enumNum, found := dd.GetEnumForProtocolValue(ddv1.NationNumeric_NATION_NUMERIC_UNSPECIFIED.Descriptor(), int32(nationByte)); found {
+		cardId.SetCardIssuingMemberState(ddv1.NationNumeric(enumNum))
+	} else {
+		cardId.SetCardIssuingMemberState(ddv1.NationNumeric_NATION_NUMERIC_UNRECOGNIZED)
 	}
-	cardId.SetCardIssuingMemberState(nation)
 	offset++
 
 	// Handle the CardNumber CHOICE type (16 bytes total)
@@ -172,21 +173,33 @@ func unmarshalIdentification(data []byte) (*cardv1.Identification, error) {
 	if offset+4 > len(data) {
 		return nil, fmt.Errorf("insufficient data for card issue date")
 	}
-	cardId.SetCardIssueDate(dd.ReadTimeReal(bytes.NewReader(data[offset : offset+4])))
+	cardIssueDate, err := dd.UnmarshalTimeReal(data[offset : offset+4])
+	if err != nil {
+		return nil, fmt.Errorf("failed to parse card issue date: %w", err)
+	}
+	cardId.SetCardIssueDate(cardIssueDate)
 	offset += 4
 
 	// Card validity begin (4 bytes)
 	if offset+4 > len(data) {
 		return nil, fmt.Errorf("insufficient data for card validity begin")
 	}
-	cardId.SetCardValidityBegin(dd.ReadTimeReal(bytes.NewReader(data[offset : offset+4])))
+	cardValidityBegin, err := dd.UnmarshalTimeReal(data[offset : offset+4])
+	if err != nil {
+		return nil, fmt.Errorf("failed to parse card validity begin: %w", err)
+	}
+	cardId.SetCardValidityBegin(cardValidityBegin)
 	offset += 4
 
 	// Card expiry date (4 bytes)
 	if offset+4 > len(data) {
 		return nil, fmt.Errorf("insufficient data for card expiry date")
 	}
-	cardId.SetCardExpiryDate(dd.ReadTimeReal(bytes.NewReader(data[offset : offset+4])))
+	cardExpiryDate, err := dd.UnmarshalTimeReal(data[offset : offset+4])
+	if err != nil {
+		return nil, fmt.Errorf("failed to parse card expiry date: %w", err)
+	}
+	cardId.SetCardExpiryDate(cardExpiryDate)
 	offset += 4
 
 	identification.SetCard(cardId)
@@ -220,9 +233,9 @@ func unmarshalIdentification(data []byte) (*cardv1.Identification, error) {
 	if offset+4 > len(data) {
 		return nil, fmt.Errorf("insufficient data for card holder birth date")
 	}
-	birthDate, err := dd.ReadDatef(bytes.NewReader(data[offset : offset+4]))
+	birthDate, err := dd.UnmarshalDate(data[offset : offset+4])
 	if err != nil {
-		return nil, fmt.Errorf("failed to read card holder birth date: %w", err)
+		return nil, fmt.Errorf("failed to parse card holder birth date: %w", err)
 	}
 	holderId.SetCardHolderBirthDate(birthDate)
 	offset += 4

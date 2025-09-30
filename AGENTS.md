@@ -353,6 +353,56 @@ func UnmarshalVuApprovalNumber(data []byte) (*ddv1.StringValue, error) {
 
 The testing strategy uses real files to validate the parser.
 
+### Testing Framework
+
+All tests must use **only** the standard library `testing` package and `github.com/google/go-cmp/cmp` for comparisons. Do not use third-party testing frameworks like `testify`.
+
+**Rationale:** This keeps dependencies minimal and ensures tests are portable and maintainable using only well-supported, stable libraries.
+
+**Guidelines:**
+
+- Use `t.Errorf()` for non-fatal errors and `t.Fatalf()` for fatal errors
+- Use `cmp.Diff()` for comparing complex structures (slices, maps, structs)
+- Use standard equality checks (`==`, `!=`) for simple types
+- Check for nil explicitly before accessing pointers
+- Always check errors before proceeding with test logic
+
+**Example:**
+
+```go
+func TestParseData(t *testing.T) {
+    tests := []struct {
+        name    string
+        input   []byte
+        want    *Data
+        wantErr bool
+    }{
+        // test cases
+    }
+
+    for _, tt := range tests {
+        t.Run(tt.name, func(t *testing.T) {
+            got, err := ParseData(tt.input)
+            if tt.wantErr {
+                if err == nil {
+                    t.Errorf("ParseData() expected error, got nil")
+                }
+                return
+            }
+            if err != nil {
+                t.Fatalf("ParseData() unexpected error: %v", err)
+            }
+            if got == nil {
+                t.Fatal("ParseData() returned nil")
+            }
+            if diff := cmp.Diff(tt.want, got); diff != "" {
+                t.Errorf("ParseData() mismatch (-want +got):\n%s", diff)
+            }
+        })
+    }
+}
+```
+
 ### Golden file tests
 
 Golden file tests for the parser are in [unmarshal_test.go](unmarshal_test.go). Example files are in the [testdata](testdata) directory. These files may contain personal data and are often in `.gitignore`.

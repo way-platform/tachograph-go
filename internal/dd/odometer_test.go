@@ -6,81 +6,83 @@ import (
 	"github.com/google/go-cmp/cmp"
 )
 
-func TestReadOdometerFromBytes(t *testing.T) {
+func TestUnmarshalOdometer(t *testing.T) {
 	tests := []struct {
 		name       string
 		input      []byte
-		offset     int
 		want       uint32
-		wantOffset int
 		wantErr    bool
+		errMessage string
 	}{
 		{
-			name:       "maximum value 999999",
-			input:      []byte{0x0F, 0x42, 0x3F},
-			offset:     0,
-			want:       999999,
-			wantOffset: 3,
+			name:  "maximum value 999999",
+			input: []byte{0x0F, 0x42, 0x3F},
+			want:  999999,
 		},
 		{
-			name:       "zero value",
-			input:      []byte{0x00, 0x00, 0x00},
-			offset:     0,
-			want:       0,
-			wantOffset: 3,
+			name:  "zero value",
+			input: []byte{0x00, 0x00, 0x00},
+			want:  0,
 		},
 		{
-			name:       "middle value 123456",
-			input:      []byte{0x01, 0xE2, 0x40},
-			offset:     0,
-			want:       123456,
-			wantOffset: 3,
+			name:  "middle value 123456",
+			input: []byte{0x01, 0xE2, 0x40},
+			want:  123456,
 		},
 		{
-			name:       "value 1",
-			input:      []byte{0x00, 0x00, 0x01},
-			offset:     0,
-			want:       1,
-			wantOffset: 3,
+			name:  "value 1",
+			input: []byte{0x00, 0x00, 0x01},
+			want:  1,
 		},
 		{
-			name:       "with offset",
-			input:      []byte{0xFF, 0xFF, 0x01, 0xE2, 0x40, 0xFF},
-			offset:     2,
-			want:       123456,
-			wantOffset: 5,
+			name:  "value 255",
+			input: []byte{0x00, 0x00, 0xFF},
+			want:  255,
 		},
 		{
-			name:    "insufficient data at offset",
-			input:   []byte{0x01, 0x02},
-			offset:  0,
-			wantErr: true,
+			name:  "value 65535",
+			input: []byte{0x00, 0xFF, 0xFF},
+			want:  65535,
 		},
 		{
-			name:    "offset beyond buffer",
-			input:   []byte{0x01, 0x02, 0x03},
-			offset:  2,
-			wantErr: true,
+			name:  "buffer larger than needed - should use first 3 bytes",
+			input: []byte{0x01, 0xE2, 0x40, 0xFF, 0xFF},
+			want:  123456,
+		},
+		{
+			name:       "insufficient data - 2 bytes",
+			input:      []byte{0x01, 0x02},
+			wantErr:    true,
+			errMessage: "insufficient data for OdometerShort",
+		},
+		{
+			name:       "insufficient data - 1 byte",
+			input:      []byte{0x01},
+			wantErr:    true,
+			errMessage: "insufficient data for OdometerShort",
+		},
+		{
+			name:       "insufficient data - 0 bytes",
+			input:      []byte{},
+			wantErr:    true,
+			errMessage: "insufficient data for OdometerShort",
 		},
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, gotOffset, err := ReadOdometerFromBytes(tt.input, tt.offset)
+			got, err := UnmarshalOdometer(tt.input)
 			if tt.wantErr {
 				if err == nil {
-					t.Errorf("ReadOdometerFromBytes() expected error, got nil")
+					t.Errorf("UnmarshalOdometer() expected error containing %q, got nil", tt.errMessage)
 				}
 				return
 			}
 			if err != nil {
-				t.Fatalf("ReadOdometerFromBytes() unexpected error: %v", err)
+				t.Fatalf("UnmarshalOdometer() unexpected error: %v", err)
 			}
 			if got != tt.want {
-				t.Errorf("ReadOdometerFromBytes() = %v, want %v", got, tt.want)
-			}
-			if gotOffset != tt.wantOffset {
-				t.Errorf("ReadOdometerFromBytes() offset = %v, want %v", gotOffset, tt.wantOffset)
+				t.Errorf("UnmarshalOdometer() = %v, want %v", got, tt.want)
 			}
 		})
 	}
@@ -161,17 +163,13 @@ func TestOdometerRoundTrip(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			// Unmarshal
-			odometer, offset, err := ReadOdometerFromBytes(tt.input, 0)
+			odometer, err := UnmarshalOdometer(tt.input)
 			if err != nil {
-				t.Fatalf("ReadOdometerFromBytes() unexpected error: %v", err)
-			}
-			if offset != 3 {
-				t.Errorf("ReadOdometerFromBytes() offset = %v, want 3", offset)
+				t.Fatalf("UnmarshalOdometer() unexpected error: %v", err)
 			}
 
 			// Marshal
-			dst := []byte{}
-			got := AppendOdometer(dst, odometer)
+			got := AppendOdometer(nil, odometer)
 
 			// Verify round-trip
 			if diff := cmp.Diff(tt.input, got); diff != "" {

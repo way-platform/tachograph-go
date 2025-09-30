@@ -188,7 +188,15 @@ func unmarshalPlaceRecord(data []byte, generation ddv1.Generation) (*cardv1.Plac
 	record := &cardv1.Places_Record{}
 
 	// Read entry time (4 bytes)
-	record.SetEntryTime(dd.ReadTimeReal(r))
+	entryTimeBytes := make([]byte, 4)
+	if _, err := r.Read(entryTimeBytes); err != nil {
+		return nil, fmt.Errorf("failed to read entry time: %w", err)
+	}
+	entryTime, err := dd.UnmarshalTimeReal(entryTimeBytes)
+	if err != nil {
+		return nil, fmt.Errorf("failed to parse entry time: %w", err)
+	}
+	record.SetEntryTime(entryTime)
 
 	// Read entry type (1 byte)
 	entryType, _ := r.ReadByte()
@@ -224,7 +232,16 @@ func unmarshalPlaceRecord(data []byte, generation ddv1.Generation) (*cardv1.Plac
 	if generation == ddv1.Generation_GENERATION_2 {
 		gnssRecord := &cardv1.Places_GnssPlaceRecord{}
 		gnssRecord.SetGeoCoordinates(readGeoCoordinates(r))
-		gnssRecord.SetTimestamp(dd.ReadTimeReal(r))
+
+		timestampBytes := make([]byte, 4)
+		if _, err := r.Read(timestampBytes); err != nil {
+			return nil, fmt.Errorf("failed to read GNSS timestamp: %w", err)
+		}
+		timestamp, err := dd.UnmarshalTimeReal(timestampBytes)
+		if err != nil {
+			return nil, fmt.Errorf("failed to parse GNSS timestamp: %w", err)
+		}
+		gnssRecord.SetTimestamp(timestamp)
 		record.SetGnssPlaceRecord(gnssRecord)
 	}
 

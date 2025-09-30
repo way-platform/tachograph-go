@@ -13,18 +13,19 @@ import (
 // ASN.1 Definition:
 //
 //	ControlType ::= OCTET STRING (SIZE(1))
-func UnmarshalControlType(data []byte) (*ddv1.ControlType, error) {
-	if len(data) == 0 {
+func UnmarshalControlType(input []byte) (*ddv1.ControlType, error) {
+	if len(input) == 0 {
 		return nil, fmt.Errorf("insufficient data for control type")
 	}
-	b := data[0]
-	ct := &ddv1.ControlType{}
-	ct.SetCardDownloading((b & 0x80) != 0)
-	ct.SetVuDownloading((b & 0x40) != 0)
-	ct.SetPrinting((b & 0x20) != 0)
-	ct.SetDisplay((b & 0x10) != 0)
-	ct.SetCalibrationChecking((b & 0x08) != 0)
-	return ct, nil
+	b := input[0]
+	var output ddv1.ControlType
+	output.SetRawValue(input)
+	output.SetCardDownloading((b & 0x80) != 0)
+	output.SetVuDownloading((b & 0x40) != 0)
+	output.SetPrinting((b & 0x20) != 0)
+	output.SetDisplay((b & 0x10) != 0)
+	output.SetCalibrationChecking((b & 0x08) != 0)
+	return &output, nil
 }
 
 // appendControlType appends a ControlType as a single byte bitmask.

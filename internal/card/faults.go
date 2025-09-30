@@ -123,29 +123,38 @@ func unmarshalFaultRecord(data []byte, rec *cardv1.FaultsData_Record) error {
 	if offset+4 > len(data) {
 		return fmt.Errorf("insufficient data for fault begin time")
 	}
-	rec.SetFaultBeginTime(dd.ReadTimeReal(bytes.NewReader(data[offset : offset+4])))
+	faultBeginTime, err := dd.UnmarshalTimeReal(data[offset : offset+4])
+	if err != nil {
+		return fmt.Errorf("failed to parse fault begin time: %w", err)
+	}
+	rec.SetFaultBeginTime(faultBeginTime)
 	offset += 4
 
 	// Read fault end time (4 bytes)
 	if offset+4 > len(data) {
 		return fmt.Errorf("insufficient data for fault end time")
 	}
-	rec.SetFaultEndTime(dd.ReadTimeReal(bytes.NewReader(data[offset : offset+4])))
+	faultEndTime, err := dd.UnmarshalTimeReal(data[offset : offset+4])
+	if err != nil {
+		return fmt.Errorf("failed to parse fault end time: %w", err)
+	}
+	rec.SetFaultEndTime(faultEndTime)
 	offset += 4
 
 	// Read vehicle registration nation (1 byte)
 	if offset+1 > len(data) {
 		return fmt.Errorf("insufficient data for vehicle registration nation")
 	}
-	nation, err := dd.UnmarshalNationNumeric(data[offset : offset+1])
-	if err != nil {
-		return fmt.Errorf("failed to read vehicle registration nation: %w", err)
-	}
+	nationByte := data[offset]
 	offset++
 
 	// Create VehicleRegistrationIdentification structure
 	vehicleReg := &ddv1.VehicleRegistrationIdentification{}
-	vehicleReg.SetNation(nation)
+	if enumNum, found := dd.GetEnumForProtocolValue(ddv1.NationNumeric_NATION_NUMERIC_UNSPECIFIED.Descriptor(), int32(nationByte)); found {
+		vehicleReg.SetNation(ddv1.NationNumeric(enumNum))
+	} else {
+		vehicleReg.SetNation(ddv1.NationNumeric_NATION_NUMERIC_UNRECOGNIZED)
+	}
 
 	// Read vehicle registration number (14 bytes)
 	if offset+14 > len(data) {
