@@ -1,6 +1,10 @@
 # Tachograph Go
 
-A Go SDK for working with Tachograph data (.DDD files).
+[![PkgGoDev](https://pkg.go.dev/badge/github.com/way-platform/tachograph-go)](https://pkg.go.dev/github.com/way-platform/tachograph-go)
+[![GoReportCard](https://goreportcard.com/badge/github.com/way-platform/tachograph-go)](https://goreportcard.com/report/github.com/way-platform/tachograph-go)
+[![CI](https://github.com/way-platform/tachograph-go/actions/workflows/release.yaml/badge.svg)](https://github.com/way-platform/tachograph-go/actions/workflows/release.yaml)
+
+A Go SDK and CLI tool for working with Tachograph data (.DDD files).
 
 ## Specification
 

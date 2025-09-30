@@ -194,3 +194,4 @@ func CreateStringValue(s string) *ddv1.StringValue {
 	stringValue.SetDecoded(s)
 	return stringValue
 }
+

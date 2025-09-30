@@ -37,3 +37,4 @@ func AppendDate(dst []byte, date *ddv1.Date) []byte {
 	dst = append(dst, byte((day/10)%10<<4|day%10))
 	return dst
 }
+

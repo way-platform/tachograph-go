@@ -104,3 +104,4 @@ func Test_roundTrip_rawCardFile(t *testing.T) {
 		})
 	}
 }
+

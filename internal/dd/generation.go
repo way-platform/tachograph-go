@@ -55,3 +55,4 @@ func AppendGeneration(dst []byte, generation ddv1.Generation) []byte {
 		return append(dst, 0) // Default to 0 for unspecified
 	}
 }
+
