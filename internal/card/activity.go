@@ -178,37 +178,19 @@ func parseSingleActivityDailyRecord(data []byte) (*cardv1.DriverActivityData_Dai
 	var activityChanges []*ddv1.ActivityChangeInfo
 
 	for offset+2 <= len(data) {
-		// Parse 2-byte ActivityChangeInfo bitfield
+		// Check for invalid entries before parsing (all zeros or all ones)
 		changeData := binary.BigEndian.Uint16(data[offset : offset+2])
-		offset += 2
-
-		// Skip invalid entries (all zeros or all ones)
 		if changeData == 0 || changeData == 0xFFFF {
+			offset += 2
 			continue
 		}
 
-		// Parse 2-byte bitfield according to spec
-		slot := int32((changeData >> 15) & 0x1)
-		drivingStatus := int32((changeData >> 14) & 0x1)
-		cardStatus := int32((changeData >> 13) & 0x1)
-		activity := int32((changeData >> 11) & 0x3)
-		timeOfChange := int32(changeData & 0x7FF)
-
-		activityChange := &ddv1.ActivityChangeInfo{}
-
-		// Convert raw values to enums using protocol annotations
-		if enumNum, found := dd.GetEnumForProtocolValue(ddv1.CardSlotNumber_CARD_SLOT_NUMBER_UNSPECIFIED.Descriptor(), slot); found {
-			activityChange.SetSlot(ddv1.CardSlotNumber(enumNum))
+		// Parse ActivityChangeInfo using centralized helper
+		activityChange, err := dd.UnmarshalActivityChangeInfo(data[offset : offset+2])
+		if err != nil {
+			return nil, fmt.Errorf("failed to parse activity change info at offset %d: %w", offset, err)
 		}
-		if enumNum, found := dd.GetEnumForProtocolValue(ddv1.DrivingStatus_DRIVING_STATUS_UNSPECIFIED.Descriptor(), drivingStatus); found {
-			activityChange.SetDrivingStatus(ddv1.DrivingStatus(enumNum))
-		}
-		activityChange.SetInserted(cardStatus != 0) // Convert to boolean (1 = inserted, 0 = not inserted)
-		if enumNum, found := dd.GetEnumForProtocolValue(ddv1.DriverActivityValue_DRIVER_ACTIVITY_UNSPECIFIED.Descriptor(), activity); found {
-			activityChange.SetActivity(ddv1.DriverActivityValue(enumNum))
-		}
-
-		activityChange.SetTimeOfChangeMinutes(timeOfChange)
+		offset += 2
 
 		activityChanges = append(activityChanges, activityChange)
 	}
@@ -406,9 +388,9 @@ func appendParsedDailyRecord(dst []byte, rec *cardv1.DriverActivityData_DailyRec
 	// Activity change info (2 bytes each)
 	for _, ac := range rec.GetActivityChangeInfo() {
 		var err error
-		contentBuf, err = appendActivityChange(contentBuf, ac)
+		contentBuf, err = dd.AppendActivityChangeInfo(contentBuf, ac)
 		if err != nil {
-			return nil, err
+			return nil, fmt.Errorf("failed to append activity change info: %w", err)
 		}
 	}
 
@@ -423,40 +405,6 @@ func appendParsedDailyRecord(dst []byte, rec *cardv1.DriverActivityData_DailyRec
 	dst = append(dst, contentBuf...)
 
 	return dst, nil
-}
-
-// AppendActivityChange appends the binary representation of ActivityChangeInfo to dst.
-//
-// The data type `ActivityChangeInfo` is specified in the Data Dictionary, Section 2.1.
-//
-// ASN.1 Definition:
-//
-//	ActivityChangeInfo ::= OCTET STRING (SIZE (2))
-//
-// Binary Layout (2 bytes):
-//
-//	Bit layout: 'scpaattttttttttt'B (16 bits)
-//	- s: Slot (1 bit): '0'B: DRIVER, '1'B: CO-DRIVER
-//	- c: Driving status (1 bit): '0'B: SINGLE, '1'B: CREW
-//	- p: Card status (1 bit): '0'B: INSERTED, '1'B: NOT INSERTED
-//	- aa: Activity (2 bits): '00'B: BREAK/REST, '01'B: AVAILABILITY, '10'B: WORK, '11'B: DRIVING
-//	- ttttttttttt: Time of change (11 bits): Number of minutes since 00h00 on the given day
-func appendActivityChange(dst []byte, ac *ddv1.ActivityChangeInfo) ([]byte, error) {
-	var aci uint16
-
-	// Reconstruct the bitfield from enum values
-	slot := dd.GetCardSlotNumberProtocolValue(ac.GetSlot(), 0)
-	drivingStatus := dd.GetDrivingStatusProtocolValue(ac.GetDrivingStatus(), 0)
-	cardInserted := dd.GetCardInsertedFromBool(ac.GetInserted())
-	activity := dd.GetDriverActivityValueProtocolValue(ac.GetActivity(), 0)
-
-	aci |= (uint16(slot) & 0x1) << 15
-	aci |= (uint16(drivingStatus) & 0x1) << 14
-	aci |= (uint16(cardInserted) & 0x1) << 13
-	aci |= (uint16(activity) & 0x3) << 11
-	aci |= (uint16(ac.GetTimeOfChangeMinutes()) & 0x7FF)
-
-	return binary.BigEndian.AppendUint16(dst, aci), nil
 }
 
 // cyclicRecordIterator provides a clean interface for traversing the cyclic buffer

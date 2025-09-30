@@ -56,12 +56,11 @@ func unmarshalCardApplicationIdentification(data []byte) (*cardv1.ApplicationIde
 	if _, err := r.Read(structureVersionBytes); err != nil {
 		return nil, fmt.Errorf("failed to read card structure version: %w", err)
 	}
-	// Parse BCD structure version
-	major := int32((structureVersionBytes[0]&0xF0)>>4)*10 + int32(structureVersionBytes[0]&0x0F)
-	minor := int32((structureVersionBytes[1]&0xF0)>>4)*10 + int32(structureVersionBytes[1]&0x0F)
-	cardStructureVersion := &ddv1.CardStructureVersion{}
-	cardStructureVersion.SetMajor(major)
-	cardStructureVersion.SetMinor(minor)
+	// Parse BCD structure version using centralized helper
+	cardStructureVersion, err := dd.UnmarshalCardStructureVersion(structureVersionBytes)
+	if err != nil {
+		return nil, fmt.Errorf("failed to unmarshal card structure version: %w", err)
+	}
 	target.SetCardStructureVersion(cardStructureVersion)
 
 	// For now, assume this is a driver card and create the driver data
@@ -166,12 +165,12 @@ func appendCardApplicationIdentification(data []byte, appId *cardv1.ApplicationI
 	// Card structure version (2 bytes)
 	structureVersion := appId.GetCardStructureVersion()
 	if structureVersion != nil {
-		// Convert major and minor to BCD format
-		major := structureVersion.GetMajor()
-		minor := structureVersion.GetMinor()
-		majorBCD := ((major / 10) << 4) | (major % 10)
-		minorBCD := ((minor / 10) << 4) | (minor % 10)
-		data = append(data, byte(majorBCD), byte(minorBCD))
+		// Append using centralized helper
+		var err error
+		data, err = dd.AppendCardStructureVersion(data, structureVersion)
+		if err != nil {
+			return nil, fmt.Errorf("failed to append card structure version: %w", err)
+		}
 	} else {
 		data = append(data, 0x00, 0x01) // Default version
 	}

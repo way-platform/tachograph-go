@@ -412,71 +412,9 @@ func parseVuActivityDailyData(data []byte, offset int) ([]*ddv1.ActivityChangeIn
 	return changes, offset, nil
 }
 
-// unmarshalActivityChangeInfo parses a single ActivityChangeInfo record from a byte slice
-func unmarshalActivityChangeInfo(data []byte) (*ddv1.ActivityChangeInfo, error) {
-	// ActivityChangeInfo ::= OCTET STRING (SIZE (2))
-	// Bit-packed format: 'scpaattttttttttt'B (16 bits)
-	// s: Slot (0=DRIVER, 1=CO-DRIVER)
-	// c: Driving status (0=SINGLE, 1=CREW)
-	// p: Card status (0=INSERTED, 1=NOT_INSERTED)
-	// aa: Activity (00=BREAK/REST, 01=AVAILABILITY, 10=WORK, 11=DRIVING)
-	// ttttttttttt: Time (11 bits for time in minutes)
-
-	if len(data) < 2 {
-		return nil, fmt.Errorf("insufficient data for activity change info: got %d, need 2", len(data))
-	}
-
-	// Read 2 bytes
-	value := uint16(data[0])<<8 | uint16(data[1])
-
-	// Extract bit fields
-	slot := (value >> 15) & 0x1          // bit 15
-	drivingStatus := (value >> 14) & 0x1 // bit 14
-	cardStatus := (value >> 13) & 0x1    // bit 13
-	activity := (value >> 11) & 0x3      // bits 12-11
-	timeMinutes := value & 0x7FF         // bits 10-0
-
-	// Create ActivityChangeInfo
-	change := &ddv1.ActivityChangeInfo{}
-
-	// Set slot
-	if slot == 0 {
-		change.SetSlot(ddv1.CardSlotNumber_DRIVER_SLOT)
-	} else {
-		change.SetSlot(ddv1.CardSlotNumber_CO_DRIVER_SLOT)
-	}
-
-	// Set driving status
-	if drivingStatus == 0 {
-		change.SetDrivingStatus(ddv1.DrivingStatus_SINGLE)
-	} else {
-		change.SetDrivingStatus(ddv1.DrivingStatus_CREW)
-	}
-
-	// Set card status (note: bit p=0 means INSERTED, p=1 means NOT_INSERTED)
-	change.SetInserted(cardStatus == 0)
-
-	// Set activity
-	switch activity {
-	case 0:
-		change.SetActivity(ddv1.DriverActivityValue_BREAK_REST)
-	case 1:
-		change.SetActivity(ddv1.DriverActivityValue_AVAILABILITY)
-	case 2:
-		change.SetActivity(ddv1.DriverActivityValue_WORK)
-	case 3:
-		change.SetActivity(ddv1.DriverActivityValue_DRIVING)
-	}
-
-	// Set time (in minutes)
-	change.SetTimeOfChangeMinutes(int32(timeMinutes))
-
-	return change, nil
-}
-
 // parseActivityChangeInfo parses a single ActivityChangeInfo record (legacy function for Gen1)
 func parseActivityChangeInfo(data []byte, offset int) (*ddv1.ActivityChangeInfo, int, error) {
-	change, err := unmarshalActivityChangeInfo(data[offset : offset+2])
+	change, err := dd.UnmarshalActivityChangeInfo(data[offset : offset+2])
 	if err != nil {
 		return nil, offset, err
 	}
@@ -959,7 +897,7 @@ func parseVuActivityDailyRecordArray(data []byte, offset int) ([]*ddv1.ActivityC
 		}
 
 		recordData := scanner.Bytes()
-		change, err := unmarshalActivityChangeInfo(recordData)
+		change, err := dd.UnmarshalActivityChangeInfo(recordData)
 		if err != nil {
 			return nil, offset, fmt.Errorf("failed to parse ActivityChangeInfo record %d: %w", recordCount, err)
 		}
@@ -2015,37 +1953,13 @@ func appendVuActivityDailyData(dst []byte, activityChanges []*ddv1.ActivityChang
 	// Write each activity change (2 bytes each)
 	for _, change := range activityChanges {
 		var err error
-		dst, err = appendVuActivityChangeInfo(dst, change)
+		dst, err = dd.AppendActivityChangeInfo(dst, change)
 		if err != nil {
 			return nil, fmt.Errorf("failed to append activity change: %w", err)
 		}
 	}
 
 	return dst, nil
-}
-
-// appendVuActivityChangeInfo appends an ActivityChangeInfo to dst
-func appendVuActivityChangeInfo(dst []byte, change *ddv1.ActivityChangeInfo) ([]byte, error) {
-	if change == nil {
-		return dst, nil
-	}
-
-	// ActivityChangeInfo is 2 bytes packed as bitfield
-	var aci uint16
-
-	// Extract values and pack into bitfield
-	slot := dd.GetCardSlotNumberProtocolValue(change.GetSlot(), 0)
-	drivingStatus := dd.GetDrivingStatusProtocolValue(change.GetDrivingStatus(), 0)
-	cardInserted := dd.GetCardInsertedFromBool(change.GetInserted())
-	activity := dd.GetDriverActivityValueProtocolValue(change.GetActivity(), 0)
-
-	aci |= (uint16(slot) & 0x1) << 15
-	aci |= (uint16(drivingStatus) & 0x1) << 14
-	aci |= (uint16(cardInserted) & 0x1) << 13
-	aci |= (uint16(activity) & 0x3) << 11
-	aci |= (uint16(change.GetTimeOfChangeMinutes()) & 0x7FF)
-
-	return binary.BigEndian.AppendUint16(dst, aci), nil
 }
 
 // appendVuPlaceDailyWorkPeriodData appends VuPlaceDailyWorkPeriodData to dst
@@ -2277,7 +2191,7 @@ func appendVuActivityDailyRecordArray(dst []byte, activityChanges []*ddv1.Activi
 	// Write each ActivityChangeInfo record
 	for _, change := range activityChanges {
 		var err error
-		dst, err = appendVuActivityChangeInfo(dst, change)
+		dst, err = dd.AppendActivityChangeInfo(dst, change)
 		if err != nil {
 			return nil, fmt.Errorf("failed to append activity change: %w", err)
 		}
