@@ -13,6 +13,14 @@ import (
 )
 
 func TestUnmarshalFile_golden(t *testing.T) {
+	// Check if testdata directory exists
+	if _, err := os.Stat("testdata"); err != nil {
+		if os.IsNotExist(err) {
+			t.Skip("testdata directory not present (proprietary test files not available)")
+		}
+		t.Fatalf("Failed to access testdata directory: %v", err)
+	}
+
 	if err := filepath.WalkDir("testdata", func(path string, d os.DirEntry, err error) error {
 		if err != nil {
 			return err

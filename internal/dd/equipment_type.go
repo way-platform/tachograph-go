@@ -22,18 +22,12 @@ func UnmarshalEquipmentType(data []byte) (ddv1.EquipmentType, error) {
 	if len(data) < 1 {
 		return ddv1.EquipmentType_EQUIPMENT_TYPE_UNSPECIFIED, fmt.Errorf("insufficient data for EquipmentType: got %d, want 1", len(data))
 	}
-
 	rawValue := int32(data[0])
-
-	// Use the protocol enum value mapping
-	equipmentType := ddv1.EquipmentType_EQUIPMENT_TYPE_UNSPECIFIED
-	if enumNumber, found := SetEnumFromProtocolValue(ddv1.EquipmentType_EQUIPMENT_TYPE_UNSPECIFIED.Descriptor(), rawValue); found {
-		equipmentType = ddv1.EquipmentType(enumNumber)
+	if enumNumber, found := GetEnumForProtocolValue(ddv1.EquipmentType_EQUIPMENT_TYPE_UNSPECIFIED.Descriptor(), rawValue); found {
+		return ddv1.EquipmentType(enumNumber), nil
 	} else {
-		equipmentType = ddv1.EquipmentType_EQUIPMENT_TYPE_UNRECOGNIZED
+		return ddv1.EquipmentType_EQUIPMENT_TYPE_UNRECOGNIZED, nil
 	}
-
-	return equipmentType, nil
 }
 
 // appendEquipmentType appends equipment type as a single byte.
@@ -50,7 +44,7 @@ func UnmarshalEquipmentType(data []byte) (ddv1.EquipmentType, error) {
 //nolint:unused
 func AppendEquipmentType(dst []byte, equipmentType ddv1.EquipmentType) []byte {
 	// Get the protocol value for the enum
-	if protocolValue, ok := GetProtocolValueFromEnum(equipmentType); ok {
+	if protocolValue, ok := GetProtocolValueForEnum(equipmentType); ok {
 		return append(dst, byte(protocolValue))
 	}
 	return append(dst, 0) // Default to 0 if not found

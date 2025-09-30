@@ -11,6 +11,14 @@ import (
 
 // Test_roundTrip_rawCardFile tests that RawCardFile → Binary → RawCardFile conversion is 100% perfect
 func Test_roundTrip_rawCardFile(t *testing.T) {
+	// Check if testdata directory exists
+	if _, err := os.Stat("../../testdata/card/driver"); err != nil {
+		if os.IsNotExist(err) {
+			t.Skip("testdata/card/driver directory not present (proprietary test files not available)")
+		}
+		t.Fatalf("Failed to access testdata/card/driver directory: %v", err)
+	}
+
 	// Dynamically discover test files
 	files, err := os.ReadDir("../../testdata/card/driver")
 	if err != nil {
@@ -104,4 +112,3 @@ func Test_roundTrip_rawCardFile(t *testing.T) {
 		})
 	}
 }
-

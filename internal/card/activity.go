@@ -194,14 +194,14 @@ func parseSingleActivityDailyRecord(data []byte) (*cardv1.DriverActivityData_Dai
 		activityChange := &ddv1.ActivityChangeInfo{}
 
 		// Convert raw values to enums using protocol annotations
-		if enumNum, found := dd.SetEnumFromProtocolValue(ddv1.CardSlotNumber_CARD_SLOT_NUMBER_UNSPECIFIED.Descriptor(), slot); found {
+		if enumNum, found := dd.GetEnumForProtocolValue(ddv1.CardSlotNumber_CARD_SLOT_NUMBER_UNSPECIFIED.Descriptor(), slot); found {
 			activityChange.SetSlot(ddv1.CardSlotNumber(enumNum))
 		}
-		if enumNum, found := dd.SetEnumFromProtocolValue(ddv1.DrivingStatus_DRIVING_STATUS_UNSPECIFIED.Descriptor(), drivingStatus); found {
+		if enumNum, found := dd.GetEnumForProtocolValue(ddv1.DrivingStatus_DRIVING_STATUS_UNSPECIFIED.Descriptor(), drivingStatus); found {
 			activityChange.SetDrivingStatus(ddv1.DrivingStatus(enumNum))
 		}
 		activityChange.SetInserted(cardStatus != 0) // Convert to boolean (1 = inserted, 0 = not inserted)
-		if enumNum, found := dd.SetEnumFromProtocolValue(ddv1.DriverActivityValue_DRIVER_ACTIVITY_UNSPECIFIED.Descriptor(), activity); found {
+		if enumNum, found := dd.GetEnumForProtocolValue(ddv1.DriverActivityValue_DRIVER_ACTIVITY_UNSPECIFIED.Descriptor(), activity); found {
 			activityChange.SetActivity(ddv1.DriverActivityValue(enumNum))
 		}
 

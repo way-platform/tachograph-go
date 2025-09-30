@@ -178,7 +178,7 @@ func AppendExtendedSerialNumberAsString(dst []byte, esn *ddv1.ExtendedSerialNumb
 
 	// Next byte: equipment type (converted to protocol value using generic helper)
 	if esn.GetType() != ddv1.EquipmentType_EQUIPMENT_TYPE_UNSPECIFIED {
-		if protocolValue, ok := GetProtocolValueFromEnum(esn.GetType()); ok {
+		if protocolValue, ok := GetProtocolValueForEnum(esn.GetType()); ok {
 			serialBytes[6] = byte(protocolValue)
 		}
 	}

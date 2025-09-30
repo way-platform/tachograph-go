@@ -114,7 +114,7 @@ func unmarshalFaultRecord(data []byte, rec *cardv1.FaultsData_Record) error {
 	}
 	faultType := data[offset]
 	enumDesc := ddv1.EventFaultType_EVENT_FAULT_TYPE_UNSPECIFIED.Descriptor()
-	if enumNum, found := dd.SetEnumFromProtocolValue(enumDesc, int32(faultType)); found {
+	if enumNum, found := dd.GetEnumForProtocolValue(enumDesc, int32(faultType)); found {
 		rec.SetFaultType(ddv1.EventFaultType(enumNum))
 	}
 	offset++

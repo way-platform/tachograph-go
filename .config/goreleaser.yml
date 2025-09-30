@@ -1,0 +1,14 @@
+builds:
+  - binary: tachograph
+    dir: ./cmd/tachograph
+    main: main.go
+    env:
+      - CGO_ENABLED=0
+    goos:
+      - darwin
+      - linux
+      - windows
+
+release:
+  github:
+  prerelease: auto

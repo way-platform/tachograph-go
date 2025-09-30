@@ -49,7 +49,7 @@ func unmarshalIcc(data []byte) (*cardv1.Icc, error) {
 	clockStop := data[offset]
 	// Convert clock stop byte to ClockStopMode enum using generic helper
 	enumDesc := ddv1.ClockStopMode_CLOCK_STOP_MODE_UNSPECIFIED.Descriptor()
-	if enumNum, found := dd.SetEnumFromProtocolValue(enumDesc, int32(clockStop)); found {
+	if enumNum, found := dd.GetEnumForProtocolValue(enumDesc, int32(clockStop)); found {
 		icc.SetClockStop(ddv1.ClockStopMode(enumNum))
 	}
 	offset++
@@ -95,7 +95,7 @@ func unmarshalIcc(data []byte) (*cardv1.Icc, error) {
 		// Next byte: equipment type (convert from protocol value using generic helper)
 		if len(serialBytes) > 6 {
 			enumDesc := ddv1.EquipmentType_EQUIPMENT_TYPE_UNSPECIFIED.Descriptor()
-			if enumNum, found := dd.SetEnumFromProtocolValue(enumDesc, int32(serialBytes[6])); found {
+			if enumNum, found := dd.GetEnumForProtocolValue(enumDesc, int32(serialBytes[6])); found {
 				esn.SetType(ddv1.EquipmentType(enumNum))
 			}
 		}
