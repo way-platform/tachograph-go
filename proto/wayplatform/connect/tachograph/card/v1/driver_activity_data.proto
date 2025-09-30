@@ -93,7 +93,7 @@ message DriverActivityData {
     // --- Field for raw data (when valid = false) ---
 
     // The raw bytes of a daily record that could not be parsed.
-    bytes raw = 8;
+    bytes raw_data = 8;
   }
 
   // The byte offset of the oldest complete day record.

@@ -79,8 +79,8 @@ func TestUnmarshalBcdString(t *testing.T) {
 			if got.GetDecoded() != tt.wantDecoded {
 				t.Errorf("UnmarshalBcdString().GetDecoded() = %v, want %v", got.GetDecoded(), tt.wantDecoded)
 			}
-			if diff := cmp.Diff(tt.wantEncoded, got.GetEncoded()); diff != "" {
-				t.Errorf("UnmarshalBcdString().GetEncoded() mismatch (-want +got):\n%s", diff)
+			if diff := cmp.Diff(tt.wantEncoded, got.GetRawData()); diff != "" {
+				t.Errorf("UnmarshalBcdString().GetRawData() mismatch (-want +got):\n%s", diff)
 			}
 		})
 	}

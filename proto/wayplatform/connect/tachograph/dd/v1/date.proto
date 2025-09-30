@@ -17,7 +17,7 @@ message Date {
   // The raw, original BCD-encoded bytes for the date (`yyyymmdd`).
   // This field is the source of truth and should always be used when marshalling
   // the data back to its binary format to ensure perfect fidelity.
-  bytes encoded = 4;
+  bytes raw_data = 4;
 
   // The decoded year.
   // This field is provided for consumer convenience and should be treated as a

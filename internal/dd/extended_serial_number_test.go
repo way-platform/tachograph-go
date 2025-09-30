@@ -117,7 +117,7 @@ func TestAppendExtendedSerialNumber(t *testing.T) {
 				esn := &ddv1.ExtendedSerialNumber{}
 				esn.SetSerialNumber(12345678)
 				my := &ddv1.MonthYear{}
-				my.SetEncoded([]byte{0x09, 0x25})
+				my.SetRawData([]byte{0x09, 0x25})
 				my.SetMonth(9)
 				my.SetYear(2025)
 				esn.SetMonthYear(my)

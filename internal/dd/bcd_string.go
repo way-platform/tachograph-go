@@ -25,7 +25,7 @@ func UnmarshalBcdString(data []byte) (*ddv1.BcdString, error) {
 		return nil, err
 	}
 	var output ddv1.BcdString
-	output.SetEncoded(data)
+	output.SetRawData(data)
 	output.SetDecoded(int32(decoded))
 	return &output, nil
 }
@@ -45,7 +45,7 @@ func AppendBcdString(dst []byte, bcdString *ddv1.BcdString) ([]byte, error) {
 	// This function only reads the encoded bytes field
 
 	// Append the raw BCD-encoded bytes
-	encoded := bcdString.GetEncoded()
+	encoded := bcdString.GetRawData()
 	if encoded != nil {
 		dst = append(dst, encoded...)
 	}

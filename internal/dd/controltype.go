@@ -19,7 +19,7 @@ func UnmarshalControlType(input []byte) (*ddv1.ControlType, error) {
 	}
 	b := input[0]
 	var output ddv1.ControlType
-	output.SetRawValue(input)
+	output.SetRawData(input)
 	output.SetCardDownloading((b & 0x80) != 0)
 	output.SetVuDownloading((b & 0x40) != 0)
 	output.SetPrinting((b & 0x20) != 0)

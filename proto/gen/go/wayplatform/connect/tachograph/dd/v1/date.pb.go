@@ -33,7 +33,7 @@ const (
 //	Datef ::= OCTET STRING (SIZE(4))
 type Date struct {
 	state                  protoimpl.MessageState `protogen:"opaque.v1"`
-	xxx_hidden_Encoded     []byte                 `protobuf:"bytes,4,opt,name=encoded"`
+	xxx_hidden_RawData     []byte                 `protobuf:"bytes,4,opt,name=raw_data,json=rawData"`
 	xxx_hidden_Year        int32                  `protobuf:"varint,1,opt,name=year"`
 	xxx_hidden_Month       int32                  `protobuf:"varint,2,opt,name=month"`
 	xxx_hidden_Day         int32                  `protobuf:"varint,3,opt,name=day"`
@@ -68,9 +68,9 @@ func (x *Date) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-func (x *Date) GetEncoded() []byte {
+func (x *Date) GetRawData() []byte {
 	if x != nil {
-		return x.xxx_hidden_Encoded
+		return x.xxx_hidden_RawData
 	}
 	return nil
 }
@@ -96,11 +96,11 @@ func (x *Date) GetDay() int32 {
 	return 0
 }
 
-func (x *Date) SetEncoded(v []byte) {
+func (x *Date) SetRawData(v []byte) {
 	if v == nil {
 		v = []byte{}
 	}
-	x.xxx_hidden_Encoded = v
+	x.xxx_hidden_RawData = v
 	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 4)
 }
 
@@ -119,7 +119,7 @@ func (x *Date) SetDay(v int32) {
 	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 3, 4)
 }
 
-func (x *Date) HasEncoded() bool {
+func (x *Date) HasRawData() bool {
 	if x == nil {
 		return false
 	}
@@ -147,9 +147,9 @@ func (x *Date) HasDay() bool {
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 3)
 }
 
-func (x *Date) ClearEncoded() {
+func (x *Date) ClearRawData() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 0)
-	x.xxx_hidden_Encoded = nil
+	x.xxx_hidden_RawData = nil
 }
 
 func (x *Date) ClearYear() {
@@ -173,7 +173,7 @@ type Date_builder struct {
 	// The raw, original BCD-encoded bytes for the date (`yyyymmdd`).
 	// This field is the source of truth and should always be used when marshalling
 	// the data back to its binary format to ensure perfect fidelity.
-	Encoded []byte
+	RawData []byte
 	// The decoded year.
 	// This field is provided for consumer convenience and should be treated as a
 	// read-only, derived value.
@@ -192,9 +192,9 @@ func (b0 Date_builder) Build() *Date {
 	m0 := &Date{}
 	b, x := &b0, m0
 	_, _ = b, x
-	if b.Encoded != nil {
+	if b.RawData != nil {
 		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 4)
-		x.xxx_hidden_Encoded = b.Encoded
+		x.xxx_hidden_RawData = b.RawData
 	}
 	if b.Year != nil {
 		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 4)
@@ -215,9 +215,9 @@ var File_wayplatform_connect_tachograph_dd_v1_date_proto protoreflect.FileDescri
 
 const file_wayplatform_connect_tachograph_dd_v1_date_proto_rawDesc = "" +
 	"\n" +
-	"/wayplatform/connect/tachograph/dd/v1/date.proto\x12$wayplatform.connect.tachograph.dd.v1\"\\\n" +
-	"\x04Date\x12\x18\n" +
-	"\aencoded\x18\x04 \x01(\fR\aencoded\x12\x12\n" +
+	"/wayplatform/connect/tachograph/dd/v1/date.proto\x12$wayplatform.connect.tachograph.dd.v1\"]\n" +
+	"\x04Date\x12\x19\n" +
+	"\braw_data\x18\x04 \x01(\fR\arawData\x12\x12\n" +
 	"\x04year\x18\x01 \x01(\x05R\x04year\x12\x14\n" +
 	"\x05month\x18\x02 \x01(\x05R\x05month\x12\x10\n" +
 	"\x03day\x18\x03 \x01(\x05R\x03dayB\xc8\x02\n" +

@@ -15,7 +15,7 @@ message MonthYear {
   // The raw, original BCD-encoded bytes for the month and year (e.g., `[0x09, 0x23]` for September 2023).
   // This field is the source of truth and should always be used when marshalling
   // the data back to its binary format.
-  bytes encoded = 1;
+  bytes raw_data = 1;
 
   // The decoded month (1-12). This field is provided for
   // consumer convenience and should be treated as a read-only, derived value.

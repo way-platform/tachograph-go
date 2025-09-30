@@ -285,7 +285,7 @@ type DriverActivityData_DailyRecord struct {
 	xxx_hidden_ActivityDailyPresenceCounter *v1.BcdString             `protobuf:"bytes,5,opt,name=activity_daily_presence_counter,json=activityDailyPresenceCounter"`
 	xxx_hidden_ActivityDayDistance          int32                     `protobuf:"varint,6,opt,name=activity_day_distance,json=activityDayDistance"`
 	xxx_hidden_ActivityChangeInfo           *[]*v1.ActivityChangeInfo `protobuf:"bytes,7,rep,name=activity_change_info,json=activityChangeInfo"`
-	xxx_hidden_Raw                          []byte                    `protobuf:"bytes,8,opt,name=raw"`
+	xxx_hidden_RawData                      []byte                    `protobuf:"bytes,8,opt,name=raw_data,json=rawData"`
 	XXX_raceDetectHookData                  protoimpl.RaceDetectHookData
 	XXX_presence                            [1]uint32
 	unknownFields                           protoimpl.UnknownFields
@@ -368,9 +368,9 @@ func (x *DriverActivityData_DailyRecord) GetActivityChangeInfo() []*v1.ActivityC
 	return nil
 }
 
-func (x *DriverActivityData_DailyRecord) GetRaw() []byte {
+func (x *DriverActivityData_DailyRecord) GetRawData() []byte {
 	if x != nil {
-		return x.xxx_hidden_Raw
+		return x.xxx_hidden_RawData
 	}
 	return nil
 }
@@ -407,11 +407,11 @@ func (x *DriverActivityData_DailyRecord) SetActivityChangeInfo(v []*v1.ActivityC
 	x.xxx_hidden_ActivityChangeInfo = &v
 }
 
-func (x *DriverActivityData_DailyRecord) SetRaw(v []byte) {
+func (x *DriverActivityData_DailyRecord) SetRawData(v []byte) {
 	if v == nil {
 		v = []byte{}
 	}
-	x.xxx_hidden_Raw = v
+	x.xxx_hidden_RawData = v
 	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 7, 8)
 }
 
@@ -457,7 +457,7 @@ func (x *DriverActivityData_DailyRecord) HasActivityDayDistance() bool {
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 5)
 }
 
-func (x *DriverActivityData_DailyRecord) HasRaw() bool {
+func (x *DriverActivityData_DailyRecord) HasRawData() bool {
 	if x == nil {
 		return false
 	}
@@ -492,9 +492,9 @@ func (x *DriverActivityData_DailyRecord) ClearActivityDayDistance() {
 	x.xxx_hidden_ActivityDayDistance = 0
 }
 
-func (x *DriverActivityData_DailyRecord) ClearRaw() {
+func (x *DriverActivityData_DailyRecord) ClearRawData() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 7)
-	x.xxx_hidden_Raw = nil
+	x.xxx_hidden_RawData = nil
 }
 
 type DriverActivityData_DailyRecord_builder struct {
@@ -543,7 +543,7 @@ type DriverActivityData_DailyRecord_builder struct {
 	// See Data Dictionary, Section 2.9, `activityChangeInfo`.
 	ActivityChangeInfo []*v1.ActivityChangeInfo
 	// The raw bytes of a daily record that could not be parsed.
-	Raw []byte
+	RawData []byte
 }
 
 func (b0 DriverActivityData_DailyRecord_builder) Build() *DriverActivityData_DailyRecord {
@@ -569,9 +569,9 @@ func (b0 DriverActivityData_DailyRecord_builder) Build() *DriverActivityData_Dai
 		x.xxx_hidden_ActivityDayDistance = *b.ActivityDayDistance
 	}
 	x.xxx_hidden_ActivityChangeInfo = &b.ActivityChangeInfo
-	if b.Raw != nil {
+	if b.RawData != nil {
 		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 7, 8)
-		x.xxx_hidden_Raw = b.Raw
+		x.xxx_hidden_RawData = b.RawData
 	}
 	return m0
 }
@@ -580,13 +580,13 @@ var File_wayplatform_connect_tachograph_card_v1_driver_activity_data_proto proto
 
 const file_wayplatform_connect_tachograph_card_v1_driver_activity_data_proto_rawDesc = "" +
 	"\n" +
-	"Awayplatform/connect/tachograph/card/v1/driver_activity_data.proto\x12&wayplatform.connect.tachograph.card.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a?wayplatform/connect/tachograph/dd/v1/activity_change_info.proto\x1a5wayplatform/connect/tachograph/dd/v1/bcd_string.proto\"\xd4\x06\n" +
+	"Awayplatform/connect/tachograph/card/v1/driver_activity_data.proto\x12&wayplatform.connect.tachograph.card.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a?wayplatform/connect/tachograph/dd/v1/activity_change_info.proto\x1a5wayplatform/connect/tachograph/dd/v1/bcd_string.proto\"\xdd\x06\n" +
 	"\x12DriverActivityData\x125\n" +
 	"\x17oldest_day_record_index\x18\x01 \x01(\x05R\x14oldestDayRecordIndex\x125\n" +
 	"\x17newest_day_record_index\x18\x02 \x01(\x05R\x14newestDayRecordIndex\x12k\n" +
 	"\rdaily_records\x18\x03 \x03(\v2F.wayplatform.connect.tachograph.card.v1.DriverActivityData.DailyRecordR\fdailyRecords\x12*\n" +
 	"\x11raw_cyclic_buffer\x18\x05 \x01(\fR\x0frawCyclicBuffer\x12\x1c\n" +
-	"\tsignature\x18\x04 \x01(\fR\tsignature\x1a\x98\x04\n" +
+	"\tsignature\x18\x04 \x01(\fR\tsignature\x1a\xa1\x04\n" +
 	"\vDailyRecord\x12\x14\n" +
 	"\x05valid\x18\x01 \x01(\bR\x05valid\x12E\n" +
 	"\x1factivity_previous_record_length\x18\x02 \x01(\x05R\x1cactivityPreviousRecordLength\x124\n" +
@@ -594,8 +594,8 @@ const file_wayplatform_connect_tachograph_card_v1_driver_activity_data_proto_raw
 	"\x14activity_record_date\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampR\x12activityRecordDate\x12v\n" +
 	"\x1factivity_daily_presence_counter\x18\x05 \x01(\v2/.wayplatform.connect.tachograph.dd.v1.BcdStringR\x1cactivityDailyPresenceCounter\x122\n" +
 	"\x15activity_day_distance\x18\x06 \x01(\x05R\x13activityDayDistance\x12j\n" +
-	"\x14activity_change_info\x18\a \x03(\v28.wayplatform.connect.tachograph.dd.v1.ActivityChangeInfoR\x12activityChangeInfo\x12\x10\n" +
-	"\x03raw\x18\b \x01(\fR\x03rawB\xe4\x02\n" +
+	"\x14activity_change_info\x18\a \x03(\v28.wayplatform.connect.tachograph.dd.v1.ActivityChangeInfoR\x12activityChangeInfo\x12\x19\n" +
+	"\braw_data\x18\b \x01(\fR\arawDataB\xe4\x02\n" +
 	"*com.wayplatform.connect.tachograph.card.v1B\x17DriverActivityDataProtoP\x01Z`github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1;cardv1\xa2\x02\x04WCTC\xaa\x02&Wayplatform.Connect.Tachograph.Card.V1\xca\x02&Wayplatform\\Connect\\Tachograph\\Card\\V1\xe2\x022Wayplatform\\Connect\\Tachograph\\Card\\V1\\GPBMetadata\xea\x02*Wayplatform::Connect::Tachograph::Card::V1b\beditionsp\xe8\a"
 
 var file_wayplatform_connect_tachograph_card_v1_driver_activity_data_proto_msgTypes = make([]protoimpl.MessageInfo, 2)

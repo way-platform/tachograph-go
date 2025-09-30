@@ -24,17 +24,13 @@ func UnmarshalDate(data []byte) (*ddv1.Date, error) {
 	if len(data) != lenDatef {
 		return nil, fmt.Errorf("invalid data length for Date: got %d, want %d", len(data), lenDatef)
 	}
-
 	date := &ddv1.Date{}
-
 	// Store the original encoded bytes for round-trip fidelity
-	date.SetEncoded(data[:lenDatef])
-
+	date.SetRawData(data[:lenDatef])
 	// Parse BCD format: YYYYMMDD
 	year := int32(int32((data[0]&0xF0)>>4)*1000 + int32(data[0]&0x0F)*100 + int32((data[1]&0xF0)>>4)*10 + int32(data[1]&0x0F))
 	month := int32(int32((data[2]&0xF0)>>4)*10 + int32(data[2]&0x0F))
 	day := int32(int32((data[3]&0xF0)>>4)*10 + int32(data[3]&0x0F))
-
 	// Validate the date
 	if year < 1900 || year > 9999 {
 		return nil, fmt.Errorf("invalid year in Date: %d", year)
@@ -45,11 +41,9 @@ func UnmarshalDate(data []byte) (*ddv1.Date, error) {
 	if day < 1 || day > 31 {
 		return nil, fmt.Errorf("invalid day in Date: %d", day)
 	}
-
 	date.SetYear(year)
 	date.SetMonth(month)
 	date.SetDay(day)
-
 	return date, nil
 }
 
@@ -68,7 +62,7 @@ func UnmarshalDate(data []byte) (*ddv1.Date, error) {
 func AppendDate(dst []byte, date *ddv1.Date) ([]byte, error) {
 	const lenDatef = 4
 	// Prefer the original encoded bytes for perfect round-trip fidelity
-	if encoded := date.GetEncoded(); len(encoded) >= lenDatef {
+	if encoded := date.GetRawData(); len(encoded) >= lenDatef {
 		return append(dst, encoded[:lenDatef]...), nil
 	}
 	// Fall back to encoding from decoded values

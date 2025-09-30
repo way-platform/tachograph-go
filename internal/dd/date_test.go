@@ -116,7 +116,7 @@ func TestUnmarshalDate(t *testing.T) {
 			if got.GetDay() != tt.wantDay {
 				t.Errorf("GetDay() = %v, want %v", got.GetDay(), tt.wantDay)
 			}
-			if diff := cmp.Diff(tt.wantEncoded, got.GetEncoded()); diff != "" {
+			if diff := cmp.Diff(tt.wantEncoded, got.GetRawData()); diff != "" {
 				t.Errorf("GetEncoded() mismatch (-want +got):\n%s", diff)
 			}
 		})
@@ -133,7 +133,7 @@ func TestAppendDate(t *testing.T) {
 			name: "valid date with encoded bytes",
 			date: func() *ddv1.Date {
 				d := &ddv1.Date{}
-				d.SetEncoded([]byte{0x20, 0x25, 0x09, 0x30})
+				d.SetRawData([]byte{0x20, 0x25, 0x09, 0x30})
 				d.SetYear(2025)
 				d.SetMonth(9)
 				d.SetDay(30)

@@ -94,7 +94,7 @@ func parseActivityRecordsWithIterator(buffer []byte, startPos int) ([]*cardv1.Dr
 		if err != nil {
 			// Parsing failed, store as raw
 			dailyRecord.SetValid(false)
-			dailyRecord.SetRaw(recordBytes)
+			dailyRecord.SetRawData(recordBytes)
 		} else {
 			// Parsing succeeded, store semantic data
 			dailyRecord.SetValid(true)
@@ -273,7 +273,7 @@ func appendDriverActivity(dst []byte, activity *cardv1.DriverActivityData) ([]by
 				}
 			} else {
 				// It's a raw record, just append the bytes.
-				dst = append(dst, rec.GetRaw()...)
+				dst = append(dst, rec.GetRawData()...)
 			}
 		}
 	}
@@ -346,7 +346,7 @@ func paintRecordsOntoBuffer(buffer []byte, records []*cardv1.DriverActivityData_
 func marshalSingleActivityRecord(record *cardv1.DriverActivityData_DailyRecord) ([]byte, error) {
 	if !record.GetValid() {
 		// For invalid records, return the raw bytes if available
-		if raw := record.GetRaw(); len(raw) > 0 {
+		if raw := record.GetRawData(); len(raw) > 0 {
 			return raw, nil
 		}
 		return nil, fmt.Errorf("invalid record has no raw data")
@@ -396,7 +396,7 @@ func appendParsedDailyRecord(dst []byte, rec *cardv1.DriverActivityData_DailyRec
 
 	// Activity daily presence counter (2 bytes BCD)
 	if bcdCounter := rec.GetActivityDailyPresenceCounter(); bcdCounter != nil {
-		contentBuf = append(contentBuf, bcdCounter.GetEncoded()...)
+		contentBuf = append(contentBuf, bcdCounter.GetRawData()...)
 	}
 
 	// Activity day distance (2 bytes)

@@ -20,13 +20,13 @@ message CardStructureVersion {
   // The raw, original BCD-encoded bytes for the version. This field is the
   // source of truth and should be used for any serialization operations to ensure
   // perfect data fidelity.
-  bytes raw_version = 3;
+  bytes raw_data = 3;
 
   // The decoded major version number.
-  // This is a convenience field derived from `raw_version`.
+  // This is a convenience field derived from `raw_data`.
   int32 major = 1;
 
   // The decoded minor version number.
-  // This is a convenience field derived from `raw_version`.
+  // This is a convenience field derived from `raw_data`.
   int32 minor = 2;
 }

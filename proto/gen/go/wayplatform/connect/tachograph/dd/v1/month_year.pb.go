@@ -31,7 +31,7 @@ const (
 //	monthYear BCDString(SIZE(2))
 type MonthYear struct {
 	state                  protoimpl.MessageState `protogen:"opaque.v1"`
-	xxx_hidden_Encoded     []byte                 `protobuf:"bytes,1,opt,name=encoded"`
+	xxx_hidden_RawData     []byte                 `protobuf:"bytes,1,opt,name=raw_data,json=rawData"`
 	xxx_hidden_Month       int32                  `protobuf:"varint,2,opt,name=month"`
 	xxx_hidden_Year        int32                  `protobuf:"varint,3,opt,name=year"`
 	XXX_raceDetectHookData protoimpl.RaceDetectHookData
@@ -65,9 +65,9 @@ func (x *MonthYear) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-func (x *MonthYear) GetEncoded() []byte {
+func (x *MonthYear) GetRawData() []byte {
 	if x != nil {
-		return x.xxx_hidden_Encoded
+		return x.xxx_hidden_RawData
 	}
 	return nil
 }
@@ -86,11 +86,11 @@ func (x *MonthYear) GetYear() int32 {
 	return 0
 }
 
-func (x *MonthYear) SetEncoded(v []byte) {
+func (x *MonthYear) SetRawData(v []byte) {
 	if v == nil {
 		v = []byte{}
 	}
-	x.xxx_hidden_Encoded = v
+	x.xxx_hidden_RawData = v
 	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 3)
 }
 
@@ -104,7 +104,7 @@ func (x *MonthYear) SetYear(v int32) {
 	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 3)
 }
 
-func (x *MonthYear) HasEncoded() bool {
+func (x *MonthYear) HasRawData() bool {
 	if x == nil {
 		return false
 	}
@@ -125,9 +125,9 @@ func (x *MonthYear) HasYear() bool {
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 2)
 }
 
-func (x *MonthYear) ClearEncoded() {
+func (x *MonthYear) ClearRawData() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 0)
-	x.xxx_hidden_Encoded = nil
+	x.xxx_hidden_RawData = nil
 }
 
 func (x *MonthYear) ClearMonth() {
@@ -146,7 +146,7 @@ type MonthYear_builder struct {
 	// The raw, original BCD-encoded bytes for the month and year (e.g., `[0x09, 0x23]` for September 2023).
 	// This field is the source of truth and should always be used when marshalling
 	// the data back to its binary format.
-	Encoded []byte
+	RawData []byte
 	// The decoded month (1-12). This field is provided for
 	// consumer convenience and should be treated as a read-only, derived value.
 	Month *int32
@@ -159,9 +159,9 @@ func (b0 MonthYear_builder) Build() *MonthYear {
 	m0 := &MonthYear{}
 	b, x := &b0, m0
 	_, _ = b, x
-	if b.Encoded != nil {
+	if b.RawData != nil {
 		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 3)
-		x.xxx_hidden_Encoded = b.Encoded
+		x.xxx_hidden_RawData = b.RawData
 	}
 	if b.Month != nil {
 		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 3)
@@ -178,9 +178,9 @@ var File_wayplatform_connect_tachograph_dd_v1_month_year_proto protoreflect.File
 
 const file_wayplatform_connect_tachograph_dd_v1_month_year_proto_rawDesc = "" +
 	"\n" +
-	"5wayplatform/connect/tachograph/dd/v1/month_year.proto\x12$wayplatform.connect.tachograph.dd.v1\"O\n" +
-	"\tMonthYear\x12\x18\n" +
-	"\aencoded\x18\x01 \x01(\fR\aencoded\x12\x14\n" +
+	"5wayplatform/connect/tachograph/dd/v1/month_year.proto\x12$wayplatform.connect.tachograph.dd.v1\"P\n" +
+	"\tMonthYear\x12\x19\n" +
+	"\braw_data\x18\x01 \x01(\fR\arawData\x12\x14\n" +
 	"\x05month\x18\x02 \x01(\x05R\x05month\x12\x12\n" +
 	"\x04year\x18\x03 \x01(\x05R\x04yearB\xcd\x02\n" +
 	"(com.wayplatform.connect.tachograph.dd.v1B\x0eMonthYearProtoP\x01Z\\github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1;ddv1\xa2\x02\x04WCTD\xaa\x02$Wayplatform.Connect.Tachograph.Dd.V1\xca\x02$Wayplatform\\Connect\\Tachograph\\Dd\\V1\xe2\x020Wayplatform\\Connect\\Tachograph\\Dd\\V1\\GPBMetadata\xea\x02(Wayplatform::Connect::Tachograph::Dd::V1b\beditionsp\xe8\a"

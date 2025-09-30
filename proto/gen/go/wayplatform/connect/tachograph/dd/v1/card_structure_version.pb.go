@@ -36,7 +36,7 @@ const (
 // e.g., version '01.02' is coded as '0102'H.
 type CardStructureVersion struct {
 	state                  protoimpl.MessageState `protogen:"opaque.v1"`
-	xxx_hidden_RawVersion  []byte                 `protobuf:"bytes,3,opt,name=raw_version,json=rawVersion"`
+	xxx_hidden_RawData     []byte                 `protobuf:"bytes,3,opt,name=raw_data,json=rawData"`
 	xxx_hidden_Major       int32                  `protobuf:"varint,1,opt,name=major"`
 	xxx_hidden_Minor       int32                  `protobuf:"varint,2,opt,name=minor"`
 	XXX_raceDetectHookData protoimpl.RaceDetectHookData
@@ -70,9 +70,9 @@ func (x *CardStructureVersion) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-func (x *CardStructureVersion) GetRawVersion() []byte {
+func (x *CardStructureVersion) GetRawData() []byte {
 	if x != nil {
-		return x.xxx_hidden_RawVersion
+		return x.xxx_hidden_RawData
 	}
 	return nil
 }
@@ -91,11 +91,11 @@ func (x *CardStructureVersion) GetMinor() int32 {
 	return 0
 }
 
-func (x *CardStructureVersion) SetRawVersion(v []byte) {
+func (x *CardStructureVersion) SetRawData(v []byte) {
 	if v == nil {
 		v = []byte{}
 	}
-	x.xxx_hidden_RawVersion = v
+	x.xxx_hidden_RawData = v
 	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 3)
 }
 
@@ -109,7 +109,7 @@ func (x *CardStructureVersion) SetMinor(v int32) {
 	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 3)
 }
 
-func (x *CardStructureVersion) HasRawVersion() bool {
+func (x *CardStructureVersion) HasRawData() bool {
 	if x == nil {
 		return false
 	}
@@ -130,9 +130,9 @@ func (x *CardStructureVersion) HasMinor() bool {
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 2)
 }
 
-func (x *CardStructureVersion) ClearRawVersion() {
+func (x *CardStructureVersion) ClearRawData() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 0)
-	x.xxx_hidden_RawVersion = nil
+	x.xxx_hidden_RawData = nil
 }
 
 func (x *CardStructureVersion) ClearMajor() {
@@ -151,12 +151,12 @@ type CardStructureVersion_builder struct {
 	// The raw, original BCD-encoded bytes for the version. This field is the
 	// source of truth and should be used for any serialization operations to ensure
 	// perfect data fidelity.
-	RawVersion []byte
+	RawData []byte
 	// The decoded major version number.
-	// This is a convenience field derived from `raw_version`.
+	// This is a convenience field derived from `raw_data`.
 	Major *int32
 	// The decoded minor version number.
-	// This is a convenience field derived from `raw_version`.
+	// This is a convenience field derived from `raw_data`.
 	Minor *int32
 }
 
@@ -164,9 +164,9 @@ func (b0 CardStructureVersion_builder) Build() *CardStructureVersion {
 	m0 := &CardStructureVersion{}
 	b, x := &b0, m0
 	_, _ = b, x
-	if b.RawVersion != nil {
+	if b.RawData != nil {
 		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 3)
-		x.xxx_hidden_RawVersion = b.RawVersion
+		x.xxx_hidden_RawData = b.RawData
 	}
 	if b.Major != nil {
 		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 3)
@@ -183,10 +183,9 @@ var File_wayplatform_connect_tachograph_dd_v1_card_structure_version_proto proto
 
 const file_wayplatform_connect_tachograph_dd_v1_card_structure_version_proto_rawDesc = "" +
 	"\n" +
-	"Awayplatform/connect/tachograph/dd/v1/card_structure_version.proto\x12$wayplatform.connect.tachograph.dd.v1\"c\n" +
-	"\x14CardStructureVersion\x12\x1f\n" +
-	"\vraw_version\x18\x03 \x01(\fR\n" +
-	"rawVersion\x12\x14\n" +
+	"Awayplatform/connect/tachograph/dd/v1/card_structure_version.proto\x12$wayplatform.connect.tachograph.dd.v1\"]\n" +
+	"\x14CardStructureVersion\x12\x19\n" +
+	"\braw_data\x18\x03 \x01(\fR\arawData\x12\x14\n" +
 	"\x05major\x18\x01 \x01(\x05R\x05major\x12\x14\n" +
 	"\x05minor\x18\x02 \x01(\x05R\x05minorB\xd8\x02\n" +
 	"(com.wayplatform.connect.tachograph.dd.v1B\x19CardStructureVersionProtoP\x01Z\\github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1;ddv1\xa2\x02\x04WCTD\xaa\x02$Wayplatform.Connect.Tachograph.Dd.V1\xca\x02$Wayplatform\\Connect\\Tachograph\\Dd\\V1\xe2\x020Wayplatform\\Connect\\Tachograph\\Dd\\V1\\GPBMetadata\xea\x02(Wayplatform::Connect::Tachograph::Dd::V1b\beditionsp\xe8\a"

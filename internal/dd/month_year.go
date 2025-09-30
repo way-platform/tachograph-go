@@ -25,7 +25,7 @@ func UnmarshalMonthYear(data []byte) (*ddv1.MonthYear, error) {
 	}
 
 	monthYear := &ddv1.MonthYear{}
-	monthYear.SetEncoded(data[:lenMonthYear])
+	monthYear.SetRawData(data[:lenMonthYear])
 
 	// Decode BCD month/year as 4-digit number MMYY
 	monthYearInt, err := decodeBCD(data[:lenMonthYear])
@@ -63,7 +63,7 @@ func AppendMonthYear(dst []byte, monthYear *ddv1.MonthYear) ([]byte, error) {
 	// This function only reads primitive int32 fields (month, year) and bytes
 
 	// Prefer the original encoded bytes for perfect round-trip fidelity
-	if encoded := monthYear.GetEncoded(); len(encoded) >= lenMonthYear {
+	if encoded := monthYear.GetRawData(); len(encoded) >= lenMonthYear {
 		return append(dst, encoded[:lenMonthYear]...), nil
 	}
 

@@ -116,8 +116,8 @@ func TestUnmarshalMonthYear(t *testing.T) {
 
 			// Verify encoded bytes are preserved
 			if !tt.wantErr && len(tt.input) >= 2 {
-				if diff := cmp.Diff(tt.input[:2], got.GetEncoded()); diff != "" {
-					t.Errorf("UnmarshalMonthYear().GetEncoded() mismatch (-want +got):\n%s", diff)
+				if diff := cmp.Diff(tt.input[:2], got.GetRawData()); diff != "" {
+					t.Errorf("UnmarshalMonthYear().GetRawData() mismatch (-want +got):\n%s", diff)
 				}
 			}
 		})
@@ -194,7 +194,7 @@ func TestAppendMonthYear(t *testing.T) {
 			name: "with encoded bytes - should prefer encoded",
 			monthYear: func() *ddv1.MonthYear {
 				my := &ddv1.MonthYear{}
-				my.SetEncoded([]byte{0x03, 0x22})
+				my.SetRawData([]byte{0x03, 0x22})
 				my.SetMonth(99) // Different from encoded
 				my.SetYear(9999)
 				return my

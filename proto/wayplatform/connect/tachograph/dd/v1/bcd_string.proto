@@ -29,7 +29,7 @@ message BcdString {
   // The raw, original BCD-encoded bytes. This field is the source of truth
   // and should always be used when marshalling the data back to its binary
   // format.
-  bytes encoded = 1;
+  bytes raw_data = 1;
 
   // The decoded numeric value of the BCD string. This field is provided for
   // consumer convenience and should be treated as a read-only, derived value.

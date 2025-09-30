@@ -232,7 +232,7 @@ func appendVehicleRecord(dst []byte, rec *cardv1.VehiclesUsed_Record) ([]byte, e
 		return nil, err
 	}
 	if bcdCounter := rec.GetVuDataBlockCounter(); bcdCounter != nil {
-		dst = append(dst, bcdCounter.GetEncoded()...)
+		dst = append(dst, bcdCounter.GetRawData()...)
 	}
 	return dst, nil
 }

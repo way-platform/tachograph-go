@@ -26,26 +26,26 @@ message ActivityChangeInfo {
   // The raw, original 2-byte bitfield. This field is the source of truth and
   // should be used for any serialization operations to ensure perfect data
   // fidelity.
-  bytes raw_value = 10;
+  bytes raw_data = 10;
 
   // Slot of the driver/co-driver. Corresponds to bit 's'.
-  // This is a convenience field derived from `raw_value`.
+  // This is a convenience field derived from `raw_data`.
   CardSlotNumber slot = 1;
 
   // Driving status (single or crew). Corresponds to bit 'c'.
-  // This is a convenience field derived from `raw_value`.
+  // This is a convenience field derived from `raw_data`.
   DrivingStatus driving_status = 3;
 
   // Indicates if a card is inserted. Corresponds to bit 'p'.
   // ASN.1 value `0` maps to `true`, `1` to `false`.
-  // This is a convenience field derived from `raw_value`.
+  // This is a convenience field derived from `raw_data`.
   bool inserted = 5;
 
   // Driver's activity (break/rest, availability, work, driving). Corresponds to bits 'aa'.
-  // This is a convenience field derived from `raw_value`.
+  // This is a convenience field derived from `raw_data`.
   DriverActivityValue activity = 7;
 
   // Time of the change in minutes since 00:00. Corresponds to bits 'ttttttttttt'.
-  // This is a convenience field derived from `raw_value`.
+  // This is a convenience field derived from `raw_data`.
   int32 time_of_change_minutes = 9;
 }
