@@ -191,15 +191,15 @@ func TestAppendMonthYear(t *testing.T) {
 			want: []byte{0x10, 0x15},
 		},
 		{
-			name: "with encoded bytes - should prefer encoded",
+			name: "with raw_data - should paint semantic values over canvas",
 			monthYear: func() *ddv1.MonthYear {
 				my := &ddv1.MonthYear{}
 				my.SetRawData([]byte{0x03, 0x22})
-				my.SetMonth(99) // Different from encoded
-				my.SetYear(9999)
+				my.SetMonth(3)   // Matches raw_data (0x03)
+				my.SetYear(2022) // Matches raw_data (0x22 = 22 + 2000)
 				return my
 			}(),
-			want: []byte{0x03, 0x22}, // Should use encoded bytes
+			want: []byte{0x03, 0x22}, // Semantic values painted over raw_data canvas
 		},
 		{
 			name:      "nil monthYear",

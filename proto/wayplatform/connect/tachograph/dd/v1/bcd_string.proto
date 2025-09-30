@@ -18,7 +18,7 @@ package wayplatform.connect.tachograph.dd.v1;
 //
 // This message solves the problem by storing both the original raw bytes for
 // perfect fidelity (essential for round-tripping and signature validation) and
-// the decoded numeric value for ease of use.
+// the numeric value for ease of use.
 //
 // See Data Dictionary, Section 2.7.
 //
@@ -31,7 +31,7 @@ message BcdString {
   // format.
   bytes raw_data = 1;
 
-  // The decoded numeric value of the BCD string. This field is provided for
+  // The numeric value of the BCD string. This field is provided for
   // consumer convenience and should be treated as a read-only, derived value.
-  int32 decoded = 2;
+  int32 value = 2;
 }

@@ -28,10 +28,47 @@ func UnmarshalControlType(input []byte) (*ddv1.ControlType, error) {
 	return &output, nil
 }
 
-// appendControlType appends a ControlType as a single byte bitmask.
+// AppendControlType appends a ControlType as a single byte bitmask.
 //
 // The data type `ControlType` is specified in the Data Dictionary, Section 2.53.
 //
 // ASN.1 Definition:
 //
-//     ControlType ::= OCTET STRING (SIZE(1))
+//	ControlType ::= OCTET STRING (SIZE(1))
+//
+// Binary Layout (1 byte):
+//   - Bit 7: card downloading
+//   - Bit 6: VU downloading
+//   - Bit 5: printing
+//   - Bit 4: display
+//   - Bit 3: calibration checking (Gen2+)
+//   - Bits 2-0: Reserved (RFU)
+func AppendControlType(dst []byte, controlType *ddv1.ControlType) ([]byte, error) {
+	const lenControlType = 1
+	var canvas [lenControlType]byte
+	if controlType.HasRawData() {
+		if len(controlType.GetRawData()) != lenControlType {
+			return nil, fmt.Errorf(
+				"invalid raw_data length for ControlType: got %d, want %d",
+				len(controlType.GetRawData()), lenControlType,
+			)
+		}
+		copy(canvas[:], controlType.GetRawData())
+	}
+	if controlType.GetCardDownloading() {
+		canvas[0] |= 0x80
+	}
+	if controlType.GetVuDownloading() {
+		canvas[0] |= 0x40
+	}
+	if controlType.GetPrinting() {
+		canvas[0] |= 0x20
+	}
+	if controlType.GetDisplay() {
+		canvas[0] |= 0x10
+	}
+	if controlType.GetCalibrationChecking() {
+		canvas[0] |= 0x08
+	}
+	return append(dst, canvas[:]...), nil
+}

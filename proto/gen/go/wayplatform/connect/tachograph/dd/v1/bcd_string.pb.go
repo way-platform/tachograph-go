@@ -36,7 +36,7 @@ const (
 //
 // This message solves the problem by storing both the original raw bytes for
 // perfect fidelity (essential for round-tripping and signature validation) and
-// the decoded numeric value for ease of use.
+// the numeric value for ease of use.
 //
 // See Data Dictionary, Section 2.7.
 //
@@ -46,7 +46,7 @@ const (
 type BcdString struct {
 	state                  protoimpl.MessageState `protogen:"opaque.v1"`
 	xxx_hidden_RawData     []byte                 `protobuf:"bytes,1,opt,name=raw_data,json=rawData"`
-	xxx_hidden_Decoded     int32                  `protobuf:"varint,2,opt,name=decoded"`
+	xxx_hidden_Value       int32                  `protobuf:"varint,2,opt,name=value"`
 	XXX_raceDetectHookData protoimpl.RaceDetectHookData
 	XXX_presence           [1]uint32
 	unknownFields          protoimpl.UnknownFields
@@ -85,9 +85,9 @@ func (x *BcdString) GetRawData() []byte {
 	return nil
 }
 
-func (x *BcdString) GetDecoded() int32 {
+func (x *BcdString) GetValue() int32 {
 	if x != nil {
-		return x.xxx_hidden_Decoded
+		return x.xxx_hidden_Value
 	}
 	return 0
 }
@@ -100,8 +100,8 @@ func (x *BcdString) SetRawData(v []byte) {
 	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 2)
 }
 
-func (x *BcdString) SetDecoded(v int32) {
-	x.xxx_hidden_Decoded = v
+func (x *BcdString) SetValue(v int32) {
+	x.xxx_hidden_Value = v
 	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 2)
 }
 
@@ -112,7 +112,7 @@ func (x *BcdString) HasRawData() bool {
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 0)
 }
 
-func (x *BcdString) HasDecoded() bool {
+func (x *BcdString) HasValue() bool {
 	if x == nil {
 		return false
 	}
@@ -124,9 +124,9 @@ func (x *BcdString) ClearRawData() {
 	x.xxx_hidden_RawData = nil
 }
 
-func (x *BcdString) ClearDecoded() {
+func (x *BcdString) ClearValue() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 1)
-	x.xxx_hidden_Decoded = 0
+	x.xxx_hidden_Value = 0
 }
 
 type BcdString_builder struct {
@@ -136,9 +136,9 @@ type BcdString_builder struct {
 	// and should always be used when marshalling the data back to its binary
 	// format.
 	RawData []byte
-	// The decoded numeric value of the BCD string. This field is provided for
+	// The numeric value of the BCD string. This field is provided for
 	// consumer convenience and should be treated as a read-only, derived value.
-	Decoded *int32
+	Value *int32
 }
 
 func (b0 BcdString_builder) Build() *BcdString {
@@ -149,9 +149,9 @@ func (b0 BcdString_builder) Build() *BcdString {
 		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 2)
 		x.xxx_hidden_RawData = b.RawData
 	}
-	if b.Decoded != nil {
+	if b.Value != nil {
 		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 2)
-		x.xxx_hidden_Decoded = *b.Decoded
+		x.xxx_hidden_Value = *b.Value
 	}
 	return m0
 }
@@ -160,10 +160,10 @@ var File_wayplatform_connect_tachograph_dd_v1_bcd_string_proto protoreflect.File
 
 const file_wayplatform_connect_tachograph_dd_v1_bcd_string_proto_rawDesc = "" +
 	"\n" +
-	"5wayplatform/connect/tachograph/dd/v1/bcd_string.proto\x12$wayplatform.connect.tachograph.dd.v1\"@\n" +
+	"5wayplatform/connect/tachograph/dd/v1/bcd_string.proto\x12$wayplatform.connect.tachograph.dd.v1\"<\n" +
 	"\tBcdString\x12\x19\n" +
-	"\braw_data\x18\x01 \x01(\fR\arawData\x12\x18\n" +
-	"\adecoded\x18\x02 \x01(\x05R\adecodedB\xcd\x02\n" +
+	"\braw_data\x18\x01 \x01(\fR\arawData\x12\x14\n" +
+	"\x05value\x18\x02 \x01(\x05R\x05valueB\xcd\x02\n" +
 	"(com.wayplatform.connect.tachograph.dd.v1B\x0eBcdStringProtoP\x01Z\\github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1;ddv1\xa2\x02\x04WCTD\xaa\x02$Wayplatform.Connect.Tachograph.Dd.V1\xca\x02$Wayplatform\\Connect\\Tachograph\\Dd\\V1\xe2\x020Wayplatform\\Connect\\Tachograph\\Dd\\V1\\GPBMetadata\xea\x02(Wayplatform::Connect::Tachograph::Dd::V1b\beditionsp\xe8\a"
 
 var file_wayplatform_connect_tachograph_dd_v1_bcd_string_proto_msgTypes = make([]protoimpl.MessageInfo, 1)

@@ -76,8 +76,8 @@ func TestUnmarshalBcdString(t *testing.T) {
 			if got == nil {
 				t.Fatal("UnmarshalBcdString() returned nil")
 			}
-			if got.GetDecoded() != tt.wantDecoded {
-				t.Errorf("UnmarshalBcdString().GetDecoded() = %v, want %v", got.GetDecoded(), tt.wantDecoded)
+			if got.GetValue() != tt.wantDecoded {
+				t.Errorf("UnmarshalBcdString().GetValue() = %v, want %v", got.GetValue(), tt.wantDecoded)
 			}
 			if diff := cmp.Diff(tt.wantEncoded, got.GetRawData()); diff != "" {
 				t.Errorf("UnmarshalBcdString().GetRawData() mismatch (-want +got):\n%s", diff)
@@ -168,6 +168,88 @@ func TestBcdStringRoundTrip(t *testing.T) {
 			// Verify round-trip
 			if diff := cmp.Diff(tt.input, got); diff != "" {
 				t.Errorf("Round-trip mismatch (-want +got):\n%s", diff)
+			}
+		})
+	}
+}
+
+func TestAppendBcdString_SemanticFallback(t *testing.T) {
+	tests := []struct {
+		name        string
+		decoded     int32
+		wantBytes   []byte
+		wantErr     bool
+		description string
+	}{
+		{
+			name:        "single digit",
+			decoded:     5,
+			wantBytes:   []byte{0x05},
+			description: "5 should encode to 0x05 (1 byte, minimal)",
+		},
+		{
+			name:        "two digits",
+			decoded:     42,
+			wantBytes:   []byte{0x42},
+			description: "42 should encode to 0x42 (1 byte)",
+		},
+		{
+			name:        "three digits",
+			decoded:     123,
+			wantBytes:   []byte{0x01, 0x23},
+			description: "123 should encode to 0x01 0x23 (2 bytes, minimal)",
+		},
+		{
+			name:        "four digits",
+			decoded:     1234,
+			wantBytes:   []byte{0x12, 0x34},
+			description: "1234 should encode to 0x12 0x34 (2 bytes)",
+		},
+		{
+			name:        "five digits",
+			decoded:     12345,
+			wantBytes:   []byte{0x01, 0x23, 0x45},
+			description: "12345 should encode to 0x01 0x23 0x45 (3 bytes, minimal)",
+		},
+		{
+			name:        "zero",
+			decoded:     0,
+			wantBytes:   []byte{0x00},
+			description: "0 should encode to 0x00 (1 byte)",
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			// Create BCD string with only value (no raw_data)
+			bcdString := &ddv1.BcdString{}
+			bcdString.SetValue(tt.decoded)
+			// Explicitly ensure raw_data is empty to test fallback
+			// (protobuf will return empty bytes by default, but let's be explicit)
+
+			dst := []byte{}
+			got, err := AppendBcdString(dst, bcdString)
+			if tt.wantErr {
+				if err == nil {
+					t.Errorf("AppendBcdString() expected error for %s, got nil", tt.description)
+				}
+				return
+			}
+			if err != nil {
+				t.Fatalf("AppendBcdString() unexpected error for %s: %v", tt.description, err)
+			}
+
+			if diff := cmp.Diff(tt.wantBytes, got); diff != "" {
+				t.Errorf("AppendBcdString() for %s mismatch (-want +got):\n%s", tt.description, diff)
+			}
+
+			// Verify it can be decoded back
+			decoded, err := decodeBCD(got)
+			if err != nil {
+				t.Fatalf("decodeBCD() failed: %v", err)
+			}
+			if int32(decoded) != tt.decoded {
+				t.Errorf("Decoded value = %d, want %d", decoded, tt.decoded)
 			}
 		})
 	}

@@ -545,6 +545,104 @@ func UnmarshalTimeReal(data []byte) (*timestamppb.Timestamp, error) {
 }
 ```
 
+### Raw Data Painting Policy
+
+When marshalling data structures that have both semantic fields and a `raw_data` field preserving the original binary representation, use the "raw data painting" strategy to achieve optimal round-trip fidelity while ensuring semantic field correctness.
+
+**Policy for `Append*` functions:**
+
+- **Always prefer raw_data as a canvas**: If `raw_data` is available and has the correct length, make a copy of it and use it as a canvas for marshalling
+- **Paint semantic values over the canvas**: Serialize semantic fields on top of the canvas at their designated byte offsets, overwriting those specific bytes. **Critical**: Do NOT just return raw_data as-is - you must encode the semantic values and write them over the canvas
+- **Preserve unknown bits**: Any padding bytes, reserved bits, or unknown data in the original `raw_data` are automatically preserved in areas not overwritten by semantic fields
+- **Fall back to zero canvas**: If `raw_data` is unavailable or has incorrect length, create a zero-filled buffer of the correct size and serialize semantic fields into it
+
+**Rationale:** This approach provides three critical benefits:
+
+1. **Round-trip fidelity**: Reserved bits, padding, and vendor-specific data are preserved exactly as they appeared in the original binary
+2. **Semantic field validation**: When round-trip tests pass, it proves the semantic fields were correctly parsed and serialized, not just that raw bytes were copied. This is crucial - simply returning raw_data would make tests pass even if semantic parsing was broken
+3. **Maximum trust**: The serialized output is guaranteed to match the original binary format because it literally uses the original as a template, while also validating that our semantic understanding is correct
+
+**Example:**
+
+```go
+// GOOD: Raw data painting strategy with stack-allocated canvas
+func AppendDate(dst []byte, date *ddv1.Date) ([]byte, error) {
+    const lenDatef = 4
+
+    // Use stack-allocated array for the canvas (fixed size, avoids heap allocation)
+    var canvas [lenDatef]byte
+
+    // Start with raw_data as canvas if available (raw data painting approach)
+    if rawData := date.GetRawData(); len(rawData) > 0 {
+        if len(rawData) != lenDatef {
+            return nil, fmt.Errorf("invalid raw_data length for Date: got %d, want %d", len(rawData), lenDatef)
+        }
+        copy(canvas[:], rawData)
+    }
+    // Otherwise canvas is zero-initialized (Go default)
+
+    // Paint semantic values over the canvas
+    year := int(date.GetYear())
+    month := int(date.GetMonth())
+    day := int(date.GetDay())
+    canvas[0] = byte((year/1000)%10<<4 | (year/100)%10)
+    canvas[1] = byte((year/10)%10<<4 | year%10)
+    canvas[2] = byte((month/10)%10<<4 | month%10)
+    canvas[3] = byte((day/10)%10<<4 | day%10)
+
+    return append(dst, canvas[:]...), nil
+}
+
+// BAD: Just returning raw_data without painting
+func AppendFieldBad(dst []byte, field *Field) ([]byte, error) {
+    // This is WRONG - it doesn't validate semantic fields!
+    if raw := field.GetRawData(); len(raw) > 0 {
+        return append(dst, raw...), nil  // ❌ No semantic validation!
+    }
+    // ... encode from semantic fields ...
+}
+
+// ACCEPTABLE: Simple structures with no reserved bits
+// Only use this when the structure is so simple that painting would be
+// identical to fresh encoding (no reserved bits, no padding, deterministic)
+func AppendSimpleField(dst []byte, field *Field) ([]byte, error) {
+    const lenField = 8
+
+    // For very simple structures, painting and fresh encoding are equivalent
+    // Use raw_data as a template for the correct byte length
+    if raw := field.GetRawData(); len(raw) == lenField {
+        // Could paint here, but for simple fields it's equivalent to:
+        return append(dst, raw[:lenField]...), nil
+    }
+
+    // Fall back to encoding from semantic fields
+    // ... encode semantic fields ...
+}
+```
+
+**Performance optimization for fixed-size structures:**
+
+For fixed-size structures, use stack-allocated arrays instead of heap-allocated slices:
+
+- Declare a fixed-size array: `var canvas [4]byte`
+- Validate raw_data length if present (error if wrong length)
+- Copy raw_data into it: `copy(canvas[:], rawData)`
+- Paint semantic values over it
+- Append using slice: `append(dst, canvas[:]...)`
+
+This avoids heap allocation and improves performance for small, fixed-size structures.
+
+**Length validation:**
+
+- Always validate that `raw_data` has the exact expected length for fixed-size structures
+- Return an error if `raw_data` is present but has the wrong length
+- This catches data corruption early and ensures we don't paint over incorrectly-sized buffers
+
+**When to use each pattern:**
+
+- **Raw data painting**: Use for structures with reserved bits, padding, or unknown vendor-specific data that must be preserved
+- **Simple preference**: Use for simple structures where semantic re-encoding produces identical output to the original
+
 ### Code Quality
 
 - **No `//nolint` comments**: Never suppress linter warnings with `//nolint` comments. Instead, fix the underlying issues by removing unused code, implementing missing functionality, or restructuring the code properly.
