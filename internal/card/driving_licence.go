@@ -29,6 +29,7 @@ func unmarshalDrivingLicenceInfo(data []byte) (*cardv1.DrivingLicenceInfo, error
 	if len(data) < lenCardDrivingLicenceInformation {
 		return nil, errors.New("not enough data for DrivingLicenceInfo")
 	}
+	var opts dd.UnmarshalOptions
 	var dli cardv1.DrivingLicenceInfo
 	offset := 0
 
@@ -36,7 +37,7 @@ func unmarshalDrivingLicenceInfo(data []byte) (*cardv1.DrivingLicenceInfo, error
 	if offset+36 > len(data) {
 		return nil, fmt.Errorf("insufficient data for driving licence issuing authority")
 	}
-	authority, err := dd.UnmarshalStringValue(data[offset : offset+36])
+	authority, err := opts.UnmarshalStringValue(data[offset : offset+36])
 	if err != nil {
 		return nil, fmt.Errorf("failed to read driving licence issuing authority: %w", err)
 	}
@@ -59,7 +60,7 @@ func unmarshalDrivingLicenceInfo(data []byte) (*cardv1.DrivingLicenceInfo, error
 	if offset+16 > len(data) {
 		return nil, fmt.Errorf("insufficient data for driving licence number")
 	}
-	licenceNumber, err := dd.UnmarshalIA5StringValue(data[offset : offset+16])
+	licenceNumber, err := opts.UnmarshalIA5StringValue(data[offset : offset+16])
 	if err != nil {
 		return nil, fmt.Errorf("failed to read driving licence number: %w", err)
 	}

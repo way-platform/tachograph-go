@@ -35,6 +35,7 @@ func unmarshalCardVehiclesUsed(data []byte) (*cardv1.VehiclesUsed, error) {
 		return nil, fmt.Errorf("insufficient data for vehicles used: got %d bytes, need at least %d", len(data), lenMinEfVehiclesUsed)
 	}
 
+	var opts dd.UnmarshalOptions
 	var target cardv1.VehiclesUsed
 	r := bytes.NewReader(data)
 
@@ -51,7 +52,7 @@ func unmarshalCardVehiclesUsed(data []byte) (*cardv1.VehiclesUsed, error) {
 	recordSize := determineVehicleRecordSize(data)
 
 	for r.Len() >= recordSize {
-		record, err := parseVehicleRecord(r, recordSize)
+		record, err := parseVehicleRecord(opts, r, recordSize)
 		if err != nil {
 			break // Stop parsing on error, but return what we have
 		}
@@ -75,7 +76,7 @@ func determineVehicleRecordSize(data []byte) int {
 }
 
 // parseVehicleRecord parses a single vehicle record
-func parseVehicleRecord(r *bytes.Reader, recordSize int) (*cardv1.VehiclesUsed_Record, error) {
+func parseVehicleRecord(opts dd.UnmarshalOptions, r *bytes.Reader, recordSize int) (*cardv1.VehiclesUsed_Record, error) {
 	if r.Len() < recordSize {
 		return nil, fmt.Errorf("insufficient data for vehicle record")
 	}
@@ -101,7 +102,7 @@ func parseVehicleRecord(r *bytes.Reader, recordSize int) (*cardv1.VehiclesUsed_R
 	if _, err := r.Read(firstUseBytes); err != nil {
 		return nil, fmt.Errorf("failed to read vehicle first use: %w", err)
 	}
-	vehicleFirstUse, err := dd.UnmarshalTimeReal(firstUseBytes)
+	vehicleFirstUse, err := opts.UnmarshalTimeReal(firstUseBytes)
 	if err != nil {
 		return nil, fmt.Errorf("failed to parse vehicle first use: %w", err)
 	}
@@ -112,7 +113,7 @@ func parseVehicleRecord(r *bytes.Reader, recordSize int) (*cardv1.VehiclesUsed_R
 	if _, err := r.Read(lastUseBytes); err != nil {
 		return nil, fmt.Errorf("failed to read vehicle last use: %w", err)
 	}
-	vehicleLastUse, err := dd.UnmarshalTimeReal(lastUseBytes)
+	vehicleLastUse, err := opts.UnmarshalTimeReal(lastUseBytes)
 	if err != nil {
 		return nil, fmt.Errorf("failed to parse vehicle last use: %w", err)
 	}
@@ -123,7 +124,7 @@ func parseVehicleRecord(r *bytes.Reader, recordSize int) (*cardv1.VehiclesUsed_R
 	if _, err := r.Read(vehicleRegBytes); err != nil {
 		return nil, fmt.Errorf("failed to read vehicle registration: %w", err)
 	}
-	vehicleReg, err := dd.UnmarshalVehicleRegistration(vehicleRegBytes)
+	vehicleReg, err := opts.UnmarshalVehicleRegistration(vehicleRegBytes)
 	if err != nil {
 		return nil, fmt.Errorf("failed to parse vehicle registration: %w", err)
 	}
@@ -138,7 +139,7 @@ func parseVehicleRecord(r *bytes.Reader, recordSize int) (*cardv1.VehiclesUsed_R
 	// Convert to BCD bytes (2 bytes)
 	bcdBytes := make([]byte, 2)
 	binary.BigEndian.PutUint16(bcdBytes, vuDataBlockCounter)
-	bcdCounter, err := dd.UnmarshalBcdString(bcdBytes)
+	bcdCounter, err := opts.UnmarshalBcdString(bcdBytes)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create BCD string for VU data block counter: %w", err)
 	}
@@ -150,7 +151,7 @@ func parseVehicleRecord(r *bytes.Reader, recordSize int) (*cardv1.VehiclesUsed_R
 		if _, err := r.Read(vinBytes); err != nil {
 			return nil, fmt.Errorf("failed to read vehicle identification number: %w", err)
 		}
-		vin, err := dd.UnmarshalIA5StringValue(vinBytes)
+		vin, err := opts.UnmarshalIA5StringValue(vinBytes)
 		if err != nil {
 			return nil, fmt.Errorf("failed to parse vehicle identification number: %w", err)
 		}

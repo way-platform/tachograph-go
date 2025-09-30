@@ -24,10 +24,11 @@ func unmarshalCardLastDownload(data []byte) (*cardv1.CardDownloadDriver, error) 
 		return nil, fmt.Errorf("insufficient data for last card download")
 	}
 
+	var opts dd.UnmarshalOptions
 	var target cardv1.CardDownloadDriver
 
 	// Read timestamp (4 bytes)
-	timestamp, err := dd.UnmarshalTimeReal(data[:lenCardDownloadDriver])
+	timestamp, err := opts.UnmarshalTimeReal(data[:lenCardDownloadDriver])
 	if err != nil {
 		return nil, fmt.Errorf("failed to parse timestamp: %w", err)
 	}

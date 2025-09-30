@@ -41,7 +41,7 @@ type DownloadInterfaceVersion struct {
 	state                  protoimpl.MessageState `protogen:"opaque.v1"`
 	xxx_hidden_RawData     []byte                 `protobuf:"bytes,1,opt,name=raw_data,json=rawData"`
 	xxx_hidden_Generation  v1.Generation          `protobuf:"varint,2,opt,name=generation,enum=wayplatform.connect.tachograph.dd.v1.Generation"`
-	xxx_hidden_Version     Version                `protobuf:"varint,3,opt,name=version,enum=wayplatform.connect.tachograph.vu.v1.Version"`
+	xxx_hidden_Version     v1.Version             `protobuf:"varint,3,opt,name=version,enum=wayplatform.connect.tachograph.dd.v1.Version"`
 	XXX_raceDetectHookData protoimpl.RaceDetectHookData
 	XXX_presence           [1]uint32
 	unknownFields          protoimpl.UnknownFields
@@ -89,13 +89,13 @@ func (x *DownloadInterfaceVersion) GetGeneration() v1.Generation {
 	return v1.Generation(0)
 }
 
-func (x *DownloadInterfaceVersion) GetVersion() Version {
+func (x *DownloadInterfaceVersion) GetVersion() v1.Version {
 	if x != nil {
 		if protoimpl.X.Present(&(x.XXX_presence[0]), 2) {
 			return x.xxx_hidden_Version
 		}
 	}
-	return Version_VERSION_UNSPECIFIED
+	return v1.Version(0)
 }
 
 func (x *DownloadInterfaceVersion) SetRawData(v []byte) {
@@ -111,7 +111,7 @@ func (x *DownloadInterfaceVersion) SetGeneration(v v1.Generation) {
 	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 3)
 }
 
-func (x *DownloadInterfaceVersion) SetVersion(v Version) {
+func (x *DownloadInterfaceVersion) SetVersion(v v1.Version) {
 	x.xxx_hidden_Version = v
 	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 3)
 }
@@ -149,7 +149,7 @@ func (x *DownloadInterfaceVersion) ClearGeneration() {
 
 func (x *DownloadInterfaceVersion) ClearVersion() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 2)
-	x.xxx_hidden_Version = Version_VERSION_UNSPECIFIED
+	x.xxx_hidden_Version = v1.Version_VERSION_UNSPECIFIED
 }
 
 type DownloadInterfaceVersion_builder struct {
@@ -163,7 +163,7 @@ type DownloadInterfaceVersion_builder struct {
 	// See Data Dictionary, Section 2.75, `Generation`.
 	Generation *v1.Generation
 	// The version of the download interface, parsed from the second byte (`bb`).
-	Version *Version
+	Version *v1.Version
 }
 
 func (b0 DownloadInterfaceVersion_builder) Build() *DownloadInterfaceVersion {
@@ -189,24 +189,24 @@ var File_wayplatform_connect_tachograph_vu_v1_download_interface_version_proto p
 
 const file_wayplatform_connect_tachograph_vu_v1_download_interface_version_proto_rawDesc = "" +
 	"\n" +
-	"Ewayplatform/connect/tachograph/vu/v1/download_interface_version.proto\x12$wayplatform.connect.tachograph.vu.v1\x1a5wayplatform/connect/tachograph/dd/v1/generation.proto\x1a5wayplatform/connect/tachograph/vu/v1/versioning.proto\"\xd0\x01\n" +
+	"Ewayplatform/connect/tachograph/vu/v1/download_interface_version.proto\x12$wayplatform.connect.tachograph.vu.v1\x1a5wayplatform/connect/tachograph/dd/v1/generation.proto\x1a2wayplatform/connect/tachograph/dd/v1/version.proto\"\xd0\x01\n" +
 	"\x18DownloadInterfaceVersion\x12\x19\n" +
 	"\braw_data\x18\x01 \x01(\fR\arawData\x12P\n" +
 	"\n" +
 	"generation\x18\x02 \x01(\x0e20.wayplatform.connect.tachograph.dd.v1.GenerationR\n" +
 	"generation\x12G\n" +
-	"\aversion\x18\x03 \x01(\x0e2-.wayplatform.connect.tachograph.vu.v1.VersionR\aversionB\xdc\x02\n" +
+	"\aversion\x18\x03 \x01(\x0e2-.wayplatform.connect.tachograph.dd.v1.VersionR\aversionB\xdc\x02\n" +
 	"(com.wayplatform.connect.tachograph.vu.v1B\x1dDownloadInterfaceVersionProtoP\x01Z\\github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/vu/v1;vuv1\xa2\x02\x04WCTV\xaa\x02$Wayplatform.Connect.Tachograph.Vu.V1\xca\x02$Wayplatform\\Connect\\Tachograph\\Vu\\V1\xe2\x020Wayplatform\\Connect\\Tachograph\\Vu\\V1\\GPBMetadata\xea\x02(Wayplatform::Connect::Tachograph::Vu::V1b\beditionsp\xe8\a"
 
 var file_wayplatform_connect_tachograph_vu_v1_download_interface_version_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_wayplatform_connect_tachograph_vu_v1_download_interface_version_proto_goTypes = []any{
 	(*DownloadInterfaceVersion)(nil), // 0: wayplatform.connect.tachograph.vu.v1.DownloadInterfaceVersion
 	(v1.Generation)(0),               // 1: wayplatform.connect.tachograph.dd.v1.Generation
-	(Version)(0),                     // 2: wayplatform.connect.tachograph.vu.v1.Version
+	(v1.Version)(0),                  // 2: wayplatform.connect.tachograph.dd.v1.Version
 }
 var file_wayplatform_connect_tachograph_vu_v1_download_interface_version_proto_depIdxs = []int32{
 	1, // 0: wayplatform.connect.tachograph.vu.v1.DownloadInterfaceVersion.generation:type_name -> wayplatform.connect.tachograph.dd.v1.Generation
-	2, // 1: wayplatform.connect.tachograph.vu.v1.DownloadInterfaceVersion.version:type_name -> wayplatform.connect.tachograph.vu.v1.Version
+	2, // 1: wayplatform.connect.tachograph.vu.v1.DownloadInterfaceVersion.version:type_name -> wayplatform.connect.tachograph.dd.v1.Version
 	2, // [2:2] is the sub-list for method output_type
 	2, // [2:2] is the sub-list for method input_type
 	2, // [2:2] is the sub-list for extension type_name
@@ -219,7 +219,6 @@ func file_wayplatform_connect_tachograph_vu_v1_download_interface_version_proto_
 	if File_wayplatform_connect_tachograph_vu_v1_download_interface_version_proto != nil {
 		return
 	}
-	file_wayplatform_connect_tachograph_vu_v1_versioning_proto_init()
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

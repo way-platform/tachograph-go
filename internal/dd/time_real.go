@@ -18,7 +18,7 @@ import (
 //
 // Binary Layout (4 bytes):
 //   - Seconds since Unix epoch (4 bytes): Big-endian uint32
-func UnmarshalTimeReal(data []byte) (*timestamppb.Timestamp, error) {
+func (opts UnmarshalOptions) UnmarshalTimeReal(data []byte) (*timestamppb.Timestamp, error) {
 	const lenTimeReal = 4
 	if len(data) != lenTimeReal {
 		return nil, fmt.Errorf("invalid data length for TimeReal: got %d, want %d", len(data), lenTimeReal)

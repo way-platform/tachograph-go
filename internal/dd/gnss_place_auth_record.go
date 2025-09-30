@@ -20,13 +20,20 @@ import (
 //	    geoCoordinates GeoCoordinates,
 //	    authenticationStatus PositionAuthenticationStatus
 //	}
-func UnmarshalGNSSPlaceAuthRecord(data []byte) (*ddv1.GNSSPlaceAuthRecord, error) {
+//
+// Binary Layout (12 bytes):
+//
+//	Offset 0: timeStamp (4 bytes)
+//	Offset 4: gnssAccuracy (1 byte)
+//	Offset 5: geoCoordinates (6 bytes)
+//	Offset 11: authenticationStatus (1 byte)
+func (opts UnmarshalOptions) UnmarshalGNSSPlaceAuthRecord(data []byte) (*ddv1.GNSSPlaceAuthRecord, error) {
 	const (
-		lenGNSSPlaceAuthRecord = 14
+		lenGNSSPlaceAuthRecord = 12
 		idxTimestamp           = 0
 		idxAccuracy            = 4
 		idxGeoCoords           = 5
-		idxAuthStatus          = 13
+		idxAuthStatus          = 11
 	)
 
 	if len(data) != lenGNSSPlaceAuthRecord {
@@ -36,7 +43,7 @@ func UnmarshalGNSSPlaceAuthRecord(data []byte) (*ddv1.GNSSPlaceAuthRecord, error
 	record := &ddv1.GNSSPlaceAuthRecord{}
 
 	// Parse timestamp (TimeReal - 4 bytes)
-	timestamp, err := UnmarshalTimeReal(data[idxTimestamp : idxTimestamp+4])
+	timestamp, err := opts.UnmarshalTimeReal(data[idxTimestamp : idxTimestamp+4])
 	if err != nil {
 		return nil, fmt.Errorf("failed to unmarshal timestamp: %w", err)
 	}
@@ -45,8 +52,8 @@ func UnmarshalGNSSPlaceAuthRecord(data []byte) (*ddv1.GNSSPlaceAuthRecord, error
 	// Parse gnssAccuracy (1 byte)
 	record.SetGnssAccuracy(int32(data[idxAccuracy]))
 
-	// Parse geoCoordinates (8 bytes)
-	geoCoords, err := UnmarshalGeoCoordinates(data[idxGeoCoords : idxGeoCoords+8])
+	// Parse geoCoordinates (6 bytes)
+	geoCoords, err := opts.UnmarshalGeoCoordinates(data[idxGeoCoords : idxGeoCoords+6])
 	if err != nil {
 		return nil, fmt.Errorf("failed to unmarshal geo coordinates: %w", err)
 	}
@@ -77,10 +84,17 @@ func UnmarshalGNSSPlaceAuthRecord(data []byte) (*ddv1.GNSSPlaceAuthRecord, error
 //	    geoCoordinates GeoCoordinates,
 //	    authenticationStatus PositionAuthenticationStatus
 //	}
+//
+// Binary Layout (12 bytes):
+//
+//	Offset 0: timeStamp (4 bytes)
+//	Offset 4: gnssAccuracy (1 byte)
+//	Offset 5: geoCoordinates (6 bytes)
+//	Offset 11: authenticationStatus (1 byte)
 func AppendGNSSPlaceAuthRecord(dst []byte, record *ddv1.GNSSPlaceAuthRecord) ([]byte, error) {
 	if record == nil {
-		// Append 14 zero bytes if no data
-		return append(dst, make([]byte, 14)...), nil
+		// Append 12 zero bytes if no data
+		return append(dst, make([]byte, 12)...), nil
 	}
 
 	// Append timestamp (TimeReal - 4 bytes)
@@ -98,7 +112,7 @@ func AppendGNSSPlaceAuthRecord(dst []byte, record *ddv1.GNSSPlaceAuthRecord) ([]
 	// Append gnssAccuracy (1 byte)
 	dst = append(dst, byte(record.GetGnssAccuracy()))
 
-	// Append geoCoordinates (8 bytes)
+	// Append geoCoordinates (6 bytes)
 	var err error
 	dst, err = AppendGeoCoordinates(dst, record.GetGeoCoordinates())
 	if err != nil {

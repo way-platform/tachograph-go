@@ -76,7 +76,8 @@ func TestUnmarshalControlType(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := UnmarshalControlType(tt.input)
+			var opts UnmarshalOptions
+			got, err := opts.UnmarshalControlType(tt.input)
 			if tt.wantErr {
 				if err == nil {
 					t.Errorf("UnmarshalControlType() expected error, got nil")
@@ -138,7 +139,8 @@ func TestControlTypeRoundTrip(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			// Unmarshal
-			ct, err := UnmarshalControlType(tt.input)
+			var opts UnmarshalOptions
+			ct, err := opts.UnmarshalControlType(tt.input)
 			if err != nil {
 				t.Fatalf("UnmarshalControlType() unexpected error: %v", err)
 			}
@@ -200,7 +202,8 @@ func TestAppendControlType_PreservesReservedBits(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			// Unmarshal (this sets raw_data)
-			ct, err := UnmarshalControlType(tt.rawData)
+			var opts UnmarshalOptions
+			ct, err := opts.UnmarshalControlType(tt.rawData)
 			if err != nil {
 				t.Fatalf("UnmarshalControlType() unexpected error: %v", err)
 			}

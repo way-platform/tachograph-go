@@ -29,7 +29,7 @@ const (
 type Overview struct {
 	state                                    protoimpl.MessageState                `protogen:"opaque.v1"`
 	xxx_hidden_Generation                    v1.Generation                         `protobuf:"varint,1,opt,name=generation,enum=wayplatform.connect.tachograph.dd.v1.Generation"`
-	xxx_hidden_Version                       Version                               `protobuf:"varint,2,opt,name=version,enum=wayplatform.connect.tachograph.vu.v1.Version"`
+	xxx_hidden_Version                       v1.Version                            `protobuf:"varint,2,opt,name=version,enum=wayplatform.connect.tachograph.dd.v1.Version"`
 	xxx_hidden_MemberStateCertificate        []byte                                `protobuf:"bytes,3,opt,name=member_state_certificate,json=memberStateCertificate"`
 	xxx_hidden_VuCertificate                 []byte                                `protobuf:"bytes,4,opt,name=vu_certificate,json=vuCertificate"`
 	xxx_hidden_VehicleIdentificationNumber   *v1.StringValue                       `protobuf:"bytes,5,opt,name=vehicle_identification_number,json=vehicleIdentificationNumber"`
@@ -84,13 +84,13 @@ func (x *Overview) GetGeneration() v1.Generation {
 	return v1.Generation(0)
 }
 
-func (x *Overview) GetVersion() Version {
+func (x *Overview) GetVersion() v1.Version {
 	if x != nil {
 		if protoimpl.X.Present(&(x.XXX_presence[0]), 1) {
 			return x.xxx_hidden_Version
 		}
 	}
-	return Version_VERSION_UNSPECIFIED
+	return v1.Version(0)
 }
 
 func (x *Overview) GetMemberStateCertificate() []byte {
@@ -206,7 +206,7 @@ func (x *Overview) SetGeneration(v v1.Generation) {
 	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 16)
 }
 
-func (x *Overview) SetVersion(v Version) {
+func (x *Overview) SetVersion(v v1.Version) {
 	x.xxx_hidden_Version = v
 	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 16)
 }
@@ -383,7 +383,7 @@ func (x *Overview) ClearGeneration() {
 
 func (x *Overview) ClearVersion() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 1)
-	x.xxx_hidden_Version = Version_VERSION_UNSPECIFIED
+	x.xxx_hidden_Version = v1.Version_VERSION_UNSPECIFIED
 }
 
 func (x *Overview) ClearMemberStateCertificate() {
@@ -444,7 +444,7 @@ type Overview_builder struct {
 	Generation *v1.Generation
 	// The version of the interface, parsed from the raw transfer data.
 	// This is a discriminator field used for parsing.
-	Version *Version
+	Version *v1.Version
 	// VU Security certificate from the Member State.
 	//
 	// See Data Dictionary, Section 2.96, `MemberStateCertificate`.
@@ -1158,12 +1158,12 @@ var File_wayplatform_connect_tachograph_vu_v1_overview_proto protoreflect.FileDe
 
 const file_wayplatform_connect_tachograph_vu_v1_overview_proto_rawDesc = "" +
 	"\n" +
-	"3wayplatform/connect/tachograph/vu/v1/overview.proto\x12$wayplatform.connect.tachograph.vu.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a7wayplatform/connect/tachograph/dd/v1/control_type.proto\x1a>wayplatform/connect/tachograph/dd/v1/downloadable_period.proto\x1a;wayplatform/connect/tachograph/dd/v1/full_card_number.proto\x1aJwayplatform/connect/tachograph/dd/v1/full_card_number_and_generation.proto\x1a5wayplatform/connect/tachograph/dd/v1/generation.proto\x1a9wayplatform/connect/tachograph/dd/v1/slot_card_type.proto\x1a7wayplatform/connect/tachograph/dd/v1/string_value.proto\x1aNwayplatform/connect/tachograph/dd/v1/vehicle_registration_identification.proto\x1a5wayplatform/connect/tachograph/vu/v1/versioning.proto\"\x99\x15\n" +
+	"3wayplatform/connect/tachograph/vu/v1/overview.proto\x12$wayplatform.connect.tachograph.vu.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a7wayplatform/connect/tachograph/dd/v1/control_type.proto\x1a>wayplatform/connect/tachograph/dd/v1/downloadable_period.proto\x1a;wayplatform/connect/tachograph/dd/v1/full_card_number.proto\x1aJwayplatform/connect/tachograph/dd/v1/full_card_number_and_generation.proto\x1a5wayplatform/connect/tachograph/dd/v1/generation.proto\x1a9wayplatform/connect/tachograph/dd/v1/slot_card_type.proto\x1a7wayplatform/connect/tachograph/dd/v1/string_value.proto\x1aNwayplatform/connect/tachograph/dd/v1/vehicle_registration_identification.proto\x1a2wayplatform/connect/tachograph/dd/v1/version.proto\"\x99\x15\n" +
 	"\bOverview\x12P\n" +
 	"\n" +
 	"generation\x18\x01 \x01(\x0e20.wayplatform.connect.tachograph.dd.v1.GenerationR\n" +
 	"generation\x12G\n" +
-	"\aversion\x18\x02 \x01(\x0e2-.wayplatform.connect.tachograph.vu.v1.VersionR\aversion\x128\n" +
+	"\aversion\x18\x02 \x01(\x0e2-.wayplatform.connect.tachograph.dd.v1.VersionR\aversion\x128\n" +
 	"\x18member_state_certificate\x18\x03 \x01(\fR\x16memberStateCertificate\x12%\n" +
 	"\x0evu_certificate\x18\x04 \x01(\fR\rvuCertificate\x12u\n" +
 	"\x1dvehicle_identification_number\x18\x05 \x01(\v21.wayplatform.connect.tachograph.dd.v1.StringValueR\x1bvehicleIdentificationNumber\x12F\n" +
@@ -1205,7 +1205,7 @@ var file_wayplatform_connect_tachograph_vu_v1_overview_proto_goTypes = []any{
 	(*Overview_CompanyLock)(nil),                 // 2: wayplatform.connect.tachograph.vu.v1.Overview.CompanyLock
 	(*Overview_ControlActivity)(nil),             // 3: wayplatform.connect.tachograph.vu.v1.Overview.ControlActivity
 	(v1.Generation)(0),                           // 4: wayplatform.connect.tachograph.dd.v1.Generation
-	(Version)(0),                                 // 5: wayplatform.connect.tachograph.vu.v1.Version
+	(v1.Version)(0),                              // 5: wayplatform.connect.tachograph.dd.v1.Version
 	(*v1.StringValue)(nil),                       // 6: wayplatform.connect.tachograph.dd.v1.StringValue
 	(*timestamppb.Timestamp)(nil),                // 7: google.protobuf.Timestamp
 	(*v1.DownloadablePeriod)(nil),                // 8: wayplatform.connect.tachograph.dd.v1.DownloadablePeriod
@@ -1216,7 +1216,7 @@ var file_wayplatform_connect_tachograph_vu_v1_overview_proto_goTypes = []any{
 }
 var file_wayplatform_connect_tachograph_vu_v1_overview_proto_depIdxs = []int32{
 	4,  // 0: wayplatform.connect.tachograph.vu.v1.Overview.generation:type_name -> wayplatform.connect.tachograph.dd.v1.Generation
-	5,  // 1: wayplatform.connect.tachograph.vu.v1.Overview.version:type_name -> wayplatform.connect.tachograph.vu.v1.Version
+	5,  // 1: wayplatform.connect.tachograph.vu.v1.Overview.version:type_name -> wayplatform.connect.tachograph.dd.v1.Version
 	6,  // 2: wayplatform.connect.tachograph.vu.v1.Overview.vehicle_identification_number:type_name -> wayplatform.connect.tachograph.dd.v1.StringValue
 	7,  // 3: wayplatform.connect.tachograph.vu.v1.Overview.current_date_time:type_name -> google.protobuf.Timestamp
 	8,  // 4: wayplatform.connect.tachograph.vu.v1.Overview.downloadable_period:type_name -> wayplatform.connect.tachograph.dd.v1.DownloadablePeriod
@@ -1252,7 +1252,6 @@ func file_wayplatform_connect_tachograph_vu_v1_overview_proto_init() {
 	if File_wayplatform_connect_tachograph_vu_v1_overview_proto != nil {
 		return
 	}
-	file_wayplatform_connect_tachograph_vu_v1_versioning_proto_init()
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

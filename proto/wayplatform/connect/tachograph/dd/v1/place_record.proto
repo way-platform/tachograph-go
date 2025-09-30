@@ -4,11 +4,32 @@ package wayplatform.connect.tachograph.dd.v1;
 
 import "google/protobuf/timestamp.proto";
 import "wayplatform/connect/tachograph/dd/v1/entry_type_daily_work_period.proto";
+import "wayplatform/connect/tachograph/dd/v1/generation.proto";
 import "wayplatform/connect/tachograph/dd/v1/gnss_place_record.proto";
 import "wayplatform/connect/tachograph/dd/v1/nation_numeric.proto";
 
 // Represents information related to a place where a daily work period begins or
 // ends.
+//
+// This message is used in multiple contexts:
+// - Card files: EF_Places (circular buffer, may contain corrupted records)
+// - VU downloads: VuPlaceDailyWorkPeriodData
+//
+// Binary Layout:
+//   Gen1: 10 bytes
+//     - entryTime: 4 bytes
+//     - entryTypeDailyWorkPeriod: 1 byte
+//     - dailyWorkPeriodCountry: 1 byte
+//     - dailyWorkPeriodRegion: 1 byte
+//     - vehicleOdometerValue: 3 bytes
+//
+//   Gen2: 21 bytes
+//     - entryTime: 4 bytes
+//     - entryTypeDailyWorkPeriod: 1 byte
+//     - dailyWorkPeriodCountry: 1 byte
+//     - dailyWorkPeriodRegion: 1 byte
+//     - vehicleOdometerValue: 3 bytes
+//     - entryGNSSPlaceRecord: 11 bytes (4 timestamp + 1 accuracy + 6 coords)
 //
 // See Data Dictionary, Section 2.117, `PlaceRecord`.
 //
@@ -77,4 +98,34 @@ message PlaceRecord {
   //
   // See Data Dictionary, Section 2.80, `GNSSPlaceRecord`.
   GNSSPlaceRecord entry_gnss_place_record = 8;
+
+  // Indicates which generation format this record uses for marshalling.
+  // Gen1: 10 bytes (no GNSS data)
+  // Gen2: 21 bytes (includes GNSS data: 4 timestamp + 1 accuracy + 6 coords)
+  //
+  // This field makes the record self-describing, enabling marshalling without
+  // additional context. During unmarshalling, this is populated from the
+  // UnmarshalOptions.Generation context.
+  //
+  // See Data Dictionary, Section 2.75, `Generation`.
+  Generation generation = 9;
+
+  // Original encoded bytes from the binary format.
+  //
+  // When present, this is used as a canvas for the "raw data painting" strategy
+  // during marshalling to preserve reserved bits and unknown data. The semantic
+  // fields are encoded and painted over this canvas at their designated offsets.
+  //
+  // Size: 10 bytes for Gen1, 21 bytes for Gen2.
+  bytes raw_data = 10;
+
+  // Indicates whether this record was successfully parsed.
+  //
+  // When true: All semantic fields are populated with valid data.
+  // When false: The record came from a corrupted source (e.g., circular buffer
+  // overwrite) and only raw_data is reliable. Semantic fields may be zero/unset.
+  //
+  // This is particularly relevant for card files where circular buffers may
+  // contain partially overwritten records.
+  bool valid = 11;
 }

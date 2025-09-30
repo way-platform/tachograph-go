@@ -27,7 +27,7 @@ import (
 //   - Manufacturer Code (1 byte): ManufacturerCode
 //
 //nolint:unused
-func UnmarshalExtendedSerialNumber(data []byte) (*ddv1.ExtendedSerialNumber, error) {
+func (opts UnmarshalOptions) UnmarshalExtendedSerialNumber(data []byte) (*ddv1.ExtendedSerialNumber, error) {
 	const (
 		lenExtendedSerialNumber = 8
 	)
@@ -43,14 +43,14 @@ func UnmarshalExtendedSerialNumber(data []byte) (*ddv1.ExtendedSerialNumber, err
 	esn.SetSerialNumber(int64(serialNum))
 
 	// Parse month/year BCD (2 bytes, MMYY format)
-	monthYear, err := UnmarshalMonthYear(data[4:6])
+	monthYear, err := opts.UnmarshalMonthYear(data[4:6])
 	if err != nil {
 		return nil, fmt.Errorf("failed to parse month/year: %w", err)
 	}
 	esn.SetMonthYear(monthYear)
 
 	// Parse equipment type (1 byte)
-	equipmentType, err := UnmarshalEquipmentType(data[6:7])
+	equipmentType, err := opts.UnmarshalEquipmentType(data[6:7])
 	if err != nil {
 		return nil, fmt.Errorf("failed to parse equipment type: %w", err)
 	}

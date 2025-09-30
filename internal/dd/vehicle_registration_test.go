@@ -93,7 +93,8 @@ func TestUnmarshalVehicleRegistration(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := UnmarshalVehicleRegistration(tt.input)
+			var opts UnmarshalOptions
+			got, err := opts.UnmarshalVehicleRegistration(tt.input)
 
 			if tt.wantErr {
 				if err == nil {
@@ -338,7 +339,8 @@ func TestVehicleRegistrationRoundTrip(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			// Unmarshal
-			vehicleReg, err := UnmarshalVehicleRegistration(tt.input)
+			var opts UnmarshalOptions
+			vehicleReg, err := opts.UnmarshalVehicleRegistration(tt.input)
 			if err != nil {
 				t.Fatalf("UnmarshalVehicleRegistration() error: %v", err)
 			}

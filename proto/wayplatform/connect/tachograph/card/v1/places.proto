@@ -2,15 +2,15 @@ edition = "2023";
 
 package wayplatform.connect.tachograph.card.v1;
 
-import "google/protobuf/timestamp.proto";
-import "wayplatform/connect/tachograph/dd/v1/entry_type_daily_work_period.proto";
 import "wayplatform/connect/tachograph/dd/v1/generation.proto";
-import "wayplatform/connect/tachograph/dd/v1/geo_coordinates.proto";
-import "wayplatform/connect/tachograph/dd/v1/nation_numeric.proto";
+import "wayplatform/connect/tachograph/dd/v1/place_record.proto";
 
 // Represents the content of the EF_Places file, where daily work periods begin and/or end.
 //
-// The file structure is specified in Appendix 2, Section 4.2.1.
+// This is a circular buffer that may contain corrupted records due to overwrites.
+// Records store information about when and where daily work periods started or ended.
+//
+// The file structure is specified in Appendix 2, Section 4.2.1:
 //
 //     EF Places
 //     └─CardPlaceDailyWorkPeriod
@@ -24,181 +24,38 @@ import "wayplatform/connect/tachograph/dd/v1/nation_numeric.proto";
 //         placeRecords SET SIZE(NoOfCardPlaceRecords) OF PlaceRecord
 //     }
 message Places {
-  // Represents a GNSS-assisted place record, exclusive to Gen2 cards.
+
+  // Index of the newest record in the circular buffer.
   //
-  // See Data Dictionary, Section 2.86a, `GNSSPlaceRecord`.
-  //
-  // ASN.1 Definition:
-  //
-  //     GNSSPlaceRecord ::= SEQUENCE {
-  //         geoCoordinates GeoCoordinates,
-  //         timeStamp TimeReal
-  //     }
-  message GnssPlaceRecord {
-    // Geographic coordinates of the place.
-    //
-    // See Data Dictionary, Section 2.86, `GeoCoordinates`.
-    dd.v1.GeoCoordinates geo_coordinates = 1;
-
-    // Timestamp of the GNSS fix.
-    //
-    // See Data Dictionary, Section 2.162, `TimeReal`.
-    google.protobuf.Timestamp timestamp = 2;
-  }
-
-  // Represents a single place record.
-  //
-  // The data type `PlaceRecord` is specified in the Data Dictionary, Section 2.117.
-  // The structure differs between Gen1 and Gen2 cards.
-  //
-  // ASN.1 Definition / Binary Structure (Gen1): 10 bytes
-  //
-  //     PlaceRecord ::= SEQUENCE {
-  //         entryTime                    (4 bytes) TimeReal,
-  //         entryTypeDailyWorkPeriod     (1 byte)  EntryTypeDailyWorkPeriod,
-  //         dailyWorkPeriodCountry       (1 byte)  NationNumeric,
-  //         dailyWorkPeriodRegion        (1 byte)  RegionNumeric,
-  //         vehicleOdometerValue         (3 bytes) OdometerShort
-  //     }
-  //
-  // ASN.1 Definition / Binary Structure (Gen2): 22 bytes
-  //
-  //     PlaceRecord_G2 ::= SEQUENCE {
-  //         entryTime                    (4 bytes) TimeReal,
-  //         entryTypeDailyWorkPeriod     (1 byte)  EntryTypeDailyWorkPeriod,
-  //         dailyWorkPeriodCountry       (1 byte)  NationNumeric,
-  //         dailyWorkPeriodRegion        (1 byte)  RegionNumeric,
-  //         vehicleOdometerValue         (3 bytes) OdometerShort,
-  //         gnssPlaceRecord              (12 bytes) GNSSPlaceRecord
-  //     }
-  //
-  message Record {
-    // If true, the fields below are populated with parsed, semantic data.
-    // If false, the 'raw_data' field contains the original, unprocessed record
-    // bytes.
-    bool valid = 1;
-
-    // --- Fields for a valid record (when valid = true) ---
-
-    // Time of the entry.
-    //
-    // See Data Dictionary, Section 2.162, `TimeReal`.
-    // ASN.1 Definition:
-    //
-    //     TimeReal ::= INTEGER (0..2^32-1)
-    google.protobuf.Timestamp entry_time = 2;
-
-    // The condition of the entry, distinguishing between a manual entry (begin/end),
-    // a GNSS-assisted entry, or an ITS-assisted entry.
-    //
-    // See Data Dictionary, Section 2.66, `EntryTypeDailyWorkPeriod`.
-    //
-    // ASN.1 Definition (Gen1):
-    //
-    //     EntryTypeDailyWorkPeriod ::= INTEGER {
-    //         begin (0),
-    //         end (1)
-    //     } (0..255)
-    //
-    // ASN.1 Definition (Gen2):
-    //
-    //     EntryTypeDailyWorkPeriod ::= INTEGER {
-    //         begin (0),
-    //         end (1),
-    //         beginGNSS (2),
-    //         endGNSS (3),
-    //         beginITS (4),
-    //         endITS (5)
-    //     } (0..255)
-    dd.v1.EntryTypeDailyWorkPeriod entry_type = 3;
-
-    // Raw protocol value for entry_type when the value is not recognized.
-    // This field preserves the original byte value for perfect data fidelity
-    // and allows consumers to handle unknown enum values.
-    int32 unrecognized_entry_type = 4;
-
-    // Country code.
-    //
-    // See Data Dictionary, Section 2.101, `NationNumeric`.
-    // ASN.1 Definition:
-    //
-    //     NationNumeric ::= INTEGER(0..255)
-    dd.v1.NationNumeric daily_work_period_country = 5;
-
-    // Raw protocol value for daily_work_period_country when the value is not recognized.
-    // This field preserves the original byte value for perfect data fidelity
-    // and allows consumers to handle unknown enum values.
-    int32 unrecognized_daily_work_period_country = 6;
-
-    // Region code.
-    //
-    // The meaning of this code is country-specific. For Gen1, the data
-    // dictionary provides values for Spain. For Gen2, codes are maintained
-    // on the JRC website: https://dtlab.jrc.ec.europa.eu/
-    //
-    // See Data Dictionary, Section 2.122, `RegionNumeric`.
-    // ASN.1 Definition:
-    //
-    //     RegionNumeric ::= OCTET STRING (SIZE (1))
-    bytes daily_work_period_region = 7;
-
-    // Odometer at the time of entry in kilometers.
-    //
-    // See Data Dictionary, Section 2.113, `OdometerShort`.
-    // ASN.1 Definition:
-    //
-    //     OdometerShort ::= INTEGER(0..999999)
-    int32 vehicle_odometer_km = 8;
-
-    // --- Field for a non-valid record (when valid = false) ---
-    // Holds the raw bytes of the original record.
-    // Size is 10 bytes for Gen1, 22 bytes for Gen2.
-    bytes raw_data = 9;
-
-    // --- Gen2-specific fields ---
-
-    // GNSS data associated with the place record, present only on Gen2 cards.
-    GnssPlaceRecord gnss_place_record = 10;
-  }
-
-  // Index of the last updated place record.
-  // Corresponds to `placePointerNewestRecord`.
-  //
-  // See Data Dictionary, Section 2.27.
-  // ASN.1 Definition:
-  //
-  //     INTEGER(0..NoOfCardPlaceRecords-1)
+  // Corresponds to `placePointerNewestRecord` in DD Section 2.27.
+  // Valid range: 0 to (number of records - 1).
   int32 newest_record_index = 1;
 
-  // The set of place records.
-  // Corresponds to `placeRecords`.
-  repeated Record records = 2;
+  // Place records from the circular buffer.
+  //
+  // Each record may be valid (successfully parsed) or corrupted (from buffer overwrites).
+  // Check the `valid` field on each record to determine which fields are reliable.
+  //
+  // Corresponds to `placeRecords` in DD Section 2.27.
+  repeated dd.v1.PlaceRecord records = 2;
 
-  // Trailing bytes that don't form complete records (for roundtrip accuracy).
+  // Trailing bytes that don't form complete records (for roundtrip fidelity).
   bytes trailing_bytes = 3;
 
   // Generation of this EF, extracted from bit 1 of the TLV tag's appendix byte.
-  // This determines the binary format used for place records (10 bytes for Gen1, 22 bytes for Gen2).
+  //
+  // This determines the binary format:
+  // - Gen1: 10-byte records
+  // - Gen2: 21-byte records (includes 11-byte GNSS data)
   //
   // See Data Dictionary, Section 2.75, `Generation`.
   dd.v1.Generation generation = 4;
 
-  // Signature data from the following file block, if tagged as a signature for
-  // this EF according to the card file format specification (Appendix 2).
+  // Signature from the following file block, if present.
+  //
+  // Gen1: RSA signature, 128 bytes (OCTET STRING SIZE(128))
+  // Gen2: ECDSA signature, variable size based on elliptic curve
   //
   // See Data Dictionary, Section 2.149, `Signature`.
-  //
-  // ASN.1 Definition (Gen1):
-  //
-  //     Signature ::= OCTET STRING (SIZE(128))
-  //
-  // ASN.1 Definition (Gen2):
-  //
-  //     Signature ::= OCTET STRING (variable size, depends on elliptic curve)
-  //
-  // Gen2 uses ECDSA signatures with variable lengths based on the curve:
-  // - 256-bit curves: ~64 bytes
-  // - 384-bit curves: ~96 bytes
-  // - 512/521-bit curves: ~128-132 bytes
   bytes signature = 5;
 }

@@ -43,7 +43,7 @@ func unmarshalOverview(data []byte, offset int, overview *vuv1.Overview, generat
 	case 2:
 		overview.SetGeneration(ddv1.Generation_GENERATION_2)
 		// For now, assume version 1 - we can add version detection later
-		overview.SetVersion(vuv1.Version_VERSION_1)
+		overview.SetVersion(ddv1.Version_VERSION_1)
 		return unmarshalOverviewGen2(data, offset, overview, startOffset)
 	default:
 		return 0, nil
@@ -54,6 +54,7 @@ func unmarshalOverviewGen1(data []byte, offset int, overview *vuv1.Overview, sta
 	// Gen1 Overview structure based on benchmark definitions
 	// See VuOverviewFirstGen in benchmark/tachoparser/pkg/decoder/definitions.go
 
+	var opts dd.UnmarshalOptions
 	// MemberStateCertificate (194 bytes)
 	memberStateCert, offset, err := readBytesFromBytes(data, offset, 194)
 	if err != nil {
@@ -73,7 +74,7 @@ func unmarshalOverviewGen1(data []byte, offset int, overview *vuv1.Overview, sta
 	if err != nil {
 		return 0, err
 	}
-	vinStrValue, err := dd.UnmarshalIA5StringValue(vinBytes)
+	vinStrValue, err := opts.UnmarshalIA5StringValue(vinBytes)
 	if err != nil {
 		return 0, fmt.Errorf("failed to read VIN: %w", err)
 	}
@@ -93,7 +94,7 @@ func unmarshalOverviewGen1(data []byte, offset int, overview *vuv1.Overview, sta
 	vehicleReg := &ddv1.VehicleRegistrationIdentification{}
 	vehicleReg.SetNation(ddv1.NationNumeric(nation))
 
-	regNumStrValue, err := dd.UnmarshalIA5StringValue(regNumBytes[1:])
+	regNumStrValue, err := opts.UnmarshalIA5StringValue(regNumBytes[1:])
 	if err != nil {
 		return 0, fmt.Errorf("failed to read vehicle registration number: %w", err)
 	}
@@ -635,8 +636,9 @@ func parseVehicleIdentificationNumberRecordArray(data []byte, offset int) ([]*dd
 	if offset+17 > len(data) {
 		return nil, offset, fmt.Errorf("insufficient data for vehicle identification number")
 	}
+	var opts dd.UnmarshalOptions
 	vinBytes := data[offset : offset+17]
-	vin, err := dd.UnmarshalIA5StringValue(vinBytes)
+	vin, err := opts.UnmarshalIA5StringValue(vinBytes)
 	if err != nil {
 		return nil, offset, fmt.Errorf("failed to parse VIN: %w", err)
 	}
@@ -661,9 +663,10 @@ func parseVehicleRegistrationIdentificationRecordArray(data []byte, offset int) 
 	if offset+15 > len(data) {
 		return nil, offset, fmt.Errorf("insufficient data for vehicle registration identification")
 	}
+	var opts dd.UnmarshalOptions
 	nation := ddv1.NationNumeric(data[offset])
 	regNumBytes := data[offset+1 : offset+15]
-	regNum, err := dd.UnmarshalIA5StringValue(regNumBytes[1:]) // Skip codepage byte
+	regNum, err := opts.UnmarshalIA5StringValue(regNumBytes[1:]) // Skip codepage byte
 	if err != nil {
 		return nil, offset, fmt.Errorf("failed to parse registration number: %w", err)
 	}

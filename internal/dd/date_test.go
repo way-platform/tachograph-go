@@ -112,7 +112,8 @@ func TestUnmarshalDate(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := UnmarshalDate(tt.input)
+			var opts UnmarshalOptions
+			got, err := opts.UnmarshalDate(tt.input)
 			if tt.wantErr {
 				if err == nil {
 					t.Errorf("UnmarshalDate() expected error, got nil")
@@ -239,7 +240,8 @@ func TestDateRoundTrip(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			// Unmarshal
-			date, err := UnmarshalDate(tt.input)
+			var opts UnmarshalOptions
+			date, err := opts.UnmarshalDate(tt.input)
 			if err != nil {
 				t.Fatalf("UnmarshalDate() unexpected error: %v", err)
 			}

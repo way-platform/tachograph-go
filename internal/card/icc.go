@@ -40,6 +40,7 @@ func unmarshalIcc(data []byte) (*cardv1.Icc, error) {
 	if len(data) < lenCardIccIdentification {
 		return nil, errors.New("not enough data for IccIdentification")
 	}
+	var opts dd.UnmarshalOptions
 	offset := 0
 
 	// Read clock stop (1 byte)
@@ -70,7 +71,7 @@ func unmarshalIcc(data []byte) (*cardv1.Icc, error) {
 
 		// Next 2 bytes: month/year BCD (MMYY format)
 		if len(serialBytes) > 5 {
-			monthYear, err := dd.UnmarshalMonthYear(serialBytes[4:6])
+			monthYear, err := opts.UnmarshalMonthYear(serialBytes[4:6])
 			if err != nil {
 				return nil, fmt.Errorf("failed to parse month/year: %w", err)
 			}
@@ -96,7 +97,7 @@ func unmarshalIcc(data []byte) (*cardv1.Icc, error) {
 	if offset+lenCardApprovalNumber > len(data) {
 		return nil, fmt.Errorf("insufficient data for card approval number")
 	}
-	cardApprovalNumber, err := dd.UnmarshalIA5StringValue(data[offset : offset+lenCardApprovalNumber])
+	cardApprovalNumber, err := opts.UnmarshalIA5StringValue(data[offset : offset+lenCardApprovalNumber])
 	if err != nil {
 		return nil, fmt.Errorf("failed to read card approval number: %w", err)
 	}

@@ -13,7 +13,7 @@ import (
 // ASN.1 Definition:
 //
 //	ControlType ::= OCTET STRING (SIZE(1))
-func UnmarshalControlType(input []byte) (*ddv1.ControlType, error) {
+func (opts UnmarshalOptions) UnmarshalControlType(input []byte) (*ddv1.ControlType, error) {
 	if len(input) == 0 {
 		return nil, fmt.Errorf("insufficient data for control type")
 	}

@@ -17,7 +17,7 @@ import (
 //
 // Binary Layout (2 bytes):
 //   - BCD-encoded MMYY format (2 bytes)
-func UnmarshalMonthYear(data []byte) (*ddv1.MonthYear, error) {
+func (opts UnmarshalOptions) UnmarshalMonthYear(data []byte) (*ddv1.MonthYear, error) {
 	const lenMonthYear = 2
 
 	if len(data) != lenMonthYear {

@@ -3,7 +3,7 @@ edition = "2023";
 package wayplatform.connect.tachograph.vu.v1;
 
 import "wayplatform/connect/tachograph/dd/v1/generation.proto";
-import "wayplatform/connect/tachograph/vu/v1/versioning.proto";
+import "wayplatform/connect/tachograph/dd/v1/version.proto";
 
 // Represents the version of the VU's download interface.
 //
@@ -32,5 +32,5 @@ message DownloadInterfaceVersion {
   dd.v1.Generation generation = 2;
 
   // The version of the download interface, parsed from the second byte (`bb`).
-  Version version = 3;
+  wayplatform.connect.tachograph.dd.v1.Version version = 3;
 }

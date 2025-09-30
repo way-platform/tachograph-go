@@ -24,7 +24,7 @@ import (
 //	- p: Card status (1 bit): '0'B: INSERTED, '1'B: NOT INSERTED
 //	- aa: Activity (2 bits): '00'B: BREAK/REST, '01'B: AVAILABILITY, '10'B: WORK, '11'B: DRIVING
 //	- ttttttttttt: Time of change (11 bits): Number of minutes since 00h00 on the given day
-func UnmarshalActivityChangeInfo(input []byte) (*ddv1.ActivityChangeInfo, error) {
+func (opts UnmarshalOptions) UnmarshalActivityChangeInfo(input []byte) (*ddv1.ActivityChangeInfo, error) {
 	const lenActivityChangeInfo = 2
 	if len(input) != lenActivityChangeInfo {
 		return nil, fmt.Errorf("invalid data length for ActivityChangeInfo: got %d, want %d", len(input), lenActivityChangeInfo)

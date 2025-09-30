@@ -20,7 +20,7 @@ import (
 // Binary Layout (15 bytes):
 //   - Nation code (1 byte): NationNumeric
 //   - Registration number (14 bytes): IA5String
-func UnmarshalVehicleRegistration(data []byte) (*ddv1.VehicleRegistrationIdentification, error) {
+func (opts UnmarshalOptions) UnmarshalVehicleRegistration(data []byte) (*ddv1.VehicleRegistrationIdentification, error) {
 	const lenVehicleRegistration = 15
 
 	if len(data) != lenVehicleRegistration {
@@ -38,7 +38,7 @@ func UnmarshalVehicleRegistration(data []byte) (*ddv1.VehicleRegistrationIdentif
 	}
 
 	// Read registration number (14 bytes)
-	regNumber, err := UnmarshalIA5StringValue(data[1:lenVehicleRegistration])
+	regNumber, err := opts.UnmarshalIA5StringValue(data[1:lenVehicleRegistration])
 	if err != nil {
 		return nil, fmt.Errorf("failed to parse registration number: %w", err)
 	}

@@ -18,7 +18,7 @@ import (
 //   - Equipment Type (1 byte): Raw integer value
 //
 //nolint:unused
-func UnmarshalEquipmentType(data []byte) (ddv1.EquipmentType, error) {
+func (opts UnmarshalOptions) UnmarshalEquipmentType(data []byte) (ddv1.EquipmentType, error) {
 	if len(data) != 1 {
 		return ddv1.EquipmentType_EQUIPMENT_TYPE_UNSPECIFIED, fmt.Errorf("invalid data length for EquipmentType: got %d, want 1", len(data))
 	}

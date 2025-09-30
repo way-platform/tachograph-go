@@ -60,7 +60,8 @@ func TestUnmarshalTimeReal(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := UnmarshalTimeReal(tt.input)
+			var opts UnmarshalOptions
+			got, err := opts.UnmarshalTimeReal(tt.input)
 			if tt.wantErr {
 				if err == nil {
 					t.Errorf("UnmarshalTimeReal() expected error, got nil")
@@ -161,7 +162,8 @@ func TestTimeRealRoundTrip(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			// Unmarshal
-			ts, err := UnmarshalTimeReal(tt.input)
+			var opts UnmarshalOptions
+			ts, err := opts.UnmarshalTimeReal(tt.input)
 			if err != nil {
 				t.Fatalf("UnmarshalTimeReal() unexpected error: %v", err)
 			}

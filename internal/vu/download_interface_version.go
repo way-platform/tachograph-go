@@ -43,11 +43,11 @@ func unmarshalDownloadInterfaceVersion(data []byte, offset int, version *vuv1.Do
 	// Map version byte to enum
 	switch versionByte {
 	case 1:
-		version.SetVersion(vuv1.Version_VERSION_1)
+		version.SetVersion(ddv1.Version_VERSION_1)
 	case 2:
-		version.SetVersion(vuv1.Version_VERSION_2)
+		version.SetVersion(ddv1.Version_VERSION_2)
 	default:
-		version.SetVersion(vuv1.Version_VERSION_UNSPECIFIED)
+		version.SetVersion(ddv1.Version_VERSION_UNSPECIFIED)
 	}
 
 	bytesRead := offset - startOffset

@@ -69,7 +69,8 @@ func TestUnmarshalStringValue(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := UnmarshalStringValue(tt.input)
+			var opts UnmarshalOptions
+			got, err := opts.UnmarshalStringValue(tt.input)
 
 			if tt.wantErr {
 				if err == nil {
@@ -158,7 +159,8 @@ func TestUnmarshalIA5StringValue(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := UnmarshalIA5StringValue(tt.input)
+			var opts UnmarshalOptions
+			got, err := opts.UnmarshalIA5StringValue(tt.input)
 
 			if tt.wantErr {
 				if err == nil {
@@ -409,7 +411,8 @@ func TestStringValueRoundTrip(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			// Unmarshal
-			sv, err := UnmarshalStringValue(tt.input)
+			var opts UnmarshalOptions
+			sv, err := opts.UnmarshalStringValue(tt.input)
 			if err != nil {
 				t.Fatalf("UnmarshalStringValue() error: %v", err)
 			}
@@ -463,7 +466,8 @@ func TestIA5StringValueRoundTrip(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			// Unmarshal
-			sv, err := UnmarshalIA5StringValue(tt.input)
+			var opts UnmarshalOptions
+			sv, err := opts.UnmarshalIA5StringValue(tt.input)
 			if err != nil {
 				t.Fatalf("UnmarshalIA5StringValue() error: %v", err)
 			}

@@ -105,6 +105,7 @@ func unmarshalEventRecord(data []byte) (*cardv1.EventsData_Record, error) {
 		return nil, fmt.Errorf("insufficient data for event record: got %d bytes, need %d", len(data), lenCardEventRecord)
 	}
 
+	var opts dd.UnmarshalOptions
 	var rec cardv1.EventsData_Record
 	offset := 0
 
@@ -123,7 +124,7 @@ func unmarshalEventRecord(data []byte) (*cardv1.EventsData_Record, error) {
 	if offset+4 > len(data) {
 		return nil, fmt.Errorf("insufficient data for event begin time")
 	}
-	eventBeginTime, err := dd.UnmarshalTimeReal(data[offset : offset+4])
+	eventBeginTime, err := opts.UnmarshalTimeReal(data[offset : offset+4])
 	if err != nil {
 		return nil, fmt.Errorf("failed to parse event begin time: %w", err)
 	}
@@ -134,7 +135,7 @@ func unmarshalEventRecord(data []byte) (*cardv1.EventsData_Record, error) {
 	if offset+4 > len(data) {
 		return nil, fmt.Errorf("insufficient data for event end time")
 	}
-	eventEndTime, err := dd.UnmarshalTimeReal(data[offset : offset+4])
+	eventEndTime, err := opts.UnmarshalTimeReal(data[offset : offset+4])
 	if err != nil {
 		return nil, fmt.Errorf("failed to parse event end time: %w", err)
 	}
@@ -145,7 +146,7 @@ func unmarshalEventRecord(data []byte) (*cardv1.EventsData_Record, error) {
 	if offset+15 > len(data) {
 		return nil, fmt.Errorf("insufficient data for vehicle registration")
 	}
-	vehicleReg, err := dd.UnmarshalVehicleRegistration(data[offset : offset+15])
+	vehicleReg, err := opts.UnmarshalVehicleRegistration(data[offset : offset+15])
 	if err != nil {
 		return nil, fmt.Errorf("failed to parse vehicle registration: %w", err)
 	}

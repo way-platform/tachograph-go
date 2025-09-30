@@ -87,7 +87,8 @@ func TestUnmarshalMonthYear(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := UnmarshalMonthYear(tt.input)
+			var opts UnmarshalOptions
+			got, err := opts.UnmarshalMonthYear(tt.input)
 
 			if tt.wantErr {
 				if err == nil {
@@ -284,7 +285,8 @@ func TestMonthYearRoundTrip(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			// Unmarshal
-			monthYear, err := UnmarshalMonthYear(tt.input)
+			var opts UnmarshalOptions
+			monthYear, err := opts.UnmarshalMonthYear(tt.input)
 			if err != nil {
 				t.Fatalf("UnmarshalMonthYear() error: %v", err)
 			}

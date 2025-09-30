@@ -8,6 +8,19 @@ import "wayplatform/connect/tachograph/dd/v1/vehicle_registration_identification
 
 // Represents information about the previous vehicle used by a driver.
 //
+// This message is used in VU downloads (VuCardIWRecord) to track the vehicle
+// a driver was using before inserting their card into the current vehicle.
+//
+// Binary Layout:
+//   Gen1: 19 bytes
+//     - vehicleRegistrationIdentification: 15 bytes (1 nation + 14 registration)
+//     - cardWithdrawalTime: 4 bytes
+//
+//   Gen2: 20 bytes
+//     - vehicleRegistrationIdentification: 15 bytes (1 nation + 14 registration)
+//     - cardWithdrawalTime: 4 bytes
+//     - vuGeneration: 1 byte
+//
 // See Data Dictionary, Section 2.118, `PreviousVehicleInfo`.
 //
 // ASN.1 Definition (Gen1):
@@ -35,4 +48,19 @@ message PreviousVehicleInfo {
   //
   // See Data Dictionary, Section 2.75, `Generation`.
   Generation vu_generation = 3;
+
+  // Indicates which generation format this record uses for marshalling.
+  // Gen1: 19 bytes (no vu_generation field in binary)
+  // Gen2: 20 bytes (includes vu_generation field in binary)
+  //
+  // This field makes the record self-describing, enabling marshalling without
+  // additional context. During unmarshalling, this is populated from the
+  // UnmarshalOptions.Generation context.
+  //
+  // Note: This is distinct from vu_generation (field 3), which indicates
+  // the generation of the VU from which the card was withdrawn (content),
+  // while this field indicates the binary format to use (structure).
+  //
+  // See Data Dictionary, Section 2.75, `Generation`.
+  Generation generation = 4;
 }

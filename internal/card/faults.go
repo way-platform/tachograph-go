@@ -106,6 +106,7 @@ func unmarshalFaultRecord(data []byte, rec *cardv1.FaultsData_Record) error {
 		return fmt.Errorf("insufficient data for fault record: got %d bytes, need %d", len(data), lenCardFaultRecord)
 	}
 
+	var opts dd.UnmarshalOptions
 	offset := 0
 
 	// Read fault type (1 byte) and convert using generic enum helper
@@ -123,7 +124,7 @@ func unmarshalFaultRecord(data []byte, rec *cardv1.FaultsData_Record) error {
 	if offset+4 > len(data) {
 		return fmt.Errorf("insufficient data for fault begin time")
 	}
-	faultBeginTime, err := dd.UnmarshalTimeReal(data[offset : offset+4])
+	faultBeginTime, err := opts.UnmarshalTimeReal(data[offset : offset+4])
 	if err != nil {
 		return fmt.Errorf("failed to parse fault begin time: %w", err)
 	}
@@ -134,7 +135,7 @@ func unmarshalFaultRecord(data []byte, rec *cardv1.FaultsData_Record) error {
 	if offset+4 > len(data) {
 		return fmt.Errorf("insufficient data for fault end time")
 	}
-	faultEndTime, err := dd.UnmarshalTimeReal(data[offset : offset+4])
+	faultEndTime, err := opts.UnmarshalTimeReal(data[offset : offset+4])
 	if err != nil {
 		return fmt.Errorf("failed to parse fault end time: %w", err)
 	}
@@ -145,7 +146,7 @@ func unmarshalFaultRecord(data []byte, rec *cardv1.FaultsData_Record) error {
 	if offset+15 > len(data) {
 		return fmt.Errorf("insufficient data for vehicle registration")
 	}
-	vehicleReg, err := dd.UnmarshalVehicleRegistration(data[offset : offset+15])
+	vehicleReg, err := opts.UnmarshalVehicleRegistration(data[offset : offset+15])
 	if err != nil {
 		return fmt.Errorf("failed to parse vehicle registration: %w", err)
 	}

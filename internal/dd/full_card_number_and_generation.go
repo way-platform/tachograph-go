@@ -20,7 +20,7 @@ import (
 // Binary Layout (variable length):
 //   - Full Card Number (variable): FullCardNumber structure
 //   - Generation (1 byte): Generation enum value
-func UnmarshalFullCardNumberAndGeneration(data []byte) (*ddv1.FullCardNumberAndGeneration, error) {
+func (opts UnmarshalOptions) UnmarshalFullCardNumberAndGeneration(data []byte) (*ddv1.FullCardNumberAndGeneration, error) {
 	if len(data) < 1 {
 		return nil, fmt.Errorf("insufficient data for FullCardNumberAndGeneration: got %d, want at least 1", len(data))
 	}
@@ -36,7 +36,7 @@ func UnmarshalFullCardNumberAndGeneration(data []byte) (*ddv1.FullCardNumberAndG
 	}
 
 	// Parse generation (last byte)
-	generation, err := UnmarshalGeneration(data[len(data)-1:])
+	generation, err := opts.UnmarshalGeneration(data[len(data)-1:])
 	if err != nil {
 		return nil, fmt.Errorf("failed to parse generation: %w", err)
 	}
@@ -44,7 +44,7 @@ func UnmarshalFullCardNumberAndGeneration(data []byte) (*ddv1.FullCardNumberAndG
 
 	// Parse full card number (everything except the last byte)
 	fullCardNumberData := data[:len(data)-1]
-	fullCardNumber, err := UnmarshalFullCardNumber(fullCardNumberData)
+	fullCardNumber, err := opts.UnmarshalFullCardNumber(fullCardNumberData)
 	if err != nil {
 		return nil, fmt.Errorf("failed to parse full card number: %w", err)
 	}

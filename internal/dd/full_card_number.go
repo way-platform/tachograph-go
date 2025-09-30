@@ -27,7 +27,7 @@ import (
 //   - Card Type (1 byte): EquipmentType
 //   - Issuing Member State (1 byte): NationNumeric
 //   - Card Number (variable): CardNumber CHOICE based on card type
-func UnmarshalFullCardNumber(data []byte) (*ddv1.FullCardNumber, error) {
+func (opts UnmarshalOptions) UnmarshalFullCardNumber(data []byte) (*ddv1.FullCardNumber, error) {
 	if len(data) < 2 {
 		return nil, fmt.Errorf("insufficient data for FullCardNumber: got %d, want at least 2", len(data))
 	}
@@ -46,13 +46,13 @@ func UnmarshalFullCardNumber(data []byte) (*ddv1.FullCardNumber, error) {
 	remainingData := data[2:]
 	switch ddv1.EquipmentType(cardType) {
 	case ddv1.EquipmentType_DRIVER_CARD:
-		driverID, err := UnmarshalDriverIdentification(remainingData)
+		driverID, err := opts.UnmarshalDriverIdentification(remainingData)
 		if err != nil {
 			return nil, fmt.Errorf("failed to parse driver identification: %w", err)
 		}
 		cardNumber.SetDriverIdentification(driverID)
 	case ddv1.EquipmentType_WORKSHOP_CARD, ddv1.EquipmentType_COMPANY_CARD:
-		ownerID, err := UnmarshalOwnerIdentification(remainingData)
+		ownerID, err := opts.UnmarshalOwnerIdentification(remainingData)
 		if err != nil {
 			return nil, fmt.Errorf("failed to parse owner identification: %w", err)
 		}

@@ -23,7 +23,7 @@ import (
 //	    codePage    OCTET STRING (SIZE(1)),
 //	    stringData  OCTET STRING (SIZE(0..255))
 //	}
-func UnmarshalStringValue(input []byte) (*ddv1.StringValue, error) {
+func (opts UnmarshalOptions) UnmarshalStringValue(input []byte) (*ddv1.StringValue, error) {
 	if len(input) < 2 {
 		return nil, fmt.Errorf("insufficient data for string value: %w", io.ErrUnexpectedEOF)
 	}
@@ -54,7 +54,7 @@ func UnmarshalStringValue(input []byte) (*ddv1.StringValue, error) {
 // ASN.1 Definition:
 //
 //	IA5String ::= OCTET STRING (SIZE(0..255))
-func UnmarshalIA5StringValue(input []byte) (*ddv1.StringValue, error) {
+func (opts UnmarshalOptions) UnmarshalIA5StringValue(input []byte) (*ddv1.StringValue, error) {
 	if len(input) == 0 {
 		return nil, fmt.Errorf("insufficient data for string value: %w", io.ErrUnexpectedEOF)
 	}

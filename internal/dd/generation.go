@@ -16,7 +16,7 @@ import (
 //
 // Binary Layout (1 byte):
 //   - Generation (1 byte): Raw integer value (1-2)
-func UnmarshalGeneration(data []byte) (ddv1.Generation, error) {
+func (opts UnmarshalOptions) UnmarshalGeneration(data []byte) (ddv1.Generation, error) {
 	if len(data) != 1 {
 		return ddv1.Generation_GENERATION_UNSPECIFIED, fmt.Errorf("invalid data length for Generation: got %d, want 1", len(data))
 	}

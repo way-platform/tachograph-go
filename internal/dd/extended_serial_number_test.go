@@ -69,7 +69,8 @@ func TestUnmarshalExtendedSerialNumber(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := UnmarshalExtendedSerialNumber(tt.input)
+			var opts UnmarshalOptions
+			got, err := opts.UnmarshalExtendedSerialNumber(tt.input)
 			if tt.wantErr {
 				if err == nil {
 					t.Errorf("UnmarshalExtendedSerialNumber() expected error, got nil")
@@ -206,7 +207,8 @@ func TestExtendedSerialNumberRoundTrip(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			// Unmarshal
-			esn, err := UnmarshalExtendedSerialNumber(tt.input)
+			var opts UnmarshalOptions
+			esn, err := opts.UnmarshalExtendedSerialNumber(tt.input)
 			if err != nil {
 				t.Fatalf("UnmarshalExtendedSerialNumber() unexpected error: %v", err)
 			}

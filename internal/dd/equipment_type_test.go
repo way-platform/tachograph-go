@@ -64,7 +64,8 @@ func TestUnmarshalEquipmentType(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := UnmarshalEquipmentType(tt.input)
+			var opts UnmarshalOptions
+			got, err := opts.UnmarshalEquipmentType(tt.input)
 			if tt.wantErr {
 				if err == nil {
 					t.Errorf("UnmarshalEquipmentType() expected error, got nil")
@@ -173,7 +174,8 @@ func TestEquipmentTypeRoundTrip(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			// Unmarshal
-			equipmentType, err := UnmarshalEquipmentType(tt.input)
+			var opts UnmarshalOptions
+			equipmentType, err := opts.UnmarshalEquipmentType(tt.input)
 			if err != nil {
 				t.Fatalf("UnmarshalEquipmentType() unexpected error: %v", err)
 			}

@@ -21,7 +21,7 @@ import (
 //	For example, version '01.02' is coded as '0102'H.
 //	- Byte 0: Major version in BCD (e.g., 0x01 = 01)
 //	- Byte 1: Minor version in BCD (e.g., 0x02 = 02)
-func UnmarshalCardStructureVersion(data []byte) (*ddv1.CardStructureVersion, error) {
+func (opts UnmarshalOptions) UnmarshalCardStructureVersion(data []byte) (*ddv1.CardStructureVersion, error) {
 	const lenCardStructureVersion = 2
 	if len(data) != lenCardStructureVersion {
 		return nil, fmt.Errorf("invalid data length for CardStructureVersion: got %d, want %d", len(data), lenCardStructureVersion)

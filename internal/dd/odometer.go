@@ -31,7 +31,7 @@ func AppendOdometer(dst []byte, odometer uint32) []byte {
 //
 // Binary Layout (3 bytes):
 //   - Odometer Value (3 bytes): Big-endian unsigned integer
-func UnmarshalOdometer(data []byte) (uint32, error) {
+func (opts UnmarshalOptions) UnmarshalOdometer(data []byte) (uint32, error) {
 	const lenOdometerShort = 3
 
 	if len(data) != lenOdometerShort {

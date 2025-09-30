@@ -20,7 +20,7 @@ import (
 // For Gen2, the following component is added:
 //
 //	vuGeneration Generation
-func UnmarshalPreviousVehicleInfo(data []byte, generation ddv1.Generation) (*ddv1.PreviousVehicleInfo, error) {
+func (opts UnmarshalOptions) UnmarshalPreviousVehicleInfo(data []byte) (*ddv1.PreviousVehicleInfo, error) {
 	const (
 		lenPreviousVehicleInfoGen1 = 19 // 15 bytes vehicle reg + 4 bytes time
 		lenPreviousVehicleInfoGen2 = 20 // Gen1 + 1 byte generation
@@ -30,33 +30,36 @@ func UnmarshalPreviousVehicleInfo(data []byte, generation ddv1.Generation) (*ddv
 		idxVuGeneration            = 19
 	)
 
+	// Check for Gen2; otherwise assume Gen1 (including zero value)
 	expectedLen := lenPreviousVehicleInfoGen1
-	if generation == ddv1.Generation_GENERATION_2 {
+	if opts.Generation == ddv1.Generation_GENERATION_2 {
 		expectedLen = lenPreviousVehicleInfoGen2
 	}
 
 	if len(data) != expectedLen {
-		return nil, fmt.Errorf("invalid data length for PreviousVehicleInfo (gen %d): got %d, want %d", generation, len(data), expectedLen)
+		return nil, fmt.Errorf("invalid data length for PreviousVehicleInfo: got %d, want %d (Gen1) or %d (Gen2)", len(data), lenPreviousVehicleInfoGen1, lenPreviousVehicleInfoGen2)
 	}
 
 	info := &ddv1.PreviousVehicleInfo{}
+	// Populate generation from unmarshal context
+	info.SetGeneration(opts.Generation)
 
 	// Parse vehicleRegistrationIdentification (15 bytes)
-	vehicleReg, err := UnmarshalVehicleRegistration(data[idxVehicleReg : idxVehicleReg+lenVehicleReg])
+	vehicleReg, err := opts.UnmarshalVehicleRegistration(data[idxVehicleReg : idxVehicleReg+lenVehicleReg])
 	if err != nil {
 		return nil, fmt.Errorf("failed to unmarshal vehicle registration: %w", err)
 	}
 	info.SetVehicleRegistration(vehicleReg)
 
 	// Parse cardWithdrawalTime (TimeReal - 4 bytes)
-	withdrawalTime, err := UnmarshalTimeReal(data[idxCardWithdrawalTime : idxCardWithdrawalTime+4])
+	withdrawalTime, err := opts.UnmarshalTimeReal(data[idxCardWithdrawalTime : idxCardWithdrawalTime+4])
 	if err != nil {
 		return nil, fmt.Errorf("failed to unmarshal card withdrawal time: %w", err)
 	}
 	info.SetCardWithdrawalTime(withdrawalTime)
 
 	// For Gen2, parse vuGeneration (1 byte)
-	if generation == ddv1.Generation_GENERATION_2 {
+	if opts.Generation == ddv1.Generation_GENERATION_2 {
 		vuGen := ddv1.Generation(data[idxVuGeneration])
 		info.SetVuGeneration(vuGen)
 	}
@@ -78,13 +81,15 @@ func UnmarshalPreviousVehicleInfo(data []byte, generation ddv1.Generation) (*ddv
 // For Gen2, the following component is added:
 //
 //	vuGeneration Generation
-func AppendPreviousVehicleInfo(dst []byte, info *ddv1.PreviousVehicleInfo, generation ddv1.Generation) ([]byte, error) {
+func AppendPreviousVehicleInfo(dst []byte, info *ddv1.PreviousVehicleInfo) ([]byte, error) {
 	if info == nil {
-		// Append appropriate zero bytes based on generation
-		if generation == ddv1.Generation_GENERATION_2 {
-			return append(dst, make([]byte, 20)...), nil
-		}
-		return append(dst, make([]byte, 19)...), nil
+		return nil, fmt.Errorf("previous vehicle info cannot be nil")
+	}
+
+	// Get generation from the self-describing record
+	generation := info.GetGeneration()
+	if generation == ddv1.Generation_GENERATION_UNSPECIFIED {
+		return nil, fmt.Errorf("PreviousVehicleInfo.generation must be specified (got GENERATION_UNSPECIFIED)")
 	}
 
 	// Append vehicleRegistrationIdentification (15 bytes)

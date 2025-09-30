@@ -23,6 +23,15 @@ const (
 
 // Represents a GNSS position with authentication status.
 //
+// This is an extension of GNSSPlaceRecord introduced in Generation 2, Version 2
+// that adds position authentication information for tamper detection.
+//
+// Binary Layout: 12 bytes total
+//   - timeStamp: 4 bytes
+//   - gnssAccuracy: 1 byte
+//   - geoCoordinates: 6 bytes (3 bytes latitude + 3 bytes longitude)
+//   - authenticationStatus: 1 byte
+//
 // See Data Dictionary, Section 2.79c, `GNSSPlaceAuthRecord`.
 //
 // ASN.1 Definition:

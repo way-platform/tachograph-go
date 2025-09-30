@@ -29,7 +29,7 @@ const (
 type Activities struct {
 	state                             protoimpl.MessageState              `protogen:"opaque.v1"`
 	xxx_hidden_Generation             v1.Generation                       `protobuf:"varint,1,opt,name=generation,enum=wayplatform.connect.tachograph.dd.v1.Generation"`
-	xxx_hidden_Version                Version                             `protobuf:"varint,2,opt,name=version,enum=wayplatform.connect.tachograph.vu.v1.Version"`
+	xxx_hidden_Version                v1.Version                          `protobuf:"varint,2,opt,name=version,enum=wayplatform.connect.tachograph.dd.v1.Version"`
 	xxx_hidden_DateOfDay              *timestamppb.Timestamp              `protobuf:"bytes,3,opt,name=date_of_day,json=dateOfDay"`
 	xxx_hidden_OdometerMidnightKm     int32                               `protobuf:"varint,4,opt,name=odometer_midnight_km,json=odometerMidnightKm"`
 	xxx_hidden_CardIwData             *[]*Activities_CardIWRecord         `protobuf:"bytes,5,rep,name=card_iw_data,json=cardIwData"`
@@ -81,13 +81,13 @@ func (x *Activities) GetGeneration() v1.Generation {
 	return v1.Generation(0)
 }
 
-func (x *Activities) GetVersion() Version {
+func (x *Activities) GetVersion() v1.Version {
 	if x != nil {
 		if protoimpl.X.Present(&(x.XXX_presence[0]), 1) {
 			return x.xxx_hidden_Version
 		}
 	}
-	return Version_VERSION_UNSPECIFIED
+	return v1.Version(0)
 }
 
 func (x *Activities) GetDateOfDay() *timestamppb.Timestamp {
@@ -186,7 +186,7 @@ func (x *Activities) SetGeneration(v v1.Generation) {
 	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 13)
 }
 
-func (x *Activities) SetVersion(v Version) {
+func (x *Activities) SetVersion(v v1.Version) {
 	x.xxx_hidden_Version = v
 	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 13)
 }
@@ -293,7 +293,7 @@ func (x *Activities) ClearGeneration() {
 
 func (x *Activities) ClearVersion() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 1)
-	x.xxx_hidden_Version = Version_VERSION_UNSPECIFIED
+	x.xxx_hidden_Version = v1.Version_VERSION_UNSPECIFIED
 }
 
 func (x *Activities) ClearDateOfDay() {
@@ -323,7 +323,7 @@ type Activities_builder struct {
 	Generation *v1.Generation
 	// The version of the interface, parsed from the raw transfer data.
 	// This is a discriminator field used for parsing.
-	Version *Version
+	Version *v1.Version
 	// Date of the downloaded day.
 	//
 	// See Data Dictionary, Section 2.162, `TimeReal`.
@@ -407,6 +407,32 @@ func (b0 Activities_builder) Build() *Activities {
 }
 
 // Represents a card insertion and withdrawal record.
+//
+// Binary Layout:
+//
+//	Gen1: 130 bytes total
+//	  - cardHolderName: 72 bytes
+//	  - fullCardNumber: 19 bytes
+//	  - cardExpiryDate: 4 bytes
+//	  - cardInsertionTime: 4 bytes
+//	  - vehicleOdometerValueAtInsertion: 3 bytes
+//	  - cardSlotNumber: 1 byte
+//	  - cardWithdrawalTime: 4 bytes
+//	  - vehicleOdometerValueAtWithdrawal: 3 bytes
+//	  - previousVehicleInfo: 19 bytes (15 vehicle reg + 4 cardWithdrawalTime)
+//	  - manualInputFlag: 1 byte
+//
+//	Gen2: 132 bytes total
+//	  - cardHolderName: 72 bytes
+//	  - fullCardNumberAndGeneration: 20 bytes
+//	  - cardExpiryDate: 4 bytes
+//	  - cardInsertionTime: 4 bytes
+//	  - vehicleOdometerValueAtInsertion: 3 bytes
+//	  - cardSlotNumber: 1 byte
+//	  - cardWithdrawalTime: 4 bytes
+//	  - vehicleOdometerValueAtWithdrawal: 3 bytes
+//	  - previousVehicleInfo: 20 bytes (15 vehicle reg + 4 cardWithdrawalTime + 1 vuGeneration)
+//	  - manualInputFlag: 1 byte
 //
 // See Data Dictionary, Section 2.177, `VuCardIWRecord`.
 //
@@ -1025,9 +1051,27 @@ func (b0 Activities_PlaceRecord_builder) Build() *Activities_PlaceRecord {
 	return m0
 }
 
-// Represents a GNSS position record.
+// Represents a GNSS position record with authentication status.
 //
-// See Data Dictionary, Section 2.80, `GNSSPlaceRecord` and 2.79c, `GNSSPlaceAuthRecord`.
+// This corresponds to GNSSPlaceAuthRecord (Gen2v2+), which is a 12-byte
+// structure used in VU border crossing and load/unload records.
+//
+// Binary Layout: 12 bytes total
+//   - timeStamp: 4 bytes
+//   - gnssAccuracy: 1 byte
+//   - geoCoordinates: 6 bytes (3 bytes latitude + 3 bytes longitude)
+//   - authenticationStatus: 1 byte
+//
+// See Data Dictionary, Section 2.79c, `GNSSPlaceAuthRecord`.
+//
+// ASN.1 Definition:
+//
+//	GNSSPlaceAuthRecord ::= SEQUENCE {
+//	    timeStamp TimeReal,
+//	    gnssAccuracy GNSSAccuracy,
+//	    geoCoordinates GeoCoordinates,
+//	    authenticationStatus PositionAuthenticationStatus
+//	}
 type Activities_GnssRecord struct {
 	state                           protoimpl.MessageState          `protogen:"opaque.v1"`
 	xxx_hidden_Timestamp            *timestamppb.Timestamp          `protobuf:"bytes,1,opt,name=timestamp"`
@@ -1165,29 +1209,16 @@ type Activities_GnssRecord_builder struct {
 	// Timestamp of the position fix.
 	//
 	// See Data Dictionary, Section 2.162, `TimeReal`.
-	// ASN.1 Definition:
-	//
-	//	TimeReal ::= INTEGER (0..2^32-1)
 	Timestamp *timestamppb.Timestamp
 	// Accuracy of the GNSS fix.
 	//
 	// See Data Dictionary, Section 2.77, `GNSSAccuracy`.
-	// ASN.1 Definition:
-	//
-	//	GNSSAccuracy ::= INTEGER (1..100)
 	GnssAccuracy *int32
 	// Geographic coordinates of the position.
 	//
 	// See Data Dictionary, Section 2.76, `GeoCoordinates`.
-	//
-	// ASN.1 Definition:
-	//
-	//	GeoCoordinates ::= SEQUENCE {
-	//	    latitude INTEGER(-90*3600*1000..90*3600*1000),
-	//	    longitude INTEGER(-180*3600*1000+1..180*3600*1000)
-	//	}
 	GeoCoordinates *v1.GeoCoordinates
-	// For Gen2v2+, indicates the authentication status of the position.
+	// Authentication status of the GNSS position (Gen2v2+).
 	//
 	// See Data Dictionary, Section 2.117a, `PositionAuthenticationStatus`.
 	AuthenticationStatus *v1.PositionAuthenticationStatus
@@ -1211,6 +1242,14 @@ func (b0 Activities_GnssRecord_builder) Build() *Activities_GnssRecord {
 }
 
 // Represents a border crossing record (Gen2v2+).
+//
+// Binary Layout: 57 bytes total
+//   - cardNumberAndGenDriverSlot: 20 bytes
+//   - cardNumberAndGenCodriverSlot: 20 bytes
+//   - countryLeft: 1 byte
+//   - countryEntered: 1 byte
+//   - gnssPlaceAuthRecord: 12 bytes (4 + 1 + 6)
+//   - vehicleOdometerValue: 3 bytes
 //
 // See Data Dictionary, Section 2.203a, `VuBorderCrossingRecord`.
 //
@@ -1457,6 +1496,14 @@ func (b0 Activities_BorderCrossingRecord_builder) Build() *Activities_BorderCros
 
 // Represents a load/unload operation record (Gen2v2+).
 //
+// Binary Layout: 60 bytes total
+//   - timeStamp: 4 bytes
+//   - operationType: 1 byte
+//   - cardNumberAndGenDriverSlot: 20 bytes
+//   - cardNumberAndGenCodriverSlot: 20 bytes
+//   - gnssPlaceAuthRecord: 12 bytes (4 + 1 + 6)
+//   - vehicleOdometerValue: 3 bytes
+//
 // See Data Dictionary, Section 2.208a, `VuLoadUnloadRecord`.
 //
 // ASN.1 Definition:
@@ -1693,13 +1740,13 @@ var File_wayplatform_connect_tachograph_vu_v1_activities_proto protoreflect.File
 
 const file_wayplatform_connect_tachograph_vu_v1_activities_proto_rawDesc = "" +
 	"\n" +
-	"5wayplatform/connect/tachograph/vu/v1/activities.proto\x12$wayplatform.connect.tachograph.vu.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a?wayplatform/connect/tachograph/dd/v1/activity_change_info.proto\x1a;wayplatform/connect/tachograph/dd/v1/card_slot_number.proto\x1a/wayplatform/connect/tachograph/dd/v1/date.proto\x1aGwayplatform/connect/tachograph/dd/v1/entry_type_daily_work_period.proto\x1a;wayplatform/connect/tachograph/dd/v1/full_card_number.proto\x1aJwayplatform/connect/tachograph/dd/v1/full_card_number_and_generation.proto\x1a5wayplatform/connect/tachograph/dd/v1/generation.proto\x1a:wayplatform/connect/tachograph/dd/v1/geo_coordinates.proto\x1a6wayplatform/connect/tachograph/dd/v1/holder_name.proto\x1a9wayplatform/connect/tachograph/dd/v1/nation_numeric.proto\x1a9wayplatform/connect/tachograph/dd/v1/operation_type.proto\x1aIwayplatform/connect/tachograph/dd/v1/position_authentication_status.proto\x1a@wayplatform/connect/tachograph/dd/v1/previous_vehicle_info.proto\x1aDwayplatform/connect/tachograph/dd/v1/specific_condition_record.proto\x1aBwayplatform/connect/tachograph/dd/v1/specific_condition_type.proto\x1aNwayplatform/connect/tachograph/dd/v1/vehicle_registration_identification.proto\x1a5wayplatform/connect/tachograph/vu/v1/versioning.proto\"\x8b\x1d\n" +
+	"5wayplatform/connect/tachograph/vu/v1/activities.proto\x12$wayplatform.connect.tachograph.vu.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a?wayplatform/connect/tachograph/dd/v1/activity_change_info.proto\x1a;wayplatform/connect/tachograph/dd/v1/card_slot_number.proto\x1a/wayplatform/connect/tachograph/dd/v1/date.proto\x1aGwayplatform/connect/tachograph/dd/v1/entry_type_daily_work_period.proto\x1a;wayplatform/connect/tachograph/dd/v1/full_card_number.proto\x1aJwayplatform/connect/tachograph/dd/v1/full_card_number_and_generation.proto\x1a5wayplatform/connect/tachograph/dd/v1/generation.proto\x1a:wayplatform/connect/tachograph/dd/v1/geo_coordinates.proto\x1a6wayplatform/connect/tachograph/dd/v1/holder_name.proto\x1a9wayplatform/connect/tachograph/dd/v1/nation_numeric.proto\x1a9wayplatform/connect/tachograph/dd/v1/operation_type.proto\x1aIwayplatform/connect/tachograph/dd/v1/position_authentication_status.proto\x1a@wayplatform/connect/tachograph/dd/v1/previous_vehicle_info.proto\x1aDwayplatform/connect/tachograph/dd/v1/specific_condition_record.proto\x1aBwayplatform/connect/tachograph/dd/v1/specific_condition_type.proto\x1aNwayplatform/connect/tachograph/dd/v1/vehicle_registration_identification.proto\x1a2wayplatform/connect/tachograph/dd/v1/version.proto\"\x8b\x1d\n" +
 	"\n" +
 	"Activities\x12P\n" +
 	"\n" +
 	"generation\x18\x01 \x01(\x0e20.wayplatform.connect.tachograph.dd.v1.GenerationR\n" +
 	"generation\x12G\n" +
-	"\aversion\x18\x02 \x01(\x0e2-.wayplatform.connect.tachograph.vu.v1.VersionR\aversion\x12:\n" +
+	"\aversion\x18\x02 \x01(\x0e2-.wayplatform.connect.tachograph.dd.v1.VersionR\aversion\x12:\n" +
 	"\vdate_of_day\x18\x03 \x01(\v2\x1a.google.protobuf.TimestampR\tdateOfDay\x120\n" +
 	"\x14odometer_midnight_km\x18\x04 \x01(\x05R\x12odometerMidnightKm\x12_\n" +
 	"\fcard_iw_data\x18\x05 \x03(\v2=.wayplatform.connect.tachograph.vu.v1.Activities.CardIWRecordR\n" +
@@ -1767,7 +1814,7 @@ var file_wayplatform_connect_tachograph_vu_v1_activities_proto_goTypes = []any{
 	(*Activities_BorderCrossingRecord)(nil), // 4: wayplatform.connect.tachograph.vu.v1.Activities.BorderCrossingRecord
 	(*Activities_LoadUnloadRecord)(nil),     // 5: wayplatform.connect.tachograph.vu.v1.Activities.LoadUnloadRecord
 	(v1.Generation)(0),                      // 6: wayplatform.connect.tachograph.dd.v1.Generation
-	(Version)(0),                            // 7: wayplatform.connect.tachograph.vu.v1.Version
+	(v1.Version)(0),                         // 7: wayplatform.connect.tachograph.dd.v1.Version
 	(*timestamppb.Timestamp)(nil),           // 8: google.protobuf.Timestamp
 	(*v1.ActivityChangeInfo)(nil),           // 9: wayplatform.connect.tachograph.dd.v1.ActivityChangeInfo
 	(*v1.SpecificConditionRecord)(nil),      // 10: wayplatform.connect.tachograph.dd.v1.SpecificConditionRecord
@@ -1784,7 +1831,7 @@ var file_wayplatform_connect_tachograph_vu_v1_activities_proto_goTypes = []any{
 }
 var file_wayplatform_connect_tachograph_vu_v1_activities_proto_depIdxs = []int32{
 	6,  // 0: wayplatform.connect.tachograph.vu.v1.Activities.generation:type_name -> wayplatform.connect.tachograph.dd.v1.Generation
-	7,  // 1: wayplatform.connect.tachograph.vu.v1.Activities.version:type_name -> wayplatform.connect.tachograph.vu.v1.Version
+	7,  // 1: wayplatform.connect.tachograph.vu.v1.Activities.version:type_name -> wayplatform.connect.tachograph.dd.v1.Version
 	8,  // 2: wayplatform.connect.tachograph.vu.v1.Activities.date_of_day:type_name -> google.protobuf.Timestamp
 	1,  // 3: wayplatform.connect.tachograph.vu.v1.Activities.card_iw_data:type_name -> wayplatform.connect.tachograph.vu.v1.Activities.CardIWRecord
 	9,  // 4: wayplatform.connect.tachograph.vu.v1.Activities.activity_changes:type_name -> wayplatform.connect.tachograph.dd.v1.ActivityChangeInfo
@@ -1828,7 +1875,6 @@ func file_wayplatform_connect_tachograph_vu_v1_activities_proto_init() {
 	if File_wayplatform_connect_tachograph_vu_v1_activities_proto != nil {
 		return
 	}
-	file_wayplatform_connect_tachograph_vu_v1_versioning_proto_init()
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

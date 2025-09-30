@@ -25,10 +25,10 @@ import (
 // For Gen2, the following component is added:
 //
 //	entryGNSSPlaceRecord GNSSPlaceRecord
-func UnmarshalPlaceRecord(data []byte, generation ddv1.Generation) (*ddv1.PlaceRecord, error) {
+func (opts UnmarshalOptions) UnmarshalPlaceRecord(data []byte) (*ddv1.PlaceRecord, error) {
 	const (
 		lenPlaceRecordGen1 = 10
-		lenPlaceRecordGen2 = 22 // 10 (base) + 12 (GNSS: 8 bytes coords + 4 bytes timestamp)
+		lenPlaceRecordGen2 = 21 // 10 (base) + 11 (GNSS: 4 timestamp + 1 accuracy + 6 coords)
 		idxEntryTime       = 0
 		idxEntryType       = 4
 		idxCountry         = 5
@@ -37,19 +37,26 @@ func UnmarshalPlaceRecord(data []byte, generation ddv1.Generation) (*ddv1.PlaceR
 		idxGNSS            = 10
 	)
 
+	// Check for Gen2; otherwise assume Gen1 (including zero value)
 	expectedLen := lenPlaceRecordGen1
-	if generation == ddv1.Generation_GENERATION_2 {
+	if opts.Generation == ddv1.Generation_GENERATION_2 {
 		expectedLen = lenPlaceRecordGen2
 	}
 
 	if len(data) != expectedLen {
-		return nil, fmt.Errorf("invalid data length for PlaceRecord (gen %d): got %d, want %d", generation, len(data), expectedLen)
+		return nil, fmt.Errorf("invalid data length for PlaceRecord: got %d, want %d (Gen1) or %d (Gen2)", len(data), lenPlaceRecordGen1, lenPlaceRecordGen2)
 	}
 
 	record := &ddv1.PlaceRecord{}
+	// Populate generation from unmarshal context
+	record.SetGeneration(opts.Generation)
+	// Store raw data for round-trip fidelity
+	record.SetRawData(data)
+	// Mark as valid (parsing succeeded)
+	record.SetValid(true)
 
 	// Parse entryTime (TimeReal - 4 bytes)
-	entryTime, err := UnmarshalTimeReal(data[idxEntryTime : idxEntryTime+4])
+	entryTime, err := opts.UnmarshalTimeReal(data[idxEntryTime : idxEntryTime+4])
 	if err != nil {
 		return nil, fmt.Errorf("failed to unmarshal entry time: %w", err)
 	}
@@ -83,16 +90,16 @@ func UnmarshalPlaceRecord(data []byte, generation ddv1.Generation) (*ddv1.PlaceR
 	record.SetDailyWorkPeriodRegion([]byte{data[idxRegion]})
 
 	// Parse vehicleOdometerValue (OdometerShort - 3 bytes)
-	odometerValue, err := UnmarshalOdometer(data[idxOdometer : idxOdometer+3])
+	odometerValue, err := opts.UnmarshalOdometer(data[idxOdometer : idxOdometer+3])
 	if err != nil {
 		return nil, fmt.Errorf("failed to unmarshal odometer: %w", err)
 	}
 	record.SetVehicleOdometerKm(int32(odometerValue))
 
-	// For Gen2, parse the GNSS place record (12 bytes)
-	if generation == ddv1.Generation_GENERATION_2 {
-		gnssData := data[idxGNSS : idxGNSS+12]
-		gnssRecord, err := UnmarshalGNSSPlaceRecordCardVariant(gnssData)
+	// For Gen2, parse the GNSS place record (11 bytes)
+	if opts.Generation == ddv1.Generation_GENERATION_2 {
+		gnssData := data[idxGNSS : idxGNSS+11]
+		gnssRecord, err := opts.UnmarshalGNSSPlaceRecord(gnssData)
 		if err != nil {
 			return nil, fmt.Errorf("failed to unmarshal GNSS place record: %w", err)
 		}
@@ -119,51 +126,85 @@ func UnmarshalPlaceRecord(data []byte, generation ddv1.Generation) (*ddv1.PlaceR
 // For Gen2, the following component is added:
 //
 //	entryGNSSPlaceRecord GNSSPlaceRecord
-func AppendPlaceRecord(dst []byte, record *ddv1.PlaceRecord, generation ddv1.Generation) ([]byte, error) {
+func AppendPlaceRecord(dst []byte, record *ddv1.PlaceRecord) ([]byte, error) {
 	if record == nil {
 		return nil, fmt.Errorf("place record cannot be nil")
 	}
 
-	// Append entryTime (TimeReal - 4 bytes)
-	var err error
-	entryTime := record.GetEntryTime()
-	if entryTime == nil {
-		// Append zero timestamp if nil
-		dst = append(dst, 0x00, 0x00, 0x00, 0x00)
-	} else {
-		dst, err = AppendTimeReal(dst, entryTime)
-		if err != nil {
-			return nil, fmt.Errorf("failed to append entry time: %w", err)
-		}
+	// Get generation from the self-describing record
+	generation := record.GetGeneration()
+	if generation == ddv1.Generation_GENERATION_UNSPECIFIED {
+		return nil, fmt.Errorf("PlaceRecord.generation must be specified (got GENERATION_UNSPECIFIED)")
 	}
 
-	// Append entryTypeDailyWorkPeriod (1 byte)
+	const (
+		lenPlaceRecordGen1 = 10
+		lenPlaceRecordGen2 = 21
+	)
+
+	recordSize := lenPlaceRecordGen1
+	if generation == ddv1.Generation_GENERATION_2 {
+		recordSize = lenPlaceRecordGen2
+	}
+
+	// Raw data painting: Use raw_data as canvas if available, otherwise zero-filled buffer
+	var canvas []byte
+	if rawData := record.GetRawData(); len(rawData) > 0 {
+		if len(rawData) != recordSize {
+			return nil, fmt.Errorf("invalid raw_data length for PlaceRecord: got %d, want %d", len(rawData), recordSize)
+		}
+		canvas = make([]byte, recordSize)
+		copy(canvas, rawData)
+	} else {
+		canvas = make([]byte, recordSize)
+	}
+
+	// Paint semantic values over the canvas
+	const (
+		idxEntryTime = 0
+		idxEntryType = 4
+		idxCountry   = 5
+		idxRegion    = 6
+		idxOdometer  = 7
+		idxGNSS      = 10
+	)
+
+	// Paint entryTime (4 bytes)
+	var err error
+	timeBytes, err := AppendTimeReal(nil, record.GetEntryTime())
+	if err != nil {
+		return nil, fmt.Errorf("failed to encode entry time: %w", err)
+	}
+	copy(canvas[idxEntryTime:idxEntryTime+4], timeBytes)
+
+	// Paint entryTypeDailyWorkPeriod (1 byte)
 	entryTypeValue, _ := GetProtocolValueForEnum(record.GetEntryTypeDailyWorkPeriod())
-	dst = append(dst, byte(entryTypeValue))
+	canvas[idxEntryType] = byte(entryTypeValue)
 
-	// Append dailyWorkPeriodCountry (NationNumeric - 1 byte)
+	// Paint dailyWorkPeriodCountry (1 byte)
 	countryValue, _ := GetProtocolValueForEnum(record.GetDailyWorkPeriodCountry())
-	dst = append(dst, byte(countryValue))
+	canvas[idxCountry] = byte(countryValue)
 
-	// Append dailyWorkPeriodRegion (RegionNumeric - 1 byte)
+	// Paint dailyWorkPeriodRegion (1 byte)
 	region := record.GetDailyWorkPeriodRegion()
 	if len(region) > 0 {
-		dst = append(dst, region[0])
+		canvas[idxRegion] = region[0]
 	} else {
-		dst = append(dst, 0)
+		canvas[idxRegion] = 0
 	}
 
-	// Append vehicleOdometerValue (OdometerShort - 3 bytes)
-	dst = AppendOdometer(dst, uint32(record.GetVehicleOdometerKm()))
+	// Paint vehicleOdometerValue (3 bytes)
+	odometerBytes := AppendOdometer(nil, uint32(record.GetVehicleOdometerKm()))
+	copy(canvas[idxOdometer:idxOdometer+3], odometerBytes)
 
-	// For Gen2, append the GNSS place record (12 bytes)
+	// For Gen2, paint the GNSS place record (11 bytes)
 	if generation == ddv1.Generation_GENERATION_2 {
-		gnssRecord := record.GetEntryGnssPlaceRecord()
-		dst, err = AppendGNSSPlaceRecordCardVariant(dst, gnssRecord)
+		gnssBytes, err := AppendGNSSPlaceRecord(nil, record.GetEntryGnssPlaceRecord())
 		if err != nil {
-			return nil, fmt.Errorf("failed to append GNSS place record: %w", err)
+			return nil, fmt.Errorf("failed to encode GNSS place record: %w", err)
 		}
+		copy(canvas[idxGNSS:idxGNSS+11], gnssBytes)
 	}
 
-	return dst, nil
+	return append(dst, canvas...), nil
 }

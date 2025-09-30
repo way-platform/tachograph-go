@@ -22,6 +22,7 @@ import (
 func unmarshalCardSpecificConditions(data []byte) (*cardv1.SpecificConditions, error) {
 	const lenSpecificConditionRecord = 5
 
+	var opts dd.UnmarshalOptions
 	if len(data) == 0 {
 		// Empty data is valid - no specific conditions
 		var target cardv1.SpecificConditions
@@ -35,7 +36,7 @@ func unmarshalCardSpecificConditions(data []byte) (*cardv1.SpecificConditions, e
 	// Parse each 5-byte SpecificConditionRecord using the DD package
 	offset := 0
 	for offset+lenSpecificConditionRecord <= len(data) {
-		record, err := dd.UnmarshalSpecificConditionRecord(data[offset : offset+lenSpecificConditionRecord])
+		record, err := opts.UnmarshalSpecificConditionRecord(data[offset : offset+lenSpecificConditionRecord])
 		if err != nil {
 			break // Stop parsing on error, but return what we have
 		}

@@ -26,6 +26,7 @@ func unmarshalCardCurrentUsage(data []byte) (*cardv1.CurrentUsage, error) {
 	if len(data) < lenCardCurrentUse {
 		return nil, fmt.Errorf("insufficient data for current usage")
 	}
+	var opts dd.UnmarshalOptions
 	var target cardv1.CurrentUsage
 	offset := 0
 
@@ -33,7 +34,7 @@ func unmarshalCardCurrentUsage(data []byte) (*cardv1.CurrentUsage, error) {
 	if offset+4 > len(data) {
 		return nil, fmt.Errorf("insufficient data for session open time")
 	}
-	sessionOpenTime, err := dd.UnmarshalTimeReal(data[offset : offset+4])
+	sessionOpenTime, err := opts.UnmarshalTimeReal(data[offset : offset+4])
 	if err != nil {
 		return nil, fmt.Errorf("failed to parse session open time: %w", err)
 	}
@@ -44,7 +45,7 @@ func unmarshalCardCurrentUsage(data []byte) (*cardv1.CurrentUsage, error) {
 	if offset+15 > len(data) {
 		return nil, fmt.Errorf("insufficient data for vehicle registration")
 	}
-	vehicleReg, err := dd.UnmarshalVehicleRegistration(data[offset : offset+15])
+	vehicleReg, err := opts.UnmarshalVehicleRegistration(data[offset : offset+15])
 	if err != nil {
 		return nil, fmt.Errorf("failed to parse vehicle registration: %w", err)
 	}

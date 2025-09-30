@@ -148,7 +148,8 @@ func parseSingleActivityDailyRecord(data []byte) (*cardv1.DriverActivityData_Dai
 	if offset+4 > len(data) {
 		return nil, fmt.Errorf("insufficient data for activity record date")
 	}
-	date, err := dd.UnmarshalTimeReal(data[offset : offset+4])
+	var opts dd.UnmarshalOptions
+	date, err := opts.UnmarshalTimeReal(data[offset : offset+4])
 	if err != nil {
 		return nil, fmt.Errorf("failed to parse activity record date: %w", err)
 	}
@@ -159,7 +160,7 @@ func parseSingleActivityDailyRecord(data []byte) (*cardv1.DriverActivityData_Dai
 	if offset+2 > len(data) {
 		return nil, fmt.Errorf("insufficient data for presence counter")
 	}
-	bcdCounter, err := dd.UnmarshalBcdString(data[offset : offset+2])
+	bcdCounter, err := opts.UnmarshalBcdString(data[offset : offset+2])
 	if err != nil {
 		return nil, fmt.Errorf("failed to create BCD string for presence counter: %w", err)
 	}
@@ -186,7 +187,7 @@ func parseSingleActivityDailyRecord(data []byte) (*cardv1.DriverActivityData_Dai
 		}
 
 		// Parse ActivityChangeInfo using centralized helper
-		activityChange, err := dd.UnmarshalActivityChangeInfo(data[offset : offset+2])
+		activityChange, err := opts.UnmarshalActivityChangeInfo(data[offset : offset+2])
 		if err != nil {
 			return nil, fmt.Errorf("failed to parse activity change info at offset %d: %w", offset, err)
 		}

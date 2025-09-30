@@ -40,6 +40,7 @@ func unmarshalIdentification(data []byte) (*cardv1.Identification, error) {
 		return nil, errors.New("not enough data for EF_Identification")
 	}
 
+	var opts dd.UnmarshalOptions
 	var identification cardv1.Identification
 	offset := 0
 
@@ -76,7 +77,7 @@ func unmarshalIdentification(data []byte) (*cardv1.Identification, error) {
 	// and if the 15th and 16th bytes are single digits (replacement/renewal indices)
 
 	// Try to parse as driver card first (14 + 1 + 1 format)
-	driverIdentification, err := dd.UnmarshalIA5StringValue(cardNumberData[0:14])
+	driverIdentification, err := opts.UnmarshalIA5StringValue(cardNumberData[0:14])
 	if err == nil {
 		// Check if bytes 14 and 15 are single digits (0-9)
 		replacementByte := cardNumberData[14]
@@ -92,28 +93,28 @@ func unmarshalIdentification(data []byte) (*cardv1.Identification, error) {
 			ownerID := &ddv1.OwnerIdentification{}
 
 			// Owner identification (13 bytes)
-			ownerIdentification, err := dd.UnmarshalIA5StringValue(cardNumberData[0:13])
+			ownerIdentification, err := opts.UnmarshalIA5StringValue(cardNumberData[0:13])
 			if err != nil {
 				return nil, fmt.Errorf("failed to read owner identification: %w", err)
 			}
 			ownerID.SetOwnerIdentification(ownerIdentification)
 
 			// Consecutive index (1 byte)
-			consecutiveIndex, err := dd.UnmarshalIA5StringValue(cardNumberData[13:14])
+			consecutiveIndex, err := opts.UnmarshalIA5StringValue(cardNumberData[13:14])
 			if err != nil {
 				return nil, fmt.Errorf("failed to read consecutive index: %w", err)
 			}
 			ownerID.SetConsecutiveIndex(consecutiveIndex)
 
 			// Replacement index (1 byte)
-			replacementIndex, err := dd.UnmarshalIA5StringValue(cardNumberData[14:15])
+			replacementIndex, err := opts.UnmarshalIA5StringValue(cardNumberData[14:15])
 			if err != nil {
 				return nil, fmt.Errorf("failed to read replacement index: %w", err)
 			}
 			ownerID.SetReplacementIndex(replacementIndex)
 
 			// Renewal index (1 byte)
-			renewalIndex, err := dd.UnmarshalIA5StringValue(cardNumberData[15:16])
+			renewalIndex, err := opts.UnmarshalIA5StringValue(cardNumberData[15:16])
 			if err != nil {
 				return nil, fmt.Errorf("failed to read renewal index: %w", err)
 			}
@@ -127,28 +128,28 @@ func unmarshalIdentification(data []byte) (*cardv1.Identification, error) {
 		ownerID := &ddv1.OwnerIdentification{}
 
 		// Owner identification (13 bytes)
-		ownerIdentification, err := dd.UnmarshalIA5StringValue(cardNumberData[0:13])
+		ownerIdentification, err := opts.UnmarshalIA5StringValue(cardNumberData[0:13])
 		if err != nil {
 			return nil, fmt.Errorf("failed to read owner identification: %w", err)
 		}
 		ownerID.SetOwnerIdentification(ownerIdentification)
 
 		// Consecutive index (1 byte)
-		consecutiveIndex, err := dd.UnmarshalIA5StringValue(cardNumberData[13:14])
+		consecutiveIndex, err := opts.UnmarshalIA5StringValue(cardNumberData[13:14])
 		if err != nil {
 			return nil, fmt.Errorf("failed to read consecutive index: %w", err)
 		}
 		ownerID.SetConsecutiveIndex(consecutiveIndex)
 
 		// Replacement index (1 byte)
-		replacementIndex, err := dd.UnmarshalIA5StringValue(cardNumberData[14:15])
+		replacementIndex, err := opts.UnmarshalIA5StringValue(cardNumberData[14:15])
 		if err != nil {
 			return nil, fmt.Errorf("failed to read replacement index: %w", err)
 		}
 		ownerID.SetReplacementIndex(replacementIndex)
 
 		// Renewal index (1 byte)
-		renewalIndex, err := dd.UnmarshalIA5StringValue(cardNumberData[15:16])
+		renewalIndex, err := opts.UnmarshalIA5StringValue(cardNumberData[15:16])
 		if err != nil {
 			return nil, fmt.Errorf("failed to read renewal index: %w", err)
 		}
@@ -162,7 +163,7 @@ func unmarshalIdentification(data []byte) (*cardv1.Identification, error) {
 	if offset+36 > len(data) {
 		return nil, fmt.Errorf("insufficient data for card issuing authority name")
 	}
-	authorityName, err := dd.UnmarshalStringValue(data[offset : offset+36])
+	authorityName, err := opts.UnmarshalStringValue(data[offset : offset+36])
 	if err != nil {
 		return nil, fmt.Errorf("failed to read card issuing authority name: %w", err)
 	}
@@ -173,7 +174,7 @@ func unmarshalIdentification(data []byte) (*cardv1.Identification, error) {
 	if offset+4 > len(data) {
 		return nil, fmt.Errorf("insufficient data for card issue date")
 	}
-	cardIssueDate, err := dd.UnmarshalTimeReal(data[offset : offset+4])
+	cardIssueDate, err := opts.UnmarshalTimeReal(data[offset : offset+4])
 	if err != nil {
 		return nil, fmt.Errorf("failed to parse card issue date: %w", err)
 	}
@@ -184,7 +185,7 @@ func unmarshalIdentification(data []byte) (*cardv1.Identification, error) {
 	if offset+4 > len(data) {
 		return nil, fmt.Errorf("insufficient data for card validity begin")
 	}
-	cardValidityBegin, err := dd.UnmarshalTimeReal(data[offset : offset+4])
+	cardValidityBegin, err := opts.UnmarshalTimeReal(data[offset : offset+4])
 	if err != nil {
 		return nil, fmt.Errorf("failed to parse card validity begin: %w", err)
 	}
@@ -195,7 +196,7 @@ func unmarshalIdentification(data []byte) (*cardv1.Identification, error) {
 	if offset+4 > len(data) {
 		return nil, fmt.Errorf("insufficient data for card expiry date")
 	}
-	cardExpiryDate, err := dd.UnmarshalTimeReal(data[offset : offset+4])
+	cardExpiryDate, err := opts.UnmarshalTimeReal(data[offset : offset+4])
 	if err != nil {
 		return nil, fmt.Errorf("failed to parse card expiry date: %w", err)
 	}
@@ -211,7 +212,7 @@ func unmarshalIdentification(data []byte) (*cardv1.Identification, error) {
 	if offset+36 > len(data) {
 		return nil, fmt.Errorf("insufficient data for card holder surname")
 	}
-	surname, err := dd.UnmarshalStringValue(data[offset : offset+36])
+	surname, err := opts.UnmarshalStringValue(data[offset : offset+36])
 	if err != nil {
 		return nil, fmt.Errorf("failed to read card holder surname: %w", err)
 	}
@@ -222,7 +223,7 @@ func unmarshalIdentification(data []byte) (*cardv1.Identification, error) {
 	if offset+36 > len(data) {
 		return nil, fmt.Errorf("insufficient data for card holder first names")
 	}
-	firstNames, err := dd.UnmarshalStringValue(data[offset : offset+36])
+	firstNames, err := opts.UnmarshalStringValue(data[offset : offset+36])
 	if err != nil {
 		return nil, fmt.Errorf("failed to read card holder first names: %w", err)
 	}
@@ -233,7 +234,7 @@ func unmarshalIdentification(data []byte) (*cardv1.Identification, error) {
 	if offset+4 > len(data) {
 		return nil, fmt.Errorf("insufficient data for card holder birth date")
 	}
-	birthDate, err := dd.UnmarshalDate(data[offset : offset+4])
+	birthDate, err := opts.UnmarshalDate(data[offset : offset+4])
 	if err != nil {
 		return nil, fmt.Errorf("failed to parse card holder birth date: %w", err)
 	}
@@ -244,7 +245,7 @@ func unmarshalIdentification(data []byte) (*cardv1.Identification, error) {
 	if offset+1 > len(data) {
 		return nil, fmt.Errorf("insufficient data for card holder preferred language")
 	}
-	preferredLanguage, err := dd.UnmarshalIA5StringValue(data[offset : offset+1])
+	preferredLanguage, err := opts.UnmarshalIA5StringValue(data[offset : offset+1])
 	if err != nil {
 		return nil, fmt.Errorf("failed to read card holder preferred language: %w", err)
 	}

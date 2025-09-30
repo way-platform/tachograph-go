@@ -41,13 +41,14 @@ func unmarshalCardControlActivityData(data []byte) (*cardv1.ControlActivityData,
 	}
 	target.SetValid(true)
 
+	var opts dd.UnmarshalOptions
 	offset := 0
 
 	// Read control type (1 byte)
 	if offset+1 > len(data) {
 		return nil, fmt.Errorf("insufficient data for control type")
 	}
-	controlType, err := dd.UnmarshalControlType(data[offset : offset+1])
+	controlType, err := opts.UnmarshalControlType(data[offset : offset+1])
 	if err != nil {
 		return nil, fmt.Errorf("failed to read control type: %w", err)
 	}
@@ -58,7 +59,7 @@ func unmarshalCardControlActivityData(data []byte) (*cardv1.ControlActivityData,
 	if offset+4 > len(data) {
 		return nil, fmt.Errorf("insufficient data for control time")
 	}
-	controlTimestamp, err2 := dd.UnmarshalTimeReal(data[offset : offset+4])
+	controlTimestamp, err2 := opts.UnmarshalTimeReal(data[offset : offset+4])
 	if err2 != nil {
 		return nil, fmt.Errorf("failed to parse control time: %w", err2)
 	}
@@ -76,7 +77,7 @@ func unmarshalCardControlActivityData(data []byte) (*cardv1.ControlActivityData,
 	if offset+18 > len(data) {
 		return nil, fmt.Errorf("insufficient data for control card number")
 	}
-	cardNumberStr, err := dd.UnmarshalIA5StringValue(data[offset : offset+18])
+	cardNumberStr, err := opts.UnmarshalIA5StringValue(data[offset : offset+18])
 	if err != nil {
 		return nil, fmt.Errorf("failed to read control card number: %w", err)
 	}
@@ -98,7 +99,7 @@ func unmarshalCardControlActivityData(data []byte) (*cardv1.ControlActivityData,
 	if offset+15 > len(data) {
 		return nil, fmt.Errorf("insufficient data for vehicle registration")
 	}
-	vehicleReg, err := dd.UnmarshalVehicleRegistration(data[offset : offset+15])
+	vehicleReg, err := opts.UnmarshalVehicleRegistration(data[offset : offset+15])
 	if err != nil {
 		return nil, fmt.Errorf("failed to parse vehicle registration: %w", err)
 	}
@@ -109,7 +110,7 @@ func unmarshalCardControlActivityData(data []byte) (*cardv1.ControlActivityData,
 	if offset+4 > len(data) {
 		return nil, fmt.Errorf("insufficient data for control download period begin")
 	}
-	controlDownloadPeriodBegin, err3 := dd.UnmarshalTimeReal(data[offset : offset+4])
+	controlDownloadPeriodBegin, err3 := opts.UnmarshalTimeReal(data[offset : offset+4])
 	if err3 != nil {
 		return nil, fmt.Errorf("failed to parse control download period begin: %w", err3)
 	}
@@ -120,7 +121,7 @@ func unmarshalCardControlActivityData(data []byte) (*cardv1.ControlActivityData,
 	if offset+4 > len(data) {
 		return nil, fmt.Errorf("insufficient data for control download period end")
 	}
-	controlDownloadPeriodEnd, err4 := dd.UnmarshalTimeReal(data[offset : offset+4])
+	controlDownloadPeriodEnd, err4 := opts.UnmarshalTimeReal(data[offset : offset+4])
 	if err4 != nil {
 		return nil, fmt.Errorf("failed to parse control download period end: %w", err4)
 	}

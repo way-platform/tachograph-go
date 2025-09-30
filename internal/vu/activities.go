@@ -56,6 +56,7 @@ func UnmarshalVuActivities(data []byte, offset int, target *vuv1.Activities, gen
 
 // unmarshalVuActivitiesGen1 unmarshals Generation 1 VU activities
 func unmarshalVuActivitiesGen1(data []byte, offset int, target *vuv1.Activities) (int, error) {
+	var opts dd.UnmarshalOptions
 	startOffset := offset
 	target.SetGeneration(ddv1.Generation_GENERATION_1)
 
@@ -67,7 +68,7 @@ func unmarshalVuActivitiesGen1(data []byte, offset int, target *vuv1.Activities)
 	target.SetDateOfDay(timestamppb.New(time.Unix(timeReal, 0)))
 
 	// Read OdometerValueMidnight (3 bytes)
-	odometerValue, err := dd.UnmarshalOdometer(data[offset : offset+3])
+	odometerValue, err := opts.UnmarshalOdometer(data[offset : offset+3])
 	if err != nil {
 		return 0, fmt.Errorf("failed to read odometer value midnight: %w", err)
 	}
@@ -177,7 +178,7 @@ func unmarshalVuActivitiesGen2(data []byte, offset int, target *vuv1.Activities)
 		borderCrossings, newOffset, err := parseVuBorderCrossingRecordArray(data, offset)
 		if err == nil {
 			target.SetBorderCrossings(borderCrossings)
-			target.SetVersion(vuv1.Version_VERSION_2)
+			target.SetVersion(ddv1.Version_VERSION_2)
 			offset = newOffset
 		}
 
@@ -274,19 +275,21 @@ func unmarshalVuCardIWRecord(data []byte) (*vuv1.Activities_CardIWRecord, error)
 	//     cardSlotNumber CardSlotNumber,                -- 1 byte
 	//     cardWithdrawalTime TimeReal,                  -- 4 bytes
 	//     vehicleOdometerValueAtWithdrawal OdometerShort, -- 3 bytes
-	//     previousVehicleInfo PreviousVehicleInfo,      -- 15 bytes
+	//     previousVehicleInfo PreviousVehicleInfo,      -- 19 bytes
 	//     manualInputFlag ManualInputFlag               -- 1 byte
 	// }
+	// Total: 130 bytes
 
-	if len(data) < 126 {
-		return nil, fmt.Errorf("insufficient data for card IW record: got %d, need 126", len(data))
+	if len(data) < 130 {
+		return nil, fmt.Errorf("insufficient data for card IW record: got %d, need 130", len(data))
 	}
 
+	var opts dd.UnmarshalOptions
 	record := &vuv1.Activities_CardIWRecord{}
 
 	// Parse cardHolderName (HolderName - 72 bytes)
 	holderNameData := data[0:72]
-	holderName, err := dd.UnmarshalHolderName(holderNameData)
+	holderName, err := opts.UnmarshalHolderName(holderNameData)
 	if err != nil {
 		return nil, fmt.Errorf("failed to unmarshal holder name: %w", err)
 	}
@@ -294,7 +297,7 @@ func unmarshalVuCardIWRecord(data []byte) (*vuv1.Activities_CardIWRecord, error)
 
 	// Parse fullCardNumber (FullCardNumber - 19 bytes)
 	fullCardNumberData := data[72:91]
-	fullCardNumber, err := dd.UnmarshalFullCardNumber(fullCardNumberData)
+	fullCardNumber, err := opts.UnmarshalFullCardNumber(fullCardNumberData)
 	if err != nil {
 		return nil, fmt.Errorf("failed to unmarshal full card number: %w", err)
 	}
@@ -305,7 +308,7 @@ func unmarshalVuCardIWRecord(data []byte) (*vuv1.Activities_CardIWRecord, error)
 	record.SetFullCardNumberAndGeneration(fullCardNumberAndGeneration)
 
 	// Parse cardExpiryDate (Datef - 4 bytes)
-	cardExpiryDate, err := dd.UnmarshalDate(data[91:95])
+	cardExpiryDate, err := opts.UnmarshalDate(data[91:95])
 	if err != nil {
 		return nil, fmt.Errorf("failed to parse card expiry date: %w", err)
 	}
@@ -319,7 +322,7 @@ func unmarshalVuCardIWRecord(data []byte) (*vuv1.Activities_CardIWRecord, error)
 	record.SetCardInsertionTime(timestamppb.New(time.Unix(insertionTime, 0)))
 
 	// Parse vehicleOdometerValueAtInsertion (OdometerShort - 3 bytes)
-	odometerAtInsertion, err := dd.UnmarshalOdometer(data[99 : 99+3])
+	odometerAtInsertion, err := opts.UnmarshalOdometer(data[99 : 99+3])
 	if err != nil {
 		return nil, fmt.Errorf("failed to read odometer at insertion: %w", err)
 	}
@@ -337,17 +340,18 @@ func unmarshalVuCardIWRecord(data []byte) (*vuv1.Activities_CardIWRecord, error)
 	record.SetCardWithdrawalTime(timestamppb.New(time.Unix(withdrawalTime, 0)))
 
 	// Parse vehicleOdometerValueAtWithdrawal (OdometerShort - 3 bytes)
-	odometerAtWithdrawal, err := dd.UnmarshalOdometer(data[107 : 107+3])
+	odometerAtWithdrawal, err := opts.UnmarshalOdometer(data[107 : 107+3])
 	if err != nil {
 		return nil, fmt.Errorf("failed to read odometer at withdrawal: %w", err)
 	}
 	record.SetOdometerAtWithdrawalKm(int32(odometerAtWithdrawal))
 
-	// Parse previousVehicleInfo (PreviousVehicleInfo - 15 bytes)
-	previousVehicleData := data[110:125]
-	previousVehicleInfo, err := parsePreviousVehicleInfo(previousVehicleData)
+	// Parse previousVehicleInfo (PreviousVehicleInfo - 19 bytes: 15 vehicle reg + 4 cardWithdrawalTime)
+	previousVehicleData := data[110:129]
+	opts.Generation = ddv1.Generation_GENERATION_1
+	previousVehicleInfo, err := opts.UnmarshalPreviousVehicleInfo(previousVehicleData)
 	if err != nil {
-		return nil, fmt.Errorf("failed to parse previous vehicle info: %w", err)
+		return nil, fmt.Errorf("failed to unmarshal previous vehicle info: %w", err)
 	}
 	record.SetPreviousVehicleInfo(previousVehicleInfo)
 
@@ -356,33 +360,6 @@ func unmarshalVuCardIWRecord(data []byte) (*vuv1.Activities_CardIWRecord, error)
 	record.SetManualInputFlag(manualInputFlag != 0)
 
 	return record, nil
-}
-
-// parsePreviousVehicleInfo parses PreviousVehicleInfo structure
-func parsePreviousVehicleInfo(data []byte) (*ddv1.PreviousVehicleInfo, error) {
-	// PreviousVehicleInfo ::= SEQUENCE {
-	//     vehicleRegistrationIdentification VehicleRegistrationIdentification -- 15 bytes
-	// }
-
-	if len(data) < 15 {
-		return nil, fmt.Errorf("insufficient data for previous vehicle info: got %d, need 15", len(data))
-	}
-
-	// Parse VehicleRegistrationIdentification (15 bytes: 1 byte nation + 14 bytes number)
-	nation := ddv1.NationNumeric(data[0])
-	regNumber, err := dd.UnmarshalIA5StringValue(data[1:15])
-	if err != nil {
-		return nil, fmt.Errorf("failed to parse vehicle registration number: %w", err)
-	}
-
-	vehicleReg := &ddv1.VehicleRegistrationIdentification{}
-	vehicleReg.SetNation(nation)
-	vehicleReg.SetNumber(regNumber)
-
-	info := &ddv1.PreviousVehicleInfo{}
-	info.SetVehicleRegistration(vehicleReg)
-
-	return info, nil
 }
 
 func parseVuActivityDailyData(data []byte, offset int) ([]*ddv1.ActivityChangeInfo, int, error) {
@@ -414,7 +391,8 @@ func parseVuActivityDailyData(data []byte, offset int) ([]*ddv1.ActivityChangeIn
 
 // parseActivityChangeInfo parses a single ActivityChangeInfo record (legacy function for Gen1)
 func parseActivityChangeInfo(data []byte, offset int) (*ddv1.ActivityChangeInfo, int, error) {
-	change, err := dd.UnmarshalActivityChangeInfo(data[offset : offset+2])
+	var opts dd.UnmarshalOptions
+	change, err := opts.UnmarshalActivityChangeInfo(data[offset : offset+2])
 	if err != nil {
 		return nil, offset, err
 	}
@@ -462,6 +440,7 @@ func unmarshalVuPlaceRecord(data []byte) (*vuv1.Activities_PlaceRecord, error) {
 		return nil, fmt.Errorf("insufficient data for place record: got %d, need 10", len(data))
 	}
 
+	var opts dd.UnmarshalOptions
 	record := &vuv1.Activities_PlaceRecord{}
 
 	// Parse entryTime (TimeReal - 4 bytes)
@@ -484,7 +463,7 @@ func unmarshalVuPlaceRecord(data []byte) (*vuv1.Activities_PlaceRecord, error) {
 	record.SetRegion([]byte{region})
 
 	// Parse vehicleOdometerValue (OdometerShort - 3 bytes)
-	odometerValue, err := dd.UnmarshalOdometer(data[7 : 7+3])
+	odometerValue, err := opts.UnmarshalOdometer(data[7 : 7+3])
 	if err != nil {
 		return nil, fmt.Errorf("failed to read odometer value: %w", err)
 	}
@@ -531,7 +510,8 @@ func parseVuSpecificConditionData(data []byte, offset int) ([]*ddv1.SpecificCond
 
 // parseVuSpecificConditionRecord parses a single SpecificConditionRecord (legacy function for Gen1)
 func parseVuSpecificConditionRecord(data []byte, offset int) (*ddv1.SpecificConditionRecord, int, error) {
-	record, err := dd.UnmarshalSpecificConditionRecord(data[offset : offset+5])
+	var opts dd.UnmarshalOptions
+	record, err := opts.UnmarshalSpecificConditionRecord(data[offset : offset+5])
 	if err != nil {
 		return nil, offset, err
 	}
@@ -629,11 +609,12 @@ func parseOdometerValueMidnightRecordArray(data []byte, offset int) ([]int32, in
 		return nil, offset, fmt.Errorf("unexpected record size: got %d, expected 3", recordSize)
 	}
 
+	var opts dd.UnmarshalOptions
 	var odometerValues []int32
 
 	// Parse each OdometerShort record
 	for i := 0; i < int(noOfRecords); i++ {
-		odometerValue, err := dd.UnmarshalOdometer(data[offset : offset+3])
+		odometerValue, err := opts.UnmarshalOdometer(data[offset : offset+3])
 		if err != nil {
 			return nil, offset, fmt.Errorf("failed to read OdometerShort record %d: %w", i, err)
 		}
@@ -696,7 +677,7 @@ func parseVuCardIWRecordArray(data []byte, offset int) ([]*vuv1.Activities_CardI
 // parseVuCardIWRecordGen2 parses a single VuCardIWRecord for Gen2
 func parseVuCardIWRecordGen2(data []byte, offset int) (*vuv1.Activities_CardIWRecord, int, error) {
 	// VuCardIWRecord (Gen2) ::= SEQUENCE {
-	//     cardHolderName HolderName,                    -- Variable length (72 bytes)
+	//     cardHolderName HolderName,                    -- 72 bytes
 	//     fullCardNumberAndGeneration FullCardNumberAndGeneration, -- 20 bytes
 	//     cardExpiryDate Datef,                         -- 4 bytes
 	//     cardInsertionTime TimeReal,                   -- 4 bytes
@@ -704,10 +685,12 @@ func parseVuCardIWRecordGen2(data []byte, offset int) (*vuv1.Activities_CardIWRe
 	//     cardSlotNumber CardSlotNumber,                -- 1 byte
 	//     cardWithdrawalTime TimeReal,                  -- 4 bytes
 	//     vehicleOdometerValueAtWithdrawal OdometerShort, -- 3 bytes
-	//     previousVehicleInfo PreviousVehicleInfo,      -- Variable length (15 bytes)
+	//     previousVehicleInfo PreviousVehicleInfo,      -- 20 bytes
 	//     manualInputFlag ManualInputFlag               -- 1 byte
 	// }
+	// Total: 132 bytes
 
+	var opts dd.UnmarshalOptions
 	record := &vuv1.Activities_CardIWRecord{}
 
 	// Parse cardHolderName (HolderName - 72 bytes)
@@ -715,7 +698,7 @@ func parseVuCardIWRecordGen2(data []byte, offset int) (*vuv1.Activities_CardIWRe
 	if err != nil {
 		return nil, offset, fmt.Errorf("failed to read card holder name: %w", err)
 	}
-	holderName, err := dd.UnmarshalHolderName(holderNameData)
+	holderName, err := opts.UnmarshalHolderName(holderNameData)
 	if err != nil {
 		return nil, offset, fmt.Errorf("failed to unmarshal holder name: %w", err)
 	}
@@ -726,7 +709,7 @@ func parseVuCardIWRecordGen2(data []byte, offset int) (*vuv1.Activities_CardIWRe
 	if err != nil {
 		return nil, offset, fmt.Errorf("failed to read full card number and generation: %w", err)
 	}
-	_, err = dd.UnmarshalFullCardNumberAndGeneration(fullCardNumberAndGenData)
+	_, err = opts.UnmarshalFullCardNumberAndGeneration(fullCardNumberAndGenData)
 	if err != nil {
 		return nil, offset, fmt.Errorf("failed to unmarshal full card number and generation: %w", err)
 	}
@@ -742,7 +725,7 @@ func parseVuCardIWRecordGen2(data []byte, offset int) (*vuv1.Activities_CardIWRe
 	if offset+4 > len(data) {
 		return nil, offset, fmt.Errorf("insufficient data for card expiry date")
 	}
-	cardExpiryDate, err := dd.UnmarshalDate(data[offset : offset+4])
+	cardExpiryDate, err := opts.UnmarshalDate(data[offset : offset+4])
 	if err != nil {
 		return nil, offset, fmt.Errorf("failed to parse card expiry date: %w", err)
 	}
@@ -757,7 +740,7 @@ func parseVuCardIWRecordGen2(data []byte, offset int) (*vuv1.Activities_CardIWRe
 	record.SetCardInsertionTime(timestamppb.New(time.Unix(insertionTime, 0)))
 
 	// Parse vehicleOdometerValueAtInsertion (OdometerShort - 3 bytes)
-	odometerAtInsertion, err := dd.UnmarshalOdometer(data[offset : offset+3])
+	odometerAtInsertion, err := opts.UnmarshalOdometer(data[offset : offset+3])
 	if err != nil {
 		return nil, offset, fmt.Errorf("failed to read odometer at insertion: %w", err)
 	}
@@ -779,21 +762,22 @@ func parseVuCardIWRecordGen2(data []byte, offset int) (*vuv1.Activities_CardIWRe
 	record.SetCardWithdrawalTime(timestamppb.New(time.Unix(withdrawalTime, 0)))
 
 	// Parse vehicleOdometerValueAtWithdrawal (OdometerShort - 3 bytes)
-	odometerAtWithdrawal, err := dd.UnmarshalOdometer(data[offset : offset+3])
+	odometerAtWithdrawal, err := opts.UnmarshalOdometer(data[offset : offset+3])
 	if err != nil {
 		return nil, offset, fmt.Errorf("failed to read odometer at withdrawal: %w", err)
 	}
 	offset += 3
 	record.SetOdometerAtWithdrawalKm(int32(odometerAtWithdrawal))
 
-	// Parse previousVehicleInfo (PreviousVehicleInfo - 15 bytes)
-	previousVehicleData, offset, err := readBytesFromBytes(data, offset, 15)
+	// Parse previousVehicleInfo (PreviousVehicleInfo - 20 bytes: 15 vehicle reg + 4 cardWithdrawalTime + 1 vuGeneration)
+	previousVehicleData, offset, err := readBytesFromBytes(data, offset, 20)
 	if err != nil {
 		return nil, offset, fmt.Errorf("failed to read previous vehicle info: %w", err)
 	}
-	previousVehicleInfo, err := parsePreviousVehicleInfo(previousVehicleData)
+	opts.Generation = ddv1.Generation_GENERATION_2
+	previousVehicleInfo, err := opts.UnmarshalPreviousVehicleInfo(previousVehicleData)
 	if err != nil {
-		return nil, offset, fmt.Errorf("failed to parse previous vehicle info: %w", err)
+		return nil, offset, fmt.Errorf("failed to unmarshal previous vehicle info: %w", err)
 	}
 	record.SetPreviousVehicleInfo(previousVehicleInfo)
 
@@ -861,6 +845,7 @@ func parseVuActivityDailyRecordArray(data []byte, offset int) ([]*ddv1.ActivityC
 	scanner := bufio.NewScanner(bytes.NewReader(recordsData))
 	scanner.Split(splitActivityChangeInfoRecord)
 
+	var opts dd.UnmarshalOptions
 	var changes []*ddv1.ActivityChangeInfo
 	recordCount := 0
 
@@ -870,7 +855,7 @@ func parseVuActivityDailyRecordArray(data []byte, offset int) ([]*ddv1.ActivityC
 		}
 
 		recordData := scanner.Bytes()
-		change, err := dd.UnmarshalActivityChangeInfo(recordData)
+		change, err := opts.UnmarshalActivityChangeInfo(recordData)
 		if err != nil {
 			return nil, offset, fmt.Errorf("failed to parse ActivityChangeInfo record %d: %w", recordCount, err)
 		}
@@ -1152,6 +1137,7 @@ func parseVuSpecificConditionRecordArray(data []byte, offset int) ([]*ddv1.Speci
 	scanner := bufio.NewScanner(bytes.NewReader(recordsData))
 	scanner.Split(splitSpecificConditionRecord)
 
+	var opts dd.UnmarshalOptions
 	var records []*ddv1.SpecificConditionRecord
 	recordCount := 0
 
@@ -1161,7 +1147,7 @@ func parseVuSpecificConditionRecordArray(data []byte, offset int) ([]*ddv1.Speci
 		}
 
 		recordData := scanner.Bytes()
-		record, err := dd.UnmarshalSpecificConditionRecord(recordData)
+		record, err := opts.UnmarshalSpecificConditionRecord(recordData)
 		if err != nil {
 			return nil, offset, fmt.Errorf("failed to parse SpecificConditionRecord %d: %w", recordCount, err)
 		}
@@ -1179,9 +1165,9 @@ func parseVuSpecificConditionRecordArray(data []byte, offset int) ([]*ddv1.Speci
 	return records, offset, nil
 }
 
-// splitVuBorderCrossingRecord splits data into 59-byte VuBorderCrossingRecord records
+// splitVuBorderCrossingRecord splits data into 57-byte VuBorderCrossingRecord records
 func splitVuBorderCrossingRecord(data []byte, atEOF bool) (advance int, token []byte, err error) {
-	const borderCrossingRecordSize = 59
+	const borderCrossingRecordSize = 57
 
 	if len(data) < borderCrossingRecordSize {
 		if atEOF {
@@ -1255,7 +1241,7 @@ func parseVuBorderCrossingRecordArray(data []byte, offset int) ([]*vuv1.Activiti
 	}
 
 	// Update offset to reflect consumed data
-	offset += recordCount * 59
+	offset += recordCount * 57
 
 	return records, offset, nil
 }
@@ -1263,23 +1249,26 @@ func parseVuBorderCrossingRecordArray(data []byte, offset int) ([]*vuv1.Activiti
 // unmarshalVuBorderCrossingRecord parses a single VuBorderCrossingRecord from a byte slice
 func unmarshalVuBorderCrossingRecord(data []byte) (*vuv1.Activities_BorderCrossingRecord, error) {
 	// VuBorderCrossingRecord ::= SEQUENCE {
-	//     cardNumberAndGenDriverSlot FullCardNumberAndGeneration, -- 20 bytes
+	//     cardNumberAndGenDriverSlot FullCardNumberAndGeneration,   -- 20 bytes
 	//     cardNumberAndGenCodriverSlot FullCardNumberAndGeneration, -- 20 bytes
-	//     countryLeft NationNumeric,                              -- 1 byte
-	//     countryEntered NationNumeric,                           -- 1 byte
-	//     placeRecord GNSSPlaceRecord,                            -- 14 bytes (timestamp + coords + auth)
-	//     odometerValue OdometerShort                             -- 3 bytes
+	//     countryLeft NationNumeric,                                -- 1 byte
+	//     countryEntered NationNumeric,                             -- 1 byte
+	//     gnssPlaceAuthRecord GNSSPlaceAuthRecord,                  -- 12 bytes
+	//     vehicleOdometerValue OdometerShort                        -- 3 bytes
 	// }
+	// Total: 57 bytes
 
-	if len(data) < 59 {
-		return nil, fmt.Errorf("insufficient data for border crossing record: got %d, need 59", len(data))
+	const vuBorderCrossingRecordSize = 57
+	if len(data) < vuBorderCrossingRecordSize {
+		return nil, fmt.Errorf("insufficient data for border crossing record: got %d, need %d", len(data), vuBorderCrossingRecordSize)
 	}
 
+	var opts dd.UnmarshalOptions
 	record := &vuv1.Activities_BorderCrossingRecord{}
 
 	// Parse cardNumberAndGenDriverSlot (FullCardNumberAndGeneration - 20 bytes)
 	driverCardData := data[0:20]
-	_, err := dd.UnmarshalFullCardNumberAndGeneration(driverCardData)
+	_, err := opts.UnmarshalFullCardNumberAndGeneration(driverCardData)
 	if err != nil {
 		return nil, fmt.Errorf("failed to unmarshal driver card data: %w", err)
 	}
@@ -1291,7 +1280,7 @@ func unmarshalVuBorderCrossingRecord(data []byte) (*vuv1.Activities_BorderCrossi
 
 	// Parse cardNumberAndGenCodriverSlot (FullCardNumberAndGeneration - 20 bytes)
 	codriverCardData := data[20:40]
-	_, err = dd.UnmarshalFullCardNumberAndGeneration(codriverCardData)
+	_, err = opts.UnmarshalFullCardNumberAndGeneration(codriverCardData)
 	if err != nil {
 		return nil, fmt.Errorf("failed to unmarshal codriver card data: %w", err)
 	}
@@ -1309,16 +1298,16 @@ func unmarshalVuBorderCrossingRecord(data []byte) (*vuv1.Activities_BorderCrossi
 	countryEntered := data[41]
 	record.SetCountryEntered(ddv1.NationNumeric(countryEntered))
 
-	// Parse placeRecord (GNSSPlaceRecord - 14 bytes)
-	placeData := data[42:56]
-	placeRecord, err := unmarshalGNSSPlaceRecord(placeData)
+	// Parse gnssPlaceAuthRecord (GNSSPlaceAuthRecord - 12 bytes)
+	placeData := data[42:54]
+	placeRecord, err := unmarshalGNSSPlaceAuthRecord(placeData, opts)
 	if err != nil {
-		return nil, fmt.Errorf("failed to unmarshal place record: %w", err)
+		return nil, fmt.Errorf("failed to unmarshal GNSS place auth record: %w", err)
 	}
 	record.SetPlaceRecord(placeRecord)
 
-	// Parse odometerValue (OdometerShort - 3 bytes)
-	odometerValue, err := dd.UnmarshalOdometer(data[56 : 56+3])
+	// Parse vehicleOdometerValue (OdometerShort - 3 bytes)
+	odometerValue, err := opts.UnmarshalOdometer(data[54:57])
 	if err != nil {
 		return nil, fmt.Errorf("failed to read odometer value: %w", err)
 	}
@@ -1327,57 +1316,29 @@ func unmarshalVuBorderCrossingRecord(data []byte) (*vuv1.Activities_BorderCrossi
 	return record, nil
 }
 
-// unmarshalGNSSPlaceRecord parses a single GNSSPlaceRecord from a byte slice
-func unmarshalGNSSPlaceRecord(data []byte) (*vuv1.Activities_GnssRecord, error) {
-	// GNSSPlaceRecord ::= SEQUENCE {
-	//     timeStamp TimeReal,                    -- 4 bytes
-	//     gnssAccuracy GNSSAccuracy,            -- 1 byte
-	//     geoCoordinates GeoCoordinates,        -- 8 bytes
-	//     positionAuthenticationStatus PositionAuthenticationStatus -- 1 byte
-	// }
-
-	if len(data) < 14 {
-		return nil, fmt.Errorf("insufficient data for GNSS place record: got %d, need 14", len(data))
-	}
-
-	record := &vuv1.Activities_GnssRecord{}
-
-	// Parse timeStamp (TimeReal - 4 bytes)
-	timestamp, _, err := readVuTimeRealFromBytes(data, 0)
+// unmarshalGNSSPlaceAuthRecord parses a GNSSPlaceAuthRecord and converts it to VU GnssRecord format.
+//
+// This uses the dd package implementation for parsing, then converts to the VU-specific message type.
+func unmarshalGNSSPlaceAuthRecord(data []byte, opts dd.UnmarshalOptions) (*vuv1.Activities_GnssRecord, error) {
+	// Use dd package to parse GNSSPlaceAuthRecord (12 bytes)
+	ddRecord, err := opts.UnmarshalGNSSPlaceAuthRecord(data)
 	if err != nil {
-		return nil, fmt.Errorf("failed to read timestamp: %w", err)
+		return nil, fmt.Errorf("failed to unmarshal GNSSPlaceAuthRecord: %w", err)
 	}
-	record.SetTimestamp(timestamppb.New(time.Unix(timestamp, 0)))
 
-	// Parse gnssAccuracy (GNSSAccuracy - 1 byte)
-	accuracy := data[4]
-	record.SetGnssAccuracy(int32(accuracy))
+	// Convert dd.GNSSPlaceAuthRecord to vu.Activities_GnssRecord
+	vuRecord := &vuv1.Activities_GnssRecord{}
+	vuRecord.SetTimestamp(ddRecord.GetTimestamp())
+	vuRecord.SetGnssAccuracy(ddRecord.GetGnssAccuracy())
+	vuRecord.SetGeoCoordinates(ddRecord.GetGeoCoordinates())
+	vuRecord.SetAuthenticationStatus(ddRecord.GetAuthenticationStatus())
 
-	// Parse geoCoordinates (GeoCoordinates - 8 bytes: 4 bytes latitude + 4 bytes longitude)
-	// Latitude (4 bytes, signed integer)
-	latBytes := data[5:9]
-	latitude := int32(binary.BigEndian.Uint32(latBytes))
-
-	// Longitude (4 bytes, signed integer)
-	lonBytes := data[9:13]
-	longitude := int32(binary.BigEndian.Uint32(lonBytes))
-
-	// Create GeoCoordinates
-	geoCoords := &ddv1.GeoCoordinates{}
-	geoCoords.SetLatitude(latitude)
-	geoCoords.SetLongitude(longitude)
-	record.SetGeoCoordinates(geoCoords)
-
-	// Parse positionAuthenticationStatus (PositionAuthenticationStatus - 1 byte)
-	authStatus := data[13]
-	record.SetAuthenticationStatus(ddv1.PositionAuthenticationStatus(authStatus))
-
-	return record, nil
+	return vuRecord, nil
 }
 
-// splitVuLoadUnloadRecord splits data into 58-byte VuLoadUnloadRecord records
+// splitVuLoadUnloadRecord splits data into 60-byte VuLoadUnloadRecord records
 func splitVuLoadUnloadRecord(data []byte, atEOF bool) (advance int, token []byte, err error) {
-	const loadUnloadRecordSize = 58
+	const loadUnloadRecordSize = 60
 
 	if len(data) < loadUnloadRecordSize {
 		if atEOF {
@@ -1451,7 +1412,7 @@ func parseVuLoadUnloadRecordArray(data []byte, offset int) ([]*vuv1.Activities_L
 	}
 
 	// Update offset to reflect consumed data
-	offset += recordCount * 58
+	offset += recordCount * 60
 
 	return records, offset, nil
 }
@@ -1459,22 +1420,37 @@ func parseVuLoadUnloadRecordArray(data []byte, offset int) ([]*vuv1.Activities_L
 // unmarshalVuLoadUnloadRecord parses a single VuLoadUnloadRecord from a byte slice
 func unmarshalVuLoadUnloadRecord(data []byte) (*vuv1.Activities_LoadUnloadRecord, error) {
 	// VuLoadUnloadRecord ::= SEQUENCE {
+	//     timeStamp TimeReal,                                     -- 4 bytes
+	//     operationType OperationType,                            -- 1 byte
 	//     cardNumberAndGenDriverSlot FullCardNumberAndGeneration, -- 20 bytes
 	//     cardNumberAndGenCodriverSlot FullCardNumberAndGeneration, -- 20 bytes
-	//     operationType OperationType,                            -- 1 byte
-	//     placeRecord GNSSPlaceRecord,                            -- 14 bytes
-	//     odometerValue OdometerShort                             -- 3 bytes
+	//     gnssPlaceAuthRecord GNSSPlaceAuthRecord,                -- 12 bytes
+	//     vehicleOdometerValue OdometerShort                      -- 3 bytes
 	// }
+	// Total: 60 bytes
 
-	if len(data) < 58 {
-		return nil, fmt.Errorf("insufficient data for load/unload record: got %d, need 58", len(data))
+	const vuLoadUnloadRecordSize = 60
+	if len(data) < vuLoadUnloadRecordSize {
+		return nil, fmt.Errorf("insufficient data for load/unload record: got %d, need %d", len(data), vuLoadUnloadRecordSize)
 	}
 
+	var opts dd.UnmarshalOptions
 	record := &vuv1.Activities_LoadUnloadRecord{}
 
+	// Parse timeStamp (TimeReal - 4 bytes)
+	timestamp, err := opts.UnmarshalTimeReal(data[0:4])
+	if err != nil {
+		return nil, fmt.Errorf("failed to unmarshal timestamp: %w", err)
+	}
+	record.SetTimestamp(timestamp)
+
+	// Parse operationType (OperationType - 1 byte)
+	operationType := data[4]
+	record.SetOperationType(ddv1.OperationType(operationType))
+
 	// Parse cardNumberAndGenDriverSlot (FullCardNumberAndGeneration - 20 bytes)
-	driverCardData := data[0:20]
-	_, err := dd.UnmarshalFullCardNumberAndGeneration(driverCardData)
+	driverCardData := data[5:25]
+	_, err = opts.UnmarshalFullCardNumberAndGeneration(driverCardData)
 	if err != nil {
 		return nil, fmt.Errorf("failed to unmarshal driver card data: %w", err)
 	}
@@ -1485,8 +1461,8 @@ func unmarshalVuLoadUnloadRecord(data []byte) (*vuv1.Activities_LoadUnloadRecord
 	record.SetCardNumberDriverSlot(driverPlaceholder)
 
 	// Parse cardNumberAndGenCodriverSlot (FullCardNumberAndGeneration - 20 bytes)
-	codriverCardData := data[20:40]
-	_, err = dd.UnmarshalFullCardNumberAndGeneration(codriverCardData)
+	codriverCardData := data[25:45]
+	_, err = opts.UnmarshalFullCardNumberAndGeneration(codriverCardData)
 	if err != nil {
 		return nil, fmt.Errorf("failed to unmarshal codriver card data: %w", err)
 	}
@@ -1496,20 +1472,16 @@ func unmarshalVuLoadUnloadRecord(data []byte) (*vuv1.Activities_LoadUnloadRecord
 	codriverPlaceholder.SetGeneration(ddv1.Generation_GENERATION_1)
 	record.SetCardNumberCodriverSlot(codriverPlaceholder)
 
-	// Parse operationType (OperationType - 1 byte)
-	operationType := data[40]
-	record.SetOperationType(ddv1.OperationType(operationType))
-
-	// Parse placeRecord (GNSSPlaceRecord - 14 bytes)
-	placeData := data[41:55]
-	placeRecord, err := unmarshalGNSSPlaceRecord(placeData)
+	// Parse gnssPlaceAuthRecord (GNSSPlaceAuthRecord - 12 bytes)
+	placeData := data[45:57]
+	placeRecord, err := unmarshalGNSSPlaceAuthRecord(placeData, opts)
 	if err != nil {
-		return nil, fmt.Errorf("failed to unmarshal place record: %w", err)
+		return nil, fmt.Errorf("failed to unmarshal GNSS place auth record: %w", err)
 	}
 	record.SetPlaceRecord(placeRecord)
 
-	// Parse odometerValue (OdometerShort - 3 bytes)
-	odometerValue, err := dd.UnmarshalOdometer(data[55 : 55+3])
+	// Parse vehicleOdometerValue (OdometerShort - 3 bytes)
+	odometerValue, err := opts.UnmarshalOdometer(data[57:60])
 	if err != nil {
 		return nil, fmt.Errorf("failed to read odometer value: %w", err)
 	}
@@ -1722,7 +1694,7 @@ func appendVuActivitiesGen2Bytes(dst []byte, activities *vuv1.Activities) ([]byt
 	}
 
 	// Append Gen2v2 specific arrays if present
-	if activities.GetVersion() == vuv1.Version_VERSION_2 {
+	if activities.GetVersion() == ddv1.Version_VERSION_2 {
 		// Append VuBorderCrossingRecordArray (Gen2v2+)
 		dst, err = appendVuBorderCrossingRecordArray(dst, activities.GetBorderCrossings())
 		if err != nil {
@@ -1797,9 +1769,10 @@ func appendVuCardIWRecord(dst []byte, record *vuv1.Activities_CardIWRecord) ([]b
 	//     cardSlotNumber CardSlotNumber,                -- 1 byte
 	//     cardWithdrawalTime TimeReal,                  -- 4 bytes
 	//     vehicleOdometerValueAtWithdrawal OdometerShort, -- 3 bytes
-	//     previousVehicleInfo PreviousVehicleInfo,      -- 15 bytes
+	//     previousVehicleInfo PreviousVehicleInfo,      -- 19 bytes (Gen1)
 	//     manualInputFlag ManualInputFlag               -- 1 byte
 	// }
+	// Total: 130 bytes (Gen1)
 
 	var err error
 
@@ -1871,33 +1844,11 @@ func appendVuCardIWRecord(dst []byte, record *vuv1.Activities_CardIWRecord) ([]b
 	// Append vehicleOdometerValueAtWithdrawal (OdometerShort - 3 bytes)
 	dst = appendVuOdometer(dst, record.GetOdometerAtWithdrawalKm())
 
-	// Append previousVehicleInfo (PreviousVehicleInfo - 15 bytes)
+	// Append previousVehicleInfo (PreviousVehicleInfo - 19 bytes for Gen1)
 	previousVehicleInfo := record.GetPreviousVehicleInfo()
-	if previousVehicleInfo != nil {
-		vehicleReg := previousVehicleInfo.GetVehicleRegistration()
-		if vehicleReg != nil {
-			// Nation (1 byte)
-			dst = append(dst, byte(vehicleReg.GetNation()))
-			// Registration number (14 bytes)
-			regNumber := vehicleReg.GetNumber()
-			if regNumber != nil {
-				regStr := regNumber.GetValue()
-				if len(regStr) > 14 {
-					regStr = regStr[:14]
-				}
-				dst = append(dst, []byte(regStr)...)
-				// Pad with spaces if needed
-				for i := len(regStr); i < 14; i++ {
-					dst = append(dst, ' ')
-				}
-			} else {
-				dst = append(dst, make([]byte, 14)...)
-			}
-		} else {
-			dst = append(dst, make([]byte, 15)...)
-		}
-	} else {
-		dst = append(dst, make([]byte, 15)...)
+	dst, err = dd.AppendPreviousVehicleInfo(dst, previousVehicleInfo)
+	if err != nil {
+		return nil, fmt.Errorf("failed to append previous vehicle info: %w", err)
 	}
 
 	// Append manualInputFlag (ManualInputFlag - 1 byte)

@@ -18,7 +18,7 @@ import (
 //
 // Binary Layout (14 bytes):
 //   - Driver Identification Number (14 bytes): IA5String
-func UnmarshalDriverIdentification(data []byte) (*ddv1.DriverIdentification, error) {
+func (opts UnmarshalOptions) UnmarshalDriverIdentification(data []byte) (*ddv1.DriverIdentification, error) {
 	const (
 		lenDriverIdentification = 14
 	)
@@ -30,7 +30,7 @@ func UnmarshalDriverIdentification(data []byte) (*ddv1.DriverIdentification, err
 	driverID := &ddv1.DriverIdentification{}
 
 	// Parse driver identification number (14 bytes)
-	identificationNumber, err := UnmarshalIA5StringValue(data[0:14])
+	identificationNumber, err := opts.UnmarshalIA5StringValue(data[0:14])
 	if err != nil {
 		return nil, fmt.Errorf("failed to parse driver identification number: %w", err)
 	}

@@ -25,7 +25,7 @@ import (
 // Binary Layout (variable length):
 //   - Holder Surname (variable): Name structure
 //   - Holder First Names (variable): Name structure
-func UnmarshalHolderName(data []byte) (*ddv1.HolderName, error) {
+func (opts UnmarshalOptions) UnmarshalHolderName(data []byte) (*ddv1.HolderName, error) {
 	if len(data) < 2 {
 		return nil, fmt.Errorf("insufficient data for HolderName: got %d, want at least 2", len(data))
 	}
@@ -41,7 +41,7 @@ func UnmarshalHolderName(data []byte) (*ddv1.HolderName, error) {
 	}
 
 	surnameData := data[0 : 2+nameLength] // Include codePage in the data
-	surname, err := UnmarshalStringValue(surnameData)
+	surname, err := opts.UnmarshalStringValue(surnameData)
 	if err != nil {
 		return nil, fmt.Errorf("failed to parse holder surname: %w", err)
 	}
@@ -54,7 +54,7 @@ func UnmarshalHolderName(data []byte) (*ddv1.HolderName, error) {
 	}
 
 	firstNamesData := remainingData // Include codePage in the data
-	firstNames, err := UnmarshalStringValue(firstNamesData)
+	firstNames, err := opts.UnmarshalStringValue(firstNamesData)
 	if err != nil {
 		return nil, fmt.Errorf("failed to parse holder first names: %w", err)
 	}

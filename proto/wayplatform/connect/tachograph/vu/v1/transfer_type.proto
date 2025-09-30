@@ -4,7 +4,7 @@ package wayplatform.connect.tachograph.vu.v1;
 
 import "wayplatform/connect/tachograph/dd/v1/generation.proto";
 import "wayplatform/connect/tachograph/vu/v1/trep.proto";
-import "wayplatform/connect/tachograph/vu/v1/versioning.proto";
+import "wayplatform/connect/tachograph/dd/v1/version.proto";
 
 // TransferType represents the type of data file that can be downloaded from a Vehicle Unit (VU).
 // The actual wire protocol value is stored in the `trep_value` custom option, corresponding to the
@@ -18,7 +18,7 @@ enum TransferType {
   DOWNLOAD_INTERFACE_VERSION = 1 [
     (trep_value) = 0x00,
     (dd.v1.generation) = GENERATION_2,
-    (version) = VERSION_2
+    (dd.v1.version) = VERSION_2
   ];
 
   // Generation 1: Overview data.
@@ -65,7 +65,7 @@ enum TransferType {
   OVERVIEW_GEN2_V1 = 8 [
     (trep_value) = 0x21,
     (dd.v1.generation) = GENERATION_2,
-    (version) = VERSION_1
+    (dd.v1.version) = VERSION_1
   ];
 
   // Generation 2, Version 1: Driver activities for a specified date.
@@ -73,7 +73,7 @@ enum TransferType {
   ACTIVITIES_GEN2_V1 = 9 [
     (trep_value) = 0x22,
     (dd.v1.generation) = GENERATION_2,
-    (version) = VERSION_1
+    (dd.v1.version) = VERSION_1
   ];
 
   // Generation 2, Version 1: Events and faults data.
@@ -81,7 +81,7 @@ enum TransferType {
   EVENTS_AND_FAULTS_GEN2_V1 = 10 [
     (trep_value) = 0x23,
     (dd.v1.generation) = GENERATION_2,
-    (version) = VERSION_1
+    (dd.v1.version) = VERSION_1
   ];
 
   // Generation 2 (v1 and v2): Detailed speed data.
@@ -96,7 +96,7 @@ enum TransferType {
   TECHNICAL_DATA_GEN2_V1 = 12 [
     (trep_value) = 0x25,
     (dd.v1.generation) = GENERATION_2,
-    (version) = VERSION_1
+    (dd.v1.version) = VERSION_1
   ];
 
   // Generation 2, Version 2: Overview data.
@@ -104,7 +104,7 @@ enum TransferType {
   OVERVIEW_GEN2_V2 = 13 [
     (trep_value) = 0x31,
     (dd.v1.generation) = GENERATION_2,
-    (version) = VERSION_2
+    (dd.v1.version) = VERSION_2
   ];
 
   // Generation 2, Version 2: Driver activities for a specified date.
@@ -112,7 +112,7 @@ enum TransferType {
   ACTIVITIES_GEN2_V2 = 14 [
     (trep_value) = 0x32,
     (dd.v1.generation) = GENERATION_2,
-    (version) = VERSION_2
+    (dd.v1.version) = VERSION_2
   ];
 
   // Generation 2, Version 2: Events and faults data.
@@ -120,7 +120,7 @@ enum TransferType {
   EVENTS_AND_FAULTS_GEN2_V2 = 15 [
     (trep_value) = 0x33,
     (dd.v1.generation) = GENERATION_2,
-    (version) = VERSION_2
+    (dd.v1.version) = VERSION_2
   ];
 
   // Generation 2, Version 2: Technical data.
@@ -128,6 +128,6 @@ enum TransferType {
   TECHNICAL_DATA_GEN2_V2 = 16 [
     (trep_value) = 0x35,
     (dd.v1.generation) = GENERATION_2,
-    (version) = VERSION_2
+    (dd.v1.version) = VERSION_2
   ];
 }

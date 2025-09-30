@@ -1,0 +1,22 @@
+edition = "2023";
+
+package wayplatform.connect.tachograph.dd.v1;
+
+import "google/protobuf/descriptor.proto";
+
+// Version represents the minor version within a generation.
+//
+// Version is used to distinguish between minor variations in data structures
+// within the same generation (e.g., Gen2v1, Gen2v2, Gen2v3).
+//
+// Functions check for specific version numbers (e.g., Version == VERSION_2);
+// all other values (including VERSION_UNSPECIFIED) are treated as version 1.
+enum Version {
+  VERSION_UNSPECIFIED = 0;
+  VERSION_1 = 1;
+  VERSION_2 = 2;
+}
+
+extend google.protobuf.EnumValueOptions {
+  Version version = 50305;
+}

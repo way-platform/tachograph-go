@@ -18,7 +18,7 @@ import (
 //   - Year (2 bytes): BCD-encoded YYYY
 //   - Month (1 byte): BCD-encoded MM
 //   - Day (1 byte): BCD-encoded DD
-func UnmarshalDate(input []byte) (*ddv1.Date, error) {
+func (opts UnmarshalOptions) UnmarshalDate(input []byte) (*ddv1.Date, error) {
 	const lenDatef = 4
 	if len(input) != lenDatef {
 		return nil, fmt.Errorf("invalid data length for Date: got %d, want %d", len(input), lenDatef)

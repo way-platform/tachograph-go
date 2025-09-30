@@ -16,7 +16,7 @@ import (
 //
 // Binary Layout (variable length):
 //   - BCD String (variable): BCD-encoded bytes
-func UnmarshalBcdString(input []byte) (*ddv1.BcdString, error) {
+func (opts UnmarshalOptions) UnmarshalBcdString(input []byte) (*ddv1.BcdString, error) {
 	if len(input) == 0 {
 		return nil, fmt.Errorf("insufficient data for BcdString: got %d, want at least 1", len(input))
 	}

@@ -22,11 +22,19 @@ const (
 
 // Represents the `GeoCoordinates` data type from the Data Dictionary, Section 2.76.
 //
+// Coordinates are encoded as multiples (factor 10) of the ±DDMM.M format, where
+// DD/DDD represents degrees and MM.M represents minutes. For example, a position
+// of 60°30.5' North would be encoded as 60305 (6030.5 × 10).
+//
+// An unknown position is represented by the value 0x7FFFFF (8388607 decimal).
+//
+// See Data Dictionary, Section 2.76.
+//
 // ASN.1 Definition:
 //
 //	GeoCoordinates ::= SEQUENCE {
-//	    latitude INTEGER(-90*3600*1000..90*3600*1000),
-//	    longitude INTEGER(-180*3600*1000+1..180*3600*1000)
+//	    latitude INTEGER(-90000..90001),
+//	    longitude INTEGER(-180000..180001)
 //	}
 type GeoCoordinates struct {
 	state                  protoimpl.MessageState `protogen:"opaque.v1"`
@@ -114,17 +122,23 @@ func (x *GeoCoordinates) ClearLongitude() {
 type GeoCoordinates_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
-	// Latitude in milliarcseconds.
+	// Latitude encoded as a multiple (factor 10) of ±DDMM.M format.
+	//
+	// Range: -90000 to +90001 (representing -90°00.0' to +90°00.1')
+	// Unknown position: 0x7FFFFF (8388607)
 	//
 	// ASN.1 Definition:
 	//
-	//	latitude INTEGER(-90*3600*1000..90*3600*1000)
+	//	latitude INTEGER(-90000..90001)
 	Latitude *int32
-	// Longitude in milliarcseconds.
+	// Longitude encoded as a multiple (factor 10) of ±DDDMM.M format.
+	//
+	// Range: -180000 to +180001 (representing -180°00.0' to +180°00.1')
+	// Unknown position: 0x7FFFFF (8388607)
 	//
 	// ASN.1 Definition:
 	//
-	//	longitude INTEGER(-180*3600*1000+1..180*3600*1000)
+	//	longitude INTEGER(-180000..180001)
 	Longitude *int32
 }
 

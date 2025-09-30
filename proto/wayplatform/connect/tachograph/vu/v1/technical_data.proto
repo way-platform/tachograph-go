@@ -18,7 +18,7 @@ import "wayplatform/connect/tachograph/dd/v1/owner_identification.proto";
 import "wayplatform/connect/tachograph/dd/v1/software_identification.proto";
 import "wayplatform/connect/tachograph/dd/v1/string_value.proto";
 import "wayplatform/connect/tachograph/dd/v1/vehicle_registration_identification.proto";
-import "wayplatform/connect/tachograph/vu/v1/versioning.proto";
+import "wayplatform/connect/tachograph/dd/v1/version.proto";
 
 // Represents the consolidated data structure for a Technical Data transfer.
 //

@@ -24,7 +24,7 @@ import (
 //   - Card Consecutive Index (1 byte): IA5String
 //   - Card Replacement Index (1 byte): IA5String
 //   - Card Renewal Index (1 byte): IA5String
-func UnmarshalOwnerIdentification(data []byte) (*ddv1.OwnerIdentification, error) {
+func (opts UnmarshalOptions) UnmarshalOwnerIdentification(data []byte) (*ddv1.OwnerIdentification, error) {
 	const (
 		lenOwnerIdentification = 16 // 13 + 1 + 1 + 1
 	)
@@ -36,28 +36,28 @@ func UnmarshalOwnerIdentification(data []byte) (*ddv1.OwnerIdentification, error
 	ownerID := &ddv1.OwnerIdentification{}
 
 	// Parse owner identification number (13 bytes)
-	identificationNumber, err := UnmarshalIA5StringValue(data[0:13])
+	identificationNumber, err := opts.UnmarshalIA5StringValue(data[0:13])
 	if err != nil {
 		return nil, fmt.Errorf("failed to parse owner identification number: %w", err)
 	}
 	ownerID.SetOwnerIdentification(identificationNumber)
 
 	// Parse card consecutive index (1 byte)
-	consecutiveIndex, err := UnmarshalIA5StringValue(data[13:14])
+	consecutiveIndex, err := opts.UnmarshalIA5StringValue(data[13:14])
 	if err != nil {
 		return nil, fmt.Errorf("failed to parse card consecutive index: %w", err)
 	}
 	ownerID.SetConsecutiveIndex(consecutiveIndex)
 
 	// Parse card replacement index (1 byte)
-	replacementIndex, err := UnmarshalIA5StringValue(data[14:15])
+	replacementIndex, err := opts.UnmarshalIA5StringValue(data[14:15])
 	if err != nil {
 		return nil, fmt.Errorf("failed to parse card replacement index: %w", err)
 	}
 	ownerID.SetReplacementIndex(replacementIndex)
 
 	// Parse card renewal index (1 byte)
-	renewalIndex, err := UnmarshalIA5StringValue(data[15:16])
+	renewalIndex, err := opts.UnmarshalIA5StringValue(data[15:16])
 	if err != nil {
 		return nil, fmt.Errorf("failed to parse card renewal index: %w", err)
 	}

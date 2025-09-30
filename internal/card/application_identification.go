@@ -39,6 +39,7 @@ func unmarshalCardApplicationIdentification(data []byte) (*cardv1.ApplicationIde
 	}
 
 	target := &cardv1.ApplicationIdentification{}
+	var opts dd.UnmarshalOptions
 	r := bytes.NewReader(data)
 
 	// Read type of tachograph card ID (1 byte)
@@ -57,7 +58,7 @@ func unmarshalCardApplicationIdentification(data []byte) (*cardv1.ApplicationIde
 		return nil, fmt.Errorf("failed to read card structure version: %w", err)
 	}
 	// Parse BCD structure version using centralized helper
-	cardStructureVersion, err := dd.UnmarshalCardStructureVersion(structureVersionBytes)
+	cardStructureVersion, err := opts.UnmarshalCardStructureVersion(structureVersionBytes)
 	if err != nil {
 		return nil, fmt.Errorf("failed to unmarshal card structure version: %w", err)
 	}

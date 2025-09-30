@@ -18,7 +18,7 @@ import (
 //	    entryTime TimeReal,
 //	    specificConditionType SpecificConditionType
 //	}
-func UnmarshalSpecificConditionRecord(data []byte) (*ddv1.SpecificConditionRecord, error) {
+func (opts UnmarshalOptions) UnmarshalSpecificConditionRecord(data []byte) (*ddv1.SpecificConditionRecord, error) {
 	const (
 		lenSpecificConditionRecord = 5
 		idxEntryTime               = 0
@@ -32,7 +32,7 @@ func UnmarshalSpecificConditionRecord(data []byte) (*ddv1.SpecificConditionRecor
 	record := &ddv1.SpecificConditionRecord{}
 
 	// Parse entryTime (TimeReal - 4 bytes)
-	entryTime, err := UnmarshalTimeReal(data[idxEntryTime : idxEntryTime+4])
+	entryTime, err := opts.UnmarshalTimeReal(data[idxEntryTime : idxEntryTime+4])
 	if err != nil {
 		return nil, fmt.Errorf("failed to unmarshal entry time: %w", err)
 	}

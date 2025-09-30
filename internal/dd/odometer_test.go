@@ -72,7 +72,8 @@ func TestUnmarshalOdometer(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := UnmarshalOdometer(tt.input)
+			var opts UnmarshalOptions
+			got, err := opts.UnmarshalOdometer(tt.input)
 			if tt.wantErr {
 				if err == nil {
 					t.Errorf("UnmarshalOdometer() expected error containing %q, got nil", tt.errMessage)
@@ -164,7 +165,8 @@ func TestOdometerRoundTrip(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			// Unmarshal
-			odometer, err := UnmarshalOdometer(tt.input)
+			var opts UnmarshalOptions
+			odometer, err := opts.UnmarshalOdometer(tt.input)
 			if err != nil {
 				t.Fatalf("UnmarshalOdometer() unexpected error: %v", err)
 			}

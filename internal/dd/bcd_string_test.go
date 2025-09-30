@@ -63,7 +63,8 @@ func TestUnmarshalBcdString(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := UnmarshalBcdString(tt.input)
+			var opts UnmarshalOptions
+			got, err := opts.UnmarshalBcdString(tt.input)
 			if tt.wantErr {
 				if err == nil {
 					t.Errorf("UnmarshalBcdString() expected error, got nil")
@@ -113,8 +114,9 @@ func TestAppendBcdString(t *testing.T) {
 			// Create BCD string from input
 			var bcdString *ddv1.BcdString
 			if len(tt.input) > 0 {
+				var opts UnmarshalOptions
 				var err error
-				bcdString, err = UnmarshalBcdString(tt.input)
+				bcdString, err = opts.UnmarshalBcdString(tt.input)
 				if err != nil {
 					t.Fatalf("UnmarshalBcdString() unexpected error: %v", err)
 				}
@@ -152,7 +154,8 @@ func TestBcdStringRoundTrip(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			// Unmarshal
-			bcdString, err := UnmarshalBcdString(tt.input)
+			var opts UnmarshalOptions
+			bcdString, err := opts.UnmarshalBcdString(tt.input)
 			if err != nil {
 				t.Fatalf("UnmarshalBcdString() unexpected error: %v", err)
 			}
