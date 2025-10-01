@@ -21,21 +21,17 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// Represents information about the previous vehicle used by a driver.
+// Represents information about the previous vehicle used by a driver (Generation 1 format).
+//
+// This is the Gen1-specific version without VU generation information.
+// For Gen2 format (with VU generation), see PreviousVehicleInfoG2.
 //
 // This message is used in VU downloads (VuCardIWRecord) to track the vehicle
 // a driver was using before inserting their card into the current vehicle.
 //
-// Binary Layout:
-//
-//	Gen1: 19 bytes
-//	  - vehicleRegistrationIdentification: 15 bytes (1 nation + 14 registration)
-//	  - cardWithdrawalTime: 4 bytes
-//
-//	Gen2: 20 bytes
-//	  - vehicleRegistrationIdentification: 15 bytes (1 nation + 14 registration)
-//	  - cardWithdrawalTime: 4 bytes
-//	  - vuGeneration: 1 byte
+// Binary Layout: 19 bytes (fixed for Gen1)
+//   - vehicleRegistrationIdentification: 15 bytes (1 nation + 14 registration)
+//   - cardWithdrawalTime: 4 bytes
 //
 // See Data Dictionary, Section 2.118, `PreviousVehicleInfo`.
 //
@@ -45,16 +41,11 @@ const (
 //	    vehicleRegistrationIdentification VehicleRegistrationIdentification,
 //	    cardWithdrawalTime                TimeReal
 //	}
-//
-// For Gen2, the following component is added:
-//
-//	vuGeneration Generation
 type PreviousVehicleInfo struct {
 	state                          protoimpl.MessageState             `protogen:"opaque.v1"`
 	xxx_hidden_VehicleRegistration *VehicleRegistrationIdentification `protobuf:"bytes,1,opt,name=vehicle_registration,json=vehicleRegistration"`
 	xxx_hidden_CardWithdrawalTime  *timestamppb.Timestamp             `protobuf:"bytes,2,opt,name=card_withdrawal_time,json=cardWithdrawalTime"`
-	xxx_hidden_VuGeneration        Generation                         `protobuf:"varint,3,opt,name=vu_generation,json=vuGeneration,enum=wayplatform.connect.tachograph.dd.v1.Generation"`
-	xxx_hidden_Generation          Generation                         `protobuf:"varint,4,opt,name=generation,enum=wayplatform.connect.tachograph.dd.v1.Generation"`
+	xxx_hidden_RawData             []byte                             `protobuf:"bytes,3,opt,name=raw_data,json=rawData"`
 	XXX_raceDetectHookData         protoimpl.RaceDetectHookData
 	XXX_presence                   [1]uint32
 	unknownFields                  protoimpl.UnknownFields
@@ -100,22 +91,11 @@ func (x *PreviousVehicleInfo) GetCardWithdrawalTime() *timestamppb.Timestamp {
 	return nil
 }
 
-func (x *PreviousVehicleInfo) GetVuGeneration() Generation {
+func (x *PreviousVehicleInfo) GetRawData() []byte {
 	if x != nil {
-		if protoimpl.X.Present(&(x.XXX_presence[0]), 2) {
-			return x.xxx_hidden_VuGeneration
-		}
+		return x.xxx_hidden_RawData
 	}
-	return Generation_GENERATION_UNSPECIFIED
-}
-
-func (x *PreviousVehicleInfo) GetGeneration() Generation {
-	if x != nil {
-		if protoimpl.X.Present(&(x.XXX_presence[0]), 3) {
-			return x.xxx_hidden_Generation
-		}
-	}
-	return Generation_GENERATION_UNSPECIFIED
+	return nil
 }
 
 func (x *PreviousVehicleInfo) SetVehicleRegistration(v *VehicleRegistrationIdentification) {
@@ -126,14 +106,12 @@ func (x *PreviousVehicleInfo) SetCardWithdrawalTime(v *timestamppb.Timestamp) {
 	x.xxx_hidden_CardWithdrawalTime = v
 }
 
-func (x *PreviousVehicleInfo) SetVuGeneration(v Generation) {
-	x.xxx_hidden_VuGeneration = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 4)
-}
-
-func (x *PreviousVehicleInfo) SetGeneration(v Generation) {
-	x.xxx_hidden_Generation = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 3, 4)
+func (x *PreviousVehicleInfo) SetRawData(v []byte) {
+	if v == nil {
+		v = []byte{}
+	}
+	x.xxx_hidden_RawData = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 3)
 }
 
 func (x *PreviousVehicleInfo) HasVehicleRegistration() bool {
@@ -150,18 +128,11 @@ func (x *PreviousVehicleInfo) HasCardWithdrawalTime() bool {
 	return x.xxx_hidden_CardWithdrawalTime != nil
 }
 
-func (x *PreviousVehicleInfo) HasVuGeneration() bool {
+func (x *PreviousVehicleInfo) HasRawData() bool {
 	if x == nil {
 		return false
 	}
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 2)
-}
-
-func (x *PreviousVehicleInfo) HasGeneration() bool {
-	if x == nil {
-		return false
-	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 3)
 }
 
 func (x *PreviousVehicleInfo) ClearVehicleRegistration() {
@@ -172,14 +143,9 @@ func (x *PreviousVehicleInfo) ClearCardWithdrawalTime() {
 	x.xxx_hidden_CardWithdrawalTime = nil
 }
 
-func (x *PreviousVehicleInfo) ClearVuGeneration() {
+func (x *PreviousVehicleInfo) ClearRawData() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 2)
-	x.xxx_hidden_VuGeneration = Generation_GENERATION_UNSPECIFIED
-}
-
-func (x *PreviousVehicleInfo) ClearGeneration() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 3)
-	x.xxx_hidden_Generation = Generation_GENERATION_UNSPECIFIED
+	x.xxx_hidden_RawData = nil
 }
 
 type PreviousVehicleInfo_builder struct {
@@ -193,24 +159,13 @@ type PreviousVehicleInfo_builder struct {
 	//
 	// See Data Dictionary, Section 2.162, `TimeReal`.
 	CardWithdrawalTime *timestamppb.Timestamp
-	// The generation of the VU from which the card was withdrawn (Gen2 only).
+	// Original encoded bytes from the binary format.
 	//
-	// See Data Dictionary, Section 2.75, `Generation`.
-	VuGeneration *Generation
-	// Indicates which generation format this record uses for marshalling.
-	// Gen1: 19 bytes (no vu_generation field in binary)
-	// Gen2: 20 bytes (includes vu_generation field in binary)
+	// When present, this is used as a canvas for the "raw data painting" strategy
+	// during marshalling to preserve reserved bits and unknown data.
 	//
-	// This field makes the record self-describing, enabling marshalling without
-	// additional context. During unmarshalling, this is populated from the
-	// UnmarshalOptions.Generation context.
-	//
-	// Note: This is distinct from vu_generation (field 3), which indicates
-	// the generation of the VU from which the card was withdrawn (content),
-	// while this field indicates the binary format to use (structure).
-	//
-	// See Data Dictionary, Section 2.75, `Generation`.
-	Generation *Generation
+	// Size: 19 bytes (fixed for Gen1).
+	RawData []byte
 }
 
 func (b0 PreviousVehicleInfo_builder) Build() *PreviousVehicleInfo {
@@ -219,13 +174,9 @@ func (b0 PreviousVehicleInfo_builder) Build() *PreviousVehicleInfo {
 	_, _ = b, x
 	x.xxx_hidden_VehicleRegistration = b.VehicleRegistration
 	x.xxx_hidden_CardWithdrawalTime = b.CardWithdrawalTime
-	if b.VuGeneration != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 4)
-		x.xxx_hidden_VuGeneration = *b.VuGeneration
-	}
-	if b.Generation != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 3, 4)
-		x.xxx_hidden_Generation = *b.Generation
+	if b.RawData != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 3)
+		x.xxx_hidden_RawData = b.RawData
 	}
 	return m0
 }
@@ -234,14 +185,11 @@ var File_wayplatform_connect_tachograph_dd_v1_previous_vehicle_info_proto protor
 
 const file_wayplatform_connect_tachograph_dd_v1_previous_vehicle_info_proto_rawDesc = "" +
 	"\n" +
-	"@wayplatform/connect/tachograph/dd/v1/previous_vehicle_info.proto\x12$wayplatform.connect.tachograph.dd.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a5wayplatform/connect/tachograph/dd/v1/generation.proto\x1aNwayplatform/connect/tachograph/dd/v1/vehicle_registration_identification.proto\"\x88\x03\n" +
+	"@wayplatform/connect/tachograph/dd/v1/previous_vehicle_info.proto\x12$wayplatform.connect.tachograph.dd.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1aNwayplatform/connect/tachograph/dd/v1/vehicle_registration_identification.proto\"\xfa\x01\n" +
 	"\x13PreviousVehicleInfo\x12z\n" +
 	"\x14vehicle_registration\x18\x01 \x01(\v2G.wayplatform.connect.tachograph.dd.v1.VehicleRegistrationIdentificationR\x13vehicleRegistration\x12L\n" +
-	"\x14card_withdrawal_time\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\x12cardWithdrawalTime\x12U\n" +
-	"\rvu_generation\x18\x03 \x01(\x0e20.wayplatform.connect.tachograph.dd.v1.GenerationR\fvuGeneration\x12P\n" +
-	"\n" +
-	"generation\x18\x04 \x01(\x0e20.wayplatform.connect.tachograph.dd.v1.GenerationR\n" +
-	"generationB\xd7\x02\n" +
+	"\x14card_withdrawal_time\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\x12cardWithdrawalTime\x12\x19\n" +
+	"\braw_data\x18\x03 \x01(\fR\arawDataB\xd7\x02\n" +
 	"(com.wayplatform.connect.tachograph.dd.v1B\x18PreviousVehicleInfoProtoP\x01Z\\github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1;ddv1\xa2\x02\x04WCTD\xaa\x02$Wayplatform.Connect.Tachograph.Dd.V1\xca\x02$Wayplatform\\Connect\\Tachograph\\Dd\\V1\xe2\x020Wayplatform\\Connect\\Tachograph\\Dd\\V1\\GPBMetadata\xea\x02(Wayplatform::Connect::Tachograph::Dd::V1b\beditionsp\xe8\a"
 
 var file_wayplatform_connect_tachograph_dd_v1_previous_vehicle_info_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
@@ -249,18 +197,15 @@ var file_wayplatform_connect_tachograph_dd_v1_previous_vehicle_info_proto_goType
 	(*PreviousVehicleInfo)(nil),               // 0: wayplatform.connect.tachograph.dd.v1.PreviousVehicleInfo
 	(*VehicleRegistrationIdentification)(nil), // 1: wayplatform.connect.tachograph.dd.v1.VehicleRegistrationIdentification
 	(*timestamppb.Timestamp)(nil),             // 2: google.protobuf.Timestamp
-	(Generation)(0),                           // 3: wayplatform.connect.tachograph.dd.v1.Generation
 }
 var file_wayplatform_connect_tachograph_dd_v1_previous_vehicle_info_proto_depIdxs = []int32{
 	1, // 0: wayplatform.connect.tachograph.dd.v1.PreviousVehicleInfo.vehicle_registration:type_name -> wayplatform.connect.tachograph.dd.v1.VehicleRegistrationIdentification
 	2, // 1: wayplatform.connect.tachograph.dd.v1.PreviousVehicleInfo.card_withdrawal_time:type_name -> google.protobuf.Timestamp
-	3, // 2: wayplatform.connect.tachograph.dd.v1.PreviousVehicleInfo.vu_generation:type_name -> wayplatform.connect.tachograph.dd.v1.Generation
-	3, // 3: wayplatform.connect.tachograph.dd.v1.PreviousVehicleInfo.generation:type_name -> wayplatform.connect.tachograph.dd.v1.Generation
-	4, // [4:4] is the sub-list for method output_type
-	4, // [4:4] is the sub-list for method input_type
-	4, // [4:4] is the sub-list for extension type_name
-	4, // [4:4] is the sub-list for extension extendee
-	0, // [0:4] is the sub-list for field type_name
+	2, // [2:2] is the sub-list for method output_type
+	2, // [2:2] is the sub-list for method input_type
+	2, // [2:2] is the sub-list for extension type_name
+	2, // [2:2] is the sub-list for extension extendee
+	0, // [0:2] is the sub-list for field type_name
 }
 
 func init() { file_wayplatform_connect_tachograph_dd_v1_previous_vehicle_info_proto_init() }
@@ -268,7 +213,6 @@ func file_wayplatform_connect_tachograph_dd_v1_previous_vehicle_info_proto_init(
 	if File_wayplatform_connect_tachograph_dd_v1_previous_vehicle_info_proto != nil {
 		return
 	}
-	file_wayplatform_connect_tachograph_dd_v1_generation_proto_init()
 	file_wayplatform_connect_tachograph_dd_v1_vehicle_registration_identification_proto_init()
 	type x struct{}
 	out := protoimpl.TypeBuilder{

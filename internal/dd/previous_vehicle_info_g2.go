@@ -6,28 +6,30 @@ import (
 	ddv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
 )
 
-// UnmarshalPreviousVehicleInfo unmarshals a Generation 1 PreviousVehicleInfo (19 bytes).
+// UnmarshalPreviousVehicleInfoG2 unmarshals a Generation 2 PreviousVehicleInfo (20 bytes).
 //
-// The data type `PreviousVehicleInfo` is specified in the Data Dictionary, Section 2.118.
+// The data type `PreviousVehicleInfo` (Gen2 variant) is specified in the Data Dictionary, Section 2.118.
 //
-// ASN.1 Definition (Gen1):
+// ASN.1 Definition (Gen2):
 //
 //	PreviousVehicleInfo ::= SEQUENCE {
 //	    vehicleRegistrationIdentification VehicleRegistrationIdentification,
-//	    cardWithdrawalTime                TimeReal
+//	    cardWithdrawalTime                TimeReal,
+//	    vuGeneration                      Generation
 //	}
-func (opts UnmarshalOptions) UnmarshalPreviousVehicleInfo(data []byte) (*ddv1.PreviousVehicleInfo, error) {
+func (opts UnmarshalOptions) UnmarshalPreviousVehicleInfoG2(data []byte) (*ddv1.PreviousVehicleInfoG2, error) {
 	const (
 		idxVehicleReg          = 0
 		idxCardWithdrawalTime  = 15
-		lenPreviousVehicleInfo = 19 // Fixed size for Gen1
+		idxVuGeneration        = 19
+		lenPreviousVehicleInfo = 20 // Fixed size for Gen2
 	)
 
 	if len(data) != lenPreviousVehicleInfo {
-		return nil, fmt.Errorf("invalid data length for Gen1 PreviousVehicleInfo: got %d, want %d", len(data), lenPreviousVehicleInfo)
+		return nil, fmt.Errorf("invalid data length for Gen2 PreviousVehicleInfo: got %d, want %d", len(data), lenPreviousVehicleInfo)
 	}
 
-	info := &ddv1.PreviousVehicleInfo{}
+	info := &ddv1.PreviousVehicleInfoG2{}
 	info.SetRawData(data)
 
 	// Parse vehicleRegistrationIdentification (15 bytes)
@@ -44,18 +46,25 @@ func (opts UnmarshalOptions) UnmarshalPreviousVehicleInfo(data []byte) (*ddv1.Pr
 	}
 	info.SetCardWithdrawalTime(withdrawalTime)
 
+	// Parse vuGeneration (1 byte)
+	vuGen, err := UnmarshalEnum[ddv1.Generation](data[idxVuGeneration])
+	if err != nil {
+		return nil, fmt.Errorf("failed to unmarshal vu generation: %w", err)
+	}
+	info.SetVuGeneration(vuGen)
+
 	return info, nil
 }
 
-// AppendPreviousVehicleInfo appends a Generation 1 PreviousVehicleInfo (19 bytes).
-func AppendPreviousVehicleInfo(dst []byte, info *ddv1.PreviousVehicleInfo) ([]byte, error) {
-	const lenPreviousVehicleInfo = 19 // Fixed size for Gen1
+// AppendPreviousVehicleInfoG2 appends a Generation 2 PreviousVehicleInfo (20 bytes).
+func AppendPreviousVehicleInfoG2(dst []byte, info *ddv1.PreviousVehicleInfoG2) ([]byte, error) {
+	const lenPreviousVehicleInfo = 20 // Fixed size for Gen2
 
 	// Use raw data painting strategy if available
 	var canvas [lenPreviousVehicleInfo]byte
 	if rawData := info.GetRawData(); len(rawData) > 0 {
 		if len(rawData) != lenPreviousVehicleInfo {
-			return nil, fmt.Errorf("invalid raw_data length for PreviousVehicleInfo: got %d, want %d", len(rawData), lenPreviousVehicleInfo)
+			return nil, fmt.Errorf("invalid raw_data length for PreviousVehicleInfoG2: got %d, want %d", len(rawData), lenPreviousVehicleInfo)
 		}
 		copy(canvas[:], rawData)
 	}
@@ -76,6 +85,13 @@ func AppendPreviousVehicleInfo(dst []byte, info *ddv1.PreviousVehicleInfo) ([]by
 		return nil, fmt.Errorf("failed to append card withdrawal time: %w", err)
 	}
 	copy(canvas[15:19], timeBytes)
+
+	// VU generation (1 byte)
+	vuGenByte, err := MarshalEnum(info.GetVuGeneration())
+	if err != nil {
+		return nil, fmt.Errorf("failed to marshal vu generation: %w", err)
+	}
+	canvas[19] = vuGenByte
 
 	return append(dst, canvas[:]...), nil
 }
