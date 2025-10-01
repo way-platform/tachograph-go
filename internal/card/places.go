@@ -11,36 +11,27 @@ import (
 	ddv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
 )
 
-// unmarshalCardPlaces unmarshals places data from a card EF, handling both Gen1 and Gen2 formats.
-//
-// The data type `CardPlaceDailyWorkPeriod` is specified in the Data Dictionary, Section 2.4.
-//
-// ASN.1 Definition (Gen1):
-//
-//	CardPlaceDailyWorkPeriod ::= SEQUENCE {
-//	    entryTime                    TimeReal,
-//	    entryTypeDailyWorkPeriod     EntryTypeDailyWorkPeriod,
-//	    dailyWorkPeriodCountry       NationNumeric,
-//	    dailyWorkPeriodRegion        RegionNumeric,
-//	    vehicleOdometerValue         OdometerShort
-//	}
-//
-// ASN.1 Definition (Gen2):
-//
-//	PlaceRecord_G2 ::= SEQUENCE {
-//		entryTime                    TimeReal,
-//		entryTypeDailyWorkPeriod     EntryTypeDailyWorkPeriod,
-//		dailyWorkPeriodCountry       NationNumeric,
-//		dailyWorkPeriodRegion        RegionNumeric,
-//		vehicleOdometerValue         OdometerShort,
-//		gnssPlaceRecord              GNSSPlaceRecord
-//	}
+// Record sizes are fixed per generation - this is one of the benefits of type splitting!
 const (
-	placeRecordSizeGen1 = 10
-	placeRecordSizeGen2 = 21
-	lenMinEfPlaces      = 2 // Minimum EF_Places file size (for the pointer)
+	placeRecordSizeGen1 = 10 // Fixed size: no conditionals needed
+	placeRecordSizeGen2 = 21 // Fixed size: no conditionals needed
+	lenMinEfPlaces      = 2  // Minimum EF_Places file size (for the pointer)
 )
 
+// unmarshalPlaces unmarshals places data from a card EF.
+//
+// The generation determines the record format:
+// - Gen1: 10-byte records (PlaceRecord)
+// - Gen2: 21-byte records (PlaceRecordG2 with GNSS data)
+//
+// The data type `CardPlaceDailyWorkPeriod` is specified in the Data Dictionary, Section 2.27.
+//
+// ASN.1 Definition:
+//
+//	CardPlaceDailyWorkPeriod ::= SEQUENCE {
+//	    placePointerNewestRecord INTEGER(0..NoOfCardPlaceRecords-1),
+//	    placeRecords SET SIZE(NoOfCardPlaceRecords) OF PlaceRecord
+//	}
 func (opts UnmarshalOptions) unmarshalPlaces(data []byte) (*cardv1.Places, error) {
 	if len(data) < lenMinEfPlaces {
 		return nil, fmt.Errorf("insufficient data for places: got %d bytes, need at least %d", len(data), lenMinEfPlaces)
@@ -62,20 +53,29 @@ func (opts UnmarshalOptions) unmarshalPlaces(data []byte) (*cardv1.Places, error
 		return nil, fmt.Errorf("failed to read remaining data: %w", err)
 	}
 
-	records, trailingBytes := parseCircularPlaceRecords(remainingData, int(newestRecordIndex), opts)
-	target.SetRecords(records)
-	target.SetTrailingBytes(trailingBytes)
+	// Create dd.UnmarshalOptions from card-level UnmarshalOptions
+	ddOpts := dd.UnmarshalOptions{
+		Generation: opts.Generation,
+		Version:    opts.Version,
+	}
+
+	// Parse records based on generation - note how clean this is with type splitting!
+	if opts.Generation == ddv1.Generation_GENERATION_2 {
+		records, trailingBytes := parseCircularPlaceRecordsG2(remainingData, int(newestRecordIndex), ddOpts)
+		target.SetRecordsG2(records)
+		target.SetTrailingBytes(trailingBytes)
+	} else {
+		records, trailingBytes := parseCircularPlaceRecordsGen1(remainingData, int(newestRecordIndex), ddOpts)
+		target.SetRecords(records)
+		target.SetTrailingBytes(trailingBytes)
+	}
 
 	return &target, nil
 }
 
-// parseCircularPlaceRecords parses place records from a circular buffer, starting from the oldest valid record.
-// It returns the parsed records and any trailing bytes that do not form a complete record.
-func parseCircularPlaceRecords(data []byte, newestRecordIndex int, opts UnmarshalOptions) ([]*ddv1.PlaceRecord, []byte) {
-	recordSize := placeRecordSizeGen1
-	if opts.Generation == ddv1.Generation_GENERATION_2 {
-		recordSize = placeRecordSizeGen2
-	}
+// parseCircularPlaceRecordsGen1 parses Gen1 place records (10 bytes each) from a circular buffer.
+func parseCircularPlaceRecordsGen1(data []byte, newestRecordIndex int, opts dd.UnmarshalOptions) ([]*ddv1.PlaceRecord, []byte) {
+	const recordSize = placeRecordSizeGen1 // Fixed size - no conditionals!
 
 	if len(data) < recordSize {
 		return nil, data // Not enough data for even one record
@@ -89,7 +89,6 @@ func parseCircularPlaceRecords(data []byte, newestRecordIndex int, opts Unmarsha
 	var validRecords []*ddv1.PlaceRecord
 
 	// Start from the record after the newest (which should be the oldest)
-	// If newestRecordIndex is out of bounds, start from beginning
 	startIndex := 0
 	if newestRecordIndex >= 0 && newestRecordIndex < totalRecords {
 		startIndex = (newestRecordIndex + 1) % totalRecords
@@ -102,11 +101,11 @@ func parseCircularPlaceRecords(data []byte, newestRecordIndex int, opts Unmarsha
 		recordOffset := recordIndex * recordSize
 
 		if recordOffset+recordSize > len(data) {
-			break // Should not happen with the totalRecords calculation, but as a safeguard
+			break
 		}
 
 		recordData := data[recordOffset : recordOffset+recordSize]
-		record, valid := unmarshalPlaceRecordWithValidation(recordData, opts)
+		record, valid := unmarshalPlaceRecordGen1WithValidation(recordData, opts)
 
 		if valid {
 			validRecords = append(validRecords, record)
@@ -126,9 +125,61 @@ func parseCircularPlaceRecords(data []byte, newestRecordIndex int, opts Unmarsha
 	return validRecords, trailingBytes
 }
 
-// unmarshalPlaceRecordWithValidation parses a place record and validates it
-func unmarshalPlaceRecordWithValidation(data []byte, opts UnmarshalOptions) (*ddv1.PlaceRecord, bool) {
-	record, err := unmarshalPlaceRecord(data, opts)
+// parseCircularPlaceRecordsG2 parses Gen2 place records (21 bytes each) from a circular buffer.
+func parseCircularPlaceRecordsG2(data []byte, newestRecordIndex int, opts dd.UnmarshalOptions) ([]*ddv1.PlaceRecordG2, []byte) {
+	const recordSize = placeRecordSizeGen2 // Fixed size - no conditionals!
+
+	if len(data) < recordSize {
+		return nil, data // Not enough data for even one record
+	}
+
+	totalRecords := len(data) / recordSize
+	if totalRecords == 0 {
+		return nil, data
+	}
+
+	var validRecords []*ddv1.PlaceRecordG2
+
+	// Start from the record after the newest (which should be the oldest)
+	startIndex := 0
+	if newestRecordIndex >= 0 && newestRecordIndex < totalRecords {
+		startIndex = (newestRecordIndex + 1) % totalRecords
+	}
+
+	// Read records in chronological order (oldest to newest)
+	// Stop as soon as we encounter an invalid record
+	for i := 0; i < totalRecords; i++ {
+		recordIndex := (startIndex + i) % totalRecords
+		recordOffset := recordIndex * recordSize
+
+		if recordOffset+recordSize > len(data) {
+			break
+		}
+
+		recordData := data[recordOffset : recordOffset+recordSize]
+		record, valid := unmarshalPlaceRecordG2WithValidation(recordData, opts)
+
+		if valid {
+			validRecords = append(validRecords, record)
+		} else {
+			// First invalid record marks the end of valid data in the circular buffer
+			break
+		}
+	}
+
+	// Capture any remaining trailing bytes for roundtrip accuracy
+	totalRecordsSize := totalRecords * recordSize
+	var trailingBytes []byte
+	if len(data) > totalRecordsSize {
+		trailingBytes = data[totalRecordsSize:]
+	}
+
+	return validRecords, trailingBytes
+}
+
+// unmarshalPlaceRecordGen1WithValidation parses and validates a Gen1 place record.
+func unmarshalPlaceRecordGen1WithValidation(data []byte, opts dd.UnmarshalOptions) (*ddv1.PlaceRecord, bool) {
+	record, err := opts.UnmarshalPlaceRecord(data)
 	if err != nil {
 		// If parsing fails, treat as invalid but keep raw data
 		invalidRecord := &ddv1.PlaceRecord{}
@@ -138,9 +189,8 @@ func unmarshalPlaceRecordWithValidation(data []byte, opts UnmarshalOptions) (*dd
 	}
 
 	// Validate the record
-	if !isValidPlaceRecord(record) {
+	if !isValidPlaceRecordGen1(record) {
 		record.SetValid(false)
-		record.SetRawData(data)
 		return record, false
 	}
 
@@ -148,11 +198,30 @@ func unmarshalPlaceRecordWithValidation(data []byte, opts UnmarshalOptions) (*dd
 	return record, true
 }
 
-// isValidPlaceRecord validates a place record for reasonable values
-func isValidPlaceRecord(record *ddv1.PlaceRecord) bool {
-	// Check timestamp validity (reasonable range for tachograph data)
-	// Tachographs were introduced around 1985, so anything before 1980 is suspicious
-	// Anything after 2050 is also suspicious
+// unmarshalPlaceRecordG2WithValidation parses and validates a Gen2 place record.
+func unmarshalPlaceRecordG2WithValidation(data []byte, opts dd.UnmarshalOptions) (*ddv1.PlaceRecordG2, bool) {
+	record, err := opts.UnmarshalPlaceRecordG2(data)
+	if err != nil {
+		// If parsing fails, treat as invalid but keep raw data
+		invalidRecord := &ddv1.PlaceRecordG2{}
+		invalidRecord.SetValid(false)
+		invalidRecord.SetRawData(data)
+		return invalidRecord, false
+	}
+
+	// Validate the record
+	if !isValidPlaceRecordG2(record) {
+		record.SetValid(false)
+		return record, false
+	}
+
+	record.SetValid(true)
+	return record, true
+}
+
+// isValidPlaceRecordGen1 validates a Gen1 place record for reasonable values.
+func isValidPlaceRecordGen1(record *ddv1.PlaceRecord) bool {
+	// Check timestamp validity
 	entryTime := record.GetEntryTime()
 	if entryTime != nil {
 		year := entryTime.AsTime().Year()
@@ -161,89 +230,33 @@ func isValidPlaceRecord(record *ddv1.PlaceRecord) bool {
 		}
 	}
 
-	// Check odometer value (should be reasonable - not negative, not extremely large)
+	// Check odometer value
 	odometer := record.GetVehicleOdometerKm()
-	if odometer < 0 || odometer > 10000000 { // 10M km is unreasonably high
+	if odometer < 0 || odometer > 10000000 {
 		return false
 	}
 
-	// All other fields can have various values including unrecognized ones,
-	// so we don't validate them as strictly
 	return true
 }
 
-// unmarshalPlaceRecord parses a single place record from a byte slice based on card generation.
-func unmarshalPlaceRecord(data []byte, opts UnmarshalOptions) (*ddv1.PlaceRecord, error) {
-	recordSize := placeRecordSizeGen1
-	if opts.Generation == ddv1.Generation_GENERATION_2 {
-		recordSize = placeRecordSizeGen2
-	}
-
-	if len(data) < recordSize {
-		return nil, fmt.Errorf("insufficient data for place record: got %d, want %d", len(data), recordSize)
-	}
-
-	r := bytes.NewReader(data)
-	record := &ddv1.PlaceRecord{}
-
-	// Read entry time (4 bytes)
-	entryTimeBytes := make([]byte, 4)
-	if _, err := r.Read(entryTimeBytes); err != nil {
-		return nil, fmt.Errorf("failed to read entry time: %w", err)
-	}
-	entryTime, err := opts.UnmarshalTimeReal(entryTimeBytes)
-	if err != nil {
-		return nil, fmt.Errorf("failed to parse entry time: %w", err)
-	}
-	record.SetEntryTime(entryTime)
-
-	// Read entry type (1 byte)
-	entryTypeByte, _ := r.ReadByte()
-	entryType, err := dd.UnmarshalEnum[ddv1.EntryTypeDailyWorkPeriod](entryTypeByte)
-	if err != nil {
-		// Value not recognized - set UNRECOGNIZED and save raw value
-		record.SetEntryTypeDailyWorkPeriod(ddv1.EntryTypeDailyWorkPeriod_ENTRY_TYPE_DAILY_WORK_PERIOD_UNRECOGNIZED)
-		record.SetUnrecognizedEntryTypeDailyWorkPeriod(int32(entryTypeByte))
-	} else {
-		record.SetEntryTypeDailyWorkPeriod(entryType)
-	}
-
-	// Read daily work period country (1 byte)
-	countryByte, _ := r.ReadByte()
-	country, err := dd.UnmarshalEnum[ddv1.NationNumeric](countryByte)
-	if err != nil {
-		// Value not recognized - set UNRECOGNIZED and save raw value
-		record.SetDailyWorkPeriodCountry(ddv1.NationNumeric_NATION_NUMERIC_UNRECOGNIZED)
-		record.SetUnrecognizedDailyWorkPeriodCountry(int32(countryByte))
-	} else {
-		record.SetDailyWorkPeriodCountry(country)
-	}
-
-	// Read daily work period region (1 byte for both Gen1 and Gen2 as per spec)
-	region, _ := r.ReadByte()
-	record.SetDailyWorkPeriodRegion([]byte{region})
-
-	// Read vehicle odometer (3 bytes)
-	odometerBytes := make([]byte, 3)
-	if _, err := r.Read(odometerBytes); err != nil {
-		return nil, fmt.Errorf("failed to read odometer: %w", err)
-	}
-	record.SetVehicleOdometerKm(int32(binary.BigEndian.Uint32(append([]byte{0}, odometerBytes...))))
-
-	if opts.Generation == ddv1.Generation_GENERATION_2 {
-		// Read GNSS place record (11 bytes: 4 timestamp + 1 accuracy + 6 coords)
-		gnssBytes := make([]byte, 11)
-		if _, err := r.Read(gnssBytes); err != nil {
-			return nil, fmt.Errorf("failed to read GNSS place record: %w", err)
+// isValidPlaceRecordG2 validates a Gen2 place record for reasonable values.
+func isValidPlaceRecordG2(record *ddv1.PlaceRecordG2) bool {
+	// Check timestamp validity
+	entryTime := record.GetEntryTime()
+	if entryTime != nil {
+		year := entryTime.AsTime().Year()
+		if year < 1980 || year > 2050 {
+			return false
 		}
-		gnssRecord, err := opts.UnmarshalGNSSPlaceRecord(gnssBytes)
-		if err != nil {
-			return nil, fmt.Errorf("failed to parse GNSS place record: %w", err)
-		}
-		record.SetEntryGnssPlaceRecord(gnssRecord)
 	}
 
-	return record, nil
+	// Check odometer value
+	odometer := record.GetVehicleOdometerKm()
+	if odometer < 0 || odometer > 10000000 {
+		return false
+	}
+
+	return true
 }
 
 // appendPlaces appends the binary representation of Places to dst.
@@ -254,10 +267,21 @@ func appendPlaces(dst []byte, p *cardv1.Places, generation ddv1.Generation) ([]b
 	dst = binary.BigEndian.AppendUint16(dst, uint16(p.GetNewestRecordIndex()))
 
 	var err error
-	for _, rec := range p.GetRecords() {
-		dst, err = appendPlaceRecord(dst, rec, generation)
-		if err != nil {
-			return nil, err
+
+	// Append Gen1 or Gen2 records based on which is populated
+	if generation == ddv1.Generation_GENERATION_2 {
+		for _, rec := range p.GetRecordsG2() {
+			dst, err = appendPlaceRecordG2(dst, rec)
+			if err != nil {
+				return nil, err
+			}
+		}
+	} else {
+		for _, rec := range p.GetRecords() {
+			dst, err = appendPlaceRecordGen1(dst, rec)
+			if err != nil {
+				return nil, err
+			}
 		}
 	}
 
@@ -269,12 +293,9 @@ func appendPlaces(dst []byte, p *cardv1.Places, generation ddv1.Generation) ([]b
 	return dst, nil
 }
 
-// appendPlaceRecord appends a single place record based on card generation.
-func appendPlaceRecord(dst []byte, rec *ddv1.PlaceRecord, generation ddv1.Generation) ([]byte, error) {
-	recordSize := placeRecordSizeGen1
-	if generation == ddv1.Generation_GENERATION_2 {
-		recordSize = placeRecordSizeGen2
-	}
+// appendPlaceRecordGen1 appends a Gen1 place record (10 bytes).
+func appendPlaceRecordGen1(dst []byte, rec *ddv1.PlaceRecord) ([]byte, error) {
+	const recordSize = placeRecordSizeGen1 // Fixed size - no conditionals!
 
 	if rec == nil || !rec.GetValid() {
 		if raw := rec.GetRawData(); len(raw) > 0 {
@@ -283,46 +304,19 @@ func appendPlaceRecord(dst []byte, rec *ddv1.PlaceRecord, generation ddv1.Genera
 		return append(dst, make([]byte, recordSize)...), nil
 	}
 
-	var err error
-	dst, err = dd.AppendTimeReal(dst, rec.GetEntryTime()) // 4 bytes
-	if err != nil {
-		return nil, fmt.Errorf("failed to append entry time: %w", err)
-	}
+	return dd.AppendPlaceRecord(dst, rec)
+}
 
-	var entryTypeProtocol byte
-	if rec.GetEntryTypeDailyWorkPeriod() == ddv1.EntryTypeDailyWorkPeriod_ENTRY_TYPE_DAILY_WORK_PERIOD_UNRECOGNIZED {
-		entryTypeProtocol = byte(rec.GetUnrecognizedEntryTypeDailyWorkPeriod())
-	} else {
-		entryTypeProtocol, _ = dd.MarshalEnum(rec.GetEntryTypeDailyWorkPeriod())
-	}
-	dst = append(dst, entryTypeProtocol) // 1 byte
+// appendPlaceRecordG2 appends a Gen2 place record (21 bytes).
+func appendPlaceRecordG2(dst []byte, rec *ddv1.PlaceRecordG2) ([]byte, error) {
+	const recordSize = placeRecordSizeGen2 // Fixed size - no conditionals!
 
-	var countryProtocol byte
-	if rec.GetDailyWorkPeriodCountry() == ddv1.NationNumeric_NATION_NUMERIC_UNRECOGNIZED {
-		countryProtocol = byte(rec.GetUnrecognizedDailyWorkPeriodCountry())
-	} else {
-		countryProtocol, _ = dd.MarshalEnum(rec.GetDailyWorkPeriodCountry())
-	}
-	dst = append(dst, countryProtocol) // 1 byte
-
-	// Append region byte (1 byte)
-	regionBytes := rec.GetDailyWorkPeriodRegion()
-	if len(regionBytes) > 0 {
-		dst = append(dst, regionBytes[0])
-	} else {
-		dst = append(dst, 0)
-	}
-
-	dst = dd.AppendOdometer(dst, uint32(rec.GetVehicleOdometerKm())) // 3 bytes
-
-	if generation == ddv1.Generation_GENERATION_2 {
-		gnssRecord := rec.GetEntryGnssPlaceRecord()
-		// Append GNSS place record (11 bytes: 4 timestamp + 1 accuracy + 6 coords)
-		dst, err = dd.AppendGNSSPlaceRecord(dst, gnssRecord)
-		if err != nil {
-			return nil, fmt.Errorf("failed to append GNSS place record: %w", err)
+	if rec == nil || !rec.GetValid() {
+		if raw := rec.GetRawData(); len(raw) > 0 {
+			return append(dst, raw...), nil
 		}
+		return append(dst, make([]byte, recordSize)...), nil
 	}
 
-	return dst, nil
+	return dd.AppendPlaceRecordG2(dst, rec)
 }

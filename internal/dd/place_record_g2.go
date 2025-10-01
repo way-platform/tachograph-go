@@ -7,34 +7,36 @@ import (
 	ddv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
 )
 
-// UnmarshalPlaceRecord parses a Generation 1 place record (10 bytes, no GNSS data).
+// UnmarshalPlaceRecordG2 parses a Generation 2 place record (21 bytes, includes GNSS data).
 //
-// The data type `PlaceRecord` is specified in the Data Dictionary, Section 2.117.
+// The data type `PlaceRecord` (Gen2 variant) is specified in the Data Dictionary, Section 2.117.
 //
-// ASN.1 Definition (Gen1):
+// ASN.1 Definition (Gen2):
 //
 //	PlaceRecord ::= SEQUENCE {
 //	    entryTime                    TimeReal,
 //	    entryTypeDailyWorkPeriod     EntryTypeDailyWorkPeriod,
 //	    dailyWorkPeriodCountry       NationNumeric,
 //	    dailyWorkPeriodRegion        RegionNumeric,
-//	    vehicleOdometerValue         OdometerShort
+//	    vehicleOdometerValue         OdometerShort,
+//	    entryGNSSPlaceRecord         GNSSPlaceRecord
 //	}
-func (opts UnmarshalOptions) UnmarshalPlaceRecord(data []byte) (*ddv1.PlaceRecord, error) {
+func (opts UnmarshalOptions) UnmarshalPlaceRecordG2(data []byte) (*ddv1.PlaceRecordG2, error) {
 	const (
 		idxEntryTime   = 0
 		idxEntryType   = 4
 		idxCountry     = 5
 		idxRegion      = 6
 		idxOdometer    = 7
-		lenPlaceRecord = 10 // Fixed size for Gen1
+		idxGNSS        = 10
+		lenPlaceRecord = 21 // Fixed size for Gen2
 	)
 
 	if len(data) != lenPlaceRecord {
-		return nil, fmt.Errorf("invalid data length for Gen1 PlaceRecord: got %d, want %d", len(data), lenPlaceRecord)
+		return nil, fmt.Errorf("invalid data length for Gen2 PlaceRecord: got %d, want %d", len(data), lenPlaceRecord)
 	}
 
-	record := &ddv1.PlaceRecord{}
+	record := &ddv1.PlaceRecordG2{}
 	record.SetRawData(data)
 
 	// Parse entry time (4 bytes)
@@ -71,18 +73,25 @@ func (opts UnmarshalOptions) UnmarshalPlaceRecord(data []byte) (*ddv1.PlaceRecor
 	odometerBytes := data[idxOdometer : idxOdometer+3]
 	record.SetVehicleOdometerKm(int32(binary.BigEndian.Uint32(append([]byte{0}, odometerBytes...))))
 
+	// Parse GNSS place record (11 bytes)
+	gnssRecord, err := opts.UnmarshalGNSSPlaceRecord(data[idxGNSS : idxGNSS+11])
+	if err != nil {
+		return nil, fmt.Errorf("failed to parse GNSS place record: %w", err)
+	}
+	record.SetEntryGnssPlaceRecord(gnssRecord)
+
 	return record, nil
 }
 
-// AppendPlaceRecord appends a Generation 1 place record (10 bytes).
-func AppendPlaceRecord(dst []byte, rec *ddv1.PlaceRecord) ([]byte, error) {
-	const lenPlaceRecord = 10 // Fixed size for Gen1
+// AppendPlaceRecordG2 appends a Generation 2 place record (21 bytes).
+func AppendPlaceRecordG2(dst []byte, rec *ddv1.PlaceRecordG2) ([]byte, error) {
+	const lenPlaceRecord = 21 // Fixed size for Gen2
 
 	// Use raw data painting strategy if available
 	var canvas [lenPlaceRecord]byte
 	if rawData := rec.GetRawData(); len(rawData) > 0 {
 		if len(rawData) != lenPlaceRecord {
-			return nil, fmt.Errorf("invalid raw_data length for PlaceRecord: got %d, want %d", len(rawData), lenPlaceRecord)
+			return nil, fmt.Errorf("invalid raw_data length for PlaceRecordG2: got %d, want %d", len(rawData), lenPlaceRecord)
 		}
 		copy(canvas[:], rawData)
 	}
@@ -123,6 +132,13 @@ func AppendPlaceRecord(dst []byte, rec *ddv1.PlaceRecord) ([]byte, error) {
 	// Odometer (3 bytes)
 	odometerBytes := AppendOdometer(nil, uint32(rec.GetVehicleOdometerKm()))
 	copy(canvas[7:10], odometerBytes)
+
+	// GNSS place record (11 bytes)
+	gnssBytes, err := AppendGNSSPlaceRecord(nil, rec.GetEntryGnssPlaceRecord())
+	if err != nil {
+		return nil, fmt.Errorf("failed to append GNSS place record: %w", err)
+	}
+	copy(canvas[10:21], gnssBytes)
 
 	return append(dst, canvas[:]...), nil
 }
