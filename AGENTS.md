@@ -75,6 +75,7 @@ os.WriteFile("tachograph.DDD", data, 0600)
 
 - **[Protobuf Schemas](./proto/AGENTS.md)**: Guidelines for developing the protobuf schemas.
 - **[Development Tools](./tools/AGENTS.md)**: Guidance on build scripts and build targets.
+- **[Card Package](./internal/card/AGENTS.md)**: Detailed guidance for card file parsing and generation-specific patterns.
 
 ### Package Organization
 
@@ -145,20 +146,73 @@ Tachograph specifications evolve, and data structures frequently differ between 
 
 **Never assume a single, fixed structure for a given data element.** Always consider the card/VU generation when parsing or marshalling data.
 
-**Example: `EF_Places`**
+### Principle: Split Types by Generation for Structural Differences
 
-A clear example of this principle is the `EF_Places` file on a driver card.
+When a data structure has **different binary layouts or sizes** between generations, create separate protobuf types for each generation rather than using a superset message with conditional logic.
 
-- **Gen1 `PlaceRecord`:** Has a fixed size of 12 bytes.
-- **Gen2 `PlaceRecord`:** Extends the record to 22 bytes to include GNSS location data.
+**Benefits of Type Splitting:**
 
-A parser that assumes a fixed 12-byte size will fail to correctly read Gen2 card data, leading to data corruption and loss. The correct implementation must:
+1. **Fixed Sizes**: Each type has a deterministic, fixed size with no conditionals
+2. **Type Safety**: The type system prevents mixing Gen1 and Gen2 data
+3. **Simpler Code**: Parse/marshal functions are straightforward with no generation checks
+4. **Better Testing**: Test each generation independently with clear expectations
+5. **Clearer Schema**: The protobuf explicitly shows what exists in each generation
 
-1.  Determine the card generation _before_ parsing `EF_Places`.
-2.  Use the generation to select the correct record size and parsing logic.
-3.  The protobuf model must be a "superset" capable of holding data from both generations.
+**When to Split:**
 
-This principle applies to all data structures, not just `EF_Places`. Always verify the structure against the specification for all relevant generations.
+- **Different sizes**: Gen1 record is X bytes, Gen2 record is Y bytes (e.g., `PlaceRecord`: 10 vs 21 bytes)
+- **Different layouts**: Fields at different offsets or with different meanings
+- **Gen2-only fields**: Not just additive, but structurally different
+
+**When to Use Superset (Don't Split):**
+
+- **Pure addition**: Gen2 is Gen1 + extra byte(s) at the end with no layout changes (e.g., `FullCardNumberAndGeneration`)
+- **Identical structures**: No differences across generations (e.g., `TimeReal`, `Date`)
+
+**Example: PlaceRecord**
+
+```protobuf
+// Gen1: 10 bytes (no GNSS)
+message PlaceRecord {
+  google.protobuf.Timestamp entry_time = 1;
+  EntryTypeDailyWorkPeriod entry_type_daily_work_period = 2;
+  // ... other fields ...
+  bytes raw_data = 8;  // Always 10 bytes
+}
+
+// Gen2: 21 bytes (includes GNSS)
+message PlaceRecordG2 {
+  google.protobuf.Timestamp entry_time = 1;
+  EntryTypeDailyWorkPeriod entry_type_daily_work_period = 2;
+  // ... other fields ...
+  GNSSPlaceRecord entry_gnss_place_record = 8;  // New in Gen2
+  bytes raw_data = 9;  // Always 21 bytes
+}
+```
+
+With separate types, parsing becomes trivial:
+
+```go
+// Gen1: Always 10 bytes, no conditionals!
+func (opts UnmarshalOptions) UnmarshalPlaceRecord(data []byte) (*PlaceRecord, error) {
+    const lenPlaceRecord = 10  // Fixed!
+    if len(data) != lenPlaceRecord {
+        return nil, fmt.Errorf("invalid length: got %d, want %d", len(data), lenPlaceRecord)
+    }
+    // ... parse exactly 10 bytes ...
+}
+
+// Gen2: Always 21 bytes, no conditionals!
+func (opts UnmarshalOptions) UnmarshalPlaceRecordG2(data []byte) (*PlaceRecordG2, error) {
+    const lenPlaceRecord = 21  // Fixed!
+    if len(data) != lenPlaceRecord {
+        return nil, fmt.Errorf("invalid length: got %d, want %d", len(data), lenPlaceRecord)
+    }
+    // ... parse exactly 21 bytes ...
+}
+```
+
+This principle applies to all data structures in the Data Dictionary. Always verify the structure against the specification for all relevant generations and split when structural differences exist.
 
 ### Marshalling and Unmarshalling
 
