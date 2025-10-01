@@ -1,4 +1,4 @@
-testdata/**/proprietary-*
+proprietary-*
 cmd/tachograph/tachograph
 docs/regulation/**/*.pdf
 build/

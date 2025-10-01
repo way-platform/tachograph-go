@@ -1,11 +1,15 @@
 package card
 
 import (
+	"bytes"
+	"encoding/json"
 	"os"
 	"path/filepath"
+	"strings"
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
+	"google.golang.org/protobuf/encoding/protojson"
 	"google.golang.org/protobuf/testing/protocmp"
 )
 
@@ -110,5 +114,87 @@ func Test_roundTrip_rawCardFile(t *testing.T) {
 				t.Logf("✅ Perfect structure roundtrip: %d records", len(originalRawFile.GetRecords()))
 			}
 		})
+	}
+}
+
+func TestUnmarshalRawCardFile_golden(t *testing.T) {
+	// Check if testdata/card directory exists
+	if _, err := os.Stat("../../testdata/card"); err != nil {
+		if os.IsNotExist(err) {
+			t.Skip("testdata/card directory not present (proprietary test files not available)")
+		}
+		t.Fatalf("Failed to access testdata/card directory: %v", err)
+	}
+
+	if err := filepath.WalkDir("../../testdata/card", func(path string, d os.DirEntry, err error) error {
+		if err != nil {
+			return err
+		}
+		if d.IsDir() || !strings.HasSuffix(d.Name(), ".DDD") {
+			return nil
+		}
+
+		// Create relative path from testdata/card root (e.g., "driver/file.DDD")
+		relPath, err := filepath.Rel("../../testdata/card", path)
+		if err != nil {
+			t.Fatalf("Failed to compute relative path: %v", err)
+		}
+
+		// Create golden file path in internal/card/testdata/card with same structure
+		goldenFile := filepath.Join("testdata/card", strings.TrimSuffix(relPath, ".DDD")+".json")
+
+		t.Run(path, func(t *testing.T) {
+			// Read and parse the DDD file
+			data, err := os.ReadFile(path)
+			if err != nil {
+				t.Fatalf("Failed to read DDD file %s: %v", path, err)
+			}
+
+			var actual string
+			rawFile, err := UnmarshalRawCardFile(data)
+			if err != nil {
+				// If parsing fails, use the error message as the golden content
+				actual = `{"error":"` + err.Error() + `"}`
+			} else {
+				// If parsing succeeds, use the JSON representation
+				actualBytes, err := (protojson.MarshalOptions{}).Marshal(rawFile)
+				if err != nil {
+					t.Fatalf("Failed to marshal RawCardFile %s: %v", path, err)
+				}
+				var actualIndented bytes.Buffer
+				_ = json.Indent(&actualIndented, actualBytes, "", "  ") // ignore error as JSON marshaling already succeeded
+				actual = actualIndented.String()
+			}
+
+			if *update {
+				// Ensure the directory exists
+				goldenDir := filepath.Dir(goldenFile)
+				if err := os.MkdirAll(goldenDir, 0o755); err != nil {
+					t.Fatalf("Failed to create golden file directory %s: %v", goldenDir, err)
+				}
+
+				if err := os.WriteFile(goldenFile, []byte(actual), 0o644); err != nil {
+					t.Fatalf("Failed to write golden file %s: %v", goldenFile, err)
+				}
+				t.Logf("Updated golden file: %s", goldenFile)
+				return
+			}
+
+			expected, err := os.ReadFile(goldenFile)
+			if err != nil {
+				if os.IsNotExist(err) {
+					t.Fatalf("Golden file %s does not exist. Run with -update to create it.", goldenFile)
+				}
+				t.Fatalf("Failed to read golden file %s: %v", goldenFile, err)
+			}
+
+			if diff := cmp.Diff(string(expected), actual); diff != "" {
+				t.Errorf("Golden file mismatch for %s (-expected +actual):\n%s", path, diff)
+				t.Logf("To update the golden file, run: go test -update")
+			}
+		})
+		return nil
+	}); err != nil {
+		t.Fatalf("Failed to walk testdata/card directory: %v", err)
 	}
 }
