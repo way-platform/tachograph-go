@@ -25,36 +25,21 @@ const (
 // This message is the result of the second pass of parsing, where the raw TLV
 // records from a `RawCardFile` are interpreted and structured into their
 // semantic meaning according to the driver card specification.
-// See regulation document Appendix 2, Section 4.2.
+//
+// The structure follows the physical card file layout with separate Dedicated Files (DFs)
+// for Generation 1 and Generation 2 applications. This design prevents data loss when
+// a card contains both Gen1 and Gen2 versions of the same EF, which is common in
+// Gen2 cards that maintain backward compatibility.
+//
+// See regulation document Appendix 2, Section 4.2 (driver card applications).
 type DriverCardFile struct {
-	state                                  protoimpl.MessageState       `protogen:"opaque.v1"`
-	xxx_hidden_Icc                         *Icc                         `protobuf:"bytes,1,opt,name=icc"`
-	xxx_hidden_Ic                          *Ic                          `protobuf:"bytes,2,opt,name=ic"`
-	xxx_hidden_ApplicationIdentification   *ApplicationIdentification   `protobuf:"bytes,3,opt,name=application_identification,json=applicationIdentification"`
-	xxx_hidden_Identification              *Identification              `protobuf:"bytes,4,opt,name=identification"`
-	xxx_hidden_DrivingLicenceInfo          *DrivingLicenceInfo          `protobuf:"bytes,6,opt,name=driving_licence_info,json=drivingLicenceInfo"`
-	xxx_hidden_EventsData                  *EventsData                  `protobuf:"bytes,7,opt,name=events_data,json=eventsData"`
-	xxx_hidden_FaultsData                  *FaultsData                  `protobuf:"bytes,8,opt,name=faults_data,json=faultsData"`
-	xxx_hidden_DriverActivityData          *DriverActivityData          `protobuf:"bytes,9,opt,name=driver_activity_data,json=driverActivityData"`
-	xxx_hidden_VehiclesUsed                *VehiclesUsed                `protobuf:"bytes,10,opt,name=vehicles_used,json=vehiclesUsed"`
-	xxx_hidden_Places                      *Places                      `protobuf:"bytes,11,opt,name=places"`
-	xxx_hidden_CurrentUsage                *CurrentUsage                `protobuf:"bytes,12,opt,name=current_usage,json=currentUsage"`
-	xxx_hidden_ControlActivityData         *ControlActivityData         `protobuf:"bytes,13,opt,name=control_activity_data,json=controlActivityData"`
-	xxx_hidden_SpecificConditions          *SpecificConditions          `protobuf:"bytes,14,opt,name=specific_conditions,json=specificConditions"`
-	xxx_hidden_CardDownloadDriver          *CardDownloadDriver          `protobuf:"bytes,15,opt,name=card_download_driver,json=cardDownloadDriver"`
-	xxx_hidden_VehicleUnitsUsed            *VehicleUnitsUsed            `protobuf:"bytes,16,opt,name=vehicle_units_used,json=vehicleUnitsUsed"`
-	xxx_hidden_GnssPlaces                  *GnssPlaces                  `protobuf:"bytes,17,opt,name=gnss_places,json=gnssPlaces"`
-	xxx_hidden_ApplicationIdentificationV2 *ApplicationIdentificationV2 `protobuf:"bytes,18,opt,name=application_identification_v2,json=applicationIdentificationV2"`
-	xxx_hidden_PlacesAuthentication        *PlacesAuthentication        `protobuf:"bytes,19,opt,name=places_authentication,json=placesAuthentication"`
-	xxx_hidden_GnssPlacesAuthentication    *GnssPlacesAuthentication    `protobuf:"bytes,20,opt,name=gnss_places_authentication,json=gnssPlacesAuthentication"`
-	xxx_hidden_BorderCrossings             *BorderCrossings             `protobuf:"bytes,21,opt,name=border_crossings,json=borderCrossings"`
-	xxx_hidden_LoadUnloadOperations        *LoadUnloadOperations        `protobuf:"bytes,22,opt,name=load_unload_operations,json=loadUnloadOperations"`
-	xxx_hidden_LoadTypeEntries             *LoadTypeEntries             `protobuf:"bytes,23,opt,name=load_type_entries,json=loadTypeEntries"`
-	xxx_hidden_CompanyActivityData         *CompanyActivityData         `protobuf:"bytes,25,opt,name=company_activity_data,json=companyActivityData"`
-	xxx_hidden_VuConfiguration             *VuConfiguration             `protobuf:"bytes,26,opt,name=vu_configuration,json=vuConfiguration"`
-	xxx_hidden_Certificates                *Certificates                `protobuf:"bytes,24,opt,name=certificates"`
-	unknownFields                          protoimpl.UnknownFields
-	sizeCache                              protoimpl.SizeCache
+	state                   protoimpl.MessageState       `protogen:"opaque.v1"`
+	xxx_hidden_Icc          *Icc                         `protobuf:"bytes,1,opt,name=icc"`
+	xxx_hidden_Ic           *Ic                          `protobuf:"bytes,2,opt,name=ic"`
+	xxx_hidden_Tachograph   *DriverCardFile_Tachograph   `protobuf:"bytes,3,opt,name=tachograph"`
+	xxx_hidden_TachographG2 *DriverCardFile_TachographG2 `protobuf:"bytes,4,opt,name=tachograph_g2,json=tachographG2"`
+	unknownFields           protoimpl.UnknownFields
+	sizeCache               protoimpl.SizeCache
 }
 
 func (x *DriverCardFile) Reset() {
@@ -96,163 +81,16 @@ func (x *DriverCardFile) GetIc() *Ic {
 	return nil
 }
 
-func (x *DriverCardFile) GetApplicationIdentification() *ApplicationIdentification {
+func (x *DriverCardFile) GetTachograph() *DriverCardFile_Tachograph {
 	if x != nil {
-		return x.xxx_hidden_ApplicationIdentification
+		return x.xxx_hidden_Tachograph
 	}
 	return nil
 }
 
-func (x *DriverCardFile) GetIdentification() *Identification {
+func (x *DriverCardFile) GetTachographG2() *DriverCardFile_TachographG2 {
 	if x != nil {
-		return x.xxx_hidden_Identification
-	}
-	return nil
-}
-
-func (x *DriverCardFile) GetDrivingLicenceInfo() *DrivingLicenceInfo {
-	if x != nil {
-		return x.xxx_hidden_DrivingLicenceInfo
-	}
-	return nil
-}
-
-func (x *DriverCardFile) GetEventsData() *EventsData {
-	if x != nil {
-		return x.xxx_hidden_EventsData
-	}
-	return nil
-}
-
-func (x *DriverCardFile) GetFaultsData() *FaultsData {
-	if x != nil {
-		return x.xxx_hidden_FaultsData
-	}
-	return nil
-}
-
-func (x *DriverCardFile) GetDriverActivityData() *DriverActivityData {
-	if x != nil {
-		return x.xxx_hidden_DriverActivityData
-	}
-	return nil
-}
-
-func (x *DriverCardFile) GetVehiclesUsed() *VehiclesUsed {
-	if x != nil {
-		return x.xxx_hidden_VehiclesUsed
-	}
-	return nil
-}
-
-func (x *DriverCardFile) GetPlaces() *Places {
-	if x != nil {
-		return x.xxx_hidden_Places
-	}
-	return nil
-}
-
-func (x *DriverCardFile) GetCurrentUsage() *CurrentUsage {
-	if x != nil {
-		return x.xxx_hidden_CurrentUsage
-	}
-	return nil
-}
-
-func (x *DriverCardFile) GetControlActivityData() *ControlActivityData {
-	if x != nil {
-		return x.xxx_hidden_ControlActivityData
-	}
-	return nil
-}
-
-func (x *DriverCardFile) GetSpecificConditions() *SpecificConditions {
-	if x != nil {
-		return x.xxx_hidden_SpecificConditions
-	}
-	return nil
-}
-
-func (x *DriverCardFile) GetCardDownloadDriver() *CardDownloadDriver {
-	if x != nil {
-		return x.xxx_hidden_CardDownloadDriver
-	}
-	return nil
-}
-
-func (x *DriverCardFile) GetVehicleUnitsUsed() *VehicleUnitsUsed {
-	if x != nil {
-		return x.xxx_hidden_VehicleUnitsUsed
-	}
-	return nil
-}
-
-func (x *DriverCardFile) GetGnssPlaces() *GnssPlaces {
-	if x != nil {
-		return x.xxx_hidden_GnssPlaces
-	}
-	return nil
-}
-
-func (x *DriverCardFile) GetApplicationIdentificationV2() *ApplicationIdentificationV2 {
-	if x != nil {
-		return x.xxx_hidden_ApplicationIdentificationV2
-	}
-	return nil
-}
-
-func (x *DriverCardFile) GetPlacesAuthentication() *PlacesAuthentication {
-	if x != nil {
-		return x.xxx_hidden_PlacesAuthentication
-	}
-	return nil
-}
-
-func (x *DriverCardFile) GetGnssPlacesAuthentication() *GnssPlacesAuthentication {
-	if x != nil {
-		return x.xxx_hidden_GnssPlacesAuthentication
-	}
-	return nil
-}
-
-func (x *DriverCardFile) GetBorderCrossings() *BorderCrossings {
-	if x != nil {
-		return x.xxx_hidden_BorderCrossings
-	}
-	return nil
-}
-
-func (x *DriverCardFile) GetLoadUnloadOperations() *LoadUnloadOperations {
-	if x != nil {
-		return x.xxx_hidden_LoadUnloadOperations
-	}
-	return nil
-}
-
-func (x *DriverCardFile) GetLoadTypeEntries() *LoadTypeEntries {
-	if x != nil {
-		return x.xxx_hidden_LoadTypeEntries
-	}
-	return nil
-}
-
-func (x *DriverCardFile) GetCompanyActivityData() *CompanyActivityData {
-	if x != nil {
-		return x.xxx_hidden_CompanyActivityData
-	}
-	return nil
-}
-
-func (x *DriverCardFile) GetVuConfiguration() *VuConfiguration {
-	if x != nil {
-		return x.xxx_hidden_VuConfiguration
-	}
-	return nil
-}
-
-func (x *DriverCardFile) GetCertificates() *Certificates {
-	if x != nil {
-		return x.xxx_hidden_Certificates
+		return x.xxx_hidden_TachographG2
 	}
 	return nil
 }
@@ -265,96 +103,12 @@ func (x *DriverCardFile) SetIc(v *Ic) {
 	x.xxx_hidden_Ic = v
 }
 
-func (x *DriverCardFile) SetApplicationIdentification(v *ApplicationIdentification) {
-	x.xxx_hidden_ApplicationIdentification = v
+func (x *DriverCardFile) SetTachograph(v *DriverCardFile_Tachograph) {
+	x.xxx_hidden_Tachograph = v
 }
 
-func (x *DriverCardFile) SetIdentification(v *Identification) {
-	x.xxx_hidden_Identification = v
-}
-
-func (x *DriverCardFile) SetDrivingLicenceInfo(v *DrivingLicenceInfo) {
-	x.xxx_hidden_DrivingLicenceInfo = v
-}
-
-func (x *DriverCardFile) SetEventsData(v *EventsData) {
-	x.xxx_hidden_EventsData = v
-}
-
-func (x *DriverCardFile) SetFaultsData(v *FaultsData) {
-	x.xxx_hidden_FaultsData = v
-}
-
-func (x *DriverCardFile) SetDriverActivityData(v *DriverActivityData) {
-	x.xxx_hidden_DriverActivityData = v
-}
-
-func (x *DriverCardFile) SetVehiclesUsed(v *VehiclesUsed) {
-	x.xxx_hidden_VehiclesUsed = v
-}
-
-func (x *DriverCardFile) SetPlaces(v *Places) {
-	x.xxx_hidden_Places = v
-}
-
-func (x *DriverCardFile) SetCurrentUsage(v *CurrentUsage) {
-	x.xxx_hidden_CurrentUsage = v
-}
-
-func (x *DriverCardFile) SetControlActivityData(v *ControlActivityData) {
-	x.xxx_hidden_ControlActivityData = v
-}
-
-func (x *DriverCardFile) SetSpecificConditions(v *SpecificConditions) {
-	x.xxx_hidden_SpecificConditions = v
-}
-
-func (x *DriverCardFile) SetCardDownloadDriver(v *CardDownloadDriver) {
-	x.xxx_hidden_CardDownloadDriver = v
-}
-
-func (x *DriverCardFile) SetVehicleUnitsUsed(v *VehicleUnitsUsed) {
-	x.xxx_hidden_VehicleUnitsUsed = v
-}
-
-func (x *DriverCardFile) SetGnssPlaces(v *GnssPlaces) {
-	x.xxx_hidden_GnssPlaces = v
-}
-
-func (x *DriverCardFile) SetApplicationIdentificationV2(v *ApplicationIdentificationV2) {
-	x.xxx_hidden_ApplicationIdentificationV2 = v
-}
-
-func (x *DriverCardFile) SetPlacesAuthentication(v *PlacesAuthentication) {
-	x.xxx_hidden_PlacesAuthentication = v
-}
-
-func (x *DriverCardFile) SetGnssPlacesAuthentication(v *GnssPlacesAuthentication) {
-	x.xxx_hidden_GnssPlacesAuthentication = v
-}
-
-func (x *DriverCardFile) SetBorderCrossings(v *BorderCrossings) {
-	x.xxx_hidden_BorderCrossings = v
-}
-
-func (x *DriverCardFile) SetLoadUnloadOperations(v *LoadUnloadOperations) {
-	x.xxx_hidden_LoadUnloadOperations = v
-}
-
-func (x *DriverCardFile) SetLoadTypeEntries(v *LoadTypeEntries) {
-	x.xxx_hidden_LoadTypeEntries = v
-}
-
-func (x *DriverCardFile) SetCompanyActivityData(v *CompanyActivityData) {
-	x.xxx_hidden_CompanyActivityData = v
-}
-
-func (x *DriverCardFile) SetVuConfiguration(v *VuConfiguration) {
-	x.xxx_hidden_VuConfiguration = v
-}
-
-func (x *DriverCardFile) SetCertificates(v *Certificates) {
-	x.xxx_hidden_Certificates = v
+func (x *DriverCardFile) SetTachographG2(v *DriverCardFile_TachographG2) {
+	x.xxx_hidden_TachographG2 = v
 }
 
 func (x *DriverCardFile) HasIcc() bool {
@@ -371,165 +125,18 @@ func (x *DriverCardFile) HasIc() bool {
 	return x.xxx_hidden_Ic != nil
 }
 
-func (x *DriverCardFile) HasApplicationIdentification() bool {
+func (x *DriverCardFile) HasTachograph() bool {
 	if x == nil {
 		return false
 	}
-	return x.xxx_hidden_ApplicationIdentification != nil
+	return x.xxx_hidden_Tachograph != nil
 }
 
-func (x *DriverCardFile) HasIdentification() bool {
+func (x *DriverCardFile) HasTachographG2() bool {
 	if x == nil {
 		return false
 	}
-	return x.xxx_hidden_Identification != nil
-}
-
-func (x *DriverCardFile) HasDrivingLicenceInfo() bool {
-	if x == nil {
-		return false
-	}
-	return x.xxx_hidden_DrivingLicenceInfo != nil
-}
-
-func (x *DriverCardFile) HasEventsData() bool {
-	if x == nil {
-		return false
-	}
-	return x.xxx_hidden_EventsData != nil
-}
-
-func (x *DriverCardFile) HasFaultsData() bool {
-	if x == nil {
-		return false
-	}
-	return x.xxx_hidden_FaultsData != nil
-}
-
-func (x *DriverCardFile) HasDriverActivityData() bool {
-	if x == nil {
-		return false
-	}
-	return x.xxx_hidden_DriverActivityData != nil
-}
-
-func (x *DriverCardFile) HasVehiclesUsed() bool {
-	if x == nil {
-		return false
-	}
-	return x.xxx_hidden_VehiclesUsed != nil
-}
-
-func (x *DriverCardFile) HasPlaces() bool {
-	if x == nil {
-		return false
-	}
-	return x.xxx_hidden_Places != nil
-}
-
-func (x *DriverCardFile) HasCurrentUsage() bool {
-	if x == nil {
-		return false
-	}
-	return x.xxx_hidden_CurrentUsage != nil
-}
-
-func (x *DriverCardFile) HasControlActivityData() bool {
-	if x == nil {
-		return false
-	}
-	return x.xxx_hidden_ControlActivityData != nil
-}
-
-func (x *DriverCardFile) HasSpecificConditions() bool {
-	if x == nil {
-		return false
-	}
-	return x.xxx_hidden_SpecificConditions != nil
-}
-
-func (x *DriverCardFile) HasCardDownloadDriver() bool {
-	if x == nil {
-		return false
-	}
-	return x.xxx_hidden_CardDownloadDriver != nil
-}
-
-func (x *DriverCardFile) HasVehicleUnitsUsed() bool {
-	if x == nil {
-		return false
-	}
-	return x.xxx_hidden_VehicleUnitsUsed != nil
-}
-
-func (x *DriverCardFile) HasGnssPlaces() bool {
-	if x == nil {
-		return false
-	}
-	return x.xxx_hidden_GnssPlaces != nil
-}
-
-func (x *DriverCardFile) HasApplicationIdentificationV2() bool {
-	if x == nil {
-		return false
-	}
-	return x.xxx_hidden_ApplicationIdentificationV2 != nil
-}
-
-func (x *DriverCardFile) HasPlacesAuthentication() bool {
-	if x == nil {
-		return false
-	}
-	return x.xxx_hidden_PlacesAuthentication != nil
-}
-
-func (x *DriverCardFile) HasGnssPlacesAuthentication() bool {
-	if x == nil {
-		return false
-	}
-	return x.xxx_hidden_GnssPlacesAuthentication != nil
-}
-
-func (x *DriverCardFile) HasBorderCrossings() bool {
-	if x == nil {
-		return false
-	}
-	return x.xxx_hidden_BorderCrossings != nil
-}
-
-func (x *DriverCardFile) HasLoadUnloadOperations() bool {
-	if x == nil {
-		return false
-	}
-	return x.xxx_hidden_LoadUnloadOperations != nil
-}
-
-func (x *DriverCardFile) HasLoadTypeEntries() bool {
-	if x == nil {
-		return false
-	}
-	return x.xxx_hidden_LoadTypeEntries != nil
-}
-
-func (x *DriverCardFile) HasCompanyActivityData() bool {
-	if x == nil {
-		return false
-	}
-	return x.xxx_hidden_CompanyActivityData != nil
-}
-
-func (x *DriverCardFile) HasVuConfiguration() bool {
-	if x == nil {
-		return false
-	}
-	return x.xxx_hidden_VuConfiguration != nil
-}
-
-func (x *DriverCardFile) HasCertificates() bool {
-	if x == nil {
-		return false
-	}
-	return x.xxx_hidden_Certificates != nil
+	return x.xxx_hidden_TachographG2 != nil
 }
 
 func (x *DriverCardFile) ClearIcc() {
@@ -540,151 +147,31 @@ func (x *DriverCardFile) ClearIc() {
 	x.xxx_hidden_Ic = nil
 }
 
-func (x *DriverCardFile) ClearApplicationIdentification() {
-	x.xxx_hidden_ApplicationIdentification = nil
+func (x *DriverCardFile) ClearTachograph() {
+	x.xxx_hidden_Tachograph = nil
 }
 
-func (x *DriverCardFile) ClearIdentification() {
-	x.xxx_hidden_Identification = nil
-}
-
-func (x *DriverCardFile) ClearDrivingLicenceInfo() {
-	x.xxx_hidden_DrivingLicenceInfo = nil
-}
-
-func (x *DriverCardFile) ClearEventsData() {
-	x.xxx_hidden_EventsData = nil
-}
-
-func (x *DriverCardFile) ClearFaultsData() {
-	x.xxx_hidden_FaultsData = nil
-}
-
-func (x *DriverCardFile) ClearDriverActivityData() {
-	x.xxx_hidden_DriverActivityData = nil
-}
-
-func (x *DriverCardFile) ClearVehiclesUsed() {
-	x.xxx_hidden_VehiclesUsed = nil
-}
-
-func (x *DriverCardFile) ClearPlaces() {
-	x.xxx_hidden_Places = nil
-}
-
-func (x *DriverCardFile) ClearCurrentUsage() {
-	x.xxx_hidden_CurrentUsage = nil
-}
-
-func (x *DriverCardFile) ClearControlActivityData() {
-	x.xxx_hidden_ControlActivityData = nil
-}
-
-func (x *DriverCardFile) ClearSpecificConditions() {
-	x.xxx_hidden_SpecificConditions = nil
-}
-
-func (x *DriverCardFile) ClearCardDownloadDriver() {
-	x.xxx_hidden_CardDownloadDriver = nil
-}
-
-func (x *DriverCardFile) ClearVehicleUnitsUsed() {
-	x.xxx_hidden_VehicleUnitsUsed = nil
-}
-
-func (x *DriverCardFile) ClearGnssPlaces() {
-	x.xxx_hidden_GnssPlaces = nil
-}
-
-func (x *DriverCardFile) ClearApplicationIdentificationV2() {
-	x.xxx_hidden_ApplicationIdentificationV2 = nil
-}
-
-func (x *DriverCardFile) ClearPlacesAuthentication() {
-	x.xxx_hidden_PlacesAuthentication = nil
-}
-
-func (x *DriverCardFile) ClearGnssPlacesAuthentication() {
-	x.xxx_hidden_GnssPlacesAuthentication = nil
-}
-
-func (x *DriverCardFile) ClearBorderCrossings() {
-	x.xxx_hidden_BorderCrossings = nil
-}
-
-func (x *DriverCardFile) ClearLoadUnloadOperations() {
-	x.xxx_hidden_LoadUnloadOperations = nil
-}
-
-func (x *DriverCardFile) ClearLoadTypeEntries() {
-	x.xxx_hidden_LoadTypeEntries = nil
-}
-
-func (x *DriverCardFile) ClearCompanyActivityData() {
-	x.xxx_hidden_CompanyActivityData = nil
-}
-
-func (x *DriverCardFile) ClearVuConfiguration() {
-	x.xxx_hidden_VuConfiguration = nil
-}
-
-func (x *DriverCardFile) ClearCertificates() {
-	x.xxx_hidden_Certificates = nil
+func (x *DriverCardFile) ClearTachographG2() {
+	x.xxx_hidden_TachographG2 = nil
 }
 
 type DriverCardFile_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
-	// Data from EF_ICC (Integrated Circuit Card Identification). See `icc.proto`.
+	// Data from EF ICC (Integrated Circuit Card Identification).
+	// Not signed (see Section 3.3, DDP_035).
 	Icc *Icc
-	// Data from EF_IC (Integrated Circuit Identification). See `ic.proto`.
+	// Data from EF IC (Integrated Circuit Identification).
+	// Not signed (see Section 3.3, DDP_035).
 	Ic *Ic
-	// Data from EF_Application_Identification. See `application_identification.proto`.
-	ApplicationIdentification *ApplicationIdentification
-	// Data from EF_Identification. See `identification.proto`.
-	Identification *Identification
-	// Data from EF_Driving_Licence_Info. See `driving_licence_info.proto`.
-	DrivingLicenceInfo *DrivingLicenceInfo
-	// Data from EF_Events_Data. See `events_data.proto`.
-	EventsData *EventsData
-	// Data from EF_Faults_Data. See `faults_data.proto`.
-	FaultsData *FaultsData
-	// Data from EF_Driver_Activity_Data. See `driver_activity_data.proto`.
-	DriverActivityData *DriverActivityData
-	// Data from EF_Vehicles_Used. See `vehicles_used.proto`.
-	VehiclesUsed *VehiclesUsed
-	// Data from EF_Places. See `places.proto`.
-	Places *Places
-	// Data from EF_Current_Usage. See `current_usage.proto`.
-	CurrentUsage *CurrentUsage
-	// Data from EF_Control_Activity_Data. See `control_activity_data.proto`.
-	ControlActivityData *ControlActivityData
-	// Data from EF_Specific_Conditions. See `specific_conditions.proto`.
-	SpecificConditions *SpecificConditions
-	// Data from EF_Card_Download. See `card_download_driver.proto`.
-	CardDownloadDriver *CardDownloadDriver
-	// Data from EF_VehicleUnits_Used. See `vehicle_units_used.proto`.
-	VehicleUnitsUsed *VehicleUnitsUsed
-	// Data from EF_GNSS_Places. See `gnss_places.proto`.
-	GnssPlaces *GnssPlaces
-	// Data from EF_Application_Identification_V2 (conditional on Gen2v2 cards). See `application_identification_v2.proto`.
-	ApplicationIdentificationV2 *ApplicationIdentificationV2
-	// Data from EF_Places_Authentication (conditional on Gen2v2 cards). See `places_authentication.proto`.
-	PlacesAuthentication *PlacesAuthentication
-	// Data from EF_GNSS_Places_Authentication (conditional on Gen2v2 cards). See `gnss_places_authentication.proto`.
-	GnssPlacesAuthentication *GnssPlacesAuthentication
-	// Data from EF_Border_Crossings (conditional on Gen2v2 cards). See `border_crossings.proto`.
-	BorderCrossings *BorderCrossings
-	// Data from EF_Load_Unload_Operations (conditional on Gen2v2 cards). See `load_unload_operations.proto`.
-	LoadUnloadOperations *LoadUnloadOperations
-	// Data from EF_Load_Type_Entries (conditional on Gen2v2 cards). See `load_type_entries.proto`.
-	LoadTypeEntries *LoadTypeEntries
-	// Data from EF_Company_Activity_Data (mandatory on Gen2 cards). See `company_activity_data.proto`.
-	CompanyActivityData *CompanyActivityData
-	// Data from EF_VU_Configuration (conditional on Gen2 cards). See `vu_configuration.proto`.
-	VuConfiguration *VuConfiguration
-	// Certificate data from various certificate EFs. See `certificates.proto`.
-	Certificates *Certificates
+	// Data from the Tachograph DF (Generation 1 application).
+	// Present on both Gen1-only cards and Gen2 cards with backward compatibility.
+	// In the TLV format, EFs from this DF use tag appendix '00' (data) and '01' (signature).
+	Tachograph *DriverCardFile_Tachograph
+	// Data from the Tachograph_G2 DF (Generation 2 application).
+	// Only present on Gen2 cards.
+	// In the TLV format, EFs from this DF use tag appendix '02' (data) and '03' (signature).
+	TachographG2 *DriverCardFile_TachographG2
 }
 
 func (b0 DriverCardFile_builder) Build() *DriverCardFile {
@@ -693,8 +180,423 @@ func (b0 DriverCardFile_builder) Build() *DriverCardFile {
 	_, _ = b, x
 	x.xxx_hidden_Icc = b.Icc
 	x.xxx_hidden_Ic = b.Ic
+	x.xxx_hidden_Tachograph = b.Tachograph
+	x.xxx_hidden_TachographG2 = b.TachographG2
+	return m0
+}
+
+// Represents data from the Tachograph DF (Generation 1 driver card application).
+//
+// This message corresponds to the Generation 1 driver card application structure
+// as defined in Section 4.2.1 of the regulation (TCS_148, TCS_150, TCS_151).
+//
+// File Structure (from TCS_148):
+//
+//	DF Tachograph (File ID '0500h')
+//	├─ EF Application_Identification
+//	├─ EF Card_Certificate
+//	├─ EF CA_Certificate
+//	├─ EF Identification
+//	├─ EF Card_Download
+//	├─ EF Driving_Licence_Info
+//	├─ EF Events_Data
+//	├─ EF Faults_Data
+//	├─ EF Driver_Activity_Data
+//	├─ EF Vehicles_Used
+//	├─ EF Places
+//	├─ EF Current_Usage
+//	├─ EF Control_Activity_Data
+//	└─ EF Specific_Conditions
+//
+// Signature Information (from Section 3.3, DDP_035):
+// - Certificate EFs (Card_Certificate, CA_Certificate) are not signed (DDP_037).
+// - EF Card_Download is not signed (DDP_035).
+// - All other application data EFs are secured with a digital signature (DDP_035).
+//
+// Note: In the TLV download format (see Section 3.4.2, DDP_042, DDP_043),
+// data files from this DF are tagged with FID + '00' (data) and FID + '01' (signature).
+type DriverCardFile_Tachograph struct {
+	state                                protoimpl.MessageState     `protogen:"opaque.v1"`
+	xxx_hidden_ApplicationIdentification *ApplicationIdentification `protobuf:"bytes,1,opt,name=application_identification,json=applicationIdentification"`
+	xxx_hidden_Identification            *Identification            `protobuf:"bytes,2,opt,name=identification"`
+	xxx_hidden_CardDownload              *CardDownloadDriver        `protobuf:"bytes,3,opt,name=card_download,json=cardDownload"`
+	xxx_hidden_DrivingLicenceInfo        *DrivingLicenceInfo        `protobuf:"bytes,4,opt,name=driving_licence_info,json=drivingLicenceInfo"`
+	xxx_hidden_EventsData                *EventsData                `protobuf:"bytes,5,opt,name=events_data,json=eventsData"`
+	xxx_hidden_FaultsData                *FaultsData                `protobuf:"bytes,6,opt,name=faults_data,json=faultsData"`
+	xxx_hidden_DriverActivityData        *DriverActivityData        `protobuf:"bytes,7,opt,name=driver_activity_data,json=driverActivityData"`
+	xxx_hidden_VehiclesUsed              *VehiclesUsed              `protobuf:"bytes,8,opt,name=vehicles_used,json=vehiclesUsed"`
+	xxx_hidden_Places                    *Places                    `protobuf:"bytes,9,opt,name=places"`
+	xxx_hidden_CurrentUsage              *CurrentUsage              `protobuf:"bytes,10,opt,name=current_usage,json=currentUsage"`
+	xxx_hidden_ControlActivityData       *ControlActivityData       `protobuf:"bytes,11,opt,name=control_activity_data,json=controlActivityData"`
+	xxx_hidden_SpecificConditions        *SpecificConditions        `protobuf:"bytes,12,opt,name=specific_conditions,json=specificConditions"`
+	xxx_hidden_Certificates              *Certificates              `protobuf:"bytes,13,opt,name=certificates"`
+	unknownFields                        protoimpl.UnknownFields
+	sizeCache                            protoimpl.SizeCache
+}
+
+func (x *DriverCardFile_Tachograph) Reset() {
+	*x = DriverCardFile_Tachograph{}
+	mi := &file_wayplatform_connect_tachograph_card_v1_driver_card_file_proto_msgTypes[1]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DriverCardFile_Tachograph) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DriverCardFile_Tachograph) ProtoMessage() {}
+
+func (x *DriverCardFile_Tachograph) ProtoReflect() protoreflect.Message {
+	mi := &file_wayplatform_connect_tachograph_card_v1_driver_card_file_proto_msgTypes[1]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+func (x *DriverCardFile_Tachograph) GetApplicationIdentification() *ApplicationIdentification {
+	if x != nil {
+		return x.xxx_hidden_ApplicationIdentification
+	}
+	return nil
+}
+
+func (x *DriverCardFile_Tachograph) GetIdentification() *Identification {
+	if x != nil {
+		return x.xxx_hidden_Identification
+	}
+	return nil
+}
+
+func (x *DriverCardFile_Tachograph) GetCardDownload() *CardDownloadDriver {
+	if x != nil {
+		return x.xxx_hidden_CardDownload
+	}
+	return nil
+}
+
+func (x *DriverCardFile_Tachograph) GetDrivingLicenceInfo() *DrivingLicenceInfo {
+	if x != nil {
+		return x.xxx_hidden_DrivingLicenceInfo
+	}
+	return nil
+}
+
+func (x *DriverCardFile_Tachograph) GetEventsData() *EventsData {
+	if x != nil {
+		return x.xxx_hidden_EventsData
+	}
+	return nil
+}
+
+func (x *DriverCardFile_Tachograph) GetFaultsData() *FaultsData {
+	if x != nil {
+		return x.xxx_hidden_FaultsData
+	}
+	return nil
+}
+
+func (x *DriverCardFile_Tachograph) GetDriverActivityData() *DriverActivityData {
+	if x != nil {
+		return x.xxx_hidden_DriverActivityData
+	}
+	return nil
+}
+
+func (x *DriverCardFile_Tachograph) GetVehiclesUsed() *VehiclesUsed {
+	if x != nil {
+		return x.xxx_hidden_VehiclesUsed
+	}
+	return nil
+}
+
+func (x *DriverCardFile_Tachograph) GetPlaces() *Places {
+	if x != nil {
+		return x.xxx_hidden_Places
+	}
+	return nil
+}
+
+func (x *DriverCardFile_Tachograph) GetCurrentUsage() *CurrentUsage {
+	if x != nil {
+		return x.xxx_hidden_CurrentUsage
+	}
+	return nil
+}
+
+func (x *DriverCardFile_Tachograph) GetControlActivityData() *ControlActivityData {
+	if x != nil {
+		return x.xxx_hidden_ControlActivityData
+	}
+	return nil
+}
+
+func (x *DriverCardFile_Tachograph) GetSpecificConditions() *SpecificConditions {
+	if x != nil {
+		return x.xxx_hidden_SpecificConditions
+	}
+	return nil
+}
+
+func (x *DriverCardFile_Tachograph) GetCertificates() *Certificates {
+	if x != nil {
+		return x.xxx_hidden_Certificates
+	}
+	return nil
+}
+
+func (x *DriverCardFile_Tachograph) SetApplicationIdentification(v *ApplicationIdentification) {
+	x.xxx_hidden_ApplicationIdentification = v
+}
+
+func (x *DriverCardFile_Tachograph) SetIdentification(v *Identification) {
+	x.xxx_hidden_Identification = v
+}
+
+func (x *DriverCardFile_Tachograph) SetCardDownload(v *CardDownloadDriver) {
+	x.xxx_hidden_CardDownload = v
+}
+
+func (x *DriverCardFile_Tachograph) SetDrivingLicenceInfo(v *DrivingLicenceInfo) {
+	x.xxx_hidden_DrivingLicenceInfo = v
+}
+
+func (x *DriverCardFile_Tachograph) SetEventsData(v *EventsData) {
+	x.xxx_hidden_EventsData = v
+}
+
+func (x *DriverCardFile_Tachograph) SetFaultsData(v *FaultsData) {
+	x.xxx_hidden_FaultsData = v
+}
+
+func (x *DriverCardFile_Tachograph) SetDriverActivityData(v *DriverActivityData) {
+	x.xxx_hidden_DriverActivityData = v
+}
+
+func (x *DriverCardFile_Tachograph) SetVehiclesUsed(v *VehiclesUsed) {
+	x.xxx_hidden_VehiclesUsed = v
+}
+
+func (x *DriverCardFile_Tachograph) SetPlaces(v *Places) {
+	x.xxx_hidden_Places = v
+}
+
+func (x *DriverCardFile_Tachograph) SetCurrentUsage(v *CurrentUsage) {
+	x.xxx_hidden_CurrentUsage = v
+}
+
+func (x *DriverCardFile_Tachograph) SetControlActivityData(v *ControlActivityData) {
+	x.xxx_hidden_ControlActivityData = v
+}
+
+func (x *DriverCardFile_Tachograph) SetSpecificConditions(v *SpecificConditions) {
+	x.xxx_hidden_SpecificConditions = v
+}
+
+func (x *DriverCardFile_Tachograph) SetCertificates(v *Certificates) {
+	x.xxx_hidden_Certificates = v
+}
+
+func (x *DriverCardFile_Tachograph) HasApplicationIdentification() bool {
+	if x == nil {
+		return false
+	}
+	return x.xxx_hidden_ApplicationIdentification != nil
+}
+
+func (x *DriverCardFile_Tachograph) HasIdentification() bool {
+	if x == nil {
+		return false
+	}
+	return x.xxx_hidden_Identification != nil
+}
+
+func (x *DriverCardFile_Tachograph) HasCardDownload() bool {
+	if x == nil {
+		return false
+	}
+	return x.xxx_hidden_CardDownload != nil
+}
+
+func (x *DriverCardFile_Tachograph) HasDrivingLicenceInfo() bool {
+	if x == nil {
+		return false
+	}
+	return x.xxx_hidden_DrivingLicenceInfo != nil
+}
+
+func (x *DriverCardFile_Tachograph) HasEventsData() bool {
+	if x == nil {
+		return false
+	}
+	return x.xxx_hidden_EventsData != nil
+}
+
+func (x *DriverCardFile_Tachograph) HasFaultsData() bool {
+	if x == nil {
+		return false
+	}
+	return x.xxx_hidden_FaultsData != nil
+}
+
+func (x *DriverCardFile_Tachograph) HasDriverActivityData() bool {
+	if x == nil {
+		return false
+	}
+	return x.xxx_hidden_DriverActivityData != nil
+}
+
+func (x *DriverCardFile_Tachograph) HasVehiclesUsed() bool {
+	if x == nil {
+		return false
+	}
+	return x.xxx_hidden_VehiclesUsed != nil
+}
+
+func (x *DriverCardFile_Tachograph) HasPlaces() bool {
+	if x == nil {
+		return false
+	}
+	return x.xxx_hidden_Places != nil
+}
+
+func (x *DriverCardFile_Tachograph) HasCurrentUsage() bool {
+	if x == nil {
+		return false
+	}
+	return x.xxx_hidden_CurrentUsage != nil
+}
+
+func (x *DriverCardFile_Tachograph) HasControlActivityData() bool {
+	if x == nil {
+		return false
+	}
+	return x.xxx_hidden_ControlActivityData != nil
+}
+
+func (x *DriverCardFile_Tachograph) HasSpecificConditions() bool {
+	if x == nil {
+		return false
+	}
+	return x.xxx_hidden_SpecificConditions != nil
+}
+
+func (x *DriverCardFile_Tachograph) HasCertificates() bool {
+	if x == nil {
+		return false
+	}
+	return x.xxx_hidden_Certificates != nil
+}
+
+func (x *DriverCardFile_Tachograph) ClearApplicationIdentification() {
+	x.xxx_hidden_ApplicationIdentification = nil
+}
+
+func (x *DriverCardFile_Tachograph) ClearIdentification() {
+	x.xxx_hidden_Identification = nil
+}
+
+func (x *DriverCardFile_Tachograph) ClearCardDownload() {
+	x.xxx_hidden_CardDownload = nil
+}
+
+func (x *DriverCardFile_Tachograph) ClearDrivingLicenceInfo() {
+	x.xxx_hidden_DrivingLicenceInfo = nil
+}
+
+func (x *DriverCardFile_Tachograph) ClearEventsData() {
+	x.xxx_hidden_EventsData = nil
+}
+
+func (x *DriverCardFile_Tachograph) ClearFaultsData() {
+	x.xxx_hidden_FaultsData = nil
+}
+
+func (x *DriverCardFile_Tachograph) ClearDriverActivityData() {
+	x.xxx_hidden_DriverActivityData = nil
+}
+
+func (x *DriverCardFile_Tachograph) ClearVehiclesUsed() {
+	x.xxx_hidden_VehiclesUsed = nil
+}
+
+func (x *DriverCardFile_Tachograph) ClearPlaces() {
+	x.xxx_hidden_Places = nil
+}
+
+func (x *DriverCardFile_Tachograph) ClearCurrentUsage() {
+	x.xxx_hidden_CurrentUsage = nil
+}
+
+func (x *DriverCardFile_Tachograph) ClearControlActivityData() {
+	x.xxx_hidden_ControlActivityData = nil
+}
+
+func (x *DriverCardFile_Tachograph) ClearSpecificConditions() {
+	x.xxx_hidden_SpecificConditions = nil
+}
+
+func (x *DriverCardFile_Tachograph) ClearCertificates() {
+	x.xxx_hidden_Certificates = nil
+}
+
+type DriverCardFile_Tachograph_builder struct {
+	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
+
+	// Data from EF Application_Identification (File ID '0501h').
+	// Signed (see Section 3.3, DDP_035).
+	ApplicationIdentification *ApplicationIdentification
+	// Data from EF Identification (File ID '0520h').
+	// Signed (see Section 3.3, DDP_035).
+	Identification *Identification
+	// Data from EF Card_Download (File ID '050Eh').
+	// Not signed (see Section 3.3, DDP_035).
+	CardDownload *CardDownloadDriver
+	// Data from EF Driving_Licence_Info (File ID '0521h').
+	// Signed (see Section 3.3, DDP_035).
+	DrivingLicenceInfo *DrivingLicenceInfo
+	// Data from EF Events_Data (File ID '0502h').
+	// Signed (see Section 3.3, DDP_035).
+	EventsData *EventsData
+	// Data from EF Faults_Data (File ID '0503h').
+	// Signed (see Section 3.3, DDP_035).
+	FaultsData *FaultsData
+	// Data from EF Driver_Activity_Data (File ID '0504h').
+	// Signed (see Section 3.3, DDP_035).
+	DriverActivityData *DriverActivityData
+	// Data from EF Vehicles_Used (File ID '0505h').
+	// Signed (see Section 3.3, DDP_035).
+	VehiclesUsed *VehiclesUsed
+	// Data from EF Places (File ID '0506h').
+	// Signed (see Section 3.3, DDP_035).
+	Places *Places
+	// Data from EF Current_Usage (File ID '0507h').
+	// Signed (see Section 3.3, DDP_035).
+	CurrentUsage *CurrentUsage
+	// Data from EF Control_Activity_Data (File ID '0508h').
+	// Signed (see Section 3.3, DDP_035).
+	ControlActivityData *ControlActivityData
+	// Data from EF Specific_Conditions (File ID '0522h').
+	// Signed (see Section 3.3, DDP_035).
+	SpecificConditions *SpecificConditions
+	// Certificate data from EF Card_Certificate (File ID 'C100h') and
+	// EF CA_Certificate (File ID 'C108h').
+	// Not signed (see Section 3.3, DDP_037).
+	Certificates *Certificates
+}
+
+func (b0 DriverCardFile_Tachograph_builder) Build() *DriverCardFile_Tachograph {
+	m0 := &DriverCardFile_Tachograph{}
+	b, x := &b0, m0
+	_, _ = b, x
 	x.xxx_hidden_ApplicationIdentification = b.ApplicationIdentification
 	x.xxx_hidden_Identification = b.Identification
+	x.xxx_hidden_CardDownload = b.CardDownload
 	x.xxx_hidden_DrivingLicenceInfo = b.DrivingLicenceInfo
 	x.xxx_hidden_EventsData = b.EventsData
 	x.xxx_hidden_FaultsData = b.FaultsData
@@ -704,7 +606,712 @@ func (b0 DriverCardFile_builder) Build() *DriverCardFile {
 	x.xxx_hidden_CurrentUsage = b.CurrentUsage
 	x.xxx_hidden_ControlActivityData = b.ControlActivityData
 	x.xxx_hidden_SpecificConditions = b.SpecificConditions
-	x.xxx_hidden_CardDownloadDriver = b.CardDownloadDriver
+	x.xxx_hidden_Certificates = b.Certificates
+	return m0
+}
+
+// Represents data from the Tachograph_G2 DF (Generation 2 driver card application).
+//
+// This message corresponds to the Generation 2 driver card application structure
+// as defined in Section 4.2.2 of the regulation (TCS_152, TCS_154, TCS_155).
+//
+// File Structure (from TCS_152):
+//
+//	DF Tachograph_G2
+//	├─ EF Application_Identification
+//	├─ EF CardMA_Certificate
+//	├─ EF CardSignCertificate
+//	├─ EF CA_Certificate
+//	├─ EF Link_Certificate
+//	├─ EF Identification
+//	├─ EF Card_Download
+//	├─ EF Driving_Licence_Info
+//	├─ EF Events_Data
+//	├─ EF Faults_Data
+//	├─ EF Driver_Activity_Data
+//	├─ EF Vehicles_Used
+//	├─ EF Places
+//	├─ EF Current_Usage
+//	├─ EF Control_Activity_Data
+//	├─ EF Specific_Conditions
+//	├─ EF VehicleUnits_Used
+//	├─ EF GNSS_Places
+//	├─ EF Application_Identification_V2 (conditional on Gen2v2)
+//	├─ EF Places_Authentication (conditional on Gen2v2)
+//	├─ EF GNSS_Places_Authentication (conditional on Gen2v2)
+//	├─ EF Border_Crossings (conditional on Gen2v2)
+//	├─ EF Load_Unload_Operations (conditional on Gen2v2)
+//	├─ EF Load_Type_Entries (conditional on Gen2v2)
+//	├─ EF Company_Activity_Data (mandatory on Gen2)
+//	└─ EF VU_Configuration (conditional on Gen2)
+//
+// Signature Information (from Section 3.3, DDP_035):
+//   - Certificate EFs (CardSignCertificate, CA_Certificate, Link_Certificate) are not signed (DDP_037).
+//   - EF Card_Download is not signed (DDP_035).
+//   - All other application data EFs are secured with a digital signature using
+//     Common Security Mechanisms Part B (DDP_035).
+//
+// Note: In the TLV download format (see Section 3.4.2, DDP_042, DDP_043),
+// data files from this DF are tagged with FID + '02' (data) and FID + '03' (signature).
+type DriverCardFile_TachographG2 struct {
+	state                                  protoimpl.MessageState       `protogen:"opaque.v1"`
+	xxx_hidden_ApplicationIdentification   *ApplicationIdentification   `protobuf:"bytes,1,opt,name=application_identification,json=applicationIdentification"`
+	xxx_hidden_Identification              *Identification              `protobuf:"bytes,2,opt,name=identification"`
+	xxx_hidden_CardDownload                *CardDownloadDriver          `protobuf:"bytes,3,opt,name=card_download,json=cardDownload"`
+	xxx_hidden_DrivingLicenceInfo          *DrivingLicenceInfo          `protobuf:"bytes,4,opt,name=driving_licence_info,json=drivingLicenceInfo"`
+	xxx_hidden_EventsData                  *EventsData                  `protobuf:"bytes,5,opt,name=events_data,json=eventsData"`
+	xxx_hidden_FaultsData                  *FaultsData                  `protobuf:"bytes,6,opt,name=faults_data,json=faultsData"`
+	xxx_hidden_DriverActivityData          *DriverActivityData          `protobuf:"bytes,7,opt,name=driver_activity_data,json=driverActivityData"`
+	xxx_hidden_VehiclesUsed                *VehiclesUsed                `protobuf:"bytes,8,opt,name=vehicles_used,json=vehiclesUsed"`
+	xxx_hidden_Places                      *Places                      `protobuf:"bytes,9,opt,name=places"`
+	xxx_hidden_CurrentUsage                *CurrentUsage                `protobuf:"bytes,10,opt,name=current_usage,json=currentUsage"`
+	xxx_hidden_ControlActivityData         *ControlActivityData         `protobuf:"bytes,11,opt,name=control_activity_data,json=controlActivityData"`
+	xxx_hidden_SpecificConditions          *SpecificConditions          `protobuf:"bytes,12,opt,name=specific_conditions,json=specificConditions"`
+	xxx_hidden_VehicleUnitsUsed            *VehicleUnitsUsed            `protobuf:"bytes,13,opt,name=vehicle_units_used,json=vehicleUnitsUsed"`
+	xxx_hidden_GnssPlaces                  *GnssPlaces                  `protobuf:"bytes,14,opt,name=gnss_places,json=gnssPlaces"`
+	xxx_hidden_ApplicationIdentificationV2 *ApplicationIdentificationV2 `protobuf:"bytes,15,opt,name=application_identification_v2,json=applicationIdentificationV2"`
+	xxx_hidden_PlacesAuthentication        *PlacesAuthentication        `protobuf:"bytes,16,opt,name=places_authentication,json=placesAuthentication"`
+	xxx_hidden_GnssPlacesAuthentication    *GnssPlacesAuthentication    `protobuf:"bytes,17,opt,name=gnss_places_authentication,json=gnssPlacesAuthentication"`
+	xxx_hidden_BorderCrossings             *BorderCrossings             `protobuf:"bytes,18,opt,name=border_crossings,json=borderCrossings"`
+	xxx_hidden_LoadUnloadOperations        *LoadUnloadOperations        `protobuf:"bytes,19,opt,name=load_unload_operations,json=loadUnloadOperations"`
+	xxx_hidden_LoadTypeEntries             *LoadTypeEntries             `protobuf:"bytes,20,opt,name=load_type_entries,json=loadTypeEntries"`
+	xxx_hidden_CompanyActivityData         *CompanyActivityData         `protobuf:"bytes,21,opt,name=company_activity_data,json=companyActivityData"`
+	xxx_hidden_VuConfiguration             *VuConfiguration             `protobuf:"bytes,22,opt,name=vu_configuration,json=vuConfiguration"`
+	xxx_hidden_Certificates                *Certificates                `protobuf:"bytes,23,opt,name=certificates"`
+	unknownFields                          protoimpl.UnknownFields
+	sizeCache                              protoimpl.SizeCache
+}
+
+func (x *DriverCardFile_TachographG2) Reset() {
+	*x = DriverCardFile_TachographG2{}
+	mi := &file_wayplatform_connect_tachograph_card_v1_driver_card_file_proto_msgTypes[2]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DriverCardFile_TachographG2) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DriverCardFile_TachographG2) ProtoMessage() {}
+
+func (x *DriverCardFile_TachographG2) ProtoReflect() protoreflect.Message {
+	mi := &file_wayplatform_connect_tachograph_card_v1_driver_card_file_proto_msgTypes[2]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+func (x *DriverCardFile_TachographG2) GetApplicationIdentification() *ApplicationIdentification {
+	if x != nil {
+		return x.xxx_hidden_ApplicationIdentification
+	}
+	return nil
+}
+
+func (x *DriverCardFile_TachographG2) GetIdentification() *Identification {
+	if x != nil {
+		return x.xxx_hidden_Identification
+	}
+	return nil
+}
+
+func (x *DriverCardFile_TachographG2) GetCardDownload() *CardDownloadDriver {
+	if x != nil {
+		return x.xxx_hidden_CardDownload
+	}
+	return nil
+}
+
+func (x *DriverCardFile_TachographG2) GetDrivingLicenceInfo() *DrivingLicenceInfo {
+	if x != nil {
+		return x.xxx_hidden_DrivingLicenceInfo
+	}
+	return nil
+}
+
+func (x *DriverCardFile_TachographG2) GetEventsData() *EventsData {
+	if x != nil {
+		return x.xxx_hidden_EventsData
+	}
+	return nil
+}
+
+func (x *DriverCardFile_TachographG2) GetFaultsData() *FaultsData {
+	if x != nil {
+		return x.xxx_hidden_FaultsData
+	}
+	return nil
+}
+
+func (x *DriverCardFile_TachographG2) GetDriverActivityData() *DriverActivityData {
+	if x != nil {
+		return x.xxx_hidden_DriverActivityData
+	}
+	return nil
+}
+
+func (x *DriverCardFile_TachographG2) GetVehiclesUsed() *VehiclesUsed {
+	if x != nil {
+		return x.xxx_hidden_VehiclesUsed
+	}
+	return nil
+}
+
+func (x *DriverCardFile_TachographG2) GetPlaces() *Places {
+	if x != nil {
+		return x.xxx_hidden_Places
+	}
+	return nil
+}
+
+func (x *DriverCardFile_TachographG2) GetCurrentUsage() *CurrentUsage {
+	if x != nil {
+		return x.xxx_hidden_CurrentUsage
+	}
+	return nil
+}
+
+func (x *DriverCardFile_TachographG2) GetControlActivityData() *ControlActivityData {
+	if x != nil {
+		return x.xxx_hidden_ControlActivityData
+	}
+	return nil
+}
+
+func (x *DriverCardFile_TachographG2) GetSpecificConditions() *SpecificConditions {
+	if x != nil {
+		return x.xxx_hidden_SpecificConditions
+	}
+	return nil
+}
+
+func (x *DriverCardFile_TachographG2) GetVehicleUnitsUsed() *VehicleUnitsUsed {
+	if x != nil {
+		return x.xxx_hidden_VehicleUnitsUsed
+	}
+	return nil
+}
+
+func (x *DriverCardFile_TachographG2) GetGnssPlaces() *GnssPlaces {
+	if x != nil {
+		return x.xxx_hidden_GnssPlaces
+	}
+	return nil
+}
+
+func (x *DriverCardFile_TachographG2) GetApplicationIdentificationV2() *ApplicationIdentificationV2 {
+	if x != nil {
+		return x.xxx_hidden_ApplicationIdentificationV2
+	}
+	return nil
+}
+
+func (x *DriverCardFile_TachographG2) GetPlacesAuthentication() *PlacesAuthentication {
+	if x != nil {
+		return x.xxx_hidden_PlacesAuthentication
+	}
+	return nil
+}
+
+func (x *DriverCardFile_TachographG2) GetGnssPlacesAuthentication() *GnssPlacesAuthentication {
+	if x != nil {
+		return x.xxx_hidden_GnssPlacesAuthentication
+	}
+	return nil
+}
+
+func (x *DriverCardFile_TachographG2) GetBorderCrossings() *BorderCrossings {
+	if x != nil {
+		return x.xxx_hidden_BorderCrossings
+	}
+	return nil
+}
+
+func (x *DriverCardFile_TachographG2) GetLoadUnloadOperations() *LoadUnloadOperations {
+	if x != nil {
+		return x.xxx_hidden_LoadUnloadOperations
+	}
+	return nil
+}
+
+func (x *DriverCardFile_TachographG2) GetLoadTypeEntries() *LoadTypeEntries {
+	if x != nil {
+		return x.xxx_hidden_LoadTypeEntries
+	}
+	return nil
+}
+
+func (x *DriverCardFile_TachographG2) GetCompanyActivityData() *CompanyActivityData {
+	if x != nil {
+		return x.xxx_hidden_CompanyActivityData
+	}
+	return nil
+}
+
+func (x *DriverCardFile_TachographG2) GetVuConfiguration() *VuConfiguration {
+	if x != nil {
+		return x.xxx_hidden_VuConfiguration
+	}
+	return nil
+}
+
+func (x *DriverCardFile_TachographG2) GetCertificates() *Certificates {
+	if x != nil {
+		return x.xxx_hidden_Certificates
+	}
+	return nil
+}
+
+func (x *DriverCardFile_TachographG2) SetApplicationIdentification(v *ApplicationIdentification) {
+	x.xxx_hidden_ApplicationIdentification = v
+}
+
+func (x *DriverCardFile_TachographG2) SetIdentification(v *Identification) {
+	x.xxx_hidden_Identification = v
+}
+
+func (x *DriverCardFile_TachographG2) SetCardDownload(v *CardDownloadDriver) {
+	x.xxx_hidden_CardDownload = v
+}
+
+func (x *DriverCardFile_TachographG2) SetDrivingLicenceInfo(v *DrivingLicenceInfo) {
+	x.xxx_hidden_DrivingLicenceInfo = v
+}
+
+func (x *DriverCardFile_TachographG2) SetEventsData(v *EventsData) {
+	x.xxx_hidden_EventsData = v
+}
+
+func (x *DriverCardFile_TachographG2) SetFaultsData(v *FaultsData) {
+	x.xxx_hidden_FaultsData = v
+}
+
+func (x *DriverCardFile_TachographG2) SetDriverActivityData(v *DriverActivityData) {
+	x.xxx_hidden_DriverActivityData = v
+}
+
+func (x *DriverCardFile_TachographG2) SetVehiclesUsed(v *VehiclesUsed) {
+	x.xxx_hidden_VehiclesUsed = v
+}
+
+func (x *DriverCardFile_TachographG2) SetPlaces(v *Places) {
+	x.xxx_hidden_Places = v
+}
+
+func (x *DriverCardFile_TachographG2) SetCurrentUsage(v *CurrentUsage) {
+	x.xxx_hidden_CurrentUsage = v
+}
+
+func (x *DriverCardFile_TachographG2) SetControlActivityData(v *ControlActivityData) {
+	x.xxx_hidden_ControlActivityData = v
+}
+
+func (x *DriverCardFile_TachographG2) SetSpecificConditions(v *SpecificConditions) {
+	x.xxx_hidden_SpecificConditions = v
+}
+
+func (x *DriverCardFile_TachographG2) SetVehicleUnitsUsed(v *VehicleUnitsUsed) {
+	x.xxx_hidden_VehicleUnitsUsed = v
+}
+
+func (x *DriverCardFile_TachographG2) SetGnssPlaces(v *GnssPlaces) {
+	x.xxx_hidden_GnssPlaces = v
+}
+
+func (x *DriverCardFile_TachographG2) SetApplicationIdentificationV2(v *ApplicationIdentificationV2) {
+	x.xxx_hidden_ApplicationIdentificationV2 = v
+}
+
+func (x *DriverCardFile_TachographG2) SetPlacesAuthentication(v *PlacesAuthentication) {
+	x.xxx_hidden_PlacesAuthentication = v
+}
+
+func (x *DriverCardFile_TachographG2) SetGnssPlacesAuthentication(v *GnssPlacesAuthentication) {
+	x.xxx_hidden_GnssPlacesAuthentication = v
+}
+
+func (x *DriverCardFile_TachographG2) SetBorderCrossings(v *BorderCrossings) {
+	x.xxx_hidden_BorderCrossings = v
+}
+
+func (x *DriverCardFile_TachographG2) SetLoadUnloadOperations(v *LoadUnloadOperations) {
+	x.xxx_hidden_LoadUnloadOperations = v
+}
+
+func (x *DriverCardFile_TachographG2) SetLoadTypeEntries(v *LoadTypeEntries) {
+	x.xxx_hidden_LoadTypeEntries = v
+}
+
+func (x *DriverCardFile_TachographG2) SetCompanyActivityData(v *CompanyActivityData) {
+	x.xxx_hidden_CompanyActivityData = v
+}
+
+func (x *DriverCardFile_TachographG2) SetVuConfiguration(v *VuConfiguration) {
+	x.xxx_hidden_VuConfiguration = v
+}
+
+func (x *DriverCardFile_TachographG2) SetCertificates(v *Certificates) {
+	x.xxx_hidden_Certificates = v
+}
+
+func (x *DriverCardFile_TachographG2) HasApplicationIdentification() bool {
+	if x == nil {
+		return false
+	}
+	return x.xxx_hidden_ApplicationIdentification != nil
+}
+
+func (x *DriverCardFile_TachographG2) HasIdentification() bool {
+	if x == nil {
+		return false
+	}
+	return x.xxx_hidden_Identification != nil
+}
+
+func (x *DriverCardFile_TachographG2) HasCardDownload() bool {
+	if x == nil {
+		return false
+	}
+	return x.xxx_hidden_CardDownload != nil
+}
+
+func (x *DriverCardFile_TachographG2) HasDrivingLicenceInfo() bool {
+	if x == nil {
+		return false
+	}
+	return x.xxx_hidden_DrivingLicenceInfo != nil
+}
+
+func (x *DriverCardFile_TachographG2) HasEventsData() bool {
+	if x == nil {
+		return false
+	}
+	return x.xxx_hidden_EventsData != nil
+}
+
+func (x *DriverCardFile_TachographG2) HasFaultsData() bool {
+	if x == nil {
+		return false
+	}
+	return x.xxx_hidden_FaultsData != nil
+}
+
+func (x *DriverCardFile_TachographG2) HasDriverActivityData() bool {
+	if x == nil {
+		return false
+	}
+	return x.xxx_hidden_DriverActivityData != nil
+}
+
+func (x *DriverCardFile_TachographG2) HasVehiclesUsed() bool {
+	if x == nil {
+		return false
+	}
+	return x.xxx_hidden_VehiclesUsed != nil
+}
+
+func (x *DriverCardFile_TachographG2) HasPlaces() bool {
+	if x == nil {
+		return false
+	}
+	return x.xxx_hidden_Places != nil
+}
+
+func (x *DriverCardFile_TachographG2) HasCurrentUsage() bool {
+	if x == nil {
+		return false
+	}
+	return x.xxx_hidden_CurrentUsage != nil
+}
+
+func (x *DriverCardFile_TachographG2) HasControlActivityData() bool {
+	if x == nil {
+		return false
+	}
+	return x.xxx_hidden_ControlActivityData != nil
+}
+
+func (x *DriverCardFile_TachographG2) HasSpecificConditions() bool {
+	if x == nil {
+		return false
+	}
+	return x.xxx_hidden_SpecificConditions != nil
+}
+
+func (x *DriverCardFile_TachographG2) HasVehicleUnitsUsed() bool {
+	if x == nil {
+		return false
+	}
+	return x.xxx_hidden_VehicleUnitsUsed != nil
+}
+
+func (x *DriverCardFile_TachographG2) HasGnssPlaces() bool {
+	if x == nil {
+		return false
+	}
+	return x.xxx_hidden_GnssPlaces != nil
+}
+
+func (x *DriverCardFile_TachographG2) HasApplicationIdentificationV2() bool {
+	if x == nil {
+		return false
+	}
+	return x.xxx_hidden_ApplicationIdentificationV2 != nil
+}
+
+func (x *DriverCardFile_TachographG2) HasPlacesAuthentication() bool {
+	if x == nil {
+		return false
+	}
+	return x.xxx_hidden_PlacesAuthentication != nil
+}
+
+func (x *DriverCardFile_TachographG2) HasGnssPlacesAuthentication() bool {
+	if x == nil {
+		return false
+	}
+	return x.xxx_hidden_GnssPlacesAuthentication != nil
+}
+
+func (x *DriverCardFile_TachographG2) HasBorderCrossings() bool {
+	if x == nil {
+		return false
+	}
+	return x.xxx_hidden_BorderCrossings != nil
+}
+
+func (x *DriverCardFile_TachographG2) HasLoadUnloadOperations() bool {
+	if x == nil {
+		return false
+	}
+	return x.xxx_hidden_LoadUnloadOperations != nil
+}
+
+func (x *DriverCardFile_TachographG2) HasLoadTypeEntries() bool {
+	if x == nil {
+		return false
+	}
+	return x.xxx_hidden_LoadTypeEntries != nil
+}
+
+func (x *DriverCardFile_TachographG2) HasCompanyActivityData() bool {
+	if x == nil {
+		return false
+	}
+	return x.xxx_hidden_CompanyActivityData != nil
+}
+
+func (x *DriverCardFile_TachographG2) HasVuConfiguration() bool {
+	if x == nil {
+		return false
+	}
+	return x.xxx_hidden_VuConfiguration != nil
+}
+
+func (x *DriverCardFile_TachographG2) HasCertificates() bool {
+	if x == nil {
+		return false
+	}
+	return x.xxx_hidden_Certificates != nil
+}
+
+func (x *DriverCardFile_TachographG2) ClearApplicationIdentification() {
+	x.xxx_hidden_ApplicationIdentification = nil
+}
+
+func (x *DriverCardFile_TachographG2) ClearIdentification() {
+	x.xxx_hidden_Identification = nil
+}
+
+func (x *DriverCardFile_TachographG2) ClearCardDownload() {
+	x.xxx_hidden_CardDownload = nil
+}
+
+func (x *DriverCardFile_TachographG2) ClearDrivingLicenceInfo() {
+	x.xxx_hidden_DrivingLicenceInfo = nil
+}
+
+func (x *DriverCardFile_TachographG2) ClearEventsData() {
+	x.xxx_hidden_EventsData = nil
+}
+
+func (x *DriverCardFile_TachographG2) ClearFaultsData() {
+	x.xxx_hidden_FaultsData = nil
+}
+
+func (x *DriverCardFile_TachographG2) ClearDriverActivityData() {
+	x.xxx_hidden_DriverActivityData = nil
+}
+
+func (x *DriverCardFile_TachographG2) ClearVehiclesUsed() {
+	x.xxx_hidden_VehiclesUsed = nil
+}
+
+func (x *DriverCardFile_TachographG2) ClearPlaces() {
+	x.xxx_hidden_Places = nil
+}
+
+func (x *DriverCardFile_TachographG2) ClearCurrentUsage() {
+	x.xxx_hidden_CurrentUsage = nil
+}
+
+func (x *DriverCardFile_TachographG2) ClearControlActivityData() {
+	x.xxx_hidden_ControlActivityData = nil
+}
+
+func (x *DriverCardFile_TachographG2) ClearSpecificConditions() {
+	x.xxx_hidden_SpecificConditions = nil
+}
+
+func (x *DriverCardFile_TachographG2) ClearVehicleUnitsUsed() {
+	x.xxx_hidden_VehicleUnitsUsed = nil
+}
+
+func (x *DriverCardFile_TachographG2) ClearGnssPlaces() {
+	x.xxx_hidden_GnssPlaces = nil
+}
+
+func (x *DriverCardFile_TachographG2) ClearApplicationIdentificationV2() {
+	x.xxx_hidden_ApplicationIdentificationV2 = nil
+}
+
+func (x *DriverCardFile_TachographG2) ClearPlacesAuthentication() {
+	x.xxx_hidden_PlacesAuthentication = nil
+}
+
+func (x *DriverCardFile_TachographG2) ClearGnssPlacesAuthentication() {
+	x.xxx_hidden_GnssPlacesAuthentication = nil
+}
+
+func (x *DriverCardFile_TachographG2) ClearBorderCrossings() {
+	x.xxx_hidden_BorderCrossings = nil
+}
+
+func (x *DriverCardFile_TachographG2) ClearLoadUnloadOperations() {
+	x.xxx_hidden_LoadUnloadOperations = nil
+}
+
+func (x *DriverCardFile_TachographG2) ClearLoadTypeEntries() {
+	x.xxx_hidden_LoadTypeEntries = nil
+}
+
+func (x *DriverCardFile_TachographG2) ClearCompanyActivityData() {
+	x.xxx_hidden_CompanyActivityData = nil
+}
+
+func (x *DriverCardFile_TachographG2) ClearVuConfiguration() {
+	x.xxx_hidden_VuConfiguration = nil
+}
+
+func (x *DriverCardFile_TachographG2) ClearCertificates() {
+	x.xxx_hidden_Certificates = nil
+}
+
+type DriverCardFile_TachographG2_builder struct {
+	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
+
+	// Data from EF Application_Identification (File ID '0501h').
+	// Signed (see Section 3.3, DDP_035).
+	ApplicationIdentification *ApplicationIdentification
+	// Data from EF Identification (File ID '0520h').
+	// Signed (see Section 3.3, DDP_035).
+	Identification *Identification
+	// Data from EF Card_Download (File ID '050Eh').
+	// Not signed (see Section 3.3, DDP_035).
+	CardDownload *CardDownloadDriver
+	// Data from EF Driving_Licence_Info (File ID '0521h').
+	// Signed (see Section 3.3, DDP_035).
+	DrivingLicenceInfo *DrivingLicenceInfo
+	// Data from EF Events_Data (File ID '0502h').
+	// Signed (see Section 3.3, DDP_035).
+	EventsData *EventsData
+	// Data from EF Faults_Data (File ID '0503h').
+	// Signed (see Section 3.3, DDP_035).
+	FaultsData *FaultsData
+	// Data from EF Driver_Activity_Data (File ID '0504h').
+	// Signed (see Section 3.3, DDP_035).
+	DriverActivityData *DriverActivityData
+	// Data from EF Vehicles_Used (File ID '0505h').
+	// Signed (see Section 3.3, DDP_035).
+	VehiclesUsed *VehiclesUsed
+	// Data from EF Places (File ID '0506h').
+	// Signed (see Section 3.3, DDP_035).
+	Places *Places
+	// Data from EF Current_Usage (File ID '0507h').
+	// Signed (see Section 3.3, DDP_035).
+	CurrentUsage *CurrentUsage
+	// Data from EF Control_Activity_Data (File ID '0508h').
+	// Signed (see Section 3.3, DDP_035).
+	ControlActivityData *ControlActivityData
+	// Data from EF Specific_Conditions (File ID '0522h').
+	// Signed (see Section 3.3, DDP_035).
+	SpecificConditions *SpecificConditions
+	// Data from EF VehicleUnits_Used (File ID '0523h').
+	// Mandatory on Gen2. Signed (see Section 3.3, DDP_035).
+	VehicleUnitsUsed *VehicleUnitsUsed
+	// Data from EF GNSS_Places (File ID '0524h').
+	// Mandatory on Gen2. Signed (see Section 3.3, DDP_035).
+	GnssPlaces *GnssPlaces
+	// Data from EF Application_Identification_V2 (File ID '0525h').
+	// Conditional: only present in Gen2v2 cards (cardStructureVersion = {01 01}).
+	// Signed (see Section 3.3, DDP_035).
+	ApplicationIdentificationV2 *ApplicationIdentificationV2
+	// Data from EF Places_Authentication (File ID '0526h').
+	// Conditional: only present in Gen2v2 cards if available.
+	// Signed (see Section 3.3, DDP_035).
+	PlacesAuthentication *PlacesAuthentication
+	// Data from EF GNSS_Places_Authentication (File ID '0527h').
+	// Conditional: only present in Gen2v2 cards if available.
+	// Signed (see Section 3.3, DDP_035).
+	GnssPlacesAuthentication *GnssPlacesAuthentication
+	// Data from EF Border_Crossings (File ID '0528h').
+	// Conditional: only present in Gen2v2 cards if available.
+	// Signed (see Section 3.3, DDP_035).
+	BorderCrossings *BorderCrossings
+	// Data from EF Load_Unload_Operations (File ID '0529h').
+	// Conditional: only present in Gen2v2 cards if available.
+	// Signed (see Section 3.3, DDP_035).
+	LoadUnloadOperations *LoadUnloadOperations
+	// Data from EF Load_Type_Entries (File ID '0530h').
+	// Conditional: only present in Gen2v2 cards if available.
+	// Signed (see Section 3.3, DDP_035).
+	LoadTypeEntries *LoadTypeEntries
+	// Data from EF Company_Activity_Data (File ID '050Dh').
+	// Mandatory on Gen2. Signed (see Section 3.3, DDP_035).
+	CompanyActivityData *CompanyActivityData
+	// Data from EF VU_Configuration (File ID '0540h').
+	// Conditional: only present on Gen2 cards.
+	// Signed (see Section 3.3, DDP_035).
+	VuConfiguration *VuConfiguration
+	// Certificate data from EF CardMA_Certificate (File ID 'C100h'),
+	// EF CardSignCertificate (File ID 'C101h'), EF CA_Certificate (File ID 'C108h'),
+	// and EF Link_Certificate (File ID 'C109h').
+	// Not signed (see Section 3.3, DDP_037).
+	Certificates *Certificates
+}
+
+func (b0 DriverCardFile_TachographG2_builder) Build() *DriverCardFile_TachographG2 {
+	m0 := &DriverCardFile_TachographG2{}
+	b, x := &b0, m0
+	_, _ = b, x
+	x.xxx_hidden_ApplicationIdentification = b.ApplicationIdentification
+	x.xxx_hidden_Identification = b.Identification
+	x.xxx_hidden_CardDownload = b.CardDownload
+	x.xxx_hidden_DrivingLicenceInfo = b.DrivingLicenceInfo
+	x.xxx_hidden_EventsData = b.EventsData
+	x.xxx_hidden_FaultsData = b.FaultsData
+	x.xxx_hidden_DriverActivityData = b.DriverActivityData
+	x.xxx_hidden_VehiclesUsed = b.VehiclesUsed
+	x.xxx_hidden_Places = b.Places
+	x.xxx_hidden_CurrentUsage = b.CurrentUsage
+	x.xxx_hidden_ControlActivityData = b.ControlActivityData
+	x.xxx_hidden_SpecificConditions = b.SpecificConditions
 	x.xxx_hidden_VehicleUnitsUsed = b.VehicleUnitsUsed
 	x.xxx_hidden_GnssPlaces = b.GnssPlaces
 	x.xxx_hidden_ApplicationIdentificationV2 = b.ApplicationIdentificationV2
@@ -723,99 +1330,140 @@ var File_wayplatform_connect_tachograph_card_v1_driver_card_file_proto protorefl
 
 const file_wayplatform_connect_tachograph_card_v1_driver_card_file_proto_rawDesc = "" +
 	"\n" +
-	"=wayplatform/connect/tachograph/card/v1/driver_card_file.proto\x12&wayplatform.connect.tachograph.card.v1\x1aGwayplatform/connect/tachograph/card/v1/application_identification.proto\x1aJwayplatform/connect/tachograph/card/v1/application_identification_v2.proto\x1a=wayplatform/connect/tachograph/card/v1/border_crossings.proto\x1aAwayplatform/connect/tachograph/card/v1/card_download_driver.proto\x1a9wayplatform/connect/tachograph/card/v1/certificates.proto\x1aBwayplatform/connect/tachograph/card/v1/company_activity_data.proto\x1aBwayplatform/connect/tachograph/card/v1/control_activity_data.proto\x1a:wayplatform/connect/tachograph/card/v1/current_usage.proto\x1aAwayplatform/connect/tachograph/card/v1/driver_activity_data.proto\x1aAwayplatform/connect/tachograph/card/v1/driving_licence_info.proto\x1a8wayplatform/connect/tachograph/card/v1/events_data.proto\x1a8wayplatform/connect/tachograph/card/v1/faults_data.proto\x1a8wayplatform/connect/tachograph/card/v1/gnss_places.proto\x1aGwayplatform/connect/tachograph/card/v1/gnss_places_authentication.proto\x1a/wayplatform/connect/tachograph/card/v1/ic.proto\x1a0wayplatform/connect/tachograph/card/v1/icc.proto\x1a;wayplatform/connect/tachograph/card/v1/identification.proto\x1a>wayplatform/connect/tachograph/card/v1/load_type_entries.proto\x1aCwayplatform/connect/tachograph/card/v1/load_unload_operations.proto\x1a3wayplatform/connect/tachograph/card/v1/places.proto\x1aBwayplatform/connect/tachograph/card/v1/places_authentication.proto\x1a@wayplatform/connect/tachograph/card/v1/specific_conditions.proto\x1a?wayplatform/connect/tachograph/card/v1/vehicle_units_used.proto\x1a:wayplatform/connect/tachograph/card/v1/vehicles_used.proto\x1a=wayplatform/connect/tachograph/card/v1/vu_configuration.proto\"\xe4\x13\n" +
+	"=wayplatform/connect/tachograph/card/v1/driver_card_file.proto\x12&wayplatform.connect.tachograph.card.v1\x1aGwayplatform/connect/tachograph/card/v1/application_identification.proto\x1aJwayplatform/connect/tachograph/card/v1/application_identification_v2.proto\x1a=wayplatform/connect/tachograph/card/v1/border_crossings.proto\x1aAwayplatform/connect/tachograph/card/v1/card_download_driver.proto\x1a9wayplatform/connect/tachograph/card/v1/certificates.proto\x1aBwayplatform/connect/tachograph/card/v1/company_activity_data.proto\x1aBwayplatform/connect/tachograph/card/v1/control_activity_data.proto\x1a:wayplatform/connect/tachograph/card/v1/current_usage.proto\x1aAwayplatform/connect/tachograph/card/v1/driver_activity_data.proto\x1aAwayplatform/connect/tachograph/card/v1/driving_licence_info.proto\x1a8wayplatform/connect/tachograph/card/v1/events_data.proto\x1a8wayplatform/connect/tachograph/card/v1/faults_data.proto\x1a8wayplatform/connect/tachograph/card/v1/gnss_places.proto\x1aGwayplatform/connect/tachograph/card/v1/gnss_places_authentication.proto\x1a/wayplatform/connect/tachograph/card/v1/ic.proto\x1a0wayplatform/connect/tachograph/card/v1/icc.proto\x1a;wayplatform/connect/tachograph/card/v1/identification.proto\x1a>wayplatform/connect/tachograph/card/v1/load_type_entries.proto\x1aCwayplatform/connect/tachograph/card/v1/load_unload_operations.proto\x1a3wayplatform/connect/tachograph/card/v1/places.proto\x1aBwayplatform/connect/tachograph/card/v1/places_authentication.proto\x1a@wayplatform/connect/tachograph/card/v1/specific_conditions.proto\x1a?wayplatform/connect/tachograph/card/v1/vehicle_units_used.proto\x1a:wayplatform/connect/tachograph/card/v1/vehicles_used.proto\x1a=wayplatform/connect/tachograph/card/v1/vu_configuration.proto\"\xc4\x1f\n" +
 	"\x0eDriverCardFile\x12=\n" +
 	"\x03icc\x18\x01 \x01(\v2+.wayplatform.connect.tachograph.card.v1.IccR\x03icc\x12:\n" +
-	"\x02ic\x18\x02 \x01(\v2*.wayplatform.connect.tachograph.card.v1.IcR\x02ic\x12\x80\x01\n" +
-	"\x1aapplication_identification\x18\x03 \x01(\v2A.wayplatform.connect.tachograph.card.v1.ApplicationIdentificationR\x19applicationIdentification\x12^\n" +
-	"\x0eidentification\x18\x04 \x01(\v26.wayplatform.connect.tachograph.card.v1.IdentificationR\x0eidentification\x12l\n" +
-	"\x14driving_licence_info\x18\x06 \x01(\v2:.wayplatform.connect.tachograph.card.v1.DrivingLicenceInfoR\x12drivingLicenceInfo\x12S\n" +
-	"\vevents_data\x18\a \x01(\v22.wayplatform.connect.tachograph.card.v1.EventsDataR\n" +
+	"\x02ic\x18\x02 \x01(\v2*.wayplatform.connect.tachograph.card.v1.IcR\x02ic\x12a\n" +
+	"\n" +
+	"tachograph\x18\x03 \x01(\v2A.wayplatform.connect.tachograph.card.v1.DriverCardFile.TachographR\n" +
+	"tachograph\x12h\n" +
+	"\rtachograph_g2\x18\x04 \x01(\v2C.wayplatform.connect.tachograph.card.v1.DriverCardFile.TachographG2R\ftachographG2\x1a\x8c\n" +
+	"\n" +
+	"\n" +
+	"Tachograph\x12\x80\x01\n" +
+	"\x1aapplication_identification\x18\x01 \x01(\v2A.wayplatform.connect.tachograph.card.v1.ApplicationIdentificationR\x19applicationIdentification\x12^\n" +
+	"\x0eidentification\x18\x02 \x01(\v26.wayplatform.connect.tachograph.card.v1.IdentificationR\x0eidentification\x12_\n" +
+	"\rcard_download\x18\x03 \x01(\v2:.wayplatform.connect.tachograph.card.v1.CardDownloadDriverR\fcardDownload\x12l\n" +
+	"\x14driving_licence_info\x18\x04 \x01(\v2:.wayplatform.connect.tachograph.card.v1.DrivingLicenceInfoR\x12drivingLicenceInfo\x12S\n" +
+	"\vevents_data\x18\x05 \x01(\v22.wayplatform.connect.tachograph.card.v1.EventsDataR\n" +
 	"eventsData\x12S\n" +
-	"\vfaults_data\x18\b \x01(\v22.wayplatform.connect.tachograph.card.v1.FaultsDataR\n" +
+	"\vfaults_data\x18\x06 \x01(\v22.wayplatform.connect.tachograph.card.v1.FaultsDataR\n" +
 	"faultsData\x12l\n" +
-	"\x14driver_activity_data\x18\t \x01(\v2:.wayplatform.connect.tachograph.card.v1.DriverActivityDataR\x12driverActivityData\x12Y\n" +
-	"\rvehicles_used\x18\n" +
-	" \x01(\v24.wayplatform.connect.tachograph.card.v1.VehiclesUsedR\fvehiclesUsed\x12F\n" +
-	"\x06places\x18\v \x01(\v2..wayplatform.connect.tachograph.card.v1.PlacesR\x06places\x12Y\n" +
-	"\rcurrent_usage\x18\f \x01(\v24.wayplatform.connect.tachograph.card.v1.CurrentUsageR\fcurrentUsage\x12o\n" +
-	"\x15control_activity_data\x18\r \x01(\v2;.wayplatform.connect.tachograph.card.v1.ControlActivityDataR\x13controlActivityData\x12k\n" +
-	"\x13specific_conditions\x18\x0e \x01(\v2:.wayplatform.connect.tachograph.card.v1.SpecificConditionsR\x12specificConditions\x12l\n" +
-	"\x14card_download_driver\x18\x0f \x01(\v2:.wayplatform.connect.tachograph.card.v1.CardDownloadDriverR\x12cardDownloadDriver\x12f\n" +
-	"\x12vehicle_units_used\x18\x10 \x01(\v28.wayplatform.connect.tachograph.card.v1.VehicleUnitsUsedR\x10vehicleUnitsUsed\x12S\n" +
-	"\vgnss_places\x18\x11 \x01(\v22.wayplatform.connect.tachograph.card.v1.GnssPlacesR\n" +
+	"\x14driver_activity_data\x18\a \x01(\v2:.wayplatform.connect.tachograph.card.v1.DriverActivityDataR\x12driverActivityData\x12Y\n" +
+	"\rvehicles_used\x18\b \x01(\v24.wayplatform.connect.tachograph.card.v1.VehiclesUsedR\fvehiclesUsed\x12F\n" +
+	"\x06places\x18\t \x01(\v2..wayplatform.connect.tachograph.card.v1.PlacesR\x06places\x12Y\n" +
+	"\rcurrent_usage\x18\n" +
+	" \x01(\v24.wayplatform.connect.tachograph.card.v1.CurrentUsageR\fcurrentUsage\x12o\n" +
+	"\x15control_activity_data\x18\v \x01(\v2;.wayplatform.connect.tachograph.card.v1.ControlActivityDataR\x13controlActivityData\x12k\n" +
+	"\x13specific_conditions\x18\f \x01(\v2:.wayplatform.connect.tachograph.card.v1.SpecificConditionsR\x12specificConditions\x12X\n" +
+	"\fcertificates\x18\r \x01(\v24.wayplatform.connect.tachograph.card.v1.CertificatesR\fcertificates\x1a\xda\x12\n" +
+	"\fTachographG2\x12\x80\x01\n" +
+	"\x1aapplication_identification\x18\x01 \x01(\v2A.wayplatform.connect.tachograph.card.v1.ApplicationIdentificationR\x19applicationIdentification\x12^\n" +
+	"\x0eidentification\x18\x02 \x01(\v26.wayplatform.connect.tachograph.card.v1.IdentificationR\x0eidentification\x12_\n" +
+	"\rcard_download\x18\x03 \x01(\v2:.wayplatform.connect.tachograph.card.v1.CardDownloadDriverR\fcardDownload\x12l\n" +
+	"\x14driving_licence_info\x18\x04 \x01(\v2:.wayplatform.connect.tachograph.card.v1.DrivingLicenceInfoR\x12drivingLicenceInfo\x12S\n" +
+	"\vevents_data\x18\x05 \x01(\v22.wayplatform.connect.tachograph.card.v1.EventsDataR\n" +
+	"eventsData\x12S\n" +
+	"\vfaults_data\x18\x06 \x01(\v22.wayplatform.connect.tachograph.card.v1.FaultsDataR\n" +
+	"faultsData\x12l\n" +
+	"\x14driver_activity_data\x18\a \x01(\v2:.wayplatform.connect.tachograph.card.v1.DriverActivityDataR\x12driverActivityData\x12Y\n" +
+	"\rvehicles_used\x18\b \x01(\v24.wayplatform.connect.tachograph.card.v1.VehiclesUsedR\fvehiclesUsed\x12F\n" +
+	"\x06places\x18\t \x01(\v2..wayplatform.connect.tachograph.card.v1.PlacesR\x06places\x12Y\n" +
+	"\rcurrent_usage\x18\n" +
+	" \x01(\v24.wayplatform.connect.tachograph.card.v1.CurrentUsageR\fcurrentUsage\x12o\n" +
+	"\x15control_activity_data\x18\v \x01(\v2;.wayplatform.connect.tachograph.card.v1.ControlActivityDataR\x13controlActivityData\x12k\n" +
+	"\x13specific_conditions\x18\f \x01(\v2:.wayplatform.connect.tachograph.card.v1.SpecificConditionsR\x12specificConditions\x12f\n" +
+	"\x12vehicle_units_used\x18\r \x01(\v28.wayplatform.connect.tachograph.card.v1.VehicleUnitsUsedR\x10vehicleUnitsUsed\x12S\n" +
+	"\vgnss_places\x18\x0e \x01(\v22.wayplatform.connect.tachograph.card.v1.GnssPlacesR\n" +
 	"gnssPlaces\x12\x87\x01\n" +
-	"\x1dapplication_identification_v2\x18\x12 \x01(\v2C.wayplatform.connect.tachograph.card.v1.ApplicationIdentificationV2R\x1bapplicationIdentificationV2\x12q\n" +
-	"\x15places_authentication\x18\x13 \x01(\v2<.wayplatform.connect.tachograph.card.v1.PlacesAuthenticationR\x14placesAuthentication\x12~\n" +
-	"\x1agnss_places_authentication\x18\x14 \x01(\v2@.wayplatform.connect.tachograph.card.v1.GnssPlacesAuthenticationR\x18gnssPlacesAuthentication\x12b\n" +
-	"\x10border_crossings\x18\x15 \x01(\v27.wayplatform.connect.tachograph.card.v1.BorderCrossingsR\x0fborderCrossings\x12r\n" +
-	"\x16load_unload_operations\x18\x16 \x01(\v2<.wayplatform.connect.tachograph.card.v1.LoadUnloadOperationsR\x14loadUnloadOperations\x12c\n" +
-	"\x11load_type_entries\x18\x17 \x01(\v27.wayplatform.connect.tachograph.card.v1.LoadTypeEntriesR\x0floadTypeEntries\x12o\n" +
-	"\x15company_activity_data\x18\x19 \x01(\v2;.wayplatform.connect.tachograph.card.v1.CompanyActivityDataR\x13companyActivityData\x12b\n" +
-	"\x10vu_configuration\x18\x1a \x01(\v27.wayplatform.connect.tachograph.card.v1.VuConfigurationR\x0fvuConfiguration\x12X\n" +
-	"\fcertificates\x18\x18 \x01(\v24.wayplatform.connect.tachograph.card.v1.CertificatesR\fcertificatesB\xe0\x02\n" +
+	"\x1dapplication_identification_v2\x18\x0f \x01(\v2C.wayplatform.connect.tachograph.card.v1.ApplicationIdentificationV2R\x1bapplicationIdentificationV2\x12q\n" +
+	"\x15places_authentication\x18\x10 \x01(\v2<.wayplatform.connect.tachograph.card.v1.PlacesAuthenticationR\x14placesAuthentication\x12~\n" +
+	"\x1agnss_places_authentication\x18\x11 \x01(\v2@.wayplatform.connect.tachograph.card.v1.GnssPlacesAuthenticationR\x18gnssPlacesAuthentication\x12b\n" +
+	"\x10border_crossings\x18\x12 \x01(\v27.wayplatform.connect.tachograph.card.v1.BorderCrossingsR\x0fborderCrossings\x12r\n" +
+	"\x16load_unload_operations\x18\x13 \x01(\v2<.wayplatform.connect.tachograph.card.v1.LoadUnloadOperationsR\x14loadUnloadOperations\x12c\n" +
+	"\x11load_type_entries\x18\x14 \x01(\v27.wayplatform.connect.tachograph.card.v1.LoadTypeEntriesR\x0floadTypeEntries\x12o\n" +
+	"\x15company_activity_data\x18\x15 \x01(\v2;.wayplatform.connect.tachograph.card.v1.CompanyActivityDataR\x13companyActivityData\x12b\n" +
+	"\x10vu_configuration\x18\x16 \x01(\v27.wayplatform.connect.tachograph.card.v1.VuConfigurationR\x0fvuConfiguration\x12X\n" +
+	"\fcertificates\x18\x17 \x01(\v24.wayplatform.connect.tachograph.card.v1.CertificatesR\fcertificatesB\xe0\x02\n" +
 	"*com.wayplatform.connect.tachograph.card.v1B\x13DriverCardFileProtoP\x01Z`github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1;cardv1\xa2\x02\x04WCTC\xaa\x02&Wayplatform.Connect.Tachograph.Card.V1\xca\x02&Wayplatform\\Connect\\Tachograph\\Card\\V1\xe2\x022Wayplatform\\Connect\\Tachograph\\Card\\V1\\GPBMetadata\xea\x02*Wayplatform::Connect::Tachograph::Card::V1b\beditionsp\xe8\a"
 
-var file_wayplatform_connect_tachograph_card_v1_driver_card_file_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
+var file_wayplatform_connect_tachograph_card_v1_driver_card_file_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
 var file_wayplatform_connect_tachograph_card_v1_driver_card_file_proto_goTypes = []any{
 	(*DriverCardFile)(nil),              // 0: wayplatform.connect.tachograph.card.v1.DriverCardFile
-	(*Icc)(nil),                         // 1: wayplatform.connect.tachograph.card.v1.Icc
-	(*Ic)(nil),                          // 2: wayplatform.connect.tachograph.card.v1.Ic
-	(*ApplicationIdentification)(nil),   // 3: wayplatform.connect.tachograph.card.v1.ApplicationIdentification
-	(*Identification)(nil),              // 4: wayplatform.connect.tachograph.card.v1.Identification
-	(*DrivingLicenceInfo)(nil),          // 5: wayplatform.connect.tachograph.card.v1.DrivingLicenceInfo
-	(*EventsData)(nil),                  // 6: wayplatform.connect.tachograph.card.v1.EventsData
-	(*FaultsData)(nil),                  // 7: wayplatform.connect.tachograph.card.v1.FaultsData
-	(*DriverActivityData)(nil),          // 8: wayplatform.connect.tachograph.card.v1.DriverActivityData
-	(*VehiclesUsed)(nil),                // 9: wayplatform.connect.tachograph.card.v1.VehiclesUsed
-	(*Places)(nil),                      // 10: wayplatform.connect.tachograph.card.v1.Places
-	(*CurrentUsage)(nil),                // 11: wayplatform.connect.tachograph.card.v1.CurrentUsage
-	(*ControlActivityData)(nil),         // 12: wayplatform.connect.tachograph.card.v1.ControlActivityData
-	(*SpecificConditions)(nil),          // 13: wayplatform.connect.tachograph.card.v1.SpecificConditions
-	(*CardDownloadDriver)(nil),          // 14: wayplatform.connect.tachograph.card.v1.CardDownloadDriver
-	(*VehicleUnitsUsed)(nil),            // 15: wayplatform.connect.tachograph.card.v1.VehicleUnitsUsed
-	(*GnssPlaces)(nil),                  // 16: wayplatform.connect.tachograph.card.v1.GnssPlaces
-	(*ApplicationIdentificationV2)(nil), // 17: wayplatform.connect.tachograph.card.v1.ApplicationIdentificationV2
-	(*PlacesAuthentication)(nil),        // 18: wayplatform.connect.tachograph.card.v1.PlacesAuthentication
-	(*GnssPlacesAuthentication)(nil),    // 19: wayplatform.connect.tachograph.card.v1.GnssPlacesAuthentication
-	(*BorderCrossings)(nil),             // 20: wayplatform.connect.tachograph.card.v1.BorderCrossings
-	(*LoadUnloadOperations)(nil),        // 21: wayplatform.connect.tachograph.card.v1.LoadUnloadOperations
-	(*LoadTypeEntries)(nil),             // 22: wayplatform.connect.tachograph.card.v1.LoadTypeEntries
-	(*CompanyActivityData)(nil),         // 23: wayplatform.connect.tachograph.card.v1.CompanyActivityData
-	(*VuConfiguration)(nil),             // 24: wayplatform.connect.tachograph.card.v1.VuConfiguration
-	(*Certificates)(nil),                // 25: wayplatform.connect.tachograph.card.v1.Certificates
+	(*DriverCardFile_Tachograph)(nil),   // 1: wayplatform.connect.tachograph.card.v1.DriverCardFile.Tachograph
+	(*DriverCardFile_TachographG2)(nil), // 2: wayplatform.connect.tachograph.card.v1.DriverCardFile.TachographG2
+	(*Icc)(nil),                         // 3: wayplatform.connect.tachograph.card.v1.Icc
+	(*Ic)(nil),                          // 4: wayplatform.connect.tachograph.card.v1.Ic
+	(*ApplicationIdentification)(nil),   // 5: wayplatform.connect.tachograph.card.v1.ApplicationIdentification
+	(*Identification)(nil),              // 6: wayplatform.connect.tachograph.card.v1.Identification
+	(*CardDownloadDriver)(nil),          // 7: wayplatform.connect.tachograph.card.v1.CardDownloadDriver
+	(*DrivingLicenceInfo)(nil),          // 8: wayplatform.connect.tachograph.card.v1.DrivingLicenceInfo
+	(*EventsData)(nil),                  // 9: wayplatform.connect.tachograph.card.v1.EventsData
+	(*FaultsData)(nil),                  // 10: wayplatform.connect.tachograph.card.v1.FaultsData
+	(*DriverActivityData)(nil),          // 11: wayplatform.connect.tachograph.card.v1.DriverActivityData
+	(*VehiclesUsed)(nil),                // 12: wayplatform.connect.tachograph.card.v1.VehiclesUsed
+	(*Places)(nil),                      // 13: wayplatform.connect.tachograph.card.v1.Places
+	(*CurrentUsage)(nil),                // 14: wayplatform.connect.tachograph.card.v1.CurrentUsage
+	(*ControlActivityData)(nil),         // 15: wayplatform.connect.tachograph.card.v1.ControlActivityData
+	(*SpecificConditions)(nil),          // 16: wayplatform.connect.tachograph.card.v1.SpecificConditions
+	(*Certificates)(nil),                // 17: wayplatform.connect.tachograph.card.v1.Certificates
+	(*VehicleUnitsUsed)(nil),            // 18: wayplatform.connect.tachograph.card.v1.VehicleUnitsUsed
+	(*GnssPlaces)(nil),                  // 19: wayplatform.connect.tachograph.card.v1.GnssPlaces
+	(*ApplicationIdentificationV2)(nil), // 20: wayplatform.connect.tachograph.card.v1.ApplicationIdentificationV2
+	(*PlacesAuthentication)(nil),        // 21: wayplatform.connect.tachograph.card.v1.PlacesAuthentication
+	(*GnssPlacesAuthentication)(nil),    // 22: wayplatform.connect.tachograph.card.v1.GnssPlacesAuthentication
+	(*BorderCrossings)(nil),             // 23: wayplatform.connect.tachograph.card.v1.BorderCrossings
+	(*LoadUnloadOperations)(nil),        // 24: wayplatform.connect.tachograph.card.v1.LoadUnloadOperations
+	(*LoadTypeEntries)(nil),             // 25: wayplatform.connect.tachograph.card.v1.LoadTypeEntries
+	(*CompanyActivityData)(nil),         // 26: wayplatform.connect.tachograph.card.v1.CompanyActivityData
+	(*VuConfiguration)(nil),             // 27: wayplatform.connect.tachograph.card.v1.VuConfiguration
 }
 var file_wayplatform_connect_tachograph_card_v1_driver_card_file_proto_depIdxs = []int32{
-	1,  // 0: wayplatform.connect.tachograph.card.v1.DriverCardFile.icc:type_name -> wayplatform.connect.tachograph.card.v1.Icc
-	2,  // 1: wayplatform.connect.tachograph.card.v1.DriverCardFile.ic:type_name -> wayplatform.connect.tachograph.card.v1.Ic
-	3,  // 2: wayplatform.connect.tachograph.card.v1.DriverCardFile.application_identification:type_name -> wayplatform.connect.tachograph.card.v1.ApplicationIdentification
-	4,  // 3: wayplatform.connect.tachograph.card.v1.DriverCardFile.identification:type_name -> wayplatform.connect.tachograph.card.v1.Identification
-	5,  // 4: wayplatform.connect.tachograph.card.v1.DriverCardFile.driving_licence_info:type_name -> wayplatform.connect.tachograph.card.v1.DrivingLicenceInfo
-	6,  // 5: wayplatform.connect.tachograph.card.v1.DriverCardFile.events_data:type_name -> wayplatform.connect.tachograph.card.v1.EventsData
-	7,  // 6: wayplatform.connect.tachograph.card.v1.DriverCardFile.faults_data:type_name -> wayplatform.connect.tachograph.card.v1.FaultsData
-	8,  // 7: wayplatform.connect.tachograph.card.v1.DriverCardFile.driver_activity_data:type_name -> wayplatform.connect.tachograph.card.v1.DriverActivityData
-	9,  // 8: wayplatform.connect.tachograph.card.v1.DriverCardFile.vehicles_used:type_name -> wayplatform.connect.tachograph.card.v1.VehiclesUsed
-	10, // 9: wayplatform.connect.tachograph.card.v1.DriverCardFile.places:type_name -> wayplatform.connect.tachograph.card.v1.Places
-	11, // 10: wayplatform.connect.tachograph.card.v1.DriverCardFile.current_usage:type_name -> wayplatform.connect.tachograph.card.v1.CurrentUsage
-	12, // 11: wayplatform.connect.tachograph.card.v1.DriverCardFile.control_activity_data:type_name -> wayplatform.connect.tachograph.card.v1.ControlActivityData
-	13, // 12: wayplatform.connect.tachograph.card.v1.DriverCardFile.specific_conditions:type_name -> wayplatform.connect.tachograph.card.v1.SpecificConditions
-	14, // 13: wayplatform.connect.tachograph.card.v1.DriverCardFile.card_download_driver:type_name -> wayplatform.connect.tachograph.card.v1.CardDownloadDriver
-	15, // 14: wayplatform.connect.tachograph.card.v1.DriverCardFile.vehicle_units_used:type_name -> wayplatform.connect.tachograph.card.v1.VehicleUnitsUsed
-	16, // 15: wayplatform.connect.tachograph.card.v1.DriverCardFile.gnss_places:type_name -> wayplatform.connect.tachograph.card.v1.GnssPlaces
-	17, // 16: wayplatform.connect.tachograph.card.v1.DriverCardFile.application_identification_v2:type_name -> wayplatform.connect.tachograph.card.v1.ApplicationIdentificationV2
-	18, // 17: wayplatform.connect.tachograph.card.v1.DriverCardFile.places_authentication:type_name -> wayplatform.connect.tachograph.card.v1.PlacesAuthentication
-	19, // 18: wayplatform.connect.tachograph.card.v1.DriverCardFile.gnss_places_authentication:type_name -> wayplatform.connect.tachograph.card.v1.GnssPlacesAuthentication
-	20, // 19: wayplatform.connect.tachograph.card.v1.DriverCardFile.border_crossings:type_name -> wayplatform.connect.tachograph.card.v1.BorderCrossings
-	21, // 20: wayplatform.connect.tachograph.card.v1.DriverCardFile.load_unload_operations:type_name -> wayplatform.connect.tachograph.card.v1.LoadUnloadOperations
-	22, // 21: wayplatform.connect.tachograph.card.v1.DriverCardFile.load_type_entries:type_name -> wayplatform.connect.tachograph.card.v1.LoadTypeEntries
-	23, // 22: wayplatform.connect.tachograph.card.v1.DriverCardFile.company_activity_data:type_name -> wayplatform.connect.tachograph.card.v1.CompanyActivityData
-	24, // 23: wayplatform.connect.tachograph.card.v1.DriverCardFile.vu_configuration:type_name -> wayplatform.connect.tachograph.card.v1.VuConfiguration
-	25, // 24: wayplatform.connect.tachograph.card.v1.DriverCardFile.certificates:type_name -> wayplatform.connect.tachograph.card.v1.Certificates
-	25, // [25:25] is the sub-list for method output_type
-	25, // [25:25] is the sub-list for method input_type
-	25, // [25:25] is the sub-list for extension type_name
-	25, // [25:25] is the sub-list for extension extendee
-	0,  // [0:25] is the sub-list for field type_name
+	3,  // 0: wayplatform.connect.tachograph.card.v1.DriverCardFile.icc:type_name -> wayplatform.connect.tachograph.card.v1.Icc
+	4,  // 1: wayplatform.connect.tachograph.card.v1.DriverCardFile.ic:type_name -> wayplatform.connect.tachograph.card.v1.Ic
+	1,  // 2: wayplatform.connect.tachograph.card.v1.DriverCardFile.tachograph:type_name -> wayplatform.connect.tachograph.card.v1.DriverCardFile.Tachograph
+	2,  // 3: wayplatform.connect.tachograph.card.v1.DriverCardFile.tachograph_g2:type_name -> wayplatform.connect.tachograph.card.v1.DriverCardFile.TachographG2
+	5,  // 4: wayplatform.connect.tachograph.card.v1.DriverCardFile.Tachograph.application_identification:type_name -> wayplatform.connect.tachograph.card.v1.ApplicationIdentification
+	6,  // 5: wayplatform.connect.tachograph.card.v1.DriverCardFile.Tachograph.identification:type_name -> wayplatform.connect.tachograph.card.v1.Identification
+	7,  // 6: wayplatform.connect.tachograph.card.v1.DriverCardFile.Tachograph.card_download:type_name -> wayplatform.connect.tachograph.card.v1.CardDownloadDriver
+	8,  // 7: wayplatform.connect.tachograph.card.v1.DriverCardFile.Tachograph.driving_licence_info:type_name -> wayplatform.connect.tachograph.card.v1.DrivingLicenceInfo
+	9,  // 8: wayplatform.connect.tachograph.card.v1.DriverCardFile.Tachograph.events_data:type_name -> wayplatform.connect.tachograph.card.v1.EventsData
+	10, // 9: wayplatform.connect.tachograph.card.v1.DriverCardFile.Tachograph.faults_data:type_name -> wayplatform.connect.tachograph.card.v1.FaultsData
+	11, // 10: wayplatform.connect.tachograph.card.v1.DriverCardFile.Tachograph.driver_activity_data:type_name -> wayplatform.connect.tachograph.card.v1.DriverActivityData
+	12, // 11: wayplatform.connect.tachograph.card.v1.DriverCardFile.Tachograph.vehicles_used:type_name -> wayplatform.connect.tachograph.card.v1.VehiclesUsed
+	13, // 12: wayplatform.connect.tachograph.card.v1.DriverCardFile.Tachograph.places:type_name -> wayplatform.connect.tachograph.card.v1.Places
+	14, // 13: wayplatform.connect.tachograph.card.v1.DriverCardFile.Tachograph.current_usage:type_name -> wayplatform.connect.tachograph.card.v1.CurrentUsage
+	15, // 14: wayplatform.connect.tachograph.card.v1.DriverCardFile.Tachograph.control_activity_data:type_name -> wayplatform.connect.tachograph.card.v1.ControlActivityData
+	16, // 15: wayplatform.connect.tachograph.card.v1.DriverCardFile.Tachograph.specific_conditions:type_name -> wayplatform.connect.tachograph.card.v1.SpecificConditions
+	17, // 16: wayplatform.connect.tachograph.card.v1.DriverCardFile.Tachograph.certificates:type_name -> wayplatform.connect.tachograph.card.v1.Certificates
+	5,  // 17: wayplatform.connect.tachograph.card.v1.DriverCardFile.TachographG2.application_identification:type_name -> wayplatform.connect.tachograph.card.v1.ApplicationIdentification
+	6,  // 18: wayplatform.connect.tachograph.card.v1.DriverCardFile.TachographG2.identification:type_name -> wayplatform.connect.tachograph.card.v1.Identification
+	7,  // 19: wayplatform.connect.tachograph.card.v1.DriverCardFile.TachographG2.card_download:type_name -> wayplatform.connect.tachograph.card.v1.CardDownloadDriver
+	8,  // 20: wayplatform.connect.tachograph.card.v1.DriverCardFile.TachographG2.driving_licence_info:type_name -> wayplatform.connect.tachograph.card.v1.DrivingLicenceInfo
+	9,  // 21: wayplatform.connect.tachograph.card.v1.DriverCardFile.TachographG2.events_data:type_name -> wayplatform.connect.tachograph.card.v1.EventsData
+	10, // 22: wayplatform.connect.tachograph.card.v1.DriverCardFile.TachographG2.faults_data:type_name -> wayplatform.connect.tachograph.card.v1.FaultsData
+	11, // 23: wayplatform.connect.tachograph.card.v1.DriverCardFile.TachographG2.driver_activity_data:type_name -> wayplatform.connect.tachograph.card.v1.DriverActivityData
+	12, // 24: wayplatform.connect.tachograph.card.v1.DriverCardFile.TachographG2.vehicles_used:type_name -> wayplatform.connect.tachograph.card.v1.VehiclesUsed
+	13, // 25: wayplatform.connect.tachograph.card.v1.DriverCardFile.TachographG2.places:type_name -> wayplatform.connect.tachograph.card.v1.Places
+	14, // 26: wayplatform.connect.tachograph.card.v1.DriverCardFile.TachographG2.current_usage:type_name -> wayplatform.connect.tachograph.card.v1.CurrentUsage
+	15, // 27: wayplatform.connect.tachograph.card.v1.DriverCardFile.TachographG2.control_activity_data:type_name -> wayplatform.connect.tachograph.card.v1.ControlActivityData
+	16, // 28: wayplatform.connect.tachograph.card.v1.DriverCardFile.TachographG2.specific_conditions:type_name -> wayplatform.connect.tachograph.card.v1.SpecificConditions
+	18, // 29: wayplatform.connect.tachograph.card.v1.DriverCardFile.TachographG2.vehicle_units_used:type_name -> wayplatform.connect.tachograph.card.v1.VehicleUnitsUsed
+	19, // 30: wayplatform.connect.tachograph.card.v1.DriverCardFile.TachographG2.gnss_places:type_name -> wayplatform.connect.tachograph.card.v1.GnssPlaces
+	20, // 31: wayplatform.connect.tachograph.card.v1.DriverCardFile.TachographG2.application_identification_v2:type_name -> wayplatform.connect.tachograph.card.v1.ApplicationIdentificationV2
+	21, // 32: wayplatform.connect.tachograph.card.v1.DriverCardFile.TachographG2.places_authentication:type_name -> wayplatform.connect.tachograph.card.v1.PlacesAuthentication
+	22, // 33: wayplatform.connect.tachograph.card.v1.DriverCardFile.TachographG2.gnss_places_authentication:type_name -> wayplatform.connect.tachograph.card.v1.GnssPlacesAuthentication
+	23, // 34: wayplatform.connect.tachograph.card.v1.DriverCardFile.TachographG2.border_crossings:type_name -> wayplatform.connect.tachograph.card.v1.BorderCrossings
+	24, // 35: wayplatform.connect.tachograph.card.v1.DriverCardFile.TachographG2.load_unload_operations:type_name -> wayplatform.connect.tachograph.card.v1.LoadUnloadOperations
+	25, // 36: wayplatform.connect.tachograph.card.v1.DriverCardFile.TachographG2.load_type_entries:type_name -> wayplatform.connect.tachograph.card.v1.LoadTypeEntries
+	26, // 37: wayplatform.connect.tachograph.card.v1.DriverCardFile.TachographG2.company_activity_data:type_name -> wayplatform.connect.tachograph.card.v1.CompanyActivityData
+	27, // 38: wayplatform.connect.tachograph.card.v1.DriverCardFile.TachographG2.vu_configuration:type_name -> wayplatform.connect.tachograph.card.v1.VuConfiguration
+	17, // 39: wayplatform.connect.tachograph.card.v1.DriverCardFile.TachographG2.certificates:type_name -> wayplatform.connect.tachograph.card.v1.Certificates
+	40, // [40:40] is the sub-list for method output_type
+	40, // [40:40] is the sub-list for method input_type
+	40, // [40:40] is the sub-list for extension type_name
+	40, // [40:40] is the sub-list for extension extendee
+	0,  // [0:40] is the sub-list for field type_name
 }
 
 func init() { file_wayplatform_connect_tachograph_card_v1_driver_card_file_proto_init() }
@@ -854,7 +1502,7 @@ func file_wayplatform_connect_tachograph_card_v1_driver_card_file_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_wayplatform_connect_tachograph_card_v1_driver_card_file_proto_rawDesc), len(file_wayplatform_connect_tachograph_card_v1_driver_card_file_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   1,
+			NumMessages:   3,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

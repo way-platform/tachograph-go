@@ -32,35 +32,23 @@ func MarshalDriverCardFile(file *cardv1.DriverCardFile) ([]byte, error) {
 
 // unmarshalDriverCardFile unmarshals a driver card file from raw card file data.
 //
-// The data type `DriverCardFile` represents a complete driver card file structure.
+// The driver card file structure is organized into Dedicated Files (DFs):
+// - Common EFs (ICC, IC) reside in the Master File (MF)
+// - Tachograph DF contains Generation 1 application data
+// - Tachograph_G2 DF contains Generation 2 application data
 //
-// ASN.1 Definition:
-//
-//	DriverCardFile ::= SEQUENCE {
-//	    icc                              CardIccIdentification,
-//	    ic                               CardChipIdentification,
-//	    identification                   CardIdentification,
-//	    applicationIdentification        ApplicationIdentification,
-//	    drivingLicenceInfo               CardDrivingLicenceInformation,
-//	    eventsData                       CardEventData,
-//	    faultsData                       CardFaultData,
-//	    driverActivityData               CardDriverActivity,
-//	    vehiclesUsed                     CardVehicleRecord,
-//	    places                           CardPlaceDailyWorkPeriod,
-//	    currentUsage                     CardCurrentUse,
-//	    controlActivityData              CardControlActivityDataRecord,
-//	    specificConditions               CardSpecificConditionRecord,
-//	    cardDownloadDriver               CardDownloadDriver,
-//	    vehicleUnitsUsed                 CardVehicleUnitsUsed,
-//	    gnssPlaces                       CardGNSSPlaceRecord,
-//	    applicationIdentificationV2      ApplicationIdentificationV2,
-//	    certificates                     Certificates
-//	}
+// The generation of each EF is determined by the TLV tag appendix byte:
+// - '00'/'01' indicates Gen1 (Tachograph DF)
+// - '02'/'03' indicates Gen2 (Tachograph_G2 DF)
 func unmarshalDriverCardFile(input *cardv1.RawCardFile) (*cardv1.DriverCardFile, error) {
 	// File-level version context (extracted from CardStructureVersion)
 	// This represents the card's overall version capability
 	var fileVersion ddv1.Version = ddv1.Version_VERSION_1
 	var output cardv1.DriverCardFile
+
+	// DF-level containers - we populate these as we encounter EFs
+	var tachographDF *cardv1.DriverCardFile_Tachograph
+	var tachographG2DF *cardv1.DriverCardFile_TachographG2
 
 	for i := 0; i < len(input.GetRecords()); i++ {
 		record := input.GetRecords()[i]
@@ -85,6 +73,7 @@ func unmarshalDriverCardFile(input *cardv1.RawCardFile) (*cardv1.DriverCardFile,
 				i++
 			}
 		}
+
 		switch record.GetFile() {
 		case cardv1.ElementaryFileType_EF_ICC:
 			icc, err := opts.unmarshalIcc(record.GetValue())
@@ -114,7 +103,22 @@ func unmarshalDriverCardFile(input *cardv1.RawCardFile) (*cardv1.DriverCardFile,
 			if signature != nil {
 				identification.SetSignature(signature)
 			}
-			output.SetIdentification(identification)
+
+			// Route to appropriate DF based on generation
+			switch efGeneration {
+			case ddv1.Generation_GENERATION_1:
+				if tachographDF == nil {
+					tachographDF = &cardv1.DriverCardFile_Tachograph{}
+				}
+				tachographDF.SetIdentification(identification)
+			case ddv1.Generation_GENERATION_2:
+				if tachographG2DF == nil {
+					tachographG2DF = &cardv1.DriverCardFile_TachographG2{}
+				}
+				tachographG2DF.SetIdentification(identification)
+			default:
+				return nil, fmt.Errorf("unexpected generation for EF_IDENTIFICATION: %v", efGeneration)
+			}
 
 		case cardv1.ElementaryFileType_EF_APPLICATION_IDENTIFICATION:
 			appId, err := opts.unmarshalApplicationIdentification(record.GetValue())
@@ -124,7 +128,6 @@ func unmarshalDriverCardFile(input *cardv1.RawCardFile) (*cardv1.DriverCardFile,
 			if signature != nil {
 				appId.SetSignature(signature)
 			}
-			output.SetApplicationIdentification(appId)
 
 			// Extract file-level version from CardStructureVersion for subsequent EFs
 			// Generation comes from TLV tag appendix, but version is file-level
@@ -132,6 +135,22 @@ func unmarshalDriverCardFile(input *cardv1.RawCardFile) (*cardv1.DriverCardFile,
 				var versionOpts UnmarshalOptions
 				versionOpts.SetFromCardStructureVersion(csv)
 				fileVersion = versionOpts.Version
+			}
+
+			// Route to appropriate DF based on generation
+			switch efGeneration {
+			case ddv1.Generation_GENERATION_1:
+				if tachographDF == nil {
+					tachographDF = &cardv1.DriverCardFile_Tachograph{}
+				}
+				tachographDF.SetApplicationIdentification(appId)
+			case ddv1.Generation_GENERATION_2:
+				if tachographG2DF == nil {
+					tachographG2DF = &cardv1.DriverCardFile_TachographG2{}
+				}
+				tachographG2DF.SetApplicationIdentification(appId)
+			default:
+				return nil, fmt.Errorf("unexpected generation for EF_APPLICATION_IDENTIFICATION: %v", efGeneration)
 			}
 
 		case cardv1.ElementaryFileType_EF_DRIVING_LICENCE_INFO:
@@ -142,7 +161,22 @@ func unmarshalDriverCardFile(input *cardv1.RawCardFile) (*cardv1.DriverCardFile,
 			if signature != nil {
 				drivingLicenceInfo.SetSignature(signature)
 			}
-			output.SetDrivingLicenceInfo(drivingLicenceInfo)
+
+			// Route to appropriate DF based on generation
+			switch efGeneration {
+			case ddv1.Generation_GENERATION_1:
+				if tachographDF == nil {
+					tachographDF = &cardv1.DriverCardFile_Tachograph{}
+				}
+				tachographDF.SetDrivingLicenceInfo(drivingLicenceInfo)
+			case ddv1.Generation_GENERATION_2:
+				if tachographG2DF == nil {
+					tachographG2DF = &cardv1.DriverCardFile_TachographG2{}
+				}
+				tachographG2DF.SetDrivingLicenceInfo(drivingLicenceInfo)
+			default:
+				return nil, fmt.Errorf("unexpected generation for EF_DRIVING_LICENCE_INFO: %v", efGeneration)
+			}
 
 		case cardv1.ElementaryFileType_EF_EVENTS_DATA:
 			eventsData, err := opts.unmarshalEventsData(record.GetValue())
@@ -152,7 +186,22 @@ func unmarshalDriverCardFile(input *cardv1.RawCardFile) (*cardv1.DriverCardFile,
 			if signature != nil {
 				eventsData.SetSignature(signature)
 			}
-			output.SetEventsData(eventsData)
+
+			// Route to appropriate DF based on generation
+			switch efGeneration {
+			case ddv1.Generation_GENERATION_1:
+				if tachographDF == nil {
+					tachographDF = &cardv1.DriverCardFile_Tachograph{}
+				}
+				tachographDF.SetEventsData(eventsData)
+			case ddv1.Generation_GENERATION_2:
+				if tachographG2DF == nil {
+					tachographG2DF = &cardv1.DriverCardFile_TachographG2{}
+				}
+				tachographG2DF.SetEventsData(eventsData)
+			default:
+				return nil, fmt.Errorf("unexpected generation for EF_EVENTS_DATA: %v", efGeneration)
+			}
 
 		case cardv1.ElementaryFileType_EF_FAULTS_DATA:
 			faultsData, err := opts.unmarshalFaultsData(record.GetValue())
@@ -162,7 +211,22 @@ func unmarshalDriverCardFile(input *cardv1.RawCardFile) (*cardv1.DriverCardFile,
 			if signature != nil {
 				faultsData.SetSignature(signature)
 			}
-			output.SetFaultsData(faultsData)
+
+			// Route to appropriate DF based on generation
+			switch efGeneration {
+			case ddv1.Generation_GENERATION_1:
+				if tachographDF == nil {
+					tachographDF = &cardv1.DriverCardFile_Tachograph{}
+				}
+				tachographDF.SetFaultsData(faultsData)
+			case ddv1.Generation_GENERATION_2:
+				if tachographG2DF == nil {
+					tachographG2DF = &cardv1.DriverCardFile_TachographG2{}
+				}
+				tachographG2DF.SetFaultsData(faultsData)
+			default:
+				return nil, fmt.Errorf("unexpected generation for EF_FAULTS_DATA: %v", efGeneration)
+			}
 
 		case cardv1.ElementaryFileType_EF_DRIVER_ACTIVITY_DATA:
 			activityData, err := opts.unmarshalDriverActivityData(record.GetValue())
@@ -172,7 +236,22 @@ func unmarshalDriverCardFile(input *cardv1.RawCardFile) (*cardv1.DriverCardFile,
 			if signature != nil {
 				activityData.SetSignature(signature)
 			}
-			output.SetDriverActivityData(activityData)
+
+			// Route to appropriate DF based on generation
+			switch efGeneration {
+			case ddv1.Generation_GENERATION_1:
+				if tachographDF == nil {
+					tachographDF = &cardv1.DriverCardFile_Tachograph{}
+				}
+				tachographDF.SetDriverActivityData(activityData)
+			case ddv1.Generation_GENERATION_2:
+				if tachographG2DF == nil {
+					tachographG2DF = &cardv1.DriverCardFile_TachographG2{}
+				}
+				tachographG2DF.SetDriverActivityData(activityData)
+			default:
+				return nil, fmt.Errorf("unexpected generation for EF_DRIVER_ACTIVITY_DATA: %v", efGeneration)
+			}
 
 		case cardv1.ElementaryFileType_EF_VEHICLES_USED:
 			vehiclesUsed, err := opts.unmarshalVehiclesUsed(record.GetValue())
@@ -182,7 +261,22 @@ func unmarshalDriverCardFile(input *cardv1.RawCardFile) (*cardv1.DriverCardFile,
 			if signature != nil {
 				vehiclesUsed.SetSignature(signature)
 			}
-			output.SetVehiclesUsed(vehiclesUsed)
+
+			// Route to appropriate DF based on generation
+			switch efGeneration {
+			case ddv1.Generation_GENERATION_1:
+				if tachographDF == nil {
+					tachographDF = &cardv1.DriverCardFile_Tachograph{}
+				}
+				tachographDF.SetVehiclesUsed(vehiclesUsed)
+			case ddv1.Generation_GENERATION_2:
+				if tachographG2DF == nil {
+					tachographG2DF = &cardv1.DriverCardFile_TachographG2{}
+				}
+				tachographG2DF.SetVehiclesUsed(vehiclesUsed)
+			default:
+				return nil, fmt.Errorf("unexpected generation for EF_VEHICLES_USED: %v", efGeneration)
+			}
 
 		case cardv1.ElementaryFileType_EF_PLACES:
 			places, err := opts.unmarshalPlaces(record.GetValue())
@@ -194,7 +288,22 @@ func unmarshalDriverCardFile(input *cardv1.RawCardFile) (*cardv1.DriverCardFile,
 			if signature != nil {
 				places.SetSignature(signature)
 			}
-			output.SetPlaces(places)
+
+			// Route to appropriate DF based on generation
+			switch efGeneration {
+			case ddv1.Generation_GENERATION_1:
+				if tachographDF == nil {
+					tachographDF = &cardv1.DriverCardFile_Tachograph{}
+				}
+				tachographDF.SetPlaces(places)
+			case ddv1.Generation_GENERATION_2:
+				if tachographG2DF == nil {
+					tachographG2DF = &cardv1.DriverCardFile_TachographG2{}
+				}
+				tachographG2DF.SetPlaces(places)
+			default:
+				return nil, fmt.Errorf("unexpected generation for EF_PLACES: %v", efGeneration)
+			}
 
 		case cardv1.ElementaryFileType_EF_CURRENT_USAGE:
 			currentUsage, err := opts.unmarshalCurrentUsage(record.GetValue())
@@ -204,7 +313,22 @@ func unmarshalDriverCardFile(input *cardv1.RawCardFile) (*cardv1.DriverCardFile,
 			if signature != nil {
 				currentUsage.SetSignature(signature)
 			}
-			output.SetCurrentUsage(currentUsage)
+
+			// Route to appropriate DF based on generation
+			switch efGeneration {
+			case ddv1.Generation_GENERATION_1:
+				if tachographDF == nil {
+					tachographDF = &cardv1.DriverCardFile_Tachograph{}
+				}
+				tachographDF.SetCurrentUsage(currentUsage)
+			case ddv1.Generation_GENERATION_2:
+				if tachographG2DF == nil {
+					tachographG2DF = &cardv1.DriverCardFile_TachographG2{}
+				}
+				tachographG2DF.SetCurrentUsage(currentUsage)
+			default:
+				return nil, fmt.Errorf("unexpected generation for EF_CURRENT_USAGE: %v", efGeneration)
+			}
 
 		case cardv1.ElementaryFileType_EF_CONTROL_ACTIVITY_DATA:
 			controlActivity, err := opts.unmarshalControlActivityData(record.GetValue())
@@ -214,7 +338,22 @@ func unmarshalDriverCardFile(input *cardv1.RawCardFile) (*cardv1.DriverCardFile,
 			if signature != nil {
 				controlActivity.SetSignature(signature)
 			}
-			output.SetControlActivityData(controlActivity)
+
+			// Route to appropriate DF based on generation
+			switch efGeneration {
+			case ddv1.Generation_GENERATION_1:
+				if tachographDF == nil {
+					tachographDF = &cardv1.DriverCardFile_Tachograph{}
+				}
+				tachographDF.SetControlActivityData(controlActivity)
+			case ddv1.Generation_GENERATION_2:
+				if tachographG2DF == nil {
+					tachographG2DF = &cardv1.DriverCardFile_TachographG2{}
+				}
+				tachographG2DF.SetControlActivityData(controlActivity)
+			default:
+				return nil, fmt.Errorf("unexpected generation for EF_CONTROL_ACTIVITY_DATA: %v", efGeneration)
+			}
 
 		case cardv1.ElementaryFileType_EF_SPECIFIC_CONDITIONS:
 			specificConditions, err := opts.unmarshalSpecificConditions(record.GetValue())
@@ -224,7 +363,22 @@ func unmarshalDriverCardFile(input *cardv1.RawCardFile) (*cardv1.DriverCardFile,
 			if signature != nil {
 				specificConditions.SetSignature(signature)
 			}
-			output.SetSpecificConditions(specificConditions)
+
+			// Route to appropriate DF based on generation
+			switch efGeneration {
+			case ddv1.Generation_GENERATION_1:
+				if tachographDF == nil {
+					tachographDF = &cardv1.DriverCardFile_Tachograph{}
+				}
+				tachographDF.SetSpecificConditions(specificConditions)
+			case ddv1.Generation_GENERATION_2:
+				if tachographG2DF == nil {
+					tachographG2DF = &cardv1.DriverCardFile_TachographG2{}
+				}
+				tachographG2DF.SetSpecificConditions(specificConditions)
+			default:
+				return nil, fmt.Errorf("unexpected generation for EF_SPECIFIC_CONDITIONS: %v", efGeneration)
+			}
 
 		case cardv1.ElementaryFileType_EF_CARD_DOWNLOAD_DRIVER:
 			lastDownload, err := opts.unmarshalLastDownload(record.GetValue())
@@ -232,9 +386,24 @@ func unmarshalDriverCardFile(input *cardv1.RawCardFile) (*cardv1.DriverCardFile,
 				return nil, err
 			}
 			if signature != nil {
-				lastDownload.SetSignature(signature)
+				return nil, fmt.Errorf("unexpected signature for EF_CARD_DOWNLOAD_DRIVER")
 			}
-			output.SetCardDownloadDriver(lastDownload)
+
+			// Route to appropriate DF based on generation
+			switch efGeneration {
+			case ddv1.Generation_GENERATION_1:
+				if tachographDF == nil {
+					tachographDF = &cardv1.DriverCardFile_Tachograph{}
+				}
+				tachographDF.SetCardDownload(lastDownload)
+			case ddv1.Generation_GENERATION_2:
+				if tachographG2DF == nil {
+					tachographG2DF = &cardv1.DriverCardFile_TachographG2{}
+				}
+				tachographG2DF.SetCardDownload(lastDownload)
+			default:
+				return nil, fmt.Errorf("unexpected generation for EF_CARD_DOWNLOAD_DRIVER: %v", efGeneration)
+			}
 
 		case cardv1.ElementaryFileType_EF_VEHICLE_UNITS_USED:
 			vehicleUnits, err := opts.unmarshalVehicleUnitsUsed(record.GetValue())
@@ -244,7 +413,12 @@ func unmarshalDriverCardFile(input *cardv1.RawCardFile) (*cardv1.DriverCardFile,
 			if signature != nil {
 				vehicleUnits.SetSignature(signature)
 			}
-			output.SetVehicleUnitsUsed(vehicleUnits)
+
+			// Only Gen2
+			if tachographG2DF == nil {
+				tachographG2DF = &cardv1.DriverCardFile_TachographG2{}
+			}
+			tachographG2DF.SetVehicleUnitsUsed(vehicleUnits)
 
 		case cardv1.ElementaryFileType_EF_GNSS_PLACES:
 			gnssPlaces, err := opts.unmarshalGnssPlaces(record.GetValue())
@@ -254,7 +428,12 @@ func unmarshalDriverCardFile(input *cardv1.RawCardFile) (*cardv1.DriverCardFile,
 			if signature != nil {
 				gnssPlaces.SetSignature(signature)
 			}
-			output.SetGnssPlaces(gnssPlaces)
+
+			// Only Gen2
+			if tachographG2DF == nil {
+				tachographG2DF = &cardv1.DriverCardFile_TachographG2{}
+			}
+			tachographG2DF.SetGnssPlaces(gnssPlaces)
 
 		case cardv1.ElementaryFileType_EF_APPLICATION_IDENTIFICATION_V2:
 			appIdV2, err := opts.unmarshalApplicationIdentificationV2(record.GetValue())
@@ -264,27 +443,76 @@ func unmarshalDriverCardFile(input *cardv1.RawCardFile) (*cardv1.DriverCardFile,
 			if signature != nil {
 				appIdV2.SetSignature(signature)
 			}
-			output.SetApplicationIdentificationV2(appIdV2)
+
+			// Only Gen2
+			if tachographG2DF == nil {
+				tachographG2DF = &cardv1.DriverCardFile_TachographG2{}
+			}
+			tachographG2DF.SetApplicationIdentificationV2(appIdV2)
 
 		case cardv1.ElementaryFileType_EF_CARD_CERTIFICATE:
-			if output.GetCertificates() == nil {
-				output.SetCertificates(&cardv1.Certificates{})
+			// Certificates are shared between Gen1 and Gen2 (based on which DF they appear in)
+			// Route to appropriate DF based on generation
+			switch efGeneration {
+			case ddv1.Generation_GENERATION_1:
+				if tachographDF == nil {
+					tachographDF = &cardv1.DriverCardFile_Tachograph{}
+				}
+				if tachographDF.GetCertificates() == nil {
+					tachographDF.SetCertificates(&cardv1.Certificates{})
+				}
+				tachographDF.GetCertificates().SetCardCertificate(record.GetValue())
+			case ddv1.Generation_GENERATION_2:
+				if tachographG2DF == nil {
+					tachographG2DF = &cardv1.DriverCardFile_TachographG2{}
+				}
+				if tachographG2DF.GetCertificates() == nil {
+					tachographG2DF.SetCertificates(&cardv1.Certificates{})
+				}
+				tachographG2DF.GetCertificates().SetCardCertificate(record.GetValue())
+			default:
+				return nil, fmt.Errorf("unexpected generation for EF_CARD_CERTIFICATE: %v", efGeneration)
 			}
-			output.GetCertificates().SetCardCertificate(record.GetValue())
 			if signature != nil {
 				return nil, fmt.Errorf("unexpected signature for EF_CARD_CERTIFICATE")
 			}
 
 		case cardv1.ElementaryFileType_EF_CA_CERTIFICATE:
-			if output.GetCertificates() == nil {
-				output.SetCertificates(&cardv1.Certificates{})
+			// Route to appropriate DF based on generation
+			switch efGeneration {
+			case ddv1.Generation_GENERATION_1:
+				if tachographDF == nil {
+					tachographDF = &cardv1.DriverCardFile_Tachograph{}
+				}
+				if tachographDF.GetCertificates() == nil {
+					tachographDF.SetCertificates(&cardv1.Certificates{})
+				}
+				tachographDF.GetCertificates().SetCaCertificate(record.GetValue())
+			case ddv1.Generation_GENERATION_2:
+				if tachographG2DF == nil {
+					tachographG2DF = &cardv1.DriverCardFile_TachographG2{}
+				}
+				if tachographG2DF.GetCertificates() == nil {
+					tachographG2DF.SetCertificates(&cardv1.Certificates{})
+				}
+				tachographG2DF.GetCertificates().SetCaCertificate(record.GetValue())
+			default:
+				return nil, fmt.Errorf("unexpected generation for EF_CA_CERTIFICATE: %v", efGeneration)
 			}
-			output.GetCertificates().SetCaCertificate(record.GetValue())
 			if signature != nil {
 				return nil, fmt.Errorf("unexpected signature for EF_CA_CERTIFICATE")
 			}
 		}
 	}
+
+	// Set the DFs on the output if they have content
+	if tachographDF != nil {
+		output.SetTachograph(tachographDF)
+	}
+	if tachographG2DF != nil {
+		output.SetTachographG2(tachographG2DF)
+	}
+
 	return &output, nil
 }
 
@@ -306,113 +534,120 @@ func appendDriverCard(dst []byte, card *cardv1.DriverCardFile) ([]byte, error) {
 	}
 
 	// 3. EF_APPLICATION_IDENTIFICATION (0x0501)
-	dst, err = appendTlv(dst, cardv1.ElementaryFileType_EF_APPLICATION_IDENTIFICATION, card.GetApplicationIdentification(), appendCardApplicationIdentification)
+	dst, err = appendTlv(dst, cardv1.ElementaryFileType_EF_APPLICATION_IDENTIFICATION, card.GetTachograph().GetApplicationIdentification(), appendCardApplicationIdentification)
 	if err != nil {
 		return nil, err
 	}
 
-	dst, err = appendTlv(dst, cardv1.ElementaryFileType_EF_DRIVING_LICENCE_INFO, card.GetDrivingLicenceInfo(), appendDrivingLicenceInfo)
+	dst, err = appendTlv(dst, cardv1.ElementaryFileType_EF_DRIVING_LICENCE_INFO, card.GetTachograph().GetDrivingLicenceInfo(), appendDrivingLicenceInfo)
 	if err != nil {
 		return nil, err
 	}
 
 	// 4. EF_IDENTIFICATION (0x0520) - composite file
-	valBuf := make([]byte, 0, 143)
-	valBuf, err = appendCardIdentification(valBuf, card.GetIdentification().GetCard())
-	if err != nil {
-		return nil, err
-	}
-	valBuf, err = appendDriverCardHolderIdentification(valBuf, card.GetIdentification().GetDriverCardHolder())
-	if err != nil {
-		return nil, err
-	}
-	dst, err = appendTlv(dst, cardv1.ElementaryFileType_EF_IDENTIFICATION, &compositeMessage{data: valBuf}, func(dst []byte, msg *compositeMessage) ([]byte, error) {
-		return append(dst, msg.data...), nil
-	})
-	if err != nil {
-		return nil, err
-	}
-
-	dst, err = appendTlv(dst, cardv1.ElementaryFileType_EF_EVENTS_DATA, card.GetEventsData(), appendEventsData)
-	if err != nil {
-		return nil, err
-	}
-
-	dst, err = appendTlv(dst, cardv1.ElementaryFileType_EF_FAULTS_DATA, card.GetFaultsData(), appendFaultsData)
-	if err != nil {
-		return nil, err
-	}
-
-	dst, err = appendTlv(dst, cardv1.ElementaryFileType_EF_DRIVER_ACTIVITY_DATA, card.GetDriverActivityData(), appendDriverActivity)
-	if err != nil {
-		return nil, err
-	}
-
-	dst, err = appendTlv(dst, cardv1.ElementaryFileType_EF_VEHICLES_USED, card.GetVehiclesUsed(), appendVehiclesUsed)
-	if err != nil {
-		return nil, err
-	}
-
-	dst, err = appendTlv(dst, cardv1.ElementaryFileType_EF_PLACES, card.GetPlaces(), func(dst []byte, places *cardv1.Places) ([]byte, error) {
-		// Use the generation stored in the Places message itself
-		generation := places.GetGeneration()
-		if generation == ddv1.Generation_GENERATION_UNSPECIFIED {
-			// Default to Generation 1 if not specified
-			generation = ddv1.Generation_GENERATION_1
+	if identification := card.GetTachograph().GetIdentification(); identification != nil {
+		valBuf := make([]byte, 0, 143)
+		valBuf, err = appendCardIdentification(valBuf, identification.GetCard())
+		if err != nil {
+			return nil, err
 		}
-		return appendPlaces(dst, places, generation)
-	})
+		valBuf, err = appendDriverCardHolderIdentification(valBuf, identification.GetDriverCardHolder())
+		if err != nil {
+			return nil, err
+		}
+		dst, err = appendTlv(dst, cardv1.ElementaryFileType_EF_IDENTIFICATION, &compositeMessage{data: valBuf}, func(dst []byte, msg *compositeMessage) ([]byte, error) {
+			return append(dst, msg.data...), nil
+		})
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	dst, err = appendTlv(dst, cardv1.ElementaryFileType_EF_EVENTS_DATA, card.GetTachograph().GetEventsData(), appendEventsData)
 	if err != nil {
 		return nil, err
 	}
 
-	dst, err = appendTlv(dst, cardv1.ElementaryFileType_EF_CURRENT_USAGE, card.GetCurrentUsage(), appendCurrentUsage)
+	dst, err = appendTlv(dst, cardv1.ElementaryFileType_EF_FAULTS_DATA, card.GetTachograph().GetFaultsData(), appendFaultsData)
 	if err != nil {
 		return nil, err
 	}
 
-	dst, err = appendTlv(dst, cardv1.ElementaryFileType_EF_CONTROL_ACTIVITY_DATA, card.GetControlActivityData(), appendCardControlActivityData)
+	dst, err = appendTlv(dst, cardv1.ElementaryFileType_EF_DRIVER_ACTIVITY_DATA, card.GetTachograph().GetDriverActivityData(), appendDriverActivity)
 	if err != nil {
 		return nil, err
 	}
 
-	dst, err = appendTlv(dst, cardv1.ElementaryFileType_EF_SPECIFIC_CONDITIONS, card.GetSpecificConditions(), appendCardSpecificConditions)
+	dst, err = appendTlv(dst, cardv1.ElementaryFileType_EF_VEHICLES_USED, card.GetTachograph().GetVehiclesUsed(), appendVehiclesUsed)
 	if err != nil {
 		return nil, err
 	}
 
-	dst, err = appendTlv(dst, cardv1.ElementaryFileType_EF_CARD_DOWNLOAD_DRIVER, card.GetCardDownloadDriver(), appendCardLastDownload)
+	if places := card.GetTachograph().GetPlaces(); places != nil {
+		dst, err = appendTlv(dst, cardv1.ElementaryFileType_EF_PLACES, places, func(dst []byte, places *cardv1.Places) ([]byte, error) {
+			// Use the generation stored in the Places message itself
+			generation := places.GetGeneration()
+			if generation == ddv1.Generation_GENERATION_UNSPECIFIED {
+				// Default to Generation 1 if not specified
+				generation = ddv1.Generation_GENERATION_1
+			}
+			return appendPlaces(dst, places, generation)
+		})
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	dst, err = appendTlv(dst, cardv1.ElementaryFileType_EF_CURRENT_USAGE, card.GetTachograph().GetCurrentUsage(), appendCurrentUsage)
 	if err != nil {
 		return nil, err
 	}
 
-	// Remove duplicate EF_APPLICATION_IDENTIFICATION - already added above
-
-	dst, err = appendTlv(dst, cardv1.ElementaryFileType_EF_VEHICLE_UNITS_USED, card.GetVehicleUnitsUsed(), appendCardVehicleUnitsUsed)
+	dst, err = appendTlv(dst, cardv1.ElementaryFileType_EF_CONTROL_ACTIVITY_DATA, card.GetTachograph().GetControlActivityData(), appendCardControlActivityData)
 	if err != nil {
 		return nil, err
 	}
 
-	dst, err = appendTlv(dst, cardv1.ElementaryFileType_EF_GNSS_PLACES, card.GetGnssPlaces(), appendCardGnssPlaces)
+	dst, err = appendTlv(dst, cardv1.ElementaryFileType_EF_SPECIFIC_CONDITIONS, card.GetTachograph().GetSpecificConditions(), appendCardSpecificConditions)
 	if err != nil {
 		return nil, err
 	}
 
-	dst, err = appendTlv(dst, cardv1.ElementaryFileType_EF_APPLICATION_IDENTIFICATION_V2, card.GetApplicationIdentificationV2(), appendCardApplicationIdentificationV2)
+	dst, err = appendTlvUnsigned(dst, cardv1.ElementaryFileType_EF_CARD_DOWNLOAD_DRIVER, card.GetTachograph().GetCardDownload(), appendCardLastDownload)
 	if err != nil {
 		return nil, err
 	}
 
-	// Append certificate EFs
-	if certificates := card.GetCertificates(); certificates != nil {
-		dst, err = appendCertificateEF(dst, cardv1.ElementaryFileType_EF_CARD_CERTIFICATE, certificates.GetCardCertificate())
+	// Gen2 DFs - only append if present
+	if tachographG2 := card.GetTachographG2(); tachographG2 != nil {
+		dst, err = appendTlv(dst, cardv1.ElementaryFileType_EF_VEHICLE_UNITS_USED, tachographG2.GetVehicleUnitsUsed(), appendCardVehicleUnitsUsed)
 		if err != nil {
 			return nil, err
 		}
 
-		dst, err = appendCertificateEF(dst, cardv1.ElementaryFileType_EF_CA_CERTIFICATE, certificates.GetCaCertificate())
+		dst, err = appendTlv(dst, cardv1.ElementaryFileType_EF_GNSS_PLACES, tachographG2.GetGnssPlaces(), appendCardGnssPlaces)
 		if err != nil {
 			return nil, err
+		}
+
+		dst, err = appendTlv(dst, cardv1.ElementaryFileType_EF_APPLICATION_IDENTIFICATION_V2, tachographG2.GetApplicationIdentificationV2(), appendCardApplicationIdentificationV2)
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	// Append certificate EFs from Gen1 DF
+	if tachograph := card.GetTachograph(); tachograph != nil {
+		if certificates := tachograph.GetCertificates(); certificates != nil {
+			dst, err = appendCertificateEF(dst, cardv1.ElementaryFileType_EF_CARD_CERTIFICATE, certificates.GetCardCertificate())
+			if err != nil {
+				return nil, err
+			}
+
+			dst, err = appendCertificateEF(dst, cardv1.ElementaryFileType_EF_CA_CERTIFICATE, certificates.GetCaCertificate())
+			if err != nil {
+				return nil, err
+			}
 		}
 	}
 
