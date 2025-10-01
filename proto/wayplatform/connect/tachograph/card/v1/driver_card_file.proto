@@ -33,84 +33,264 @@ import "wayplatform/connect/tachograph/card/v1/vu_configuration.proto";
 // This message is the result of the second pass of parsing, where the raw TLV
 // records from a `RawCardFile` are interpreted and structured into their
 // semantic meaning according to the driver card specification.
-// See regulation document Appendix 2, Section 4.2.
+//
+// The structure follows the physical card file layout with separate Dedicated Files (DFs)
+// for Generation 1 and Generation 2 applications. This design prevents data loss when
+// a card contains both Gen1 and Gen2 versions of the same EF, which is common in
+// Gen2 cards that maintain backward compatibility.
+//
+// See regulation document Appendix 2, Section 4.2 (driver card applications).
 message DriverCardFile {
-  // Data from EF_ICC (Integrated Circuit Card Identification). See `icc.proto`.
+  // Common card information from EF_ICC (File ID '0002h') and EF_IC (File ID '0005h').
+  // These EFs reside in the Master File (MF), not in any DF, and are the same
+  // for all card types. See Section 4.1 (TCS_142, TCS_144).
+
+  // Data from EF ICC (Integrated Circuit Card Identification).
+  // Not signed (see Section 3.3, DDP_035).
   Icc icc = 1;
 
-  // Data from EF_IC (Integrated Circuit Identification). See `ic.proto`.
+  // Data from EF IC (Integrated Circuit Identification).
+  // Not signed (see Section 3.3, DDP_035).
   Ic ic = 2;
 
-  // Data from EF_Application_Identification. See `application_identification.proto`.
-  ApplicationIdentification application_identification = 3;
+  // Data from the Tachograph DF (Generation 1 application).
+  // Present on both Gen1-only cards and Gen2 cards with backward compatibility.
+  // In the TLV format, EFs from this DF use tag appendix '00' (data) and '01' (signature).
+  Tachograph tachograph = 3;
 
-  // Data from EF_Identification. See `identification.proto`.
-  Identification identification = 4;
+  // Data from the Tachograph_G2 DF (Generation 2 application).
+  // Only present on Gen2 cards.
+  // In the TLV format, EFs from this DF use tag appendix '02' (data) and '03' (signature).
+  TachographG2 tachograph_g2 = 4;
 
-  // Data from EF_Driving_Licence_Info. See `driving_licence_info.proto`.
-  DrivingLicenceInfo driving_licence_info = 6;
+  // Represents data from the Tachograph DF (Generation 1 driver card application).
+  //
+  // This message corresponds to the Generation 1 driver card application structure
+  // as defined in Section 4.2.1 of the regulation (TCS_148, TCS_150, TCS_151).
+  //
+  // File Structure (from TCS_148):
+  //
+  //     DF Tachograph (File ID '0500h')
+  //     ├─ EF Application_Identification
+  //     ├─ EF Card_Certificate
+  //     ├─ EF CA_Certificate
+  //     ├─ EF Identification
+  //     ├─ EF Card_Download
+  //     ├─ EF Driving_Licence_Info
+  //     ├─ EF Events_Data
+  //     ├─ EF Faults_Data
+  //     ├─ EF Driver_Activity_Data
+  //     ├─ EF Vehicles_Used
+  //     ├─ EF Places
+  //     ├─ EF Current_Usage
+  //     ├─ EF Control_Activity_Data
+  //     └─ EF Specific_Conditions
+  //
+  // Signature Information (from Section 3.3, DDP_035):
+  // - Certificate EFs (Card_Certificate, CA_Certificate) are not signed (DDP_037).
+  // - EF Card_Download is not signed (DDP_035).
+  // - All other application data EFs are secured with a digital signature (DDP_035).
+  //
+  // Note: In the TLV download format (see Section 3.4.2, DDP_042, DDP_043),
+  // data files from this DF are tagged with FID + '00' (data) and FID + '01' (signature).
+  message Tachograph {
+    // Data from EF Application_Identification (File ID '0501h').
+    // Signed (see Section 3.3, DDP_035).
+    ApplicationIdentification application_identification = 1;
 
-  // Data from EF_Events_Data. See `events_data.proto`.
-  EventsData events_data = 7;
+    // Data from EF Identification (File ID '0520h').
+    // Signed (see Section 3.3, DDP_035).
+    Identification identification = 2;
 
-  // Data from EF_Faults_Data. See `faults_data.proto`.
-  FaultsData faults_data = 8;
+    // Data from EF Card_Download (File ID '050Eh').
+    // Not signed (see Section 3.3, DDP_035).
+    CardDownloadDriver card_download = 3;
 
-  // Data from EF_Driver_Activity_Data. See `driver_activity_data.proto`.
-  DriverActivityData driver_activity_data = 9;
+    // Data from EF Driving_Licence_Info (File ID '0521h').
+    // Signed (see Section 3.3, DDP_035).
+    DrivingLicenceInfo driving_licence_info = 4;
 
-  // Data from EF_Vehicles_Used. See `vehicles_used.proto`.
-  VehiclesUsed vehicles_used = 10;
+    // Data from EF Events_Data (File ID '0502h').
+    // Signed (see Section 3.3, DDP_035).
+    EventsData events_data = 5;
 
-  // Data from EF_Places. See `places.proto`.
-  Places places = 11;
+    // Data from EF Faults_Data (File ID '0503h').
+    // Signed (see Section 3.3, DDP_035).
+    FaultsData faults_data = 6;
 
-  // Data from EF_Current_Usage. See `current_usage.proto`.
-  CurrentUsage current_usage = 12;
+    // Data from EF Driver_Activity_Data (File ID '0504h').
+    // Signed (see Section 3.3, DDP_035).
+    DriverActivityData driver_activity_data = 7;
 
-  // Data from EF_Control_Activity_Data. See `control_activity_data.proto`.
-  ControlActivityData control_activity_data = 13;
+    // Data from EF Vehicles_Used (File ID '0505h').
+    // Signed (see Section 3.3, DDP_035).
+    VehiclesUsed vehicles_used = 8;
 
-  // Data from EF_Specific_Conditions. See `specific_conditions.proto`.
-  SpecificConditions specific_conditions = 14;
+    // Data from EF Places (File ID '0506h').
+    // Signed (see Section 3.3, DDP_035).
+    Places places = 9;
 
-  // Data from EF_Card_Download. See `card_download_driver.proto`.
-  CardDownloadDriver card_download_driver = 15;
+    // Data from EF Current_Usage (File ID '0507h').
+    // Signed (see Section 3.3, DDP_035).
+    CurrentUsage current_usage = 10;
 
-  // --- Gen2 Specific Fields ---
+    // Data from EF Control_Activity_Data (File ID '0508h').
+    // Signed (see Section 3.3, DDP_035).
+    ControlActivityData control_activity_data = 11;
 
-  // Data from EF_VehicleUnits_Used. See `vehicle_units_used.proto`.
-  VehicleUnitsUsed vehicle_units_used = 16;
+    // Data from EF Specific_Conditions (File ID '0522h').
+    // Signed (see Section 3.3, DDP_035).
+    SpecificConditions specific_conditions = 12;
 
-  // Data from EF_GNSS_Places. See `gnss_places.proto`.
-  GnssPlaces gnss_places = 17;
+    // Certificate data from EF Card_Certificate (File ID 'C100h') and
+    // EF CA_Certificate (File ID 'C108h').
+    // Not signed (see Section 3.3, DDP_037).
+    Certificates certificates = 13;
+  }
 
-  // Data from EF_Application_Identification_V2 (conditional on Gen2v2 cards). See `application_identification_v2.proto`.
-  ApplicationIdentificationV2 application_identification_v2 = 18;
+  // Represents data from the Tachograph_G2 DF (Generation 2 driver card application).
+  //
+  // This message corresponds to the Generation 2 driver card application structure
+  // as defined in Section 4.2.2 of the regulation (TCS_152, TCS_154, TCS_155).
+  //
+  // File Structure (from TCS_152):
+  //
+  //     DF Tachograph_G2
+  //     ├─ EF Application_Identification
+  //     ├─ EF CardMA_Certificate
+  //     ├─ EF CardSignCertificate
+  //     ├─ EF CA_Certificate
+  //     ├─ EF Link_Certificate
+  //     ├─ EF Identification
+  //     ├─ EF Card_Download
+  //     ├─ EF Driving_Licence_Info
+  //     ├─ EF Events_Data
+  //     ├─ EF Faults_Data
+  //     ├─ EF Driver_Activity_Data
+  //     ├─ EF Vehicles_Used
+  //     ├─ EF Places
+  //     ├─ EF Current_Usage
+  //     ├─ EF Control_Activity_Data
+  //     ├─ EF Specific_Conditions
+  //     ├─ EF VehicleUnits_Used
+  //     ├─ EF GNSS_Places
+  //     ├─ EF Application_Identification_V2 (conditional on Gen2v2)
+  //     ├─ EF Places_Authentication (conditional on Gen2v2)
+  //     ├─ EF GNSS_Places_Authentication (conditional on Gen2v2)
+  //     ├─ EF Border_Crossings (conditional on Gen2v2)
+  //     ├─ EF Load_Unload_Operations (conditional on Gen2v2)
+  //     ├─ EF Load_Type_Entries (conditional on Gen2v2)
+  //     ├─ EF Company_Activity_Data (mandatory on Gen2)
+  //     └─ EF VU_Configuration (conditional on Gen2)
+  //
+  // Signature Information (from Section 3.3, DDP_035):
+  // - Certificate EFs (CardSignCertificate, CA_Certificate, Link_Certificate) are not signed (DDP_037).
+  // - EF Card_Download is not signed (DDP_035).
+  // - All other application data EFs are secured with a digital signature using
+  //   Common Security Mechanisms Part B (DDP_035).
+  //
+  // Note: In the TLV download format (see Section 3.4.2, DDP_042, DDP_043),
+  // data files from this DF are tagged with FID + '02' (data) and FID + '03' (signature).
+  message TachographG2 {
+    // Data from EF Application_Identification (File ID '0501h').
+    // Signed (see Section 3.3, DDP_035).
+    ApplicationIdentification application_identification = 1;
 
-  // Data from EF_Places_Authentication (conditional on Gen2v2 cards). See `places_authentication.proto`.
-  PlacesAuthentication places_authentication = 19;
+    // Data from EF Identification (File ID '0520h').
+    // Signed (see Section 3.3, DDP_035).
+    Identification identification = 2;
 
-  // Data from EF_GNSS_Places_Authentication (conditional on Gen2v2 cards). See `gnss_places_authentication.proto`.
-  GnssPlacesAuthentication gnss_places_authentication = 20;
+    // Data from EF Card_Download (File ID '050Eh').
+    // Not signed (see Section 3.3, DDP_035).
+    CardDownloadDriver card_download = 3;
 
-  // Data from EF_Border_Crossings (conditional on Gen2v2 cards). See `border_crossings.proto`.
-  BorderCrossings border_crossings = 21;
+    // Data from EF Driving_Licence_Info (File ID '0521h').
+    // Signed (see Section 3.3, DDP_035).
+    DrivingLicenceInfo driving_licence_info = 4;
 
-  // Data from EF_Load_Unload_Operations (conditional on Gen2v2 cards). See `load_unload_operations.proto`.
-  LoadUnloadOperations load_unload_operations = 22;
+    // Data from EF Events_Data (File ID '0502h').
+    // Signed (see Section 3.3, DDP_035).
+    EventsData events_data = 5;
 
-  // Data from EF_Load_Type_Entries (conditional on Gen2v2 cards). See `load_type_entries.proto`.
-  LoadTypeEntries load_type_entries = 23;
+    // Data from EF Faults_Data (File ID '0503h').
+    // Signed (see Section 3.3, DDP_035).
+    FaultsData faults_data = 6;
 
-  // Data from EF_Company_Activity_Data (mandatory on Gen2 cards). See `company_activity_data.proto`.
-  CompanyActivityData company_activity_data = 25;
+    // Data from EF Driver_Activity_Data (File ID '0504h').
+    // Signed (see Section 3.3, DDP_035).
+    DriverActivityData driver_activity_data = 7;
 
-  // Data from EF_VU_Configuration (conditional on Gen2 cards). See `vu_configuration.proto`.
-  VuConfiguration vu_configuration = 26;
+    // Data from EF Vehicles_Used (File ID '0505h').
+    // Signed (see Section 3.3, DDP_035).
+    VehiclesUsed vehicles_used = 8;
 
-  // --- Security Data ---
+    // Data from EF Places (File ID '0506h').
+    // Signed (see Section 3.3, DDP_035).
+    Places places = 9;
 
-  // Certificate data from various certificate EFs. See `certificates.proto`.
-  Certificates certificates = 24;
+    // Data from EF Current_Usage (File ID '0507h').
+    // Signed (see Section 3.3, DDP_035).
+    CurrentUsage current_usage = 10;
+
+    // Data from EF Control_Activity_Data (File ID '0508h').
+    // Signed (see Section 3.3, DDP_035).
+    ControlActivityData control_activity_data = 11;
+
+    // Data from EF Specific_Conditions (File ID '0522h').
+    // Signed (see Section 3.3, DDP_035).
+    SpecificConditions specific_conditions = 12;
+
+    // Data from EF VehicleUnits_Used (File ID '0523h').
+    // Mandatory on Gen2. Signed (see Section 3.3, DDP_035).
+    VehicleUnitsUsed vehicle_units_used = 13;
+
+    // Data from EF GNSS_Places (File ID '0524h').
+    // Mandatory on Gen2. Signed (see Section 3.3, DDP_035).
+    GnssPlaces gnss_places = 14;
+
+    // Data from EF Application_Identification_V2 (File ID '0525h').
+    // Conditional: only present in Gen2v2 cards (cardStructureVersion = {01 01}).
+    // Signed (see Section 3.3, DDP_035).
+    ApplicationIdentificationV2 application_identification_v2 = 15;
+
+    // Data from EF Places_Authentication (File ID '0526h').
+    // Conditional: only present in Gen2v2 cards if available.
+    // Signed (see Section 3.3, DDP_035).
+    PlacesAuthentication places_authentication = 16;
+
+    // Data from EF GNSS_Places_Authentication (File ID '0527h').
+    // Conditional: only present in Gen2v2 cards if available.
+    // Signed (see Section 3.3, DDP_035).
+    GnssPlacesAuthentication gnss_places_authentication = 17;
+
+    // Data from EF Border_Crossings (File ID '0528h').
+    // Conditional: only present in Gen2v2 cards if available.
+    // Signed (see Section 3.3, DDP_035).
+    BorderCrossings border_crossings = 18;
+
+    // Data from EF Load_Unload_Operations (File ID '0529h').
+    // Conditional: only present in Gen2v2 cards if available.
+    // Signed (see Section 3.3, DDP_035).
+    LoadUnloadOperations load_unload_operations = 19;
+
+    // Data from EF Load_Type_Entries (File ID '0530h').
+    // Conditional: only present in Gen2v2 cards if available.
+    // Signed (see Section 3.3, DDP_035).
+    LoadTypeEntries load_type_entries = 20;
+
+    // Data from EF Company_Activity_Data (File ID '050Dh').
+    // Mandatory on Gen2. Signed (see Section 3.3, DDP_035).
+    CompanyActivityData company_activity_data = 21;
+
+    // Data from EF VU_Configuration (File ID '0540h').
+    // Conditional: only present on Gen2 cards.
+    // Signed (see Section 3.3, DDP_035).
+    VuConfiguration vu_configuration = 22;
+
+    // Certificate data from EF CardMA_Certificate (File ID 'C100h'),
+    // EF CardSignCertificate (File ID 'C101h'), EF CA_Certificate (File ID 'C108h'),
+    // and EF Link_Certificate (File ID 'C109h').
+    // Not signed (see Section 3.3, DDP_037).
+    Certificates certificates = 23;
+  }
 }
