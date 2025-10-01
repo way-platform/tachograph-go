@@ -38,7 +38,7 @@ func UnmarshalFile(data []byte) (*tachographv1.File, error) {
 		}
 
 		// Infer the card type
-		cardType := card.InferCardFileType(rawCardFile)
+		cardType := card.InferFileType(rawCardFile)
 
 		// Parse structured card data based on type
 		switch cardType {

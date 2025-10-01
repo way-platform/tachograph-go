@@ -1,11 +1,8 @@
 package card
 
 import (
-	"bufio"
-	"bytes"
 	"encoding/binary"
 	"fmt"
-	"io"
 	"reflect"
 
 	"google.golang.org/protobuf/proto"
@@ -31,194 +28,6 @@ func MarshalDriverCardFile(file *cardv1.DriverCardFile) ([]byte, error) {
 
 	// Use the existing appendDriverCard function
 	return appendDriverCard(buf, file)
-}
-
-// UnmarshalRawCardFile parses raw card data.
-func UnmarshalRawCardFile(input []byte) (*cardv1.RawCardFile, error) {
-	var output cardv1.RawCardFile
-	sc := bufio.NewScanner(bytes.NewReader(input))
-	sc.Split(scanCardFile)
-	for sc.Scan() {
-		record, err := unmarshalRawCardFileRecord(sc.Bytes())
-		if err != nil {
-			return nil, err
-		}
-		output.SetRecords(append(output.GetRecords(), record))
-	}
-	if err := sc.Err(); err != nil {
-		return nil, err
-	}
-	return &output, nil
-}
-
-// MarshalRawCardFile serializes a RawCardFile into binary format.
-func MarshalRawCardFile(file *cardv1.RawCardFile) ([]byte, error) {
-	if file == nil {
-		return nil, fmt.Errorf("raw card file is nil")
-	}
-
-	var result []byte
-	for _, record := range file.GetRecords() {
-		// Write tag (FID + appendix)
-		result = binary.BigEndian.AppendUint16(result, uint16(record.GetTag()>>8))
-		result = append(result, byte(record.GetTag()&0xFF))
-
-		// Write length
-		result = binary.BigEndian.AppendUint16(result, uint16(record.GetLength()))
-
-		// Write value
-		result = append(result, record.GetValue()...)
-	}
-
-	return result, nil
-}
-
-// InferCardFileType determines the card type from raw card data.
-func InferCardFileType(input *cardv1.RawCardFile) cardv1.CardType {
-	// Create a copy of the records with File fields set for inference
-	recordsWithFileTypes := make([]*cardv1.RawCardFile_Record, len(input.GetRecords()))
-	for i, record := range input.GetRecords() {
-		// Create a copy of the record
-		recordCopy := &cardv1.RawCardFile_Record{}
-		recordCopy.SetTag(record.GetTag())
-		recordCopy.SetLength(record.GetLength())
-		recordCopy.SetValue(record.GetValue())
-		recordCopy.SetContentType(record.GetContentType())
-
-		// Set the File field based on the FID
-		fid := uint16(record.GetTag() >> 8)
-		fileType := MapFidToElementaryFileType(fid)
-		recordCopy.SetFile(fileType)
-
-		recordsWithFileTypes[i] = recordCopy
-	}
-
-	enumDesc := cardv1.CardType_CARD_TYPE_UNSPECIFIED.Descriptor()
-	for i := 0; i < enumDesc.Values().Len(); i++ {
-		enumValue := enumDesc.Values().Get(i)
-		fileStructure, ok := proto.GetExtension(enumValue.Options(), cardv1.E_FileStructure).(*cardv1.FileDescriptor)
-		if !ok {
-			continue
-		}
-		if hasAllElementaryFiles(fileStructure, recordsWithFileTypes) {
-			return cardv1.CardType(enumValue.Number())
-		}
-	}
-	return cardv1.CardType_CARD_TYPE_UNSPECIFIED
-}
-
-// scanCardFile is a [bufio.SplitFunc] that splits a card file into separate TLV records.
-func scanCardFile(data []byte, atEOF bool) (advance int, token []byte, err error) {
-	// Need at least 5 bytes for TLV header (3 bytes tag + 2 bytes length)
-	if len(data) < 5 {
-		if atEOF {
-			if len(data) == 0 {
-				// No more data - this is normal EOF
-				return 0, nil, nil
-			}
-			// We have some data but not enough for a complete header
-			return 0, nil, io.ErrUnexpectedEOF
-		}
-		// Request more data
-		return 0, nil, nil
-	}
-	// Read the length field (bytes 3-4, big-endian)
-	length := binary.BigEndian.Uint16(data[3:5])
-	// Calculate total record size: 5 bytes header + length bytes value
-	totalSize := 5 + int(length)
-	// Check if we have enough data for the complete record
-	if len(data) < totalSize {
-		if atEOF {
-			// We're at EOF but don't have enough data - this is an error condition
-			return 0, nil, io.ErrUnexpectedEOF
-		}
-		// Request more data
-		return 0, nil, nil
-	}
-	// We have a complete TLV record.
-	return totalSize, data[:totalSize], nil
-}
-
-// unmarshalRawCardFileRecord unmarshals a single raw card file record
-func unmarshalRawCardFileRecord(input []byte) (*cardv1.RawCardFile_Record, error) {
-	var output cardv1.RawCardFile_Record
-	// Parse tag: FID (2 bytes) + appendix (1 byte)
-	fid := binary.BigEndian.Uint16(input[0:2])
-	appendix := input[2]
-	output.SetTag((int32(fid) << 8) | int32(appendix))
-
-	// Parse length (2 bytes)
-	length := binary.BigEndian.Uint16(input[3:5])
-	output.SetLength(int32(length))
-
-	// Parse value - make a copy since input slice may be reused by scanner
-	value := make([]byte, length)
-	copy(value, input[5:5+length])
-	output.SetValue(value)
-
-	// Determine content type based on appendix byte
-	// Appendix 0x00 = DATA, 0x01 = SIGNATURE
-	if appendix == 0x01 {
-		output.SetContentType(cardv1.ContentType_SIGNATURE)
-	} else {
-		output.SetContentType(cardv1.ContentType_DATA)
-	}
-
-	// Don't set File field in raw card records to maintain compatibility
-	// The File field will be set only when needed for card type inference
-
-	return &output, nil
-}
-
-// MapFidToElementaryFileType maps a FID to its ElementaryFileType using protobuf annotations.
-func MapFidToElementaryFileType(fid uint16) cardv1.ElementaryFileType {
-	enumDesc := cardv1.ElementaryFileType_ELEMENTARY_FILE_UNSPECIFIED.Descriptor()
-	for i := 0; i < enumDesc.Values().Len(); i++ {
-		enumValue := enumDesc.Values().Get(i)
-		fileId, ok := proto.GetExtension(enumValue.Options(), cardv1.E_FileId).(int32)
-		if !ok {
-			continue
-		}
-		if uint16(fileId) == fid {
-			return cardv1.ElementaryFileType(enumValue.Number())
-		}
-	}
-	return cardv1.ElementaryFileType_ELEMENTARY_FILE_UNSPECIFIED
-}
-
-// hasAllElementaryFiles checks if all required elementary files are present
-func hasAllElementaryFiles(fileStructure *cardv1.FileDescriptor, records []*cardv1.RawCardFile_Record) bool {
-	// Get all elementary files that should be present for this card type
-	expectedFiles := getAllElementaryFiles(fileStructure)
-
-	// Check if all present files are expected for this card type
-	for _, record := range records {
-		if record.GetContentType() == cardv1.ContentType_DATA {
-			found := false
-			for _, expectedFile := range expectedFiles {
-				if record.GetFile() == expectedFile {
-					found = true
-					break
-				}
-			}
-			if !found {
-				return false
-			}
-		}
-	}
-	return true
-}
-
-// getAllElementaryFiles extracts all elementary files from a file structure
-func getAllElementaryFiles(desc *cardv1.FileDescriptor) []cardv1.ElementaryFileType {
-	var files []cardv1.ElementaryFileType
-	if desc.GetType() == cardv1.FileType_EF {
-		files = append(files, desc.GetEf())
-	}
-	for _, child := range desc.GetFiles() {
-		files = append(files, getAllElementaryFiles(child)...)
-	}
-	return files
 }
 
 // unmarshalDriverCardFile unmarshals a driver card file from raw card file data.
@@ -248,9 +57,9 @@ func getAllElementaryFiles(desc *cardv1.FileDescriptor) []cardv1.ElementaryFileT
 //	    certificates                     Certificates
 //	}
 func unmarshalDriverCardFile(input *cardv1.RawCardFile) (*cardv1.DriverCardFile, error) {
-	// Initialize with default generation/version (Gen1, Version1)
-	// This will be updated when we encounter EF_Application_Identification
-	var opts UnmarshalOptions
+	// File-level version context (extracted from CardStructureVersion)
+	// This represents the card's overall version capability
+	var fileVersion ddv1.Version = ddv1.Version_VERSION_1
 	var output cardv1.DriverCardFile
 
 	for i := 0; i < len(input.GetRecords()); i++ {
@@ -258,21 +67,19 @@ func unmarshalDriverCardFile(input *cardv1.RawCardFile) (*cardv1.DriverCardFile,
 		if record.GetContentType() != cardv1.ContentType_DATA {
 			return nil, fmt.Errorf("record %d has unexpected content type", i)
 		}
-		if !record.HasFile() {
-			// Set the File field based on the FID if not already set
-			fid := uint16(record.GetTag() >> 8)
-			fileType := MapFidToElementaryFileType(fid)
-			record.SetFile(fileType)
-		}
+
+		// Use generation already parsed from the TLV tag appendix
+		// (set during unmarshalRawCardFileRecord)
+		efGeneration := record.GetGeneration()
+
+		// Create UnmarshalOptions with EF-specific generation and file-level version
+		opts := UnmarshalOptions{}
+		opts.Generation = efGeneration
+		opts.Version = fileVersion
+
 		var signature []byte
 		if i+1 < len(input.GetRecords()) {
 			nextRecord := input.GetRecords()[i+1]
-			// Set File field for next record too if not set, so we can compare
-			if !nextRecord.HasFile() {
-				nextFid := uint16(nextRecord.GetTag() >> 8)
-				nextFileType := MapFidToElementaryFileType(nextFid)
-				nextRecord.SetFile(nextFileType)
-			}
 			if nextRecord.GetFile() == record.GetFile() && nextRecord.GetContentType() == cardv1.ContentType_SIGNATURE {
 				signature = nextRecord.GetValue()
 				i++
@@ -319,8 +126,13 @@ func unmarshalDriverCardFile(input *cardv1.RawCardFile) (*cardv1.DriverCardFile,
 			}
 			output.SetApplicationIdentification(appId)
 
-			// Update opts with the actual generation/version for subsequent EFs
-			opts.SetFromCardStructureVersion(appId.GetCardStructureVersion())
+			// Extract file-level version from CardStructureVersion for subsequent EFs
+			// Generation comes from TLV tag appendix, but version is file-level
+			if csv := appId.GetCardStructureVersion(); csv != nil {
+				var versionOpts UnmarshalOptions
+				versionOpts.SetFromCardStructureVersion(csv)
+				fileVersion = versionOpts.Version
+			}
 
 		case cardv1.ElementaryFileType_EF_DRIVING_LICENCE_INFO:
 			drivingLicenceInfo, err := opts.unmarshalDrivingLicenceInfo(record.GetValue())
@@ -377,7 +189,7 @@ func unmarshalDriverCardFile(input *cardv1.RawCardFile) (*cardv1.DriverCardFile,
 			if err != nil {
 				return nil, err
 			}
-			// Store the generation in the Places message itself (from opts now, not record)
+			// Store the EF-specific generation in the Places message
 			places.SetGeneration(opts.Generation)
 			if signature != nil {
 				places.SetSignature(signature)

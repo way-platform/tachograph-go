@@ -48,7 +48,7 @@ func TestInferCardFileType(t *testing.T) {
 			if err != nil {
 				t.Fatalf("Failed to unmarshal: %v", err)
 			}
-			inferredCardType := InferCardFileType(rawCardFile)
+			inferredCardType := InferFileType(rawCardFile)
 			if inferredCardType != expectedCardType {
 				t.Errorf("Expected %s, got %s (%d records)",
 					expectedCardType, inferredCardType, len(rawCardFile.GetRecords()))
