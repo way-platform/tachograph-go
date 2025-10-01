@@ -21,11 +21,13 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// Represents data from EF_Application_Identification.
+// Represents data from EF_Application_Identification for Generation 1.
 //
 // The structure of this EF depends on the type of card. This message uses a
 // tagged union pattern to represent this, where the `card_type` field indicates
 // which of the nested messages is populated.
+//
+// Gen1: 10 bytes for driver cards (7 fields).
 type ApplicationIdentification struct {
 	state                             protoimpl.MessageState              `protogen:"opaque.v1"`
 	xxx_hidden_CardType               CardType                            `protobuf:"varint,1,opt,name=card_type,json=cardType,enum=wayplatform.connect.tachograph.card.v1.CardType"`
@@ -291,15 +293,6 @@ type ApplicationIdentification_builder struct {
 	// ASN.1 Definition (Gen1):
 	//
 	//	Signature ::= OCTET STRING (SIZE(128))
-	//
-	// ASN.1 Definition (Gen2):
-	//
-	//	Signature ::= OCTET STRING (variable size, depends on elliptic curve)
-	//
-	// Gen2 uses ECDSA signatures with variable lengths based on the curve:
-	// - 256-bit curves: ~64 bytes
-	// - 384-bit curves: ~96 bytes
-	// - 512/521-bit curves: ~128-132 bytes
 	Signature []byte
 }
 
@@ -329,20 +322,19 @@ func (b0 ApplicationIdentification_builder) Build() *ApplicationIdentification {
 
 // Data for a driver card. Populated if `card_type` is `DRIVER_CARD`.
 // See Data Dictionary, Section 2.61, `DriverCardApplicationIdentification`.
+//
+// Gen1: 10 bytes total (1 + 2 + 1 + 1 + 2 + 2 + 1).
 type ApplicationIdentification_Driver struct {
-	state                                    protoimpl.MessageState `protogen:"opaque.v1"`
-	xxx_hidden_EventsPerTypeCount            int32                  `protobuf:"varint,1,opt,name=events_per_type_count,json=eventsPerTypeCount"`
-	xxx_hidden_FaultsPerTypeCount            int32                  `protobuf:"varint,2,opt,name=faults_per_type_count,json=faultsPerTypeCount"`
-	xxx_hidden_ActivityStructureLength       int32                  `protobuf:"varint,3,opt,name=activity_structure_length,json=activityStructureLength"`
-	xxx_hidden_CardVehicleRecordsCount       int32                  `protobuf:"varint,4,opt,name=card_vehicle_records_count,json=cardVehicleRecordsCount"`
-	xxx_hidden_CardPlaceRecordsCount         int32                  `protobuf:"varint,5,opt,name=card_place_records_count,json=cardPlaceRecordsCount"`
-	xxx_hidden_GnssAdRecordsCount            int32                  `protobuf:"varint,6,opt,name=gnss_ad_records_count,json=gnssAdRecordsCount"`
-	xxx_hidden_SpecificConditionRecordsCount int32                  `protobuf:"varint,7,opt,name=specific_condition_records_count,json=specificConditionRecordsCount"`
-	xxx_hidden_CardVehicleUnitRecordsCount   int32                  `protobuf:"varint,8,opt,name=card_vehicle_unit_records_count,json=cardVehicleUnitRecordsCount"`
-	XXX_raceDetectHookData                   protoimpl.RaceDetectHookData
-	XXX_presence                             [1]uint32
-	unknownFields                            protoimpl.UnknownFields
-	sizeCache                                protoimpl.SizeCache
+	state                              protoimpl.MessageState `protogen:"opaque.v1"`
+	xxx_hidden_EventsPerTypeCount      int32                  `protobuf:"varint,1,opt,name=events_per_type_count,json=eventsPerTypeCount"`
+	xxx_hidden_FaultsPerTypeCount      int32                  `protobuf:"varint,2,opt,name=faults_per_type_count,json=faultsPerTypeCount"`
+	xxx_hidden_ActivityStructureLength int32                  `protobuf:"varint,3,opt,name=activity_structure_length,json=activityStructureLength"`
+	xxx_hidden_CardVehicleRecordsCount int32                  `protobuf:"varint,4,opt,name=card_vehicle_records_count,json=cardVehicleRecordsCount"`
+	xxx_hidden_CardPlaceRecordsCount   int32                  `protobuf:"varint,5,opt,name=card_place_records_count,json=cardPlaceRecordsCount"`
+	XXX_raceDetectHookData             protoimpl.RaceDetectHookData
+	XXX_presence                       [1]uint32
+	unknownFields                      protoimpl.UnknownFields
+	sizeCache                          protoimpl.SizeCache
 }
 
 func (x *ApplicationIdentification_Driver) Reset() {
@@ -405,65 +397,29 @@ func (x *ApplicationIdentification_Driver) GetCardPlaceRecordsCount() int32 {
 	return 0
 }
 
-func (x *ApplicationIdentification_Driver) GetGnssAdRecordsCount() int32 {
-	if x != nil {
-		return x.xxx_hidden_GnssAdRecordsCount
-	}
-	return 0
-}
-
-func (x *ApplicationIdentification_Driver) GetSpecificConditionRecordsCount() int32 {
-	if x != nil {
-		return x.xxx_hidden_SpecificConditionRecordsCount
-	}
-	return 0
-}
-
-func (x *ApplicationIdentification_Driver) GetCardVehicleUnitRecordsCount() int32 {
-	if x != nil {
-		return x.xxx_hidden_CardVehicleUnitRecordsCount
-	}
-	return 0
-}
-
 func (x *ApplicationIdentification_Driver) SetEventsPerTypeCount(v int32) {
 	x.xxx_hidden_EventsPerTypeCount = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 8)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 5)
 }
 
 func (x *ApplicationIdentification_Driver) SetFaultsPerTypeCount(v int32) {
 	x.xxx_hidden_FaultsPerTypeCount = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 8)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 5)
 }
 
 func (x *ApplicationIdentification_Driver) SetActivityStructureLength(v int32) {
 	x.xxx_hidden_ActivityStructureLength = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 8)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 5)
 }
 
 func (x *ApplicationIdentification_Driver) SetCardVehicleRecordsCount(v int32) {
 	x.xxx_hidden_CardVehicleRecordsCount = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 3, 8)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 3, 5)
 }
 
 func (x *ApplicationIdentification_Driver) SetCardPlaceRecordsCount(v int32) {
 	x.xxx_hidden_CardPlaceRecordsCount = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 4, 8)
-}
-
-func (x *ApplicationIdentification_Driver) SetGnssAdRecordsCount(v int32) {
-	x.xxx_hidden_GnssAdRecordsCount = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 5, 8)
-}
-
-func (x *ApplicationIdentification_Driver) SetSpecificConditionRecordsCount(v int32) {
-	x.xxx_hidden_SpecificConditionRecordsCount = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 6, 8)
-}
-
-func (x *ApplicationIdentification_Driver) SetCardVehicleUnitRecordsCount(v int32) {
-	x.xxx_hidden_CardVehicleUnitRecordsCount = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 7, 8)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 4, 5)
 }
 
 func (x *ApplicationIdentification_Driver) HasEventsPerTypeCount() bool {
@@ -501,27 +457,6 @@ func (x *ApplicationIdentification_Driver) HasCardPlaceRecordsCount() bool {
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 4)
 }
 
-func (x *ApplicationIdentification_Driver) HasGnssAdRecordsCount() bool {
-	if x == nil {
-		return false
-	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 5)
-}
-
-func (x *ApplicationIdentification_Driver) HasSpecificConditionRecordsCount() bool {
-	if x == nil {
-		return false
-	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 6)
-}
-
-func (x *ApplicationIdentification_Driver) HasCardVehicleUnitRecordsCount() bool {
-	if x == nil {
-		return false
-	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 7)
-}
-
 func (x *ApplicationIdentification_Driver) ClearEventsPerTypeCount() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 0)
 	x.xxx_hidden_EventsPerTypeCount = 0
@@ -545,21 +480,6 @@ func (x *ApplicationIdentification_Driver) ClearCardVehicleRecordsCount() {
 func (x *ApplicationIdentification_Driver) ClearCardPlaceRecordsCount() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 4)
 	x.xxx_hidden_CardPlaceRecordsCount = 0
-}
-
-func (x *ApplicationIdentification_Driver) ClearGnssAdRecordsCount() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 5)
-	x.xxx_hidden_GnssAdRecordsCount = 0
-}
-
-func (x *ApplicationIdentification_Driver) ClearSpecificConditionRecordsCount() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 6)
-	x.xxx_hidden_SpecificConditionRecordsCount = 0
-}
-
-func (x *ApplicationIdentification_Driver) ClearCardVehicleUnitRecordsCount() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 7)
-	x.xxx_hidden_CardVehicleUnitRecordsCount = 0
 }
 
 type ApplicationIdentification_Driver_builder struct {
@@ -596,36 +516,10 @@ type ApplicationIdentification_Driver_builder struct {
 	// The number of place records the card can store.
 	//
 	// See Data Dictionary, Section 2.104, `NoOfCardPlaceRecords`.
-	// ASN.1 definition:
-	//
-	//	NoOfCardPlaceRecords ::= INTEGER(0..65535)
-	CardPlaceRecordsCount *int32
-	// The number of GNSS accumulated driving records the card can store.
-	//
-	// See Data Dictionary, Section 2.111, `NoOfGNSSADRecords`.
-	// ASN.1 definition:
-	//
-	//	NoOfGNSSADRecords ::= INTEGER(0..65535)
-	GnssAdRecordsCount *int32
-	// The number of specific condition records the card can store.
-	//
-	// See Data Dictionary, Section 2.112, `NoOfSpecificConditionRecords`.
-	//
 	// ASN.1 definition (Gen1):
 	//
-	//	NoOfSpecificConditionRecords ::= INTEGER(0..255)
-	//
-	// ASN.1 definition (Gen2):
-	//
-	//	NoOfSpecificConditionRecords ::= INTEGER(0..65535)
-	SpecificConditionRecordsCount *int32
-	// The number of vehicle units used records the card can store.
-	//
-	// See Data Dictionary, Section 2.106, `NoOfCardVehicleUnitRecords`.
-	// ASN.1 definition:
-	//
-	//	NoOfCardVehicleUnitRecords ::= INTEGER(0..65535)
-	CardVehicleUnitRecordsCount *int32
+	//	NoOfCardPlaceRecords ::= INTEGER(0..255)
+	CardPlaceRecordsCount *int32
 }
 
 func (b0 ApplicationIdentification_Driver_builder) Build() *ApplicationIdentification_Driver {
@@ -633,36 +527,24 @@ func (b0 ApplicationIdentification_Driver_builder) Build() *ApplicationIdentific
 	b, x := &b0, m0
 	_, _ = b, x
 	if b.EventsPerTypeCount != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 8)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 5)
 		x.xxx_hidden_EventsPerTypeCount = *b.EventsPerTypeCount
 	}
 	if b.FaultsPerTypeCount != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 8)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 5)
 		x.xxx_hidden_FaultsPerTypeCount = *b.FaultsPerTypeCount
 	}
 	if b.ActivityStructureLength != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 8)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 5)
 		x.xxx_hidden_ActivityStructureLength = *b.ActivityStructureLength
 	}
 	if b.CardVehicleRecordsCount != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 3, 8)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 3, 5)
 		x.xxx_hidden_CardVehicleRecordsCount = *b.CardVehicleRecordsCount
 	}
 	if b.CardPlaceRecordsCount != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 4, 8)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 4, 5)
 		x.xxx_hidden_CardPlaceRecordsCount = *b.CardPlaceRecordsCount
-	}
-	if b.GnssAdRecordsCount != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 5, 8)
-		x.xxx_hidden_GnssAdRecordsCount = *b.GnssAdRecordsCount
-	}
-	if b.SpecificConditionRecordsCount != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 6, 8)
-		x.xxx_hidden_SpecificConditionRecordsCount = *b.SpecificConditionRecordsCount
-	}
-	if b.CardVehicleUnitRecordsCount != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 7, 8)
-		x.xxx_hidden_CardVehicleUnitRecordsCount = *b.CardVehicleUnitRecordsCount
 	}
 	return m0
 }
@@ -896,10 +778,6 @@ type ApplicationIdentification_Workshop_builder struct {
 	// ASN.1 definition (Gen1):
 	//
 	//	NoOfCalibrationRecords ::= INTEGER(0..255)
-	//
-	// ASN.1 definition (Gen2):
-	//
-	//	NoOfCalibrationRecords ::= INTEGER(0..65535)
 	CalibrationRecordsCount *int32
 }
 
@@ -1104,7 +982,7 @@ var File_wayplatform_connect_tachograph_card_v1_application_identification_proto
 
 const file_wayplatform_connect_tachograph_card_v1_application_identification_proto_rawDesc = "" +
 	"\n" +
-	"Gwayplatform/connect/tachograph/card/v1/application_identification.proto\x12&wayplatform.connect.tachograph.card.v1\x1a6wayplatform/connect/tachograph/card/v1/card_type.proto\x1aAwayplatform/connect/tachograph/dd/v1/card_structure_version.proto\x1a9wayplatform/connect/tachograph/dd/v1/equipment_type.proto\"\xe5\r\n" +
+	"Gwayplatform/connect/tachograph/card/v1/application_identification.proto\x12&wayplatform.connect.tachograph.card.v1\x1a6wayplatform/connect/tachograph/card/v1/card_type.proto\x1aAwayplatform/connect/tachograph/dd/v1/card_structure_version.proto\x1a9wayplatform/connect/tachograph/dd/v1/equipment_type.proto\"\xa3\f\n" +
 	"\x19ApplicationIdentification\x12M\n" +
 	"\tcard_type\x18\x01 \x01(\x0e20.wayplatform.connect.tachograph.card.v1.CardTypeR\bcardType\x12o\n" +
 	"\x1atype_of_tachograph_card_id\x18\x02 \x01(\x0e23.wayplatform.connect.tachograph.dd.v1.EquipmentTypeR\x16typeOfTachographCardId\x12p\n" +
@@ -1113,16 +991,13 @@ const file_wayplatform_connect_tachograph_card_v1_application_identification_pro
 	"\bworkshop\x18\x05 \x01(\v2J.wayplatform.connect.tachograph.card.v1.ApplicationIdentification.WorkshopR\bworkshop\x12c\n" +
 	"\acompany\x18\x06 \x01(\v2I.wayplatform.connect.tachograph.card.v1.ApplicationIdentification.CompanyR\acompany\x12c\n" +
 	"\acontrol\x18\a \x01(\v2I.wayplatform.connect.tachograph.card.v1.ApplicationIdentification.ControlR\acontrol\x12\x1c\n" +
-	"\tsignature\x18\b \x01(\fR\tsignature\x1a\xe2\x03\n" +
+	"\tsignature\x18\b \x01(\fR\tsignature\x1a\xa0\x02\n" +
 	"\x06Driver\x121\n" +
 	"\x15events_per_type_count\x18\x01 \x01(\x05R\x12eventsPerTypeCount\x121\n" +
 	"\x15faults_per_type_count\x18\x02 \x01(\x05R\x12faultsPerTypeCount\x12:\n" +
 	"\x19activity_structure_length\x18\x03 \x01(\x05R\x17activityStructureLength\x12;\n" +
 	"\x1acard_vehicle_records_count\x18\x04 \x01(\x05R\x17cardVehicleRecordsCount\x127\n" +
-	"\x18card_place_records_count\x18\x05 \x01(\x05R\x15cardPlaceRecordsCount\x121\n" +
-	"\x15gnss_ad_records_count\x18\x06 \x01(\x05R\x12gnssAdRecordsCount\x12G\n" +
-	" specific_condition_records_count\x18\a \x01(\x05R\x1dspecificConditionRecordsCount\x12D\n" +
-	"\x1fcard_vehicle_unit_records_count\x18\b \x01(\x05R\x1bcardVehicleUnitRecordsCount\x1a\xde\x02\n" +
+	"\x18card_place_records_count\x18\x05 \x01(\x05R\x15cardPlaceRecordsCount\x1a\xde\x02\n" +
 	"\bWorkshop\x121\n" +
 	"\x15events_per_type_count\x18\x01 \x01(\x05R\x12eventsPerTypeCount\x121\n" +
 	"\x15faults_per_type_count\x18\x02 \x01(\x05R\x12faultsPerTypeCount\x12:\n" +

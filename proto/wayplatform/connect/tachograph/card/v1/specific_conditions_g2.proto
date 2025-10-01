@@ -1,0 +1,53 @@
+edition = "2023";
+
+package wayplatform.connect.tachograph.card.v1;
+
+import "wayplatform/connect/tachograph/dd/v1/specific_condition_record.proto";
+
+// Represents the content of the EF_Specific_Conditions file for Generation 2.
+//
+// This is a circular buffer that may contain corrupted records due to overwrites.
+// Records store specific conditions such as Ferry/Train crossings.
+//
+// Gen2: Variable size with newest record pointer (circular buffer structure).
+//
+// The file structure is specified in Appendix 2, Section 4.2.2 (TCS_152):
+//
+//     EF Specific_Conditions
+//     └─SpecificConditions
+//
+// The data type `SpecificConditions` is specified in the Data Dictionary, Section 2.153.
+//
+// ASN.1 Definition (Gen2):
+//
+//     SpecificConditions ::= SEQUENCE {
+//         conditionPointerNewestRecord NoOfSpecificConditionRecords,
+//         specificConditionRecords SET SIZE(NoOfSpecificConditionRecords) OF SpecificConditionRecord
+//     }
+//
+message SpecificConditionsG2 {
+  // Index of the newest record in the circular buffer.
+  //
+  // Corresponds to `conditionPointerNewestRecord` in DD Section 2.153.
+  // Valid range: 0 to (number of records - 1).
+  int32 newest_record_index = 1;
+
+  // Specific condition records from the circular buffer (Generation 2 format).
+  //
+  // Each record is 5 bytes. Records may be valid (successfully parsed) or
+  // corrupted (from buffer overwrites).
+  //
+  // Corresponds to `specificConditionRecords` in DD Section 2.153.
+  repeated dd.v1.SpecificConditionRecord records = 2;
+
+  // Trailing bytes that don't form complete records (for roundtrip fidelity).
+  bytes trailing_bytes = 3;
+
+  // Signature data from the following file block, if tagged as a signature for
+  // this EF according to the card file format specification (Appendix 2).
+  //
+  // Gen2: ECDSA signature, variable size based on elliptic curve
+  //
+  // See Data Dictionary, Section 2.149, `Signature`.
+  bytes signature = 4;
+}

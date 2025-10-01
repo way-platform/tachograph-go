@@ -21,22 +21,23 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// Represents the content of the EF_Specific_Conditions file, which contains a log
-// of specific conditions (e.g., Ferry/Train crossing).
+// Represents the content of the EF_Specific_Conditions file for Generation 1.
 //
-// The file structure is defined in Appendix 2 (tables TCS_150 and TCS_154).
-// Note the absence of a `Signature` block.
+// Gen1 uses a fixed-size array of 56 records with no circular buffer pointer.
+// This provides 280 bytes total storage (56 records × 5 bytes each).
 //
-// File Structure:
+// Gen1: Fixed 56 records, no pointer.
+//
+// The file structure is specified in Appendix 2, Section 4.2.1 (TCS_150):
 //
 //	EF Specific_Conditions
-//	└─SpecificConditions (a set of SpecificConditionRecord)
+//	└─SpecificConditions
 //
 // The data type `SpecificConditions` is specified in the Data Dictionary, Section 2.153.
 //
-// ASN.1 Definition:
+// ASN.1 Definition (Gen1):
 //
-//	SpecificConditions ::= SET SIZE(NoOfSpecificConditionRecords) OF SpecificConditionRecord
+//	SpecificConditions ::= SET SIZE(56) OF SpecificConditionRecord
 type SpecificConditions struct {
 	state                  protoimpl.MessageState         `protogen:"opaque.v1"`
 	xxx_hidden_Records     *[]*v1.SpecificConditionRecord `protobuf:"bytes,1,rep,name=records"`
@@ -115,7 +116,9 @@ func (x *SpecificConditions) ClearSignature() {
 type SpecificConditions_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
-	// The set of specific condition records.
+	// The fixed array of 56 specific condition records.
+	//
+	// Each record is 5 bytes (entryTime + specificConditionType).
 	//
 	// See Data Dictionary, Section 2.152, `SpecificConditionRecord`.
 	Records []*v1.SpecificConditionRecord
