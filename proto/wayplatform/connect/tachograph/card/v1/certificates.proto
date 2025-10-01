@@ -48,16 +48,3 @@ message Certificates {
   //     Certificate ::= OCTET STRING (SIZE (204..341))
   bytes link_certificate = 4;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
