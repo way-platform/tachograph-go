@@ -284,7 +284,6 @@ func unmarshalDriverCardFile(input *cardv1.RawCardFile) (*cardv1.DriverCardFile,
 				return nil, err
 			}
 			// Store the EF-specific generation in the Places message
-			places.SetGeneration(opts.Generation)
 			if signature != nil {
 				places.SetSignature(signature)
 			}
@@ -585,13 +584,8 @@ func appendDriverCard(dst []byte, card *cardv1.DriverCardFile) ([]byte, error) {
 
 	if places := card.GetTachograph().GetPlaces(); places != nil {
 		dst, err = appendTlv(dst, cardv1.ElementaryFileType_EF_PLACES, places, func(dst []byte, places *cardv1.Places) ([]byte, error) {
-			// Use the generation stored in the Places message itself
-			generation := places.GetGeneration()
-			if generation == ddv1.Generation_GENERATION_UNSPECIFIED {
-				// Default to Generation 1 if not specified
-				generation = ddv1.Generation_GENERATION_1
-			}
-			return appendPlaces(dst, places, generation)
+			// Places in the Tachograph DF are always Gen1 format
+			return appendPlaces(dst, places, ddv1.Generation_GENERATION_1)
 		})
 		if err != nil {
 			return nil, err

@@ -2,7 +2,7 @@
 // versions:
 // 	protoc-gen-go v1.36.6
 // 	protoc        (unknown)
-// source: wayplatform/connect/tachograph/dd/v1/place_record.proto
+// source: wayplatform/connect/tachograph/dd/v1/place_record_g2.proto
 
 package ddv1
 
@@ -22,34 +22,36 @@ const (
 )
 
 // Represents information related to a place where a daily work period begins or
-// ends (Generation 1 format).
+// ends (Generation 2 format).
 //
-// This is the Gen1-specific version without GNSS location data. For Gen2 format
-// (with GNSS), see PlaceRecordG2.
+// This is the Gen2-specific version with GNSS location data. For Gen1 format
+// (without GNSS), see PlaceRecord.
 //
 // This message is used in multiple contexts:
 // - Card files: EF_Places (circular buffer, may contain corrupted records)
 // - VU downloads: VuPlaceDailyWorkPeriodData
 //
-// Binary Layout: 10 bytes (fixed for Gen1)
+// Binary Layout: 21 bytes
 //   - entryTime: 4 bytes
 //   - entryTypeDailyWorkPeriod: 1 byte
 //   - dailyWorkPeriodCountry: 1 byte
 //   - dailyWorkPeriodRegion: 1 byte
 //   - vehicleOdometerValue: 3 bytes
+//   - entryGNSSPlaceRecord: 11 bytes (4 timestamp + 1 accuracy + 6 coords)
 //
 // See Data Dictionary, Section 2.117, `PlaceRecord`.
 //
-// ASN.1 Definition (Gen1):
+// ASN.1 Definition (Gen2):
 //
 //	PlaceRecord ::= SEQUENCE {
 //	    entryTime TimeReal,
 //	    entryTypeDailyWorkPeriod EntryTypeDailyWorkPeriod,
 //	    dailyWorkPeriodCountry NationNumeric,
 //	    dailyWorkPeriodRegion RegionNumeric,
-//	    vehicleOdometerValue OdometerShort
+//	    vehicleOdometerValue OdometerShort,
+//	    entryGNSSPlaceRecord GNSSPlaceRecord
 //	}
-type PlaceRecord struct {
+type PlaceRecordG2 struct {
 	state                                           protoimpl.MessageState   `protogen:"opaque.v1"`
 	xxx_hidden_EntryTime                            *timestamppb.Timestamp   `protobuf:"bytes,1,opt,name=entry_time,json=entryTime"`
 	xxx_hidden_EntryTypeDailyWorkPeriod             EntryTypeDailyWorkPeriod `protobuf:"varint,2,opt,name=entry_type_daily_work_period,json=entryTypeDailyWorkPeriod,enum=wayplatform.connect.tachograph.dd.v1.EntryTypeDailyWorkPeriod"`
@@ -58,29 +60,30 @@ type PlaceRecord struct {
 	xxx_hidden_UnrecognizedDailyWorkPeriodCountry   int32                    `protobuf:"varint,5,opt,name=unrecognized_daily_work_period_country,json=unrecognizedDailyWorkPeriodCountry"`
 	xxx_hidden_DailyWorkPeriodRegion                []byte                   `protobuf:"bytes,6,opt,name=daily_work_period_region,json=dailyWorkPeriodRegion"`
 	xxx_hidden_VehicleOdometerKm                    int32                    `protobuf:"varint,7,opt,name=vehicle_odometer_km,json=vehicleOdometerKm"`
-	xxx_hidden_RawData                              []byte                   `protobuf:"bytes,8,opt,name=raw_data,json=rawData"`
-	xxx_hidden_Valid                                bool                     `protobuf:"varint,9,opt,name=valid"`
+	xxx_hidden_EntryGnssPlaceRecord                 *GNSSPlaceRecord         `protobuf:"bytes,8,opt,name=entry_gnss_place_record,json=entryGnssPlaceRecord"`
+	xxx_hidden_RawData                              []byte                   `protobuf:"bytes,9,opt,name=raw_data,json=rawData"`
+	xxx_hidden_Valid                                bool                     `protobuf:"varint,10,opt,name=valid"`
 	XXX_raceDetectHookData                          protoimpl.RaceDetectHookData
 	XXX_presence                                    [1]uint32
 	unknownFields                                   protoimpl.UnknownFields
 	sizeCache                                       protoimpl.SizeCache
 }
 
-func (x *PlaceRecord) Reset() {
-	*x = PlaceRecord{}
-	mi := &file_wayplatform_connect_tachograph_dd_v1_place_record_proto_msgTypes[0]
+func (x *PlaceRecordG2) Reset() {
+	*x = PlaceRecordG2{}
+	mi := &file_wayplatform_connect_tachograph_dd_v1_place_record_g2_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *PlaceRecord) String() string {
+func (x *PlaceRecordG2) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*PlaceRecord) ProtoMessage() {}
+func (*PlaceRecordG2) ProtoMessage() {}
 
-func (x *PlaceRecord) ProtoReflect() protoreflect.Message {
-	mi := &file_wayplatform_connect_tachograph_dd_v1_place_record_proto_msgTypes[0]
+func (x *PlaceRecordG2) ProtoReflect() protoreflect.Message {
+	mi := &file_wayplatform_connect_tachograph_dd_v1_place_record_g2_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -91,14 +94,14 @@ func (x *PlaceRecord) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-func (x *PlaceRecord) GetEntryTime() *timestamppb.Timestamp {
+func (x *PlaceRecordG2) GetEntryTime() *timestamppb.Timestamp {
 	if x != nil {
 		return x.xxx_hidden_EntryTime
 	}
 	return nil
 }
 
-func (x *PlaceRecord) GetEntryTypeDailyWorkPeriod() EntryTypeDailyWorkPeriod {
+func (x *PlaceRecordG2) GetEntryTypeDailyWorkPeriod() EntryTypeDailyWorkPeriod {
 	if x != nil {
 		if protoimpl.X.Present(&(x.XXX_presence[0]), 1) {
 			return x.xxx_hidden_EntryTypeDailyWorkPeriod
@@ -107,14 +110,14 @@ func (x *PlaceRecord) GetEntryTypeDailyWorkPeriod() EntryTypeDailyWorkPeriod {
 	return EntryTypeDailyWorkPeriod_ENTRY_TYPE_DAILY_WORK_PERIOD_UNSPECIFIED
 }
 
-func (x *PlaceRecord) GetUnrecognizedEntryTypeDailyWorkPeriod() int32 {
+func (x *PlaceRecordG2) GetUnrecognizedEntryTypeDailyWorkPeriod() int32 {
 	if x != nil {
 		return x.xxx_hidden_UnrecognizedEntryTypeDailyWorkPeriod
 	}
 	return 0
 }
 
-func (x *PlaceRecord) GetDailyWorkPeriodCountry() NationNumeric {
+func (x *PlaceRecordG2) GetDailyWorkPeriodCountry() NationNumeric {
 	if x != nil {
 		if protoimpl.X.Present(&(x.XXX_presence[0]), 3) {
 			return x.xxx_hidden_DailyWorkPeriodCountry
@@ -123,199 +126,221 @@ func (x *PlaceRecord) GetDailyWorkPeriodCountry() NationNumeric {
 	return NationNumeric_NATION_NUMERIC_UNSPECIFIED
 }
 
-func (x *PlaceRecord) GetUnrecognizedDailyWorkPeriodCountry() int32 {
+func (x *PlaceRecordG2) GetUnrecognizedDailyWorkPeriodCountry() int32 {
 	if x != nil {
 		return x.xxx_hidden_UnrecognizedDailyWorkPeriodCountry
 	}
 	return 0
 }
 
-func (x *PlaceRecord) GetDailyWorkPeriodRegion() []byte {
+func (x *PlaceRecordG2) GetDailyWorkPeriodRegion() []byte {
 	if x != nil {
 		return x.xxx_hidden_DailyWorkPeriodRegion
 	}
 	return nil
 }
 
-func (x *PlaceRecord) GetVehicleOdometerKm() int32 {
+func (x *PlaceRecordG2) GetVehicleOdometerKm() int32 {
 	if x != nil {
 		return x.xxx_hidden_VehicleOdometerKm
 	}
 	return 0
 }
 
-func (x *PlaceRecord) GetRawData() []byte {
+func (x *PlaceRecordG2) GetEntryGnssPlaceRecord() *GNSSPlaceRecord {
+	if x != nil {
+		return x.xxx_hidden_EntryGnssPlaceRecord
+	}
+	return nil
+}
+
+func (x *PlaceRecordG2) GetRawData() []byte {
 	if x != nil {
 		return x.xxx_hidden_RawData
 	}
 	return nil
 }
 
-func (x *PlaceRecord) GetValid() bool {
+func (x *PlaceRecordG2) GetValid() bool {
 	if x != nil {
 		return x.xxx_hidden_Valid
 	}
 	return false
 }
 
-func (x *PlaceRecord) SetEntryTime(v *timestamppb.Timestamp) {
+func (x *PlaceRecordG2) SetEntryTime(v *timestamppb.Timestamp) {
 	x.xxx_hidden_EntryTime = v
 }
 
-func (x *PlaceRecord) SetEntryTypeDailyWorkPeriod(v EntryTypeDailyWorkPeriod) {
+func (x *PlaceRecordG2) SetEntryTypeDailyWorkPeriod(v EntryTypeDailyWorkPeriod) {
 	x.xxx_hidden_EntryTypeDailyWorkPeriod = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 9)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 10)
 }
 
-func (x *PlaceRecord) SetUnrecognizedEntryTypeDailyWorkPeriod(v int32) {
+func (x *PlaceRecordG2) SetUnrecognizedEntryTypeDailyWorkPeriod(v int32) {
 	x.xxx_hidden_UnrecognizedEntryTypeDailyWorkPeriod = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 9)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 10)
 }
 
-func (x *PlaceRecord) SetDailyWorkPeriodCountry(v NationNumeric) {
+func (x *PlaceRecordG2) SetDailyWorkPeriodCountry(v NationNumeric) {
 	x.xxx_hidden_DailyWorkPeriodCountry = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 3, 9)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 3, 10)
 }
 
-func (x *PlaceRecord) SetUnrecognizedDailyWorkPeriodCountry(v int32) {
+func (x *PlaceRecordG2) SetUnrecognizedDailyWorkPeriodCountry(v int32) {
 	x.xxx_hidden_UnrecognizedDailyWorkPeriodCountry = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 4, 9)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 4, 10)
 }
 
-func (x *PlaceRecord) SetDailyWorkPeriodRegion(v []byte) {
+func (x *PlaceRecordG2) SetDailyWorkPeriodRegion(v []byte) {
 	if v == nil {
 		v = []byte{}
 	}
 	x.xxx_hidden_DailyWorkPeriodRegion = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 5, 9)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 5, 10)
 }
 
-func (x *PlaceRecord) SetVehicleOdometerKm(v int32) {
+func (x *PlaceRecordG2) SetVehicleOdometerKm(v int32) {
 	x.xxx_hidden_VehicleOdometerKm = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 6, 9)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 6, 10)
 }
 
-func (x *PlaceRecord) SetRawData(v []byte) {
+func (x *PlaceRecordG2) SetEntryGnssPlaceRecord(v *GNSSPlaceRecord) {
+	x.xxx_hidden_EntryGnssPlaceRecord = v
+}
+
+func (x *PlaceRecordG2) SetRawData(v []byte) {
 	if v == nil {
 		v = []byte{}
 	}
 	x.xxx_hidden_RawData = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 7, 9)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 8, 10)
 }
 
-func (x *PlaceRecord) SetValid(v bool) {
+func (x *PlaceRecordG2) SetValid(v bool) {
 	x.xxx_hidden_Valid = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 8, 9)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 9, 10)
 }
 
-func (x *PlaceRecord) HasEntryTime() bool {
+func (x *PlaceRecordG2) HasEntryTime() bool {
 	if x == nil {
 		return false
 	}
 	return x.xxx_hidden_EntryTime != nil
 }
 
-func (x *PlaceRecord) HasEntryTypeDailyWorkPeriod() bool {
+func (x *PlaceRecordG2) HasEntryTypeDailyWorkPeriod() bool {
 	if x == nil {
 		return false
 	}
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 1)
 }
 
-func (x *PlaceRecord) HasUnrecognizedEntryTypeDailyWorkPeriod() bool {
+func (x *PlaceRecordG2) HasUnrecognizedEntryTypeDailyWorkPeriod() bool {
 	if x == nil {
 		return false
 	}
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 2)
 }
 
-func (x *PlaceRecord) HasDailyWorkPeriodCountry() bool {
+func (x *PlaceRecordG2) HasDailyWorkPeriodCountry() bool {
 	if x == nil {
 		return false
 	}
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 3)
 }
 
-func (x *PlaceRecord) HasUnrecognizedDailyWorkPeriodCountry() bool {
+func (x *PlaceRecordG2) HasUnrecognizedDailyWorkPeriodCountry() bool {
 	if x == nil {
 		return false
 	}
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 4)
 }
 
-func (x *PlaceRecord) HasDailyWorkPeriodRegion() bool {
+func (x *PlaceRecordG2) HasDailyWorkPeriodRegion() bool {
 	if x == nil {
 		return false
 	}
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 5)
 }
 
-func (x *PlaceRecord) HasVehicleOdometerKm() bool {
+func (x *PlaceRecordG2) HasVehicleOdometerKm() bool {
 	if x == nil {
 		return false
 	}
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 6)
 }
 
-func (x *PlaceRecord) HasRawData() bool {
+func (x *PlaceRecordG2) HasEntryGnssPlaceRecord() bool {
 	if x == nil {
 		return false
 	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 7)
+	return x.xxx_hidden_EntryGnssPlaceRecord != nil
 }
 
-func (x *PlaceRecord) HasValid() bool {
+func (x *PlaceRecordG2) HasRawData() bool {
 	if x == nil {
 		return false
 	}
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 8)
 }
 
-func (x *PlaceRecord) ClearEntryTime() {
+func (x *PlaceRecordG2) HasValid() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 9)
+}
+
+func (x *PlaceRecordG2) ClearEntryTime() {
 	x.xxx_hidden_EntryTime = nil
 }
 
-func (x *PlaceRecord) ClearEntryTypeDailyWorkPeriod() {
+func (x *PlaceRecordG2) ClearEntryTypeDailyWorkPeriod() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 1)
 	x.xxx_hidden_EntryTypeDailyWorkPeriod = EntryTypeDailyWorkPeriod_ENTRY_TYPE_DAILY_WORK_PERIOD_UNSPECIFIED
 }
 
-func (x *PlaceRecord) ClearUnrecognizedEntryTypeDailyWorkPeriod() {
+func (x *PlaceRecordG2) ClearUnrecognizedEntryTypeDailyWorkPeriod() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 2)
 	x.xxx_hidden_UnrecognizedEntryTypeDailyWorkPeriod = 0
 }
 
-func (x *PlaceRecord) ClearDailyWorkPeriodCountry() {
+func (x *PlaceRecordG2) ClearDailyWorkPeriodCountry() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 3)
 	x.xxx_hidden_DailyWorkPeriodCountry = NationNumeric_NATION_NUMERIC_UNSPECIFIED
 }
 
-func (x *PlaceRecord) ClearUnrecognizedDailyWorkPeriodCountry() {
+func (x *PlaceRecordG2) ClearUnrecognizedDailyWorkPeriodCountry() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 4)
 	x.xxx_hidden_UnrecognizedDailyWorkPeriodCountry = 0
 }
 
-func (x *PlaceRecord) ClearDailyWorkPeriodRegion() {
+func (x *PlaceRecordG2) ClearDailyWorkPeriodRegion() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 5)
 	x.xxx_hidden_DailyWorkPeriodRegion = nil
 }
 
-func (x *PlaceRecord) ClearVehicleOdometerKm() {
+func (x *PlaceRecordG2) ClearVehicleOdometerKm() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 6)
 	x.xxx_hidden_VehicleOdometerKm = 0
 }
 
-func (x *PlaceRecord) ClearRawData() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 7)
+func (x *PlaceRecordG2) ClearEntryGnssPlaceRecord() {
+	x.xxx_hidden_EntryGnssPlaceRecord = nil
+}
+
+func (x *PlaceRecordG2) ClearRawData() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 8)
 	x.xxx_hidden_RawData = nil
 }
 
-func (x *PlaceRecord) ClearValid() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 8)
+func (x *PlaceRecordG2) ClearValid() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 9)
 	x.xxx_hidden_Valid = false
 }
 
-type PlaceRecord_builder struct {
+type PlaceRecordG2_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
 	// The date and time related to the entry.
@@ -358,13 +383,20 @@ type PlaceRecord_builder struct {
 	//
 	//	OdometerShort ::= INTEGER(0..999999)
 	VehicleOdometerKm *int32
+	// The recorded GNSS location and time.
+	//
+	// This field is mandatory in Gen2 format and provides precise geographic
+	// coordinates for the place entry.
+	//
+	// See Data Dictionary, Section 2.80, `GNSSPlaceRecord`.
+	EntryGnssPlaceRecord *GNSSPlaceRecord
 	// Original encoded bytes from the binary format.
 	//
 	// When present, this is used as a canvas for the "raw data painting" strategy
 	// during marshalling to preserve reserved bits and unknown data. The semantic
 	// fields are encoded and painted over this canvas at their designated offsets.
 	//
-	// Size: 10 bytes (fixed for Gen1).
+	// Size: 21 bytes (fixed for Gen2).
 	RawData []byte
 	// Indicates whether this record was successfully parsed.
 	//
@@ -377,52 +409,53 @@ type PlaceRecord_builder struct {
 	Valid *bool
 }
 
-func (b0 PlaceRecord_builder) Build() *PlaceRecord {
-	m0 := &PlaceRecord{}
+func (b0 PlaceRecordG2_builder) Build() *PlaceRecordG2 {
+	m0 := &PlaceRecordG2{}
 	b, x := &b0, m0
 	_, _ = b, x
 	x.xxx_hidden_EntryTime = b.EntryTime
 	if b.EntryTypeDailyWorkPeriod != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 9)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 10)
 		x.xxx_hidden_EntryTypeDailyWorkPeriod = *b.EntryTypeDailyWorkPeriod
 	}
 	if b.UnrecognizedEntryTypeDailyWorkPeriod != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 9)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 10)
 		x.xxx_hidden_UnrecognizedEntryTypeDailyWorkPeriod = *b.UnrecognizedEntryTypeDailyWorkPeriod
 	}
 	if b.DailyWorkPeriodCountry != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 3, 9)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 3, 10)
 		x.xxx_hidden_DailyWorkPeriodCountry = *b.DailyWorkPeriodCountry
 	}
 	if b.UnrecognizedDailyWorkPeriodCountry != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 4, 9)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 4, 10)
 		x.xxx_hidden_UnrecognizedDailyWorkPeriodCountry = *b.UnrecognizedDailyWorkPeriodCountry
 	}
 	if b.DailyWorkPeriodRegion != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 5, 9)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 5, 10)
 		x.xxx_hidden_DailyWorkPeriodRegion = b.DailyWorkPeriodRegion
 	}
 	if b.VehicleOdometerKm != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 6, 9)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 6, 10)
 		x.xxx_hidden_VehicleOdometerKm = *b.VehicleOdometerKm
 	}
+	x.xxx_hidden_EntryGnssPlaceRecord = b.EntryGnssPlaceRecord
 	if b.RawData != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 7, 9)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 8, 10)
 		x.xxx_hidden_RawData = b.RawData
 	}
 	if b.Valid != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 8, 9)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 9, 10)
 		x.xxx_hidden_Valid = *b.Valid
 	}
 	return m0
 }
 
-var File_wayplatform_connect_tachograph_dd_v1_place_record_proto protoreflect.FileDescriptor
+var File_wayplatform_connect_tachograph_dd_v1_place_record_g2_proto protoreflect.FileDescriptor
 
-const file_wayplatform_connect_tachograph_dd_v1_place_record_proto_rawDesc = "" +
+const file_wayplatform_connect_tachograph_dd_v1_place_record_g2_proto_rawDesc = "" +
 	"\n" +
-	"7wayplatform/connect/tachograph/dd/v1/place_record.proto\x12$wayplatform.connect.tachograph.dd.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1aGwayplatform/connect/tachograph/dd/v1/entry_type_daily_work_period.proto\x1a9wayplatform/connect/tachograph/dd/v1/nation_numeric.proto\"\xff\x04\n" +
-	"\vPlaceRecord\x129\n" +
+	":wayplatform/connect/tachograph/dd/v1/place_record_g2.proto\x12$wayplatform.connect.tachograph.dd.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1aGwayplatform/connect/tachograph/dd/v1/entry_type_daily_work_period.proto\x1a<wayplatform/connect/tachograph/dd/v1/gnss_place_record.proto\x1a9wayplatform/connect/tachograph/dd/v1/nation_numeric.proto\"\xef\x05\n" +
+	"\rPlaceRecordG2\x129\n" +
 	"\n" +
 	"entry_time\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\tentryTime\x12~\n" +
 	"\x1centry_type_daily_work_period\x18\x02 \x01(\x0e2>.wayplatform.connect.tachograph.dd.v1.EntryTypeDailyWorkPeriodR\x18entryTypeDailyWorkPeriod\x12W\n" +
@@ -430,51 +463,56 @@ const file_wayplatform_connect_tachograph_dd_v1_place_record_proto_rawDesc = "" 
 	"\x19daily_work_period_country\x18\x04 \x01(\x0e23.wayplatform.connect.tachograph.dd.v1.NationNumericR\x16dailyWorkPeriodCountry\x12R\n" +
 	"&unrecognized_daily_work_period_country\x18\x05 \x01(\x05R\"unrecognizedDailyWorkPeriodCountry\x127\n" +
 	"\x18daily_work_period_region\x18\x06 \x01(\fR\x15dailyWorkPeriodRegion\x12.\n" +
-	"\x13vehicle_odometer_km\x18\a \x01(\x05R\x11vehicleOdometerKm\x12\x19\n" +
-	"\braw_data\x18\b \x01(\fR\arawData\x12\x14\n" +
-	"\x05valid\x18\t \x01(\bR\x05validB\xcf\x02\n" +
-	"(com.wayplatform.connect.tachograph.dd.v1B\x10PlaceRecordProtoP\x01Z\\github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1;ddv1\xa2\x02\x04WCTD\xaa\x02$Wayplatform.Connect.Tachograph.Dd.V1\xca\x02$Wayplatform\\Connect\\Tachograph\\Dd\\V1\xe2\x020Wayplatform\\Connect\\Tachograph\\Dd\\V1\\GPBMetadata\xea\x02(Wayplatform::Connect::Tachograph::Dd::V1b\beditionsp\xe8\a"
+	"\x13vehicle_odometer_km\x18\a \x01(\x05R\x11vehicleOdometerKm\x12l\n" +
+	"\x17entry_gnss_place_record\x18\b \x01(\v25.wayplatform.connect.tachograph.dd.v1.GNSSPlaceRecordR\x14entryGnssPlaceRecord\x12\x19\n" +
+	"\braw_data\x18\t \x01(\fR\arawData\x12\x14\n" +
+	"\x05valid\x18\n" +
+	" \x01(\bR\x05validB\xd1\x02\n" +
+	"(com.wayplatform.connect.tachograph.dd.v1B\x12PlaceRecordG2ProtoP\x01Z\\github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1;ddv1\xa2\x02\x04WCTD\xaa\x02$Wayplatform.Connect.Tachograph.Dd.V1\xca\x02$Wayplatform\\Connect\\Tachograph\\Dd\\V1\xe2\x020Wayplatform\\Connect\\Tachograph\\Dd\\V1\\GPBMetadata\xea\x02(Wayplatform::Connect::Tachograph::Dd::V1b\beditionsp\xe8\a"
 
-var file_wayplatform_connect_tachograph_dd_v1_place_record_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
-var file_wayplatform_connect_tachograph_dd_v1_place_record_proto_goTypes = []any{
-	(*PlaceRecord)(nil),           // 0: wayplatform.connect.tachograph.dd.v1.PlaceRecord
+var file_wayplatform_connect_tachograph_dd_v1_place_record_g2_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
+var file_wayplatform_connect_tachograph_dd_v1_place_record_g2_proto_goTypes = []any{
+	(*PlaceRecordG2)(nil),         // 0: wayplatform.connect.tachograph.dd.v1.PlaceRecordG2
 	(*timestamppb.Timestamp)(nil), // 1: google.protobuf.Timestamp
 	(EntryTypeDailyWorkPeriod)(0), // 2: wayplatform.connect.tachograph.dd.v1.EntryTypeDailyWorkPeriod
 	(NationNumeric)(0),            // 3: wayplatform.connect.tachograph.dd.v1.NationNumeric
+	(*GNSSPlaceRecord)(nil),       // 4: wayplatform.connect.tachograph.dd.v1.GNSSPlaceRecord
 }
-var file_wayplatform_connect_tachograph_dd_v1_place_record_proto_depIdxs = []int32{
-	1, // 0: wayplatform.connect.tachograph.dd.v1.PlaceRecord.entry_time:type_name -> google.protobuf.Timestamp
-	2, // 1: wayplatform.connect.tachograph.dd.v1.PlaceRecord.entry_type_daily_work_period:type_name -> wayplatform.connect.tachograph.dd.v1.EntryTypeDailyWorkPeriod
-	3, // 2: wayplatform.connect.tachograph.dd.v1.PlaceRecord.daily_work_period_country:type_name -> wayplatform.connect.tachograph.dd.v1.NationNumeric
-	3, // [3:3] is the sub-list for method output_type
-	3, // [3:3] is the sub-list for method input_type
-	3, // [3:3] is the sub-list for extension type_name
-	3, // [3:3] is the sub-list for extension extendee
-	0, // [0:3] is the sub-list for field type_name
+var file_wayplatform_connect_tachograph_dd_v1_place_record_g2_proto_depIdxs = []int32{
+	1, // 0: wayplatform.connect.tachograph.dd.v1.PlaceRecordG2.entry_time:type_name -> google.protobuf.Timestamp
+	2, // 1: wayplatform.connect.tachograph.dd.v1.PlaceRecordG2.entry_type_daily_work_period:type_name -> wayplatform.connect.tachograph.dd.v1.EntryTypeDailyWorkPeriod
+	3, // 2: wayplatform.connect.tachograph.dd.v1.PlaceRecordG2.daily_work_period_country:type_name -> wayplatform.connect.tachograph.dd.v1.NationNumeric
+	4, // 3: wayplatform.connect.tachograph.dd.v1.PlaceRecordG2.entry_gnss_place_record:type_name -> wayplatform.connect.tachograph.dd.v1.GNSSPlaceRecord
+	4, // [4:4] is the sub-list for method output_type
+	4, // [4:4] is the sub-list for method input_type
+	4, // [4:4] is the sub-list for extension type_name
+	4, // [4:4] is the sub-list for extension extendee
+	0, // [0:4] is the sub-list for field type_name
 }
 
-func init() { file_wayplatform_connect_tachograph_dd_v1_place_record_proto_init() }
-func file_wayplatform_connect_tachograph_dd_v1_place_record_proto_init() {
-	if File_wayplatform_connect_tachograph_dd_v1_place_record_proto != nil {
+func init() { file_wayplatform_connect_tachograph_dd_v1_place_record_g2_proto_init() }
+func file_wayplatform_connect_tachograph_dd_v1_place_record_g2_proto_init() {
+	if File_wayplatform_connect_tachograph_dd_v1_place_record_g2_proto != nil {
 		return
 	}
 	file_wayplatform_connect_tachograph_dd_v1_entry_type_daily_work_period_proto_init()
+	file_wayplatform_connect_tachograph_dd_v1_gnss_place_record_proto_init()
 	file_wayplatform_connect_tachograph_dd_v1_nation_numeric_proto_init()
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_wayplatform_connect_tachograph_dd_v1_place_record_proto_rawDesc), len(file_wayplatform_connect_tachograph_dd_v1_place_record_proto_rawDesc)),
+			RawDescriptor: unsafe.Slice(unsafe.StringData(file_wayplatform_connect_tachograph_dd_v1_place_record_g2_proto_rawDesc), len(file_wayplatform_connect_tachograph_dd_v1_place_record_g2_proto_rawDesc)),
 			NumEnums:      0,
 			NumMessages:   1,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
-		GoTypes:           file_wayplatform_connect_tachograph_dd_v1_place_record_proto_goTypes,
-		DependencyIndexes: file_wayplatform_connect_tachograph_dd_v1_place_record_proto_depIdxs,
-		MessageInfos:      file_wayplatform_connect_tachograph_dd_v1_place_record_proto_msgTypes,
+		GoTypes:           file_wayplatform_connect_tachograph_dd_v1_place_record_g2_proto_goTypes,
+		DependencyIndexes: file_wayplatform_connect_tachograph_dd_v1_place_record_g2_proto_depIdxs,
+		MessageInfos:      file_wayplatform_connect_tachograph_dd_v1_place_record_g2_proto_msgTypes,
 	}.Build()
-	File_wayplatform_connect_tachograph_dd_v1_place_record_proto = out.File
-	file_wayplatform_connect_tachograph_dd_v1_place_record_proto_goTypes = nil
-	file_wayplatform_connect_tachograph_dd_v1_place_record_proto_depIdxs = nil
+	File_wayplatform_connect_tachograph_dd_v1_place_record_g2_proto = out.File
+	file_wayplatform_connect_tachograph_dd_v1_place_record_g2_proto_goTypes = nil
+	file_wayplatform_connect_tachograph_dd_v1_place_record_g2_proto_depIdxs = nil
 }

@@ -4,37 +4,40 @@ package wayplatform.connect.tachograph.dd.v1;
 
 import "google/protobuf/timestamp.proto";
 import "wayplatform/connect/tachograph/dd/v1/entry_type_daily_work_period.proto";
+import "wayplatform/connect/tachograph/dd/v1/gnss_place_record.proto";
 import "wayplatform/connect/tachograph/dd/v1/nation_numeric.proto";
 
 // Represents information related to a place where a daily work period begins or
-// ends (Generation 1 format).
+// ends (Generation 2 format).
 //
-// This is the Gen1-specific version without GNSS location data. For Gen2 format
-// (with GNSS), see PlaceRecordG2.
+// This is the Gen2-specific version with GNSS location data. For Gen1 format
+// (without GNSS), see PlaceRecord.
 //
 // This message is used in multiple contexts:
 // - Card files: EF_Places (circular buffer, may contain corrupted records)
 // - VU downloads: VuPlaceDailyWorkPeriodData
 //
-// Binary Layout: 10 bytes (fixed for Gen1)
+// Binary Layout: 21 bytes
 //   - entryTime: 4 bytes
 //   - entryTypeDailyWorkPeriod: 1 byte
 //   - dailyWorkPeriodCountry: 1 byte
 //   - dailyWorkPeriodRegion: 1 byte
 //   - vehicleOdometerValue: 3 bytes
+//   - entryGNSSPlaceRecord: 11 bytes (4 timestamp + 1 accuracy + 6 coords)
 //
 // See Data Dictionary, Section 2.117, `PlaceRecord`.
 //
-// ASN.1 Definition (Gen1):
+// ASN.1 Definition (Gen2):
 //
 //     PlaceRecord ::= SEQUENCE {
 //         entryTime TimeReal,
 //         entryTypeDailyWorkPeriod EntryTypeDailyWorkPeriod,
 //         dailyWorkPeriodCountry NationNumeric,
 //         dailyWorkPeriodRegion RegionNumeric,
-//         vehicleOdometerValue OdometerShort
+//         vehicleOdometerValue OdometerShort,
+//         entryGNSSPlaceRecord GNSSPlaceRecord
 //     }
-message PlaceRecord {
+message PlaceRecordG2 {
   // The date and time related to the entry.
   //
   // See Data Dictionary, Section 2.162, `TimeReal`.
@@ -82,14 +85,22 @@ message PlaceRecord {
   //     OdometerShort ::= INTEGER(0..999999)
   int32 vehicle_odometer_km = 7;
 
+  // The recorded GNSS location and time.
+  //
+  // This field is mandatory in Gen2 format and provides precise geographic
+  // coordinates for the place entry.
+  //
+  // See Data Dictionary, Section 2.80, `GNSSPlaceRecord`.
+  GNSSPlaceRecord entry_gnss_place_record = 8;
+
   // Original encoded bytes from the binary format.
   //
   // When present, this is used as a canvas for the "raw data painting" strategy
   // during marshalling to preserve reserved bits and unknown data. The semantic
   // fields are encoded and painted over this canvas at their designated offsets.
   //
-  // Size: 10 bytes (fixed for Gen1).
-  bytes raw_data = 8;
+  // Size: 21 bytes (fixed for Gen2).
+  bytes raw_data = 9;
 
   // Indicates whether this record was successfully parsed.
   //
@@ -99,5 +110,6 @@ message PlaceRecord {
   //
   // This is particularly relevant for card files where circular buffers may
   // contain partially overwritten records.
-  bool valid = 9;
+  bool valid = 10;
 }
+

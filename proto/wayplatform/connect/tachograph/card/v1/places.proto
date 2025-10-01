@@ -2,13 +2,17 @@ edition = "2023";
 
 package wayplatform.connect.tachograph.card.v1;
 
-import "wayplatform/connect/tachograph/dd/v1/generation.proto";
 import "wayplatform/connect/tachograph/dd/v1/place_record.proto";
+import "wayplatform/connect/tachograph/dd/v1/place_record_g2.proto";
 
 // Represents the content of the EF_Places file, where daily work periods begin and/or end.
 //
 // This is a circular buffer that may contain corrupted records due to overwrites.
 // Records store information about when and where daily work periods started or ended.
+//
+// The format differs between generations:
+// - Gen1: 10-byte records (no GNSS data) - stored in `records`
+// - Gen2: 21-byte records (includes GNSS data) - stored in `records_g2`
 //
 // The file structure is specified in Appendix 2, Section 4.2.1:
 //
@@ -31,25 +35,30 @@ message Places {
   // Valid range: 0 to (number of records - 1).
   int32 newest_record_index = 1;
 
-  // Place records from the circular buffer.
+  // Place records from the circular buffer (Generation 1 format).
   //
-  // Each record may be valid (successfully parsed) or corrupted (from buffer overwrites).
-  // Check the `valid` field on each record to determine which fields are reliable.
+  // Each record is 10 bytes and may be valid (successfully parsed) or corrupted
+  // (from buffer overwrites). Check the `valid` field on each record to determine
+  // which fields are reliable.
+  //
+  // Only one of `records` or `records_g2` will be populated, based on the DF context.
   //
   // Corresponds to `placeRecords` in DD Section 2.27.
   repeated dd.v1.PlaceRecord records = 2;
 
+  // Place records from the circular buffer (Generation 2 format).
+  //
+  // Each record is 21 bytes and includes GNSS location data. Records may be valid
+  // (successfully parsed) or corrupted (from buffer overwrites). Check the `valid`
+  // field on each record to determine which fields are reliable.
+  //
+  // Only one of `records` or `records_g2` will be populated, based on the DF context.
+  //
+  // Corresponds to `placeRecords` in DD Section 2.27.
+  repeated dd.v1.PlaceRecordG2 records_g2 = 6;
+
   // Trailing bytes that don't form complete records (for roundtrip fidelity).
   bytes trailing_bytes = 3;
-
-  // Generation of this EF, extracted from bit 1 of the TLV tag's appendix byte.
-  //
-  // This determines the binary format:
-  // - Gen1: 10-byte records
-  // - Gen2: 21-byte records (includes 11-byte GNSS data)
-  //
-  // See Data Dictionary, Section 2.75, `Generation`.
-  dd.v1.Generation generation = 4;
 
   // Signature from the following file block, if present.
   //

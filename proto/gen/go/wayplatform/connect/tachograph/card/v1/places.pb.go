@@ -26,6 +26,10 @@ const (
 // This is a circular buffer that may contain corrupted records due to overwrites.
 // Records store information about when and where daily work periods started or ended.
 //
+// The format differs between generations:
+// - Gen1: 10-byte records (no GNSS data) - stored in `records`
+// - Gen2: 21-byte records (includes GNSS data) - stored in `records_g2`
+//
 // The file structure is specified in Appendix 2, Section 4.2.1:
 //
 //	EF Places
@@ -43,8 +47,8 @@ type Places struct {
 	state                        protoimpl.MessageState `protogen:"opaque.v1"`
 	xxx_hidden_NewestRecordIndex int32                  `protobuf:"varint,1,opt,name=newest_record_index,json=newestRecordIndex"`
 	xxx_hidden_Records           *[]*v1.PlaceRecord     `protobuf:"bytes,2,rep,name=records"`
+	xxx_hidden_RecordsG2         *[]*v1.PlaceRecordG2   `protobuf:"bytes,6,rep,name=records_g2,json=recordsG2"`
 	xxx_hidden_TrailingBytes     []byte                 `protobuf:"bytes,3,opt,name=trailing_bytes,json=trailingBytes"`
-	xxx_hidden_Generation        v1.Generation          `protobuf:"varint,4,opt,name=generation,enum=wayplatform.connect.tachograph.dd.v1.Generation"`
 	xxx_hidden_Signature         []byte                 `protobuf:"bytes,5,opt,name=signature"`
 	XXX_raceDetectHookData       protoimpl.RaceDetectHookData
 	XXX_presence                 [1]uint32
@@ -93,20 +97,20 @@ func (x *Places) GetRecords() []*v1.PlaceRecord {
 	return nil
 }
 
+func (x *Places) GetRecordsG2() []*v1.PlaceRecordG2 {
+	if x != nil {
+		if x.xxx_hidden_RecordsG2 != nil {
+			return *x.xxx_hidden_RecordsG2
+		}
+	}
+	return nil
+}
+
 func (x *Places) GetTrailingBytes() []byte {
 	if x != nil {
 		return x.xxx_hidden_TrailingBytes
 	}
 	return nil
-}
-
-func (x *Places) GetGeneration() v1.Generation {
-	if x != nil {
-		if protoimpl.X.Present(&(x.XXX_presence[0]), 3) {
-			return x.xxx_hidden_Generation
-		}
-	}
-	return v1.Generation(0)
 }
 
 func (x *Places) GetSignature() []byte {
@@ -125,16 +129,15 @@ func (x *Places) SetRecords(v []*v1.PlaceRecord) {
 	x.xxx_hidden_Records = &v
 }
 
+func (x *Places) SetRecordsG2(v []*v1.PlaceRecordG2) {
+	x.xxx_hidden_RecordsG2 = &v
+}
+
 func (x *Places) SetTrailingBytes(v []byte) {
 	if v == nil {
 		v = []byte{}
 	}
 	x.xxx_hidden_TrailingBytes = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 5)
-}
-
-func (x *Places) SetGeneration(v v1.Generation) {
-	x.xxx_hidden_Generation = v
 	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 3, 5)
 }
 
@@ -157,13 +160,6 @@ func (x *Places) HasTrailingBytes() bool {
 	if x == nil {
 		return false
 	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 2)
-}
-
-func (x *Places) HasGeneration() bool {
-	if x == nil {
-		return false
-	}
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 3)
 }
 
@@ -180,13 +176,8 @@ func (x *Places) ClearNewestRecordIndex() {
 }
 
 func (x *Places) ClearTrailingBytes() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 2)
-	x.xxx_hidden_TrailingBytes = nil
-}
-
-func (x *Places) ClearGeneration() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 3)
-	x.xxx_hidden_Generation = v1.Generation_GENERATION_UNSPECIFIED
+	x.xxx_hidden_TrailingBytes = nil
 }
 
 func (x *Places) ClearSignature() {
@@ -202,23 +193,28 @@ type Places_builder struct {
 	// Corresponds to `placePointerNewestRecord` in DD Section 2.27.
 	// Valid range: 0 to (number of records - 1).
 	NewestRecordIndex *int32
-	// Place records from the circular buffer.
+	// Place records from the circular buffer (Generation 1 format).
 	//
-	// Each record may be valid (successfully parsed) or corrupted (from buffer overwrites).
-	// Check the `valid` field on each record to determine which fields are reliable.
+	// Each record is 10 bytes and may be valid (successfully parsed) or corrupted
+	// (from buffer overwrites). Check the `valid` field on each record to determine
+	// which fields are reliable.
+	//
+	// Only one of `records` or `records_g2` will be populated, based on the DF context.
 	//
 	// Corresponds to `placeRecords` in DD Section 2.27.
 	Records []*v1.PlaceRecord
+	// Place records from the circular buffer (Generation 2 format).
+	//
+	// Each record is 21 bytes and includes GNSS location data. Records may be valid
+	// (successfully parsed) or corrupted (from buffer overwrites). Check the `valid`
+	// field on each record to determine which fields are reliable.
+	//
+	// Only one of `records` or `records_g2` will be populated, based on the DF context.
+	//
+	// Corresponds to `placeRecords` in DD Section 2.27.
+	RecordsG2 []*v1.PlaceRecordG2
 	// Trailing bytes that don't form complete records (for roundtrip fidelity).
 	TrailingBytes []byte
-	// Generation of this EF, extracted from bit 1 of the TLV tag's appendix byte.
-	//
-	// This determines the binary format:
-	// - Gen1: 10-byte records
-	// - Gen2: 21-byte records (includes 11-byte GNSS data)
-	//
-	// See Data Dictionary, Section 2.75, `Generation`.
-	Generation *v1.Generation
 	// Signature from the following file block, if present.
 	//
 	// Gen1: RSA signature, 128 bytes (OCTET STRING SIZE(128))
@@ -237,13 +233,10 @@ func (b0 Places_builder) Build() *Places {
 		x.xxx_hidden_NewestRecordIndex = *b.NewestRecordIndex
 	}
 	x.xxx_hidden_Records = &b.Records
+	x.xxx_hidden_RecordsG2 = &b.RecordsG2
 	if b.TrailingBytes != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 5)
-		x.xxx_hidden_TrailingBytes = b.TrailingBytes
-	}
-	if b.Generation != nil {
 		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 3, 5)
-		x.xxx_hidden_Generation = *b.Generation
+		x.xxx_hidden_TrailingBytes = b.TrailingBytes
 	}
 	if b.Signature != nil {
 		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 4, 5)
@@ -256,26 +249,25 @@ var File_wayplatform_connect_tachograph_card_v1_places_proto protoreflect.FileDe
 
 const file_wayplatform_connect_tachograph_card_v1_places_proto_rawDesc = "" +
 	"\n" +
-	"3wayplatform/connect/tachograph/card/v1/places.proto\x12&wayplatform.connect.tachograph.card.v1\x1a5wayplatform/connect/tachograph/dd/v1/generation.proto\x1a7wayplatform/connect/tachograph/dd/v1/place_record.proto\"\x9c\x02\n" +
+	"3wayplatform/connect/tachograph/card/v1/places.proto\x12&wayplatform.connect.tachograph.card.v1\x1a7wayplatform/connect/tachograph/dd/v1/place_record.proto\x1a:wayplatform/connect/tachograph/dd/v1/place_record_g2.proto\"\x9e\x02\n" +
 	"\x06Places\x12.\n" +
 	"\x13newest_record_index\x18\x01 \x01(\x05R\x11newestRecordIndex\x12K\n" +
-	"\arecords\x18\x02 \x03(\v21.wayplatform.connect.tachograph.dd.v1.PlaceRecordR\arecords\x12%\n" +
-	"\x0etrailing_bytes\x18\x03 \x01(\fR\rtrailingBytes\x12P\n" +
+	"\arecords\x18\x02 \x03(\v21.wayplatform.connect.tachograph.dd.v1.PlaceRecordR\arecords\x12R\n" +
 	"\n" +
-	"generation\x18\x04 \x01(\x0e20.wayplatform.connect.tachograph.dd.v1.GenerationR\n" +
-	"generation\x12\x1c\n" +
+	"records_g2\x18\x06 \x03(\v23.wayplatform.connect.tachograph.dd.v1.PlaceRecordG2R\trecordsG2\x12%\n" +
+	"\x0etrailing_bytes\x18\x03 \x01(\fR\rtrailingBytes\x12\x1c\n" +
 	"\tsignature\x18\x05 \x01(\fR\tsignatureB\xd8\x02\n" +
 	"*com.wayplatform.connect.tachograph.card.v1B\vPlacesProtoP\x01Z`github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1;cardv1\xa2\x02\x04WCTC\xaa\x02&Wayplatform.Connect.Tachograph.Card.V1\xca\x02&Wayplatform\\Connect\\Tachograph\\Card\\V1\xe2\x022Wayplatform\\Connect\\Tachograph\\Card\\V1\\GPBMetadata\xea\x02*Wayplatform::Connect::Tachograph::Card::V1b\beditionsp\xe8\a"
 
 var file_wayplatform_connect_tachograph_card_v1_places_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_wayplatform_connect_tachograph_card_v1_places_proto_goTypes = []any{
-	(*Places)(nil),         // 0: wayplatform.connect.tachograph.card.v1.Places
-	(*v1.PlaceRecord)(nil), // 1: wayplatform.connect.tachograph.dd.v1.PlaceRecord
-	(v1.Generation)(0),     // 2: wayplatform.connect.tachograph.dd.v1.Generation
+	(*Places)(nil),           // 0: wayplatform.connect.tachograph.card.v1.Places
+	(*v1.PlaceRecord)(nil),   // 1: wayplatform.connect.tachograph.dd.v1.PlaceRecord
+	(*v1.PlaceRecordG2)(nil), // 2: wayplatform.connect.tachograph.dd.v1.PlaceRecordG2
 }
 var file_wayplatform_connect_tachograph_card_v1_places_proto_depIdxs = []int32{
 	1, // 0: wayplatform.connect.tachograph.card.v1.Places.records:type_name -> wayplatform.connect.tachograph.dd.v1.PlaceRecord
-	2, // 1: wayplatform.connect.tachograph.card.v1.Places.generation:type_name -> wayplatform.connect.tachograph.dd.v1.Generation
+	2, // 1: wayplatform.connect.tachograph.card.v1.Places.records_g2:type_name -> wayplatform.connect.tachograph.dd.v1.PlaceRecordG2
 	2, // [2:2] is the sub-list for method output_type
 	2, // [2:2] is the sub-list for method input_type
 	2, // [2:2] is the sub-list for extension type_name
