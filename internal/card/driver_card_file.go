@@ -254,52 +254,67 @@ func unmarshalDriverCardFile(input *cardv1.RawCardFile) (*cardv1.DriverCardFile,
 			}
 
 		case cardv1.ElementaryFileType_EF_VEHICLES_USED:
-			vehiclesUsed, err := opts.unmarshalVehiclesUsed(record.GetValue())
-			if err != nil {
-				return nil, err
-			}
-			if signature != nil {
-				vehiclesUsed.SetSignature(signature)
-			}
-
-			// Route to appropriate DF based on generation
+			// Parse and route to appropriate DF based on generation
 			switch efGeneration {
 			case ddv1.Generation_GENERATION_1:
+				vehiclesUsed, err := opts.unmarshalVehiclesUsed(record.GetValue())
+				if err != nil {
+					return nil, err
+				}
+				if signature != nil {
+					vehiclesUsed.SetSignature(signature)
+				}
 				if tachographDF == nil {
 					tachographDF = &cardv1.DriverCardFile_Tachograph{}
 				}
 				tachographDF.SetVehiclesUsed(vehiclesUsed)
+
 			case ddv1.Generation_GENERATION_2:
+				vehiclesUsedG2, err := opts.unmarshalVehiclesUsedG2(record.GetValue())
+				if err != nil {
+					return nil, err
+				}
+				if signature != nil {
+					vehiclesUsedG2.SetSignature(signature)
+				}
 				if tachographG2DF == nil {
 					tachographG2DF = &cardv1.DriverCardFile_TachographG2{}
 				}
-				tachographG2DF.SetVehiclesUsed(vehiclesUsed)
+				tachographG2DF.SetVehiclesUsed(vehiclesUsedG2)
+
 			default:
 				return nil, fmt.Errorf("unexpected generation for EF_VEHICLES_USED: %v", efGeneration)
 			}
 
 		case cardv1.ElementaryFileType_EF_PLACES:
-			places, err := opts.unmarshalPlaces(record.GetValue())
-			if err != nil {
-				return nil, err
-			}
-			// Store the EF-specific generation in the Places message
-			if signature != nil {
-				places.SetSignature(signature)
-			}
-
-			// Route to appropriate DF based on generation
+			// Parse and route to appropriate DF based on generation
 			switch efGeneration {
 			case ddv1.Generation_GENERATION_1:
+				places, err := opts.unmarshalPlaces(record.GetValue())
+				if err != nil {
+					return nil, err
+				}
+				if signature != nil {
+					places.SetSignature(signature)
+				}
 				if tachographDF == nil {
 					tachographDF = &cardv1.DriverCardFile_Tachograph{}
 				}
 				tachographDF.SetPlaces(places)
+
 			case ddv1.Generation_GENERATION_2:
+				placesG2, err := opts.unmarshalPlacesG2(record.GetValue())
+				if err != nil {
+					return nil, err
+				}
+				if signature != nil {
+					placesG2.SetSignature(signature)
+				}
 				if tachographG2DF == nil {
 					tachographG2DF = &cardv1.DriverCardFile_TachographG2{}
 				}
-				tachographG2DF.SetPlaces(places)
+				tachographG2DF.SetPlaces(placesG2)
+
 			default:
 				return nil, fmt.Errorf("unexpected generation for EF_PLACES: %v", efGeneration)
 			}
@@ -582,14 +597,9 @@ func appendDriverCard(dst []byte, card *cardv1.DriverCardFile) ([]byte, error) {
 		return nil, err
 	}
 
-	if places := card.GetTachograph().GetPlaces(); places != nil {
-		dst, err = appendTlv(dst, cardv1.ElementaryFileType_EF_PLACES, places, func(dst []byte, places *cardv1.Places) ([]byte, error) {
-			// Places in the Tachograph DF are always Gen1 format
-			return appendPlaces(dst, places, ddv1.Generation_GENERATION_1)
-		})
-		if err != nil {
-			return nil, err
-		}
+	dst, err = appendTlv(dst, cardv1.ElementaryFileType_EF_PLACES, card.GetTachograph().GetPlaces(), appendPlaces)
+	if err != nil {
+		return nil, err
 	}
 
 	dst, err = appendTlv(dst, cardv1.ElementaryFileType_EF_CURRENT_USAGE, card.GetTachograph().GetCurrentUsage(), appendCurrentUsage)
@@ -612,19 +622,31 @@ func appendDriverCard(dst []byte, card *cardv1.DriverCardFile) ([]byte, error) {
 		return nil, err
 	}
 
-	// Gen2 DFs - only append if present
+	// Gen2 DF - marshal all Gen2 EFs with appendix 0x02/0x03
 	if tachographG2 := card.GetTachographG2(); tachographG2 != nil {
-		dst, err = appendTlv(dst, cardv1.ElementaryFileType_EF_VEHICLE_UNITS_USED, tachographG2.GetVehicleUnitsUsed(), appendCardVehicleUnitsUsed)
+		// Marshal Gen2 versions of shared EFs
+		dst, err = appendTlvG2(dst, cardv1.ElementaryFileType_EF_VEHICLES_USED, tachographG2.GetVehiclesUsed(), appendVehiclesUsedG2)
 		if err != nil {
 			return nil, err
 		}
 
-		dst, err = appendTlv(dst, cardv1.ElementaryFileType_EF_GNSS_PLACES, tachographG2.GetGnssPlaces(), appendCardGnssPlaces)
+		dst, err = appendTlvG2(dst, cardv1.ElementaryFileType_EF_PLACES, tachographG2.GetPlaces(), appendPlacesG2)
 		if err != nil {
 			return nil, err
 		}
 
-		dst, err = appendTlv(dst, cardv1.ElementaryFileType_EF_APPLICATION_IDENTIFICATION_V2, tachographG2.GetApplicationIdentificationV2(), appendCardApplicationIdentificationV2)
+		// Marshal Gen2-exclusive EFs
+		dst, err = appendTlvG2(dst, cardv1.ElementaryFileType_EF_VEHICLE_UNITS_USED, tachographG2.GetVehicleUnitsUsed(), appendCardVehicleUnitsUsed)
+		if err != nil {
+			return nil, err
+		}
+
+		dst, err = appendTlvG2(dst, cardv1.ElementaryFileType_EF_GNSS_PLACES, tachographG2.GetGnssPlaces(), appendCardGnssPlaces)
+		if err != nil {
+			return nil, err
+		}
+
+		dst, err = appendTlvG2(dst, cardv1.ElementaryFileType_EF_APPLICATION_IDENTIFICATION_V2, tachographG2.GetApplicationIdentificationV2(), appendCardApplicationIdentificationV2)
 		if err != nil {
 			return nil, err
 		}
@@ -765,5 +787,53 @@ func appendTlvUnsigned[T proto.Message](
 	binary.BigEndian.PutUint16(dst[lenPos:], uint16(valLen))
 
 	// No signature block for unsigned EFs
+	return dst, nil
+}
+
+// appendTlvG2 is like appendTlv but uses Gen2 DF appendix (0x02/0x03 instead of 0x00/0x01)
+func appendTlvG2[T proto.Message](
+	dst []byte,
+	fileType cardv1.ElementaryFileType,
+	msg T,
+	appenderFunc func([]byte, T) ([]byte, error),
+) ([]byte, error) {
+	// Use reflection to check if the message is nil
+	msgValue := reflect.ValueOf(msg)
+	if !msgValue.IsValid() || (msgValue.Kind() == reflect.Ptr && msgValue.IsNil()) {
+		return dst, nil // Don't write anything if the message is nil
+	}
+
+	opts := fileType.Descriptor().Values().ByNumber(protoreflect.EnumNumber(fileType)).Options()
+	tag := proto.GetExtension(opts, cardv1.E_FileId).(int32)
+
+	// Write data tag (FID + appendix 0x02) first - Gen2 DF
+	dst = binary.BigEndian.AppendUint16(dst, uint16(tag))
+	dst = append(dst, 0x02) // appendix for Gen2 data
+
+	// Placeholder for length
+	lenPos := len(dst)
+	dst = binary.BigEndian.AppendUint16(dst, 0) // Will be updated later
+
+	valPos := len(dst)
+
+	var err error
+	dst, err = appenderFunc(dst, msg)
+	if err != nil {
+		return nil, err
+	}
+
+	valLen := len(dst) - valPos
+
+	// Update the length field
+	binary.BigEndian.PutUint16(dst[lenPos:], uint16(valLen))
+
+	// Add signature block (FID + appendix 0x03, 128 bytes of zeros for now) - Gen2 DF
+	dst = binary.BigEndian.AppendUint16(dst, uint16(tag))
+	dst = append(dst, 0x03)                       // appendix for Gen2 signature
+	dst = binary.BigEndian.AppendUint16(dst, 128) // Signature length
+	// Add 128 bytes of signature data (zeros for now)
+	signature := make([]byte, 128)
+	dst = append(dst, signature...)
+
 	return dst, nil
 }

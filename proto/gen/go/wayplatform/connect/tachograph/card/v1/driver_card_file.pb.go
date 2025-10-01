@@ -571,9 +571,11 @@ type DriverCardFile_Tachograph_builder struct {
 	DriverActivityData *DriverActivityData
 	// Data from EF Vehicles_Used (File ID '0505h').
 	// Signed (see Section 3.3, DDP_035).
+	// Gen1 format: 31-byte vehicle records (no VIN).
 	VehiclesUsed *VehiclesUsed
 	// Data from EF Places (File ID '0506h').
 	// Signed (see Section 3.3, DDP_035).
+	// Gen1 format: 10-byte place records (no GNSS).
 	Places *Places
 	// Data from EF Current_Usage (File ID '0507h').
 	// Signed (see Section 3.3, DDP_035).
@@ -662,8 +664,8 @@ type DriverCardFile_TachographG2 struct {
 	xxx_hidden_EventsData                  *EventsData                  `protobuf:"bytes,5,opt,name=events_data,json=eventsData"`
 	xxx_hidden_FaultsData                  *FaultsData                  `protobuf:"bytes,6,opt,name=faults_data,json=faultsData"`
 	xxx_hidden_DriverActivityData          *DriverActivityData          `protobuf:"bytes,7,opt,name=driver_activity_data,json=driverActivityData"`
-	xxx_hidden_VehiclesUsed                *VehiclesUsed                `protobuf:"bytes,8,opt,name=vehicles_used,json=vehiclesUsed"`
-	xxx_hidden_Places                      *Places                      `protobuf:"bytes,9,opt,name=places"`
+	xxx_hidden_VehiclesUsed                *VehiclesUsedG2              `protobuf:"bytes,8,opt,name=vehicles_used,json=vehiclesUsed"`
+	xxx_hidden_Places                      *PlacesG2                    `protobuf:"bytes,9,opt,name=places"`
 	xxx_hidden_CurrentUsage                *CurrentUsage                `protobuf:"bytes,10,opt,name=current_usage,json=currentUsage"`
 	xxx_hidden_ControlActivityData         *ControlActivityData         `protobuf:"bytes,11,opt,name=control_activity_data,json=controlActivityData"`
 	xxx_hidden_SpecificConditions          *SpecificConditions          `protobuf:"bytes,12,opt,name=specific_conditions,json=specificConditions"`
@@ -756,14 +758,14 @@ func (x *DriverCardFile_TachographG2) GetDriverActivityData() *DriverActivityDat
 	return nil
 }
 
-func (x *DriverCardFile_TachographG2) GetVehiclesUsed() *VehiclesUsed {
+func (x *DriverCardFile_TachographG2) GetVehiclesUsed() *VehiclesUsedG2 {
 	if x != nil {
 		return x.xxx_hidden_VehiclesUsed
 	}
 	return nil
 }
 
-func (x *DriverCardFile_TachographG2) GetPlaces() *Places {
+func (x *DriverCardFile_TachographG2) GetPlaces() *PlacesG2 {
 	if x != nil {
 		return x.xxx_hidden_Places
 	}
@@ -896,11 +898,11 @@ func (x *DriverCardFile_TachographG2) SetDriverActivityData(v *DriverActivityDat
 	x.xxx_hidden_DriverActivityData = v
 }
 
-func (x *DriverCardFile_TachographG2) SetVehiclesUsed(v *VehiclesUsed) {
+func (x *DriverCardFile_TachographG2) SetVehiclesUsed(v *VehiclesUsedG2) {
 	x.xxx_hidden_VehiclesUsed = v
 }
 
-func (x *DriverCardFile_TachographG2) SetPlaces(v *Places) {
+func (x *DriverCardFile_TachographG2) SetPlaces(v *PlacesG2) {
 	x.xxx_hidden_Places = v
 }
 
@@ -1239,10 +1241,12 @@ type DriverCardFile_TachographG2_builder struct {
 	DriverActivityData *DriverActivityData
 	// Data from EF Vehicles_Used (File ID '0505h').
 	// Signed (see Section 3.3, DDP_035).
-	VehiclesUsed *VehiclesUsed
+	// Gen2 format: 48-byte vehicle records (includes 17-byte VIN).
+	VehiclesUsed *VehiclesUsedG2
 	// Data from EF Places (File ID '0506h').
 	// Signed (see Section 3.3, DDP_035).
-	Places *Places
+	// Gen2 format: 21-byte place records (includes GNSS).
+	Places *PlacesG2
 	// Data from EF Current_Usage (File ID '0507h').
 	// Signed (see Section 3.3, DDP_035).
 	CurrentUsage *CurrentUsage
@@ -1330,7 +1334,7 @@ var File_wayplatform_connect_tachograph_card_v1_driver_card_file_proto protorefl
 
 const file_wayplatform_connect_tachograph_card_v1_driver_card_file_proto_rawDesc = "" +
 	"\n" +
-	"=wayplatform/connect/tachograph/card/v1/driver_card_file.proto\x12&wayplatform.connect.tachograph.card.v1\x1aGwayplatform/connect/tachograph/card/v1/application_identification.proto\x1aJwayplatform/connect/tachograph/card/v1/application_identification_v2.proto\x1a=wayplatform/connect/tachograph/card/v1/border_crossings.proto\x1aAwayplatform/connect/tachograph/card/v1/card_download_driver.proto\x1a9wayplatform/connect/tachograph/card/v1/certificates.proto\x1aBwayplatform/connect/tachograph/card/v1/company_activity_data.proto\x1aBwayplatform/connect/tachograph/card/v1/control_activity_data.proto\x1a:wayplatform/connect/tachograph/card/v1/current_usage.proto\x1aAwayplatform/connect/tachograph/card/v1/driver_activity_data.proto\x1aAwayplatform/connect/tachograph/card/v1/driving_licence_info.proto\x1a8wayplatform/connect/tachograph/card/v1/events_data.proto\x1a8wayplatform/connect/tachograph/card/v1/faults_data.proto\x1a8wayplatform/connect/tachograph/card/v1/gnss_places.proto\x1aGwayplatform/connect/tachograph/card/v1/gnss_places_authentication.proto\x1a/wayplatform/connect/tachograph/card/v1/ic.proto\x1a0wayplatform/connect/tachograph/card/v1/icc.proto\x1a;wayplatform/connect/tachograph/card/v1/identification.proto\x1a>wayplatform/connect/tachograph/card/v1/load_type_entries.proto\x1aCwayplatform/connect/tachograph/card/v1/load_unload_operations.proto\x1a3wayplatform/connect/tachograph/card/v1/places.proto\x1aBwayplatform/connect/tachograph/card/v1/places_authentication.proto\x1a@wayplatform/connect/tachograph/card/v1/specific_conditions.proto\x1a?wayplatform/connect/tachograph/card/v1/vehicle_units_used.proto\x1a:wayplatform/connect/tachograph/card/v1/vehicles_used.proto\x1a=wayplatform/connect/tachograph/card/v1/vu_configuration.proto\"\xc4\x1f\n" +
+	"=wayplatform/connect/tachograph/card/v1/driver_card_file.proto\x12&wayplatform.connect.tachograph.card.v1\x1aGwayplatform/connect/tachograph/card/v1/application_identification.proto\x1aJwayplatform/connect/tachograph/card/v1/application_identification_v2.proto\x1a=wayplatform/connect/tachograph/card/v1/border_crossings.proto\x1aAwayplatform/connect/tachograph/card/v1/card_download_driver.proto\x1a9wayplatform/connect/tachograph/card/v1/certificates.proto\x1aBwayplatform/connect/tachograph/card/v1/company_activity_data.proto\x1aBwayplatform/connect/tachograph/card/v1/control_activity_data.proto\x1a:wayplatform/connect/tachograph/card/v1/current_usage.proto\x1aAwayplatform/connect/tachograph/card/v1/driver_activity_data.proto\x1aAwayplatform/connect/tachograph/card/v1/driving_licence_info.proto\x1a8wayplatform/connect/tachograph/card/v1/events_data.proto\x1a8wayplatform/connect/tachograph/card/v1/faults_data.proto\x1a8wayplatform/connect/tachograph/card/v1/gnss_places.proto\x1aGwayplatform/connect/tachograph/card/v1/gnss_places_authentication.proto\x1a/wayplatform/connect/tachograph/card/v1/ic.proto\x1a0wayplatform/connect/tachograph/card/v1/icc.proto\x1a;wayplatform/connect/tachograph/card/v1/identification.proto\x1a>wayplatform/connect/tachograph/card/v1/load_type_entries.proto\x1aCwayplatform/connect/tachograph/card/v1/load_unload_operations.proto\x1a3wayplatform/connect/tachograph/card/v1/places.proto\x1aBwayplatform/connect/tachograph/card/v1/places_authentication.proto\x1a6wayplatform/connect/tachograph/card/v1/places_g2.proto\x1a@wayplatform/connect/tachograph/card/v1/specific_conditions.proto\x1a?wayplatform/connect/tachograph/card/v1/vehicle_units_used.proto\x1a:wayplatform/connect/tachograph/card/v1/vehicles_used.proto\x1a=wayplatform/connect/tachograph/card/v1/vehicles_used_g2.proto\x1a=wayplatform/connect/tachograph/card/v1/vu_configuration.proto\"\xc8\x1f\n" +
 	"\x0eDriverCardFile\x12=\n" +
 	"\x03icc\x18\x01 \x01(\v2+.wayplatform.connect.tachograph.card.v1.IccR\x03icc\x12:\n" +
 	"\x02ic\x18\x02 \x01(\v2*.wayplatform.connect.tachograph.card.v1.IcR\x02ic\x12a\n" +
@@ -1356,7 +1360,7 @@ const file_wayplatform_connect_tachograph_card_v1_driver_card_file_proto_rawDesc
 	" \x01(\v24.wayplatform.connect.tachograph.card.v1.CurrentUsageR\fcurrentUsage\x12o\n" +
 	"\x15control_activity_data\x18\v \x01(\v2;.wayplatform.connect.tachograph.card.v1.ControlActivityDataR\x13controlActivityData\x12k\n" +
 	"\x13specific_conditions\x18\f \x01(\v2:.wayplatform.connect.tachograph.card.v1.SpecificConditionsR\x12specificConditions\x12X\n" +
-	"\fcertificates\x18\r \x01(\v24.wayplatform.connect.tachograph.card.v1.CertificatesR\fcertificates\x1a\xda\x12\n" +
+	"\fcertificates\x18\r \x01(\v24.wayplatform.connect.tachograph.card.v1.CertificatesR\fcertificates\x1a\xde\x12\n" +
 	"\fTachographG2\x12\x80\x01\n" +
 	"\x1aapplication_identification\x18\x01 \x01(\v2A.wayplatform.connect.tachograph.card.v1.ApplicationIdentificationR\x19applicationIdentification\x12^\n" +
 	"\x0eidentification\x18\x02 \x01(\v26.wayplatform.connect.tachograph.card.v1.IdentificationR\x0eidentification\x12_\n" +
@@ -1366,9 +1370,9 @@ const file_wayplatform_connect_tachograph_card_v1_driver_card_file_proto_rawDesc
 	"eventsData\x12S\n" +
 	"\vfaults_data\x18\x06 \x01(\v22.wayplatform.connect.tachograph.card.v1.FaultsDataR\n" +
 	"faultsData\x12l\n" +
-	"\x14driver_activity_data\x18\a \x01(\v2:.wayplatform.connect.tachograph.card.v1.DriverActivityDataR\x12driverActivityData\x12Y\n" +
-	"\rvehicles_used\x18\b \x01(\v24.wayplatform.connect.tachograph.card.v1.VehiclesUsedR\fvehiclesUsed\x12F\n" +
-	"\x06places\x18\t \x01(\v2..wayplatform.connect.tachograph.card.v1.PlacesR\x06places\x12Y\n" +
+	"\x14driver_activity_data\x18\a \x01(\v2:.wayplatform.connect.tachograph.card.v1.DriverActivityDataR\x12driverActivityData\x12[\n" +
+	"\rvehicles_used\x18\b \x01(\v26.wayplatform.connect.tachograph.card.v1.VehiclesUsedG2R\fvehiclesUsed\x12H\n" +
+	"\x06places\x18\t \x01(\v20.wayplatform.connect.tachograph.card.v1.PlacesG2R\x06places\x12Y\n" +
 	"\rcurrent_usage\x18\n" +
 	" \x01(\v24.wayplatform.connect.tachograph.card.v1.CurrentUsageR\fcurrentUsage\x12o\n" +
 	"\x15control_activity_data\x18\v \x01(\v2;.wayplatform.connect.tachograph.card.v1.ControlActivityDataR\x13controlActivityData\x12k\n" +
@@ -1407,16 +1411,18 @@ var file_wayplatform_connect_tachograph_card_v1_driver_card_file_proto_goTypes =
 	(*ControlActivityData)(nil),         // 15: wayplatform.connect.tachograph.card.v1.ControlActivityData
 	(*SpecificConditions)(nil),          // 16: wayplatform.connect.tachograph.card.v1.SpecificConditions
 	(*Certificates)(nil),                // 17: wayplatform.connect.tachograph.card.v1.Certificates
-	(*VehicleUnitsUsed)(nil),            // 18: wayplatform.connect.tachograph.card.v1.VehicleUnitsUsed
-	(*GnssPlaces)(nil),                  // 19: wayplatform.connect.tachograph.card.v1.GnssPlaces
-	(*ApplicationIdentificationV2)(nil), // 20: wayplatform.connect.tachograph.card.v1.ApplicationIdentificationV2
-	(*PlacesAuthentication)(nil),        // 21: wayplatform.connect.tachograph.card.v1.PlacesAuthentication
-	(*GnssPlacesAuthentication)(nil),    // 22: wayplatform.connect.tachograph.card.v1.GnssPlacesAuthentication
-	(*BorderCrossings)(nil),             // 23: wayplatform.connect.tachograph.card.v1.BorderCrossings
-	(*LoadUnloadOperations)(nil),        // 24: wayplatform.connect.tachograph.card.v1.LoadUnloadOperations
-	(*LoadTypeEntries)(nil),             // 25: wayplatform.connect.tachograph.card.v1.LoadTypeEntries
-	(*CompanyActivityData)(nil),         // 26: wayplatform.connect.tachograph.card.v1.CompanyActivityData
-	(*VuConfiguration)(nil),             // 27: wayplatform.connect.tachograph.card.v1.VuConfiguration
+	(*VehiclesUsedG2)(nil),              // 18: wayplatform.connect.tachograph.card.v1.VehiclesUsedG2
+	(*PlacesG2)(nil),                    // 19: wayplatform.connect.tachograph.card.v1.PlacesG2
+	(*VehicleUnitsUsed)(nil),            // 20: wayplatform.connect.tachograph.card.v1.VehicleUnitsUsed
+	(*GnssPlaces)(nil),                  // 21: wayplatform.connect.tachograph.card.v1.GnssPlaces
+	(*ApplicationIdentificationV2)(nil), // 22: wayplatform.connect.tachograph.card.v1.ApplicationIdentificationV2
+	(*PlacesAuthentication)(nil),        // 23: wayplatform.connect.tachograph.card.v1.PlacesAuthentication
+	(*GnssPlacesAuthentication)(nil),    // 24: wayplatform.connect.tachograph.card.v1.GnssPlacesAuthentication
+	(*BorderCrossings)(nil),             // 25: wayplatform.connect.tachograph.card.v1.BorderCrossings
+	(*LoadUnloadOperations)(nil),        // 26: wayplatform.connect.tachograph.card.v1.LoadUnloadOperations
+	(*LoadTypeEntries)(nil),             // 27: wayplatform.connect.tachograph.card.v1.LoadTypeEntries
+	(*CompanyActivityData)(nil),         // 28: wayplatform.connect.tachograph.card.v1.CompanyActivityData
+	(*VuConfiguration)(nil),             // 29: wayplatform.connect.tachograph.card.v1.VuConfiguration
 }
 var file_wayplatform_connect_tachograph_card_v1_driver_card_file_proto_depIdxs = []int32{
 	3,  // 0: wayplatform.connect.tachograph.card.v1.DriverCardFile.icc:type_name -> wayplatform.connect.tachograph.card.v1.Icc
@@ -1443,21 +1449,21 @@ var file_wayplatform_connect_tachograph_card_v1_driver_card_file_proto_depIdxs =
 	9,  // 21: wayplatform.connect.tachograph.card.v1.DriverCardFile.TachographG2.events_data:type_name -> wayplatform.connect.tachograph.card.v1.EventsData
 	10, // 22: wayplatform.connect.tachograph.card.v1.DriverCardFile.TachographG2.faults_data:type_name -> wayplatform.connect.tachograph.card.v1.FaultsData
 	11, // 23: wayplatform.connect.tachograph.card.v1.DriverCardFile.TachographG2.driver_activity_data:type_name -> wayplatform.connect.tachograph.card.v1.DriverActivityData
-	12, // 24: wayplatform.connect.tachograph.card.v1.DriverCardFile.TachographG2.vehicles_used:type_name -> wayplatform.connect.tachograph.card.v1.VehiclesUsed
-	13, // 25: wayplatform.connect.tachograph.card.v1.DriverCardFile.TachographG2.places:type_name -> wayplatform.connect.tachograph.card.v1.Places
+	18, // 24: wayplatform.connect.tachograph.card.v1.DriverCardFile.TachographG2.vehicles_used:type_name -> wayplatform.connect.tachograph.card.v1.VehiclesUsedG2
+	19, // 25: wayplatform.connect.tachograph.card.v1.DriverCardFile.TachographG2.places:type_name -> wayplatform.connect.tachograph.card.v1.PlacesG2
 	14, // 26: wayplatform.connect.tachograph.card.v1.DriverCardFile.TachographG2.current_usage:type_name -> wayplatform.connect.tachograph.card.v1.CurrentUsage
 	15, // 27: wayplatform.connect.tachograph.card.v1.DriverCardFile.TachographG2.control_activity_data:type_name -> wayplatform.connect.tachograph.card.v1.ControlActivityData
 	16, // 28: wayplatform.connect.tachograph.card.v1.DriverCardFile.TachographG2.specific_conditions:type_name -> wayplatform.connect.tachograph.card.v1.SpecificConditions
-	18, // 29: wayplatform.connect.tachograph.card.v1.DriverCardFile.TachographG2.vehicle_units_used:type_name -> wayplatform.connect.tachograph.card.v1.VehicleUnitsUsed
-	19, // 30: wayplatform.connect.tachograph.card.v1.DriverCardFile.TachographG2.gnss_places:type_name -> wayplatform.connect.tachograph.card.v1.GnssPlaces
-	20, // 31: wayplatform.connect.tachograph.card.v1.DriverCardFile.TachographG2.application_identification_v2:type_name -> wayplatform.connect.tachograph.card.v1.ApplicationIdentificationV2
-	21, // 32: wayplatform.connect.tachograph.card.v1.DriverCardFile.TachographG2.places_authentication:type_name -> wayplatform.connect.tachograph.card.v1.PlacesAuthentication
-	22, // 33: wayplatform.connect.tachograph.card.v1.DriverCardFile.TachographG2.gnss_places_authentication:type_name -> wayplatform.connect.tachograph.card.v1.GnssPlacesAuthentication
-	23, // 34: wayplatform.connect.tachograph.card.v1.DriverCardFile.TachographG2.border_crossings:type_name -> wayplatform.connect.tachograph.card.v1.BorderCrossings
-	24, // 35: wayplatform.connect.tachograph.card.v1.DriverCardFile.TachographG2.load_unload_operations:type_name -> wayplatform.connect.tachograph.card.v1.LoadUnloadOperations
-	25, // 36: wayplatform.connect.tachograph.card.v1.DriverCardFile.TachographG2.load_type_entries:type_name -> wayplatform.connect.tachograph.card.v1.LoadTypeEntries
-	26, // 37: wayplatform.connect.tachograph.card.v1.DriverCardFile.TachographG2.company_activity_data:type_name -> wayplatform.connect.tachograph.card.v1.CompanyActivityData
-	27, // 38: wayplatform.connect.tachograph.card.v1.DriverCardFile.TachographG2.vu_configuration:type_name -> wayplatform.connect.tachograph.card.v1.VuConfiguration
+	20, // 29: wayplatform.connect.tachograph.card.v1.DriverCardFile.TachographG2.vehicle_units_used:type_name -> wayplatform.connect.tachograph.card.v1.VehicleUnitsUsed
+	21, // 30: wayplatform.connect.tachograph.card.v1.DriverCardFile.TachographG2.gnss_places:type_name -> wayplatform.connect.tachograph.card.v1.GnssPlaces
+	22, // 31: wayplatform.connect.tachograph.card.v1.DriverCardFile.TachographG2.application_identification_v2:type_name -> wayplatform.connect.tachograph.card.v1.ApplicationIdentificationV2
+	23, // 32: wayplatform.connect.tachograph.card.v1.DriverCardFile.TachographG2.places_authentication:type_name -> wayplatform.connect.tachograph.card.v1.PlacesAuthentication
+	24, // 33: wayplatform.connect.tachograph.card.v1.DriverCardFile.TachographG2.gnss_places_authentication:type_name -> wayplatform.connect.tachograph.card.v1.GnssPlacesAuthentication
+	25, // 34: wayplatform.connect.tachograph.card.v1.DriverCardFile.TachographG2.border_crossings:type_name -> wayplatform.connect.tachograph.card.v1.BorderCrossings
+	26, // 35: wayplatform.connect.tachograph.card.v1.DriverCardFile.TachographG2.load_unload_operations:type_name -> wayplatform.connect.tachograph.card.v1.LoadUnloadOperations
+	27, // 36: wayplatform.connect.tachograph.card.v1.DriverCardFile.TachographG2.load_type_entries:type_name -> wayplatform.connect.tachograph.card.v1.LoadTypeEntries
+	28, // 37: wayplatform.connect.tachograph.card.v1.DriverCardFile.TachographG2.company_activity_data:type_name -> wayplatform.connect.tachograph.card.v1.CompanyActivityData
+	29, // 38: wayplatform.connect.tachograph.card.v1.DriverCardFile.TachographG2.vu_configuration:type_name -> wayplatform.connect.tachograph.card.v1.VuConfiguration
 	17, // 39: wayplatform.connect.tachograph.card.v1.DriverCardFile.TachographG2.certificates:type_name -> wayplatform.connect.tachograph.card.v1.Certificates
 	40, // [40:40] is the sub-list for method output_type
 	40, // [40:40] is the sub-list for method input_type
@@ -1492,9 +1498,11 @@ func file_wayplatform_connect_tachograph_card_v1_driver_card_file_proto_init() {
 	file_wayplatform_connect_tachograph_card_v1_load_unload_operations_proto_init()
 	file_wayplatform_connect_tachograph_card_v1_places_proto_init()
 	file_wayplatform_connect_tachograph_card_v1_places_authentication_proto_init()
+	file_wayplatform_connect_tachograph_card_v1_places_g2_proto_init()
 	file_wayplatform_connect_tachograph_card_v1_specific_conditions_proto_init()
 	file_wayplatform_connect_tachograph_card_v1_vehicle_units_used_proto_init()
 	file_wayplatform_connect_tachograph_card_v1_vehicles_used_proto_init()
+	file_wayplatform_connect_tachograph_card_v1_vehicles_used_g2_proto_init()
 	file_wayplatform_connect_tachograph_card_v1_vu_configuration_proto_init()
 	type x struct{}
 	out := protoimpl.TypeBuilder{

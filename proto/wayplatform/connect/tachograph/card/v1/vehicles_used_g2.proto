@@ -2,12 +2,12 @@ edition = "2023";
 
 package wayplatform.connect.tachograph.card.v1;
 
-import "wayplatform/connect/tachograph/dd/v1/card_vehicle_record.proto";
+import "wayplatform/connect/tachograph/dd/v1/card_vehicle_record_g2.proto";
 
-// Represents the content of the EF_Vehicles_Used file for Generation 1 cards.
+// Represents the content of the EF_Vehicles_Used file for Generation 2 cards.
 //
-// This is the Gen1-specific version with 31-byte vehicle records (no VIN).
-// For Gen2 format (48-byte records with VIN), see VehiclesUsedG2.
+// This is the Gen2-specific version with 48-byte vehicle records (includes VIN).
+// For Gen1 format (31-byte records), see VehiclesUsed.
 //
 // The file structure is specified in Appendix 2, Section 4.2.1.
 //
@@ -23,8 +23,8 @@ import "wayplatform/connect/tachograph/dd/v1/card_vehicle_record.proto";
 //         cardVehicleRecords SET SIZE(NoOfCardVehicleRecords) OF CardVehicleRecord
 //     }
 //
-// Note: CardVehicleRecord is 31 bytes in Gen1 (no VIN).
-message VehiclesUsed {
+// Note: CardVehicleRecord is 48 bytes in Gen2 (includes 17-byte VIN).
+message VehiclesUsedG2 {
   // Index of the last updated vehicle record.
   // Corresponds to `vehiclePointerNewestRecord`.
   //
@@ -34,13 +34,13 @@ message VehiclesUsed {
   //     INTEGER(0..NoOfCardVehicleRecords-1)
   int32 newest_record_index = 1;
 
-  // The set of Generation 1 vehicle records (31 bytes each, no VIN).
+  // The set of Generation 2 vehicle records (48 bytes each, includes VIN).
   //
   // Each record contains information about a period of use of a vehicle,
-  // including odometer readings, timestamps, and vehicle registration.
+  // including odometer readings, timestamps, vehicle registration, and VIN.
   //
-  // See Data Dictionary, Section 2.37, `CardVehicleRecord` (Gen1).
-  repeated dd.v1.CardVehicleRecord records = 2;
+  // See Data Dictionary, Section 2.37, `CardVehicleRecord` (Gen2).
+  repeated dd.v1.CardVehicleRecordG2 records = 2;
 
   // Digital signature for the EF_Vehicles_Used file content.
   //
@@ -50,3 +50,4 @@ message VehiclesUsed {
   //     Signature ::= OCTET STRING (SIZE(128))
   bytes signature = 3;
 }
+
