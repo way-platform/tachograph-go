@@ -6,14 +6,14 @@ import "wayplatform/connect/tachograph/card/v1/card_type.proto";
 import "wayplatform/connect/tachograph/dd/v1/card_structure_version.proto";
 import "wayplatform/connect/tachograph/dd/v1/equipment_type.proto";
 
-// Represents data from EF_Application_Identification for Generation 1.
+// Represents data from EF_Application_Identification for Generation 2.
 //
 // The structure of this EF depends on the type of card. This message uses a
 // tagged union pattern to represent this, where the `card_type` field indicates
 // which of the nested messages is populated.
 //
-// Gen1: 10 bytes for driver cards (7 fields).
-message ApplicationIdentification {
+// Gen2 adds additional capacity fields compared to Gen1.
+message ApplicationIdentificationG2 {
   // The type of card this data is from.
   CardType card_type = 1;
 
@@ -36,7 +36,7 @@ message ApplicationIdentification {
   // Data for a driver card. Populated if `card_type` is `DRIVER_CARD`.
   // See Data Dictionary, Section 2.61, `DriverCardApplicationIdentification`.
   //
-  // Gen1: 10 bytes total (1 + 2 + 1 + 1 + 2 + 2 + 1).
+  // Gen2 adds 3 new fields (6 bytes) for a total of 16 bytes.
   message Driver {
     // The number of events per type the card can record.
     //
@@ -73,10 +73,36 @@ message ApplicationIdentification {
     // The number of place records the card can store.
     //
     // See Data Dictionary, Section 2.104, `NoOfCardPlaceRecords`.
-    // ASN.1 definition (Gen1):
+    // ASN.1 definition:
     //
-    //     NoOfCardPlaceRecords ::= INTEGER(0..255)
+    //     NoOfCardPlaceRecords ::= INTEGER(0..65535)
     int32 card_place_records_count = 5;
+
+    // --- Gen2-only fields (new in Generation 2) ---
+
+    // The number of GNSS accumulated driving records the card can store.
+    //
+    // See Data Dictionary, Section 2.111, `NoOfGNSSADRecords`.
+    // ASN.1 definition:
+    //
+    //     NoOfGNSSADRecords ::= INTEGER(0..65535)
+    int32 gnss_ad_records_count = 6;
+
+    // The number of specific condition records the card can store.
+    //
+    // See Data Dictionary, Section 2.112, `NoOfSpecificConditionRecords`.
+    // ASN.1 definition (Gen2):
+    //
+    //     NoOfSpecificConditionRecords ::= INTEGER(0..65535)
+    int32 specific_condition_records_count = 7;
+
+    // The number of vehicle units used records the card can store.
+    //
+    // See Data Dictionary, Section 2.106, `NoOfCardVehicleUnitRecords`.
+    // ASN.1 definition:
+    //
+    //     NoOfCardVehicleUnitRecords ::= INTEGER(0..65535)
+    int32 card_vehicle_unit_records_count = 8;
   }
 
   // Data for a workshop card. Populated if `card_type` is `WORKSHOP_CARD`.
@@ -125,9 +151,9 @@ message ApplicationIdentification {
     // The number of calibration records the card can store.
     //
     // See Data Dictionary, Section 2.102, `NoOfCalibrationRecords`.
-    // ASN.1 definition (Gen1):
+    // ASN.1 definition (Gen2):
     //
-    //     NoOfCalibrationRecords ::= INTEGER(0..255)
+    //     NoOfCalibrationRecords ::= INTEGER(0..65535)
     int32 calibration_records_count = 6;
   }
 
@@ -169,8 +195,11 @@ message ApplicationIdentification {
   //
   // See Data Dictionary, Section 2.149, `Signature`.
   //
-  // ASN.1 Definition (Gen1):
+  // Gen2: ECDSA signature, variable size based on elliptic curve
   //
-  //     Signature ::= OCTET STRING (SIZE(128))
+  // Gen2 uses ECDSA signatures with variable lengths based on the curve:
+  // - 256-bit curves: ~64 bytes
+  // - 384-bit curves: ~96 bytes
+  // - 512/521-bit curves: ~128-132 bytes
   bytes signature = 8;
 }
