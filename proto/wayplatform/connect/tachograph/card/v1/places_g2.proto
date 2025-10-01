@@ -2,12 +2,12 @@ edition = "2023";
 
 package wayplatform.connect.tachograph.card.v1;
 
-import "wayplatform/connect/tachograph/dd/v1/place_record.proto";
+import "wayplatform/connect/tachograph/dd/v1/place_record_g2.proto";
 
-// Represents the content of the EF_Places file for Generation 1 cards.
+// Represents the content of the EF_Places file for Generation 2 cards.
 //
-// This is the Gen1-specific version with 10-byte place records (no GNSS).
-// For Gen2 format (21-byte records with GNSS), see PlacesG2.
+// This is the Gen2-specific version with 21-byte place records (includes GNSS).
+// For Gen1 format (10-byte records), see Places.
 //
 // The file structure is specified in Appendix 2, Section 4.2.1.
 //
@@ -23,10 +23,10 @@ import "wayplatform/connect/tachograph/dd/v1/place_record.proto";
 //         placeRecords SET SIZE(NoOfCardPlaceRecords) OF PlaceRecord
 //     }
 //
-// Note: PlaceRecord is 10 bytes in Gen1 (no GNSS data).
+// Note: PlaceRecord is 21 bytes in Gen2 (includes 11-byte GNSS data).
 // This is stored as a circular buffer where placePointerNewestRecord indicates
 // the index of the most recently written record.
-message Places {
+message PlacesG2 {
   // Index of the most recently written place record.
   // Corresponds to `placePointerNewestRecord`.
   //
@@ -38,13 +38,13 @@ message Places {
   //     INTEGER(0..NoOfCardPlaceRecords-1)
   int32 newest_record_index = 1;
 
-  // The set of Generation 1 place records (10 bytes each, no GNSS).
+  // The set of Generation 2 place records (21 bytes each, includes GNSS).
   //
   // This is a circular buffer. The newest record is at index `newest_record_index`.
   // To read in chronological order, start from (newest_record_index + 1) and wrap around.
   //
-  // See Data Dictionary, Section 2.117, `PlaceRecord` (Gen1).
-  repeated dd.v1.PlaceRecord records = 2;
+  // See Data Dictionary, Section 2.117, `PlaceRecord` (Gen2).
+  repeated dd.v1.PlaceRecordG2 records = 2;
 
   // Digital signature for the EF_Places file content.
   //
@@ -54,3 +54,4 @@ message Places {
   //     Signature ::= OCTET STRING (SIZE(128))
   bytes signature = 3;
 }
+

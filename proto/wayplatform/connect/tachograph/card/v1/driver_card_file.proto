@@ -23,9 +23,11 @@ import "wayplatform/connect/tachograph/card/v1/load_type_entries.proto";
 import "wayplatform/connect/tachograph/card/v1/load_unload_operations.proto";
 import "wayplatform/connect/tachograph/card/v1/places.proto";
 import "wayplatform/connect/tachograph/card/v1/places_authentication.proto";
+import "wayplatform/connect/tachograph/card/v1/places_g2.proto";
 import "wayplatform/connect/tachograph/card/v1/specific_conditions.proto";
 import "wayplatform/connect/tachograph/card/v1/vehicle_units_used.proto";
 import "wayplatform/connect/tachograph/card/v1/vehicles_used.proto";
+import "wayplatform/connect/tachograph/card/v1/vehicles_used_g2.proto";
 import "wayplatform/connect/tachograph/card/v1/vu_configuration.proto";
 
 // Represents the fully parsed content of a driver card file.
@@ -124,10 +126,12 @@ message DriverCardFile {
 
     // Data from EF Vehicles_Used (File ID '0505h').
     // Signed (see Section 3.3, DDP_035).
+    // Gen1 format: 31-byte vehicle records (no VIN).
     VehiclesUsed vehicles_used = 8;
 
     // Data from EF Places (File ID '0506h').
     // Signed (see Section 3.3, DDP_035).
+    // Gen1 format: 10-byte place records (no GNSS).
     Places places = 9;
 
     // Data from EF Current_Usage (File ID '0507h').
@@ -222,11 +226,13 @@ message DriverCardFile {
 
     // Data from EF Vehicles_Used (File ID '0505h').
     // Signed (see Section 3.3, DDP_035).
-    VehiclesUsed vehicles_used = 8;
+    // Gen2 format: 48-byte vehicle records (includes 17-byte VIN).
+    VehiclesUsedG2 vehicles_used = 8;
 
     // Data from EF Places (File ID '0506h').
     // Signed (see Section 3.3, DDP_035).
-    Places places = 9;
+    // Gen2 format: 21-byte place records (includes GNSS).
+    PlacesG2 places = 9;
 
     // Data from EF Current_Usage (File ID '0507h').
     // Signed (see Section 3.3, DDP_035).

@@ -1,0 +1,78 @@
+edition = "2023";
+
+package wayplatform.connect.tachograph.dd.v1;
+
+import "google/protobuf/timestamp.proto";
+import "wayplatform/connect/tachograph/dd/v1/bcd_string.proto";
+import "wayplatform/connect/tachograph/dd/v1/vehicle_registration_identification.proto";
+
+// Represents a vehicle usage record from a driver or workshop card (Generation 1 format).
+//
+// This is the Gen1-specific version without Vehicle Identification Number (VIN).
+// For Gen2 format (with VIN), see CardVehicleRecordG2.
+//
+// Information, stored in a driver or workshop card, related to a period of use
+// of a vehicle during a calendar day.
+//
+// Binary Layout: 31 bytes (fixed for Gen1)
+//   - vehicleOdometerBegin: 3 bytes (OdometerShort)
+//   - vehicleOdometerEnd: 3 bytes (OdometerShort)
+//   - vehicleFirstUse: 4 bytes (TimeReal)
+//   - vehicleLastUse: 4 bytes (TimeReal)
+//   - vehicleRegistration: 15 bytes (VehicleRegistrationIdentification)
+//   - vuDataBlockCounter: 2 bytes (VuDataBlockCounter as BCD)
+//
+// See Data Dictionary, Section 2.37, `CardVehicleRecord`.
+//
+// ASN.1 Definition (Gen1):
+//
+//     CardVehicleRecord ::= SEQUENCE {
+//         vehicleOdometerBegin       OdometerShort,
+//         vehicleOdometerEnd         OdometerShort,
+//         vehicleFirstUse            TimeReal,
+//         vehicleLastUse             TimeReal,
+//         vehicleRegistration        VehicleRegistrationIdentification,
+//         vuDataBlockCounter         VuDataBlockCounter
+//     }
+message CardVehicleRecord {
+  // Vehicle odometer value at the beginning of the period of use (in kilometers).
+  //
+  // OdometerShort is a 3-byte unsigned integer representing distance in kilometers.
+  int32 vehicle_odometer_begin_km = 1;
+
+  // Vehicle odometer value at the end of the period of use (in kilometers).
+  //
+  // OdometerShort is a 3-byte unsigned integer representing distance in kilometers.
+  int32 vehicle_odometer_end_km = 2;
+
+  // Date and time of the beginning of the period of use of the vehicle.
+  //
+  // See Data Dictionary, Section 2.162, `TimeReal`.
+  google.protobuf.Timestamp vehicle_first_use = 3;
+
+  // Date and time of the end of the period of use of the vehicle.
+  //
+  // See Data Dictionary, Section 2.162, `TimeReal`.
+  google.protobuf.Timestamp vehicle_last_use = 4;
+
+  // The VRN and the registering Member State of the vehicle.
+  //
+  // See Data Dictionary, Section 2.166, `VehicleRegistrationIdentification`.
+  VehicleRegistrationIdentification vehicle_registration = 5;
+
+  // Value of the VuDataBlockCounter at last extraction of the period of use.
+  //
+  // This is a BCD-encoded counter value.
+  //
+  // See Data Dictionary, Section 2.213, `VuDataBlockCounter`.
+  BcdString vu_data_block_counter = 6;
+
+  // Original encoded bytes from the binary format.
+  //
+  // When present, this is used as a canvas for the "raw data painting" strategy
+  // during marshalling to preserve reserved bits and unknown data.
+  //
+  // Size: 31 bytes (fixed for Gen1).
+  bytes raw_data = 7;
+}
+

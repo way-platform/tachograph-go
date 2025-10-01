@@ -2,7 +2,7 @@
 // versions:
 // 	protoc-gen-go v1.36.6
 // 	protoc        (unknown)
-// source: wayplatform/connect/tachograph/card/v1/places.proto
+// source: wayplatform/connect/tachograph/card/v1/places_g2.proto
 
 package cardv1
 
@@ -21,10 +21,10 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// Represents the content of the EF_Places file for Generation 1 cards.
+// Represents the content of the EF_Places file for Generation 2 cards.
 //
-// This is the Gen1-specific version with 10-byte place records (no GNSS).
-// For Gen2 format (21-byte records with GNSS), see PlacesG2.
+// This is the Gen2-specific version with 21-byte place records (includes GNSS).
+// For Gen1 format (10-byte records), see Places.
 //
 // The file structure is specified in Appendix 2, Section 4.2.1.
 //
@@ -40,13 +40,13 @@ const (
 //	    placeRecords SET SIZE(NoOfCardPlaceRecords) OF PlaceRecord
 //	}
 //
-// Note: PlaceRecord is 10 bytes in Gen1 (no GNSS data).
+// Note: PlaceRecord is 21 bytes in Gen2 (includes 11-byte GNSS data).
 // This is stored as a circular buffer where placePointerNewestRecord indicates
 // the index of the most recently written record.
-type Places struct {
+type PlacesG2 struct {
 	state                        protoimpl.MessageState `protogen:"opaque.v1"`
 	xxx_hidden_NewestRecordIndex int32                  `protobuf:"varint,1,opt,name=newest_record_index,json=newestRecordIndex"`
-	xxx_hidden_Records           *[]*v1.PlaceRecord     `protobuf:"bytes,2,rep,name=records"`
+	xxx_hidden_Records           *[]*v1.PlaceRecordG2   `protobuf:"bytes,2,rep,name=records"`
 	xxx_hidden_Signature         []byte                 `protobuf:"bytes,3,opt,name=signature"`
 	XXX_raceDetectHookData       protoimpl.RaceDetectHookData
 	XXX_presence                 [1]uint32
@@ -54,21 +54,21 @@ type Places struct {
 	sizeCache                    protoimpl.SizeCache
 }
 
-func (x *Places) Reset() {
-	*x = Places{}
-	mi := &file_wayplatform_connect_tachograph_card_v1_places_proto_msgTypes[0]
+func (x *PlacesG2) Reset() {
+	*x = PlacesG2{}
+	mi := &file_wayplatform_connect_tachograph_card_v1_places_g2_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *Places) String() string {
+func (x *PlacesG2) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*Places) ProtoMessage() {}
+func (*PlacesG2) ProtoMessage() {}
 
-func (x *Places) ProtoReflect() protoreflect.Message {
-	mi := &file_wayplatform_connect_tachograph_card_v1_places_proto_msgTypes[0]
+func (x *PlacesG2) ProtoReflect() protoreflect.Message {
+	mi := &file_wayplatform_connect_tachograph_card_v1_places_g2_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -79,14 +79,14 @@ func (x *Places) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-func (x *Places) GetNewestRecordIndex() int32 {
+func (x *PlacesG2) GetNewestRecordIndex() int32 {
 	if x != nil {
 		return x.xxx_hidden_NewestRecordIndex
 	}
 	return 0
 }
 
-func (x *Places) GetRecords() []*v1.PlaceRecord {
+func (x *PlacesG2) GetRecords() []*v1.PlaceRecordG2 {
 	if x != nil {
 		if x.xxx_hidden_Records != nil {
 			return *x.xxx_hidden_Records
@@ -95,23 +95,23 @@ func (x *Places) GetRecords() []*v1.PlaceRecord {
 	return nil
 }
 
-func (x *Places) GetSignature() []byte {
+func (x *PlacesG2) GetSignature() []byte {
 	if x != nil {
 		return x.xxx_hidden_Signature
 	}
 	return nil
 }
 
-func (x *Places) SetNewestRecordIndex(v int32) {
+func (x *PlacesG2) SetNewestRecordIndex(v int32) {
 	x.xxx_hidden_NewestRecordIndex = v
 	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 3)
 }
 
-func (x *Places) SetRecords(v []*v1.PlaceRecord) {
+func (x *PlacesG2) SetRecords(v []*v1.PlaceRecordG2) {
 	x.xxx_hidden_Records = &v
 }
 
-func (x *Places) SetSignature(v []byte) {
+func (x *PlacesG2) SetSignature(v []byte) {
 	if v == nil {
 		v = []byte{}
 	}
@@ -119,31 +119,31 @@ func (x *Places) SetSignature(v []byte) {
 	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 3)
 }
 
-func (x *Places) HasNewestRecordIndex() bool {
+func (x *PlacesG2) HasNewestRecordIndex() bool {
 	if x == nil {
 		return false
 	}
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 0)
 }
 
-func (x *Places) HasSignature() bool {
+func (x *PlacesG2) HasSignature() bool {
 	if x == nil {
 		return false
 	}
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 2)
 }
 
-func (x *Places) ClearNewestRecordIndex() {
+func (x *PlacesG2) ClearNewestRecordIndex() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 0)
 	x.xxx_hidden_NewestRecordIndex = 0
 }
 
-func (x *Places) ClearSignature() {
+func (x *PlacesG2) ClearSignature() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 2)
 	x.xxx_hidden_Signature = nil
 }
 
-type Places_builder struct {
+type PlacesG2_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
 	// Index of the most recently written place record.
@@ -156,13 +156,13 @@ type Places_builder struct {
 	//
 	//	INTEGER(0..NoOfCardPlaceRecords-1)
 	NewestRecordIndex *int32
-	// The set of Generation 1 place records (10 bytes each, no GNSS).
+	// The set of Generation 2 place records (21 bytes each, includes GNSS).
 	//
 	// This is a circular buffer. The newest record is at index `newest_record_index`.
 	// To read in chronological order, start from (newest_record_index + 1) and wrap around.
 	//
-	// See Data Dictionary, Section 2.117, `PlaceRecord` (Gen1).
-	Records []*v1.PlaceRecord
+	// See Data Dictionary, Section 2.117, `PlaceRecord` (Gen2).
+	Records []*v1.PlaceRecordG2
 	// Digital signature for the EF_Places file content.
 	//
 	// See Data Dictionary, Section 2.149, `Signature`.
@@ -172,8 +172,8 @@ type Places_builder struct {
 	Signature []byte
 }
 
-func (b0 Places_builder) Build() *Places {
-	m0 := &Places{}
+func (b0 PlacesG2_builder) Build() *PlacesG2 {
+	m0 := &PlacesG2{}
 	b, x := &b0, m0
 	_, _ = b, x
 	if b.NewestRecordIndex != nil {
@@ -188,24 +188,24 @@ func (b0 Places_builder) Build() *Places {
 	return m0
 }
 
-var File_wayplatform_connect_tachograph_card_v1_places_proto protoreflect.FileDescriptor
+var File_wayplatform_connect_tachograph_card_v1_places_g2_proto protoreflect.FileDescriptor
 
-const file_wayplatform_connect_tachograph_card_v1_places_proto_rawDesc = "" +
+const file_wayplatform_connect_tachograph_card_v1_places_g2_proto_rawDesc = "" +
 	"\n" +
-	"3wayplatform/connect/tachograph/card/v1/places.proto\x12&wayplatform.connect.tachograph.card.v1\x1a7wayplatform/connect/tachograph/dd/v1/place_record.proto\"\xa3\x01\n" +
-	"\x06Places\x12.\n" +
-	"\x13newest_record_index\x18\x01 \x01(\x05R\x11newestRecordIndex\x12K\n" +
-	"\arecords\x18\x02 \x03(\v21.wayplatform.connect.tachograph.dd.v1.PlaceRecordR\arecords\x12\x1c\n" +
-	"\tsignature\x18\x03 \x01(\fR\tsignatureB\xd8\x02\n" +
-	"*com.wayplatform.connect.tachograph.card.v1B\vPlacesProtoP\x01Z`github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1;cardv1\xa2\x02\x04WCTC\xaa\x02&Wayplatform.Connect.Tachograph.Card.V1\xca\x02&Wayplatform\\Connect\\Tachograph\\Card\\V1\xe2\x022Wayplatform\\Connect\\Tachograph\\Card\\V1\\GPBMetadata\xea\x02*Wayplatform::Connect::Tachograph::Card::V1b\beditionsp\xe8\a"
+	"6wayplatform/connect/tachograph/card/v1/places_g2.proto\x12&wayplatform.connect.tachograph.card.v1\x1a:wayplatform/connect/tachograph/dd/v1/place_record_g2.proto\"\xa7\x01\n" +
+	"\bPlacesG2\x12.\n" +
+	"\x13newest_record_index\x18\x01 \x01(\x05R\x11newestRecordIndex\x12M\n" +
+	"\arecords\x18\x02 \x03(\v23.wayplatform.connect.tachograph.dd.v1.PlaceRecordG2R\arecords\x12\x1c\n" +
+	"\tsignature\x18\x03 \x01(\fR\tsignatureB\xda\x02\n" +
+	"*com.wayplatform.connect.tachograph.card.v1B\rPlacesG2ProtoP\x01Z`github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1;cardv1\xa2\x02\x04WCTC\xaa\x02&Wayplatform.Connect.Tachograph.Card.V1\xca\x02&Wayplatform\\Connect\\Tachograph\\Card\\V1\xe2\x022Wayplatform\\Connect\\Tachograph\\Card\\V1\\GPBMetadata\xea\x02*Wayplatform::Connect::Tachograph::Card::V1b\beditionsp\xe8\a"
 
-var file_wayplatform_connect_tachograph_card_v1_places_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
-var file_wayplatform_connect_tachograph_card_v1_places_proto_goTypes = []any{
-	(*Places)(nil),         // 0: wayplatform.connect.tachograph.card.v1.Places
-	(*v1.PlaceRecord)(nil), // 1: wayplatform.connect.tachograph.dd.v1.PlaceRecord
+var file_wayplatform_connect_tachograph_card_v1_places_g2_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
+var file_wayplatform_connect_tachograph_card_v1_places_g2_proto_goTypes = []any{
+	(*PlacesG2)(nil),         // 0: wayplatform.connect.tachograph.card.v1.PlacesG2
+	(*v1.PlaceRecordG2)(nil), // 1: wayplatform.connect.tachograph.dd.v1.PlaceRecordG2
 }
-var file_wayplatform_connect_tachograph_card_v1_places_proto_depIdxs = []int32{
-	1, // 0: wayplatform.connect.tachograph.card.v1.Places.records:type_name -> wayplatform.connect.tachograph.dd.v1.PlaceRecord
+var file_wayplatform_connect_tachograph_card_v1_places_g2_proto_depIdxs = []int32{
+	1, // 0: wayplatform.connect.tachograph.card.v1.PlacesG2.records:type_name -> wayplatform.connect.tachograph.dd.v1.PlaceRecordG2
 	1, // [1:1] is the sub-list for method output_type
 	1, // [1:1] is the sub-list for method input_type
 	1, // [1:1] is the sub-list for extension type_name
@@ -213,26 +213,26 @@ var file_wayplatform_connect_tachograph_card_v1_places_proto_depIdxs = []int32{
 	0, // [0:1] is the sub-list for field type_name
 }
 
-func init() { file_wayplatform_connect_tachograph_card_v1_places_proto_init() }
-func file_wayplatform_connect_tachograph_card_v1_places_proto_init() {
-	if File_wayplatform_connect_tachograph_card_v1_places_proto != nil {
+func init() { file_wayplatform_connect_tachograph_card_v1_places_g2_proto_init() }
+func file_wayplatform_connect_tachograph_card_v1_places_g2_proto_init() {
+	if File_wayplatform_connect_tachograph_card_v1_places_g2_proto != nil {
 		return
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_wayplatform_connect_tachograph_card_v1_places_proto_rawDesc), len(file_wayplatform_connect_tachograph_card_v1_places_proto_rawDesc)),
+			RawDescriptor: unsafe.Slice(unsafe.StringData(file_wayplatform_connect_tachograph_card_v1_places_g2_proto_rawDesc), len(file_wayplatform_connect_tachograph_card_v1_places_g2_proto_rawDesc)),
 			NumEnums:      0,
 			NumMessages:   1,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
-		GoTypes:           file_wayplatform_connect_tachograph_card_v1_places_proto_goTypes,
-		DependencyIndexes: file_wayplatform_connect_tachograph_card_v1_places_proto_depIdxs,
-		MessageInfos:      file_wayplatform_connect_tachograph_card_v1_places_proto_msgTypes,
+		GoTypes:           file_wayplatform_connect_tachograph_card_v1_places_g2_proto_goTypes,
+		DependencyIndexes: file_wayplatform_connect_tachograph_card_v1_places_g2_proto_depIdxs,
+		MessageInfos:      file_wayplatform_connect_tachograph_card_v1_places_g2_proto_msgTypes,
 	}.Build()
-	File_wayplatform_connect_tachograph_card_v1_places_proto = out.File
-	file_wayplatform_connect_tachograph_card_v1_places_proto_goTypes = nil
-	file_wayplatform_connect_tachograph_card_v1_places_proto_depIdxs = nil
+	File_wayplatform_connect_tachograph_card_v1_places_g2_proto = out.File
+	file_wayplatform_connect_tachograph_card_v1_places_g2_proto_goTypes = nil
+	file_wayplatform_connect_tachograph_card_v1_places_g2_proto_depIdxs = nil
 }
