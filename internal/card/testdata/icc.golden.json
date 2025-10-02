@@ -11,7 +11,6 @@
   },
   "cardApprovalNumber": {
     "encoding": "IA5",
-    "rawData": "VEVTVDAwMDE=",
     "value": "TEST0001",
     "length": 8
   },
@@ -19,15 +18,13 @@
   "embedderIcAssemblerId": {
     "countryCode": {
       "encoding": "IA5",
-      "rawData": "Rkk=",
       "value": "FI",
       "length": 2
     },
     "moduleEmbedder": {
       "encoding": "IA5",
-      "rawData": "VEU=",
       "value": "TEST",
-      "length": 2
+      "length": 3
     },
     "manufacturerInformation": 187
   },

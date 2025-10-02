@@ -56,13 +56,12 @@
       "eventVehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
-      "rawData": "BV4MicBeDJDIElRFU1QtVlJOICAgICAg"
+      "rawData": "BV4MicBeDJDIEgFURVNULVZSTiAgICAg"
     },
     {
       "valid": false,

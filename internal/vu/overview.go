@@ -81,24 +81,15 @@ func unmarshalOverviewGen1(data []byte, offset int, overview *vuv1.Overview, sta
 	overview.SetVehicleIdentificationNumber(vinStrValue)
 
 	// VehicleRegistrationIdentification (15 bytes: nation(1) + regnum(14))
-	nation, offset, err := readUint8FromBytes(data, offset)
-	if err != nil {
-		return 0, err
-	}
-	regNumBytes, offset, err := readBytesFromBytes(data, offset, 14)
+	vehicleRegBytes, offset, err := readBytesFromBytes(data, offset, 15)
 	if err != nil {
 		return 0, err
 	}
 
-	// First byte is codepage, rest is registration number
-	vehicleReg := &ddv1.VehicleRegistrationIdentification{}
-	vehicleReg.SetNation(ddv1.NationNumeric(nation))
-
-	regNumStrValue, err := opts.UnmarshalIA5StringValue(regNumBytes[1:])
+	vehicleReg, err := opts.UnmarshalVehicleRegistration(vehicleRegBytes)
 	if err != nil {
-		return 0, fmt.Errorf("failed to read vehicle registration number: %w", err)
+		return 0, fmt.Errorf("failed to read vehicle registration: %w", err)
 	}
-	vehicleReg.SetNumber(regNumStrValue)
 	overview.SetVehicleRegistrationWithNation(vehicleReg)
 
 	// CurrentDateTime (4 bytes)
@@ -516,7 +507,7 @@ func appendOverviewGen2(buf *bytes.Buffer, overview *vuv1.Overview) {
 	// Append VehicleRegistrationIdentificationRecordArray
 	vehicleReg := overview.GetVehicleRegistrationWithNation()
 	if vehicleReg != nil {
-		appendVehicleRegistrationIdentificationRecordArray(buf, []*ddv1.VehicleRegistrationIdentification{vehicleReg})
+		_ = appendVehicleRegistrationIdentificationRecordArray(buf, []*ddv1.VehicleRegistrationIdentification{vehicleReg})
 	}
 
 	// Append CurrentDateTimeRecordArray
@@ -538,7 +529,6 @@ func appendOverviewGen2(buf *bytes.Buffer, overview *vuv1.Overview) {
 		buf.Write(signature)
 	}
 }
-
 
 // VU-specific helper functions for binary operations
 
@@ -661,31 +651,26 @@ func parseVehicleRegistrationIdentificationRecordArray(data []byte, offset int) 
 		return nil, offset, fmt.Errorf("insufficient data for vehicle registration identification")
 	}
 	var opts dd.UnmarshalOptions
-	nation := ddv1.NationNumeric(data[offset])
-	regNumBytes := data[offset+1 : offset+15]
-	regNum, err := opts.UnmarshalIA5StringValue(regNumBytes[1:]) // Skip codepage byte
+	vehicleReg, err := opts.UnmarshalVehicleRegistration(data[offset : offset+15])
 	if err != nil {
-		return nil, offset, fmt.Errorf("failed to parse registration number: %w", err)
+		return nil, offset, fmt.Errorf("failed to parse vehicle registration: %w", err)
 	}
-	vehicleReg := &ddv1.VehicleRegistrationIdentification{}
-	vehicleReg.SetNation(nation)
-	vehicleReg.SetNumber(regNum)
 	return []*ddv1.VehicleRegistrationIdentification{vehicleReg}, offset + 15, nil
 }
 
 // appendVehicleRegistrationIdentificationRecordArray appends VehicleRegistrationIdentificationRecordArray
 //
 //nolint:unused
-func appendVehicleRegistrationIdentificationRecordArray(buf *bytes.Buffer, regs []*ddv1.VehicleRegistrationIdentification) {
+func appendVehicleRegistrationIdentificationRecordArray(buf *bytes.Buffer, regs []*ddv1.VehicleRegistrationIdentification) error {
 	// For now, implement a simplified version that writes a single registration
 	if len(regs) > 0 && regs[0] != nil {
-		reg := regs[0]
-		buf.WriteByte(byte(reg.GetNation()))
-		regBytes := make([]byte, 14)
-		regBytes[0] = 0 // Codepage
-		copy(regBytes[1:], []byte(reg.GetNumber().GetValue()))
+		regBytes, err := dd.AppendVehicleRegistration(nil, regs[0])
+		if err != nil {
+			return fmt.Errorf("failed to append vehicle registration: %w", err)
+		}
 		buf.Write(regBytes)
 	}
+	return nil
 }
 
 // parseCurrentDateTimeRecordArray parses CurrentDateTimeRecordArray

@@ -11,6 +11,16 @@ import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
+// createIA5StringValue creates a StringValue with IA5 encoding and fixed length.
+// This is a helper for creating test/anonymized string data.
+func createIA5StringValue(value string, length uint32) *ddv1.StringValue {
+	sv := &ddv1.StringValue{}
+	sv.SetValue(value)
+	sv.SetEncoding(ddv1.Encoding_IA5)
+	sv.SetLength(length)
+	return sv
+}
+
 // unmarshalIdentification parses the binary data for an EF_Identification record.
 //
 // The data type `CardIdentification` is specified in the Data Dictionary, Section 2.1.
@@ -488,10 +498,8 @@ func AnonymizeIdentification(id *cardv1.Identification) *cardv1.Identification {
 		// Anonymize owner identification (for workshop/control/company cards)
 		if ownerID := card.GetOwnerIdentification(); ownerID != nil {
 			anonymizedOwner := &ddv1.OwnerIdentification{}
-			// Use generic owner ID
-			anonymizedOwner.SetOwnerIdentification(
-				dd.AnonymizeStringValue(ownerID.GetOwnerIdentification(), "OWNER00000001"),
-			)
+			// Use generic owner ID (IA5String, 13 bytes)
+			anonymizedOwner.SetOwnerIdentification(createIA5StringValue("OWNER00000001", 13))
 			// Preserve indices (structural info)
 			anonymizedOwner.SetConsecutiveIndex(ownerID.GetConsecutiveIndex())
 			anonymizedOwner.SetReplacementIndex(ownerID.GetReplacementIndex())
@@ -499,10 +507,12 @@ func AnonymizeIdentification(id *cardv1.Identification) *cardv1.Identification {
 			anonymizedCard.SetOwnerIdentification(anonymizedOwner)
 		}
 
-		// Anonymize issuing authority name
-		anonymizedCard.SetCardIssuingAuthorityName(
-			dd.AnonymizeStringValue(card.GetCardIssuingAuthorityName(), "TEST_AUTHORITY"),
-		)
+		// Anonymize issuing authority name (code-paged string: 1 byte code page + 35 bytes data)
+		authName := &ddv1.StringValue{}
+		authName.SetValue("TEST_AUTHORITY")
+		authName.SetEncoding(ddv1.Encoding_ISO_8859_1)
+		authName.SetLength(35) // Data length (not including code page byte)
+		anonymizedCard.SetCardIssuingAuthorityName(authName)
 
 		// Replace card dates with static test dates (valid 5-year period)
 		// Issue/validity: 2020-01-01 00:00:00 UTC (epoch: 1577836800)
@@ -520,13 +530,18 @@ func AnonymizeIdentification(id *cardv1.Identification) *cardv1.Identification {
 		if holder := id.GetDriverCardHolder(); holder != nil {
 			anonymizedHolder := &cardv1.Identification_DriverCardHolder{}
 
-			// Replace names with test values
-			anonymizedHolder.SetCardHolderSurname(
-				dd.AnonymizeStringValue(holder.GetCardHolderSurname(), "TEST_SURNAME"),
-			)
-			anonymizedHolder.SetCardHolderFirstNames(
-				dd.AnonymizeStringValue(holder.GetCardHolderFirstNames(), "TEST_FIRSTNAME"),
-			)
+			// Replace names with test values (code-paged strings: 1 byte code page + 35 bytes data each)
+			surname := &ddv1.StringValue{}
+			surname.SetValue("TEST_SURNAME")
+			surname.SetEncoding(ddv1.Encoding_ISO_8859_1)
+			surname.SetLength(35)
+			anonymizedHolder.SetCardHolderSurname(surname)
+			
+			firstName := &ddv1.StringValue{}
+			firstName.SetValue("TEST_FIRSTNAME")
+			firstName.SetEncoding(ddv1.Encoding_ISO_8859_1)
+			firstName.SetLength(35)
+			anonymizedHolder.SetCardHolderFirstNames(firstName)
 
 			// Replace birth date with static test date (2000-01-01)
 			birthDate := &ddv1.Date{}
@@ -549,21 +564,31 @@ func AnonymizeIdentification(id *cardv1.Identification) *cardv1.Identification {
 		if holder := id.GetWorkshopCardHolder(); holder != nil {
 			anonymizedHolder := &cardv1.Identification_WorkshopCardHolder{}
 
-			// Anonymize workshop details
-			anonymizedHolder.SetWorkshopName(
-				dd.AnonymizeStringValue(holder.GetWorkshopName(), "TEST_WORKSHOP"),
-			)
-			anonymizedHolder.SetWorkshopAddress(
-				dd.AnonymizeStringValue(holder.GetWorkshopAddress(), "TEST_ADDRESS"),
-			)
+			// Anonymize workshop details (code-paged strings: 1 byte code page + 35 bytes data each)
+			workshopName := &ddv1.StringValue{}
+			workshopName.SetValue("TEST_WORKSHOP")
+			workshopName.SetEncoding(ddv1.Encoding_ISO_8859_1)
+			workshopName.SetLength(35)
+			anonymizedHolder.SetWorkshopName(workshopName)
+			
+			workshopAddr := &ddv1.StringValue{}
+			workshopAddr.SetValue("TEST_ADDRESS")
+			workshopAddr.SetEncoding(ddv1.Encoding_ISO_8859_1)
+			workshopAddr.SetLength(35)
+			anonymizedHolder.SetWorkshopAddress(workshopAddr)
 
-			// Anonymize holder names
-			anonymizedHolder.SetCardHolderSurname(
-				dd.AnonymizeStringValue(holder.GetCardHolderSurname(), "TEST_SURNAME"),
-			)
-			anonymizedHolder.SetCardHolderFirstNames(
-				dd.AnonymizeStringValue(holder.GetCardHolderFirstNames(), "TEST_FIRSTNAME"),
-			)
+			// Anonymize holder names (code-paged strings: 1 byte code page + 35 bytes data each)
+			surname := &ddv1.StringValue{}
+			surname.SetValue("TEST_SURNAME")
+			surname.SetEncoding(ddv1.Encoding_ISO_8859_1)
+			surname.SetLength(35)
+			anonymizedHolder.SetCardHolderSurname(surname)
+			
+			firstName := &ddv1.StringValue{}
+			firstName.SetValue("TEST_FIRSTNAME")
+			firstName.SetEncoding(ddv1.Encoding_ISO_8859_1)
+			firstName.SetLength(35)
+			anonymizedHolder.SetCardHolderFirstNames(firstName)
 
 			// Preserve language
 			anonymizedHolder.SetCardHolderPreferredLanguage(holder.GetCardHolderPreferredLanguage())
@@ -575,21 +600,31 @@ func AnonymizeIdentification(id *cardv1.Identification) *cardv1.Identification {
 		if holder := id.GetControlCardHolder(); holder != nil {
 			anonymizedHolder := &cardv1.Identification_ControlCardHolder{}
 
-			// Anonymize control body details
-			anonymizedHolder.SetControlBodyName(
-				dd.AnonymizeStringValue(holder.GetControlBodyName(), "TEST_CONTROL_BODY"),
-			)
-			anonymizedHolder.SetControlBodyAddress(
-				dd.AnonymizeStringValue(holder.GetControlBodyAddress(), "TEST_ADDRESS"),
-			)
+			// Anonymize control body details (code-paged strings: 1 byte code page + 35 bytes data each)
+			controlBodyName := &ddv1.StringValue{}
+			controlBodyName.SetValue("TEST_CONTROL_BODY")
+			controlBodyName.SetEncoding(ddv1.Encoding_ISO_8859_1)
+			controlBodyName.SetLength(35)
+			anonymizedHolder.SetControlBodyName(controlBodyName)
+			
+			controlBodyAddr := &ddv1.StringValue{}
+			controlBodyAddr.SetValue("TEST_ADDRESS")
+			controlBodyAddr.SetEncoding(ddv1.Encoding_ISO_8859_1)
+			controlBodyAddr.SetLength(35)
+			anonymizedHolder.SetControlBodyAddress(controlBodyAddr)
 
-			// Anonymize holder names
-			anonymizedHolder.SetCardHolderSurname(
-				dd.AnonymizeStringValue(holder.GetCardHolderSurname(), "TEST_SURNAME"),
-			)
-			anonymizedHolder.SetCardHolderFirstNames(
-				dd.AnonymizeStringValue(holder.GetCardHolderFirstNames(), "TEST_FIRSTNAME"),
-			)
+			// Anonymize holder names (code-paged strings: 1 byte code page + 35 bytes data each)
+			surname := &ddv1.StringValue{}
+			surname.SetValue("TEST_SURNAME")
+			surname.SetEncoding(ddv1.Encoding_ISO_8859_1)
+			surname.SetLength(35)
+			anonymizedHolder.SetCardHolderSurname(surname)
+			
+			firstName := &ddv1.StringValue{}
+			firstName.SetValue("TEST_FIRSTNAME")
+			firstName.SetEncoding(ddv1.Encoding_ISO_8859_1)
+			firstName.SetLength(35)
+			anonymizedHolder.SetCardHolderFirstNames(firstName)
 
 			// Preserve language
 			anonymizedHolder.SetCardHolderPreferredLanguage(holder.GetCardHolderPreferredLanguage())
@@ -601,13 +636,18 @@ func AnonymizeIdentification(id *cardv1.Identification) *cardv1.Identification {
 		if holder := id.GetCompanyCardHolder(); holder != nil {
 			anonymizedHolder := &cardv1.Identification_CompanyCardHolder{}
 
-			// Anonymize company details
-			anonymizedHolder.SetCompanyName(
-				dd.AnonymizeStringValue(holder.GetCompanyName(), "TEST_COMPANY"),
-			)
-			anonymizedHolder.SetCompanyAddress(
-				dd.AnonymizeStringValue(holder.GetCompanyAddress(), "TEST_ADDRESS"),
-			)
+			// Anonymize company details (code-paged strings: 1 byte code page + 35 bytes data each)
+			companyName := &ddv1.StringValue{}
+			companyName.SetValue("TEST_COMPANY")
+			companyName.SetEncoding(ddv1.Encoding_ISO_8859_1)
+			companyName.SetLength(35)
+			anonymizedHolder.SetCompanyName(companyName)
+			
+			companyAddr := &ddv1.StringValue{}
+			companyAddr.SetValue("TEST_ADDRESS")
+			companyAddr.SetEncoding(ddv1.Encoding_ISO_8859_1)
+			companyAddr.SetLength(35)
+			anonymizedHolder.SetCompanyAddress(companyAddr)
 
 			// Preserve language
 			anonymizedHolder.SetCardHolderPreferredLanguage(holder.GetCardHolderPreferredLanguage())

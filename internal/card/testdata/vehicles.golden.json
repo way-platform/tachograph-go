@@ -9,17 +9,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 401,
         "length": 2
       },
-      "rawData": "Avm4Avm4XgvhAF4NMn8SVEVTVC1WUk4gICAgICAEAQ=="
+      "rawData": "Avm4Avm4XgvhAF4NMn8SAVRFU1QtVlJOICAgICAEAQ=="
     },
     {
       "vehicleOdometerBeginKm": 195000,
@@ -29,17 +28,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 402,
         "length": 2
       },
-      "rawData": "Avm4Avm4Xg0ygF4Og/8SVEVTVC1WUk4gICAgICAEAg=="
+      "rawData": "Avm4Avm4Xg0ygF4Og/8SAVRFU1QtVlJOICAgICAEAg=="
     },
     {
       "vehicleOdometerBeginKm": 195000,
@@ -49,17 +47,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 403,
         "length": 2
       },
-      "rawData": "Avm4Avm4Xg6EAF4P1X8SVEVTVC1WUk4gICAgICAEAw=="
+      "rawData": "Avm4Avm4Xg6EAF4P1X8SAVRFU1QtVlJOICAgICAEAw=="
     },
     {
       "vehicleOdometerBeginKm": 195000,
@@ -69,17 +66,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 404,
         "length": 2
       },
-      "rawData": "Avm4Avm4Xg/VgF4RJv8SVEVTVC1WUk4gICAgICAEBA=="
+      "rawData": "Avm4Avm4Xg/VgF4RJv8SAVRFU1QtVlJOICAgICAEBA=="
     },
     {
       "vehicleOdometerBeginKm": 195000,
@@ -89,17 +85,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 405,
         "length": 2
       },
-      "rawData": "Avm4Avm4XhEnAF4SeH8SVEVTVC1WUk4gICAgICAEBQ=="
+      "rawData": "Avm4Avm4XhEnAF4SeH8SAVRFU1QtVlJOICAgICAEBQ=="
     },
     {
       "vehicleOdometerBeginKm": 195000,
@@ -109,17 +104,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 406,
         "length": 2
       },
-      "rawData": "Avm4Avm4XhJ4gF4Tyf8SVEVTVC1WUk4gICAgICAEBg=="
+      "rawData": "Avm4Avm4XhJ4gF4Tyf8SAVRFU1QtVlJOICAgICAEBg=="
     },
     {
       "vehicleOdometerBeginKm": 195000,
@@ -129,17 +123,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 407,
         "length": 2
       },
-      "rawData": "Avm4Avm4XhPKAF4VG38SVEVTVC1WUk4gICAgICAEBw=="
+      "rawData": "Avm4Avm4XhPKAF4VG38SAVRFU1QtVlJOICAgICAEBw=="
     },
     {
       "vehicleOdometerBeginKm": 195000,
@@ -149,17 +142,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 408,
         "length": 2
       },
-      "rawData": "Avm4Avm4XhUbgF4WbP8SVEVTVC1WUk4gICAgICAECA=="
+      "rawData": "Avm4Avm4XhUbgF4WbP8SAVRFU1QtVlJOICAgICAECA=="
     },
     {
       "vehicleOdometerBeginKm": 195000,
@@ -169,17 +161,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 409,
         "length": 2
       },
-      "rawData": "Avm4Avm4XhZtAF4Xvn8SVEVTVC1WUk4gICAgICAECQ=="
+      "rawData": "Avm4Avm4XhZtAF4Xvn8SAVRFU1QtVlJOICAgICAECQ=="
     },
     {
       "vehicleOdometerBeginKm": 195000,
@@ -189,17 +180,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 410,
         "length": 2
       },
-      "rawData": "Avm4Avm4Xhe+gF4ZD/8SVEVTVC1WUk4gICAgICAEEA=="
+      "rawData": "Avm4Avm4Xhe+gF4ZD/8SAVRFU1QtVlJOICAgICAEEA=="
     },
     {
       "vehicleOdometerBeginKm": 195000,
@@ -209,17 +199,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 411,
         "length": 2
       },
-      "rawData": "Avm4Av2gXhkQAF4aYX8SVEVTVC1WUk4gICAgICAEEQ=="
+      "rawData": "Avm4Av2gXhkQAF4aYX8SAVRFU1QtVlJOICAgICAEEQ=="
     },
     {
       "vehicleOdometerBeginKm": 196000,
@@ -229,17 +218,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 412,
         "length": 2
       },
-      "rawData": "Av2gAv2gXhphgF4bsv8SVEVTVC1WUk4gICAgICAEEg=="
+      "rawData": "Av2gAv2gXhphgF4bsv8SAVRFU1QtVlJOICAgICAEEg=="
     },
     {
       "vehicleOdometerBeginKm": 196000,
@@ -249,17 +237,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 413,
         "length": 2
       },
-      "rawData": "Av2gAv2gXhuzAF4dBH8SVEVTVC1WUk4gICAgICAEEw=="
+      "rawData": "Av2gAv2gXhuzAF4dBH8SAVRFU1QtVlJOICAgICAEEw=="
     },
     {
       "vehicleOdometerBeginKm": 196000,
@@ -269,17 +256,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 414,
         "length": 2
       },
-      "rawData": "Av2gAv2gXh0EgF4eVf8SVEVTVC1WUk4gICAgICAEFA=="
+      "rawData": "Av2gAv2gXh0EgF4eVf8SAVRFU1QtVlJOICAgICAEFA=="
     },
     {
       "vehicleOdometerBeginKm": 196000,
@@ -289,17 +275,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 415,
         "length": 2
       },
-      "rawData": "Av2gAv2gXh5WAF4fp38SVEVTVC1WUk4gICAgICAEFQ=="
+      "rawData": "Av2gAv2gXh5WAF4fp38SAVRFU1QtVlJOICAgICAEFQ=="
     },
     {
       "vehicleOdometerBeginKm": 196000,
@@ -309,17 +294,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 416,
         "length": 2
       },
-      "rawData": "Av2gAv2gXh+ngF4g+P8SVEVTVC1WUk4gICAgICAEFg=="
+      "rawData": "Av2gAv2gXh+ngF4g+P8SAVRFU1QtVlJOICAgICAEFg=="
     },
     {
       "vehicleOdometerBeginKm": 196000,
@@ -329,17 +313,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 417,
         "length": 2
       },
-      "rawData": "Av2gAv2gXiD5AF4iSn8SVEVTVC1WUk4gICAgICAEFw=="
+      "rawData": "Av2gAv2gXiD5AF4iSn8SAVRFU1QtVlJOICAgICAEFw=="
     },
     {
       "vehicleOdometerBeginKm": 196000,
@@ -349,17 +332,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 418,
         "length": 2
       },
-      "rawData": "Av2gAv2gXiJKgF4jm/8SVEVTVC1WUk4gICAgICAEGA=="
+      "rawData": "Av2gAv2gXiJKgF4jm/8SAVRFU1QtVlJOICAgICAEGA=="
     },
     {
       "vehicleOdometerBeginKm": 196000,
@@ -369,17 +351,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 419,
         "length": 2
       },
-      "rawData": "Av2gAv2gXiOcAF4k7X8SVEVTVC1WUk4gICAgICAEGQ=="
+      "rawData": "Av2gAv2gXiOcAF4k7X8SAVRFU1QtVlJOICAgICAEGQ=="
     },
     {
       "vehicleOdometerBeginKm": 196000,
@@ -389,17 +370,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 420,
         "length": 2
       },
-      "rawData": "Av2gAv2gXiTtgF4mPv8SVEVTVC1WUk4gICAgICAEIA=="
+      "rawData": "Av2gAv2gXiTtgF4mPv8SAVRFU1QtVlJOICAgICAEIA=="
     },
     {
       "vehicleOdometerBeginKm": 196000,
@@ -409,17 +389,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 421,
         "length": 2
       },
-      "rawData": "Av2gAwGIXiY/AF4nkH8SVEVTVC1WUk4gICAgICAEIQ=="
+      "rawData": "Av2gAwGIXiY/AF4nkH8SAVRFU1QtVlJOICAgICAEIQ=="
     },
     {
       "vehicleOdometerBeginKm": 197000,
@@ -429,17 +408,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 422,
         "length": 2
       },
-      "rawData": "AwGIAwGIXieQgF4o4f8SVEVTVC1WUk4gICAgICAEIg=="
+      "rawData": "AwGIAwGIXieQgF4o4f8SAVRFU1QtVlJOICAgICAEIg=="
     },
     {
       "vehicleOdometerBeginKm": 197000,
@@ -449,17 +427,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 423,
         "length": 2
       },
-      "rawData": "AwGIAwGIXijiAF4qM38SVEVTVC1WUk4gICAgICAEIw=="
+      "rawData": "AwGIAwGIXijiAF4qM38SAVRFU1QtVlJOICAgICAEIw=="
     },
     {
       "vehicleOdometerBeginKm": 197000,
@@ -469,17 +446,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 424,
         "length": 2
       },
-      "rawData": "AwGIAwGIXiozgF4rhP8SVEVTVC1WUk4gICAgICAEJA=="
+      "rawData": "AwGIAwGIXiozgF4rhP8SAVRFU1QtVlJOICAgICAEJA=="
     },
     {
       "vehicleOdometerBeginKm": 197000,
@@ -489,17 +465,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 425,
         "length": 2
       },
-      "rawData": "AwGIAwGIXiuFAF4s1n8SVEVTVC1WUk4gICAgICAEJQ=="
+      "rawData": "AwGIAwGIXiuFAF4s1n8SAVRFU1QtVlJOICAgICAEJQ=="
     },
     {
       "vehicleOdometerBeginKm": 197000,
@@ -509,17 +484,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 426,
         "length": 2
       },
-      "rawData": "AwGIAwGIXizWgF4uJ/8SVEVTVC1WUk4gICAgICAEJg=="
+      "rawData": "AwGIAwGIXizWgF4uJ/8SAVRFU1QtVlJOICAgICAEJg=="
     },
     {
       "vehicleOdometerBeginKm": 197000,
@@ -529,17 +503,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 427,
         "length": 2
       },
-      "rawData": "AwGIAwGIXi4oAF4veX8SVEVTVC1WUk4gICAgICAEJw=="
+      "rawData": "AwGIAwGIXi4oAF4veX8SAVRFU1QtVlJOICAgICAEJw=="
     },
     {
       "vehicleOdometerBeginKm": 197000,
@@ -549,17 +522,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 428,
         "length": 2
       },
-      "rawData": "AwGIAwGIXi95gF4wyv8SVEVTVC1WUk4gICAgICAEKA=="
+      "rawData": "AwGIAwGIXi95gF4wyv8SAVRFU1QtVlJOICAgICAEKA=="
     },
     {
       "vehicleOdometerBeginKm": 197000,
@@ -569,17 +541,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 429,
         "length": 2
       },
-      "rawData": "AwGIAwGIXjDLAF4yHH8SVEVTVC1WUk4gICAgICAEKQ=="
+      "rawData": "AwGIAwGIXjDLAF4yHH8SAVRFU1QtVlJOICAgICAEKQ=="
     },
     {
       "vehicleOdometerBeginKm": 197000,
@@ -589,17 +560,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 430,
         "length": 2
       },
-      "rawData": "AwGIAwGIXjIcgF4zbf8SVEVTVC1WUk4gICAgICAEMA=="
+      "rawData": "AwGIAwGIXjIcgF4zbf8SAVRFU1QtVlJOICAgICAEMA=="
     },
     {
       "vehicleOdometerBeginKm": 197000,
@@ -609,17 +579,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 431,
         "length": 2
       },
-      "rawData": "AwGIAwVwXjNuAF40v38SVEVTVC1WUk4gICAgICAEMQ=="
+      "rawData": "AwGIAwVwXjNuAF40v38SAVRFU1QtVlJOICAgICAEMQ=="
     },
     {
       "vehicleOdometerBeginKm": 305000,
@@ -629,17 +598,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 432,
         "length": 2
       },
-      "rawData": "BKdo//8oXjS/gF42EP8SVEVTVC1WUk4gICAgICAEMg=="
+      "rawData": "BKdo//8oXjS/gF42EP8SAVRFU1QtVlJOICAgICAEMg=="
     },
     {
       "vehicleOdometerBeginKm": 283000,
@@ -649,17 +617,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 233,
         "length": 2
       },
-      "rawData": "BFF4BFF4XjYRAF43Yn8SVEVTVC1WUk4gICAgICACMw=="
+      "rawData": "BFF4BFF4XjYRAF43Yn8SAVRFU1QtVlJOICAgICACMw=="
     },
     {
       "vehicleOdometerBeginKm": 283000,
@@ -669,17 +636,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 234,
         "length": 2
       },
-      "rawData": "BFF4BFF4XjdigF44s/8SVEVTVC1WUk4gICAgICACNA=="
+      "rawData": "BFF4BFF4XjdigF44s/8SAVRFU1QtVlJOICAgICACNA=="
     },
     {
       "vehicleOdometerBeginKm": 283000,
@@ -689,17 +655,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 235,
         "length": 2
       },
-      "rawData": "BFF4BFF4Xji0AF46BX8SVEVTVC1WUk4gICAgICACNQ=="
+      "rawData": "BFF4BFF4Xji0AF46BX8SAVRFU1QtVlJOICAgICACNQ=="
     },
     {
       "vehicleOdometerBeginKm": 283000,
@@ -709,17 +674,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 236,
         "length": 2
       },
-      "rawData": "BFF4BFF4XjoFgF47Vv8SVEVTVC1WUk4gICAgICACNg=="
+      "rawData": "BFF4BFF4XjoFgF47Vv8SAVRFU1QtVlJOICAgICACNg=="
     },
     {
       "vehicleOdometerBeginKm": 283000,
@@ -729,17 +693,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 237,
         "length": 2
       },
-      "rawData": "BFF4BFF4XjtXAF48qH8SVEVTVC1WUk4gICAgICACNw=="
+      "rawData": "BFF4BFF4XjtXAF48qH8SAVRFU1QtVlJOICAgICACNw=="
     },
     {
       "vehicleOdometerBeginKm": 283000,
@@ -749,17 +712,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 238,
         "length": 2
       },
-      "rawData": "BFF4BFF4XjyogF49+f8SVEVTVC1WUk4gICAgICACOA=="
+      "rawData": "BFF4BFF4XjyogF49+f8SAVRFU1QtVlJOICAgICACOA=="
     },
     {
       "vehicleOdometerBeginKm": 284000,
@@ -769,17 +731,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 239,
         "length": 2
       },
-      "rawData": "BFVgBFVgXj36AF4/S38SVEVTVC1WUk4gICAgICACOQ=="
+      "rawData": "BFVgBFVgXj36AF4/S38SAVRFU1QtVlJOICAgICACOQ=="
     },
     {
       "vehicleOdometerBeginKm": 284000,
@@ -789,17 +750,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 240,
         "length": 2
       },
-      "rawData": "BFVgBFVgXj9LgF5AnP8SVEVTVC1WUk4gICAgICACQA=="
+      "rawData": "BFVgBFVgXj9LgF5AnP8SAVRFU1QtVlJOICAgICACQA=="
     },
     {
       "vehicleOdometerBeginKm": 284000,
@@ -809,17 +769,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 241,
         "length": 2
       },
-      "rawData": "BFVgBFVgXkCdAF5B7n8SVEVTVC1WUk4gICAgICACQQ=="
+      "rawData": "BFVgBFVgXkCdAF5B7n8SAVRFU1QtVlJOICAgICACQQ=="
     },
     {
       "vehicleOdometerBeginKm": 284000,
@@ -829,17 +788,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 242,
         "length": 2
       },
-      "rawData": "BFVgBFVgXkHugF5DP/8SVEVTVC1WUk4gICAgICACQg=="
+      "rawData": "BFVgBFVgXkHugF5DP/8SAVRFU1QtVlJOICAgICACQg=="
     },
     {
       "vehicleOdometerBeginKm": 284000,
@@ -849,17 +807,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 243,
         "length": 2
       },
-      "rawData": "BFVgBFVgXkNAAF5EkX8SVEVTVC1WUk4gICAgICACQw=="
+      "rawData": "BFVgBFVgXkNAAF5EkX8SAVRFU1QtVlJOICAgICACQw=="
     },
     {
       "vehicleOdometerBeginKm": 284000,
@@ -869,17 +826,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 244,
         "length": 2
       },
-      "rawData": "BFVgBFVgXkSRgF5F4v8SVEVTVC1WUk4gICAgICACRA=="
+      "rawData": "BFVgBFVgXkSRgF5F4v8SAVRFU1QtVlJOICAgICACRA=="
     },
     {
       "vehicleOdometerBeginKm": 284000,
@@ -889,17 +845,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 245,
         "length": 2
       },
-      "rawData": "BFVgBFVgXkXjAF5HNH8SVEVTVC1WUk4gICAgICACRQ=="
+      "rawData": "BFVgBFVgXkXjAF5HNH8SAVRFU1QtVlJOICAgICACRQ=="
     },
     {
       "vehicleOdometerBeginKm": 284000,
@@ -909,17 +864,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 246,
         "length": 2
       },
-      "rawData": "BFVgBFVgXkc0gF5Ihf8SVEVTVC1WUk4gICAgICACRg=="
+      "rawData": "BFVgBFVgXkc0gF5Ihf8SAVRFU1QtVlJOICAgICACRg=="
     },
     {
       "vehicleOdometerBeginKm": 284000,
@@ -929,17 +883,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 247,
         "length": 2
       },
-      "rawData": "BFVgBFVgXkiGAF5J138SVEVTVC1WUk4gICAgICACRw=="
+      "rawData": "BFVgBFVgXkiGAF5J138SAVRFU1QtVlJOICAgICACRw=="
     },
     {
       "vehicleOdometerBeginKm": 284000,
@@ -949,17 +902,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 248,
         "length": 2
       },
-      "rawData": "BFVgBFlIXknXgF5LKP8SVEVTVC1WUk4gICAgICACSA=="
+      "rawData": "BFVgBFlIXknXgF5LKP8SAVRFU1QtVlJOICAgICACSA=="
     },
     {
       "vehicleOdometerBeginKm": 285000,
@@ -969,17 +921,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 249,
         "length": 2
       },
-      "rawData": "BFlIBFlIXkspAF5Men8SVEVTVC1WUk4gICAgICACSQ=="
+      "rawData": "BFlIBFlIXkspAF5Men8SAVRFU1QtVlJOICAgICACSQ=="
     },
     {
       "vehicleOdometerBeginKm": 285000,
@@ -989,17 +940,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 250,
         "length": 2
       },
-      "rawData": "BFlIBFlIXkx6gF5Ny/8SVEVTVC1WUk4gICAgICACUA=="
+      "rawData": "BFlIBFlIXkx6gF5Ny/8SAVRFU1QtVlJOICAgICACUA=="
     },
     {
       "vehicleOdometerBeginKm": 285000,
@@ -1009,17 +959,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 251,
         "length": 2
       },
-      "rawData": "BFlIBFlIXk3MAF5PHX8SVEVTVC1WUk4gICAgICACUQ=="
+      "rawData": "BFlIBFlIXk3MAF5PHX8SAVRFU1QtVlJOICAgICACUQ=="
     },
     {
       "vehicleOdometerBeginKm": 177000,
@@ -1029,17 +978,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 252,
         "length": 2
       },
-      "rawData": "ArNoArNoXk8dgF5Qbv8SVEVTVC1WUk4gICAgICACUg=="
+      "rawData": "ArNoArNoXk8dgF5Qbv8SAVRFU1QtVlJOICAgICACUg=="
     },
     {
       "vehicleOdometerBeginKm": 177000,
@@ -1049,17 +997,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 253,
         "length": 2
       },
-      "rawData": "ArNoArdQXlBvAF5RwH8SVEVTVC1WUk4gICAgICACUw=="
+      "rawData": "ArNoArdQXlBvAF5RwH8SAVRFU1QtVlJOICAgICACUw=="
     },
     {
       "vehicleOdometerBeginKm": 178000,
@@ -1069,17 +1016,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 254,
         "length": 2
       },
-      "rawData": "ArdQArdQXlHAgF5TEf8SVEVTVC1WUk4gICAgICACVA=="
+      "rawData": "ArdQArdQXlHAgF5TEf8SAVRFU1QtVlJOICAgICACVA=="
     },
     {
       "vehicleOdometerBeginKm": 178000,
@@ -1089,17 +1035,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 255,
         "length": 2
       },
-      "rawData": "ArdQArdQXlMSAF5UY38SVEVTVC1WUk4gICAgICACVQ=="
+      "rawData": "ArdQArdQXlMSAF5UY38SAVRFU1QtVlJOICAgICACVQ=="
     },
     {
       "vehicleOdometerBeginKm": 178000,
@@ -1109,17 +1054,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 256,
         "length": 2
       },
-      "rawData": "ArdQArdQXlRjgF5VtP8SVEVTVC1WUk4gICAgICACVg=="
+      "rawData": "ArdQArdQXlRjgF5VtP8SAVRFU1QtVlJOICAgICACVg=="
     },
     {
       "vehicleOdometerBeginKm": 178000,
@@ -1129,17 +1073,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 257,
         "length": 2
       },
-      "rawData": "ArdQArdQXlW1AF5XBn8SVEVTVC1WUk4gICAgICACVw=="
+      "rawData": "ArdQArdQXlW1AF5XBn8SAVRFU1QtVlJOICAgICACVw=="
     },
     {
       "vehicleOdometerBeginKm": 178000,
@@ -1149,17 +1092,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 258,
         "length": 2
       },
-      "rawData": "ArdQArdQXlcGgF5YV/8SVEVTVC1WUk4gICAgICACWA=="
+      "rawData": "ArdQArdQXlcGgF5YV/8SAVRFU1QtVlJOICAgICACWA=="
     },
     {
       "vehicleOdometerBeginKm": 178000,
@@ -1169,17 +1111,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 259,
         "length": 2
       },
-      "rawData": "ArdQArdQXlhYAF5ZqX8SVEVTVC1WUk4gICAgICACWQ=="
+      "rawData": "ArdQArdQXlhYAF5ZqX8SAVRFU1QtVlJOICAgICACWQ=="
     },
     {
       "vehicleOdometerBeginKm": 178000,
@@ -1189,17 +1130,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 260,
         "length": 2
       },
-      "rawData": "ArdQArdQXlmpgF5a+v8SVEVTVC1WUk4gICAgICACYA=="
+      "rawData": "ArdQArdQXlmpgF5a+v8SAVRFU1QtVlJOICAgICACYA=="
     },
     {
       "vehicleOdometerBeginKm": 178000,
@@ -1209,17 +1149,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 261,
         "length": 2
       },
-      "rawData": "ArdQArdQXlr7AF5cTH8SVEVTVC1WUk4gICAgICACYQ=="
+      "rawData": "ArdQArdQXlr7AF5cTH8SAVRFU1QtVlJOICAgICACYQ=="
     },
     {
       "vehicleOdometerBeginKm": 178000,
@@ -1229,17 +1168,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 262,
         "length": 2
       },
-      "rawData": "ArdQArs4XlxMgF5dnf8SVEVTVC1WUk4gICAgICACYg=="
+      "rawData": "ArdQArs4XlxMgF5dnf8SAVRFU1QtVlJOICAgICACYg=="
     },
     {
       "vehicleOdometerBeginKm": 179000,
@@ -1249,17 +1187,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 263,
         "length": 2
       },
-      "rawData": "Ars4Ars4Xl2eAF5e738SVEVTVC1WUk4gICAgICACYw=="
+      "rawData": "Ars4Ars4Xl2eAF5e738SAVRFU1QtVlJOICAgICACYw=="
     },
     {
       "vehicleOdometerBeginKm": 179000,
@@ -1269,17 +1206,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 264,
         "length": 2
       },
-      "rawData": "Ars4Ars4Xl7vgF5gQP8SVEVTVC1WUk4gICAgICACZA=="
+      "rawData": "Ars4Ars4Xl7vgF5gQP8SAVRFU1QtVlJOICAgICACZA=="
     },
     {
       "vehicleOdometerBeginKm": 179000,
@@ -1289,17 +1225,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 265,
         "length": 2
       },
-      "rawData": "Ars4Ars4XmBBAF5hkn8SVEVTVC1WUk4gICAgICACZQ=="
+      "rawData": "Ars4Ars4XmBBAF5hkn8SAVRFU1QtVlJOICAgICACZQ=="
     },
     {
       "vehicleOdometerBeginKm": 179000,
@@ -1309,17 +1244,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 266,
         "length": 2
       },
-      "rawData": "Ars4Ars4XmGSgF5i4/8SVEVTVC1WUk4gICAgICACZg=="
+      "rawData": "Ars4Ars4XmGSgF5i4/8SAVRFU1QtVlJOICAgICACZg=="
     },
     {
       "vehicleOdometerBeginKm": 179000,
@@ -1329,17 +1263,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 267,
         "length": 2
       },
-      "rawData": "Ars4Ars4XmLkAF5kNX8SVEVTVC1WUk4gICAgICACZw=="
+      "rawData": "Ars4Ars4XmLkAF5kNX8SAVRFU1QtVlJOICAgICACZw=="
     },
     {
       "vehicleOdometerBeginKm": 179000,
@@ -1349,17 +1282,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 268,
         "length": 2
       },
-      "rawData": "Ars4Ars4XmQ1gF5lhv8SVEVTVC1WUk4gICAgICACaA=="
+      "rawData": "Ars4Ars4XmQ1gF5lhv8SAVRFU1QtVlJOICAgICACaA=="
     },
     {
       "vehicleOdometerBeginKm": 179000,
@@ -1369,17 +1301,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 269,
         "length": 2
       },
-      "rawData": "Ars4Ars4XmWHAF5m2H8SVEVTVC1WUk4gICAgICACaQ=="
+      "rawData": "Ars4Ars4XmWHAF5m2H8SAVRFU1QtVlJOICAgICACaQ=="
     },
     {
       "vehicleOdometerBeginKm": 179000,
@@ -1389,17 +1320,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 270,
         "length": 2
       },
-      "rawData": "Ars4Ars4XmbYgF5oKf8SVEVTVC1WUk4gICAgICACcA=="
+      "rawData": "Ars4Ars4XmbYgF5oKf8SAVRFU1QtVlJOICAgICACcA=="
     },
     {
       "vehicleOdometerBeginKm": 179000,
@@ -1409,17 +1339,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 271,
         "length": 2
       },
-      "rawData": "Ars4Ars4XmgqAF5pe38SVEVTVC1WUk4gICAgICACcQ=="
+      "rawData": "Ars4Ars4XmgqAF5pe38SAVRFU1QtVlJOICAgICACcQ=="
     },
     {
       "vehicleOdometerBeginKm": 179000,
@@ -1429,17 +1358,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 272,
         "length": 2
       },
-      "rawData": "Ars4Ar8gXml7gF5qzP8SVEVTVC1WUk4gICAgICACcg=="
+      "rawData": "Ars4Ar8gXml7gF5qzP8SAVRFU1QtVlJOICAgICACcg=="
     },
     {
       "vehicleOdometerBeginKm": 180000,
@@ -1449,17 +1377,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 273,
         "length": 2
       },
-      "rawData": "Ar8gAr8gXmrNAF5sHn8SVEVTVC1WUk4gICAgICACcw=="
+      "rawData": "Ar8gAr8gXmrNAF5sHn8SAVRFU1QtVlJOICAgICACcw=="
     },
     {
       "vehicleOdometerBeginKm": 180000,
@@ -1469,17 +1396,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 274,
         "length": 2
       },
-      "rawData": "Ar8gAr8gXmwegF5tb/8SVEVTVC1WUk4gICAgICACdA=="
+      "rawData": "Ar8gAr8gXmwegF5tb/8SAVRFU1QtVlJOICAgICACdA=="
     },
     {
       "vehicleOdometerBeginKm": 180000,
@@ -1489,17 +1415,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 275,
         "length": 2
       },
-      "rawData": "Ar8gAr8gXm1wAF5uwX8SVEVTVC1WUk4gICAgICACdQ=="
+      "rawData": "Ar8gAr8gXm1wAF5uwX8SAVRFU1QtVlJOICAgICACdQ=="
     },
     {
       "vehicleOdometerBeginKm": 180000,
@@ -1509,17 +1434,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 276,
         "length": 2
       },
-      "rawData": "Ar8gAr8gXm7BgF5wEv8SVEVTVC1WUk4gICAgICACdg=="
+      "rawData": "Ar8gAr8gXm7BgF5wEv8SAVRFU1QtVlJOICAgICACdg=="
     },
     {
       "vehicleOdometerBeginKm": 180000,
@@ -1529,17 +1453,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 277,
         "length": 2
       },
-      "rawData": "Ar8gAr8gXnATAF5xZH8SVEVTVC1WUk4gICAgICACdw=="
+      "rawData": "Ar8gAr8gXnATAF5xZH8SAVRFU1QtVlJOICAgICACdw=="
     },
     {
       "vehicleOdometerBeginKm": 180000,
@@ -1549,17 +1472,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 278,
         "length": 2
       },
-      "rawData": "Ar8gAr8gXnFkgF5ytf8SVEVTVC1WUk4gICAgICACeA=="
+      "rawData": "Ar8gAr8gXnFkgF5ytf8SAVRFU1QtVlJOICAgICACeA=="
     },
     {
       "vehicleOdometerBeginKm": 180000,
@@ -1569,17 +1491,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 279,
         "length": 2
       },
-      "rawData": "Ar8gAr8gXnK2AF50B38SVEVTVC1WUk4gICAgICACeQ=="
+      "rawData": "Ar8gAr8gXnK2AF50B38SAVRFU1QtVlJOICAgICACeQ=="
     },
     {
       "vehicleOdometerBeginKm": 180000,
@@ -1589,17 +1510,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 280,
         "length": 2
       },
-      "rawData": "Ar8gAr8gXnQHgF51WP8SVEVTVC1WUk4gICAgICACgA=="
+      "rawData": "Ar8gAr8gXnQHgF51WP8SAVRFU1QtVlJOICAgICACgA=="
     },
     {
       "vehicleOdometerBeginKm": 180000,
@@ -1609,17 +1529,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 281,
         "length": 2
       },
-      "rawData": "Ar8gAr8gXnVZAF52qn8SVEVTVC1WUk4gICAgICACgQ=="
+      "rawData": "Ar8gAr8gXnVZAF52qn8SAVRFU1QtVlJOICAgICACgQ=="
     },
     {
       "vehicleOdometerBeginKm": 180000,
@@ -1629,17 +1548,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 282,
         "length": 2
       },
-      "rawData": "Ar8gAsMIXnaqgF53+/8SVEVTVC1WUk4gICAgICACgg=="
+      "rawData": "Ar8gAsMIXnaqgF53+/8SAVRFU1QtVlJOICAgICACgg=="
     },
     {
       "vehicleOdometerBeginKm": 181000,
@@ -1649,17 +1567,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 283,
         "length": 2
       },
-      "rawData": "AsMIAsMIXnf8AF55TX8SVEVTVC1WUk4gICAgICACgw=="
+      "rawData": "AsMIAsMIXnf8AF55TX8SAVRFU1QtVlJOICAgICACgw=="
     },
     {
       "vehicleOdometerBeginKm": 181000,
@@ -1669,17 +1586,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 284,
         "length": 2
       },
-      "rawData": "AsMIAsMIXnlNgF56nv8SVEVTVC1WUk4gICAgICAChA=="
+      "rawData": "AsMIAsMIXnlNgF56nv8SAVRFU1QtVlJOICAgICAChA=="
     },
     {
       "vehicleOdometerBeginKm": 181000,
@@ -1689,17 +1605,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 285,
         "length": 2
       },
-      "rawData": "AsMIAsMIXnqfAF578H8SVEVTVC1WUk4gICAgICAChQ=="
+      "rawData": "AsMIAsMIXnqfAF578H8SAVRFU1QtVlJOICAgICAChQ=="
     },
     {
       "vehicleOdometerBeginKm": 181000,
@@ -1709,17 +1624,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 286,
         "length": 2
       },
-      "rawData": "AsMIAsMIXnvwgF59Qf8SVEVTVC1WUk4gICAgICAChg=="
+      "rawData": "AsMIAsMIXnvwgF59Qf8SAVRFU1QtVlJOICAgICAChg=="
     },
     {
       "vehicleOdometerBeginKm": 181000,
@@ -1729,17 +1643,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 287,
         "length": 2
       },
-      "rawData": "AsMIAsMIXn1CAF5+k38SVEVTVC1WUk4gICAgICAChw=="
+      "rawData": "AsMIAsMIXn1CAF5+k38SAVRFU1QtVlJOICAgICAChw=="
     },
     {
       "vehicleOdometerBeginKm": 181000,
@@ -1749,17 +1662,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 288,
         "length": 2
       },
-      "rawData": "AsMIAsMIXn6TgF5/5P8SVEVTVC1WUk4gICAgICACiA=="
+      "rawData": "AsMIAsMIXn6TgF5/5P8SAVRFU1QtVlJOICAgICACiA=="
     },
     {
       "vehicleOdometerBeginKm": 181000,
@@ -1769,17 +1681,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 289,
         "length": 2
       },
-      "rawData": "AsMIAsMIXn/lAF6BNn8SVEVTVC1WUk4gICAgICACiQ=="
+      "rawData": "AsMIAsMIXn/lAF6BNn8SAVRFU1QtVlJOICAgICACiQ=="
     },
     {
       "vehicleOdometerBeginKm": 181000,
@@ -1789,17 +1700,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 290,
         "length": 2
       },
-      "rawData": "AsMIAsMIXoE2gF6Ch/8SVEVTVC1WUk4gICAgICACkA=="
+      "rawData": "AsMIAsMIXoE2gF6Ch/8SAVRFU1QtVlJOICAgICACkA=="
     },
     {
       "vehicleOdometerBeginKm": 181000,
@@ -1809,17 +1719,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 291,
         "length": 2
       },
-      "rawData": "AsMIAsMIXoKIAF6D2X8SVEVTVC1WUk4gICAgICACkQ=="
+      "rawData": "AsMIAsMIXoKIAF6D2X8SAVRFU1QtVlJOICAgICACkQ=="
     },
     {
       "vehicleOdometerBeginKm": 181000,
@@ -1829,17 +1738,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 292,
         "length": 2
       },
-      "rawData": "AsMIAsbwXoPZgF6FKv8SVEVTVC1WUk4gICAgICACkg=="
+      "rawData": "AsMIAsbwXoPZgF6FKv8SAVRFU1QtVlJOICAgICACkg=="
     },
     {
       "vehicleOdometerBeginKm": 182000,
@@ -1849,17 +1757,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 293,
         "length": 2
       },
-      "rawData": "AsbwAsbwXoUrAF6GfH8SVEVTVC1WUk4gICAgICACkw=="
+      "rawData": "AsbwAsbwXoUrAF6GfH8SAVRFU1QtVlJOICAgICACkw=="
     },
     {
       "vehicleOdometerBeginKm": 182000,
@@ -1869,17 +1776,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 294,
         "length": 2
       },
-      "rawData": "AsbwAsbwXoZ8gF6Hzf8SVEVTVC1WUk4gICAgICAClA=="
+      "rawData": "AsbwAsbwXoZ8gF6Hzf8SAVRFU1QtVlJOICAgICAClA=="
     },
     {
       "vehicleOdometerBeginKm": 182000,
@@ -1889,17 +1795,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 295,
         "length": 2
       },
-      "rawData": "AsbwAsbwXofOAF6JH38SVEVTVC1WUk4gICAgICAClQ=="
+      "rawData": "AsbwAsbwXofOAF6JH38SAVRFU1QtVlJOICAgICAClQ=="
     },
     {
       "vehicleOdometerBeginKm": 182000,
@@ -1909,17 +1814,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 296,
         "length": 2
       },
-      "rawData": "AsbwAsbwXokfgF6KcP8SVEVTVC1WUk4gICAgICAClg=="
+      "rawData": "AsbwAsbwXokfgF6KcP8SAVRFU1QtVlJOICAgICAClg=="
     },
     {
       "vehicleOdometerBeginKm": 182000,
@@ -1929,17 +1833,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 297,
         "length": 2
       },
-      "rawData": "AsbwAsbwXopxAF6Lwn8SVEVTVC1WUk4gICAgICAClw=="
+      "rawData": "AsbwAsbwXopxAF6Lwn8SAVRFU1QtVlJOICAgICAClw=="
     },
     {
       "vehicleOdometerBeginKm": 182000,
@@ -1949,17 +1852,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 298,
         "length": 2
       },
-      "rawData": "AsbwAsbwXovCgF6NE/8SVEVTVC1WUk4gICAgICACmA=="
+      "rawData": "AsbwAsbwXovCgF6NE/8SAVRFU1QtVlJOICAgICACmA=="
     },
     {
       "vehicleOdometerBeginKm": 109000,
@@ -1969,17 +1871,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 299,
         "length": 2
       },
-      "rawData": "AanIAanIXo0UAF6OZX8SVEVTVC1WUk4gICAgICACmQ=="
+      "rawData": "AanIAanIXo0UAF6OZX8SAVRFU1QtVlJOICAgICACmQ=="
     },
     {
       "vehicleOdometerBeginKm": 182000,
@@ -1989,17 +1890,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 300,
         "length": 2
       },
-      "rawData": "AsbwAsbwXo5lgF6Ptv8SVEVTVC1WUk4gICAgICADAA=="
+      "rawData": "AsbwAsbwXo5lgF6Ptv8SAVRFU1QtVlJOICAgICADAA=="
     },
     {
       "vehicleOdometerBeginKm": 182000,
@@ -2009,17 +1909,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 301,
         "length": 2
       },
-      "rawData": "AsbwAsbwXo+3AF6RCH8SVEVTVC1WUk4gICAgICADAQ=="
+      "rawData": "AsbwAsbwXo+3AF6RCH8SAVRFU1QtVlJOICAgICADAQ=="
     },
     {
       "vehicleOdometerBeginKm": 182000,
@@ -2029,17 +1928,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 302,
         "length": 2
       },
-      "rawData": "AsbwAsbwXpEIgF6SWf8SVEVTVC1WUk4gICAgICADAg=="
+      "rawData": "AsbwAsbwXpEIgF6SWf8SAVRFU1QtVlJOICAgICADAg=="
     },
     {
       "vehicleOdometerBeginKm": 183000,
@@ -2049,17 +1947,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 303,
         "length": 2
       },
-      "rawData": "AsrYAsrYXpJaAF6Tq38SVEVTVC1WUk4gICAgICADAw=="
+      "rawData": "AsrYAsrYXpJaAF6Tq38SAVRFU1QtVlJOICAgICADAw=="
     },
     {
       "vehicleOdometerBeginKm": 45000,
@@ -2069,17 +1966,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 304,
         "length": 2
       },
-      "rawData": "AK/IAK/IXpOrgF6U/P8SVEVTVC1WUk4gICAgICADBA=="
+      "rawData": "AK/IAK/IXpOrgF6U/P8SAVRFU1QtVlJOICAgICADBA=="
     },
     {
       "vehicleOdometerBeginKm": 45000,
@@ -2089,17 +1985,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 305,
         "length": 2
       },
-      "rawData": "AK/IAK/IXpT9AF6WTn8SVEVTVC1WUk4gICAgICADBQ=="
+      "rawData": "AK/IAK/IXpT9AF6WTn8SAVRFU1QtVlJOICAgICADBQ=="
     },
     {
       "vehicleOdometerBeginKm": 183000,
@@ -2109,17 +2004,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 306,
         "length": 2
       },
-      "rawData": "AsrYAsrYXpZOgF6Xn/8SVEVTVC1WUk4gICAgICADBg=="
+      "rawData": "AsrYAsrYXpZOgF6Xn/8SAVRFU1QtVlJOICAgICADBg=="
     },
     {
       "vehicleOdometerBeginKm": 183000,
@@ -2129,17 +2023,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 307,
         "length": 2
       },
-      "rawData": "AsrYAsrYXpegAF6Y8X8SVEVTVC1WUk4gICAgICADBw=="
+      "rawData": "AsrYAsrYXpegAF6Y8X8SAVRFU1QtVlJOICAgICADBw=="
     },
     {
       "vehicleOdometerBeginKm": 183000,
@@ -2149,17 +2042,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 308,
         "length": 2
       },
-      "rawData": "AsrYAsrYXpjxgF6aQv8SVEVTVC1WUk4gICAgICADCA=="
+      "rawData": "AsrYAsrYXpjxgF6aQv8SAVRFU1QtVlJOICAgICADCA=="
     },
     {
       "vehicleOdometerBeginKm": 183000,
@@ -2169,17 +2061,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 309,
         "length": 2
       },
-      "rawData": "AsrYAsrYXppDAF6blH8SVEVTVC1WUk4gICAgICADCQ=="
+      "rawData": "AsrYAsrYXppDAF6blH8SAVRFU1QtVlJOICAgICADCQ=="
     },
     {
       "vehicleOdometerBeginKm": 183000,
@@ -2189,17 +2080,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 310,
         "length": 2
       },
-      "rawData": "AsrYAsrYXpuUgF6c5f8SVEVTVC1WUk4gICAgICADEA=="
+      "rawData": "AsrYAsrYXpuUgF6c5f8SAVRFU1QtVlJOICAgICADEA=="
     },
     {
       "vehicleOdometerBeginKm": 183000,
@@ -2209,17 +2099,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 311,
         "length": 2
       },
-      "rawData": "AsrYAsrYXpzmAF6eN38SVEVTVC1WUk4gICAgICADEQ=="
+      "rawData": "AsrYAsrYXpzmAF6eN38SAVRFU1QtVlJOICAgICADEQ=="
     },
     {
       "vehicleOdometerBeginKm": 183000,
@@ -2229,17 +2118,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 312,
         "length": 2
       },
-      "rawData": "AsrYAsrYXp43gF6fiP8SVEVTVC1WUk4gICAgICADEg=="
+      "rawData": "AsrYAsrYXp43gF6fiP8SAVRFU1QtVlJOICAgICADEg=="
     },
     {
       "vehicleOdometerBeginKm": 183000,
@@ -2249,17 +2137,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 313,
         "length": 2
       },
-      "rawData": "AsrYAs7AXp+JAF6g2n8SVEVTVC1WUk4gICAgICADEw=="
+      "rawData": "AsrYAs7AXp+JAF6g2n8SAVRFU1QtVlJOICAgICADEw=="
     },
     {
       "vehicleOdometerBeginKm": 184000,
@@ -2269,17 +2156,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 314,
         "length": 2
       },
-      "rawData": "As7AAs7AXqDagF6iK/8SVEVTVC1WUk4gICAgICADFA=="
+      "rawData": "As7AAs7AXqDagF6iK/8SAVRFU1QtVlJOICAgICADFA=="
     },
     {
       "vehicleOdometerBeginKm": 184000,
@@ -2289,17 +2175,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 315,
         "length": 2
       },
-      "rawData": "As7AAs7AXqIsAF6jfX8SVEVTVC1WUk4gICAgICADFQ=="
+      "rawData": "As7AAs7AXqIsAF6jfX8SAVRFU1QtVlJOICAgICADFQ=="
     },
     {
       "vehicleOdometerBeginKm": 184000,
@@ -2309,17 +2194,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 316,
         "length": 2
       },
-      "rawData": "As7AAs7AXqN9gF6kzv8SVEVTVC1WUk4gICAgICADFg=="
+      "rawData": "As7AAs7AXqN9gF6kzv8SAVRFU1QtVlJOICAgICADFg=="
     },
     {
       "vehicleOdometerBeginKm": 184000,
@@ -2329,17 +2213,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 317,
         "length": 2
       },
-      "rawData": "As7AAs7AXqTPAF6mIH8SVEVTVC1WUk4gICAgICADFw=="
+      "rawData": "As7AAs7AXqTPAF6mIH8SAVRFU1QtVlJOICAgICADFw=="
     },
     {
       "vehicleOdometerBeginKm": 185000,
@@ -2349,17 +2232,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 318,
         "length": 2
       },
-      "rawData": "AtKoAtKoXqYggF6ncf8SVEVTVC1WUk4gICAgICADGA=="
+      "rawData": "AtKoAtKoXqYggF6ncf8SAVRFU1QtVlJOICAgICADGA=="
     },
     {
       "vehicleOdometerBeginKm": 185000,
@@ -2369,17 +2251,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 319,
         "length": 2
       },
-      "rawData": "AtKoAtKoXqdyAF6ow38SVEVTVC1WUk4gICAgICADGQ=="
+      "rawData": "AtKoAtKoXqdyAF6ow38SAVRFU1QtVlJOICAgICADGQ=="
     },
     {
       "vehicleOdometerBeginKm": 185000,
@@ -2389,17 +2270,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 320,
         "length": 2
       },
-      "rawData": "AtKoAtKoXqjDgF6qFP8SVEVTVC1WUk4gICAgICADIA=="
+      "rawData": "AtKoAtKoXqjDgF6qFP8SAVRFU1QtVlJOICAgICADIA=="
     },
     {
       "vehicleOdometerBeginKm": 185000,
@@ -2409,17 +2289,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 321,
         "length": 2
       },
-      "rawData": "AtKoAtKoXqoVAF6rZn8SVEVTVC1WUk4gICAgICADIQ=="
+      "rawData": "AtKoAtKoXqoVAF6rZn8SAVRFU1QtVlJOICAgICADIQ=="
     },
     {
       "vehicleOdometerBeginKm": 185000,
@@ -2429,17 +2308,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 322,
         "length": 2
       },
-      "rawData": "AtKoAtKoXqtmgF6st/8SVEVTVC1WUk4gICAgICADIg=="
+      "rawData": "AtKoAtKoXqtmgF6st/8SAVRFU1QtVlJOICAgICADIg=="
     },
     {
       "vehicleOdometerBeginKm": 185000,
@@ -2449,17 +2327,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 323,
         "length": 2
       },
-      "rawData": "AtKoAtaQXqy4AF6uCX8SVEVTVC1WUk4gICAgICADIw=="
+      "rawData": "AtKoAtaQXqy4AF6uCX8SAVRFU1QtVlJOICAgICADIw=="
     },
     {
       "vehicleOdometerBeginKm": 186000,
@@ -2469,17 +2346,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 324,
         "length": 2
       },
-      "rawData": "AtaQAtaQXq4JgF6vWv8SVEVTVC1WUk4gICAgICADJA=="
+      "rawData": "AtaQAtaQXq4JgF6vWv8SAVRFU1QtVlJOICAgICADJA=="
     },
     {
       "vehicleOdometerBeginKm": 186000,
@@ -2489,17 +2365,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 325,
         "length": 2
       },
-      "rawData": "AtaQAtaQXq9bAF6wrH8SVEVTVC1WUk4gICAgICADJQ=="
+      "rawData": "AtaQAtaQXq9bAF6wrH8SAVRFU1QtVlJOICAgICADJQ=="
     },
     {
       "vehicleOdometerBeginKm": 186000,
@@ -2509,17 +2384,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 326,
         "length": 2
       },
-      "rawData": "AtaQAtaQXrCsgF6x/f8SVEVTVC1WUk4gICAgICADJg=="
+      "rawData": "AtaQAtaQXrCsgF6x/f8SAVRFU1QtVlJOICAgICADJg=="
     },
     {
       "vehicleOdometerBeginKm": 186000,
@@ -2529,17 +2403,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 327,
         "length": 2
       },
-      "rawData": "AtaQAtaQXrH+AF6zT38SVEVTVC1WUk4gICAgICADJw=="
+      "rawData": "AtaQAtaQXrH+AF6zT38SAVRFU1QtVlJOICAgICADJw=="
     },
     {
       "vehicleOdometerBeginKm": 186000,
@@ -2549,17 +2422,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 328,
         "length": 2
       },
-      "rawData": "AtaQAtaQXrNPgF60oP8SVEVTVC1WUk4gICAgICADKA=="
+      "rawData": "AtaQAtaQXrNPgF60oP8SAVRFU1QtVlJOICAgICADKA=="
     },
     {
       "vehicleOdometerBeginKm": 186000,
@@ -2569,17 +2441,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 329,
         "length": 2
       },
-      "rawData": "AtaQAtaQXrShAF618n8SVEVTVC1WUk4gICAgICADKQ=="
+      "rawData": "AtaQAtaQXrShAF618n8SAVRFU1QtVlJOICAgICADKQ=="
     },
     {
       "vehicleOdometerBeginKm": 186000,
@@ -2589,17 +2460,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 330,
         "length": 2
       },
-      "rawData": "AtaQAtaQXrXygF63Q/8SVEVTVC1WUk4gICAgICADMA=="
+      "rawData": "AtaQAtaQXrXygF63Q/8SAVRFU1QtVlJOICAgICADMA=="
     },
     {
       "vehicleOdometerBeginKm": 186000,
@@ -2609,17 +2479,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 331,
         "length": 2
       },
-      "rawData": "AtaQAtaQXrdEAF64lX8SVEVTVC1WUk4gICAgICADMQ=="
+      "rawData": "AtaQAtaQXrdEAF64lX8SAVRFU1QtVlJOICAgICADMQ=="
     },
     {
       "vehicleOdometerBeginKm": 186000,
@@ -2629,17 +2498,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 332,
         "length": 2
       },
-      "rawData": "AtaQAtaQXriVgF655v8SVEVTVC1WUk4gICAgICADMg=="
+      "rawData": "AtaQAtaQXriVgF655v8SAVRFU1QtVlJOICAgICADMg=="
     },
     {
       "vehicleOdometerBeginKm": 186000,
@@ -2649,17 +2517,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 333,
         "length": 2
       },
-      "rawData": "AtaQAtp4XrnnAF67OH8SVEVTVC1WUk4gICAgICADMw=="
+      "rawData": "AtaQAtp4XrnnAF67OH8SAVRFU1QtVlJOICAgICADMw=="
     },
     {
       "vehicleOdometerBeginKm": 187000,
@@ -2669,17 +2536,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 334,
         "length": 2
       },
-      "rawData": "Atp4Atp4Xrs4gF68if8SVEVTVC1WUk4gICAgICADNA=="
+      "rawData": "Atp4Atp4Xrs4gF68if8SAVRFU1QtVlJOICAgICADNA=="
     },
     {
       "vehicleOdometerBeginKm": 187000,
@@ -2689,17 +2555,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 335,
         "length": 2
       },
-      "rawData": "Atp4Atp4XryKAF69238SVEVTVC1WUk4gICAgICADNQ=="
+      "rawData": "Atp4Atp4XryKAF69238SAVRFU1QtVlJOICAgICADNQ=="
     },
     {
       "vehicleOdometerBeginKm": 187000,
@@ -2709,17 +2574,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 336,
         "length": 2
       },
-      "rawData": "Atp4Atp4Xr3bgF6/LP8SVEVTVC1WUk4gICAgICADNg=="
+      "rawData": "Atp4Atp4Xr3bgF6/LP8SAVRFU1QtVlJOICAgICADNg=="
     },
     {
       "vehicleOdometerBeginKm": 187000,
@@ -2729,17 +2593,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 337,
         "length": 2
       },
-      "rawData": "Atp4Atp4Xr8tAF7Afn8SVEVTVC1WUk4gICAgICADNw=="
+      "rawData": "Atp4Atp4Xr8tAF7Afn8SAVRFU1QtVlJOICAgICADNw=="
     },
     {
       "vehicleOdometerBeginKm": 187000,
@@ -2749,17 +2612,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 338,
         "length": 2
       },
-      "rawData": "Atp4Atp4XsB+gF7Bz/8SVEVTVC1WUk4gICAgICADOA=="
+      "rawData": "Atp4Atp4XsB+gF7Bz/8SAVRFU1QtVlJOICAgICADOA=="
     },
     {
       "vehicleOdometerBeginKm": 187000,
@@ -2769,17 +2631,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 339,
         "length": 2
       },
-      "rawData": "Atp4Atp4XsHQAF7DIX8SVEVTVC1WUk4gICAgICADOQ=="
+      "rawData": "Atp4Atp4XsHQAF7DIX8SAVRFU1QtVlJOICAgICADOQ=="
     },
     {
       "vehicleOdometerBeginKm": 187000,
@@ -2789,17 +2650,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 340,
         "length": 2
       },
-      "rawData": "Atp4Atp4XsMhgF7Ecv8SVEVTVC1WUk4gICAgICADQA=="
+      "rawData": "Atp4Atp4XsMhgF7Ecv8SAVRFU1QtVlJOICAgICADQA=="
     },
     {
       "vehicleOdometerBeginKm": 187000,
@@ -2809,17 +2669,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 341,
         "length": 2
       },
-      "rawData": "Atp4Atp4XsRzAF7FxH8SVEVTVC1WUk4gICAgICADQQ=="
+      "rawData": "Atp4Atp4XsRzAF7FxH8SAVRFU1QtVlJOICAgICADQQ=="
     },
     {
       "vehicleOdometerBeginKm": 187000,
@@ -2829,17 +2688,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 342,
         "length": 2
       },
-      "rawData": "Atp4At5gXsXEgF7HFf8SVEVTVC1WUk4gICAgICADQg=="
+      "rawData": "Atp4At5gXsXEgF7HFf8SAVRFU1QtVlJOICAgICADQg=="
     },
     {
       "vehicleOdometerBeginKm": 188000,
@@ -2849,17 +2707,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 343,
         "length": 2
       },
-      "rawData": "At5gAt5gXscWAF7IZ38SVEVTVC1WUk4gICAgICADQw=="
+      "rawData": "At5gAt5gXscWAF7IZ38SAVRFU1QtVlJOICAgICADQw=="
     },
     {
       "vehicleOdometerBeginKm": 188000,
@@ -2869,17 +2726,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 344,
         "length": 2
       },
-      "rawData": "At5gAt5gXshngF7JuP8SVEVTVC1WUk4gICAgICADRA=="
+      "rawData": "At5gAt5gXshngF7JuP8SAVRFU1QtVlJOICAgICADRA=="
     },
     {
       "vehicleOdometerBeginKm": 188000,
@@ -2889,17 +2745,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 345,
         "length": 2
       },
-      "rawData": "At5gAt5gXsm5AF7LCn8SVEVTVC1WUk4gICAgICADRQ=="
+      "rawData": "At5gAt5gXsm5AF7LCn8SAVRFU1QtVlJOICAgICADRQ=="
     },
     {
       "vehicleOdometerBeginKm": 188000,
@@ -2909,17 +2764,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 346,
         "length": 2
       },
-      "rawData": "At5gAt5gXssKgF7MW/8SVEVTVC1WUk4gICAgICADRg=="
+      "rawData": "At5gAt5gXssKgF7MW/8SAVRFU1QtVlJOICAgICADRg=="
     },
     {
       "vehicleOdometerBeginKm": 188000,
@@ -2929,17 +2783,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 347,
         "length": 2
       },
-      "rawData": "At5gAt5gXsxcAF7NrX8SVEVTVC1WUk4gICAgICADRw=="
+      "rawData": "At5gAt5gXsxcAF7NrX8SAVRFU1QtVlJOICAgICADRw=="
     },
     {
       "vehicleOdometerBeginKm": 188000,
@@ -2949,17 +2802,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 348,
         "length": 2
       },
-      "rawData": "At5gAt5gXs2tgF7O/v8SVEVTVC1WUk4gICAgICADSA=="
+      "rawData": "At5gAt5gXs2tgF7O/v8SAVRFU1QtVlJOICAgICADSA=="
     },
     {
       "vehicleOdometerBeginKm": 188000,
@@ -2969,17 +2821,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 349,
         "length": 2
       },
-      "rawData": "At5gAt5gXs7/AF7QUH8SVEVTVC1WUk4gICAgICADSQ=="
+      "rawData": "At5gAt5gXs7/AF7QUH8SAVRFU1QtVlJOICAgICADSQ=="
     },
     {
       "vehicleOdometerBeginKm": 188000,
@@ -2989,17 +2840,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 350,
         "length": 2
       },
-      "rawData": "At5gAt5gXtBQgF7Rof8SVEVTVC1WUk4gICAgICADUA=="
+      "rawData": "At5gAt5gXtBQgF7Rof8SAVRFU1QtVlJOICAgICADUA=="
     },
     {
       "vehicleOdometerBeginKm": 188000,
@@ -3009,17 +2859,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 351,
         "length": 2
       },
-      "rawData": "At5gAt5gXtGiAF7S838SVEVTVC1WUk4gICAgICADUQ=="
+      "rawData": "At5gAt5gXtGiAF7S838SAVRFU1QtVlJOICAgICADUQ=="
     },
     {
       "vehicleOdometerBeginKm": 188000,
@@ -3029,17 +2878,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 352,
         "length": 2
       },
-      "rawData": "At5gAuJIXtLzgF7URP8SVEVTVC1WUk4gICAgICADUg=="
+      "rawData": "At5gAuJIXtLzgF7URP8SAVRFU1QtVlJOICAgICADUg=="
     },
     {
       "vehicleOdometerBeginKm": 189000,
@@ -3049,17 +2897,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 353,
         "length": 2
       },
-      "rawData": "AuJIAuJIXtRFAF7Vln8SVEVTVC1WUk4gICAgICADUw=="
+      "rawData": "AuJIAuJIXtRFAF7Vln8SAVRFU1QtVlJOICAgICADUw=="
     },
     {
       "vehicleOdometerBeginKm": 189000,
@@ -3069,17 +2916,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 354,
         "length": 2
       },
-      "rawData": "AuJIAuJIXtWWgF7W5/8SVEVTVC1WUk4gICAgICADVA=="
+      "rawData": "AuJIAuJIXtWWgF7W5/8SAVRFU1QtVlJOICAgICADVA=="
     },
     {
       "vehicleOdometerBeginKm": 189000,
@@ -3089,17 +2935,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 355,
         "length": 2
       },
-      "rawData": "AuJIAuJIXtboAF7YOX8SVEVTVC1WUk4gICAgICADVQ=="
+      "rawData": "AuJIAuJIXtboAF7YOX8SAVRFU1QtVlJOICAgICADVQ=="
     },
     {
       "vehicleOdometerBeginKm": 189000,
@@ -3109,17 +2954,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 356,
         "length": 2
       },
-      "rawData": "AuJIAuJIXtg5gF7Ziv8SVEVTVC1WUk4gICAgICADVg=="
+      "rawData": "AuJIAuJIXtg5gF7Ziv8SAVRFU1QtVlJOICAgICADVg=="
     },
     {
       "vehicleOdometerBeginKm": 189000,
@@ -3129,17 +2973,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 357,
         "length": 2
       },
-      "rawData": "AuJIAuJIXtmLAF7a3H8SVEVTVC1WUk4gICAgICADVw=="
+      "rawData": "AuJIAuJIXtmLAF7a3H8SAVRFU1QtVlJOICAgICADVw=="
     },
     {
       "vehicleOdometerBeginKm": 189000,
@@ -3149,17 +2992,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 358,
         "length": 2
       },
-      "rawData": "AuJIAuJIXtrcgF7cLf8SVEVTVC1WUk4gICAgICADWA=="
+      "rawData": "AuJIAuJIXtrcgF7cLf8SAVRFU1QtVlJOICAgICADWA=="
     },
     {
       "vehicleOdometerBeginKm": 189000,
@@ -3169,17 +3011,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 359,
         "length": 2
       },
-      "rawData": "AuJIAuJIXtwuAF7df38SVEVTVC1WUk4gICAgICADWQ=="
+      "rawData": "AuJIAuJIXtwuAF7df38SAVRFU1QtVlJOICAgICADWQ=="
     },
     {
       "vehicleOdometerBeginKm": 189000,
@@ -3189,17 +3030,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 360,
         "length": 2
       },
-      "rawData": "AuJIAuJIXt1/gF7e0P8SVEVTVC1WUk4gICAgICADYA=="
+      "rawData": "AuJIAuJIXt1/gF7e0P8SAVRFU1QtVlJOICAgICADYA=="
     },
     {
       "vehicleOdometerBeginKm": 189000,
@@ -3209,17 +3049,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 361,
         "length": 2
       },
-      "rawData": "AuJIAuYwXt7RAF7gIn8SVEVTVC1WUk4gICAgICADYQ=="
+      "rawData": "AuJIAuYwXt7RAF7gIn8SAVRFU1QtVlJOICAgICADYQ=="
     },
     {
       "vehicleOdometerBeginKm": 190000,
@@ -3229,17 +3068,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 362,
         "length": 2
       },
-      "rawData": "AuYwAuYwXuAigF7hc/8SVEVTVC1WUk4gICAgICADYg=="
+      "rawData": "AuYwAuYwXuAigF7hc/8SAVRFU1QtVlJOICAgICADYg=="
     },
     {
       "vehicleOdometerBeginKm": 190000,
@@ -3249,17 +3087,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 363,
         "length": 2
       },
-      "rawData": "AuYwAuYwXuF0AF7ixX8SVEVTVC1WUk4gICAgICADYw=="
+      "rawData": "AuYwAuYwXuF0AF7ixX8SAVRFU1QtVlJOICAgICADYw=="
     },
     {
       "vehicleOdometerBeginKm": 190000,
@@ -3269,17 +3106,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 364,
         "length": 2
       },
-      "rawData": "AuYwAuYwXuLFgF7kFv8SVEVTVC1WUk4gICAgICADZA=="
+      "rawData": "AuYwAuYwXuLFgF7kFv8SAVRFU1QtVlJOICAgICADZA=="
     },
     {
       "vehicleOdometerBeginKm": 190000,
@@ -3289,17 +3125,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 365,
         "length": 2
       },
-      "rawData": "AuYwAuYwXuQXAF7laH8SVEVTVC1WUk4gICAgICADZQ=="
+      "rawData": "AuYwAuYwXuQXAF7laH8SAVRFU1QtVlJOICAgICADZQ=="
     },
     {
       "vehicleOdometerBeginKm": 190000,
@@ -3309,17 +3144,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 366,
         "length": 2
       },
-      "rawData": "AuYwAuYwXuVogF7muf8SVEVTVC1WUk4gICAgICADZg=="
+      "rawData": "AuYwAuYwXuVogF7muf8SAVRFU1QtVlJOICAgICADZg=="
     },
     {
       "vehicleOdometerBeginKm": 112000,
@@ -3329,17 +3163,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 367,
         "length": 2
       },
-      "rawData": "AbWAAbWAXua6AF7oC38SVEVTVC1WUk4gICAgICADZw=="
+      "rawData": "AbWAAbWAXua6AF7oC38SAVRFU1QtVlJOICAgICADZw=="
     },
     {
       "vehicleOdometerBeginKm": 112000,
@@ -3349,17 +3182,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 368,
         "length": 2
       },
-      "rawData": "AbWAAbWAXugLgF7pXP8SVEVTVC1WUk4gICAgICADaA=="
+      "rawData": "AbWAAbWAXugLgF7pXP8SAVRFU1QtVlJOICAgICADaA=="
     },
     {
       "vehicleOdometerBeginKm": 190000,
@@ -3369,17 +3201,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 369,
         "length": 2
       },
-      "rawData": "AuYwAuYwXuldAF7qrn8SVEVTVC1WUk4gICAgICADaQ=="
+      "rawData": "AuYwAuYwXuldAF7qrn8SAVRFU1QtVlJOICAgICADaQ=="
     },
     {
       "vehicleOdometerBeginKm": 192000,
@@ -3389,17 +3220,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 370,
         "length": 2
       },
-      "rawData": "Au4AAu4AXuqugF7r//8SVEVTVC1WUk4gICAgICADcA=="
+      "rawData": "Au4AAu4AXuqugF7r//8SAVRFU1QtVlJOICAgICADcA=="
     },
     {
       "vehicleOdometerBeginKm": 192000,
@@ -3409,17 +3239,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 371,
         "length": 2
       },
-      "rawData": "Au4AAu4AXuwAAF7tUX8SVEVTVC1WUk4gICAgICADcQ=="
+      "rawData": "Au4AAu4AXuwAAF7tUX8SAVRFU1QtVlJOICAgICADcQ=="
     },
     {
       "vehicleOdometerBeginKm": 192000,
@@ -3429,17 +3258,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 372,
         "length": 2
       },
-      "rawData": "Au4AAu4AXu1RgF7uov8SVEVTVC1WUk4gICAgICADcg=="
+      "rawData": "Au4AAu4AXu1RgF7uov8SAVRFU1QtVlJOICAgICADcg=="
     },
     {
       "vehicleOdometerBeginKm": 192000,
@@ -3449,17 +3277,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 373,
         "length": 2
       },
-      "rawData": "Au4AAu4AXu6jAF7v9H8SVEVTVC1WUk4gICAgICADcw=="
+      "rawData": "Au4AAu4AXu6jAF7v9H8SAVRFU1QtVlJOICAgICADcw=="
     },
     {
       "vehicleOdometerBeginKm": 192000,
@@ -3469,17 +3296,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 374,
         "length": 2
       },
-      "rawData": "Au4AAu4AXu/0gF7xRf8SVEVTVC1WUk4gICAgICADdA=="
+      "rawData": "Au4AAu4AXu/0gF7xRf8SAVRFU1QtVlJOICAgICADdA=="
     },
     {
       "vehicleOdometerBeginKm": 192000,
@@ -3489,17 +3315,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 375,
         "length": 2
       },
-      "rawData": "Au4AAu4AXvFGAF7yl38SVEVTVC1WUk4gICAgICADdQ=="
+      "rawData": "Au4AAu4AXvFGAF7yl38SAVRFU1QtVlJOICAgICADdQ=="
     },
     {
       "vehicleOdometerBeginKm": 192000,
@@ -3509,17 +3334,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 376,
         "length": 2
       },
-      "rawData": "Au4AAu4AXvKXgF7z6P8SVEVTVC1WUk4gICAgICADdg=="
+      "rawData": "Au4AAu4AXvKXgF7z6P8SAVRFU1QtVlJOICAgICADdg=="
     },
     {
       "vehicleOdometerBeginKm": 192000,
@@ -3529,17 +3353,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 377,
         "length": 2
       },
-      "rawData": "Au4AAu4AXvPpAF71On8SVEVTVC1WUk4gICAgICADdw=="
+      "rawData": "Au4AAu4AXvPpAF71On8SAVRFU1QtVlJOICAgICADdw=="
     },
     {
       "vehicleOdometerBeginKm": 192000,
@@ -3549,17 +3372,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 378,
         "length": 2
       },
-      "rawData": "Au4AAu4AXvU6gF72i/8SVEVTVC1WUk4gICAgICADeA=="
+      "rawData": "Au4AAu4AXvU6gF72i/8SAVRFU1QtVlJOICAgICADeA=="
     },
     {
       "vehicleOdometerBeginKm": 192000,
@@ -3569,17 +3391,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 379,
         "length": 2
       },
-      "rawData": "Au4AAvHoXvaMAF733X8SVEVTVC1WUk4gICAgICADeQ=="
+      "rawData": "Au4AAvHoXvaMAF733X8SAVRFU1QtVlJOICAgICADeQ=="
     },
     {
       "vehicleOdometerBeginKm": 193000,
@@ -3589,17 +3410,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 380,
         "length": 2
       },
-      "rawData": "AvHoAvHoXvfdgF75Lv8SVEVTVC1WUk4gICAgICADgA=="
+      "rawData": "AvHoAvHoXvfdgF75Lv8SAVRFU1QtVlJOICAgICADgA=="
     },
     {
       "vehicleOdometerBeginKm": 193000,
@@ -3609,17 +3429,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 381,
         "length": 2
       },
-      "rawData": "AvHoAvHoXvkvAF76gH8SVEVTVC1WUk4gICAgICADgQ=="
+      "rawData": "AvHoAvHoXvkvAF76gH8SAVRFU1QtVlJOICAgICADgQ=="
     },
     {
       "vehicleOdometerBeginKm": 193000,
@@ -3629,17 +3448,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 382,
         "length": 2
       },
-      "rawData": "AvHoAvHoXvqAgF770f8SVEVTVC1WUk4gICAgICADgg=="
+      "rawData": "AvHoAvHoXvqAgF770f8SAVRFU1QtVlJOICAgICADgg=="
     },
     {
       "vehicleOdometerBeginKm": 193000,
@@ -3649,17 +3467,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 383,
         "length": 2
       },
-      "rawData": "AvHoAvHoXvvSAF79I38SVEVTVC1WUk4gICAgICADgw=="
+      "rawData": "AvHoAvHoXvvSAF79I38SAVRFU1QtVlJOICAgICADgw=="
     },
     {
       "vehicleOdometerBeginKm": 193000,
@@ -3669,17 +3486,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 384,
         "length": 2
       },
-      "rawData": "AvHoAvHoXv0jgF7+dP8SVEVTVC1WUk4gICAgICADhA=="
+      "rawData": "AvHoAvHoXv0jgF7+dP8SAVRFU1QtVlJOICAgICADhA=="
     },
     {
       "vehicleOdometerBeginKm": 193000,
@@ -3689,17 +3505,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 385,
         "length": 2
       },
-      "rawData": "AvHoAvHoXv51AF7/xn8SVEVTVC1WUk4gICAgICADhQ=="
+      "rawData": "AvHoAvHoXv51AF7/xn8SAVRFU1QtVlJOICAgICADhQ=="
     },
     {
       "vehicleOdometerBeginKm": 193000,
@@ -3709,17 +3524,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 386,
         "length": 2
       },
-      "rawData": "AvHoAvHoXv/GgF8BF/8SVEVTVC1WUk4gICAgICADhg=="
+      "rawData": "AvHoAvHoXv/GgF8BF/8SAVRFU1QtVlJOICAgICADhg=="
     },
     {
       "vehicleOdometerBeginKm": 193000,
@@ -3729,17 +3543,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 387,
         "length": 2
       },
-      "rawData": "AvHoAvHoXwEYAF8CaX8SVEVTVC1WUk4gICAgICADhw=="
+      "rawData": "AvHoAvHoXwEYAF8CaX8SAVRFU1QtVlJOICAgICADhw=="
     },
     {
       "vehicleOdometerBeginKm": 193000,
@@ -3749,17 +3562,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 388,
         "length": 2
       },
-      "rawData": "AvHoAvHoXwJpgF8Duv8SVEVTVC1WUk4gICAgICADiA=="
+      "rawData": "AvHoAvHoXwJpgF8Duv8SAVRFU1QtVlJOICAgICADiA=="
     },
     {
       "vehicleOdometerBeginKm": 193000,
@@ -3769,17 +3581,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 389,
         "length": 2
       },
-      "rawData": "AvHoAvXQXwO7AF8FDH8SVEVTVC1WUk4gICAgICADiQ=="
+      "rawData": "AvHoAvXQXwO7AF8FDH8SAVRFU1QtVlJOICAgICADiQ=="
     },
     {
       "vehicleOdometerBeginKm": 113000,
@@ -3789,17 +3600,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 390,
         "length": 2
       },
-      "rawData": "AbloAbloXwUMgF8GXf8SVEVTVC1WUk4gICAgICADkA=="
+      "rawData": "AbloAbloXwUMgF8GXf8SAVRFU1QtVlJOICAgICADkA=="
     },
     {
       "vehicleOdometerBeginKm": 113000,
@@ -3809,17 +3619,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 391,
         "length": 2
       },
-      "rawData": "AbloAbloXwZeAF8Hr38SVEVTVC1WUk4gICAgICADkQ=="
+      "rawData": "AbloAbloXwZeAF8Hr38SAVRFU1QtVlJOICAgICADkQ=="
     },
     {
       "vehicleOdometerBeginKm": 194000,
@@ -3829,17 +3638,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 392,
         "length": 2
       },
-      "rawData": "AvXQAvXQXwevgF8JAP8SVEVTVC1WUk4gICAgICADkg=="
+      "rawData": "AvXQAvXQXwevgF8JAP8SAVRFU1QtVlJOICAgICADkg=="
     },
     {
       "vehicleOdometerBeginKm": 194000,
@@ -3849,17 +3657,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 393,
         "length": 2
       },
-      "rawData": "AvXQAvXQXwkBAF8KUn8SVEVTVC1WUk4gICAgICADkw=="
+      "rawData": "AvXQAvXQXwkBAF8KUn8SAVRFU1QtVlJOICAgICADkw=="
     },
     {
       "vehicleOdometerBeginKm": 194000,
@@ -3869,17 +3676,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 394,
         "length": 2
       },
-      "rawData": "AvXQAvXQXwpSgF8Lo/8SVEVTVC1WUk4gICAgICADlA=="
+      "rawData": "AvXQAvXQXwpSgF8Lo/8SAVRFU1QtVlJOICAgICADlA=="
     },
     {
       "vehicleOdometerBeginKm": 194000,
@@ -3889,17 +3695,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 395,
         "length": 2
       },
-      "rawData": "AvXQAvXQXwukAF8M9X8SVEVTVC1WUk4gICAgICADlQ=="
+      "rawData": "AvXQAvXQXwukAF8M9X8SAVRFU1QtVlJOICAgICADlQ=="
     },
     {
       "vehicleOdometerBeginKm": 194000,
@@ -3909,17 +3714,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 396,
         "length": 2
       },
-      "rawData": "AvXQAvXQXwz1gF8ORv8SVEVTVC1WUk4gICAgICADlg=="
+      "rawData": "AvXQAvXQXwz1gF8ORv8SAVRFU1QtVlJOICAgICADlg=="
     },
     {
       "vehicleOdometerBeginKm": 194000,
@@ -3929,17 +3733,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 397,
         "length": 2
       },
-      "rawData": "AvXQAvXQXw5HAF8PmH8SVEVTVC1WUk4gICAgICADlw=="
+      "rawData": "AvXQAvXQXw5HAF8PmH8SAVRFU1QtVlJOICAgICADlw=="
     },
     {
       "vehicleOdometerBeginKm": 194000,
@@ -3949,17 +3752,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 398,
         "length": 2
       },
-      "rawData": "AvXQAvXQXw+YgF8Q6f8SVEVTVC1WUk4gICAgICADmA=="
+      "rawData": "AvXQAvXQXw+YgF8Q6f8SAVRFU1QtVlJOICAgICADmA=="
     },
     {
       "vehicleOdometerBeginKm": 194000,
@@ -3969,17 +3771,16 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 399,
         "length": 2
       },
-      "rawData": "AvXQAvXQXxDqAF8SO38SVEVTVC1WUk4gICAgICADmQ=="
+      "rawData": "AvXQAvXQXxDqAF8SO38SAVRFU1QtVlJOICAgICADmQ=="
     },
     {
       "vehicleOdometerBeginKm": 194000,
@@ -3989,19 +3790,18 @@
       "vehicleRegistration": {
         "nation": "FINLAND",
         "number": {
-          "encoding": "IA5",
-          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "encoding": "ISO_8859_1",
           "value": "TEST-VRN",
-          "length": 14
+          "length": 13
         }
       },
       "vuDataBlockCounter": {
         "value": 400,
         "length": 2
       },
-      "rawData": "AvXQAvm4XxI7gF8TjP8SVEVTVC1WUk4gICAgICAEAA=="
+      "rawData": "AvXQAvm4XxI7gF8TjP8SAVRFU1QtVlJOICAgICAEAA=="
     }
   ],
-  "rawData": "AB8C+bgC+bheC+EAXg0yfxJURVNULVZSTiAgICAgIAQBAvm4Avm4Xg0ygF4Og/8SVEVTVC1WUk4gICAgICAEAgL5uAL5uF4OhABeD9V/ElRFU1QtVlJOICAgICAgBAMC+bgC+bheD9WAXhEm/xJURVNULVZSTiAgICAgIAQEAvm4Avm4XhEnAF4SeH8SVEVTVC1WUk4gICAgICAEBQL5uAL5uF4SeIBeE8n/ElRFU1QtVlJOICAgICAgBAYC+bgC+bheE8oAXhUbfxJURVNULVZSTiAgICAgIAQHAvm4Avm4XhUbgF4WbP8SVEVTVC1WUk4gICAgICAECAL5uAL5uF4WbQBeF75/ElRFU1QtVlJOICAgICAgBAkC+bgC+bheF76AXhkP/xJURVNULVZSTiAgICAgIAQQAvm4Av2gXhkQAF4aYX8SVEVTVC1WUk4gICAgICAEEQL9oAL9oF4aYYBeG7L/ElRFU1QtVlJOICAgICAgBBIC/aAC/aBeG7MAXh0EfxJURVNULVZSTiAgICAgIAQTAv2gAv2gXh0EgF4eVf8SVEVTVC1WUk4gICAgICAEFAL9oAL9oF4eVgBeH6d/ElRFU1QtVlJOICAgICAgBBUC/aAC/aBeH6eAXiD4/xJURVNULVZSTiAgICAgIAQWAv2gAv2gXiD5AF4iSn8SVEVTVC1WUk4gICAgICAEFwL9oAL9oF4iSoBeI5v/ElRFU1QtVlJOICAgICAgBBgC/aAC/aBeI5wAXiTtfxJURVNULVZSTiAgICAgIAQZAv2gAv2gXiTtgF4mPv8SVEVTVC1WUk4gICAgICAEIAL9oAMBiF4mPwBeJ5B/ElRFU1QtVlJOICAgICAgBCEDAYgDAYheJ5CAXijh/xJURVNULVZSTiAgICAgIAQiAwGIAwGIXijiAF4qM38SVEVTVC1WUk4gICAgICAEIwMBiAMBiF4qM4BeK4T/ElRFU1QtVlJOICAgICAgBCQDAYgDAYheK4UAXizWfxJURVNULVZSTiAgICAgIAQlAwGIAwGIXizWgF4uJ/8SVEVTVC1WUk4gICAgICAEJgMBiAMBiF4uKABeL3l/ElRFU1QtVlJOICAgICAgBCcDAYgDAYheL3mAXjDK/xJURVNULVZSTiAgICAgIAQoAwGIAwGIXjDLAF4yHH8SVEVTVC1WUk4gICAgICAEKQMBiAMBiF4yHIBeM23/ElRFU1QtVlJOICAgICAgBDADAYgDBXBeM24AXjS/fxJURVNULVZSTiAgICAgIAQxBKdo//8oXjS/gF42EP8SVEVTVC1WUk4gICAgICAEMgRReARReF42EQBeN2J/ElRFU1QtVlJOICAgICAgAjMEUXgEUXheN2KAXjiz/xJURVNULVZSTiAgICAgIAI0BFF4BFF4Xji0AF46BX8SVEVTVC1WUk4gICAgICACNQRReARReF46BYBeO1b/ElRFU1QtVlJOICAgICAgAjYEUXgEUXheO1cAXjyofxJURVNULVZSTiAgICAgIAI3BFF4BFF4XjyogF49+f8SVEVTVC1WUk4gICAgICACOARVYARVYF49+gBeP0t/ElRFU1QtVlJOICAgICAgAjkEVWAEVWBeP0uAXkCc/xJURVNULVZSTiAgICAgIAJABFVgBFVgXkCdAF5B7n8SVEVTVC1WUk4gICAgICACQQRVYARVYF5B7oBeQz//ElRFU1QtVlJOICAgICAgAkIEVWAEVWBeQ0AAXkSRfxJURVNULVZSTiAgICAgIAJDBFVgBFVgXkSRgF5F4v8SVEVTVC1WUk4gICAgICACRARVYARVYF5F4wBeRzR/ElRFU1QtVlJOICAgICAgAkUEVWAEVWBeRzSAXkiF/xJURVNULVZSTiAgICAgIAJGBFVgBFVgXkiGAF5J138SVEVTVC1WUk4gICAgICACRwRVYARZSF5J14BeSyj/ElRFU1QtVlJOICAgICAgAkgEWUgEWUheSykAXkx6fxJURVNULVZSTiAgICAgIAJJBFlIBFlIXkx6gF5Ny/8SVEVTVC1WUk4gICAgICACUARZSARZSF5NzABeTx1/ElRFU1QtVlJOICAgICAgAlECs2gCs2heTx2AXlBu/xJURVNULVZSTiAgICAgIAJSArNoArdQXlBvAF5RwH8SVEVTVC1WUk4gICAgICACUwK3UAK3UF5RwIBeUxH/ElRFU1QtVlJOICAgICAgAlQCt1ACt1BeUxIAXlRjfxJURVNULVZSTiAgICAgIAJVArdQArdQXlRjgF5VtP8SVEVTVC1WUk4gICAgICACVgK3UAK3UF5VtQBeVwZ/ElRFU1QtVlJOICAgICAgAlcCt1ACt1BeVwaAXlhX/xJURVNULVZSTiAgICAgIAJYArdQArdQXlhYAF5ZqX8SVEVTVC1WUk4gICAgICACWQK3UAK3UF5ZqYBeWvr/ElRFU1QtVlJOICAgICAgAmACt1ACt1BeWvsAXlxMfxJURVNULVZSTiAgICAgIAJhArdQArs4XlxMgF5dnf8SVEVTVC1WUk4gICAgICACYgK7OAK7OF5dngBeXu9/ElRFU1QtVlJOICAgICAgAmMCuzgCuzheXu+AXmBA/xJURVNULVZSTiAgICAgIAJkArs4Ars4XmBBAF5hkn8SVEVTVC1WUk4gICAgICACZQK7OAK7OF5hkoBeYuP/ElRFU1QtVlJOICAgICAgAmYCuzgCuzheYuQAXmQ1fxJURVNULVZSTiAgICAgIAJnArs4Ars4XmQ1gF5lhv8SVEVTVC1WUk4gICAgICACaAK7OAK7OF5lhwBeZth/ElRFU1QtVlJOICAgICAgAmkCuzgCuzheZtiAXmgp/xJURVNULVZSTiAgICAgIAJwArs4Ars4XmgqAF5pe38SVEVTVC1WUk4gICAgICACcQK7OAK/IF5pe4Beasz/ElRFU1QtVlJOICAgICAgAnICvyACvyBeas0AXmwefxJURVNULVZSTiAgICAgIAJzAr8gAr8gXmwegF5tb/8SVEVTVC1WUk4gICAgICACdAK/IAK/IF5tcABebsF/ElRFU1QtVlJOICAgICAgAnUCvyACvyBebsGAXnAS/xJURVNULVZSTiAgICAgIAJ2Ar8gAr8gXnATAF5xZH8SVEVTVC1WUk4gICAgICACdwK/IAK/IF5xZIBecrX/ElRFU1QtVlJOICAgICAgAngCvyACvyBecrYAXnQHfxJURVNULVZSTiAgICAgIAJ5Ar8gAr8gXnQHgF51WP8SVEVTVC1WUk4gICAgICACgAK/IAK/IF51WQBedqp/ElRFU1QtVlJOICAgICAgAoECvyACwwhedqqAXnf7/xJURVNULVZSTiAgICAgIAKCAsMIAsMIXnf8AF55TX8SVEVTVC1WUk4gICAgICACgwLDCALDCF55TYBeep7/ElRFU1QtVlJOICAgICAgAoQCwwgCwwheep8AXnvwfxJURVNULVZSTiAgICAgIAKFAsMIAsMIXnvwgF59Qf8SVEVTVC1WUk4gICAgICAChgLDCALDCF59QgBefpN/ElRFU1QtVlJOICAgICAgAocCwwgCwwhefpOAXn/k/xJURVNULVZSTiAgICAgIAKIAsMIAsMIXn/lAF6BNn8SVEVTVC1WUk4gICAgICACiQLDCALDCF6BNoBegof/ElRFU1QtVlJOICAgICAgApACwwgCwwhegogAXoPZfxJURVNULVZSTiAgICAgIAKRAsMIAsbwXoPZgF6FKv8SVEVTVC1WUk4gICAgICACkgLG8ALG8F6FKwBehnx/ElRFU1QtVlJOICAgICAgApMCxvACxvBehnyAXofN/xJURVNULVZSTiAgICAgIAKUAsbwAsbwXofOAF6JH38SVEVTVC1WUk4gICAgICAClQLG8ALG8F6JH4BeinD/ElRFU1QtVlJOICAgICAgApYCxvACxvBeinEAXovCfxJURVNULVZSTiAgICAgIAKXAsbwAsbwXovCgF6NE/8SVEVTVC1WUk4gICAgICACmAGpyAGpyF6NFABejmV/ElRFU1QtVlJOICAgICAgApkCxvACxvBejmWAXo+2/xJURVNULVZSTiAgICAgIAMAAsbwAsbwXo+3AF6RCH8SVEVTVC1WUk4gICAgICADAQLG8ALG8F6RCIBekln/ElRFU1QtVlJOICAgICAgAwICytgCythekloAXpOrfxJURVNULVZSTiAgICAgIAMDAK/IAK/IXpOrgF6U/P8SVEVTVC1WUk4gICAgICADBACvyACvyF6U/QBelk5/ElRFU1QtVlJOICAgICAgAwUCytgCythelk6AXpef/xJURVNULVZSTiAgICAgIAMGAsrYAsrYXpegAF6Y8X8SVEVTVC1WUk4gICAgICADBwLK2ALK2F6Y8YBemkL/ElRFU1QtVlJOICAgICAgAwgCytgCythemkMAXpuUfxJURVNULVZSTiAgICAgIAMJAsrYAsrYXpuUgF6c5f8SVEVTVC1WUk4gICAgICADEALK2ALK2F6c5gBenjd/ElRFU1QtVlJOICAgICAgAxECytgCythenjeAXp+I/xJURVNULVZSTiAgICAgIAMSAsrYAs7AXp+JAF6g2n8SVEVTVC1WUk4gICAgICADEwLOwALOwF6g2oBeoiv/ElRFU1QtVlJOICAgICAgAxQCzsACzsBeoiwAXqN9fxJURVNULVZSTiAgICAgIAMVAs7AAs7AXqN9gF6kzv8SVEVTVC1WUk4gICAgICADFgLOwALOwF6kzwBepiB/ElRFU1QtVlJOICAgICAgAxcC0qgC0qhepiCAXqdx/xJURVNULVZSTiAgICAgIAMYAtKoAtKoXqdyAF6ow38SVEVTVC1WUk4gICAgICADGQLSqALSqF6ow4BeqhT/ElRFU1QtVlJOICAgICAgAyAC0qgC0qheqhUAXqtmfxJURVNULVZSTiAgICAgIAMhAtKoAtKoXqtmgF6st/8SVEVTVC1WUk4gICAgICADIgLSqALWkF6suABergl/ElRFU1QtVlJOICAgICAgAyMC1pAC1pBergmAXq9a/xJURVNULVZSTiAgICAgIAMkAtaQAtaQXq9bAF6wrH8SVEVTVC1WUk4gICAgICADJQLWkALWkF6wrIBesf3/ElRFU1QtVlJOICAgICAgAyYC1pAC1pBesf4AXrNPfxJURVNULVZSTiAgICAgIAMnAtaQAtaQXrNPgF60oP8SVEVTVC1WUk4gICAgICADKALWkALWkF60oQBetfJ/ElRFU1QtVlJOICAgICAgAykC1pAC1pBetfKAXrdD/xJURVNULVZSTiAgICAgIAMwAtaQAtaQXrdEAF64lX8SVEVTVC1WUk4gICAgICADMQLWkALWkF64lYBeueb/ElRFU1QtVlJOICAgICAgAzIC1pAC2nheuecAXrs4fxJURVNULVZSTiAgICAgIAMzAtp4Atp4Xrs4gF68if8SVEVTVC1WUk4gICAgICADNALaeALaeF68igBevdt/ElRFU1QtVlJOICAgICAgAzUC2ngC2nhevduAXr8s/xJURVNULVZSTiAgICAgIAM2Atp4Atp4Xr8tAF7Afn8SVEVTVC1WUk4gICAgICADNwLaeALaeF7AfoBewc//ElRFU1QtVlJOICAgICAgAzgC2ngC2nhewdAAXsMhfxJURVNULVZSTiAgICAgIAM5Atp4Atp4XsMhgF7Ecv8SVEVTVC1WUk4gICAgICADQALaeALaeF7EcwBexcR/ElRFU1QtVlJOICAgICAgA0EC2ngC3mBexcSAXscV/xJURVNULVZSTiAgICAgIANCAt5gAt5gXscWAF7IZ38SVEVTVC1WUk4gICAgICADQwLeYALeYF7IZ4Beybj/ElRFU1QtVlJOICAgICAgA0QC3mAC3mBeybkAXssKfxJURVNULVZSTiAgICAgIANFAt5g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",
+  "rawData": "AB8C+bgC+bheC+EAXg0yfxIBVEVTVC1WUk4gICAgIAQBAvm4Avm4Xg0ygF4Og/8SAVRFU1QtVlJOICAgICAEAgL5uAL5uF4OhABeD9V/EgFURVNULVZSTiAgICAgBAMC+bgC+bheD9WAXhEm/xIBVEVTVC1WUk4gICAgIAQEAvm4Avm4XhEnAF4SeH8SAVRFU1QtVlJOICAgICAEBQL5uAL5uF4SeIBeE8n/EgFURVNULVZSTiAgICAgBAYC+bgC+bheE8oAXhUbfxIBVEVTVC1WUk4gICAgIAQHAvm4Avm4XhUbgF4WbP8SAVRFU1QtVlJOICAgICAECAL5uAL5uF4WbQBeF75/EgFURVNULVZSTiAgICAgBAkC+bgC+bheF76AXhkP/xIBVEVTVC1WUk4gICAgIAQQAvm4Av2gXhkQAF4aYX8SAVRFU1QtVlJOICAgICAEEQL9oAL9oF4aYYBeG7L/EgFURVNULVZSTiAgICAgBBIC/aAC/aBeG7MAXh0EfxIBVEVTVC1WUk4gICAgIAQTAv2gAv2gXh0EgF4eVf8SAVRFU1QtVlJOICAgICAEFAL9oAL9oF4eVgBeH6d/EgFURVNULVZSTiAgICAgBBUC/aAC/aBeH6eAXiD4/xIBVEVTVC1WUk4gICAgIAQWAv2gAv2gXiD5AF4iSn8SAVRFU1QtVlJOICAgICAEFwL9oAL9oF4iSoBeI5v/EgFURVNULVZSTiAgICAgBBgC/aAC/aBeI5wAXiTtfxIBVEVTVC1WUk4gICAgIAQZAv2gAv2gXiTtgF4mPv8SAVRFU1QtVlJOICAgICAEIAL9oAMBiF4mPwBeJ5B/EgFURVNULVZSTiAgICAgBCEDAYgDAYheJ5CAXijh/xIBVEVTVC1WUk4gICAgIAQiAwGIAwGIXijiAF4qM38SAVRFU1QtVlJOICAgICAEIwMBiAMBiF4qM4BeK4T/EgFURVNULVZSTiAgICAgBCQDAYgDAYheK4UAXizWfxIBVEVTVC1WUk4gICAgIAQlAwGIAwGIXizWgF4uJ/8SAVRFU1QtVlJOICAgICAEJgMBiAMBiF4uKABeL3l/EgFURVNULVZSTiAgICAgBCcDAYgDAYheL3mAXjDK/xIBVEVTVC1WUk4gICAgIAQoAwGIAwGIXjDLAF4yHH8SAVRFU1QtVlJOICAgICAEKQMBiAMBiF4yHIBeM23/EgFURVNULVZSTiAgICAgBDADAYgDBXBeM24AXjS/fxIBVEVTVC1WUk4gICAgIAQxBKdo//8oXjS/gF42EP8SAVRFU1QtVlJOICAgICAEMgRReARReF42EQBeN2J/EgFURVNULVZSTiAgICAgAjMEUXgEUXheN2KAXjiz/xIBVEVTVC1WUk4gICAgIAI0BFF4BFF4Xji0AF46BX8SAVRFU1QtVlJOICAgICACNQRReARReF46BYBeO1b/EgFURVNULVZSTiAgICAgAjYEUXgEUXheO1cAXjyofxIBVEVTVC1WUk4gICAgIAI3BFF4BFF4XjyogF49+f8SAVRFU1QtVlJOICAgICACOARVYARVYF49+gBeP0t/EgFURVNULVZSTiAgICAgAjkEVWAEVWBeP0uAXkCc/xIBVEVTVC1WUk4gICAgIAJABFVgBFVgXkCdAF5B7n8SAVRFU1QtVlJOICAgICACQQRVYARVYF5B7oBeQz//EgFURVNULVZSTiAgICAgAkIEVWAEVWBeQ0AAXkSRfxIBVEVTVC1WUk4gICAgIAJDBFVgBFVgXkSRgF5F4v8SAVRFU1QtVlJOICAgICACRARVYARVYF5F4wBeRzR/EgFURVNULVZSTiAgICAgAkUEVWAEVWBeRzSAXkiF/xIBVEVTVC1WUk4gICAgIAJGBFVgBFVgXkiGAF5J138SAVRFU1QtVlJOICAgICACRwRVYARZSF5J14BeSyj/EgFURVNULVZSTiAgICAgAkgEWUgEWUheSykAXkx6fxIBVEVTVC1WUk4gICAgIAJJBFlIBFlIXkx6gF5Ny/8SAVRFU1QtVlJOICAgICACUARZSARZSF5NzABeTx1/EgFURVNULVZSTiAgICAgAlECs2gCs2heTx2AXlBu/xIBVEVTVC1WUk4gICAgIAJSArNoArdQXlBvAF5RwH8SAVRFU1QtVlJOICAgICACUwK3UAK3UF5RwIBeUxH/EgFURVNULVZSTiAgICAgAlQCt1ACt1BeUxIAXlRjfxIBVEVTVC1WUk4gICAgIAJVArdQArdQXlRjgF5VtP8SAVRFU1QtVlJOICAgICACVgK3UAK3UF5VtQBeVwZ/EgFURVNULVZSTiAgICAgAlcCt1ACt1BeVwaAXlhX/xIBVEVTVC1WUk4gICAgIAJYArdQArdQXlhYAF5ZqX8SAVRFU1QtVlJOICAgICACWQK3UAK3UF5ZqYBeWvr/EgFURVNULVZSTiAgICAgAmACt1ACt1BeWvsAXlxMfxIBVEVTVC1WUk4gICAgIAJhArdQArs4XlxMgF5dnf8SAVRFU1QtVlJOICAgICACYgK7OAK7OF5dngBeXu9/EgFURVNULVZSTiAgICAgAmMCuzgCuzheXu+AXmBA/xIBVEVTVC1WUk4gICAgIAJkArs4Ars4XmBBAF5hkn8SAVRFU1QtVlJOICAgICACZQK7OAK7OF5hkoBeYuP/EgFURVNULVZSTiAgICAgAmYCuzgCuzheYuQAXmQ1fxIBVEVTVC1WUk4gICAgIAJnArs4Ars4XmQ1gF5lhv8SAVRFU1QtVlJOICAgICACaAK7OAK7OF5lhwBeZth/EgFURVNULVZSTiAgICAgAmkCuzgCuzheZtiAXmgp/xIBVEVTVC1WUk4gICAgIAJwArs4Ars4XmgqAF5pe38SAVRFU1QtVlJOICAgICACcQK7OAK/IF5pe4Beasz/EgFURVNULVZSTiAgICAgAnICvyACvyBeas0AXmwefxIBVEVTVC1WUk4gICAgIAJzAr8gAr8gXmwegF5tb/8SAVRFU1QtVlJOICAgICACdAK/IAK/IF5tcABebsF/EgFURVNULVZSTiAgICAgAnUCvyACvyBebsGAXnAS/xIBVEVTVC1WUk4gICAgIAJ2Ar8gAr8gXnATAF5xZH8SAVRFU1QtVlJOICAgICACdwK/IAK/IF5xZIBecrX/EgFURVNULVZSTiAgICAgAngCvyACvyBecrYAXnQHfxIBVEVTVC1WUk4gICAgIAJ5Ar8gAr8gXnQHgF51WP8SAVRFU1QtVlJOICAgICACgAK/IAK/IF51WQBedqp/EgFURVNULVZSTiAgICAgAoECvyACwwhedqqAXnf7/xIBVEVTVC1WUk4gICAgIAKCAsMIAsMIXnf8AF55TX8SAVRFU1QtVlJOICAgICACgwLDCALDCF55TYBeep7/EgFURVNULVZSTiAgICAgAoQCwwgCwwheep8AXnvwfxIBVEVTVC1WUk4gICAgIAKFAsMIAsMIXnvwgF59Qf8SAVRFU1QtVlJOICAgICAChgLDCALDCF59QgBefpN/EgFURVNULVZSTiAgICAgAocCwwgCwwhefpOAXn/k/xIBVEVTVC1WUk4gICAgIAKIAsMIAsMIXn/lAF6BNn8SAVRFU1QtVlJOICAgICACiQLDCALDCF6BNoBegof/EgFURVNULVZSTiAgICAgApACwwgCwwhegogAXoPZfxIBVEVTVC1WUk4gICAgIAKRAsMIAsbwXoPZgF6FKv8SAVRFU1QtVlJOICAgICACkgLG8ALG8F6FKwBehnx/EgFURVNULVZSTiAgICAgApMCxvACxvBehnyAXofN/xIBVEVTVC1WUk4gICAgIAKUAsbwAsbwXofOAF6JH38SAVRFU1QtVlJOICAgICAClQLG8ALG8F6JH4BeinD/EgFURVNULVZSTiAgICAgApYCxvACxvBeinEAXovCfxIBVEVTVC1WUk4gICAgIAKXAsbwAsbwXovCgF6NE/8SAVRFU1QtVlJOICAgICACmAGpyAGpyF6NFABejmV/EgFURVNULVZSTiAgICAgApkCxvACxvBejmWAXo+2/xIBVEVTVC1WUk4gICAgIAMAAsbwAsbwXo+3AF6RCH8SAVRFU1QtVlJOICAgICADAQLG8ALG8F6RCIBekln/EgFURVNULVZSTiAgICAgAwICytgCythekloAXpOrfxIBVEVTVC1WUk4gICAgIAMDAK/IAK/IXpOrgF6U/P8SAVRFU1QtVlJOICAgICADBACvyACvyF6U/QBelk5/EgFURVNULVZSTiAgICAgAwUCytgCythelk6AXpef/xIBVEVTVC1WUk4gICAgIAMGAsrYAsrYXpegAF6Y8X8SAVRFU1QtVlJOICAgICADBwLK2ALK2F6Y8YBemkL/EgFURVNULVZSTiAgICAgAwgCytgCythemkMAXpuUfxIBVEVTVC1WUk4gICAgIAMJAsrYAsrYXpuUgF6c5f8SAVRFU1QtVlJOICAgICADEALK2ALK2F6c5gBenjd/EgFURVNULVZSTiAgICAgAxECytgCythenjeAXp+I/xIBVEVTVC1WUk4gICAgIAMSAsrYAs7AXp+JAF6g2n8SAVRFU1QtVlJOICAgICADEwLOwALOwF6g2oBeoiv/EgFURVNULVZSTiAgICAgAxQCzsACzsBeoiwAXqN9fxIBVEVTVC1WUk4gICAgIAMVAs7AAs7AXqN9gF6kzv8SAVRFU1QtVlJOICAgICADFgLOwALOwF6kzwBepiB/EgFURVNULVZSTiAgICAgAxcC0qgC0qhepiCAXqdx/xIBVEVTVC1WUk4gICAgIAMYAtKoAtKoXqdyAF6ow38SAVRFU1QtVlJOICAgICADGQLSqALSqF6ow4BeqhT/EgFURVNULVZSTiAgICAgAyAC0qgC0qheqhUAXqtmfxIBVEVTVC1WUk4gICAgIAMhAtKoAtKoXqtmgF6st/8SAVRFU1QtVlJOICAgICADIgLSqALWkF6suABergl/EgFURVNULVZSTiAgICAgAyMC1pAC1pBergmAXq9a/xIBVEVTVC1WUk4gICAgIAMkAtaQAtaQXq9bAF6wrH8SAVRFU1QtVlJOICAgICADJQLWkALWkF6wrIBesf3/EgFURVNULVZSTiAgICAgAyYC1pAC1pBesf4AXrNPfxIBVEVTVC1WUk4gICAgIAMnAtaQAtaQXrNPgF60oP8SAVRFU1QtVlJOICAgICADKALWkALWkF60oQBetfJ/EgFURVNULVZSTiAgICAgAykC1pAC1pBetfKAXrdD/xIBVEVTVC1WUk4gICAgIAMwAtaQAtaQXrdEAF64lX8SAVRFU1QtVlJOICAgICADMQLWkALWkF64lYBeueb/EgFURVNULVZSTiAgICAgAzIC1pAC2nheuecAXrs4fxIBVEVTVC1WUk4gICAgIAMzAtp4Atp4Xrs4gF68if8SAVRFU1QtVlJOICAgICADNALaeALaeF68igBevdt/EgFURVNULVZSTiAgICAgAzUC2ngC2nhevduAXr8s/xIBVEVTVC1WUk4gICAgIAM2Atp4Atp4Xr8tAF7Afn8SAVRFU1QtVlJOICAgICADNwLaeALaeF7AfoBewc//EgFURVNULVZSTiAgICAgAzgC2ngC2nhewdAAXsMhfxIBVEVTVC1WUk4gICAgIAM5Atp4Atp4XsMhgF7Ecv8SAVRFU1QtVlJOICAgICADQALaeALaeF7EcwBexcR/EgFURVNULVZSTiAgICAgA0EC2ngC3mBexcSAXscV/xIBVEVTVC1WUk4gICAgIANCAt5gAt5gXscWAF7IZ38SAVRFU1QtVlJOICAgICADQwLeYALeYF7IZ4Beybj/EgFURVNULVZSTiAgICAgA0QC3mAC3mBeybkAXssKfxIBVEVTVC1WUk4gICAgIANFAt5g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",
   "signature": ""
 }

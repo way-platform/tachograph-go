@@ -12,8 +12,6 @@ import (
 	"google.golang.org/protobuf/testing/protocmp"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
-	"github.com/way-platform/tachograph-go/internal/dd"
-
 	cardv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1"
 	ddv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
 )
@@ -189,9 +187,12 @@ func AnonymizeCurrentUsage(cu *cardv1.CurrentUsage) *cardv1.CurrentUsage {
 		anonymizedReg.SetNation(ddv1.NationNumeric_FINLAND)
 
 		// Registration number → static test value
-		if regNum := vehicleReg.GetNumber(); regNum != nil {
-			anonymizedReg.SetNumber(dd.AnonymizeStringValue(regNum, "TEST-123"))
-		}
+		// VehicleRegistrationNumber is: 1 byte code page + 13 bytes data
+		testRegNum := &ddv1.StringValue{}
+		testRegNum.SetValue("TEST-123")
+		testRegNum.SetEncoding(ddv1.Encoding_ISO_8859_1) // Code page 1 (Latin-1)
+		testRegNum.SetLength(13)                               // Length of data bytes (not including code page)
+		anonymizedReg.SetNumber(testRegNum)
 
 		anonymized.SetSessionOpenVehicle(anonymizedReg)
 	}

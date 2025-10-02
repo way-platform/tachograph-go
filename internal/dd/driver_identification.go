@@ -70,11 +70,12 @@ func AnonymizeDriverIdentification(driverID *ddv1.DriverIdentification) *ddv1.Dr
 
 	result := &ddv1.DriverIdentification{}
 
-	// Anonymize driver identification number (14 bytes)
-	// Use a deterministic replacement that maintains IA5 format
-	result.SetDriverIdentificationNumber(
-		AnonymizeStringValue(driverID.GetDriverIdentificationNumber(), "DRIVER00000001"),
-	)
+	// Anonymize driver identification number (IA5String, 14 bytes)
+	testDriverID := &ddv1.StringValue{}
+	testDriverID.SetValue("DRIVER00000001")
+	testDriverID.SetEncoding(ddv1.Encoding_IA5)
+	testDriverID.SetLength(14)
+	result.SetDriverIdentificationNumber(testDriverID)
 
 	return result
 }

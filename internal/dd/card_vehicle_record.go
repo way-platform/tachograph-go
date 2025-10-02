@@ -183,7 +183,12 @@ func AnonymizeCardVehicleRecord(record *ddv1.CardVehicleRecord, index int) *ddv1
 		anonymizedReg.SetNation(vreg.GetNation())
 		
 		// Replace VRN with test value
-		anonymizedReg.SetNumber(AnonymizeStringValue(vreg.GetNumber(), "TEST-VRN"))
+		// VehicleRegistrationNumber is: 1 byte code page + 13 bytes data
+		testRegNum := &ddv1.StringValue{}
+		testRegNum.SetValue("TEST-VRN")
+		testRegNum.SetEncoding(ddv1.Encoding_ISO_8859_1) // Code page 1 (Latin-1)
+		testRegNum.SetLength(13) // Length of data bytes (not including code page)
+		anonymizedReg.SetNumber(testRegNum)
 		
 		anonymized.SetVehicleRegistration(anonymizedReg)
 	}

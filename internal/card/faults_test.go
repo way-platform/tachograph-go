@@ -201,21 +201,12 @@ func AnonymizeFaultsData(faults *cardv1.FaultsData) *cardv1.FaultsData {
 				anonymizedReg.SetNation(ddv1.NationNumeric_FINLAND)
 
 				// Use static test registration number
-				if regNum := vehicleReg.GetNumber(); regNum != nil {
-					// Create proper StringValue with encoding and length
-					testRegNum := &ddv1.StringValue{}
-					testRegNum.SetEncoding(ddv1.Encoding_IA5)
-					testRegNum.SetValue("TEST-VRN")
-					testRegNum.SetLength(14) // VRN is 14 bytes
-					// Pad value to 14 bytes for raw_data
-					paddedValue := make([]byte, 14)
-					copy(paddedValue, []byte("TEST-VRN"))
-					for j := len("TEST-VRN"); j < 14; j++ {
-						paddedValue[j] = ' '
-					}
-					testRegNum.SetRawData(paddedValue)
-					anonymizedReg.SetNumber(testRegNum)
-				}
+				// VehicleRegistrationNumber is: 1 byte code page + 13 bytes data
+				testRegNum := &ddv1.StringValue{}
+				testRegNum.SetValue("TEST-VRN")
+				testRegNum.SetEncoding(ddv1.Encoding_ISO_8859_1) // Code page 1 (Latin-1)
+				testRegNum.SetLength(13)                               // Length of data bytes (not including code page)
+				anonymizedReg.SetNumber(testRegNum)
 
 				anonymizedFault.SetFaultVehicleRegistration(anonymizedReg)
 			}

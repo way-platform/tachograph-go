@@ -12,8 +12,6 @@ import (
 	"google.golang.org/protobuf/testing/protocmp"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
-	"github.com/way-platform/tachograph-go/internal/dd"
-
 	cardv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1"
 	ddv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
 )
@@ -194,29 +192,57 @@ func AnonymizeControlActivityData(ca *cardv1.ControlActivityData) *cardv1.Contro
 			// Anonymize driver or owner identification
 			if driverID := fcn.GetDriverIdentification(); driverID != nil {
 				anonymizedDriverID := &ddv1.DriverIdentification{}
-				if idStr := driverID.GetDriverIdentificationNumber(); idStr != nil {
-					anonymizedDriverID.SetDriverIdentificationNumber(dd.AnonymizeStringValue(idStr, "CTRL-DRV-001"))
+				if driverID.GetDriverIdentificationNumber() != nil {
+					sv := &ddv1.StringValue{}
+					sv.SetValue("CTRL-DRV-001")
+					sv.SetEncoding(ddv1.Encoding_IA5)
+					sv.SetLength(14)
+					anonymizedDriverID.SetDriverIdentificationNumber(sv)
 				}
-				if replacementIdx := driverID.GetCardReplacementIndex(); replacementIdx != nil {
-					anonymizedDriverID.SetCardReplacementIndex(dd.AnonymizeStringValue(replacementIdx, "0"))
+				if driverID.GetCardReplacementIndex() != nil {
+					sv := &ddv1.StringValue{}
+					sv.SetValue("0")
+					sv.SetEncoding(ddv1.Encoding_IA5)
+					sv.SetLength(1)
+					anonymizedDriverID.SetCardReplacementIndex(sv)
 				}
-				if renewalIdx := driverID.GetCardRenewalIndex(); renewalIdx != nil {
-					anonymizedDriverID.SetCardRenewalIndex(dd.AnonymizeStringValue(renewalIdx, "0"))
+				if driverID.GetCardRenewalIndex() != nil {
+					sv := &ddv1.StringValue{}
+					sv.SetValue("0")
+					sv.SetEncoding(ddv1.Encoding_IA5)
+					sv.SetLength(1)
+					anonymizedDriverID.SetCardRenewalIndex(sv)
 				}
 				anonymizedFCN.SetDriverIdentification(anonymizedDriverID)
 			} else if ownerID := fcn.GetOwnerIdentification(); ownerID != nil {
 				anonymizedOwnerID := &ddv1.OwnerIdentification{}
-				if idStr := ownerID.GetOwnerIdentification(); idStr != nil {
-					anonymizedOwnerID.SetOwnerIdentification(dd.AnonymizeStringValue(idStr, "CTRL-OWN-001"))
+				if ownerID.GetOwnerIdentification() != nil {
+					sv := &ddv1.StringValue{}
+					sv.SetValue("CTRL-OWN-001")
+					sv.SetEncoding(ddv1.Encoding_IA5)
+					sv.SetLength(13)
+					anonymizedOwnerID.SetOwnerIdentification(sv)
 				}
-				if consecutiveIdx := ownerID.GetConsecutiveIndex(); consecutiveIdx != nil {
-					anonymizedOwnerID.SetConsecutiveIndex(dd.AnonymizeStringValue(consecutiveIdx, "0"))
+				if ownerID.GetConsecutiveIndex() != nil {
+					sv := &ddv1.StringValue{}
+					sv.SetValue("0")
+					sv.SetEncoding(ddv1.Encoding_IA5)
+					sv.SetLength(1)
+					anonymizedOwnerID.SetConsecutiveIndex(sv)
 				}
-				if replacementIdx := ownerID.GetReplacementIndex(); replacementIdx != nil {
-					anonymizedOwnerID.SetReplacementIndex(dd.AnonymizeStringValue(replacementIdx, "0"))
+				if ownerID.GetReplacementIndex() != nil {
+					sv := &ddv1.StringValue{}
+					sv.SetValue("0")
+					sv.SetEncoding(ddv1.Encoding_IA5)
+					sv.SetLength(1)
+					anonymizedOwnerID.SetReplacementIndex(sv)
 				}
-				if renewalIdx := ownerID.GetRenewalIndex(); renewalIdx != nil {
-					anonymizedOwnerID.SetRenewalIndex(dd.AnonymizeStringValue(renewalIdx, "0"))
+				if ownerID.GetRenewalIndex() != nil {
+					sv := &ddv1.StringValue{}
+					sv.SetValue("0")
+					sv.SetEncoding(ddv1.Encoding_IA5)
+					sv.SetLength(1)
+					anonymizedOwnerID.SetRenewalIndex(sv)
 				}
 				anonymizedFCN.SetOwnerIdentification(anonymizedOwnerID)
 			}
@@ -230,19 +256,14 @@ func AnonymizeControlActivityData(ca *cardv1.ControlActivityData) *cardv1.Contro
 	if vehicleReg := ca.GetControlVehicleRegistration(); vehicleReg != nil {
 		anonymizedReg := &ddv1.VehicleRegistrationIdentification{}
 		anonymizedReg.SetNation(ddv1.NationNumeric_FINLAND)
-		if regNum := vehicleReg.GetNumber(); regNum != nil {
-			testRegNum := &ddv1.StringValue{}
-			testRegNum.SetEncoding(ddv1.Encoding_IA5)
-			testRegNum.SetValue("TEST-VRN")
-			testRegNum.SetLength(14)
-			paddedValue := make([]byte, 14)
-			copy(paddedValue, []byte("TEST-VRN"))
-			for j := len("TEST-VRN"); j < 14; j++ {
-				paddedValue[j] = ' '
-			}
-			testRegNum.SetRawData(paddedValue)
-			anonymizedReg.SetNumber(testRegNum)
-		}
+
+		// VehicleRegistrationNumber is: 1 byte code page + 13 bytes data
+		testRegNum := &ddv1.StringValue{}
+		testRegNum.SetValue("TEST-VRN")
+		testRegNum.SetEncoding(ddv1.Encoding_ISO_8859_1) // Code page 1 (Latin-1)
+		testRegNum.SetLength(13)                               // Length of data bytes (not including code page)
+		anonymizedReg.SetNumber(testRegNum)
+
 		anonymized.SetControlVehicleRegistration(anonymizedReg)
 	}
 

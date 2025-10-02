@@ -124,3 +124,4 @@ func appendVehiclesUsedG2(dst []byte, vehiclesUsed *cardv1.VehiclesUsedG2) ([]by
 
 	return dst, nil
 }
+

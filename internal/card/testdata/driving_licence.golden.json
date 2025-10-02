@@ -1,14 +1,12 @@
 {
   "drivingLicenceIssuingAuthority": {
     "encoding": "ISO_8859_1",
-    "rawData": "VEVTVCBBVVRIT1JJVFkgICAgICAgICAgICAgICAgICAgICA=",
     "value": "TEST AUTHORITY",
     "length": 35
   },
   "drivingLicenceIssuingNation": "FINLAND",
   "drivingLicenceNumber": {
     "encoding": "IA5",
-    "rawData": "VEVTVC1ETC0xMjMgICAgIA==",
     "value": "TEST-DL-123",
     "length": 16
   }
