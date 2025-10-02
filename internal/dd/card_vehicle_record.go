@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	ddv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
+	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
 // UnmarshalCardVehicleRecord unmarshals a Generation 1 CardVehicleRecord (31 bytes).
@@ -137,4 +138,63 @@ func AppendCardVehicleRecord(dst []byte, record *ddv1.CardVehicleRecord) ([]byte
 	copy(canvas[29:31], vuDataBlockCounterBytes)
 
 	return append(dst, canvas[:]...), nil
+}
+
+// AnonymizeCardVehicleRecord creates an anonymized copy, replacing sensitive data
+// with static, deterministic test values while preserving structure.
+//
+// Parameters:
+//   - record: The original record to anonymize
+//   - index: Record index, used to create incrementing timestamps for determinism
+//
+// Anonymization strategy:
+// - Vehicle registration: Replaced with "TEST-VRN"
+// - Timestamps: Static base (2020-01-01 00:00:00) + 1 day per index
+// - Odometer readings: Rounded to nearest 1000km
+// - Country: Preserved (structural info)
+// - VU counter: Preserved (structural info)
+func AnonymizeCardVehicleRecord(record *ddv1.CardVehicleRecord, index int) *ddv1.CardVehicleRecord {
+	if record == nil {
+		return nil
+	}
+
+	anonymized := &ddv1.CardVehicleRecord{}
+
+	// Round odometer readings to nearest 1000km
+	odometerBegin := (record.GetVehicleOdometerBeginKm() / 1000) * 1000
+	odometerEnd := (record.GetVehicleOdometerEndKm() / 1000) * 1000
+	anonymized.SetVehicleOdometerBeginKm(odometerBegin)
+	anonymized.SetVehicleOdometerEndKm(odometerEnd)
+
+	// Static timestamps: 2020-01-01 00:00:00 UTC (epoch: 1577836800) + 1 day per record
+	const secondsPerDay = 86400
+	baseEpoch := int64(1577836800)
+	firstUseEpoch := baseEpoch + int64(index)*secondsPerDay
+	lastUseEpoch := firstUseEpoch + secondsPerDay - 1 // End of same day
+
+	anonymized.SetVehicleFirstUse(&timestamppb.Timestamp{Seconds: firstUseEpoch})
+	anonymized.SetVehicleLastUse(&timestamppb.Timestamp{Seconds: lastUseEpoch})
+
+	// Anonymize vehicle registration
+	if vreg := record.GetVehicleRegistration(); vreg != nil {
+		anonymizedReg := &ddv1.VehicleRegistrationIdentification{}
+		
+		// Preserve country (structural info)
+		anonymizedReg.SetNation(vreg.GetNation())
+		
+		// Replace VRN with test value
+		anonymizedReg.SetNumber(AnonymizeStringValue(vreg.GetNumber(), "TEST-VRN"))
+		
+		anonymized.SetVehicleRegistration(anonymizedReg)
+	}
+
+	// Preserve VU counter (structural info)
+	anonymized.SetVuDataBlockCounter(record.GetVuDataBlockCounter())
+
+	// Regenerate raw_data for binary fidelity
+	if rawData, err := AppendCardVehicleRecord(nil, anonymized); err == nil {
+		anonymized.SetRawData(rawData)
+	}
+
+	return anonymized
 }

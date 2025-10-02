@@ -107,3 +107,34 @@ func AppendGNSSPlaceRecord(dst []byte, record *ddv1.GNSSPlaceRecord) ([]byte, er
 
 	return dst, nil
 }
+
+// AnonymizeGNSSPlaceRecord creates an anonymized copy of GNSSPlaceRecord,
+// replacing GNSS coordinates with a fixed, safe location (Helsinki, Finland)
+// while preserving the timestamp and accuracy.
+//
+// Note: Timestamp normalization happens at the EF level (PlacesG2), not here.
+//
+// Helsinki coordinates: 60.17°N, 24.94°E
+func AnonymizeGNSSPlaceRecord(record *ddv1.GNSSPlaceRecord) *ddv1.GNSSPlaceRecord {
+	if record == nil {
+		return nil
+	}
+
+	result := &ddv1.GNSSPlaceRecord{}
+
+	// Preserve timestamp (will be normalized at EF level)
+	result.SetTimestamp(record.GetTimestamp())
+
+	// Preserve accuracy (structural information)
+	result.SetGnssAccuracy(record.GetGnssAccuracy())
+
+	// Replace coordinates with Helsinki, Finland
+	// Helsinki: approximately 60°10'N, 24°56'E
+	// Encoded as ±DDMM.M * 10 (latitude) and ±DDDMM.M * 10 (longitude)
+	helsinkiGeo := &ddv1.GeoCoordinates{}
+	helsinkiGeo.SetLatitude(60100)  // 60°10.0'N
+	helsinkiGeo.SetLongitude(24560) // 24°56.0'E
+	result.SetGeoCoordinates(helsinkiGeo)
+
+	return result
+}

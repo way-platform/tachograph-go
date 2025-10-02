@@ -1,0 +1,12 @@
+{
+  "sessionOpenTime": "2020-01-01T00:00:00Z",
+  "sessionOpenVehicle": {
+    "nation": "FINLAND",
+    "number": {
+      "encoding": "IA5",
+      "rawData": "VEVTVC0xMjMgICAgICA=",
+      "value": "TEST-123",
+      "length": 14
+    }
+  }
+}

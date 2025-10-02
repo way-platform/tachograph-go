@@ -1,0 +1,16 @@
+{
+  "cardType": "DRIVER_CARD",
+  "typeOfTachographCardId": "DRIVER_CARD",
+  "cardStructureVersion": {
+    "rawData": "AAA=",
+    "major": 0,
+    "minor": 0
+  },
+  "driver": {
+    "eventsPerTypeCount": 12,
+    "faultsPerTypeCount": 24,
+    "activityStructureLength": 13776,
+    "cardVehicleRecordsCount": 200,
+    "cardPlaceRecordsCount": 112
+  }
+}

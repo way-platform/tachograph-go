@@ -89,7 +89,12 @@ func appendDrivingLicenceInfo(dst []byte, dli *cardv1.DrivingLicenceInfo) ([]byt
 	if err != nil {
 		return nil, err
 	}
-	dst = append(dst, byte(dli.GetDrivingLicenceIssuingNation()))
+	// Marshal nation enum to protocol value
+	nationByte, err := dd.MarshalEnum(dli.GetDrivingLicenceIssuingNation())
+	if err != nil {
+		return nil, fmt.Errorf("failed to marshal nation: %w", err)
+	}
+	dst = append(dst, nationByte)
 	dst, err = dd.AppendStringValue(dst, dli.GetDrivingLicenceNumber())
 	if err != nil {
 		return nil, fmt.Errorf("failed to append driving licence number: %w", err)

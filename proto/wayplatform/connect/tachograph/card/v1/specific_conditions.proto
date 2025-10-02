@@ -30,6 +30,14 @@ message SpecificConditions {
   // See Data Dictionary, Section 2.152, `SpecificConditionRecord`.
   repeated dd.v1.SpecificConditionRecord records = 1;
 
+  // Complete raw binary data (all 56 records).
+  //
+  // Used as canvas for raw data painting during marshalling to preserve
+  // unknown bits and ensure perfect round-trip fidelity.
+  //
+  // Length: 56 records × 5 bytes = 280 bytes (fixed)
+  bytes raw_data = 2;
+
   // Signature data from the following file block, if tagged as a signature for
   // this EF according to the card file format specification (Appendix 2).
   //
@@ -47,5 +55,5 @@ message SpecificConditions {
   // - 256-bit curves: ~64 bytes
   // - 384-bit curves: ~96 bytes
   // - 512/521-bit curves: ~128-132 bytes
-  bytes signature = 2;
+  bytes signature = 3;
 }

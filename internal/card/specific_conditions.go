@@ -30,6 +30,10 @@ func (opts UnmarshalOptions) unmarshalSpecificConditions(data []byte) (*cardv1.S
 	}
 
 	var target cardv1.SpecificConditions
+
+	// Save complete raw data for painting
+	target.SetRawData(data)
+
 	var records []*ddv1.SpecificConditionRecord
 
 	// Parse each 5-byte SpecificConditionRecord using the DD package
@@ -62,7 +66,35 @@ func appendCardSpecificConditions(data []byte, conditions *cardv1.SpecificCondit
 		return data, nil
 	}
 
-	// Write each specific condition record using the DD package
+	// Calculate expected size: N records × 5 bytes (Gen1: fixed 56 records = 280 bytes)
+	const recordSize = 5
+	numRecords := len(conditions.GetRecords())
+	expectedSize := numRecords * recordSize
+
+	// Use raw_data as canvas if available and correct size
+	if rawData := conditions.GetRawData(); len(rawData) == expectedSize {
+		// Make a copy to use as canvas
+		canvas := make([]byte, expectedSize)
+		copy(canvas, rawData)
+
+		// Paint each record over canvas
+		offset := 0
+		for _, record := range conditions.GetRecords() {
+			recordBytes, err := dd.AppendSpecificConditionRecord(nil, record)
+			if err != nil {
+				return nil, fmt.Errorf("failed to append specific condition record: %w", err)
+			}
+			if len(recordBytes) != recordSize {
+				return nil, fmt.Errorf("invalid specific condition record size: got %d, want %d", len(recordBytes), recordSize)
+			}
+			copy(canvas[offset:offset+recordSize], recordBytes)
+			offset += recordSize
+		}
+
+		return append(data, canvas...), nil
+	}
+
+	// Fall back to building from scratch
 	for _, record := range conditions.GetRecords() {
 		var err error
 		data, err = dd.AppendSpecificConditionRecord(data, record)

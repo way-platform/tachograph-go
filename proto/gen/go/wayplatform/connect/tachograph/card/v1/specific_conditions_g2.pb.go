@@ -45,7 +45,7 @@ type SpecificConditionsG2 struct {
 	state                        protoimpl.MessageState         `protogen:"opaque.v1"`
 	xxx_hidden_NewestRecordIndex int32                          `protobuf:"varint,1,opt,name=newest_record_index,json=newestRecordIndex"`
 	xxx_hidden_Records           *[]*v1.SpecificConditionRecord `protobuf:"bytes,2,rep,name=records"`
-	xxx_hidden_TrailingBytes     []byte                         `protobuf:"bytes,3,opt,name=trailing_bytes,json=trailingBytes"`
+	xxx_hidden_RawData           []byte                         `protobuf:"bytes,3,opt,name=raw_data,json=rawData"`
 	xxx_hidden_Signature         []byte                         `protobuf:"bytes,4,opt,name=signature"`
 	XXX_raceDetectHookData       protoimpl.RaceDetectHookData
 	XXX_presence                 [1]uint32
@@ -94,9 +94,9 @@ func (x *SpecificConditionsG2) GetRecords() []*v1.SpecificConditionRecord {
 	return nil
 }
 
-func (x *SpecificConditionsG2) GetTrailingBytes() []byte {
+func (x *SpecificConditionsG2) GetRawData() []byte {
 	if x != nil {
-		return x.xxx_hidden_TrailingBytes
+		return x.xxx_hidden_RawData
 	}
 	return nil
 }
@@ -117,11 +117,11 @@ func (x *SpecificConditionsG2) SetRecords(v []*v1.SpecificConditionRecord) {
 	x.xxx_hidden_Records = &v
 }
 
-func (x *SpecificConditionsG2) SetTrailingBytes(v []byte) {
+func (x *SpecificConditionsG2) SetRawData(v []byte) {
 	if v == nil {
 		v = []byte{}
 	}
-	x.xxx_hidden_TrailingBytes = v
+	x.xxx_hidden_RawData = v
 	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 4)
 }
 
@@ -140,7 +140,7 @@ func (x *SpecificConditionsG2) HasNewestRecordIndex() bool {
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 0)
 }
 
-func (x *SpecificConditionsG2) HasTrailingBytes() bool {
+func (x *SpecificConditionsG2) HasRawData() bool {
 	if x == nil {
 		return false
 	}
@@ -159,9 +159,9 @@ func (x *SpecificConditionsG2) ClearNewestRecordIndex() {
 	x.xxx_hidden_NewestRecordIndex = 0
 }
 
-func (x *SpecificConditionsG2) ClearTrailingBytes() {
+func (x *SpecificConditionsG2) ClearRawData() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 2)
-	x.xxx_hidden_TrailingBytes = nil
+	x.xxx_hidden_RawData = nil
 }
 
 func (x *SpecificConditionsG2) ClearSignature() {
@@ -184,8 +184,13 @@ type SpecificConditionsG2_builder struct {
 	//
 	// Corresponds to `specificConditionRecords` in DD Section 2.153.
 	Records []*v1.SpecificConditionRecord
-	// Trailing bytes that don't form complete records (for roundtrip fidelity).
-	TrailingBytes []byte
+	// Complete raw binary data (pointer + all records + any trailing bytes).
+	//
+	// Used as canvas for raw data painting during marshalling to preserve
+	// unknown bits and ensure perfect round-trip fidelity.
+	//
+	// Length: 2 bytes (pointer) + (N × 5 bytes per record) + trailing bytes
+	RawData []byte
 	// Signature data from the following file block, if tagged as a signature for
 	// this EF according to the card file format specification (Appendix 2).
 	//
@@ -204,9 +209,9 @@ func (b0 SpecificConditionsG2_builder) Build() *SpecificConditionsG2 {
 		x.xxx_hidden_NewestRecordIndex = *b.NewestRecordIndex
 	}
 	x.xxx_hidden_Records = &b.Records
-	if b.TrailingBytes != nil {
+	if b.RawData != nil {
 		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 4)
-		x.xxx_hidden_TrailingBytes = b.TrailingBytes
+		x.xxx_hidden_RawData = b.RawData
 	}
 	if b.Signature != nil {
 		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 3, 4)
@@ -219,11 +224,11 @@ var File_wayplatform_connect_tachograph_card_v1_specific_conditions_g2_proto pro
 
 const file_wayplatform_connect_tachograph_card_v1_specific_conditions_g2_proto_rawDesc = "" +
 	"\n" +
-	"Cwayplatform/connect/tachograph/card/v1/specific_conditions_g2.proto\x12&wayplatform.connect.tachograph.card.v1\x1aDwayplatform/connect/tachograph/dd/v1/specific_condition_record.proto\"\xe4\x01\n" +
+	"Cwayplatform/connect/tachograph/card/v1/specific_conditions_g2.proto\x12&wayplatform.connect.tachograph.card.v1\x1aDwayplatform/connect/tachograph/dd/v1/specific_condition_record.proto\"\xd8\x01\n" +
 	"\x14SpecificConditionsG2\x12.\n" +
 	"\x13newest_record_index\x18\x01 \x01(\x05R\x11newestRecordIndex\x12W\n" +
-	"\arecords\x18\x02 \x03(\v2=.wayplatform.connect.tachograph.dd.v1.SpecificConditionRecordR\arecords\x12%\n" +
-	"\x0etrailing_bytes\x18\x03 \x01(\fR\rtrailingBytes\x12\x1c\n" +
+	"\arecords\x18\x02 \x03(\v2=.wayplatform.connect.tachograph.dd.v1.SpecificConditionRecordR\arecords\x12\x19\n" +
+	"\braw_data\x18\x03 \x01(\fR\arawData\x12\x1c\n" +
 	"\tsignature\x18\x04 \x01(\fR\tsignatureB\xe6\x02\n" +
 	"*com.wayplatform.connect.tachograph.card.v1B\x19SpecificConditionsG2ProtoP\x01Z`github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1;cardv1\xa2\x02\x04WCTC\xaa\x02&Wayplatform.Connect.Tachograph.Card.V1\xca\x02&Wayplatform\\Connect\\Tachograph\\Card\\V1\xe2\x022Wayplatform\\Connect\\Tachograph\\Card\\V1\\GPBMetadata\xea\x02*Wayplatform::Connect::Tachograph::Card::V1b\beditionsp\xe8\a"
 

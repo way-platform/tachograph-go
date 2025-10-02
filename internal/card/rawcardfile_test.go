@@ -140,8 +140,8 @@ func TestUnmarshalRawCardFile_golden(t *testing.T) {
 			t.Fatalf("Failed to compute relative path: %v", err)
 		}
 
-		// Create golden file path in internal/card/testdata/card with same structure
-		goldenFile := filepath.Join("testdata/card", strings.TrimSuffix(relPath, ".DDD")+".json")
+		// Create golden file path in internal/card/testdata/raw/card with same structure
+		goldenFile := filepath.Join("testdata/raw/card", strings.TrimSuffix(relPath, ".DDD")+".json")
 
 		t.Run(path, func(t *testing.T) {
 			// Read and parse the DDD file

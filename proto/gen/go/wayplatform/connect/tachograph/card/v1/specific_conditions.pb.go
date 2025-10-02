@@ -41,7 +41,8 @@ const (
 type SpecificConditions struct {
 	state                  protoimpl.MessageState         `protogen:"opaque.v1"`
 	xxx_hidden_Records     *[]*v1.SpecificConditionRecord `protobuf:"bytes,1,rep,name=records"`
-	xxx_hidden_Signature   []byte                         `protobuf:"bytes,2,opt,name=signature"`
+	xxx_hidden_RawData     []byte                         `protobuf:"bytes,2,opt,name=raw_data,json=rawData"`
+	xxx_hidden_Signature   []byte                         `protobuf:"bytes,3,opt,name=signature"`
 	XXX_raceDetectHookData protoimpl.RaceDetectHookData
 	XXX_presence           [1]uint32
 	unknownFields          protoimpl.UnknownFields
@@ -82,6 +83,13 @@ func (x *SpecificConditions) GetRecords() []*v1.SpecificConditionRecord {
 	return nil
 }
 
+func (x *SpecificConditions) GetRawData() []byte {
+	if x != nil {
+		return x.xxx_hidden_RawData
+	}
+	return nil
+}
+
 func (x *SpecificConditions) GetSignature() []byte {
 	if x != nil {
 		return x.xxx_hidden_Signature
@@ -93,23 +101,43 @@ func (x *SpecificConditions) SetRecords(v []*v1.SpecificConditionRecord) {
 	x.xxx_hidden_Records = &v
 }
 
+func (x *SpecificConditions) SetRawData(v []byte) {
+	if v == nil {
+		v = []byte{}
+	}
+	x.xxx_hidden_RawData = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 3)
+}
+
 func (x *SpecificConditions) SetSignature(v []byte) {
 	if v == nil {
 		v = []byte{}
 	}
 	x.xxx_hidden_Signature = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 2)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 3)
 }
 
-func (x *SpecificConditions) HasSignature() bool {
+func (x *SpecificConditions) HasRawData() bool {
 	if x == nil {
 		return false
 	}
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 1)
 }
 
-func (x *SpecificConditions) ClearSignature() {
+func (x *SpecificConditions) HasSignature() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 2)
+}
+
+func (x *SpecificConditions) ClearRawData() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 1)
+	x.xxx_hidden_RawData = nil
+}
+
+func (x *SpecificConditions) ClearSignature() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 2)
 	x.xxx_hidden_Signature = nil
 }
 
@@ -122,6 +150,13 @@ type SpecificConditions_builder struct {
 	//
 	// See Data Dictionary, Section 2.152, `SpecificConditionRecord`.
 	Records []*v1.SpecificConditionRecord
+	// Complete raw binary data (all 56 records).
+	//
+	// Used as canvas for raw data painting during marshalling to preserve
+	// unknown bits and ensure perfect round-trip fidelity.
+	//
+	// Length: 56 records × 5 bytes = 280 bytes (fixed)
+	RawData []byte
 	// Signature data from the following file block, if tagged as a signature for
 	// this EF according to the card file format specification (Appendix 2).
 	//
@@ -147,8 +182,12 @@ func (b0 SpecificConditions_builder) Build() *SpecificConditions {
 	b, x := &b0, m0
 	_, _ = b, x
 	x.xxx_hidden_Records = &b.Records
+	if b.RawData != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 3)
+		x.xxx_hidden_RawData = b.RawData
+	}
 	if b.Signature != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 2)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 3)
 		x.xxx_hidden_Signature = b.Signature
 	}
 	return m0
@@ -158,10 +197,11 @@ var File_wayplatform_connect_tachograph_card_v1_specific_conditions_proto protor
 
 const file_wayplatform_connect_tachograph_card_v1_specific_conditions_proto_rawDesc = "" +
 	"\n" +
-	"@wayplatform/connect/tachograph/card/v1/specific_conditions.proto\x12&wayplatform.connect.tachograph.card.v1\x1aDwayplatform/connect/tachograph/dd/v1/specific_condition_record.proto\"\x8b\x01\n" +
+	"@wayplatform/connect/tachograph/card/v1/specific_conditions.proto\x12&wayplatform.connect.tachograph.card.v1\x1aDwayplatform/connect/tachograph/dd/v1/specific_condition_record.proto\"\xa6\x01\n" +
 	"\x12SpecificConditions\x12W\n" +
-	"\arecords\x18\x01 \x03(\v2=.wayplatform.connect.tachograph.dd.v1.SpecificConditionRecordR\arecords\x12\x1c\n" +
-	"\tsignature\x18\x02 \x01(\fR\tsignatureB\xe4\x02\n" +
+	"\arecords\x18\x01 \x03(\v2=.wayplatform.connect.tachograph.dd.v1.SpecificConditionRecordR\arecords\x12\x19\n" +
+	"\braw_data\x18\x02 \x01(\fR\arawData\x12\x1c\n" +
+	"\tsignature\x18\x03 \x01(\fR\tsignatureB\xe4\x02\n" +
 	"*com.wayplatform.connect.tachograph.card.v1B\x17SpecificConditionsProtoP\x01Z`github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1;cardv1\xa2\x02\x04WCTC\xaa\x02&Wayplatform.Connect.Tachograph.Card.V1\xca\x02&Wayplatform\\Connect\\Tachograph\\Card\\V1\xe2\x022Wayplatform\\Connect\\Tachograph\\Card\\V1\\GPBMetadata\xea\x02*Wayplatform::Connect::Tachograph::Card::V1b\beditionsp\xe8\a"
 
 var file_wayplatform_connect_tachograph_card_v1_specific_conditions_proto_msgTypes = make([]protoimpl.MessageInfo, 1)

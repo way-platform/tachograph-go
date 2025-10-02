@@ -1,0 +1,61 @@
+{
+  "card": {
+    "cardIssuingMemberState": "FINLAND",
+    "driverIdentification": {
+      "driverIdentificationNumber": {
+        "encoding": "IA5",
+        "rawData": "RFJJVkVSMDAwMDAwMDE=",
+        "value": "DRIVER00000001",
+        "length": 14
+      },
+      "cardReplacementIndex": {
+        "encoding": "IA5",
+        "rawData": "MA==",
+        "value": "0",
+        "length": 1
+      },
+      "cardRenewalIndex": {
+        "encoding": "IA5",
+        "rawData": "MA==",
+        "value": "0",
+        "length": 1
+      }
+    },
+    "cardIssuingAuthorityName": {
+      "encoding": "ISO_8859_1",
+      "rawData": "VEVTVF9BVVRIT1JJVFkgICAgICAgICAgICAgICAgICAgICA=",
+      "value": "TEST_AUTHORITY",
+      "length": 35
+    },
+    "cardIssueDate": "2020-01-01T00:00:00Z",
+    "cardValidityBegin": "2020-01-01T00:00:00Z",
+    "cardExpiryDate": "2024-12-31T23:59:59Z"
+  },
+  "cardType": "DRIVER_CARD",
+  "driverCardHolder": {
+    "cardHolderSurname": {
+      "encoding": "ISO_8859_1",
+      "rawData": "VEVTVF9TVVJOQU1FICAgICAgICAgICAgICAgICAgICAgICA=",
+      "value": "TEST_SURNAME",
+      "length": 35
+    },
+    "cardHolderFirstNames": {
+      "encoding": "ISO_8859_1",
+      "rawData": "VEVTVF9GSVJTVE5BTUUgICAgICAgICAgICAgICAgICAgICA=",
+      "value": "TEST_FIRSTNAME",
+      "length": 35
+    },
+    "cardHolderBirthDate": {
+      "rawData": "IAABAQ==",
+      "year": 2000,
+      "month": 1,
+      "day": 1
+    },
+    "cardHolderPreferredLanguage": {
+      "encoding": "IA5",
+      "rawData": "Zmk=",
+      "value": "fi",
+      "length": 2
+    }
+  }
+}
