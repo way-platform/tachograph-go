@@ -8,20 +8,20 @@ import (
 	cardv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1"
 )
 
-// unmarshalCardLastDownload unmarshals last card download data from a card EF.
+// unmarshalCardDownload unmarshals card download data from a card EF.
 //
-// The data type `CardDownloadDriver` is specified in the Data Dictionary, Section 2.16.
+// The data type `LastCardDownload` is specified in the Data Dictionary, Section 2.89.
 //
 // ASN.1 Definition:
 //
-//	CardDownloadDriver ::= TimeReal
-func (opts UnmarshalOptions) unmarshalLastDownload(data []byte) (*cardv1.CardDownloadDriver, error) {
+//	LastCardDownload ::= TimeReal
+func (opts UnmarshalOptions) unmarshalCardDownload(data []byte) (*cardv1.CardDownloadDriver, error) {
 	const (
-		lenCardDownloadDriver = 4 // CardDownloadDriver total size
+		lenCardDownloadDriver = 4 // TimeReal size
 	)
 
 	if len(data) < lenCardDownloadDriver {
-		return nil, fmt.Errorf("insufficient data for last card download")
+		return nil, fmt.Errorf("insufficient data for card download")
 	}
 
 	var target cardv1.CardDownloadDriver
@@ -36,14 +36,14 @@ func (opts UnmarshalOptions) unmarshalLastDownload(data []byte) (*cardv1.CardDow
 	return &target, nil
 }
 
-// AppendCardLastDownload appends last card download data to a byte slice.
+// appendCardDownload appends card download data to a byte slice.
 //
-// The data type `CardDownloadDriver` is specified in the Data Dictionary, Section 2.16.
+// The data type `LastCardDownload` is specified in the Data Dictionary, Section 2.89.
 //
 // ASN.1 Definition:
 //
-//	CardDownloadDriver ::= TimeReal
-func appendCardLastDownload(data []byte, lastDownload *cardv1.CardDownloadDriver) ([]byte, error) {
+//	LastCardDownload ::= TimeReal
+func appendCardDownload(data []byte, lastDownload *cardv1.CardDownloadDriver) ([]byte, error) {
 	if lastDownload == nil {
 		return data, nil
 	}

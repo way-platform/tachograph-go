@@ -75,7 +75,7 @@ os.WriteFile("tachograph.DDD", data, 0600)
 
 - **[Protobuf Schemas](./proto/AGENTS.md)**: Guidelines for developing the protobuf schemas.
 - **[Development Tools](./tools/AGENTS.md)**: Guidance on build scripts and build targets.
-- **[Card Package](./internal/card/AGENTS.md)**: Detailed guidance for card file parsing and generation-specific patterns.
+- **[Card Package](./internal/card/AGENTS.md)**: Comprehensive guidance for card file parsing, including TLV structure, DF/EF hierarchy, generation-specific patterns, and testing strategies.
 
 ### Package Organization
 

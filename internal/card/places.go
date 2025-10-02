@@ -1,29 +1,36 @@
 package card
 
 import (
-	"encoding/binary"
 	"fmt"
 
 	"github.com/way-platform/tachograph-go/internal/dd"
 
 	cardv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1"
 	ddv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
+	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
 // unmarshalPlaces unmarshals the EF_Places data (Gen1 format).
+//
+// Gen1 Structure (TCS_150):
+// - placePointerNewestRecord: 1 byte (not 2!)
+// - placeRecords: N × 10 bytes (84-112 records for driver cards)
 func (opts UnmarshalOptions) unmarshalPlaces(data []byte) (*cardv1.Places, error) {
-	if len(data) < 2 {
-		return nil, fmt.Errorf("insufficient data for places: got %d bytes, need at least 2", len(data))
+	if len(data) < 1 {
+		return nil, fmt.Errorf("insufficient data for places: got %d bytes, need at least 1", len(data))
 	}
 
 	target := &cardv1.Places{}
 
-	// Read the newest record index (2 bytes)
-	newestRecordIndex := binary.BigEndian.Uint16(data[0:2])
+	// Save complete raw data for painting
+	target.SetRawData(data)
+
+	// Read the newest record index (1 byte for Gen1)
+	newestRecordIndex := data[0]
 	target.SetNewestRecordIndex(int32(newestRecordIndex))
 
 	// Remaining data contains the circular buffer of place records
-	remainingData := data[2:]
+	remainingData := data[1:]
 
 	// Create dd.UnmarshalOptions from card-level UnmarshalOptions
 	ddOpts := dd.UnmarshalOptions{
@@ -32,41 +39,7 @@ func (opts UnmarshalOptions) unmarshalPlaces(data []byte) (*cardv1.Places, error
 	}
 
 	// Parse Gen1 records (10 bytes each)
-	records, trailingBytes := parseCircularPlaceRecordsGen1(remainingData, int(newestRecordIndex), ddOpts)
-	target.SetRecords(records)
-
-	// Store trailing bytes for round-trip fidelity
-	if len(trailingBytes) > 0 {
-		// Note: Gen1 Places doesn't have trailing_bytes field, we just discard them
-		// This is okay since Gen1 cards have fixed record sizes
-	}
-
-	return target, nil
-}
-
-// unmarshalPlacesG2 unmarshals the EF_Places data (Gen2 format).
-func (opts UnmarshalOptions) unmarshalPlacesG2(data []byte) (*cardv1.PlacesG2, error) {
-	if len(data) < 2 {
-		return nil, fmt.Errorf("insufficient data for places: got %d bytes, need at least 2", len(data))
-	}
-
-	target := &cardv1.PlacesG2{}
-
-	// Read the newest record index (2 bytes)
-	newestRecordIndex := binary.BigEndian.Uint16(data[0:2])
-	target.SetNewestRecordIndex(int32(newestRecordIndex))
-
-	// Remaining data contains the circular buffer of place records
-	remainingData := data[2:]
-
-	// Create dd.UnmarshalOptions from card-level UnmarshalOptions
-	ddOpts := dd.UnmarshalOptions{
-		Generation: opts.Generation,
-		Version:    opts.Version,
-	}
-
-	// Parse Gen2 records (21 bytes each)
-	records, _ := parseCircularPlaceRecordsG2(remainingData, int(newestRecordIndex), ddOpts)
+	records, _ := parseCircularPlaceRecordsGen1(remainingData, int(newestRecordIndex), ddOpts)
 	target.SetRecords(records)
 
 	return target, nil
@@ -99,44 +72,51 @@ func parseCircularPlaceRecordsGen1(data []byte, newestIndex int, opts dd.Unmarsh
 	return records, trailingBytes
 }
 
-// parseCircularPlaceRecordsG2 parses place records from a circular buffer (Gen2: 21 bytes each).
-func parseCircularPlaceRecordsG2(data []byte, newestIndex int, opts dd.UnmarshalOptions) ([]*ddv1.PlaceRecordG2, []byte) {
-	const recordSize = 21
-	numFullRecords := len(data) / recordSize
-	trailingBytes := data[numFullRecords*recordSize:]
-
-	records := make([]*ddv1.PlaceRecordG2, 0, numFullRecords)
-
-	for i := 0; i < numFullRecords; i++ {
-		start := i * recordSize
-		end := start + recordSize
-		recordData := data[start:end]
-
-		record, err := opts.UnmarshalPlaceRecordG2(recordData)
-		if err != nil {
-			// Mark record as invalid on parse error
-			record = &ddv1.PlaceRecordG2{}
-			record.SetValid(false)
-			record.SetRawData(recordData)
-		}
-
-		records = append(records, record)
-	}
-
-	return records, trailingBytes
-}
-
 // appendPlaces marshals the EF_Places data (Gen1 format).
+//
+// Gen1 Structure (TCS_150):
+// - placePointerNewestRecord: 1 byte (not 2!)
+// - placeRecords: N × 10 bytes
 func appendPlaces(dst []byte, p *cardv1.Places) ([]byte, error) {
 	if p == nil {
 		return dst, nil
 	}
 
-	// Write newest record index (2 bytes)
-	newestRecordIndex := uint16(p.GetNewestRecordIndex())
-	dst = binary.BigEndian.AppendUint16(dst, newestRecordIndex)
+	// Calculate expected size: 1 byte (pointer) + N records × 10 bytes
+	const recordSize = 10
+	numRecords := len(p.GetRecords())
+	expectedSize := 1 + (numRecords * recordSize)
 
-	// Write Gen1 records (10 bytes each)
+	// Use raw_data as canvas if available and correct size
+	if rawData := p.GetRawData(); len(rawData) == expectedSize {
+		// Make a copy to use as canvas
+		canvas := make([]byte, expectedSize)
+		copy(canvas, rawData)
+
+		// Paint newest record index over canvas (1 byte for Gen1)
+		canvas[0] = byte(p.GetNewestRecordIndex())
+
+		// Paint each record over canvas
+		offset := 1
+		for _, record := range p.GetRecords() {
+			recordBytes, err := dd.AppendPlaceRecord(nil, record)
+			if err != nil {
+				return nil, fmt.Errorf("failed to append Gen1 place record: %w", err)
+			}
+			if len(recordBytes) != recordSize {
+				return nil, fmt.Errorf("invalid Gen1 place record size: got %d, want %d", len(recordBytes), recordSize)
+			}
+			copy(canvas[offset:offset+recordSize], recordBytes)
+			offset += recordSize
+		}
+
+		return append(dst, canvas...), nil
+	}
+
+	// Fall back to building from scratch
+	newestRecordIndex := byte(p.GetNewestRecordIndex())
+	dst = append(dst, newestRecordIndex)
+
 	for _, record := range p.GetRecords() {
 		recordBytes, err := dd.AppendPlaceRecord(nil, record)
 		if err != nil {
@@ -148,24 +128,77 @@ func appendPlaces(dst []byte, p *cardv1.Places) ([]byte, error) {
 	return dst, nil
 }
 
-// appendPlacesG2 marshals the EF_Places data (Gen2 format).
-func appendPlacesG2(dst []byte, p *cardv1.PlacesG2) ([]byte, error) {
+// AnonymizePlaces creates an anonymized copy of Places (Gen1), replacing potentially
+// sensitive location data while preserving the structure for testing.
+//
+// Timestamp anonymization strategy:
+// - Replaces all timestamps with static test values
+// - Base: 2020-01-01 00:00:00, incremented by 1 hour per record
+// - Deterministic: same input always produces same output
+// - Maintains record ordering for parsing tests
+func AnonymizePlaces(p *cardv1.Places) *cardv1.Places {
 	if p == nil {
-		return dst, nil
+		return nil
 	}
 
-	// Write newest record index (2 bytes)
-	newestRecordIndex := uint16(p.GetNewestRecordIndex())
-	dst = binary.BigEndian.AppendUint16(dst, newestRecordIndex)
+	result := &cardv1.Places{}
 
-	// Write Gen2 records (21 bytes each)
+	// Preserve structural metadata
+	result.SetNewestRecordIndex(p.GetNewestRecordIndex())
+
+	// Anonymize each record (timestamps anonymized below)
+	var anonymizedRecords []*ddv1.PlaceRecord
 	for _, record := range p.GetRecords() {
-		recordBytes, err := dd.AppendPlaceRecordG2(nil, record)
-		if err != nil {
-			return nil, fmt.Errorf("failed to append Gen2 place record: %w", err)
+		anonymizedRecords = append(anonymizedRecords, dd.AnonymizePlaceRecord(record))
+	}
+	result.SetRecords(anonymizedRecords)
+
+	// Apply dataset-specific timestamp normalization
+	// This makes the anonymization non-reversible
+	anonymizeTimestampsInPlace(anonymizedRecords)
+
+	// Regenerate raw_data for each record after timestamp modification
+	for _, record := range anonymizedRecords {
+		recordBytes, err := dd.AppendPlaceRecord(nil, record)
+		if err == nil {
+			record.SetRawData(recordBytes)
 		}
-		dst = append(dst, recordBytes...)
 	}
 
-	return dst, nil
+	// Regenerate raw_data to match anonymized content
+	// This ensures round-trip fidelity after anonymization
+	anonymizedBytes, err := appendPlaces(nil, result)
+	if err == nil {
+		result.SetRawData(anonymizedBytes)
+	}
+	// If marshalling fails, we'll have no raw_data, which is acceptable
+
+	// Don't preserve signature - it will be invalid
+
+	return result
+}
+
+// anonymizeTimestampsInPlace replaces all timestamps with static test values.
+// Uses a fixed base timestamp (2020-01-01 00:00:00) and increments by 1 hour per record
+// to maintain ordering while providing deterministic, anonymized test data.
+func anonymizeTimestampsInPlace(records []*ddv1.PlaceRecord) {
+	if len(records) == 0 {
+		return
+	}
+
+	// Test epoch: 2020-01-01 00:00:00 UTC
+	const testEpoch = int64(1577836800)
+	const oneHour = int64(3600)
+
+	// Replace all timestamps with static incremented values
+	for i, record := range records {
+		// Set entry time: base + (i * 1 hour)
+		staticTimestamp := testEpoch + (int64(i) * oneHour)
+		if record.GetEntryTime() != nil || i == 0 {
+			record.SetEntryTime(&timestamppb.Timestamp{
+				Seconds: staticTimestamp,
+				Nanos:   0,
+			})
+		}
+	}
 }

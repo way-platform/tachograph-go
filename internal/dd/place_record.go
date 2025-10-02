@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	ddv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
+	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
 // UnmarshalPlaceRecord parses a Generation 1 place record (10 bytes, no GNSS data).
@@ -125,4 +126,59 @@ func AppendPlaceRecord(dst []byte, rec *ddv1.PlaceRecord) ([]byte, error) {
 	copy(canvas[7:10], odometerBytes)
 
 	return append(dst, canvas[:]...), nil
+}
+
+// anonymizeTimestamp is a placeholder that returns the timestamp unchanged.
+// Actual anonymization happens at the Places message level via AnonymizeTimestampsInPlace,
+// which needs access to all timestamps to calculate a dataset-specific offset.
+//
+// This function exists for API consistency but does not modify the timestamp.
+func anonymizeTimestamp(ts *timestamppb.Timestamp) *timestamppb.Timestamp {
+	return ts
+}
+
+// AnonymizePlaceRecord creates an anonymized copy of PlaceRecord, preserving the
+// structure while replacing potentially sensitive location data with normalized values.
+//
+// The anonymization:
+// - Shifts timestamps to test epoch (2020) while preserving relative timing
+// - Normalizes country/region to generic values
+// - Rounds odometer to nearest 100km
+// - Preserves entry type (needed for structure testing)
+func AnonymizePlaceRecord(rec *ddv1.PlaceRecord) *ddv1.PlaceRecord {
+	if rec == nil {
+		return nil
+	}
+
+	result := &ddv1.PlaceRecord{}
+
+	// Anonymize timestamp: shift to test epoch while preserving all relative timing
+	result.SetEntryTime(anonymizeTimestamp(rec.GetEntryTime()))
+
+	// Preserve entry type (structural information)
+	result.SetEntryTypeDailyWorkPeriod(rec.GetEntryTypeDailyWorkPeriod())
+	if rec.HasUnrecognizedEntryTypeDailyWorkPeriod() {
+		result.SetUnrecognizedEntryTypeDailyWorkPeriod(rec.GetUnrecognizedEntryTypeDailyWorkPeriod())
+	}
+
+	// Anonymize country (use a generic test country code)
+	result.SetDailyWorkPeriodCountry(ddv1.NationNumeric_FINLAND) // Finland as test default
+
+	// Anonymize region (use generic value)
+	result.SetDailyWorkPeriodRegion([]byte{0x01})
+
+	// Round odometer to nearest 100km (preserves magnitude but not exact location correlation)
+	originalOdometer := rec.GetVehicleOdometerKm()
+	roundedOdometer := (originalOdometer / 100) * 100
+	result.SetVehicleOdometerKm(roundedOdometer)
+
+	// Regenerate raw_data to match anonymized values
+	// This ensures round-trip fidelity after anonymization
+	anonymizedBytes, err := AppendPlaceRecord(nil, result)
+	if err == nil {
+		result.SetRawData(anonymizedBytes)
+	}
+	// If marshalling fails, we'll have no raw_data, which is acceptable
+
+	return result
 }

@@ -42,11 +42,19 @@ message VehiclesUsed {
   // See Data Dictionary, Section 2.37, `CardVehicleRecord` (Gen1).
   repeated dd.v1.CardVehicleRecord records = 2;
 
+  // Complete raw binary data (pointer + all records).
+  //
+  // Used as canvas for raw data painting during marshalling to preserve
+  // unknown bits and ensure perfect round-trip fidelity.
+  //
+  // Length: 2 bytes (pointer) + (N × 31 bytes per record)
+  bytes raw_data = 3;
+
   // Digital signature for the EF_Vehicles_Used file content.
   //
   // See Data Dictionary, Section 2.149, `Signature`.
   // ASN.1 Definition:
   //
   //     Signature ::= OCTET STRING (SIZE(128))
-  bytes signature = 3;
+  bytes signature = 4;
 }

@@ -8,6 +8,7 @@ import (
 
 	cardv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1"
 	ddv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
+	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
 // unmarshalIdentification parses the binary data for an EF_Identification record.
@@ -85,6 +86,17 @@ func (opts UnmarshalOptions) unmarshalIdentification(data []byte) (*cardv1.Ident
 			// This looks like a driver card format
 			driverID := &ddv1.DriverIdentification{}
 			driverID.SetDriverIdentificationNumber(driverIdentification)
+
+			// Parse replacement and renewal indices (1 byte each)
+			replacementIndex, err := opts.UnmarshalIA5StringValue(cardNumberData[14:15])
+			if err == nil {
+				driverID.SetCardReplacementIndex(replacementIndex)
+			}
+			renewalIndex, err := opts.UnmarshalIA5StringValue(cardNumberData[15:16])
+			if err == nil {
+				driverID.SetCardRenewalIndex(renewalIndex)
+			}
+
 			cardId.SetDriverIdentification(driverID)
 			identification.SetCardType(cardv1.CardType_DRIVER_CARD)
 		} else {
@@ -240,16 +252,16 @@ func (opts UnmarshalOptions) unmarshalIdentification(data []byte) (*cardv1.Ident
 	holderId.SetCardHolderBirthDate(birthDate)
 	offset += 4
 
-	// Card holder preferred language (1 byte)
-	if offset+1 > len(data) {
+	// Card holder preferred language (2 bytes) - Language ::= IA5String(SIZE(2))
+	if offset+2 > len(data) {
 		return nil, fmt.Errorf("insufficient data for card holder preferred language")
 	}
-	preferredLanguage, err := opts.UnmarshalIA5StringValue(data[offset : offset+1])
+	preferredLanguage, err := opts.UnmarshalIA5StringValue(data[offset : offset+2])
 	if err != nil {
 		return nil, fmt.Errorf("failed to read card holder preferred language: %w", err)
 	}
 	holderId.SetCardHolderPreferredLanguage(preferredLanguage)
-	// offset++ // Not needed as this is the last field
+	// offset += 2 // Not needed as this is the last field
 
 	identification.SetDriverCardHolder(holderId)
 
@@ -322,10 +334,19 @@ func appendCardIdentification(dst []byte, id *cardv1.Identification_Card) ([]byt
 				cardNumberBytes[i] = ' '
 			}
 		}
-		// Note: DriverIdentification doesn't have replacement and renewal indices in current schema
-		// These would be bytes 14 and 15, but we can't access them
-		cardNumberBytes[14] = 0 // Default replacement index
-		cardNumberBytes[15] = 0 // Default renewal index
+		// Write replacement and renewal indices (1 byte each)
+		replacementIndex := driverID.GetCardReplacementIndex()
+		if replacementIndex != nil && len(replacementIndex.GetValue()) > 0 {
+			cardNumberBytes[14] = replacementIndex.GetValue()[0]
+		} else {
+			cardNumberBytes[14] = '0' // Default replacement index
+		}
+		renewalIndex := driverID.GetCardRenewalIndex()
+		if renewalIndex != nil && len(renewalIndex.GetValue()) > 0 {
+			cardNumberBytes[15] = renewalIndex.GetValue()[0]
+		} else {
+			cardNumberBytes[15] = '0' // Default renewal index
+		}
 	} else if ownerID := id.GetOwnerIdentification(); ownerID != nil {
 		// Other cards: 13 bytes identification + 1 byte consecutive + 1 byte replacement + 1 byte renewal
 		identification := ownerID.GetOwnerIdentification()
@@ -430,4 +451,173 @@ func appendDriverCardHolderIdentification(dst []byte, h *cardv1.Identification_D
 		return nil, fmt.Errorf("failed to append preferred language: %w", err)
 	}
 	return dst, nil
+}
+
+// AnonymizeIdentification creates an anonymized copy of Identification, replacing all
+// personally identifiable information with safe, deterministic test values while
+// preserving the structure and validity for testing.
+//
+// Anonymization strategy:
+// - Names: Replaced with generic test names
+// - Card numbers: Replaced with test values
+// - Addresses: Replaced with generic test addresses
+// - Birth dates: Replaced with static test date (2000-01-01)
+// - Card dates: Replaced with static test dates (issue/validity: 2020-01-01, expiry: 2024-12-31)
+// - Countries: Preserved (structural info)
+// - Signatures: Cleared (will be invalid after anonymization anyway)
+func AnonymizeIdentification(id *cardv1.Identification) *cardv1.Identification {
+	if id == nil {
+		return nil
+	}
+
+	result := &cardv1.Identification{}
+	result.SetCardType(id.GetCardType())
+
+	// Anonymize card identification
+	if card := id.GetCard(); card != nil {
+		anonymizedCard := &cardv1.Identification_Card{}
+
+		// Preserve country (structural info)
+		anonymizedCard.SetCardIssuingMemberState(card.GetCardIssuingMemberState())
+
+		// Anonymize driver identification
+		if driverID := card.GetDriverIdentification(); driverID != nil {
+			anonymizedCard.SetDriverIdentification(dd.AnonymizeDriverIdentification(driverID))
+		}
+
+		// Anonymize owner identification (for workshop/control/company cards)
+		if ownerID := card.GetOwnerIdentification(); ownerID != nil {
+			anonymizedOwner := &ddv1.OwnerIdentification{}
+			// Use generic owner ID
+			anonymizedOwner.SetOwnerIdentification(
+				dd.AnonymizeStringValue(ownerID.GetOwnerIdentification(), "OWNER00000001"),
+			)
+			// Preserve indices (structural info)
+			anonymizedOwner.SetConsecutiveIndex(ownerID.GetConsecutiveIndex())
+			anonymizedOwner.SetReplacementIndex(ownerID.GetReplacementIndex())
+			anonymizedOwner.SetRenewalIndex(ownerID.GetRenewalIndex())
+			anonymizedCard.SetOwnerIdentification(anonymizedOwner)
+		}
+
+		// Anonymize issuing authority name
+		anonymizedCard.SetCardIssuingAuthorityName(
+			dd.AnonymizeStringValue(card.GetCardIssuingAuthorityName(), "TEST_AUTHORITY"),
+		)
+
+		// Replace card dates with static test dates (valid 5-year period)
+		// Issue/validity: 2020-01-01 00:00:00 UTC (epoch: 1577836800)
+		// Expiry: 2024-12-31 23:59:59 UTC (epoch: 1735689599)
+		anonymizedCard.SetCardIssueDate(&timestamppb.Timestamp{Seconds: 1577836800})
+		anonymizedCard.SetCardValidityBegin(&timestamppb.Timestamp{Seconds: 1577836800})
+		anonymizedCard.SetCardExpiryDate(&timestamppb.Timestamp{Seconds: 1735689599})
+
+		result.SetCard(anonymizedCard)
+	}
+
+	// Anonymize holder identification based on card type
+	switch id.GetCardType() {
+	case cardv1.CardType_DRIVER_CARD:
+		if holder := id.GetDriverCardHolder(); holder != nil {
+			anonymizedHolder := &cardv1.Identification_DriverCardHolder{}
+
+			// Replace names with test values
+			anonymizedHolder.SetCardHolderSurname(
+				dd.AnonymizeStringValue(holder.GetCardHolderSurname(), "TEST_SURNAME"),
+			)
+			anonymizedHolder.SetCardHolderFirstNames(
+				dd.AnonymizeStringValue(holder.GetCardHolderFirstNames(), "TEST_FIRSTNAME"),
+			)
+
+			// Replace birth date with static test date (2000-01-01)
+			birthDate := &ddv1.Date{}
+			birthDate.SetYear(2000)
+			birthDate.SetMonth(1)
+			birthDate.SetDay(1)
+			// Regenerate raw_data for binary fidelity
+			if rawData, err := dd.AppendDate(nil, birthDate); err == nil {
+				birthDate.SetRawData(rawData)
+			}
+			anonymizedHolder.SetCardHolderBirthDate(birthDate)
+
+			// Preserve language (not sensitive)
+			anonymizedHolder.SetCardHolderPreferredLanguage(holder.GetCardHolderPreferredLanguage())
+
+			result.SetDriverCardHolder(anonymizedHolder)
+		}
+
+	case cardv1.CardType_WORKSHOP_CARD:
+		if holder := id.GetWorkshopCardHolder(); holder != nil {
+			anonymizedHolder := &cardv1.Identification_WorkshopCardHolder{}
+
+			// Anonymize workshop details
+			anonymizedHolder.SetWorkshopName(
+				dd.AnonymizeStringValue(holder.GetWorkshopName(), "TEST_WORKSHOP"),
+			)
+			anonymizedHolder.SetWorkshopAddress(
+				dd.AnonymizeStringValue(holder.GetWorkshopAddress(), "TEST_ADDRESS"),
+			)
+
+			// Anonymize holder names
+			anonymizedHolder.SetCardHolderSurname(
+				dd.AnonymizeStringValue(holder.GetCardHolderSurname(), "TEST_SURNAME"),
+			)
+			anonymizedHolder.SetCardHolderFirstNames(
+				dd.AnonymizeStringValue(holder.GetCardHolderFirstNames(), "TEST_FIRSTNAME"),
+			)
+
+			// Preserve language
+			anonymizedHolder.SetCardHolderPreferredLanguage(holder.GetCardHolderPreferredLanguage())
+
+			result.SetWorkshopCardHolder(anonymizedHolder)
+		}
+
+	case cardv1.CardType_CONTROL_CARD:
+		if holder := id.GetControlCardHolder(); holder != nil {
+			anonymizedHolder := &cardv1.Identification_ControlCardHolder{}
+
+			// Anonymize control body details
+			anonymizedHolder.SetControlBodyName(
+				dd.AnonymizeStringValue(holder.GetControlBodyName(), "TEST_CONTROL_BODY"),
+			)
+			anonymizedHolder.SetControlBodyAddress(
+				dd.AnonymizeStringValue(holder.GetControlBodyAddress(), "TEST_ADDRESS"),
+			)
+
+			// Anonymize holder names
+			anonymizedHolder.SetCardHolderSurname(
+				dd.AnonymizeStringValue(holder.GetCardHolderSurname(), "TEST_SURNAME"),
+			)
+			anonymizedHolder.SetCardHolderFirstNames(
+				dd.AnonymizeStringValue(holder.GetCardHolderFirstNames(), "TEST_FIRSTNAME"),
+			)
+
+			// Preserve language
+			anonymizedHolder.SetCardHolderPreferredLanguage(holder.GetCardHolderPreferredLanguage())
+
+			result.SetControlCardHolder(anonymizedHolder)
+		}
+
+	case cardv1.CardType_COMPANY_CARD:
+		if holder := id.GetCompanyCardHolder(); holder != nil {
+			anonymizedHolder := &cardv1.Identification_CompanyCardHolder{}
+
+			// Anonymize company details
+			anonymizedHolder.SetCompanyName(
+				dd.AnonymizeStringValue(holder.GetCompanyName(), "TEST_COMPANY"),
+			)
+			anonymizedHolder.SetCompanyAddress(
+				dd.AnonymizeStringValue(holder.GetCompanyAddress(), "TEST_ADDRESS"),
+			)
+
+			// Preserve language
+			anonymizedHolder.SetCardHolderPreferredLanguage(holder.GetCardHolderPreferredLanguage())
+
+			result.SetCompanyCardHolder(anonymizedHolder)
+		}
+	}
+
+	// Don't preserve signature - it will be invalid after anonymization
+	// Users can re-sign if needed for testing
+
+	return result
 }

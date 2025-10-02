@@ -1,6 +1,28 @@
 # Card Package Guidelines
 
-This document provides detailed guidance for implementing and maintaining card file parsing in the `internal/card` package.
+This document provides comprehensive guidance for implementing and maintaining card file parsing in the `internal/card` package.
+
+## Overview
+
+The `internal/card` package handles parsing and marshalling of tachograph card files (`.DDD` files). These are binary data dumps from tachograph cards using a TLV (Tag-Length-Value) format organized into a hierarchical Dedicated File (DF) and Elementary File (EF) structure.
+
+**Goals:**
+
+- Full alignment with the EU digital tachograph regulation
+- Full binary roundtrip parsing with no data loss
+- Easy-to-use and high-fidelity protobuf data model
+- Support for Generation 1 and Generation 2 card formats
+
+## Regulation References
+
+Key regulation chapters for card file implementation:
+
+- **[03-data-dictionary.md](../../docs/regulation/chapters/03-data-dictionary.md)**: Critical for data parsing. Contains ASN.1 specifications.
+- **[05-tachograph-cards-file-structure.md](../../docs/regulation/chapters/05-tachograph-cards-file-structure.md)**: Essential for understanding the DF/EF hierarchy and file structure.
+- **[12-card-downloading.md](../../docs/regulation/chapters/12-card-downloading.md)**: Essential for card data format and TLV encoding.
+- **[16-common-security-mechanisms.md](../../docs/regulation/chapters/16-common-security-mechanisms.md)**: Essential for certificates and signatures.
+
+**IMPORTANT**: Always read [../../docs/asn-1.md](../../docs/asn-1.md) before working with ASN.1 data.
 
 ## Card File Structure Overview
 
@@ -311,6 +333,18 @@ for i := 0; i < len(records); i++ {
 
 ## Generation-Specific Type Splitting
 
+### Principle: Split Types by Generation for Structural Differences
+
+When a data structure has **different binary layouts or sizes** between generations, create separate protobuf types for each generation rather than using a superset message with conditional logic.
+
+**Benefits of Type Splitting:**
+
+1. **Fixed Sizes**: Each type has a deterministic, fixed size with no conditionals
+2. **Type Safety**: The type system prevents mixing Gen1 and Gen2 data
+3. **Simpler Code**: Parse/marshal functions are straightforward with no generation checks
+4. **Better Testing**: Test each generation independently with clear expectations
+5. **Clearer Schema**: The protobuf explicitly shows what exists in each generation
+
 ### When to Split Types
 
 Split Data Dictionary types into separate Gen1 and Gen2 versions when:
@@ -318,6 +352,11 @@ Split Data Dictionary types into separate Gen1 and Gen2 versions when:
 1. **Different sizes**: Gen1 is X bytes, Gen2 is Y bytes
 2. **Different layouts**: Fields at different offsets
 3. **Structural changes**: Not just additive fields
+
+**When to Use Superset (Don't Split):**
+
+- **Pure addition**: Gen2 is Gen1 + extra byte(s) at the end with no layout changes (e.g., `FullCardNumberAndGeneration`)
+- **Identical structures**: No differences across generations (e.g., `TimeReal`, `Date`)
 
 ### Example: PlaceRecord
 
@@ -435,27 +474,283 @@ card/
 
 **One file per proto**: Each `.proto` file has a corresponding `.go` file with the same base name.
 
-## Testing Strategy
+## Marshalling and Unmarshalling Implementation
 
-### Golden File Tests
+### File Structure
 
-Test full card file parsing with real-world examples:
+The core principle is to organize files by type rather than by operation, with a direct correspondence to the protobuf schema definitions:
+
+- **`internal/card/`**: For each card-related protobuf file (e.g., `card/v1/activity.proto`), there should be one corresponding file:
+
+  - `<typename>.go`: Handles both marshalling and unmarshalling for card-specific protobuf message types
+
+- **`internal/dd/`**: For each data dictionary protobuf file (e.g., `dd/v1/time.proto`), there should be one corresponding file:
+  - `<typename>.go`: Handles both marshalling and unmarshalling for data dictionary types
+
+This convention improves locality of context by keeping related marshalling and unmarshalling logic together, making it easier to spot inconsistencies and ensuring the operations stay in sync.
+
+### Marshalling Pattern
+
+Marshalling is implemented using a multi-level approach:
+
+1. **Top-Level Function (`UnmarshalDriverCardFile`)**: Entry point in `internal/card` that orchestrates the full card file unmarshaling
+2. **EF-Level Functions (`unmarshalPlaces`, `unmarshalIdentification`, etc.)**: Parse individual Elementary Files
+3. **Appending Functions (`Append*`)**: Functions in `internal/dd` that follow the `BinaryAppender` pattern, taking a pre-allocated `[]byte` slice and appending their binary representation
+
+### Unmarshalling Pattern
+
+Unmarshalling follows a similar structure:
+
+1. **Top-Level Function (`UnmarshalDriverCardFile`)**: Entry point that handles TLV parsing and DF routing
+2. **EF-Level Functions (`unmarshalPlaces`, `unmarshalIdentification`, etc.)**: Parse individual Elementary Files
+3. **Unmarshalling Functions (`Unmarshal*`)**: Functions in `internal/dd` responsible for parsing `[]byte` slices into protobuf messages
+
+## Coding Principles
+
+### Bufio Scanner Pattern for Record Parsing
+
+Use `bufio.Scanner` with custom `SplitFunc` for all contiguous binary data parsing that advances forward through memory.
+
+**Use for:** Fixed-size records, variable-length records, record arrays, complex structures
+**Avoid for:** Backward iteration, linked lists with pointers, non-contiguous data, cyclic buffers
+
+**Guidelines:**
+
+- Co-locate `SplitFunc` in same file with descriptive name (e.g., `splitPlaceRecord`)
+- Never reuse `SplitFunc` across different record types
+- Use `unmarshal<ProtoMessage>` naming for parsing functions
+- Return errors for invalid data in `SplitFunc` (fail-fast)
+- Include proper size validation
+
+**Pattern:**
 
 ```go
-// golden_test.go
-func TestDriverCardGolden(t *testing.T) {
-    data, err := os.ReadFile("testdata/card.DDD")
-    // ...
+func splitPlaceRecord(data []byte, atEOF bool) (advance int, token []byte, err error) {
+    const recordSize = 10
+    if len(data) < recordSize {
+        if atEOF { return 0, nil, nil }
+        return 0, nil, nil
+    }
+    return recordSize, data[:recordSize], nil
+}
 
-    file, err := UnmarshalDriverCardFile(rawCard)
-    // ...
+func parseCircularPlaceRecords(data []byte, offset int) ([]*PlaceRecord, error) {
+    scanner := bufio.NewScanner(bytes.NewReader(data[offset:]))
+    scanner.Split(splitPlaceRecord)
+    var records []*PlaceRecord
+    for scanner.Scan() {
+        record, err := unmarshalPlaceRecord(scanner.Bytes())
+        if err != nil { return nil, err }
+        records = append(records, record)
+    }
+    if err := scanner.Err(); err != nil {
+        return nil, err
+    }
+    return records, nil
+}
+```
 
-    // Compare with golden JSON
+### Nil Handling Policy
+
+The binary tachograph protocol has no concept of `nil` or null values. Every field in the protocol is either present with valid data or absent (which is represented by specific zero/empty patterns in the binary format).
+
+**Policy for `Append*` functions in `internal/dd`:**
+
+- `Append*` functions **must error** when receiving a `nil` protobuf message parameter **if** the function needs to call nested `Append*` functions or access complex fields
+- For functions that only read primitive fields (integers, bytes) where zero is a valid protocol value, **skip the nil check** and rely on protobuf's zero-value behavior
+- Exception: `AppendStringValue` accepts `nil` and encodes it as an empty string (code page 255), as this is a valid protocol state
+- When appending optional data, the caller should pass a properly initialized message with empty/zero values, not `nil`
+
+**Rationale:** This policy catches bugs early by failing fast when data is missing, rather than silently writing incorrect/default values to the binary output.
+
+### Exact Length Validation Policy
+
+When parsing fixed-size binary structures, we must validate that the input data length exactly matches the expected size. The protocol is strictly defined - if we expect N bytes and receive a different amount, something has already gone wrong upstream and we should fail early.
+
+**Policy for `Unmarshal*` functions in `internal/dd`:**
+
+- For fixed-size structures, validate with `len(data) == expectedSize`, not `len(data) >= expectedSize`
+- For variable-size structures with known minimums, validate with `len(data) < expectedSize` only when consuming from a stream
+- When unmarshalling a complete structure from a byte slice, the slice should contain exactly the expected bytes
+- Extra bytes indicate a parsing error upstream (incorrect offset calculation, wrong structure interpretation, etc.)
+
+**Rationale:** Strict validation catches bugs early. If a 4-byte timestamp gets 5 bytes, that's an error that should be caught immediately, not silently ignored.
+
+**Example:**
+
+```go
+// GOOD: Requires exact length
+func UnmarshalTimeReal(data []byte) (*timestamppb.Timestamp, error) {
+    const lenTimeReal = 4
+    if len(data) != lenTimeReal {  // Correct! Exact match required
+        return nil, fmt.Errorf("invalid data length for TimeReal: got %d, want %d", len(data), lenTimeReal)
+    }
     // ...
 }
 ```
 
-### Unit Tests for DD Types
+### Raw Data Painting Policy
+
+When marshalling data structures that have both semantic fields and a `raw_data` field preserving the original binary representation, use the "raw data painting" strategy to achieve optimal round-trip fidelity while ensuring semantic field correctness.
+
+**Policy for `Append*` functions:**
+
+- **Always prefer raw_data as a canvas**: If `raw_data` is available and has the correct length, make a copy of it and use it as a canvas for marshalling
+- **Paint semantic values over the canvas**: Serialize semantic fields on top of the canvas at their designated byte offsets, overwriting those specific bytes. **Critical**: Do NOT just return raw_data as-is - you must encode the semantic values and write them over the canvas
+- **Preserve unknown bits**: Any padding bytes, reserved bits, or unknown data in the original `raw_data` are automatically preserved in areas not overwritten by semantic fields
+- **Fall back to zero canvas**: If `raw_data` is unavailable or has incorrect length, create a zero-filled buffer of the correct size and serialize semantic fields into it
+
+**Rationale:** This approach provides three critical benefits:
+
+1. **Round-trip fidelity**: Reserved bits, padding, and vendor-specific data are preserved exactly as they appeared in the original binary
+2. **Semantic field validation**: When round-trip tests pass, it proves the semantic fields were correctly parsed and serialized, not just that raw bytes were copied
+3. **Maximum trust**: The serialized output is guaranteed to match the original binary format because it literally uses the original as a template, while also validating that our semantic understanding is correct
+
+**Example:**
+
+```go
+// GOOD: Raw data painting strategy with stack-allocated canvas
+func AppendDate(dst []byte, date *ddv1.Date) ([]byte, error) {
+    const lenDatef = 4
+
+    // Use stack-allocated array for the canvas (fixed size, avoids heap allocation)
+    var canvas [lenDatef]byte
+
+    // Start with raw_data as canvas if available (raw data painting approach)
+    if rawData := date.GetRawData(); len(rawData) > 0 {
+        if len(rawData) != lenDatef {
+            return nil, fmt.Errorf("invalid raw_data length for Date: got %d, want %d", len(rawData), lenDatef)
+        }
+        copy(canvas[:], rawData)
+    }
+    // Otherwise canvas is zero-initialized (Go default)
+
+    // Paint semantic values over the canvas
+    year := int(date.GetYear())
+    month := int(date.GetMonth())
+    day := int(date.GetDay())
+    canvas[0] = byte((year/1000)%10<<4 | (year/100)%10)
+    canvas[1] = byte((year/10)%10<<4 | year%10)
+    canvas[2] = byte((month/10)%10<<4 | month%10)
+    canvas[3] = byte((day/10)%10<<4 | day%10)
+
+    return append(dst, canvas[:]...), nil
+}
+```
+
+### In-Code Documentation and Context
+
+To make the marshalling and unmarshalling logic as robust and maintainable as possible, we bring critical context from the regulation specifications directly into the code.
+
+#### ASN.1 Definitions in Comments
+
+Every function that marshals or unmarshals a data structure defined in the ASN.1 specification should include the corresponding ASN.1 definition in its function-level comment block. This provides immediate context for the binary layout.
+
+#### Constants for Binary Layout
+
+Avoid using "magic numbers" for sizes and offsets. Instead, define a `const` block within the function to specify the byte layout (offsets, lengths) of the structure being processed. Use the `idx` prefix for offsets and `len` for lengths to make them easy to identify.
+
+**Example:**
+
+```go
+// unmarshalIdentification parses the CardIdentification structure.
+//
+// The data type `CardIdentification` is specified in the Data Dictionary, Section 2.24.
+//
+// ASN.1 Specification:
+//
+//     CardIdentification ::= SEQUENCE {
+//         cardIssuingMemberState          NationNumeric,         -- 1 byte
+//         cardNumber                      CardNumber,            -- 16 bytes
+//         cardIssuingAuthorityName        Name,                  -- 36 bytes
+//         cardIssueDate                   TimeReal,              -- 4 bytes
+//         cardValidityBegin               TimeReal,              -- 4 bytes
+//         cardExpiryDate                  TimeReal               -- 4 bytes
+//     }
+func (opts UnmarshalOptions) unmarshalIdentification(data []byte) (*cardv1.Identification, error) {
+    const (
+        idxIssuingMemberState = 0
+        idxCardNumber         = 1
+        idxAuthorityName      = 17
+        idxIssueDate          = 53
+        idxValidityBegin      = 57
+        idxExpiryDate         = 61
+        lenIdentification     = 65
+    )
+
+    if len(data) != lenIdentification {
+        return nil, fmt.Errorf("invalid data length: got %d, want %d", len(data), lenIdentification)
+    }
+    // ... parsing logic ...
+}
+```
+
+## Testing Strategy
+
+### Testing Framework
+
+All tests must use **only** the standard library `testing` package and `github.com/google/go-cmp/cmp` for comparisons. Do not use third-party testing frameworks like `testify`.
+
+**Guidelines:**
+
+- Use `t.Errorf()` for non-fatal errors and `t.Fatalf()` for fatal errors
+- Use `cmp.Diff()` for comparing complex structures (slices, maps, structs)
+- Use standard equality checks (`==`, `!=`) for simple types
+- Check for nil explicitly before accessing pointers
+- Always check errors before proceeding with test logic
+
+### EF-Level Tests
+
+Each Elementary File implementation should have comprehensive tests:
+
+**Round-trip tests**: Verify that `unmarshal → marshal → unmarshal` produces identical results:
+
+```go
+func TestPlacesRoundTrip(t *testing.T) {
+    // Read testdata/places.b64
+    b64Data, err := os.ReadFile("testdata/places.b64")
+    if err != nil {
+        t.Fatalf("Failed to read test data: %v", err)
+    }
+    data, err := base64.StdEncoding.DecodeString(string(b64Data))
+    if err != nil {
+        t.Fatalf("Failed to decode base64: %v", err)
+    }
+
+    // First unmarshal
+    opts := UnmarshalOptions{}
+    places1, err := opts.unmarshalPlaces(data)
+    if err != nil {
+        t.Fatalf("First unmarshal failed: %v", err)
+    }
+
+    // Marshal
+    marshaled, err := appendPlaces(nil, places1)
+    if err != nil {
+        t.Fatalf("Marshal failed: %v", err)
+    }
+
+    // Assert: binary equality
+    if diff := cmp.Diff(data, marshaled); diff != "" {
+        t.Errorf("Binary mismatch after marshal (-want +got):\n%s", diff)
+    }
+
+    // Second unmarshal
+    places2, err := opts.unmarshalPlaces(marshaled)
+    if err != nil {
+        t.Fatalf("Second unmarshal failed: %v", err)
+    }
+
+    // Assert: structural equality
+    if diff := cmp.Diff(places1, places2, protocmp.Transform()); diff != "" {
+        t.Errorf("Structural mismatch after round-trip (-want +got):\n%s", diff)
+    }
+}
+```
+
+**Anonymization tests**: Use the golden file pattern with the `-update` flag. See [testdata/AGENTS.md](testdata/AGENTS.md) for comprehensive guidance on creating anonymized test data.
+
+### Data Dictionary Tests
 
 Test generation-specific parsers independently:
 
@@ -488,6 +783,22 @@ func TestUnmarshalPlaceRecordG2(t *testing.T) {
     // ...
 }
 ```
+
+### Golden File Tests with Anonymization
+
+For comprehensive guidance on creating anonymized test data using the golden file pattern, see **[testdata/AGENTS.md](testdata/AGENTS.md)**.
+
+Key points:
+
+- All test data must be deterministically anonymized
+- Use the `-update` flag to regenerate golden files when logic changes
+- Round-trip tests validate binary fidelity
+- Anonymization tests validate that anonymization is deterministic
+
+## Code Quality
+
+- **No `//nolint` comments**: Never suppress linter warnings with `//nolint` comments. Instead, fix the underlying issues by removing unused code, implementing missing functionality, or restructuring the code properly.
+- **Zero linter errors**: The codebase must have zero linter errors at all times. This ensures code quality and maintainability.
 
 ## Summary
 

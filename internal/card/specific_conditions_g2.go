@@ -32,6 +32,9 @@ func (opts UnmarshalOptions) unmarshalSpecificConditionsG2(data []byte) (*cardv1
 
 	target := &cardv1.SpecificConditionsG2{}
 
+	// Save complete raw data for painting (includes pointer + records + trailing bytes)
+	target.SetRawData(data)
+
 	// Read newest record pointer (2 bytes)
 	newestRecordPointer := binary.BigEndian.Uint16(data[0:lenPointer])
 	target.SetNewestRecordIndex(int32(newestRecordPointer))
@@ -48,11 +51,6 @@ func (opts UnmarshalOptions) unmarshalSpecificConditionsG2(data []byte) (*cardv1
 		}
 		records = append(records, record)
 		offset += lenSpecificConditionRecord
-	}
-
-	// Capture trailing bytes for round-trip fidelity
-	if offset < len(recordsData) {
-		target.SetTrailingBytes(recordsData[offset:])
 	}
 
 	target.SetRecords(records)
@@ -74,23 +72,54 @@ func appendCardSpecificConditionsG2(data []byte, conditions *cardv1.SpecificCond
 		return data, nil
 	}
 
-	// Write newest record pointer (2 bytes)
+	// Use raw_data as canvas if available (includes pointer + records + trailing bytes)
+	if rawData := conditions.GetRawData(); len(rawData) > 0 {
+		const (
+			lenPointer = 2
+			recordSize = 5
+		)
+
+		// Make a copy to use as canvas
+		canvas := make([]byte, len(rawData))
+		copy(canvas, rawData)
+
+		// Paint newest record pointer over canvas
+		binary.BigEndian.PutUint16(canvas[0:lenPointer], uint16(conditions.GetNewestRecordIndex()))
+
+		// Paint each record over canvas
+		offset := lenPointer
+		for _, record := range conditions.GetRecords() {
+			if offset+recordSize > len(canvas) {
+				// Canvas too small for all records, fall back to building from scratch
+				goto fallback
+			}
+			recordBytes, err := dd.AppendSpecificConditionRecord(nil, record)
+			if err != nil {
+				return nil, fmt.Errorf("failed to append specific condition record: %w", err)
+			}
+			if len(recordBytes) != recordSize {
+				return nil, fmt.Errorf("invalid specific condition record size: got %d, want %d", len(recordBytes), recordSize)
+			}
+			copy(canvas[offset:offset+recordSize], recordBytes)
+			offset += recordSize
+		}
+
+		// Canvas preserves trailing bytes automatically
+		return append(data, canvas...), nil
+	}
+
+fallback:
+	// Fall back to building from scratch
 	pointerBytes := make([]byte, 2)
 	binary.BigEndian.PutUint16(pointerBytes, uint16(conditions.GetNewestRecordIndex()))
 	data = append(data, pointerBytes...)
 
-	// Write each specific condition record using the DD package
 	for _, record := range conditions.GetRecords() {
 		var err error
 		data, err = dd.AppendSpecificConditionRecord(data, record)
 		if err != nil {
 			return nil, fmt.Errorf("failed to append specific condition record: %w", err)
 		}
-	}
-
-	// Append trailing bytes for round-trip fidelity
-	if trailingBytes := conditions.GetTrailingBytes(); len(trailingBytes) > 0 {
-		data = append(data, trailingBytes...)
 	}
 
 	return data, nil

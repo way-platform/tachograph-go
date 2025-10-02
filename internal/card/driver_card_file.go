@@ -422,7 +422,7 @@ func unmarshalDriverCardFile(input *cardv1.RawCardFile) (*cardv1.DriverCardFile,
 			}
 
 		case cardv1.ElementaryFileType_EF_CARD_DOWNLOAD_DRIVER:
-			lastDownload, err := opts.unmarshalLastDownload(record.GetValue())
+			cardDownload, err := opts.unmarshalCardDownload(record.GetValue())
 			if err != nil {
 				return nil, err
 			}
@@ -436,12 +436,12 @@ func unmarshalDriverCardFile(input *cardv1.RawCardFile) (*cardv1.DriverCardFile,
 				if tachographDF == nil {
 					tachographDF = &cardv1.DriverCardFile_Tachograph{}
 				}
-				tachographDF.SetCardDownload(lastDownload)
+				tachographDF.SetCardDownload(cardDownload)
 			case ddv1.Generation_GENERATION_2:
 				if tachographG2DF == nil {
 					tachographG2DF = &cardv1.DriverCardFile_TachographG2{}
 				}
-				tachographG2DF.SetCardDownload(lastDownload)
+				tachographG2DF.SetCardDownload(cardDownload)
 			default:
 				return nil, fmt.Errorf("unexpected generation for EF_CARD_DOWNLOAD_DRIVER: %v", efGeneration)
 			}
@@ -644,7 +644,7 @@ func appendDriverCard(dst []byte, card *cardv1.DriverCardFile) ([]byte, error) {
 		return nil, err
 	}
 
-	dst, err = appendTlvUnsigned(dst, cardv1.ElementaryFileType_EF_CARD_DOWNLOAD_DRIVER, card.GetTachograph().GetCardDownload(), appendCardLastDownload)
+	dst, err = appendTlvUnsigned(dst, cardv1.ElementaryFileType_EF_CARD_DOWNLOAD_DRIVER, card.GetTachograph().GetCardDownload(), appendCardDownload)
 	if err != nil {
 		return nil, err
 	}

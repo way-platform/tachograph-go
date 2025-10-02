@@ -1,0 +1,304 @@
+{
+  "events": [
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": true,
+      "eventType": "GENERAL_CARD_INSERTION_WHILE_DRIVING",
+      "eventBeginTime": "2020-01-01T12:00:00Z",
+      "eventEndTime": "2020-01-01T12:30:00Z",
+      "eventVehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "IA5",
+          "rawData": "VEVTVC1WUk4gICAgICA=",
+          "value": "TEST-VRN",
+          "length": 14
+        }
+      },
+      "rawData": "BV4MicBeDJDIElRFU1QtVlJOICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    }
+  ]
+}
