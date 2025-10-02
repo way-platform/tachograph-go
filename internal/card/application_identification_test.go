@@ -198,3 +198,4 @@ func AnonymizeApplicationIdentification(appId *cardv1.ApplicationIdentification)
 
 	return anonymized
 }
+

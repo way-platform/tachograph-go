@@ -11,8 +11,6 @@ import (
 	"google.golang.org/protobuf/encoding/protojson"
 	"google.golang.org/protobuf/testing/protocmp"
 
-	"github.com/way-platform/tachograph-go/internal/dd"
-
 	cardv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1"
 	ddv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
 )
@@ -174,18 +172,27 @@ func AnonymizeDrivingLicenceInfo(dli *cardv1.DrivingLicenceInfo) *cardv1.Driving
 
 	anonymized := &cardv1.DrivingLicenceInfo{}
 
-	// Replace issuing authority with static test value
-	if authority := dli.GetDrivingLicenceIssuingAuthority(); authority != nil {
-		anonymized.SetDrivingLicenceIssuingAuthority(dd.AnonymizeStringValue(authority, "TEST AUTHORITY"))
+	// Replace issuing authority with static test value (code-paged string: 1 byte code page + 35 bytes data)
+	if dli.GetDrivingLicenceIssuingAuthority() != nil {
+		sv := &ddv1.StringValue{}
+		sv.SetValue("TEST AUTHORITY")
+		sv.SetEncoding(ddv1.Encoding_ISO_8859_1)
+		sv.SetLength(35)
+		anonymized.SetDrivingLicenceIssuingAuthority(sv)
 	}
 
 	// Country → FINLAND (always)
 	anonymized.SetDrivingLicenceIssuingNation(ddv1.NationNumeric_FINLAND)
 
-	// Replace licence number with static test value
-	if licenceNumber := dli.GetDrivingLicenceNumber(); licenceNumber != nil {
-		anonymized.SetDrivingLicenceNumber(dd.AnonymizeStringValue(licenceNumber, "TEST-DL-123"))
+	// Replace licence number with static test value (IA5String, 16 bytes)
+	if dli.GetDrivingLicenceNumber() != nil {
+		sv := &ddv1.StringValue{}
+		sv.SetValue("TEST-DL-123")
+		sv.SetEncoding(ddv1.Encoding_IA5)
+		sv.SetLength(16)
+		anonymized.SetDrivingLicenceNumber(sv)
 	}
 
 	return anonymized
 }
+

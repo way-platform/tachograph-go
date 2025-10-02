@@ -3,10 +3,9 @@
   "sessionOpenVehicle": {
     "nation": "FINLAND",
     "number": {
-      "encoding": "IA5",
-      "rawData": "VEVTVC0xMjMgICAgICA=",
+      "encoding": "ISO_8859_1",
       "value": "TEST-123",
-      "length": 14
+      "length": 13
     }
   }
 }

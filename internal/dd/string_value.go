@@ -143,23 +143,30 @@ func AppendStringValue(dst []byte, sv *ddv1.StringValue) ([]byte, error) {
 		return append(dst, result...), nil
 	}
 
-	// Handle code-paged format (variable-length with code page byte)
+	// Handle code-paged format (with code page byte)
+	// Can be either fixed-length (like VehicleRegistrationNumber) or variable-length
 
 	// Determine the code page byte
 	codePage := getCodePageFromEncoding(sv.GetEncoding())
 
+	// Check if this is a fixed-length code-paged string (has length field set)
+	hasFixedLength := sv.HasLength()
+	var dataLength int
+	if hasFixedLength {
+		dataLength = int(sv.GetLength())
+	}
+
 	// Prefer raw bytes if available (round-trip fidelity)
 	if raw := sv.GetRawData(); len(raw) > 0 {
+		if hasFixedLength && len(raw) != dataLength {
+			return nil, fmt.Errorf("raw_data length (%d) does not match expected data length (%d)", len(raw), dataLength)
+		}
 		dst = append(dst, codePage)
 		return append(dst, raw...), nil
 	}
 
 	// Fallback: encode the value string
 	value := sv.GetValue()
-	if value == "" {
-		// Empty string
-		return append(dst, codePage), nil
-	}
 
 	// For now, we only support encoding to ISO-8859-1 and IA5 (ASCII)
 	// More sophisticated encoding would require charmap encoding
@@ -168,6 +175,21 @@ func AppendStringValue(dst []byte, sv *ddv1.StringValue) ([]byte, error) {
 		return nil, fmt.Errorf("failed to encode string with code page %d: %w", codePage, err)
 	}
 
+	// Handle fixed-length code-paged strings (pad with spaces)
+	if hasFixedLength {
+		if len(encoded) > dataLength {
+			return nil, fmt.Errorf("encoded string length (%d) exceeds allowed length (%d)", len(encoded), dataLength)
+		}
+		result := make([]byte, dataLength)
+		copy(result, encoded)
+		for i := len(encoded); i < dataLength; i++ {
+			result[i] = ' '
+		}
+		dst = append(dst, codePage)
+		return append(dst, result...), nil
+	}
+
+	// Handle variable-length code-paged strings (no padding)
 	dst = append(dst, codePage)
 	return append(dst, encoded...), nil
 }
@@ -336,75 +358,4 @@ func encodeWithCodePage(codePage byte, s string) ([]byte, error) {
 	// For now, fall back to ISO-8859-1 encoding for other code pages
 	// This is a simplification and should be enhanced for full support
 	return []byte(s), nil
-}
-
-// AnonymizeStringValue creates an anonymized copy of a StringValue, replacing the
-// value with a safe, deterministic replacement while preserving the encoding and
-// structure (length, code page).
-//
-// The replacement string respects the original length constraints to maintain
-// binary compatibility.
-func AnonymizeStringValue(sv *ddv1.StringValue, replacement string) *ddv1.StringValue {
-	if sv == nil {
-		return nil
-	}
-
-	// Clone the original to preserve all metadata
-	result := &ddv1.StringValue{}
-	result.SetEncoding(sv.GetEncoding())
-	result.SetLength(sv.GetLength())
-
-	// Get the code page from encoding
-	codePage := byte(0)
-	switch sv.GetEncoding() {
-	case ddv1.Encoding_ISO_8859_1:
-		codePage = 1
-	case ddv1.Encoding_ISO_8859_2:
-		codePage = 2
-	case ddv1.Encoding_ISO_8859_3:
-		codePage = 3
-	case ddv1.Encoding_ISO_8859_5:
-		codePage = 5
-	case ddv1.Encoding_ISO_8859_7:
-		codePage = 7
-	case ddv1.Encoding_ISO_8859_9:
-		codePage = 9
-	case ddv1.Encoding_ISO_8859_13:
-		codePage = 13
-	case ddv1.Encoding_ISO_8859_15:
-		codePage = 15
-	case ddv1.Encoding_ISO_8859_16:
-		codePage = 16
-	case ddv1.Encoding_KOI8_R:
-		codePage = 80
-	case ddv1.Encoding_KOI8_U:
-		codePage = 85
-	default:
-		codePage = 0 // ASCII/IA5
-	}
-
-	// Encode the replacement string
-	encoded, err := encodeWithCodePage(codePage, replacement)
-	if err != nil {
-		// If encoding fails, use the original bytes (shouldn't happen with safe replacements)
-		encoded = sv.GetRawData()
-	}
-
-	// Pad or truncate to match original length
-	originalLen := int(sv.GetLength())
-	if len(encoded) > originalLen {
-		encoded = encoded[:originalLen]
-	} else if len(encoded) < originalLen {
-		// Pad with spaces (0x20)
-		padding := make([]byte, originalLen-len(encoded))
-		for i := range padding {
-			padding[i] = 0x20
-		}
-		encoded = append(encoded, padding...)
-	}
-
-	result.SetRawData(encoded)
-	result.SetValue(replacement)
-
-	return result
 }

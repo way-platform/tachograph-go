@@ -11,8 +11,6 @@ import (
 	"google.golang.org/protobuf/encoding/protojson"
 	"google.golang.org/protobuf/testing/protocmp"
 
-	"github.com/way-platform/tachograph-go/internal/dd"
-
 	cardv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1"
 	ddv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
 )
@@ -208,9 +206,13 @@ func AnonymizeIcc(icc *cardv1.Icc) *cardv1.Icc {
 		anonymized.SetCardExtendedSerialNumber(anonymizedESN)
 	}
 
-	// Anonymize card approval number
-	if approval := icc.GetCardApprovalNumber(); approval != nil {
-		anonymized.SetCardApprovalNumber(dd.AnonymizeStringValue(approval, "TEST0001"))
+	// Anonymize card approval number (IA5String, 8 bytes)
+	if icc.GetCardApprovalNumber() != nil {
+		sv := &ddv1.StringValue{}
+		sv.SetValue("TEST0001")
+		sv.SetEncoding(ddv1.Encoding_IA5)
+		sv.SetLength(8)
+		anonymized.SetCardApprovalNumber(sv)
 	}
 
 	// Use static test personaliser ID
@@ -220,14 +222,22 @@ func AnonymizeIcc(icc *cardv1.Icc) *cardv1.Icc {
 	if eia := icc.GetEmbedderIcAssemblerId(); eia != nil {
 		anonymizedEIA := &cardv1.Icc_EmbedderIcAssemblerId{}
 
-		// Country code → static test value
-		if cc := eia.GetCountryCode(); cc != nil {
-			anonymizedEIA.SetCountryCode(dd.AnonymizeStringValue(cc, "FI"))
+		// Country code (IA5String, 2 bytes)
+		if eia.GetCountryCode() != nil {
+			sv := &ddv1.StringValue{}
+			sv.SetValue("FI")
+			sv.SetEncoding(ddv1.Encoding_IA5)
+			sv.SetLength(2)
+			anonymizedEIA.SetCountryCode(sv)
 		}
 
-		// Module embedder → static test value
-		if me := eia.GetModuleEmbedder(); me != nil {
-			anonymizedEIA.SetModuleEmbedder(dd.AnonymizeStringValue(me, "TEST"))
+		// Module embedder (IA5String, 3 bytes)
+		if eia.GetModuleEmbedder() != nil {
+			sv := &ddv1.StringValue{}
+			sv.SetValue("TEST")
+			sv.SetEncoding(ddv1.Encoding_IA5)
+			sv.SetLength(3)
+			anonymizedEIA.SetModuleEmbedder(sv)
 		}
 
 		// Use static test manufacturer information

@@ -19,7 +19,7 @@ import (
 //
 // Binary Layout (15 bytes):
 //   - Nation code (1 byte): NationNumeric
-//   - Registration number (14 bytes): IA5String
+//   - Registration number (14 bytes): codePage (1 byte) + vehicleRegNumber (13 bytes)
 func (opts UnmarshalOptions) UnmarshalVehicleRegistration(data []byte) (*ddv1.VehicleRegistrationIdentification, error) {
 	const lenVehicleRegistration = 15
 
@@ -37,8 +37,8 @@ func (opts UnmarshalOptions) UnmarshalVehicleRegistration(data []byte) (*ddv1.Ve
 		vehicleReg.SetNation(ddv1.NationNumeric_NATION_NUMERIC_UNRECOGNIZED)
 	}
 
-	// Read registration number (14 bytes)
-	regNumber, err := opts.UnmarshalIA5StringValue(data[1:lenVehicleRegistration])
+	// Read registration number (14 bytes: 1 byte code page + 13 bytes string)
+	regNumber, err := opts.UnmarshalStringValue(data[1:lenVehicleRegistration])
 	if err != nil {
 		return nil, fmt.Errorf("failed to parse registration number: %w", err)
 	}
@@ -60,7 +60,7 @@ func (opts UnmarshalOptions) UnmarshalVehicleRegistration(data []byte) (*ddv1.Ve
 //
 // Binary Layout (15 bytes):
 //   - Nation code (1 byte): NationNumeric
-//   - Registration number (14 bytes): IA5String
+//   - Registration number (14 bytes): codePage (1 byte) + vehicleRegNumber (13 bytes)
 func AppendVehicleRegistration(dst []byte, vehicleReg *ddv1.VehicleRegistrationIdentification) ([]byte, error) {
 	if vehicleReg == nil {
 		return nil, fmt.Errorf("vehicleRegistration cannot be nil")
@@ -81,14 +81,15 @@ func AppendVehicleRegistration(dst []byte, vehicleReg *ddv1.VehicleRegistrationI
 	}
 	dst = append(dst, nationByte)
 
-	// Append registration number (14 bytes, padded with spaces)
+	// Append registration number (14 bytes: 1 byte code page + 13 bytes string data)
 	number := vehicleReg.GetNumber()
 	if number == nil {
-		// Create empty StringValue with correct length for VehicleRegistrationNumber (SIZE(14))
+		// Create empty StringValue with correct length for VehicleRegistrationNumber
+		// Default to code page 0 (no national characters) with 13 bytes of data
 		number = &ddv1.StringValue{}
 		number.SetValue("")
-		number.SetLength(14)
-		number.SetEncoding(ddv1.Encoding_IA5)
+		number.SetLength(13) // Length of the string data, not including code page byte
+		number.SetEncoding(ddv1.Encoding_ENCODING_DEFAULT)
 	}
 	return AppendStringValue(dst, number)
 }
