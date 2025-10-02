@@ -45,7 +45,8 @@ type VehiclesUsedG2 struct {
 	state                        protoimpl.MessageState     `protogen:"opaque.v1"`
 	xxx_hidden_NewestRecordIndex int32                      `protobuf:"varint,1,opt,name=newest_record_index,json=newestRecordIndex"`
 	xxx_hidden_Records           *[]*v1.CardVehicleRecordG2 `protobuf:"bytes,2,rep,name=records"`
-	xxx_hidden_Signature         []byte                     `protobuf:"bytes,3,opt,name=signature"`
+	xxx_hidden_RawData           []byte                     `protobuf:"bytes,3,opt,name=raw_data,json=rawData"`
+	xxx_hidden_Signature         []byte                     `protobuf:"bytes,4,opt,name=signature"`
 	XXX_raceDetectHookData       protoimpl.RaceDetectHookData
 	XXX_presence                 [1]uint32
 	unknownFields                protoimpl.UnknownFields
@@ -93,6 +94,13 @@ func (x *VehiclesUsedG2) GetRecords() []*v1.CardVehicleRecordG2 {
 	return nil
 }
 
+func (x *VehiclesUsedG2) GetRawData() []byte {
+	if x != nil {
+		return x.xxx_hidden_RawData
+	}
+	return nil
+}
+
 func (x *VehiclesUsedG2) GetSignature() []byte {
 	if x != nil {
 		return x.xxx_hidden_Signature
@@ -102,11 +110,19 @@ func (x *VehiclesUsedG2) GetSignature() []byte {
 
 func (x *VehiclesUsedG2) SetNewestRecordIndex(v int32) {
 	x.xxx_hidden_NewestRecordIndex = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 3)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 4)
 }
 
 func (x *VehiclesUsedG2) SetRecords(v []*v1.CardVehicleRecordG2) {
 	x.xxx_hidden_Records = &v
+}
+
+func (x *VehiclesUsedG2) SetRawData(v []byte) {
+	if v == nil {
+		v = []byte{}
+	}
+	x.xxx_hidden_RawData = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 4)
 }
 
 func (x *VehiclesUsedG2) SetSignature(v []byte) {
@@ -114,7 +130,7 @@ func (x *VehiclesUsedG2) SetSignature(v []byte) {
 		v = []byte{}
 	}
 	x.xxx_hidden_Signature = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 3)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 3, 4)
 }
 
 func (x *VehiclesUsedG2) HasNewestRecordIndex() bool {
@@ -124,11 +140,18 @@ func (x *VehiclesUsedG2) HasNewestRecordIndex() bool {
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 0)
 }
 
-func (x *VehiclesUsedG2) HasSignature() bool {
+func (x *VehiclesUsedG2) HasRawData() bool {
 	if x == nil {
 		return false
 	}
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 2)
+}
+
+func (x *VehiclesUsedG2) HasSignature() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 3)
 }
 
 func (x *VehiclesUsedG2) ClearNewestRecordIndex() {
@@ -136,8 +159,13 @@ func (x *VehiclesUsedG2) ClearNewestRecordIndex() {
 	x.xxx_hidden_NewestRecordIndex = 0
 }
 
-func (x *VehiclesUsedG2) ClearSignature() {
+func (x *VehiclesUsedG2) ClearRawData() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 2)
+	x.xxx_hidden_RawData = nil
+}
+
+func (x *VehiclesUsedG2) ClearSignature() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 3)
 	x.xxx_hidden_Signature = nil
 }
 
@@ -159,6 +187,13 @@ type VehiclesUsedG2_builder struct {
 	//
 	// See Data Dictionary, Section 2.37, `CardVehicleRecord` (Gen2).
 	Records []*v1.CardVehicleRecordG2
+	// Complete raw binary data (pointer + all records).
+	//
+	// Used as canvas for raw data painting during marshalling to preserve
+	// unknown bits and ensure perfect round-trip fidelity.
+	//
+	// Length: 2 bytes (pointer) + (N × 48 bytes per record)
+	RawData []byte
 	// Digital signature for the EF_Vehicles_Used file content.
 	//
 	// See Data Dictionary, Section 2.149, `Signature`.
@@ -173,12 +208,16 @@ func (b0 VehiclesUsedG2_builder) Build() *VehiclesUsedG2 {
 	b, x := &b0, m0
 	_, _ = b, x
 	if b.NewestRecordIndex != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 3)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 4)
 		x.xxx_hidden_NewestRecordIndex = *b.NewestRecordIndex
 	}
 	x.xxx_hidden_Records = &b.Records
+	if b.RawData != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 4)
+		x.xxx_hidden_RawData = b.RawData
+	}
 	if b.Signature != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 3)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 3, 4)
 		x.xxx_hidden_Signature = b.Signature
 	}
 	return m0
@@ -188,11 +227,12 @@ var File_wayplatform_connect_tachograph_card_v1_vehicles_used_g2_proto protorefl
 
 const file_wayplatform_connect_tachograph_card_v1_vehicles_used_g2_proto_rawDesc = "" +
 	"\n" +
-	"=wayplatform/connect/tachograph/card/v1/vehicles_used_g2.proto\x12&wayplatform.connect.tachograph.card.v1\x1aAwayplatform/connect/tachograph/dd/v1/card_vehicle_record_g2.proto\"\xb3\x01\n" +
+	"=wayplatform/connect/tachograph/card/v1/vehicles_used_g2.proto\x12&wayplatform.connect.tachograph.card.v1\x1aAwayplatform/connect/tachograph/dd/v1/card_vehicle_record_g2.proto\"\xce\x01\n" +
 	"\x0eVehiclesUsedG2\x12.\n" +
 	"\x13newest_record_index\x18\x01 \x01(\x05R\x11newestRecordIndex\x12S\n" +
-	"\arecords\x18\x02 \x03(\v29.wayplatform.connect.tachograph.dd.v1.CardVehicleRecordG2R\arecords\x12\x1c\n" +
-	"\tsignature\x18\x03 \x01(\fR\tsignatureB\xe0\x02\n" +
+	"\arecords\x18\x02 \x03(\v29.wayplatform.connect.tachograph.dd.v1.CardVehicleRecordG2R\arecords\x12\x19\n" +
+	"\braw_data\x18\x03 \x01(\fR\arawData\x12\x1c\n" +
+	"\tsignature\x18\x04 \x01(\fR\tsignatureB\xe0\x02\n" +
 	"*com.wayplatform.connect.tachograph.card.v1B\x13VehiclesUsedG2ProtoP\x01Z`github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1;cardv1\xa2\x02\x04WCTC\xaa\x02&Wayplatform.Connect.Tachograph.Card.V1\xca\x02&Wayplatform\\Connect\\Tachograph\\Card\\V1\xe2\x022Wayplatform\\Connect\\Tachograph\\Card\\V1\\GPBMetadata\xea\x02*Wayplatform::Connect::Tachograph::Card::V1b\beditionsp\xe8\a"
 
 var file_wayplatform_connect_tachograph_card_v1_vehicles_used_g2_proto_msgTypes = make([]protoimpl.MessageInfo, 1)

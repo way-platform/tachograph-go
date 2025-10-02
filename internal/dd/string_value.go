@@ -337,3 +337,74 @@ func encodeWithCodePage(codePage byte, s string) ([]byte, error) {
 	// This is a simplification and should be enhanced for full support
 	return []byte(s), nil
 }
+
+// AnonymizeStringValue creates an anonymized copy of a StringValue, replacing the
+// value with a safe, deterministic replacement while preserving the encoding and
+// structure (length, code page).
+//
+// The replacement string respects the original length constraints to maintain
+// binary compatibility.
+func AnonymizeStringValue(sv *ddv1.StringValue, replacement string) *ddv1.StringValue {
+	if sv == nil {
+		return nil
+	}
+
+	// Clone the original to preserve all metadata
+	result := &ddv1.StringValue{}
+	result.SetEncoding(sv.GetEncoding())
+	result.SetLength(sv.GetLength())
+
+	// Get the code page from encoding
+	codePage := byte(0)
+	switch sv.GetEncoding() {
+	case ddv1.Encoding_ISO_8859_1:
+		codePage = 1
+	case ddv1.Encoding_ISO_8859_2:
+		codePage = 2
+	case ddv1.Encoding_ISO_8859_3:
+		codePage = 3
+	case ddv1.Encoding_ISO_8859_5:
+		codePage = 5
+	case ddv1.Encoding_ISO_8859_7:
+		codePage = 7
+	case ddv1.Encoding_ISO_8859_9:
+		codePage = 9
+	case ddv1.Encoding_ISO_8859_13:
+		codePage = 13
+	case ddv1.Encoding_ISO_8859_15:
+		codePage = 15
+	case ddv1.Encoding_ISO_8859_16:
+		codePage = 16
+	case ddv1.Encoding_KOI8_R:
+		codePage = 80
+	case ddv1.Encoding_KOI8_U:
+		codePage = 85
+	default:
+		codePage = 0 // ASCII/IA5
+	}
+
+	// Encode the replacement string
+	encoded, err := encodeWithCodePage(codePage, replacement)
+	if err != nil {
+		// If encoding fails, use the original bytes (shouldn't happen with safe replacements)
+		encoded = sv.GetRawData()
+	}
+
+	// Pad or truncate to match original length
+	originalLen := int(sv.GetLength())
+	if len(encoded) > originalLen {
+		encoded = encoded[:originalLen]
+	} else if len(encoded) < originalLen {
+		// Pad with spaces (0x20)
+		padding := make([]byte, originalLen-len(encoded))
+		for i := range padding {
+			padding[i] = 0x20
+		}
+		encoded = append(encoded, padding...)
+	}
+
+	result.SetRawData(encoded)
+	result.SetValue(replacement)
+
+	return result
+}

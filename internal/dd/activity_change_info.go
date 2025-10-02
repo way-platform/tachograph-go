@@ -61,6 +61,36 @@ func (opts UnmarshalOptions) UnmarshalActivityChangeInfo(input []byte) (*ddv1.Ac
 	return &output, nil
 }
 
+// AnonymizeActivityChangeInfo creates an anonymized copy of ActivityChangeInfo.
+// It preserves the activity type, slot, driving status, and card inserted status,
+// but replaces the time-of-change with a deterministic sequential value to protect
+// the driver's privacy while maintaining the structure and sequence of activities.
+//
+// The anonymized time intervals are spaced 30 minutes apart, starting from minute 0.
+// This provides enough granularity to see activity patterns while removing exact timing.
+func AnonymizeActivityChangeInfo(ac *ddv1.ActivityChangeInfo, index int) *ddv1.ActivityChangeInfo {
+	if ac == nil {
+		return nil
+	}
+
+	result := &ddv1.ActivityChangeInfo{}
+
+	// Preserve activity type and status fields
+	result.SetSlot(ac.GetSlot())
+	result.SetDrivingStatus(ac.GetDrivingStatus())
+	result.SetInserted(ac.GetInserted())
+	result.SetActivity(ac.GetActivity())
+
+	// Anonymize time: space activities 30 minutes apart, wrapping at 1440 (24 hours)
+	anonymizedTime := int32((index * 30) % 1440)
+	result.SetTimeOfChangeMinutes(anonymizedTime)
+
+	// Note: raw_data is intentionally NOT preserved here - it will be regenerated
+	// by AppendActivityChangeInfo using the raw data painting strategy
+
+	return result
+}
+
 // AppendActivityChangeInfo appends the binary representation of ActivityChangeInfo to dst.
 //
 // The data type `ActivityChangeInfo` is specified in the Data Dictionary, Section 2.1.

@@ -47,7 +47,8 @@ type Places struct {
 	state                        protoimpl.MessageState `protogen:"opaque.v1"`
 	xxx_hidden_NewestRecordIndex int32                  `protobuf:"varint,1,opt,name=newest_record_index,json=newestRecordIndex"`
 	xxx_hidden_Records           *[]*v1.PlaceRecord     `protobuf:"bytes,2,rep,name=records"`
-	xxx_hidden_Signature         []byte                 `protobuf:"bytes,3,opt,name=signature"`
+	xxx_hidden_RawData           []byte                 `protobuf:"bytes,3,opt,name=raw_data,json=rawData"`
+	xxx_hidden_Signature         []byte                 `protobuf:"bytes,4,opt,name=signature"`
 	XXX_raceDetectHookData       protoimpl.RaceDetectHookData
 	XXX_presence                 [1]uint32
 	unknownFields                protoimpl.UnknownFields
@@ -95,6 +96,13 @@ func (x *Places) GetRecords() []*v1.PlaceRecord {
 	return nil
 }
 
+func (x *Places) GetRawData() []byte {
+	if x != nil {
+		return x.xxx_hidden_RawData
+	}
+	return nil
+}
+
 func (x *Places) GetSignature() []byte {
 	if x != nil {
 		return x.xxx_hidden_Signature
@@ -104,11 +112,19 @@ func (x *Places) GetSignature() []byte {
 
 func (x *Places) SetNewestRecordIndex(v int32) {
 	x.xxx_hidden_NewestRecordIndex = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 3)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 4)
 }
 
 func (x *Places) SetRecords(v []*v1.PlaceRecord) {
 	x.xxx_hidden_Records = &v
+}
+
+func (x *Places) SetRawData(v []byte) {
+	if v == nil {
+		v = []byte{}
+	}
+	x.xxx_hidden_RawData = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 4)
 }
 
 func (x *Places) SetSignature(v []byte) {
@@ -116,7 +132,7 @@ func (x *Places) SetSignature(v []byte) {
 		v = []byte{}
 	}
 	x.xxx_hidden_Signature = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 3)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 3, 4)
 }
 
 func (x *Places) HasNewestRecordIndex() bool {
@@ -126,11 +142,18 @@ func (x *Places) HasNewestRecordIndex() bool {
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 0)
 }
 
-func (x *Places) HasSignature() bool {
+func (x *Places) HasRawData() bool {
 	if x == nil {
 		return false
 	}
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 2)
+}
+
+func (x *Places) HasSignature() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 3)
 }
 
 func (x *Places) ClearNewestRecordIndex() {
@@ -138,8 +161,13 @@ func (x *Places) ClearNewestRecordIndex() {
 	x.xxx_hidden_NewestRecordIndex = 0
 }
 
-func (x *Places) ClearSignature() {
+func (x *Places) ClearRawData() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 2)
+	x.xxx_hidden_RawData = nil
+}
+
+func (x *Places) ClearSignature() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 3)
 	x.xxx_hidden_Signature = nil
 }
 
@@ -163,6 +191,13 @@ type Places_builder struct {
 	//
 	// See Data Dictionary, Section 2.117, `PlaceRecord` (Gen1).
 	Records []*v1.PlaceRecord
+	// Complete raw binary data (pointer + all records).
+	//
+	// Used as canvas for raw data painting during marshalling to preserve
+	// unknown bits and ensure perfect round-trip fidelity.
+	//
+	// Length: 1 byte (pointer) + (N × 10 bytes per record)
+	RawData []byte
 	// Digital signature for the EF_Places file content.
 	//
 	// See Data Dictionary, Section 2.149, `Signature`.
@@ -177,12 +212,16 @@ func (b0 Places_builder) Build() *Places {
 	b, x := &b0, m0
 	_, _ = b, x
 	if b.NewestRecordIndex != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 3)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 4)
 		x.xxx_hidden_NewestRecordIndex = *b.NewestRecordIndex
 	}
 	x.xxx_hidden_Records = &b.Records
+	if b.RawData != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 4)
+		x.xxx_hidden_RawData = b.RawData
+	}
 	if b.Signature != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 3)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 3, 4)
 		x.xxx_hidden_Signature = b.Signature
 	}
 	return m0
@@ -192,11 +231,12 @@ var File_wayplatform_connect_tachograph_card_v1_places_proto protoreflect.FileDe
 
 const file_wayplatform_connect_tachograph_card_v1_places_proto_rawDesc = "" +
 	"\n" +
-	"3wayplatform/connect/tachograph/card/v1/places.proto\x12&wayplatform.connect.tachograph.card.v1\x1a7wayplatform/connect/tachograph/dd/v1/place_record.proto\"\xa3\x01\n" +
+	"3wayplatform/connect/tachograph/card/v1/places.proto\x12&wayplatform.connect.tachograph.card.v1\x1a7wayplatform/connect/tachograph/dd/v1/place_record.proto\"\xbe\x01\n" +
 	"\x06Places\x12.\n" +
 	"\x13newest_record_index\x18\x01 \x01(\x05R\x11newestRecordIndex\x12K\n" +
-	"\arecords\x18\x02 \x03(\v21.wayplatform.connect.tachograph.dd.v1.PlaceRecordR\arecords\x12\x1c\n" +
-	"\tsignature\x18\x03 \x01(\fR\tsignatureB\xd8\x02\n" +
+	"\arecords\x18\x02 \x03(\v21.wayplatform.connect.tachograph.dd.v1.PlaceRecordR\arecords\x12\x19\n" +
+	"\braw_data\x18\x03 \x01(\fR\arawData\x12\x1c\n" +
+	"\tsignature\x18\x04 \x01(\fR\tsignatureB\xd8\x02\n" +
 	"*com.wayplatform.connect.tachograph.card.v1B\vPlacesProtoP\x01Z`github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1;cardv1\xa2\x02\x04WCTC\xaa\x02&Wayplatform.Connect.Tachograph.Card.V1\xca\x02&Wayplatform\\Connect\\Tachograph\\Card\\V1\xe2\x022Wayplatform\\Connect\\Tachograph\\Card\\V1\\GPBMetadata\xea\x02*Wayplatform::Connect::Tachograph::Card::V1b\beditionsp\xe8\a"
 
 var file_wayplatform_connect_tachograph_card_v1_places_proto_msgTypes = make([]protoimpl.MessageInfo, 1)

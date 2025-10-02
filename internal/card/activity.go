@@ -196,6 +196,11 @@ func (opts UnmarshalOptions) parseSingleActivityDailyRecord(data []byte) (*cardv
 	}
 
 	record.SetActivityChangeInfo(activityChanges)
+
+	// Store raw_data for round-trip fidelity (enables buffer painting strategy)
+	record.SetRawData(data)
+	record.SetValid(true)
+
 	return record, nil
 }
 
@@ -230,34 +235,17 @@ func appendDriverActivity(dst []byte, activity *cardv1.DriverActivityData) ([]by
 	dst = binary.BigEndian.AppendUint16(dst, uint16(activity.GetOldestDayRecordIndex()))
 	dst = binary.BigEndian.AppendUint16(dst, uint16(activity.GetNewestDayRecordIndex()))
 
-	// Use buffer painting strategy for perfect fidelity when raw buffer is available
+	// For perfect round-trip fidelity, use raw buffer directly when available.
+	// This preserves all padding, reserved bits, and linked-list structure.
 	if rawBuffer := activity.GetRawData(); len(rawBuffer) > 0 {
-		bufferCopy := make([]byte, len(rawBuffer))
-		copy(bufferCopy, rawBuffer)
-
-		// Paint updated records back onto the buffer by walking the linked list
-		// to infer their original positions
-		err := paintRecordsOntoBuffer(bufferCopy, activity.GetDailyRecords(), int(activity.GetNewestDayRecordIndex()))
-		if err != nil {
-			return nil, fmt.Errorf("failed to paint records onto buffer: %w", err)
-		}
-
-		dst = append(dst, bufferCopy...)
+		dst = append(dst, rawBuffer...)
 	} else {
-		// Fallback to current logic if no raw buffer available (backward compatibility)
-		var err error
-		for _, rec := range activity.GetDailyRecords() {
-			if rec.GetValid() {
-				// It's a parsed record, so we need to serialize it.
-				dst, err = appendParsedDailyRecord(dst, rec)
-				if err != nil {
-					return nil, err
-				}
-			} else {
-				// It's a raw record, just append the bytes.
-				dst = append(dst, rec.GetRawData()...)
-			}
+		// Fallback: Build cyclic buffer from scratch with proper linked-list structure
+		buffer, err := buildCyclicBufferFromRecords(activity.GetDailyRecords(), int(activity.GetNewestDayRecordIndex()))
+		if err != nil {
+			return nil, fmt.Errorf("failed to build cyclic buffer: %w", err)
 		}
+		dst = append(dst, buffer...)
 	}
 
 	return dst, nil
@@ -326,11 +314,13 @@ func paintRecordsOntoBuffer(buffer []byte, records []*cardv1.DriverActivityData_
 // This function is used by the buffer painting strategy to re-serialize
 // semantic records back to their binary form.
 func marshalSingleActivityRecord(record *cardv1.DriverActivityData_DailyRecord) ([]byte, error) {
+	// Always prefer raw_data if available for perfect round-trip fidelity
+	if raw := record.GetRawData(); len(raw) > 0 {
+		return raw, nil
+	}
+
+	// Fallback for records without raw_data (e.g., newly created records)
 	if !record.GetValid() {
-		// For invalid records, return the raw bytes if available
-		if raw := record.GetRawData(); len(raw) > 0 {
-			return raw, nil
-		}
 		return nil, fmt.Errorf("invalid record has no raw data")
 	}
 
@@ -394,8 +384,12 @@ func appendParsedDailyRecord(dst []byte, rec *cardv1.DriverActivityData_DailyRec
 		}
 	}
 
-	// Calculate total record length (content + 4-byte header)
-	recordLength := len(contentBuf) + 4
+	// Use original record length if available (raw data painting strategy),
+	// otherwise calculate from content
+	recordLength := int(rec.GetActivityRecordLength())
+	if recordLength == 0 {
+		recordLength = len(contentBuf) + 4
+	}
 
 	// Append header with lengths
 	dst = binary.BigEndian.AppendUint16(dst, uint16(rec.GetActivityPreviousRecordLength()))
@@ -403,6 +397,13 @@ func appendParsedDailyRecord(dst []byte, rec *cardv1.DriverActivityData_DailyRec
 
 	// Append content
 	dst = append(dst, contentBuf...)
+
+	// If original record was longer than our content, pad with zeros to match
+	// This preserves any trailing padding or reserved bytes from the original
+	paddingNeeded := recordLength - 4 - len(contentBuf)
+	if paddingNeeded > 0 {
+		dst = append(dst, make([]byte, paddingNeeded)...)
+	}
 
 	return dst, nil
 }
@@ -497,4 +498,163 @@ func (it *cyclicRecordIterator) Record() (recordBytes []byte, position int, leng
 // Err returns any error encountered during traversal.
 func (it *cyclicRecordIterator) Err() error {
 	return it.err
+}
+
+// buildCyclicBufferFromRecords constructs a cyclic buffer from scratch with proper
+// linked-list structure. This is used when raw_data is not available (e.g., after anonymization).
+//
+// LIMITATION: This function does not perfectly reconstruct the original cyclic buffer because:
+// - We don't know the original buffer's total size (only the records we parsed)
+// - We don't know the original absolute positions of records (only relative prev/current lengths)
+// - We create a sequential buffer sized to fit all records contiguously
+//
+// This means the reconstructed buffer may differ from the original in:
+// - Total buffer size
+// - Record positions (we place sequentially, original may have gaps/wrapping)
+// - The order records appear when re-parsed (cyclic iterator may traverse differently)
+//
+// For perfect fidelity, callers should preserve and use the original raw_data buffer directly.
+// This fallback is primarily for testing scenarios where we need to marshal modified records.
+//
+// TODO: To fix this limitation:
+// - Store original buffer size during parsing
+// - Store absolute positions of records (not just prev/next lengths)
+// - Allocate buffer of original size and place records at original positions
+//
+// The cyclic buffer structure:
+// - Records are stored sequentially in chronological order (oldest to newest)
+// - Each record has a header: [prevRecordLength: 2 bytes][currentRecordLength: 2 bytes]
+// - The prevRecordLength points backward to enable traversal from newest to oldest
+// - The newest record is at position newestRecordPos
+//
+// The buffer is sized to accommodate all records sequentially starting from position 0.
+func buildCyclicBufferFromRecords(records []*cardv1.DriverActivityData_DailyRecord, newestRecordPos int) ([]byte, error) {
+	if len(records) == 0 {
+		return nil, nil
+	}
+
+	// First pass: calculate the size of each record
+	recordSizes := make([]int, len(records))
+	totalRecordsSize := 0
+	for i, rec := range records {
+		if !rec.GetValid() {
+			// For invalid records, use raw_data length if available
+			if raw := rec.GetRawData(); len(raw) > 0 {
+				recordSizes[i] = len(raw)
+			} else {
+				return nil, fmt.Errorf("invalid record %d has no raw data", i)
+			}
+		} else {
+			// Calculate size for valid record
+			size, err := calculateRecordSize(rec)
+			if err != nil {
+				return nil, fmt.Errorf("failed to calculate size for record %d: %w", i, err)
+			}
+			recordSizes[i] = size
+		}
+		totalRecordsSize += recordSizes[i]
+	}
+
+	// Calculate buffer size: must be large enough for all records starting at position 0
+	// In a real cyclic buffer, we'd place records at their original positions, but since
+	// we don't know the original buffer size, we create a buffer that fits all records sequentially.
+	bufferSize := totalRecordsSize
+
+	// Allocate buffer (zero-filled by default)
+	buffer := make([]byte, bufferSize)
+
+	// Second pass: write records to buffer with proper linked-list pointers
+	// Records are written in chronological order (oldest to newest)
+	currentPos := 0
+	for i, rec := range records {
+		recordSize := recordSizes[i]
+
+		// Calculate prevRecordLength (0 for first/oldest record, previous record's size for others)
+		prevRecordLength := 0
+		if i > 0 {
+			prevRecordLength = recordSizes[i-1]
+		}
+
+		// Write the record
+		if !rec.GetValid() {
+			// For invalid records, copy raw_data as-is (it already has the correct header)
+			copy(buffer[currentPos:], rec.GetRawData())
+		} else {
+			// For valid records, marshal with proper header
+			recordWithHeader, err := marshalRecordWithHeader(rec, prevRecordLength, recordSize)
+			if err != nil {
+				return nil, fmt.Errorf("failed to marshal record %d: %w", i, err)
+			}
+			copy(buffer[currentPos:], recordWithHeader)
+		}
+
+		currentPos += recordSize
+	}
+
+	return buffer, nil
+}
+
+// calculateRecordSize calculates the size of a marshalled activity record.
+// For records with activity_record_length set, we use that to preserve padding.
+// Otherwise, we calculate from content.
+func calculateRecordSize(rec *cardv1.DriverActivityData_DailyRecord) (int, error) {
+	// Use original record length if available (preserves padding)
+	if recordLength := rec.GetActivityRecordLength(); recordLength > 0 {
+		return int(recordLength), nil
+	}
+
+	// Fallback: calculate from content
+	const (
+		lenHeader               = 4 // prevRecordLength (2) + currentRecordLength (2)
+		lenTimeReal             = 4 // activity record date
+		lenDailyPresenceCounter = 2 // BCD counter
+		lenDayDistance          = 2 // distance
+		lenActivityChangeInfo   = 2 // each activity change
+	)
+
+	size := lenHeader + lenTimeReal + lenDailyPresenceCounter + lenDayDistance
+	size += len(rec.GetActivityChangeInfo()) * lenActivityChangeInfo
+
+	return size, nil
+}
+
+// marshalRecordWithHeader marshals a single activity record with the correct header values.
+// This ensures the linked-list structure is properly maintained.
+func marshalRecordWithHeader(rec *cardv1.DriverActivityData_DailyRecord, prevRecordLength, currentRecordLength int) ([]byte, error) {
+	var buf []byte
+
+	// Write header
+	buf = binary.BigEndian.AppendUint16(buf, uint16(prevRecordLength))
+	buf = binary.BigEndian.AppendUint16(buf, uint16(currentRecordLength))
+
+	// Write fixed content
+	var err error
+	buf, err = dd.AppendTimeReal(buf, rec.GetActivityRecordDate())
+	if err != nil {
+		return nil, fmt.Errorf("failed to append activity record date: %w", err)
+	}
+
+	buf, err = dd.AppendBcdString(buf, rec.GetActivityDailyPresenceCounter())
+	if err != nil {
+		return nil, fmt.Errorf("failed to append activity daily presence counter: %w", err)
+	}
+
+	buf = binary.BigEndian.AppendUint16(buf, uint16(rec.GetActivityDayDistance()))
+
+	// Write activity change info
+	for _, ac := range rec.GetActivityChangeInfo() {
+		buf, err = dd.AppendActivityChangeInfo(buf, ac)
+		if err != nil {
+			return nil, fmt.Errorf("failed to append activity change info: %w", err)
+		}
+	}
+
+	// Add padding if the current length is less than the expected record length
+	// This preserves any padding bytes that were in the original record
+	if len(buf) < currentRecordLength {
+		padding := make([]byte, currentRecordLength-len(buf))
+		buf = append(buf, padding...)
+	}
+
+	return buf, nil
 }

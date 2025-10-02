@@ -40,8 +40,13 @@ message SpecificConditionsG2 {
   // Corresponds to `specificConditionRecords` in DD Section 2.153.
   repeated dd.v1.SpecificConditionRecord records = 2;
 
-  // Trailing bytes that don't form complete records (for roundtrip fidelity).
-  bytes trailing_bytes = 3;
+  // Complete raw binary data (pointer + all records + any trailing bytes).
+  //
+  // Used as canvas for raw data painting during marshalling to preserve
+  // unknown bits and ensure perfect round-trip fidelity.
+  //
+  // Length: 2 bytes (pointer) + (N × 5 bytes per record) + trailing bytes
+  bytes raw_data = 3;
 
   // Signature data from the following file block, if tagged as a signature for
   // this EF according to the card file format specification (Appendix 2).

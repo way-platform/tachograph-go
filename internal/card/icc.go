@@ -120,19 +120,21 @@ func (opts UnmarshalOptions) unmarshalIcc(data []byte) (*cardv1.Icc, error) {
 	offset += lenEmbedderIcAssemblerId
 	eia := &cardv1.Icc_EmbedderIcAssemblerId{}
 	if len(embedder) >= lenEmbedderIcAssemblerId {
-		// Store as hex string to avoid UTF-8 validation issues with binary data
-		countryCode := &ddv1.StringValue{}
-		countryCode.SetEncoding(ddv1.Encoding_IA5)
-		countryCode.SetRawData([]byte(fmt.Sprintf("%02X%02X", embedder[0], embedder[1])))
-		countryCode.SetValue(fmt.Sprintf("%02X%02X", embedder[0], embedder[1]))
+		// Country code (2 bytes, IA5String)
+		countryCode, err := opts.UnmarshalIA5StringValue(embedder[0:2])
+		if err != nil {
+			return nil, fmt.Errorf("failed to unmarshal country code: %w", err)
+		}
 		eia.SetCountryCode(countryCode)
 
-		moduleEmbedder := &ddv1.StringValue{}
-		moduleEmbedder.SetEncoding(ddv1.Encoding_IA5)
-		moduleEmbedder.SetRawData([]byte(fmt.Sprintf("%02X%02X", embedder[2], embedder[3])))
-		moduleEmbedder.SetValue(fmt.Sprintf("%02X%02X", embedder[2], embedder[3]))
+		// Module embedder (2 bytes, IA5String)
+		moduleEmbedder, err := opts.UnmarshalIA5StringValue(embedder[2:4])
+		if err != nil {
+			return nil, fmt.Errorf("failed to unmarshal module embedder: %w", err)
+		}
 		eia.SetModuleEmbedder(moduleEmbedder)
 
+		// Manufacturer information (1 byte)
 		eia.SetManufacturerInformation(int32(embedder[4]))
 	}
 	icc.SetEmbedderIcAssemblerId(eia)
@@ -173,7 +175,11 @@ func appendIcc(dst []byte, icc *cardv1.Icc) ([]byte, error) {
 
 	var err error
 	// Append clock stop (1 byte)
-	dst = append(dst, byte(icc.GetClockStop()))
+	clockStopByte, err := dd.MarshalEnum(icc.GetClockStop())
+	if err != nil {
+		return nil, fmt.Errorf("failed to marshal clock stop: %w", err)
+	}
+	dst = append(dst, clockStopByte)
 
 	// Append extended serial number (8 bytes)
 	dst, err = dd.AppendExtendedSerialNumberAsString(dst, icc.GetCardExtendedSerialNumber(), lenCardExtendedSerialNumber)
@@ -201,18 +207,58 @@ func appendIcc(dst []byte, icc *cardv1.Icc) ([]byte, error) {
 	return dst, nil
 }
 
-// appendEmbedderIcAssemblerId appends an EmbedderIcAssemblerId structure
+// appendEmbedderIcAssemblerId appends an EmbedderIcAssemblerId structure (5 bytes total)
 func appendEmbedderIcAssemblerId(dst []byte, eia *cardv1.Icc_EmbedderIcAssemblerId) ([]byte, error) {
+	const lenEmbedderIcAssemblerId = 5
+	const lenCountryCode = 2
+	const lenModuleEmbedder = 2
+
 	if eia == nil {
-		// Append default values: 1 byte manufacturer code + 1 byte year
-		return append(dst, 0x00, 0x00), nil
+		// Append default values: 5 zero bytes
+		return append(dst, make([]byte, lenEmbedderIcAssemblerId)...), nil
 	}
 
-	// Append manufacturer code (1 byte)
-	dst = append(dst, byte(eia.GetManufacturerInformation()))
+	// Append country code (2 bytes, IA5String)
+	// Note: IA5String format has no code page byte, just the raw string data
+	countryCode := eia.GetCountryCode()
+	if countryCode != nil && len(countryCode.GetRawData()) == lenCountryCode {
+		dst = append(dst, countryCode.GetRawData()...)
+	} else if countryCode != nil {
+		// Pad or truncate value to 2 bytes
+		value := countryCode.GetValue()
+		if len(value) > lenCountryCode {
+			dst = append(dst, []byte(value[:lenCountryCode])...)
+		} else {
+			dst = append(dst, []byte(value)...)
+			for i := len(value); i < lenCountryCode; i++ {
+				dst = append(dst, ' ')
+			}
+		}
+	} else {
+		dst = append(dst, 0x00, 0x00)
+	}
 
-	// Append year (1 byte) - this is a placeholder since the structure doesn't have a year field
-	dst = append(dst, 0x00)
+	// Append module embedder (2 bytes, IA5String)
+	moduleEmbedder := eia.GetModuleEmbedder()
+	if moduleEmbedder != nil && len(moduleEmbedder.GetRawData()) == lenModuleEmbedder {
+		dst = append(dst, moduleEmbedder.GetRawData()...)
+	} else if moduleEmbedder != nil {
+		// Pad or truncate value to 2 bytes
+		value := moduleEmbedder.GetValue()
+		if len(value) > lenModuleEmbedder {
+			dst = append(dst, []byte(value[:lenModuleEmbedder])...)
+		} else {
+			dst = append(dst, []byte(value)...)
+			for i := len(value); i < lenModuleEmbedder; i++ {
+				dst = append(dst, ' ')
+			}
+		}
+	} else {
+		dst = append(dst, 0x00, 0x00)
+	}
+
+	// Append manufacturer information (1 byte)
+	dst = append(dst, byte(eia.GetManufacturerInformation()))
 
 	return dst, nil
 }

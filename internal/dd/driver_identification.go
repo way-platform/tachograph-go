@@ -59,3 +59,22 @@ func AppendDriverIdentification(dst []byte, driverID *ddv1.DriverIdentification)
 	// Append driver identification number (14 bytes)
 	return AppendStringValue(dst, driverID.GetDriverIdentificationNumber())
 }
+
+// AnonymizeDriverIdentification creates an anonymized copy of DriverIdentification,
+// replacing the driver identification number with a safe, deterministic value while
+// maintaining the correct format and length.
+func AnonymizeDriverIdentification(driverID *ddv1.DriverIdentification) *ddv1.DriverIdentification {
+	if driverID == nil {
+		return nil
+	}
+
+	result := &ddv1.DriverIdentification{}
+
+	// Anonymize driver identification number (14 bytes)
+	// Use a deterministic replacement that maintains IA5 format
+	result.SetDriverIdentificationNumber(
+		AnonymizeStringValue(driverID.GetDriverIdentificationNumber(), "DRIVER00000001"),
+	)
+
+	return result
+}

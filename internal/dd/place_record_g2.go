@@ -142,3 +142,47 @@ func AppendPlaceRecordG2(dst []byte, rec *ddv1.PlaceRecordG2) ([]byte, error) {
 
 	return append(dst, canvas[:]...), nil
 }
+
+// AnonymizePlaceRecordG2 creates an anonymized copy of PlaceRecordG2, preserving the
+// structure while replacing potentially sensitive location data with normalized values.
+//
+// The anonymization:
+// - Preserves timestamps (useful for testing temporal logic)
+// - Normalizes country/region to generic values
+// - Rounds odometer to nearest 100km
+// - Preserves entry type (needed for structure testing)
+// - Anonymizes GNSS coordinates (set to Helsinki, Finland: 60.17°N, 24.94°E)
+func AnonymizePlaceRecordG2(rec *ddv1.PlaceRecordG2) *ddv1.PlaceRecordG2 {
+	if rec == nil {
+		return nil
+	}
+
+	result := &ddv1.PlaceRecordG2{}
+
+	// Preserve entry time (useful for testing)
+	result.SetEntryTime(rec.GetEntryTime())
+
+	// Preserve entry type (structural information)
+	result.SetEntryTypeDailyWorkPeriod(rec.GetEntryTypeDailyWorkPeriod())
+	if rec.HasUnrecognizedEntryTypeDailyWorkPeriod() {
+		result.SetUnrecognizedEntryTypeDailyWorkPeriod(rec.GetUnrecognizedEntryTypeDailyWorkPeriod())
+	}
+
+	// Anonymize country (use a generic test country code)
+	result.SetDailyWorkPeriodCountry(ddv1.NationNumeric_FINLAND) // Finland as test default
+
+	// Anonymize region (use generic value)
+	result.SetDailyWorkPeriodRegion([]byte{0x01})
+
+	// Round odometer to nearest 100km (preserves magnitude but not exact location correlation)
+	originalOdometer := rec.GetVehicleOdometerKm()
+	roundedOdometer := (originalOdometer / 100) * 100
+	result.SetVehicleOdometerKm(roundedOdometer)
+
+	// Anonymize GNSS coordinates
+	result.SetEntryGnssPlaceRecord(AnonymizeGNSSPlaceRecord(rec.GetEntryGnssPlaceRecord()))
+
+	// Don't preserve raw_data - it will be regenerated during marshalling
+
+	return result
+}
