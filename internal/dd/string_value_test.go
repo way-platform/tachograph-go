@@ -13,7 +13,7 @@ func TestUnmarshalStringValue(t *testing.T) {
 		name         string
 		input        []byte
 		wantEncoding ddv1.Encoding
-		wantEncoded  []byte
+		wantEncoded  []byte // raw_data now includes the code page byte
 		wantDecoded  string
 		wantErr      bool
 		errMessage   string
@@ -22,35 +22,35 @@ func TestUnmarshalStringValue(t *testing.T) {
 			name:         "ISO-8859-1 with name 'John'",
 			input:        []byte{0x01, 0x4A, 0x6F, 0x68, 0x6E}, // Code page 1 + "John"
 			wantEncoding: ddv1.Encoding_ISO_8859_1,
-			wantEncoded:  []byte{0x4A, 0x6F, 0x68, 0x6E},
+			wantEncoded:  []byte{0x01, 0x4A, 0x6F, 0x68, 0x6E}, // Includes code page byte
 			wantDecoded:  "John",
 		},
 		{
 			name:         "Default code page with text",
 			input:        []byte{0x00, 0x48, 0x65, 0x6C, 0x6C, 0x6F}, // Code page 0 + "Hello"
 			wantEncoding: ddv1.Encoding_ENCODING_DEFAULT,
-			wantEncoded:  []byte{0x48, 0x65, 0x6C, 0x6C, 0x6F},
+			wantEncoded:  []byte{0x00, 0x48, 0x65, 0x6C, 0x6C, 0x6F}, // Includes code page byte
 			wantDecoded:  "Hello",
 		},
 		{
 			name:         "ISO-8859-2 Polish text",
 			input:        []byte{0x02, 0xB1, 0xE6, 0xEA, 0xB3, 0xF1}, // Code page 2 + ISO-8859-2 bytes
 			wantEncoding: ddv1.Encoding_ISO_8859_2,
-			wantEncoded:  []byte{0xB1, 0xE6, 0xEA, 0xB3, 0xF1},
+			wantEncoded:  []byte{0x02, 0xB1, 0xE6, 0xEA, 0xB3, 0xF1}, // Includes code page byte
 			wantDecoded:  "ąćęłń",
 		},
 		{
 			name:         "Empty code page (255) with padding",
 			input:        []byte{0xFF, 0x00, 0x00, 0x00},
 			wantEncoding: ddv1.Encoding_ENCODING_EMPTY,
-			wantEncoded:  []byte{0x00, 0x00, 0x00},
+			wantEncoded:  []byte{0xFF, 0x00, 0x00, 0x00}, // Includes code page byte
 			wantDecoded:  "",
 		},
 		{
 			name:         "ISO-8859-15 with Euro sign area",
 			input:        []byte{0x0F, 0x45, 0x75, 0x72, 0x6F}, // Code page 15 + "Euro"
 			wantEncoding: ddv1.Encoding_ISO_8859_15,
-			wantEncoded:  []byte{0x45, 0x75, 0x72, 0x6F},
+			wantEncoded:  []byte{0x0F, 0x45, 0x75, 0x72, 0x6F}, // Includes code page byte
 			wantDecoded:  "Euro",
 		},
 		{
@@ -203,7 +203,8 @@ func TestAppendStringValue_CodePaged(t *testing.T) {
 			stringValue: func() *ddv1.StringValue {
 				sv := &ddv1.StringValue{}
 				sv.SetEncoding(ddv1.Encoding_ISO_8859_1)
-				sv.SetRawData([]byte{0x4A, 0x6F, 0x68, 0x6E})
+				sv.SetRawData([]byte{0x01, 0x4A, 0x6F, 0x68, 0x6E}) // Includes code page byte
+				sv.SetLength(4)                                     // String data length (without code page)
 				sv.SetValue("John")
 				return sv
 			}(),
@@ -255,15 +256,16 @@ func TestAppendStringValue_CodePaged(t *testing.T) {
 			want: []byte{0x0F, 0x54, 0x65, 0x73, 0x74},
 		},
 		{
-			name: "Prefer encoded bytes over decoded",
+			name: "Raw data painting: preserves string bytes, paints code page",
 			stringValue: func() *ddv1.StringValue {
 				sv := &ddv1.StringValue{}
 				sv.SetEncoding(ddv1.Encoding_ISO_8859_1)
-				sv.SetRawData([]byte{0x41, 0x42, 0x43})
-				sv.SetValue("XYZ") // Should be ignored
+				sv.SetRawData([]byte{0x01, 0x41, 0x42, 0x43}) // Canvas with original bytes
+				sv.SetLength(3)                               // String data length (without code page)
+				sv.SetValue("XYZ")                            // Display value (not re-encoded)
 				return sv
 			}(),
-			want: []byte{0x01, 0x41, 0x42, 0x43},
+			want: []byte{0x01, 0x41, 0x42, 0x43}, // Code page painted, string bytes preserved
 		},
 	}
 

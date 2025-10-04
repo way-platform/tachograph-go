@@ -8,6 +8,7 @@ import (
 	"strings"
 	"testing"
 
+	"buf.build/go/protovalidate"
 	"github.com/google/go-cmp/cmp"
 	"google.golang.org/protobuf/encoding/protojson"
 	"google.golang.org/protobuf/testing/protocmp"
@@ -156,6 +157,15 @@ func TestUnmarshalRawCardFile_golden(t *testing.T) {
 				// If parsing fails, use the error message as the golden content
 				actual = `{"error":"` + err.Error() + `"}`
 			} else {
+				// Validate the parsed file against protovalidate annotations
+				validator, err := protovalidate.New()
+				if err != nil {
+					t.Fatalf("Failed to create validator: %v", err)
+				}
+				if err := validator.Validate(rawFile); err != nil {
+					t.Errorf("Validation failed for %s: %v", path, err)
+				}
+
 				// If parsing succeeds, use the JSON representation
 				actualBytes, err := (protojson.MarshalOptions{}).Marshal(rawFile)
 				if err != nil {

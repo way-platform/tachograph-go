@@ -22,7 +22,7 @@
       "encoding": "ISO_8859_1",
       "length": 35,
       "value": "TEST_AUTHORITY",
-      "rawData": "VEVTVF9BVVRIT1JJVFkgICAgICAgICAgICAgICAgICAgICA="
+      "rawData": "AVRFU1RfQVVUSE9SSVRZICAgICAgICAgICAgICAgICAgICAg"
     },
     "cardIssueDate": "2020-01-01T00:00:00Z",
     "cardValidityBegin": "2020-01-01T00:00:00Z",
@@ -34,13 +34,13 @@
       "encoding": "ISO_8859_1",
       "length": 35,
       "value": "TEST_SURNAME",
-      "rawData": "VEVTVF9TVVJOQU1FICAgICAgICAgICAgICAgICAgICAgICA="
+      "rawData": "AVRFU1RfU1VSTkFNRSAgICAgICAgICAgICAgICAgICAgICAg"
     },
     "cardHolderFirstNames": {
       "encoding": "ISO_8859_1",
       "length": 35,
       "value": "TEST_FIRSTNAME",
-      "rawData": "VEVTVF9GSVJTVE5BTUUgICAgICAgICAgICAgICAgICAgICA="
+      "rawData": "AVRFU1RfRklSU1ROQU1FICAgICAgICAgICAgICAgICAgICAg"
     },
     "cardHolderBirthDate": {
       "rawData": "IAABAQ==",

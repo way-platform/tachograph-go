@@ -33,7 +33,9 @@ func (opts UnmarshalOptions) UnmarshalStringValue(input []byte) (*ddv1.StringVal
 
 	var output ddv1.StringValue
 	output.SetEncoding(getEncodingFromCodePage(codePage))
-	output.SetRawData(data)
+	// Store the entire input including the code page byte (aligns with raw data painting policy)
+	output.SetRawData(input)
+	// Length field represents the string data length (not including code page)
 	output.SetLength(int32(len(data)))
 
 	// Decode the string based on the code page
@@ -67,49 +69,60 @@ func AppendStringValue(dst []byte, sv *ddv1.StringValue) ([]byte, error) {
 		return append(dst, 0xFF), nil
 	}
 
-	// Validate that raw_data and length agree if both are provided
-	if sv.HasRawData() && sv.HasLength() {
+	// Determine the expected total length (code page + string data)
+	// Length field represents string data only (without code page)
+	hasFixedLength := sv.HasLength()
+	var totalLength int
+	if hasFixedLength {
+		// Total = 1 (code page) + length (string data)
+		totalLength = 1 + int(sv.GetLength())
+	}
+
+	// Validate that raw_data has correct size if present
+	if sv.HasRawData() {
 		rawData := sv.GetRawData()
-		length := int(sv.GetLength())
-		if len(rawData) != length {
-			return nil, fmt.Errorf("raw_data length (%d) does not match length field (%d)", len(rawData), length)
+		if len(rawData) < 1 {
+			return nil, fmt.Errorf("raw_data must include at least the code page byte")
+		}
+		if hasFixedLength && len(rawData) != totalLength {
+			return nil, fmt.Errorf("raw_data length (%d) does not match expected total length (%d = 1 + %d)", len(rawData), totalLength, sv.GetLength())
 		}
 	}
 
-	// Handle code-paged format (with code page byte)
-	// Can be either fixed-length (like VehicleRegistrationNumber) or variable-length
-
-	// Determine the code page byte
+	// Determine the code page byte from the encoding field
 	codePage := getCodePageFromEncoding(sv.GetEncoding())
 
-	// Check if this is a fixed-length code-paged string (has length field set)
-	hasFixedLength := sv.HasLength()
-	var dataLength int
-	if hasFixedLength {
-		dataLength = int(sv.GetLength())
-	}
-
-	// Prefer raw bytes if available (round-trip fidelity)
+	// Use raw data painting approach if raw_data is available
 	if raw := sv.GetRawData(); len(raw) > 0 {
-		if hasFixedLength && len(raw) != dataLength {
-			return nil, fmt.Errorf("raw_data length (%d) does not match expected data length (%d)", len(raw), dataLength)
-		}
-		dst = append(dst, codePage)
-		return append(dst, raw...), nil
+		// Allocate canvas from raw_data
+		canvas := make([]byte, len(raw))
+		copy(canvas, raw)
+
+		// Paint only the code page byte at offset 0 (from semantic encoding field)
+		// The string data at offset 1+ is already correct in raw_data
+		canvas[0] = codePage
+
+		// Note: We do NOT re-encode from the value field because:
+		// 1. The value field is UTF-8 (for display), while raw_data is in the original encoding
+		// 2. Re-encoding from UTF-8 can produce different byte lengths (e.g., ISO-8859-2 → UTF-8 → ISO-8859-2)
+		// 3. The raw_data preserves the exact original bytes, which is what we want for round-trip fidelity
+
+		return append(dst, canvas...), nil
 	}
 
-	// Fallback: encode the value string
+	// Fallback: encode from semantic fields (no raw_data available)
 	value := sv.GetValue()
-
-	// For now, we only support encoding to ISO-8859-1 and IA5 (ASCII)
-	// More sophisticated encoding would require charmap encoding
 	encoded, err := encodeWithCodePage(codePage, value)
 	if err != nil {
 		return nil, fmt.Errorf("failed to encode string with code page %d: %w", codePage, err)
 	}
 
-	// Handle fixed-length code-paged strings (pad with spaces)
+	// Write code page byte
+	dst = append(dst, codePage)
+
+	// Handle fixed-length strings (pad with spaces)
 	if hasFixedLength {
+		dataLength := int(sv.GetLength())
 		if len(encoded) > dataLength {
 			return nil, fmt.Errorf("encoded string length (%d) exceeds allowed length (%d)", len(encoded), dataLength)
 		}
@@ -118,12 +131,10 @@ func AppendStringValue(dst []byte, sv *ddv1.StringValue) ([]byte, error) {
 		for i := len(encoded); i < dataLength; i++ {
 			result[i] = ' '
 		}
-		dst = append(dst, codePage)
 		return append(dst, result...), nil
 	}
 
-	// Handle variable-length code-paged strings (no padding)
-	dst = append(dst, codePage)
+	// Handle variable-length strings (no padding)
 	return append(dst, encoded...), nil
 }
 
