@@ -40,7 +40,7 @@ type ActivityChangeInfo struct {
 	state                          protoimpl.MessageState `protogen:"opaque.v1"`
 	xxx_hidden_RawData             []byte                 `protobuf:"bytes,10,opt,name=raw_data,json=rawData"`
 	xxx_hidden_Slot                CardSlotNumber         `protobuf:"varint,1,opt,name=slot,enum=wayplatform.connect.tachograph.dd.v1.CardSlotNumber"`
-	xxx_hidden_DrivingStatus       DrivingStatus          `protobuf:"varint,3,opt,name=driving_status,json=drivingStatus,enum=wayplatform.connect.tachograph.dd.v1.DrivingStatus"`
+	xxx_hidden_Crew                bool                   `protobuf:"varint,3,opt,name=crew"`
 	xxx_hidden_Inserted            bool                   `protobuf:"varint,5,opt,name=inserted"`
 	xxx_hidden_Activity            DriverActivityValue    `protobuf:"varint,7,opt,name=activity,enum=wayplatform.connect.tachograph.dd.v1.DriverActivityValue"`
 	xxx_hidden_TimeOfChangeMinutes int32                  `protobuf:"varint,9,opt,name=time_of_change_minutes,json=timeOfChangeMinutes"`
@@ -91,13 +91,11 @@ func (x *ActivityChangeInfo) GetSlot() CardSlotNumber {
 	return CardSlotNumber_CARD_SLOT_NUMBER_UNSPECIFIED
 }
 
-func (x *ActivityChangeInfo) GetDrivingStatus() DrivingStatus {
+func (x *ActivityChangeInfo) GetCrew() bool {
 	if x != nil {
-		if protoimpl.X.Present(&(x.XXX_presence[0]), 2) {
-			return x.xxx_hidden_DrivingStatus
-		}
+		return x.xxx_hidden_Crew
 	}
-	return DrivingStatus_DRIVING_STATUS_UNSPECIFIED
+	return false
 }
 
 func (x *ActivityChangeInfo) GetInserted() bool {
@@ -136,8 +134,8 @@ func (x *ActivityChangeInfo) SetSlot(v CardSlotNumber) {
 	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 6)
 }
 
-func (x *ActivityChangeInfo) SetDrivingStatus(v DrivingStatus) {
-	x.xxx_hidden_DrivingStatus = v
+func (x *ActivityChangeInfo) SetCrew(v bool) {
+	x.xxx_hidden_Crew = v
 	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 6)
 }
 
@@ -170,7 +168,7 @@ func (x *ActivityChangeInfo) HasSlot() bool {
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 1)
 }
 
-func (x *ActivityChangeInfo) HasDrivingStatus() bool {
+func (x *ActivityChangeInfo) HasCrew() bool {
 	if x == nil {
 		return false
 	}
@@ -208,9 +206,9 @@ func (x *ActivityChangeInfo) ClearSlot() {
 	x.xxx_hidden_Slot = CardSlotNumber_CARD_SLOT_NUMBER_UNSPECIFIED
 }
 
-func (x *ActivityChangeInfo) ClearDrivingStatus() {
+func (x *ActivityChangeInfo) ClearCrew() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 2)
-	x.xxx_hidden_DrivingStatus = DrivingStatus_DRIVING_STATUS_UNSPECIFIED
+	x.xxx_hidden_Crew = false
 }
 
 func (x *ActivityChangeInfo) ClearInserted() {
@@ -238,9 +236,11 @@ type ActivityChangeInfo_builder struct {
 	// Slot of the driver/co-driver. Corresponds to bit 's'.
 	// This is a convenience field derived from `raw_data`.
 	Slot *CardSlotNumber
-	// Driving status (single or crew). Corresponds to bit 'c'.
+	// Indicates if this is crew mode (true) or single driver mode (false).
+	// Corresponds to bit 'c'.
+	// Protocol value: 0 = single, 1 = crew.
 	// This is a convenience field derived from `raw_data`.
-	DrivingStatus *DrivingStatus
+	Crew *bool
 	// Indicates if a card is inserted. Corresponds to bit 'p'.
 	// ASN.1 value `0` maps to `true`, `1` to `false`.
 	// This is a convenience field derived from `raw_data`.
@@ -265,9 +265,9 @@ func (b0 ActivityChangeInfo_builder) Build() *ActivityChangeInfo {
 		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 6)
 		x.xxx_hidden_Slot = *b.Slot
 	}
-	if b.DrivingStatus != nil {
+	if b.Crew != nil {
 		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 6)
-		x.xxx_hidden_DrivingStatus = *b.DrivingStatus
+		x.xxx_hidden_Crew = *b.Crew
 	}
 	if b.Inserted != nil {
 		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 3, 6)
@@ -288,12 +288,12 @@ var File_wayplatform_connect_tachograph_dd_v1_activity_change_info_proto protore
 
 const file_wayplatform_connect_tachograph_dd_v1_activity_change_info_proto_rawDesc = "" +
 	"\n" +
-	"?wayplatform/connect/tachograph/dd/v1/activity_change_info.proto\x12$wayplatform.connect.tachograph.dd.v1\x1a;wayplatform/connect/tachograph/dd/v1/card_slot_number.proto\x1a@wayplatform/connect/tachograph/dd/v1/driver_activity_value.proto\x1a9wayplatform/connect/tachograph/dd/v1/driving_status.proto\"\xfd\x02\n" +
+	"?wayplatform/connect/tachograph/dd/v1/activity_change_info.proto\x12$wayplatform.connect.tachograph.dd.v1\x1a;wayplatform/connect/tachograph/dd/v1/card_slot_number.proto\x1a@wayplatform/connect/tachograph/dd/v1/driver_activity_value.proto\"\xb5\x02\n" +
 	"\x12ActivityChangeInfo\x12\x19\n" +
 	"\braw_data\x18\n" +
 	" \x01(\fR\arawData\x12H\n" +
-	"\x04slot\x18\x01 \x01(\x0e24.wayplatform.connect.tachograph.dd.v1.CardSlotNumberR\x04slot\x12Z\n" +
-	"\x0edriving_status\x18\x03 \x01(\x0e23.wayplatform.connect.tachograph.dd.v1.DrivingStatusR\rdrivingStatus\x12\x1a\n" +
+	"\x04slot\x18\x01 \x01(\x0e24.wayplatform.connect.tachograph.dd.v1.CardSlotNumberR\x04slot\x12\x12\n" +
+	"\x04crew\x18\x03 \x01(\bR\x04crew\x12\x1a\n" +
 	"\binserted\x18\x05 \x01(\bR\binserted\x12U\n" +
 	"\bactivity\x18\a \x01(\x0e29.wayplatform.connect.tachograph.dd.v1.DriverActivityValueR\bactivity\x123\n" +
 	"\x16time_of_change_minutes\x18\t \x01(\x05R\x13timeOfChangeMinutesB\xd6\x02\n" +
@@ -303,18 +303,16 @@ var file_wayplatform_connect_tachograph_dd_v1_activity_change_info_proto_msgType
 var file_wayplatform_connect_tachograph_dd_v1_activity_change_info_proto_goTypes = []any{
 	(*ActivityChangeInfo)(nil), // 0: wayplatform.connect.tachograph.dd.v1.ActivityChangeInfo
 	(CardSlotNumber)(0),        // 1: wayplatform.connect.tachograph.dd.v1.CardSlotNumber
-	(DrivingStatus)(0),         // 2: wayplatform.connect.tachograph.dd.v1.DrivingStatus
-	(DriverActivityValue)(0),   // 3: wayplatform.connect.tachograph.dd.v1.DriverActivityValue
+	(DriverActivityValue)(0),   // 2: wayplatform.connect.tachograph.dd.v1.DriverActivityValue
 }
 var file_wayplatform_connect_tachograph_dd_v1_activity_change_info_proto_depIdxs = []int32{
 	1, // 0: wayplatform.connect.tachograph.dd.v1.ActivityChangeInfo.slot:type_name -> wayplatform.connect.tachograph.dd.v1.CardSlotNumber
-	2, // 1: wayplatform.connect.tachograph.dd.v1.ActivityChangeInfo.driving_status:type_name -> wayplatform.connect.tachograph.dd.v1.DrivingStatus
-	3, // 2: wayplatform.connect.tachograph.dd.v1.ActivityChangeInfo.activity:type_name -> wayplatform.connect.tachograph.dd.v1.DriverActivityValue
-	3, // [3:3] is the sub-list for method output_type
-	3, // [3:3] is the sub-list for method input_type
-	3, // [3:3] is the sub-list for extension type_name
-	3, // [3:3] is the sub-list for extension extendee
-	0, // [0:3] is the sub-list for field type_name
+	2, // 1: wayplatform.connect.tachograph.dd.v1.ActivityChangeInfo.activity:type_name -> wayplatform.connect.tachograph.dd.v1.DriverActivityValue
+	2, // [2:2] is the sub-list for method output_type
+	2, // [2:2] is the sub-list for method input_type
+	2, // [2:2] is the sub-list for extension type_name
+	2, // [2:2] is the sub-list for extension extendee
+	0, // [0:2] is the sub-list for field type_name
 }
 
 func init() { file_wayplatform_connect_tachograph_dd_v1_activity_change_info_proto_init() }
@@ -324,7 +322,6 @@ func file_wayplatform_connect_tachograph_dd_v1_activity_change_info_proto_init()
 	}
 	file_wayplatform_connect_tachograph_dd_v1_card_slot_number_proto_init()
 	file_wayplatform_connect_tachograph_dd_v1_driver_activity_value_proto_init()
-	file_wayplatform_connect_tachograph_dd_v1_driving_status_proto_init()
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

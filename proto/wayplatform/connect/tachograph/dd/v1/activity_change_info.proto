@@ -4,7 +4,6 @@ package wayplatform.connect.tachograph.dd.v1;
 
 import "wayplatform/connect/tachograph/dd/v1/card_slot_number.proto";
 import "wayplatform/connect/tachograph/dd/v1/driver_activity_value.proto";
-import "wayplatform/connect/tachograph/dd/v1/driving_status.proto";
 
 // Represents a change in driver activity, driving status, or card status.
 // This message preserves the original raw 2-byte bitfield for round-trip data
@@ -32,9 +31,11 @@ message ActivityChangeInfo {
   // This is a convenience field derived from `raw_data`.
   CardSlotNumber slot = 1;
 
-  // Driving status (single or crew). Corresponds to bit 'c'.
+  // Indicates if this is crew mode (true) or single driver mode (false).
+  // Corresponds to bit 'c'.
+  // Protocol value: 0 = single, 1 = crew.
   // This is a convenience field derived from `raw_data`.
-  DrivingStatus driving_status = 3;
+  bool crew = 3;
 
   // Indicates if a card is inserted. Corresponds to bit 'p'.
   // ASN.1 value `0` maps to `true`, `1` to `false`.

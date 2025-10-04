@@ -32,24 +32,19 @@ func (opts UnmarshalOptions) UnmarshalActivityChangeInfo(input []byte) (*ddv1.Ac
 	var output ddv1.ActivityChangeInfo
 	output.SetRawData(bytes.Clone(input))
 	value := binary.BigEndian.Uint16(input)
-	slot := int32((value >> 15) & 0x1)          // bit 15
-	drivingStatus := int32((value >> 14) & 0x1) // bit 14
-	cardStatus := (value >> 13) & 0x1           // bit 13
-	activity := int32((value >> 11) & 0x3)      // bits 12-11
-	timeMinutes := int32(value & 0x7FF)         // bits 10-0
+	slot := (value >> 15) & 0x1            // bit 15
+	drivingStatus := (value >> 14) & 0x1   // bit 14
+	cardStatus := (value >> 13) & 0x1      // bit 13
+	activity := int32((value >> 11) & 0x3) // bits 12-11
+	timeMinutes := int32(value & 0x7FF)    // bits 10-0
 
+	// Convert bit values
 	if slotEnum, err := UnmarshalEnum[ddv1.CardSlotNumber](byte(slot)); err == nil {
 		output.SetSlot(slotEnum)
 	} else {
 		return nil, fmt.Errorf("invalid slot value %d: %w", slot, err)
 	}
-
-	if drivingStatusEnum, err := UnmarshalEnum[ddv1.DrivingStatus](byte(drivingStatus)); err == nil {
-		output.SetDrivingStatus(drivingStatusEnum)
-	} else {
-		return nil, fmt.Errorf("invalid driving status value %d: %w", drivingStatus, err)
-	}
-
+	output.SetCrew(drivingStatus == 1)
 	output.SetInserted(cardStatus == 0)
 
 	if activityEnum, err := UnmarshalEnum[ddv1.DriverActivityValue](byte(activity)); err == nil {
@@ -77,7 +72,7 @@ func AnonymizeActivityChangeInfo(ac *ddv1.ActivityChangeInfo, index int) *ddv1.A
 
 	// Preserve activity type and status fields
 	result.SetSlot(ac.GetSlot())
-	result.SetDrivingStatus(ac.GetDrivingStatus())
+	result.SetCrew(ac.GetCrew())
 	result.SetInserted(ac.GetInserted())
 	result.SetActivity(ac.GetActivity())
 
@@ -119,16 +114,17 @@ func AppendActivityChangeInfo(dst []byte, ac *ddv1.ActivityChangeInfo) ([]byte, 
 		}
 		copy(canvas[:], ac.GetRawData())
 	}
+	// Convert enum and boolean to bit values
 	slot, err := MarshalEnum(ac.GetSlot())
 	if err != nil {
 		return nil, fmt.Errorf("failed to marshal slot: %w", err)
 	}
-	drivingStatus, err := MarshalEnum(ac.GetDrivingStatus())
-	if err != nil {
-		return nil, fmt.Errorf("failed to marshal driving status: %w", err)
+	var drivingStatus uint16
+	if ac.GetCrew() {
+		drivingStatus = 1
 	}
 	// Convert boolean to protocol value: 0 = inserted, 1 = not inserted
-	cardInserted := int32(1)
+	var cardInserted uint16 = 1
 	if ac.GetInserted() {
 		cardInserted = 0
 	}
@@ -138,8 +134,8 @@ func AppendActivityChangeInfo(dst []byte, ac *ddv1.ActivityChangeInfo) ([]byte, 
 	}
 	var aci uint16
 	aci |= (uint16(slot) & 0x1) << 15
-	aci |= (uint16(drivingStatus) & 0x1) << 14
-	aci |= (uint16(cardInserted) & 0x1) << 13
+	aci |= (drivingStatus & 0x1) << 14
+	aci |= (cardInserted & 0x1) << 13
 	aci |= (uint16(activity) & 0x3) << 11
 	aci |= (uint16(ac.GetTimeOfChangeMinutes()) & 0x7FF)
 	binary.BigEndian.PutUint16(canvas[:], aci)
