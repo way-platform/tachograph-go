@@ -97,7 +97,7 @@ func (opts UnmarshalOptions) unmarshalIcc(data []byte) (*cardv1.Icc, error) {
 	if offset+lenCardApprovalNumber > len(data) {
 		return nil, fmt.Errorf("insufficient data for card approval number")
 	}
-	cardApprovalNumber, err := opts.UnmarshalIA5StringValue(data[offset : offset+lenCardApprovalNumber])
+	cardApprovalNumber, err := opts.UnmarshalIa5StringValue(data[offset : offset+lenCardApprovalNumber])
 	if err != nil {
 		return nil, fmt.Errorf("failed to read card approval number: %w", err)
 	}
@@ -121,14 +121,14 @@ func (opts UnmarshalOptions) unmarshalIcc(data []byte) (*cardv1.Icc, error) {
 	eia := &cardv1.Icc_EmbedderIcAssemblerId{}
 	if len(embedder) >= lenEmbedderIcAssemblerId {
 		// Country code (2 bytes, IA5String)
-		countryCode, err := opts.UnmarshalIA5StringValue(embedder[0:2])
+		countryCode, err := opts.UnmarshalIa5StringValue(embedder[0:2])
 		if err != nil {
 			return nil, fmt.Errorf("failed to unmarshal country code: %w", err)
 		}
 		eia.SetCountryCode(countryCode)
 
 		// Module embedder (2 bytes, IA5String)
-		moduleEmbedder, err := opts.UnmarshalIA5StringValue(embedder[2:4])
+		moduleEmbedder, err := opts.UnmarshalIa5StringValue(embedder[2:4])
 		if err != nil {
 			return nil, fmt.Errorf("failed to unmarshal module embedder: %w", err)
 		}
@@ -188,7 +188,7 @@ func appendIcc(dst []byte, icc *cardv1.Icc) ([]byte, error) {
 	}
 
 	// Append card approval number (8 bytes)
-	dst, err = dd.AppendStringValue(dst, icc.GetCardApprovalNumber())
+	dst, err = dd.AppendIa5StringValue(dst, icc.GetCardApprovalNumber())
 	if err != nil {
 		return nil, err
 	}
@@ -210,51 +210,23 @@ func appendIcc(dst []byte, icc *cardv1.Icc) ([]byte, error) {
 // appendEmbedderIcAssemblerId appends an EmbedderIcAssemblerId structure (5 bytes total)
 func appendEmbedderIcAssemblerId(dst []byte, eia *cardv1.Icc_EmbedderIcAssemblerId) ([]byte, error) {
 	const lenEmbedderIcAssemblerId = 5
-	const lenCountryCode = 2
-	const lenModuleEmbedder = 2
 
 	if eia == nil {
 		// Append default values: 5 zero bytes
 		return append(dst, make([]byte, lenEmbedderIcAssemblerId)...), nil
 	}
 
+	var err error
 	// Append country code (2 bytes, IA5String)
-	// Note: IA5String format has no code page byte, just the raw string data
-	countryCode := eia.GetCountryCode()
-	if countryCode != nil && len(countryCode.GetRawData()) == lenCountryCode {
-		dst = append(dst, countryCode.GetRawData()...)
-	} else if countryCode != nil {
-		// Pad or truncate value to 2 bytes
-		value := countryCode.GetValue()
-		if len(value) > lenCountryCode {
-			dst = append(dst, []byte(value[:lenCountryCode])...)
-		} else {
-			dst = append(dst, []byte(value)...)
-			for i := len(value); i < lenCountryCode; i++ {
-				dst = append(dst, ' ')
-			}
-		}
-	} else {
-		dst = append(dst, 0x00, 0x00)
+	dst, err = dd.AppendIa5StringValue(dst, eia.GetCountryCode())
+	if err != nil {
+		return nil, fmt.Errorf("failed to append country code: %w", err)
 	}
 
 	// Append module embedder (2 bytes, IA5String)
-	moduleEmbedder := eia.GetModuleEmbedder()
-	if moduleEmbedder != nil && len(moduleEmbedder.GetRawData()) == lenModuleEmbedder {
-		dst = append(dst, moduleEmbedder.GetRawData()...)
-	} else if moduleEmbedder != nil {
-		// Pad or truncate value to 2 bytes
-		value := moduleEmbedder.GetValue()
-		if len(value) > lenModuleEmbedder {
-			dst = append(dst, []byte(value[:lenModuleEmbedder])...)
-		} else {
-			dst = append(dst, []byte(value)...)
-			for i := len(value); i < lenModuleEmbedder; i++ {
-				dst = append(dst, ' ')
-			}
-		}
-	} else {
-		dst = append(dst, 0x00, 0x00)
+	dst, err = dd.AppendIa5StringValue(dst, eia.GetModuleEmbedder())
+	if err != nil {
+		return nil, fmt.Errorf("failed to append module embedder: %w", err)
 	}
 
 	// Append manufacturer information (1 byte)

@@ -11,12 +11,11 @@ import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
-// createIA5StringValue creates a StringValue with IA5 encoding and fixed length.
+// createIA5StringValue creates a Ia5StringValue with fixed length.
 // This is a helper for creating test/anonymized string data.
-func createIA5StringValue(value string, length uint32) *ddv1.StringValue {
-	sv := &ddv1.StringValue{}
+func createIA5StringValue(value string, length int32) *ddv1.Ia5StringValue {
+	sv := &ddv1.Ia5StringValue{}
 	sv.SetValue(value)
-	sv.SetEncoding(ddv1.Encoding_IA5)
 	sv.SetLength(length)
 	return sv
 }
@@ -87,7 +86,7 @@ func (opts UnmarshalOptions) unmarshalIdentification(data []byte) (*cardv1.Ident
 	// and if the 15th and 16th bytes are single digits (replacement/renewal indices)
 
 	// Try to parse as driver card first (14 + 1 + 1 format)
-	driverIdentification, err := opts.UnmarshalIA5StringValue(cardNumberData[0:14])
+	driverIdentification, err := opts.UnmarshalIa5StringValue(cardNumberData[0:14])
 	if err == nil {
 		// Check if bytes 14 and 15 are single digits (0-9)
 		replacementByte := cardNumberData[14]
@@ -98,11 +97,11 @@ func (opts UnmarshalOptions) unmarshalIdentification(data []byte) (*cardv1.Ident
 			driverID.SetDriverIdentificationNumber(driverIdentification)
 
 			// Parse replacement and renewal indices (1 byte each)
-			replacementIndex, err := opts.UnmarshalIA5StringValue(cardNumberData[14:15])
+			replacementIndex, err := opts.UnmarshalIa5StringValue(cardNumberData[14:15])
 			if err == nil {
 				driverID.SetCardReplacementIndex(replacementIndex)
 			}
-			renewalIndex, err := opts.UnmarshalIA5StringValue(cardNumberData[15:16])
+			renewalIndex, err := opts.UnmarshalIa5StringValue(cardNumberData[15:16])
 			if err == nil {
 				driverID.SetCardRenewalIndex(renewalIndex)
 			}
@@ -114,28 +113,28 @@ func (opts UnmarshalOptions) unmarshalIdentification(data []byte) (*cardv1.Ident
 			ownerID := &ddv1.OwnerIdentification{}
 
 			// Owner identification (13 bytes)
-			ownerIdentification, err := opts.UnmarshalIA5StringValue(cardNumberData[0:13])
+			ownerIdentification, err := opts.UnmarshalIa5StringValue(cardNumberData[0:13])
 			if err != nil {
 				return nil, fmt.Errorf("failed to read owner identification: %w", err)
 			}
 			ownerID.SetOwnerIdentification(ownerIdentification)
 
 			// Consecutive index (1 byte)
-			consecutiveIndex, err := opts.UnmarshalIA5StringValue(cardNumberData[13:14])
+			consecutiveIndex, err := opts.UnmarshalIa5StringValue(cardNumberData[13:14])
 			if err != nil {
 				return nil, fmt.Errorf("failed to read consecutive index: %w", err)
 			}
 			ownerID.SetConsecutiveIndex(consecutiveIndex)
 
 			// Replacement index (1 byte)
-			replacementIndex, err := opts.UnmarshalIA5StringValue(cardNumberData[14:15])
+			replacementIndex, err := opts.UnmarshalIa5StringValue(cardNumberData[14:15])
 			if err != nil {
 				return nil, fmt.Errorf("failed to read replacement index: %w", err)
 			}
 			ownerID.SetReplacementIndex(replacementIndex)
 
 			// Renewal index (1 byte)
-			renewalIndex, err := opts.UnmarshalIA5StringValue(cardNumberData[15:16])
+			renewalIndex, err := opts.UnmarshalIa5StringValue(cardNumberData[15:16])
 			if err != nil {
 				return nil, fmt.Errorf("failed to read renewal index: %w", err)
 			}
@@ -149,28 +148,28 @@ func (opts UnmarshalOptions) unmarshalIdentification(data []byte) (*cardv1.Ident
 		ownerID := &ddv1.OwnerIdentification{}
 
 		// Owner identification (13 bytes)
-		ownerIdentification, err := opts.UnmarshalIA5StringValue(cardNumberData[0:13])
+		ownerIdentification, err := opts.UnmarshalIa5StringValue(cardNumberData[0:13])
 		if err != nil {
 			return nil, fmt.Errorf("failed to read owner identification: %w", err)
 		}
 		ownerID.SetOwnerIdentification(ownerIdentification)
 
 		// Consecutive index (1 byte)
-		consecutiveIndex, err := opts.UnmarshalIA5StringValue(cardNumberData[13:14])
+		consecutiveIndex, err := opts.UnmarshalIa5StringValue(cardNumberData[13:14])
 		if err != nil {
 			return nil, fmt.Errorf("failed to read consecutive index: %w", err)
 		}
 		ownerID.SetConsecutiveIndex(consecutiveIndex)
 
 		// Replacement index (1 byte)
-		replacementIndex, err := opts.UnmarshalIA5StringValue(cardNumberData[14:15])
+		replacementIndex, err := opts.UnmarshalIa5StringValue(cardNumberData[14:15])
 		if err != nil {
 			return nil, fmt.Errorf("failed to read replacement index: %w", err)
 		}
 		ownerID.SetReplacementIndex(replacementIndex)
 
 		// Renewal index (1 byte)
-		renewalIndex, err := opts.UnmarshalIA5StringValue(cardNumberData[15:16])
+		renewalIndex, err := opts.UnmarshalIa5StringValue(cardNumberData[15:16])
 		if err != nil {
 			return nil, fmt.Errorf("failed to read renewal index: %w", err)
 		}
@@ -266,7 +265,7 @@ func (opts UnmarshalOptions) unmarshalIdentification(data []byte) (*cardv1.Ident
 	if offset+2 > len(data) {
 		return nil, fmt.Errorf("insufficient data for card holder preferred language")
 	}
-	preferredLanguage, err := opts.UnmarshalIA5StringValue(data[offset : offset+2])
+	preferredLanguage, err := opts.UnmarshalIa5StringValue(data[offset : offset+2])
 	if err != nil {
 		return nil, fmt.Errorf("failed to read card holder preferred language: %w", err)
 	}
@@ -456,7 +455,7 @@ func appendDriverCardHolderIdentification(dst []byte, h *cardv1.Identification_D
 		dst = append(dst, 0x00, 0x00, 0x00, 0x00)
 	}
 
-	dst, err = dd.AppendStringValue(dst, h.GetCardHolderPreferredLanguage())
+	dst, err = dd.AppendIa5StringValue(dst, h.GetCardHolderPreferredLanguage())
 	if err != nil {
 		return nil, fmt.Errorf("failed to append preferred language: %w", err)
 	}
@@ -536,7 +535,7 @@ func AnonymizeIdentification(id *cardv1.Identification) *cardv1.Identification {
 			surname.SetEncoding(ddv1.Encoding_ISO_8859_1)
 			surname.SetLength(35)
 			anonymizedHolder.SetCardHolderSurname(surname)
-			
+
 			firstName := &ddv1.StringValue{}
 			firstName.SetValue("TEST_FIRSTNAME")
 			firstName.SetEncoding(ddv1.Encoding_ISO_8859_1)
@@ -570,7 +569,7 @@ func AnonymizeIdentification(id *cardv1.Identification) *cardv1.Identification {
 			workshopName.SetEncoding(ddv1.Encoding_ISO_8859_1)
 			workshopName.SetLength(35)
 			anonymizedHolder.SetWorkshopName(workshopName)
-			
+
 			workshopAddr := &ddv1.StringValue{}
 			workshopAddr.SetValue("TEST_ADDRESS")
 			workshopAddr.SetEncoding(ddv1.Encoding_ISO_8859_1)
@@ -583,7 +582,7 @@ func AnonymizeIdentification(id *cardv1.Identification) *cardv1.Identification {
 			surname.SetEncoding(ddv1.Encoding_ISO_8859_1)
 			surname.SetLength(35)
 			anonymizedHolder.SetCardHolderSurname(surname)
-			
+
 			firstName := &ddv1.StringValue{}
 			firstName.SetValue("TEST_FIRSTNAME")
 			firstName.SetEncoding(ddv1.Encoding_ISO_8859_1)
@@ -606,7 +605,7 @@ func AnonymizeIdentification(id *cardv1.Identification) *cardv1.Identification {
 			controlBodyName.SetEncoding(ddv1.Encoding_ISO_8859_1)
 			controlBodyName.SetLength(35)
 			anonymizedHolder.SetControlBodyName(controlBodyName)
-			
+
 			controlBodyAddr := &ddv1.StringValue{}
 			controlBodyAddr.SetValue("TEST_ADDRESS")
 			controlBodyAddr.SetEncoding(ddv1.Encoding_ISO_8859_1)
@@ -619,7 +618,7 @@ func AnonymizeIdentification(id *cardv1.Identification) *cardv1.Identification {
 			surname.SetEncoding(ddv1.Encoding_ISO_8859_1)
 			surname.SetLength(35)
 			anonymizedHolder.SetCardHolderSurname(surname)
-			
+
 			firstName := &ddv1.StringValue{}
 			firstName.SetValue("TEST_FIRSTNAME")
 			firstName.SetEncoding(ddv1.Encoding_ISO_8859_1)
@@ -642,7 +641,7 @@ func AnonymizeIdentification(id *cardv1.Identification) *cardv1.Identification {
 			companyName.SetEncoding(ddv1.Encoding_ISO_8859_1)
 			companyName.SetLength(35)
 			anonymizedHolder.SetCompanyName(companyName)
-			
+
 			companyAddr := &ddv1.StringValue{}
 			companyAddr.SetValue("TEST_ADDRESS")
 			companyAddr.SetEncoding(ddv1.Encoding_ISO_8859_1)

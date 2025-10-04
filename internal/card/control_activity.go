@@ -76,7 +76,7 @@ func (opts UnmarshalOptions) unmarshalControlActivityData(data []byte) (*cardv1.
 	if offset+18 > len(data) {
 		return nil, fmt.Errorf("insufficient data for control card number")
 	}
-	cardNumberStr, err := opts.UnmarshalIA5StringValue(data[offset : offset+18])
+	cardNumberStr, err := opts.UnmarshalIa5StringValue(data[offset : offset+18])
 	if err != nil {
 		return nil, fmt.Errorf("failed to read control card number: %w", err)
 	}

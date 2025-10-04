@@ -57,8 +57,8 @@
         "nation": "FINLAND",
         "number": {
           "encoding": "ISO_8859_1",
-          "value": "TEST-VRN",
-          "length": 13
+          "length": 13,
+          "value": "TEST-VRN"
         }
       },
       "rawData": "BV4MicBeDJDIEgFURVNULVZSTiAgICAg"

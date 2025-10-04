@@ -11,4 +11,4 @@ lint:
     - ENUM_VALUE_PREFIX
 
 deps:
-  - buf.build/bufbuild/protovalidate:v0.14.2
+  - buf.build/bufbuild/protovalidate:v1.0.0

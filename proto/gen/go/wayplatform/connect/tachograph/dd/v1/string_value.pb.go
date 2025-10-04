@@ -7,6 +7,7 @@
 package ddv1
 
 import (
+	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -20,13 +21,12 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// StringValue provides a canonical representation for various string types
-// found in the tachograph regulations that have special encoding rules.
+// StringValue provides a canonical representation for code-paged string types
+// found in the tachograph regulations.
 //
 // Many ASN.1 types in the specification, such as `Name` (DD 2.99) and
 // `Address` (DD 2.2), are defined as a `SEQUENCE` containing a numeric
-// code page and an octet string. Other types, like `IA5String`, have a
-// fixed encoding (ASCII) and may include padding.
+// code page and an octet string.
 //
 // This message solves the problem of representing these types faithfully
 // by storing both the original raw bytes and the corresponding encoding
@@ -35,9 +35,9 @@ const (
 type StringValue struct {
 	state                  protoimpl.MessageState `protogen:"opaque.v1"`
 	xxx_hidden_Encoding    Encoding               `protobuf:"varint,1,opt,name=encoding,enum=wayplatform.connect.tachograph.dd.v1.Encoding"`
-	xxx_hidden_RawData     []byte                 `protobuf:"bytes,2,opt,name=raw_data,json=rawData"`
+	xxx_hidden_Length      int32                  `protobuf:"varint,2,opt,name=length"`
 	xxx_hidden_Value       *string                `protobuf:"bytes,3,opt,name=value"`
-	xxx_hidden_Length      uint32                 `protobuf:"varint,4,opt,name=length"`
+	xxx_hidden_RawData     []byte                 `protobuf:"bytes,4,opt,name=raw_data,json=rawData"`
 	XXX_raceDetectHookData protoimpl.RaceDetectHookData
 	XXX_presence           [1]uint32
 	unknownFields          protoimpl.UnknownFields
@@ -78,11 +78,11 @@ func (x *StringValue) GetEncoding() Encoding {
 	return Encoding_ENCODING_UNSPECIFIED
 }
 
-func (x *StringValue) GetRawData() []byte {
+func (x *StringValue) GetLength() int32 {
 	if x != nil {
-		return x.xxx_hidden_RawData
+		return x.xxx_hidden_Length
 	}
-	return nil
+	return 0
 }
 
 func (x *StringValue) GetValue() string {
@@ -95,11 +95,11 @@ func (x *StringValue) GetValue() string {
 	return ""
 }
 
-func (x *StringValue) GetLength() uint32 {
+func (x *StringValue) GetRawData() []byte {
 	if x != nil {
-		return x.xxx_hidden_Length
+		return x.xxx_hidden_RawData
 	}
-	return 0
+	return nil
 }
 
 func (x *StringValue) SetEncoding(v Encoding) {
@@ -107,11 +107,8 @@ func (x *StringValue) SetEncoding(v Encoding) {
 	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 4)
 }
 
-func (x *StringValue) SetRawData(v []byte) {
-	if v == nil {
-		v = []byte{}
-	}
-	x.xxx_hidden_RawData = v
+func (x *StringValue) SetLength(v int32) {
+	x.xxx_hidden_Length = v
 	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 4)
 }
 
@@ -120,8 +117,11 @@ func (x *StringValue) SetValue(v string) {
 	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 4)
 }
 
-func (x *StringValue) SetLength(v uint32) {
-	x.xxx_hidden_Length = v
+func (x *StringValue) SetRawData(v []byte) {
+	if v == nil {
+		v = []byte{}
+	}
+	x.xxx_hidden_RawData = v
 	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 3, 4)
 }
 
@@ -132,7 +132,7 @@ func (x *StringValue) HasEncoding() bool {
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 0)
 }
 
-func (x *StringValue) HasRawData() bool {
+func (x *StringValue) HasLength() bool {
 	if x == nil {
 		return false
 	}
@@ -146,7 +146,7 @@ func (x *StringValue) HasValue() bool {
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 2)
 }
 
-func (x *StringValue) HasLength() bool {
+func (x *StringValue) HasRawData() bool {
 	if x == nil {
 		return false
 	}
@@ -158,9 +158,9 @@ func (x *StringValue) ClearEncoding() {
 	x.xxx_hidden_Encoding = Encoding_ENCODING_UNSPECIFIED
 }
 
-func (x *StringValue) ClearRawData() {
+func (x *StringValue) ClearLength() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 1)
-	x.xxx_hidden_RawData = nil
+	x.xxx_hidden_Length = 0
 }
 
 func (x *StringValue) ClearValue() {
@@ -168,43 +168,29 @@ func (x *StringValue) ClearValue() {
 	x.xxx_hidden_Value = nil
 }
 
-func (x *StringValue) ClearLength() {
+func (x *StringValue) ClearRawData() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 3)
-	x.xxx_hidden_Length = 0
+	x.xxx_hidden_RawData = nil
 }
 
 type StringValue_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
-	// The character encoding of the 'raw_data' bytes.
+	// The character encoding as determined by the code page byte.
 	Encoding *Encoding
-	// The raw, original byte representation of the string as it appears in
-	// the binary format.
-	RawData []byte
+	// The serialized length of the string data.
+	//
+	// If both 'raw_data' and 'length' are present, their lengths must agree.
+	Length *int32
 	// A user-friendly, UTF-8 representation of the string, generated by
-	// decoding and trimming the 'raw_data' bytes. This field is for display
-	// and consumption purposes (e.g., in JSON) and SHOULD be ignored when
-	// marshalling.
+	// decoding and trimming the 'raw_data' bytes.
+	//
+	// When raw_data is not present, this field will be used during marshalling
+	// and padded with spaces to the length.
 	Value *string
-	// The serialized length of the string data (for fixed-length formats).
-	//
-	// For IA5String types (Encoding_IA5), this field is REQUIRED and specifies
-	// the fixed length as defined in the specification (e.g.,
-	// VehicleIdentificationNumber is SIZE(17)). When marshalling:
-	// - If 'raw_data' is present and matches this length, it is used directly
-	// - Otherwise, the 'value' string is padded with spaces to this length
-	//
-	// For variable-length, code-paged formats (other encodings), this field
-	// is typically unset (or 0), as the length is determined by the actual
-	// data in 'raw_data'.
-	//
-	// If both 'raw_data' and 'length' are present, their lengths
-	// must agree. Marshalling will fail with an error if they don't match,
-	// ensuring data integrity.
-	//
-	// This field makes StringValue self-describing, eliminating the need to
-	// pass length as a separate parameter during marshalling.
-	Length *uint32
+	// The raw, original byte representation of the string as it appears in
+	// the binary format, including the code page byte.
+	RawData []byte
 }
 
 func (b0 StringValue_builder) Build() *StringValue {
@@ -215,17 +201,17 @@ func (b0 StringValue_builder) Build() *StringValue {
 		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 4)
 		x.xxx_hidden_Encoding = *b.Encoding
 	}
-	if b.RawData != nil {
+	if b.Length != nil {
 		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 4)
-		x.xxx_hidden_RawData = b.RawData
+		x.xxx_hidden_Length = *b.Length
 	}
 	if b.Value != nil {
 		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 4)
 		x.xxx_hidden_Value = b.Value
 	}
-	if b.Length != nil {
+	if b.RawData != nil {
 		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 3, 4)
-		x.xxx_hidden_Length = *b.Length
+		x.xxx_hidden_RawData = b.RawData
 	}
 	return m0
 }
@@ -234,12 +220,15 @@ var File_wayplatform_connect_tachograph_dd_v1_string_value_proto protoreflect.Fi
 
 const file_wayplatform_connect_tachograph_dd_v1_string_value_proto_rawDesc = "" +
 	"\n" +
-	"7wayplatform/connect/tachograph/dd/v1/string_value.proto\x12$wayplatform.connect.tachograph.dd.v1\x1a3wayplatform/connect/tachograph/dd/v1/encoding.proto\"\xa2\x01\n" +
-	"\vStringValue\x12J\n" +
-	"\bencoding\x18\x01 \x01(\x0e2..wayplatform.connect.tachograph.dd.v1.EncodingR\bencoding\x12\x19\n" +
-	"\braw_data\x18\x02 \x01(\fR\arawData\x12\x14\n" +
-	"\x05value\x18\x03 \x01(\tR\x05value\x12\x16\n" +
-	"\x06length\x18\x04 \x01(\rR\x06lengthB\xcf\x02\n" +
+	"7wayplatform/connect/tachograph/dd/v1/string_value.proto\x12$wayplatform.connect.tachograph.dd.v1\x1a\x1bbuf/validate/validate.proto\x1a3wayplatform/connect/tachograph/dd/v1/encoding.proto\"\x91\x03\n" +
+	"\vStringValue\x12Y\n" +
+	"\bencoding\x18\x01 \x01(\x0e2..wayplatform.connect.tachograph.dd.v1.EncodingB\r\xbaH\n" +
+	"\xc8\x01\x01\x82\x01\x04\x10\x01 \x00R\bencoding\x12\"\n" +
+	"\x06length\x18\x02 \x01(\x05B\n" +
+	"\xbaH\a\xc8\x01\x01\x1a\x02 \x00R\x06length\x12\x1c\n" +
+	"\x05value\x18\x03 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x05value\x12\"\n" +
+	"\braw_data\x18\x04 \x01(\fB\a\xbaH\x04z\x02\x10\x02R\arawData:\xc0\x01\xbaH\xbc\x01\x1a\xb9\x01\n" +
+	"\x15length.raw_data.equal\x12Zif raw_data is present, length must match the size of the raw data (without the code page)\x1aD!has(this.raw_data) ? true : this.length == this.raw_data.size() - 1B\xcf\x02\n" +
 	"(com.wayplatform.connect.tachograph.dd.v1B\x10StringValueProtoP\x01Z\\github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1;ddv1\xa2\x02\x04WCTD\xaa\x02$Wayplatform.Connect.Tachograph.Dd.V1\xca\x02$Wayplatform\\Connect\\Tachograph\\Dd\\V1\xe2\x020Wayplatform\\Connect\\Tachograph\\Dd\\V1\\GPBMetadata\xea\x02(Wayplatform::Connect::Tachograph::Dd::V1b\beditionsp\xe8\a"
 
 var file_wayplatform_connect_tachograph_dd_v1_string_value_proto_msgTypes = make([]protoimpl.MessageInfo, 1)

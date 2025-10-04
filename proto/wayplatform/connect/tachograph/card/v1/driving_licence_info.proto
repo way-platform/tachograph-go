@@ -2,6 +2,7 @@ edition = "2023";
 
 package wayplatform.connect.tachograph.card.v1;
 
+import "wayplatform/connect/tachograph/dd/v1/ia5_string_value.proto";
 import "wayplatform/connect/tachograph/dd/v1/nation_numeric.proto";
 import "wayplatform/connect/tachograph/dd/v1/string_value.proto";
 
@@ -48,7 +49,7 @@ message DrivingLicenceInfo {
   // ASN.1 Specification:
   //
   //     IA5String(SIZE(16))
-  wayplatform.connect.tachograph.dd.v1.StringValue driving_licence_number = 3;
+  wayplatform.connect.tachograph.dd.v1.Ia5StringValue driving_licence_number = 3;
 
   // Signature data from the following file block, if tagged as a signature for
   // this EF according to the card file format specification (Appendix 2).

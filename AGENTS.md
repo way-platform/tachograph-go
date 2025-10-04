@@ -697,6 +697,88 @@ This avoids heap allocation and improves performance for small, fixed-size struc
 - **Raw data painting**: Use for structures with reserved bits, padding, or unknown vendor-specific data that must be preserved
 - **Simple preference**: Use for simple structures where semantic re-encoding produces identical output to the original
 
+### Prefer Specific Proto Messages for Specific Protocol Types
+
+When the protocol specification defines distinct types (e.g., code-paged strings vs IA5 strings), prefer creating separate protobuf messages for each type rather than using a single generic message with conditional logic.
+
+**Benefits:**
+
+1. **Type Safety**: The type system enforces correct usage at compile time
+2. **Simpler Code**: Parse/marshal functions have clear, focused behavior without conditionals
+3. **Better Documentation**: The protobuf schema explicitly shows what each field type is
+4. **Reduced Complexity**: Each type has its own well-defined behavior and constraints
+
+**Example: StringValue vs Ia5StringValue**
+
+The protocol has two distinct string types:
+
+- **Code-paged strings** (e.g., `Name`, `Address`): Defined as `SEQUENCE { codePage OCTET STRING (SIZE(1)), stringData OCTET STRING }`. Binary format includes a code page byte prefix.
+- **IA5 strings** (e.g., `VIN`, card numbers): Defined as `IA5String ::= OCTET STRING (SIZE(N))`. Binary format is just ASCII bytes, no code page prefix.
+
+We use separate protobuf types:
+
+```protobuf
+// For code-paged strings with code page prefix
+message StringValue {
+  Encoding encoding = 1;  // Maps to code page byte
+  int32 length = 2;       // String data length (not including code page)
+  string value = 3;       // Decoded UTF-8 string
+  bytes raw_data = 4;     // Original bytes (not including code page)
+}
+
+// For IA5 (ASCII) strings without code page
+message Ia5StringValue {
+  int32 length = 1;       // String data length
+  string value = 2;       // Decoded UTF-8 string
+  bytes raw_data = 3;     // Original bytes
+}
+```
+
+**Implementation:**
+
+```go
+// Separate unmarshal functions with clear behavior
+func (opts UnmarshalOptions) UnmarshalStringValue(input []byte) (*StringValue, error) {
+    // Expects: [code page byte][string data]
+    codePage := input[0]
+    data := input[1:]
+    // ... decode with code page ...
+}
+
+func (opts UnmarshalOptions) UnmarshalIa5StringValue(input []byte) (*Ia5StringValue, error) {
+    // Expects: [string data] (no code page)
+    // ... decode as ASCII ...
+}
+
+// Separate append functions with clear behavior
+func AppendStringValue(dst []byte, sv *StringValue) ([]byte, error) {
+    // Writes: [code page byte][string data]
+    codePage := getCodePageFromEncoding(sv.GetEncoding())
+    dst = append(dst, codePage)
+    // ... encode and append string data ...
+}
+
+func AppendIa5StringValue(dst []byte, sv *Ia5StringValue) ([]byte, error) {
+    // Writes: [string data] (no code page byte)
+    // ... encode and append string data ...
+}
+```
+
+**When to Apply This Pattern:**
+
+- When protocol types have different binary layouts
+- When protocol types have different constraints or validation rules
+- When mixing types would require frequent conditionals in parse/marshal logic
+- When type distinction provides meaningful semantic information
+
+**When NOT to Apply:**
+
+- When protocol types are truly interchangeable
+- When the difference is purely semantic with identical binary representation
+- When creating separate types would fragment related data unnecessarily
+
+This principle complements the "Split Types by Generation" principle but applies to protocol-level type distinctions rather than generational differences.
+
 ### Code Quality
 
 - **No `//nolint` comments**: Never suppress linter warnings with `//nolint` comments. Instead, fix the underlying issues by removing unused code, implementing missing functionality, or restructuring the code properly.

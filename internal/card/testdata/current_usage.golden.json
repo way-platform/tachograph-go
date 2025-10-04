@@ -4,8 +4,8 @@
     "nation": "FINLAND",
     "number": {
       "encoding": "ISO_8859_1",
-      "value": "TEST-123",
-      "length": 13
+      "length": 13,
+      "value": "TEST-123"
     }
   }
 }

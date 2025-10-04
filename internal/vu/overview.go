@@ -74,7 +74,7 @@ func unmarshalOverviewGen1(data []byte, offset int, overview *vuv1.Overview, sta
 	if err != nil {
 		return 0, err
 	}
-	vinStrValue, err := opts.UnmarshalIA5StringValue(vinBytes)
+	vinStrValue, err := opts.UnmarshalIa5StringValue(vinBytes)
 	if err != nil {
 		return 0, fmt.Errorf("failed to read VIN: %w", err)
 	}
@@ -501,7 +501,7 @@ func appendOverviewGen2(buf *bytes.Buffer, overview *vuv1.Overview) {
 	// Append VehicleIdentificationNumberRecordArray
 	vin := overview.GetVehicleIdentificationNumber()
 	if vin != nil {
-		appendVehicleIdentificationNumberRecordArray(buf, []*ddv1.StringValue{vin})
+		appendVehicleIdentificationNumberRecordArray(buf, []*ddv1.Ia5StringValue{vin})
 	}
 
 	// Append VehicleRegistrationIdentificationRecordArray
@@ -618,24 +618,24 @@ func appendVuCertificateRecordArray(buf *bytes.Buffer, certs [][]byte) {
 }
 
 // parseVehicleIdentificationNumberRecordArray parses VehicleIdentificationNumberRecordArray
-func parseVehicleIdentificationNumberRecordArray(data []byte, offset int) ([]*ddv1.StringValue, int, error) {
+func parseVehicleIdentificationNumberRecordArray(data []byte, offset int) ([]*ddv1.Ia5StringValue, int, error) {
 	// For now, implement a simplified version that reads a single VIN
 	if offset+17 > len(data) {
 		return nil, offset, fmt.Errorf("insufficient data for vehicle identification number")
 	}
 	var opts dd.UnmarshalOptions
 	vinBytes := data[offset : offset+17]
-	vin, err := opts.UnmarshalIA5StringValue(vinBytes)
+	vin, err := opts.UnmarshalIa5StringValue(vinBytes)
 	if err != nil {
 		return nil, offset, fmt.Errorf("failed to parse VIN: %w", err)
 	}
-	return []*ddv1.StringValue{vin}, offset + 17, nil
+	return []*ddv1.Ia5StringValue{vin}, offset + 17, nil
 }
 
 // appendVehicleIdentificationNumberRecordArray appends VehicleIdentificationNumberRecordArray
 //
 //nolint:unused
-func appendVehicleIdentificationNumberRecordArray(buf *bytes.Buffer, vins []*ddv1.StringValue) {
+func appendVehicleIdentificationNumberRecordArray(buf *bytes.Buffer, vins []*ddv1.Ia5StringValue) {
 	// For now, implement a simplified version that writes a single VIN
 	if len(vins) > 0 && vins[0] != nil {
 		vinBytes := make([]byte, 17)

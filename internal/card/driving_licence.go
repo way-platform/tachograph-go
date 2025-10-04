@@ -59,7 +59,7 @@ func (opts UnmarshalOptions) unmarshalDrivingLicenceInfo(data []byte) (*cardv1.D
 	if offset+16 > len(data) {
 		return nil, fmt.Errorf("insufficient data for driving licence number")
 	}
-	licenceNumber, err := opts.UnmarshalIA5StringValue(data[offset : offset+16])
+	licenceNumber, err := opts.UnmarshalIa5StringValue(data[offset : offset+16])
 	if err != nil {
 		return nil, fmt.Errorf("failed to read driving licence number: %w", err)
 	}
@@ -95,7 +95,7 @@ func appendDrivingLicenceInfo(dst []byte, dli *cardv1.DrivingLicenceInfo) ([]byt
 		return nil, fmt.Errorf("failed to marshal nation: %w", err)
 	}
 	dst = append(dst, nationByte)
-	dst, err = dd.AppendStringValue(dst, dli.GetDrivingLicenceNumber())
+	dst, err = dd.AppendIa5StringValue(dst, dli.GetDrivingLicenceNumber())
 	if err != nil {
 		return nil, fmt.Errorf("failed to append driving licence number: %w", err)
 	}

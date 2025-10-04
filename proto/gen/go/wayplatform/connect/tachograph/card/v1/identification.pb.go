@@ -576,7 +576,7 @@ type Identification_DriverCardHolder struct {
 	xxx_hidden_CardHolderSurname           *v1.StringValue        `protobuf:"bytes,1,opt,name=card_holder_surname,json=cardHolderSurname"`
 	xxx_hidden_CardHolderFirstNames        *v1.StringValue        `protobuf:"bytes,2,opt,name=card_holder_first_names,json=cardHolderFirstNames"`
 	xxx_hidden_CardHolderBirthDate         *v1.Date               `protobuf:"bytes,3,opt,name=card_holder_birth_date,json=cardHolderBirthDate"`
-	xxx_hidden_CardHolderPreferredLanguage *v1.StringValue        `protobuf:"bytes,4,opt,name=card_holder_preferred_language,json=cardHolderPreferredLanguage"`
+	xxx_hidden_CardHolderPreferredLanguage *v1.Ia5StringValue     `protobuf:"bytes,4,opt,name=card_holder_preferred_language,json=cardHolderPreferredLanguage"`
 	unknownFields                          protoimpl.UnknownFields
 	sizeCache                              protoimpl.SizeCache
 }
@@ -627,7 +627,7 @@ func (x *Identification_DriverCardHolder) GetCardHolderBirthDate() *v1.Date {
 	return nil
 }
 
-func (x *Identification_DriverCardHolder) GetCardHolderPreferredLanguage() *v1.StringValue {
+func (x *Identification_DriverCardHolder) GetCardHolderPreferredLanguage() *v1.Ia5StringValue {
 	if x != nil {
 		return x.xxx_hidden_CardHolderPreferredLanguage
 	}
@@ -646,7 +646,7 @@ func (x *Identification_DriverCardHolder) SetCardHolderBirthDate(v *v1.Date) {
 	x.xxx_hidden_CardHolderBirthDate = v
 }
 
-func (x *Identification_DriverCardHolder) SetCardHolderPreferredLanguage(v *v1.StringValue) {
+func (x *Identification_DriverCardHolder) SetCardHolderPreferredLanguage(v *v1.Ia5StringValue) {
 	x.xxx_hidden_CardHolderPreferredLanguage = v
 }
 
@@ -719,7 +719,7 @@ type Identification_DriverCardHolder_builder struct {
 	// ASN.1 Definition:
 	//
 	//	Language ::= IA5String (SIZE(2))
-	CardHolderPreferredLanguage *v1.StringValue
+	CardHolderPreferredLanguage *v1.Ia5StringValue
 }
 
 func (b0 Identification_DriverCardHolder_builder) Build() *Identification_DriverCardHolder {
@@ -1287,7 +1287,7 @@ var File_wayplatform_connect_tachograph_card_v1_identification_proto protoreflec
 
 const file_wayplatform_connect_tachograph_card_v1_identification_proto_rawDesc = "" +
 	"\n" +
-	";wayplatform/connect/tachograph/card/v1/identification.proto\x12&wayplatform.connect.tachograph.card.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a6wayplatform/connect/tachograph/card/v1/card_type.proto\x1a/wayplatform/connect/tachograph/dd/v1/date.proto\x1a@wayplatform/connect/tachograph/dd/v1/driver_identification.proto\x1a9wayplatform/connect/tachograph/dd/v1/nation_numeric.proto\x1a?wayplatform/connect/tachograph/dd/v1/owner_identification.proto\x1a7wayplatform/connect/tachograph/dd/v1/string_value.proto\"\x82\x19\n" +
+	";wayplatform/connect/tachograph/card/v1/identification.proto\x12&wayplatform.connect.tachograph.card.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a6wayplatform/connect/tachograph/card/v1/card_type.proto\x1a/wayplatform/connect/tachograph/dd/v1/date.proto\x1a@wayplatform/connect/tachograph/dd/v1/driver_identification.proto\x1a;wayplatform/connect/tachograph/dd/v1/ia5_string_value.proto\x1a9wayplatform/connect/tachograph/dd/v1/nation_numeric.proto\x1a?wayplatform/connect/tachograph/dd/v1/owner_identification.proto\x1a7wayplatform/connect/tachograph/dd/v1/string_value.proto\"\x85\x19\n" +
 	"\x0eIdentification\x12O\n" +
 	"\x04card\x18\x01 \x01(\v2;.wayplatform.connect.tachograph.card.v1.Identification.CardR\x04card\x12M\n" +
 	"\tcard_type\x18\x02 \x01(\x0e20.wayplatform.connect.tachograph.card.v1.CardTypeR\bcardType\x12u\n" +
@@ -1303,12 +1303,12 @@ const file_wayplatform_connect_tachograph_card_v1_identification_proto_rawDesc =
 	"\x1bcard_issuing_authority_name\x18\x03 \x01(\v21.wayplatform.connect.tachograph.dd.v1.StringValueR\x18cardIssuingAuthorityName\x12B\n" +
 	"\x0fcard_issue_date\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampR\rcardIssueDate\x12J\n" +
 	"\x13card_validity_begin\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampR\x11cardValidityBegin\x12D\n" +
-	"\x10card_expiry_date\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampR\x0ecardExpiryDate\x1a\xb8\x03\n" +
+	"\x10card_expiry_date\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampR\x0ecardExpiryDate\x1a\xbb\x03\n" +
 	"\x10DriverCardHolder\x12a\n" +
 	"\x13card_holder_surname\x18\x01 \x01(\v21.wayplatform.connect.tachograph.dd.v1.StringValueR\x11cardHolderSurname\x12h\n" +
 	"\x17card_holder_first_names\x18\x02 \x01(\v21.wayplatform.connect.tachograph.dd.v1.StringValueR\x14cardHolderFirstNames\x12_\n" +
-	"\x16card_holder_birth_date\x18\x03 \x01(\v2*.wayplatform.connect.tachograph.dd.v1.DateR\x13cardHolderBirthDate\x12v\n" +
-	"\x1ecard_holder_preferred_language\x18\x04 \x01(\v21.wayplatform.connect.tachograph.dd.v1.StringValueR\x1bcardHolderPreferredLanguage\x1a\x8f\x04\n" +
+	"\x16card_holder_birth_date\x18\x03 \x01(\v2*.wayplatform.connect.tachograph.dd.v1.DateR\x13cardHolderBirthDate\x12y\n" +
+	"\x1ecard_holder_preferred_language\x18\x04 \x01(\v24.wayplatform.connect.tachograph.dd.v1.Ia5StringValueR\x1bcardHolderPreferredLanguage\x1a\x8f\x04\n" +
 	"\x12WorkshopCardHolder\x12V\n" +
 	"\rworkshop_name\x18\x01 \x01(\v21.wayplatform.connect.tachograph.dd.v1.StringValueR\fworkshopName\x12\\\n" +
 	"\x10workshop_address\x18\x02 \x01(\v21.wayplatform.connect.tachograph.dd.v1.StringValueR\x0fworkshopAddress\x12a\n" +
@@ -1342,6 +1342,7 @@ var file_wayplatform_connect_tachograph_card_v1_identification_proto_goTypes = [
 	(*v1.StringValue)(nil),                    // 10: wayplatform.connect.tachograph.dd.v1.StringValue
 	(*timestamppb.Timestamp)(nil),             // 11: google.protobuf.Timestamp
 	(*v1.Date)(nil),                           // 12: wayplatform.connect.tachograph.dd.v1.Date
+	(*v1.Ia5StringValue)(nil),                 // 13: wayplatform.connect.tachograph.dd.v1.Ia5StringValue
 }
 var file_wayplatform_connect_tachograph_card_v1_identification_proto_depIdxs = []int32{
 	1,  // 0: wayplatform.connect.tachograph.card.v1.Identification.card:type_name -> wayplatform.connect.tachograph.card.v1.Identification.Card
@@ -1360,7 +1361,7 @@ var file_wayplatform_connect_tachograph_card_v1_identification_proto_depIdxs = [
 	10, // 13: wayplatform.connect.tachograph.card.v1.Identification.DriverCardHolder.card_holder_surname:type_name -> wayplatform.connect.tachograph.dd.v1.StringValue
 	10, // 14: wayplatform.connect.tachograph.card.v1.Identification.DriverCardHolder.card_holder_first_names:type_name -> wayplatform.connect.tachograph.dd.v1.StringValue
 	12, // 15: wayplatform.connect.tachograph.card.v1.Identification.DriverCardHolder.card_holder_birth_date:type_name -> wayplatform.connect.tachograph.dd.v1.Date
-	10, // 16: wayplatform.connect.tachograph.card.v1.Identification.DriverCardHolder.card_holder_preferred_language:type_name -> wayplatform.connect.tachograph.dd.v1.StringValue
+	13, // 16: wayplatform.connect.tachograph.card.v1.Identification.DriverCardHolder.card_holder_preferred_language:type_name -> wayplatform.connect.tachograph.dd.v1.Ia5StringValue
 	10, // 17: wayplatform.connect.tachograph.card.v1.Identification.WorkshopCardHolder.workshop_name:type_name -> wayplatform.connect.tachograph.dd.v1.StringValue
 	10, // 18: wayplatform.connect.tachograph.card.v1.Identification.WorkshopCardHolder.workshop_address:type_name -> wayplatform.connect.tachograph.dd.v1.StringValue
 	10, // 19: wayplatform.connect.tachograph.card.v1.Identification.WorkshopCardHolder.card_holder_surname:type_name -> wayplatform.connect.tachograph.dd.v1.StringValue

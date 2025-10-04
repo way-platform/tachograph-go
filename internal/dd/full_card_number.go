@@ -130,11 +130,11 @@ func AppendFullCardNumberAsString(dst []byte, cardNumber *ddv1.FullCardNumber, m
 	switch cardNumber.GetCardType() {
 	case ddv1.EquipmentType_DRIVER_CARD:
 		if driverID := cardNumber.GetDriverIdentification(); driverID != nil {
-			return AppendStringValue(dst, driverID.GetDriverIdentificationNumber())
+			return AppendIa5StringValue(dst, driverID.GetDriverIdentificationNumber())
 		}
 	case ddv1.EquipmentType_WORKSHOP_CARD, ddv1.EquipmentType_COMPANY_CARD:
 		if ownerID := cardNumber.GetOwnerIdentification(); ownerID != nil {
-			return AppendStringValue(dst, ownerID.GetOwnerIdentification())
+			return AppendIa5StringValue(dst, ownerID.GetOwnerIdentification())
 		}
 	}
 

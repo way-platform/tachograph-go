@@ -34,7 +34,7 @@ func (opts UnmarshalOptions) UnmarshalStringValue(input []byte) (*ddv1.StringVal
 	var output ddv1.StringValue
 	output.SetEncoding(getEncodingFromCodePage(codePage))
 	output.SetRawData(data)
-	output.SetLength(uint32(len(data)))
+	output.SetLength(int32(len(data)))
 
 	// Decode the string based on the code page
 	decoded, err := decodeWithCodePage(codePage, data)
@@ -46,61 +46,20 @@ func (opts UnmarshalOptions) UnmarshalStringValue(input []byte) (*ddv1.StringVal
 	return &output, nil
 }
 
-// UnmarshalIA5StringValue unmarshals an IA5 (ASCII) string value from binary data.
-// IA5 strings have a fixed encoding and may include padding.
-//
-// The data type `IA5String` is specified in the Data Dictionary, Section 2.89.
-//
-// ASN.1 Definition:
-//
-//	IA5String ::= OCTET STRING (SIZE(0..255))
-func (opts UnmarshalOptions) UnmarshalIA5StringValue(input []byte) (*ddv1.StringValue, error) {
-	if len(input) == 0 {
-		return nil, fmt.Errorf("insufficient data for string value: %w", io.ErrUnexpectedEOF)
-	}
-
-	var output ddv1.StringValue
-	output.SetEncoding(ddv1.Encoding_IA5)
-	output.SetRawData(input)
-	output.SetLength(uint32(len(input))) // Store the length for self-describing marshalling
-
-	// Decode and trim the input bytes
-	trimmed := trimSpaceAndZeroBytes(input)
-	decoded := string(trimmed)
-
-	// Ensure the result is valid UTF-8
-	if !utf8.ValidString(decoded) {
-		// Convert invalid UTF-8 sequences to replacement characters
-		decoded = strings.ToValidUTF8(decoded, string(utf8.RuneError))
-	}
-
-	output.SetValue(decoded)
-
-	return &output, nil
-}
-
 // AppendStringValue appends a StringValue to dst.
 //
-// This function handles two ASN.1 formats based on the encoding:
+// This function handles code-paged string format defined as:
 //
-//  1. IA5String format (Encoding_IA5):
-//     Fixed-length ASCII strings defined as:
-//     IA5String ::= OCTET STRING (SIZE(N))
-//     Binary Layout: stringData (N bytes, space-padded)
-//     The length is taken from the StringValue's 'length' field.
+//	StringValue ::= SEQUENCE {
+//	    codePage    OCTET STRING (SIZE(1)),
+//	    stringData  OCTET STRING (SIZE(0..255))
+//	}
 //
-//  2. Code-paged format (other encodings):
-//     Variable-length strings with code page prefix, defined as:
-//     StringValue ::= SEQUENCE {
-//     codePage    OCTET STRING (SIZE(1)),
-//     stringData  OCTET STRING (SIZE(0..255))
-//     }
-//     Binary Layout: codePage (1 byte) + stringData (variable bytes)
+// Binary Layout: codePage (1 byte) + stringData (variable or fixed-length bytes)
 //
-// The function prefers to use 'raw_data' bytes if available (for round-trip fidelity),
-// otherwise it encodes the 'value' string using the specified encoding.
-//
-// If both raw_data and length are provided, they must agree or an error is returned.
+// If 'raw_data' is available, it is used directly (for round-trip fidelity).
+// Otherwise, the 'value' string is encoded using the specified encoding and padded
+// with spaces if a 'length' field is set (for fixed-length strings).
 func AppendStringValue(dst []byte, sv *ddv1.StringValue) ([]byte, error) {
 	// Handle nil
 	if sv == nil {
@@ -115,32 +74,6 @@ func AppendStringValue(dst []byte, sv *ddv1.StringValue) ([]byte, error) {
 		if len(rawData) != length {
 			return nil, fmt.Errorf("raw_data length (%d) does not match length field (%d)", len(rawData), length)
 		}
-	}
-
-	// Handle IA5String format (fixed-length, no code page)
-	if sv.GetEncoding() == ddv1.Encoding_IA5 {
-		if !sv.HasLength() {
-			return nil, fmt.Errorf("IA5String requires length field to be set")
-		}
-
-		length := int(sv.GetLength())
-
-		// Prefer raw bytes if available and of correct length
-		if sv.HasRawData() && len(sv.GetRawData()) == length {
-			return append(dst, sv.GetRawData()...), nil
-		}
-
-		// Fallback: use value string and pad with spaces
-		value := sv.GetValue()
-		if len(value) > length {
-			return nil, fmt.Errorf("string value '%s' is longer than the allowed length %d", value, length)
-		}
-		result := make([]byte, length)
-		copy(result, []byte(value))
-		for i := len(value); i < length; i++ {
-			result[i] = ' '
-		}
-		return append(dst, result...), nil
 	}
 
 	// Handle code-paged format (with code page byte)
@@ -332,8 +265,6 @@ func getCodePageFromEncoding(encoding ddv1.Encoding) byte {
 		return 80
 	case ddv1.Encoding_KOI8_U:
 		return 85
-	case ddv1.Encoding_IA5:
-		return 0 // IA5 uses default encoding (ASCII-compatible)
 	case ddv1.Encoding_ENCODING_EMPTY, ddv1.Encoding_ENCODING_UNSPECIFIED, ddv1.Encoding_ENCODING_UNRECOGNIZED:
 		return 255
 	default:

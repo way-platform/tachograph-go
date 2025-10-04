@@ -160,7 +160,7 @@ func TestUnmarshalIA5StringValue(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			var opts UnmarshalOptions
-			got, err := opts.UnmarshalIA5StringValue(tt.input)
+			got, err := opts.UnmarshalIa5StringValue(tt.input)
 
 			if tt.wantErr {
 				if err == nil {
@@ -179,9 +179,7 @@ func TestUnmarshalIA5StringValue(t *testing.T) {
 				t.Fatal("UnmarshalIA5StringValue() returned nil")
 			}
 
-			if got.GetEncoding() != ddv1.Encoding_IA5 {
-				t.Errorf("UnmarshalIA5StringValue().GetEncoding() = %v, want %v", got.GetEncoding(), ddv1.Encoding_IA5)
-			}
+			// Ia5StringValue no longer has encoding field - it's always IA5/ASCII
 
 			if diff := cmp.Diff(tt.wantEncoded, got.GetRawData()); diff != "" {
 				t.Errorf("UnmarshalIA5StringValue().GetRawData() mismatch (-want +got):\n%s", diff)
@@ -283,19 +281,18 @@ func TestAppendStringValue_CodePaged(t *testing.T) {
 	}
 }
 
-func TestAppendStringValue_IA5(t *testing.T) {
+func TestAppendIa5StringValue(t *testing.T) {
 	tests := []struct {
 		name        string
-		stringValue *ddv1.StringValue
+		stringValue *ddv1.Ia5StringValue
 		length      int
 		want        []byte
 		wantErr     bool
 	}{
 		{
 			name: "simple string with padding",
-			stringValue: func() *ddv1.StringValue {
-				sv := &ddv1.StringValue{}
-				sv.SetEncoding(ddv1.Encoding_IA5)
+			stringValue: func() *ddv1.Ia5StringValue {
+				sv := &ddv1.Ia5StringValue{}
 				sv.SetLength(10)
 				sv.SetValue("ABC")
 				return sv
@@ -305,9 +302,8 @@ func TestAppendStringValue_IA5(t *testing.T) {
 		},
 		{
 			name: "prefer raw_data bytes if correct length",
-			stringValue: func() *ddv1.StringValue {
-				sv := &ddv1.StringValue{}
-				sv.SetEncoding(ddv1.Encoding_IA5)
+			stringValue: func() *ddv1.Ia5StringValue {
+				sv := &ddv1.Ia5StringValue{}
 				sv.SetLength(5)
 				sv.SetRawData([]byte{0x41, 0x42, 0x43, 0x20, 0x20})
 				sv.SetValue("XYZ") // Should be ignored
@@ -318,9 +314,8 @@ func TestAppendStringValue_IA5(t *testing.T) {
 		},
 		{
 			name: "error if raw_data length disagrees with length field",
-			stringValue: func() *ddv1.StringValue {
-				sv := &ddv1.StringValue{}
-				sv.SetEncoding(ddv1.Encoding_IA5)
+			stringValue: func() *ddv1.Ia5StringValue {
+				sv := &ddv1.Ia5StringValue{}
 				sv.SetLength(10)
 				sv.SetRawData([]byte{0x41, 0x42}) // Wrong length - should error
 				sv.SetValue("Test")
@@ -333,13 +328,12 @@ func TestAppendStringValue_IA5(t *testing.T) {
 			name:        "nil string value",
 			stringValue: nil,
 			length:      5,
-			want:        []byte{0xFF}, // Nil returns EMPTY code page
+			want:        []byte{}, // Nil returns empty (no code page for IA5)
 		},
 		{
 			name: "full length string",
-			stringValue: func() *ddv1.StringValue {
-				sv := &ddv1.StringValue{}
-				sv.SetEncoding(ddv1.Encoding_IA5)
+			stringValue: func() *ddv1.Ia5StringValue {
+				sv := &ddv1.Ia5StringValue{}
 				sv.SetLength(10)
 				sv.SetValue("1234567890")
 				return sv
@@ -349,9 +343,8 @@ func TestAppendStringValue_IA5(t *testing.T) {
 		},
 		{
 			name: "empty string with length",
-			stringValue: func() *ddv1.StringValue {
-				sv := &ddv1.StringValue{}
-				sv.SetEncoding(ddv1.Encoding_IA5)
+			stringValue: func() *ddv1.Ia5StringValue {
+				sv := &ddv1.Ia5StringValue{}
 				sv.SetLength(3)
 				sv.SetValue("")
 				return sv
@@ -363,7 +356,7 @@ func TestAppendStringValue_IA5(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := AppendStringValue(nil, tt.stringValue)
+			got, err := AppendIa5StringValue(nil, tt.stringValue)
 			if tt.wantErr {
 				if err == nil {
 					t.Fatalf("AppendStringValue() expected error, got nil")
@@ -467,7 +460,7 @@ func TestIA5StringValueRoundTrip(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			// Unmarshal
 			var opts UnmarshalOptions
-			sv, err := opts.UnmarshalIA5StringValue(tt.input)
+			sv, err := opts.UnmarshalIa5StringValue(tt.input)
 			if err != nil {
 				t.Fatalf("UnmarshalIA5StringValue() error: %v", err)
 			}
@@ -477,9 +470,9 @@ func TestIA5StringValueRoundTrip(t *testing.T) {
 			}
 
 			// Marshal back
-			got, err := AppendStringValue(nil, sv)
+			got, err := AppendIa5StringValue(nil, sv)
 			if err != nil {
-				t.Fatalf("AppendStringValue() error: %v", err)
+				t.Fatalf("AppendIa5StringValue() error: %v", err)
 			}
 
 			// Verify round-trip
@@ -490,17 +483,17 @@ func TestIA5StringValueRoundTrip(t *testing.T) {
 	}
 }
 
-func TestAppendStringValue_WithExistingData(t *testing.T) {
+func TestAppendIa5StringValue_WithExistingData(t *testing.T) {
 	existing := []byte{0xDE, 0xAD, 0xBE, 0xEF}
 
-	sv := &ddv1.StringValue{}
-	sv.SetEncoding(ddv1.Encoding_IA5)
+	sv := &ddv1.Ia5StringValue{}
+	// IA5 encoding is implicit for Ia5StringValue
 	sv.SetLength(10)
 	sv.SetValue("Test")
 
-	got, err := AppendStringValue(existing, sv)
+	got, err := AppendIa5StringValue(existing, sv)
 	if err != nil {
-		t.Fatalf("AppendStringValue() unexpected error: %v", err)
+		t.Fatalf("AppendIa5StringValue() unexpected error: %v", err)
 	}
 
 	want := []byte{
@@ -509,6 +502,6 @@ func TestAppendStringValue_WithExistingData(t *testing.T) {
 	}
 
 	if diff := cmp.Diff(want, got); diff != "" {
-		t.Errorf("AppendStringValue() with existing data mismatch (-want +got):\n%s", diff)
+		t.Errorf("AppendIa5StringValue() with existing data mismatch (-want +got):\n%s", diff)
 	}
 }

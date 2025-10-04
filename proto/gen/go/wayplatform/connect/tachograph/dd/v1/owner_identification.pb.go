@@ -41,10 +41,10 @@ const (
 //	}
 type OwnerIdentification struct {
 	state                          protoimpl.MessageState `protogen:"opaque.v1"`
-	xxx_hidden_OwnerIdentification *StringValue           `protobuf:"bytes,1,opt,name=owner_identification,json=ownerIdentification"`
-	xxx_hidden_ConsecutiveIndex    *StringValue           `protobuf:"bytes,2,opt,name=consecutive_index,json=consecutiveIndex"`
-	xxx_hidden_ReplacementIndex    *StringValue           `protobuf:"bytes,3,opt,name=replacement_index,json=replacementIndex"`
-	xxx_hidden_RenewalIndex        *StringValue           `protobuf:"bytes,4,opt,name=renewal_index,json=renewalIndex"`
+	xxx_hidden_OwnerIdentification *Ia5StringValue        `protobuf:"bytes,1,opt,name=owner_identification,json=ownerIdentification"`
+	xxx_hidden_ConsecutiveIndex    *Ia5StringValue        `protobuf:"bytes,2,opt,name=consecutive_index,json=consecutiveIndex"`
+	xxx_hidden_ReplacementIndex    *Ia5StringValue        `protobuf:"bytes,3,opt,name=replacement_index,json=replacementIndex"`
+	xxx_hidden_RenewalIndex        *Ia5StringValue        `protobuf:"bytes,4,opt,name=renewal_index,json=renewalIndex"`
 	unknownFields                  protoimpl.UnknownFields
 	sizeCache                      protoimpl.SizeCache
 }
@@ -74,47 +74,47 @@ func (x *OwnerIdentification) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-func (x *OwnerIdentification) GetOwnerIdentification() *StringValue {
+func (x *OwnerIdentification) GetOwnerIdentification() *Ia5StringValue {
 	if x != nil {
 		return x.xxx_hidden_OwnerIdentification
 	}
 	return nil
 }
 
-func (x *OwnerIdentification) GetConsecutiveIndex() *StringValue {
+func (x *OwnerIdentification) GetConsecutiveIndex() *Ia5StringValue {
 	if x != nil {
 		return x.xxx_hidden_ConsecutiveIndex
 	}
 	return nil
 }
 
-func (x *OwnerIdentification) GetReplacementIndex() *StringValue {
+func (x *OwnerIdentification) GetReplacementIndex() *Ia5StringValue {
 	if x != nil {
 		return x.xxx_hidden_ReplacementIndex
 	}
 	return nil
 }
 
-func (x *OwnerIdentification) GetRenewalIndex() *StringValue {
+func (x *OwnerIdentification) GetRenewalIndex() *Ia5StringValue {
 	if x != nil {
 		return x.xxx_hidden_RenewalIndex
 	}
 	return nil
 }
 
-func (x *OwnerIdentification) SetOwnerIdentification(v *StringValue) {
+func (x *OwnerIdentification) SetOwnerIdentification(v *Ia5StringValue) {
 	x.xxx_hidden_OwnerIdentification = v
 }
 
-func (x *OwnerIdentification) SetConsecutiveIndex(v *StringValue) {
+func (x *OwnerIdentification) SetConsecutiveIndex(v *Ia5StringValue) {
 	x.xxx_hidden_ConsecutiveIndex = v
 }
 
-func (x *OwnerIdentification) SetReplacementIndex(v *StringValue) {
+func (x *OwnerIdentification) SetReplacementIndex(v *Ia5StringValue) {
 	x.xxx_hidden_ReplacementIndex = v
 }
 
-func (x *OwnerIdentification) SetRenewalIndex(v *StringValue) {
+func (x *OwnerIdentification) SetRenewalIndex(v *Ia5StringValue) {
 	x.xxx_hidden_RenewalIndex = v
 }
 
@@ -170,7 +170,7 @@ type OwnerIdentification_builder struct {
 	// ASN.1 Definition:
 	//
 	//	ownerIdentification IA5String(SIZE(13))
-	OwnerIdentification *StringValue
+	OwnerIdentification *Ia5StringValue
 	// A single-digit index for the card.
 	//
 	// See Data Dictionary, Section 2.14.
@@ -178,7 +178,7 @@ type OwnerIdentification_builder struct {
 	// ASN.1 Definition:
 	//
 	//	CardConsecutiveIndex ::= IA5String (SIZE(1))
-	ConsecutiveIndex *StringValue
+	ConsecutiveIndex *Ia5StringValue
 	// A single-digit index for card replacement.
 	//
 	// See Data Dictionary, Section 2.31.
@@ -186,7 +186,7 @@ type OwnerIdentification_builder struct {
 	// ASN.1 Definition:
 	//
 	//	CardReplacementIndex ::= IA5String(SIZE(1))
-	ReplacementIndex *StringValue
+	ReplacementIndex *Ia5StringValue
 	// A single-digit index for card renewal.
 	//
 	// See Data Dictionary, Section 2.30.
@@ -194,7 +194,7 @@ type OwnerIdentification_builder struct {
 	// ASN.1 Definition:
 	//
 	//	CardRenewalIndex ::= IA5String(SIZE(1))
-	RenewalIndex *StringValue
+	RenewalIndex *Ia5StringValue
 }
 
 func (b0 OwnerIdentification_builder) Build() *OwnerIdentification {
@@ -212,24 +212,24 @@ var File_wayplatform_connect_tachograph_dd_v1_owner_identification_proto protore
 
 const file_wayplatform_connect_tachograph_dd_v1_owner_identification_proto_rawDesc = "" +
 	"\n" +
-	"?wayplatform/connect/tachograph/dd/v1/owner_identification.proto\x12$wayplatform.connect.tachograph.dd.v1\x1a7wayplatform/connect/tachograph/dd/v1/string_value.proto\"\x93\x03\n" +
-	"\x13OwnerIdentification\x12d\n" +
-	"\x14owner_identification\x18\x01 \x01(\v21.wayplatform.connect.tachograph.dd.v1.StringValueR\x13ownerIdentification\x12^\n" +
-	"\x11consecutive_index\x18\x02 \x01(\v21.wayplatform.connect.tachograph.dd.v1.StringValueR\x10consecutiveIndex\x12^\n" +
-	"\x11replacement_index\x18\x03 \x01(\v21.wayplatform.connect.tachograph.dd.v1.StringValueR\x10replacementIndex\x12V\n" +
-	"\rrenewal_index\x18\x04 \x01(\v21.wayplatform.connect.tachograph.dd.v1.StringValueR\frenewalIndexB\xd7\x02\n" +
+	"?wayplatform/connect/tachograph/dd/v1/owner_identification.proto\x12$wayplatform.connect.tachograph.dd.v1\x1a;wayplatform/connect/tachograph/dd/v1/ia5_string_value.proto\"\x9f\x03\n" +
+	"\x13OwnerIdentification\x12g\n" +
+	"\x14owner_identification\x18\x01 \x01(\v24.wayplatform.connect.tachograph.dd.v1.Ia5StringValueR\x13ownerIdentification\x12a\n" +
+	"\x11consecutive_index\x18\x02 \x01(\v24.wayplatform.connect.tachograph.dd.v1.Ia5StringValueR\x10consecutiveIndex\x12a\n" +
+	"\x11replacement_index\x18\x03 \x01(\v24.wayplatform.connect.tachograph.dd.v1.Ia5StringValueR\x10replacementIndex\x12Y\n" +
+	"\rrenewal_index\x18\x04 \x01(\v24.wayplatform.connect.tachograph.dd.v1.Ia5StringValueR\frenewalIndexB\xd7\x02\n" +
 	"(com.wayplatform.connect.tachograph.dd.v1B\x18OwnerIdentificationProtoP\x01Z\\github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1;ddv1\xa2\x02\x04WCTD\xaa\x02$Wayplatform.Connect.Tachograph.Dd.V1\xca\x02$Wayplatform\\Connect\\Tachograph\\Dd\\V1\xe2\x020Wayplatform\\Connect\\Tachograph\\Dd\\V1\\GPBMetadata\xea\x02(Wayplatform::Connect::Tachograph::Dd::V1b\beditionsp\xe8\a"
 
 var file_wayplatform_connect_tachograph_dd_v1_owner_identification_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_wayplatform_connect_tachograph_dd_v1_owner_identification_proto_goTypes = []any{
 	(*OwnerIdentification)(nil), // 0: wayplatform.connect.tachograph.dd.v1.OwnerIdentification
-	(*StringValue)(nil),         // 1: wayplatform.connect.tachograph.dd.v1.StringValue
+	(*Ia5StringValue)(nil),      // 1: wayplatform.connect.tachograph.dd.v1.Ia5StringValue
 }
 var file_wayplatform_connect_tachograph_dd_v1_owner_identification_proto_depIdxs = []int32{
-	1, // 0: wayplatform.connect.tachograph.dd.v1.OwnerIdentification.owner_identification:type_name -> wayplatform.connect.tachograph.dd.v1.StringValue
-	1, // 1: wayplatform.connect.tachograph.dd.v1.OwnerIdentification.consecutive_index:type_name -> wayplatform.connect.tachograph.dd.v1.StringValue
-	1, // 2: wayplatform.connect.tachograph.dd.v1.OwnerIdentification.replacement_index:type_name -> wayplatform.connect.tachograph.dd.v1.StringValue
-	1, // 3: wayplatform.connect.tachograph.dd.v1.OwnerIdentification.renewal_index:type_name -> wayplatform.connect.tachograph.dd.v1.StringValue
+	1, // 0: wayplatform.connect.tachograph.dd.v1.OwnerIdentification.owner_identification:type_name -> wayplatform.connect.tachograph.dd.v1.Ia5StringValue
+	1, // 1: wayplatform.connect.tachograph.dd.v1.OwnerIdentification.consecutive_index:type_name -> wayplatform.connect.tachograph.dd.v1.Ia5StringValue
+	1, // 2: wayplatform.connect.tachograph.dd.v1.OwnerIdentification.replacement_index:type_name -> wayplatform.connect.tachograph.dd.v1.Ia5StringValue
+	1, // 3: wayplatform.connect.tachograph.dd.v1.OwnerIdentification.renewal_index:type_name -> wayplatform.connect.tachograph.dd.v1.Ia5StringValue
 	4, // [4:4] is the sub-list for method output_type
 	4, // [4:4] is the sub-list for method input_type
 	4, // [4:4] is the sub-list for extension type_name
@@ -242,7 +242,7 @@ func file_wayplatform_connect_tachograph_dd_v1_owner_identification_proto_init()
 	if File_wayplatform_connect_tachograph_dd_v1_owner_identification_proto != nil {
 		return
 	}
-	file_wayplatform_connect_tachograph_dd_v1_string_value_proto_init()
+	file_wayplatform_connect_tachograph_dd_v1_ia5_string_value_proto_init()
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

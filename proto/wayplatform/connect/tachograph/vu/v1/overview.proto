@@ -8,6 +8,7 @@ import "wayplatform/connect/tachograph/dd/v1/downloadable_period.proto";
 import "wayplatform/connect/tachograph/dd/v1/full_card_number.proto";
 import "wayplatform/connect/tachograph/dd/v1/full_card_number_and_generation.proto";
 import "wayplatform/connect/tachograph/dd/v1/generation.proto";
+import "wayplatform/connect/tachograph/dd/v1/ia5_string_value.proto";
 import "wayplatform/connect/tachograph/dd/v1/slot_card_type.proto";
 import "wayplatform/connect/tachograph/dd/v1/string_value.proto";
 import "wayplatform/connect/tachograph/dd/v1/vehicle_registration_identification.proto";
@@ -199,7 +200,7 @@ message Overview {
   // ASN.1 Definition:
   //
   //     VehicleIdentificationNumber ::= IA5String(SIZE(17))
-  wayplatform.connect.tachograph.dd.v1.StringValue vehicle_identification_number = 5;
+  wayplatform.connect.tachograph.dd.v1.Ia5StringValue vehicle_identification_number = 5;
 
   // Current date and time of the VU.
   //

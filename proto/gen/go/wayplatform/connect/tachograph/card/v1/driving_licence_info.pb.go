@@ -45,7 +45,7 @@ type DrivingLicenceInfo struct {
 	state                                     protoimpl.MessageState `protogen:"opaque.v1"`
 	xxx_hidden_DrivingLicenceIssuingAuthority *v1.StringValue        `protobuf:"bytes,1,opt,name=driving_licence_issuing_authority,json=drivingLicenceIssuingAuthority"`
 	xxx_hidden_DrivingLicenceIssuingNation    v1.NationNumeric       `protobuf:"varint,2,opt,name=driving_licence_issuing_nation,json=drivingLicenceIssuingNation,enum=wayplatform.connect.tachograph.dd.v1.NationNumeric"`
-	xxx_hidden_DrivingLicenceNumber           *v1.StringValue        `protobuf:"bytes,3,opt,name=driving_licence_number,json=drivingLicenceNumber"`
+	xxx_hidden_DrivingLicenceNumber           *v1.Ia5StringValue     `protobuf:"bytes,3,opt,name=driving_licence_number,json=drivingLicenceNumber"`
 	xxx_hidden_Signature                      []byte                 `protobuf:"bytes,4,opt,name=signature"`
 	XXX_raceDetectHookData                    protoimpl.RaceDetectHookData
 	XXX_presence                              [1]uint32
@@ -94,7 +94,7 @@ func (x *DrivingLicenceInfo) GetDrivingLicenceIssuingNation() v1.NationNumeric {
 	return v1.NationNumeric(0)
 }
 
-func (x *DrivingLicenceInfo) GetDrivingLicenceNumber() *v1.StringValue {
+func (x *DrivingLicenceInfo) GetDrivingLicenceNumber() *v1.Ia5StringValue {
 	if x != nil {
 		return x.xxx_hidden_DrivingLicenceNumber
 	}
@@ -117,7 +117,7 @@ func (x *DrivingLicenceInfo) SetDrivingLicenceIssuingNation(v v1.NationNumeric) 
 	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 4)
 }
 
-func (x *DrivingLicenceInfo) SetDrivingLicenceNumber(v *v1.StringValue) {
+func (x *DrivingLicenceInfo) SetDrivingLicenceNumber(v *v1.Ia5StringValue) {
 	x.xxx_hidden_DrivingLicenceNumber = v
 }
 
@@ -198,7 +198,7 @@ type DrivingLicenceInfo_builder struct {
 	// ASN.1 Specification:
 	//
 	//	IA5String(SIZE(16))
-	DrivingLicenceNumber *v1.StringValue
+	DrivingLicenceNumber *v1.Ia5StringValue
 	// Signature data from the following file block, if tagged as a signature for
 	// this EF according to the card file format specification (Appendix 2).
 	//
@@ -240,11 +240,11 @@ var File_wayplatform_connect_tachograph_card_v1_driving_licence_info_proto proto
 
 const file_wayplatform_connect_tachograph_card_v1_driving_licence_info_proto_rawDesc = "" +
 	"\n" +
-	"Awayplatform/connect/tachograph/card/v1/driving_licence_info.proto\x12&wayplatform.connect.tachograph.card.v1\x1a9wayplatform/connect/tachograph/dd/v1/nation_numeric.proto\x1a7wayplatform/connect/tachograph/dd/v1/string_value.proto\"\x93\x03\n" +
+	"Awayplatform/connect/tachograph/card/v1/driving_licence_info.proto\x12&wayplatform.connect.tachograph.card.v1\x1a;wayplatform/connect/tachograph/dd/v1/ia5_string_value.proto\x1a9wayplatform/connect/tachograph/dd/v1/nation_numeric.proto\x1a7wayplatform/connect/tachograph/dd/v1/string_value.proto\"\x96\x03\n" +
 	"\x12DrivingLicenceInfo\x12|\n" +
 	"!driving_licence_issuing_authority\x18\x01 \x01(\v21.wayplatform.connect.tachograph.dd.v1.StringValueR\x1edrivingLicenceIssuingAuthority\x12x\n" +
-	"\x1edriving_licence_issuing_nation\x18\x02 \x01(\x0e23.wayplatform.connect.tachograph.dd.v1.NationNumericR\x1bdrivingLicenceIssuingNation\x12g\n" +
-	"\x16driving_licence_number\x18\x03 \x01(\v21.wayplatform.connect.tachograph.dd.v1.StringValueR\x14drivingLicenceNumber\x12\x1c\n" +
+	"\x1edriving_licence_issuing_nation\x18\x02 \x01(\x0e23.wayplatform.connect.tachograph.dd.v1.NationNumericR\x1bdrivingLicenceIssuingNation\x12j\n" +
+	"\x16driving_licence_number\x18\x03 \x01(\v24.wayplatform.connect.tachograph.dd.v1.Ia5StringValueR\x14drivingLicenceNumber\x12\x1c\n" +
 	"\tsignature\x18\x04 \x01(\fR\tsignatureB\xe4\x02\n" +
 	"*com.wayplatform.connect.tachograph.card.v1B\x17DrivingLicenceInfoProtoP\x01Z`github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1;cardv1\xa2\x02\x04WCTC\xaa\x02&Wayplatform.Connect.Tachograph.Card.V1\xca\x02&Wayplatform\\Connect\\Tachograph\\Card\\V1\xe2\x022Wayplatform\\Connect\\Tachograph\\Card\\V1\\GPBMetadata\xea\x02*Wayplatform::Connect::Tachograph::Card::V1b\beditionsp\xe8\a"
 
@@ -253,11 +253,12 @@ var file_wayplatform_connect_tachograph_card_v1_driving_licence_info_proto_goTyp
 	(*DrivingLicenceInfo)(nil), // 0: wayplatform.connect.tachograph.card.v1.DrivingLicenceInfo
 	(*v1.StringValue)(nil),     // 1: wayplatform.connect.tachograph.dd.v1.StringValue
 	(v1.NationNumeric)(0),      // 2: wayplatform.connect.tachograph.dd.v1.NationNumeric
+	(*v1.Ia5StringValue)(nil),  // 3: wayplatform.connect.tachograph.dd.v1.Ia5StringValue
 }
 var file_wayplatform_connect_tachograph_card_v1_driving_licence_info_proto_depIdxs = []int32{
 	1, // 0: wayplatform.connect.tachograph.card.v1.DrivingLicenceInfo.driving_licence_issuing_authority:type_name -> wayplatform.connect.tachograph.dd.v1.StringValue
 	2, // 1: wayplatform.connect.tachograph.card.v1.DrivingLicenceInfo.driving_licence_issuing_nation:type_name -> wayplatform.connect.tachograph.dd.v1.NationNumeric
-	1, // 2: wayplatform.connect.tachograph.card.v1.DrivingLicenceInfo.driving_licence_number:type_name -> wayplatform.connect.tachograph.dd.v1.StringValue
+	3, // 2: wayplatform.connect.tachograph.card.v1.DrivingLicenceInfo.driving_licence_number:type_name -> wayplatform.connect.tachograph.dd.v1.Ia5StringValue
 	3, // [3:3] is the sub-list for method output_type
 	3, // [3:3] is the sub-list for method input_type
 	3, // [3:3] is the sub-list for extension type_name

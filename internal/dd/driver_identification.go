@@ -30,7 +30,7 @@ func (opts UnmarshalOptions) UnmarshalDriverIdentification(data []byte) (*ddv1.D
 	driverID := &ddv1.DriverIdentification{}
 
 	// Parse driver identification number (14 bytes)
-	identificationNumber, err := opts.UnmarshalIA5StringValue(data[0:14])
+	identificationNumber, err := opts.UnmarshalIa5StringValue(data[0:14])
 	if err != nil {
 		return nil, fmt.Errorf("failed to parse driver identification number: %w", err)
 	}
@@ -57,7 +57,7 @@ func AppendDriverIdentification(dst []byte, driverID *ddv1.DriverIdentification)
 	}
 
 	// Append driver identification number (14 bytes)
-	return AppendStringValue(dst, driverID.GetDriverIdentificationNumber())
+	return AppendIa5StringValue(dst, driverID.GetDriverIdentificationNumber())
 }
 
 // AnonymizeDriverIdentification creates an anonymized copy of DriverIdentification,
@@ -67,15 +67,11 @@ func AnonymizeDriverIdentification(driverID *ddv1.DriverIdentification) *ddv1.Dr
 	if driverID == nil {
 		return nil
 	}
-
 	result := &ddv1.DriverIdentification{}
-
 	// Anonymize driver identification number (IA5String, 14 bytes)
-	testDriverID := &ddv1.StringValue{}
+	testDriverID := &ddv1.Ia5StringValue{}
 	testDriverID.SetValue("DRIVER00000001")
-	testDriverID.SetEncoding(ddv1.Encoding_IA5)
 	testDriverID.SetLength(14)
 	result.SetDriverIdentificationNumber(testDriverID)
-
 	return result
 }

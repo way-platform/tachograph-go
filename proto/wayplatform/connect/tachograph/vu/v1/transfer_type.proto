@@ -3,8 +3,8 @@ edition = "2023";
 package wayplatform.connect.tachograph.vu.v1;
 
 import "wayplatform/connect/tachograph/dd/v1/generation.proto";
-import "wayplatform/connect/tachograph/vu/v1/trep.proto";
 import "wayplatform/connect/tachograph/dd/v1/version.proto";
+import "wayplatform/connect/tachograph/vu/v1/trep.proto";
 
 // TransferType represents the type of data file that can be downloaded from a Vehicle Unit (VU).
 // The actual wire protocol value is stored in the `trep_value` custom option, corresponding to the

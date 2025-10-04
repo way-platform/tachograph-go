@@ -45,7 +45,7 @@ type Icc struct {
 	state                               protoimpl.MessageState     `protogen:"opaque.v1"`
 	xxx_hidden_ClockStop                v1.ClockStopMode           `protobuf:"varint,1,opt,name=clock_stop,json=clockStop,enum=wayplatform.connect.tachograph.dd.v1.ClockStopMode"`
 	xxx_hidden_CardExtendedSerialNumber *v1.ExtendedSerialNumber   `protobuf:"bytes,2,opt,name=card_extended_serial_number,json=cardExtendedSerialNumber"`
-	xxx_hidden_CardApprovalNumber       *v1.StringValue            `protobuf:"bytes,3,opt,name=card_approval_number,json=cardApprovalNumber"`
+	xxx_hidden_CardApprovalNumber       *v1.Ia5StringValue         `protobuf:"bytes,3,opt,name=card_approval_number,json=cardApprovalNumber"`
 	xxx_hidden_CardPersonaliserId       int32                      `protobuf:"varint,4,opt,name=card_personaliser_id,json=cardPersonaliserId"`
 	xxx_hidden_EmbedderIcAssemblerId    *Icc_EmbedderIcAssemblerId `protobuf:"bytes,5,opt,name=embedder_ic_assembler_id,json=embedderIcAssemblerId"`
 	xxx_hidden_IcIdentifier             []byte                     `protobuf:"bytes,6,opt,name=ic_identifier,json=icIdentifier"`
@@ -96,7 +96,7 @@ func (x *Icc) GetCardExtendedSerialNumber() *v1.ExtendedSerialNumber {
 	return nil
 }
 
-func (x *Icc) GetCardApprovalNumber() *v1.StringValue {
+func (x *Icc) GetCardApprovalNumber() *v1.Ia5StringValue {
 	if x != nil {
 		return x.xxx_hidden_CardApprovalNumber
 	}
@@ -133,7 +133,7 @@ func (x *Icc) SetCardExtendedSerialNumber(v *v1.ExtendedSerialNumber) {
 	x.xxx_hidden_CardExtendedSerialNumber = v
 }
 
-func (x *Icc) SetCardApprovalNumber(v *v1.StringValue) {
+func (x *Icc) SetCardApprovalNumber(v *v1.Ia5StringValue) {
 	x.xxx_hidden_CardApprovalNumber = v
 }
 
@@ -243,7 +243,7 @@ type Icc_builder struct {
 	// ASN.1 Definition:
 	//
 	//	CardApprovalNumber ::= IA5String (SIZE (8))
-	CardApprovalNumber *v1.StringValue
+	CardApprovalNumber *v1.Ia5StringValue
 	// The ID of the card personaliser.
 	//
 	// See Data Dictionary, Section 2.94, `ManufacturerCode`.
@@ -299,8 +299,8 @@ func (b0 Icc_builder) Build() *Icc {
 //	}
 type Icc_EmbedderIcAssemblerId struct {
 	state                              protoimpl.MessageState `protogen:"opaque.v1"`
-	xxx_hidden_CountryCode             *v1.StringValue        `protobuf:"bytes,1,opt,name=country_code,json=countryCode"`
-	xxx_hidden_ModuleEmbedder          *v1.StringValue        `protobuf:"bytes,2,opt,name=module_embedder,json=moduleEmbedder"`
+	xxx_hidden_CountryCode             *v1.Ia5StringValue     `protobuf:"bytes,1,opt,name=country_code,json=countryCode"`
+	xxx_hidden_ModuleEmbedder          *v1.Ia5StringValue     `protobuf:"bytes,2,opt,name=module_embedder,json=moduleEmbedder"`
 	xxx_hidden_ManufacturerInformation int32                  `protobuf:"varint,3,opt,name=manufacturer_information,json=manufacturerInformation"`
 	XXX_raceDetectHookData             protoimpl.RaceDetectHookData
 	XXX_presence                       [1]uint32
@@ -333,14 +333,14 @@ func (x *Icc_EmbedderIcAssemblerId) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-func (x *Icc_EmbedderIcAssemblerId) GetCountryCode() *v1.StringValue {
+func (x *Icc_EmbedderIcAssemblerId) GetCountryCode() *v1.Ia5StringValue {
 	if x != nil {
 		return x.xxx_hidden_CountryCode
 	}
 	return nil
 }
 
-func (x *Icc_EmbedderIcAssemblerId) GetModuleEmbedder() *v1.StringValue {
+func (x *Icc_EmbedderIcAssemblerId) GetModuleEmbedder() *v1.Ia5StringValue {
 	if x != nil {
 		return x.xxx_hidden_ModuleEmbedder
 	}
@@ -354,11 +354,11 @@ func (x *Icc_EmbedderIcAssemblerId) GetManufacturerInformation() int32 {
 	return 0
 }
 
-func (x *Icc_EmbedderIcAssemblerId) SetCountryCode(v *v1.StringValue) {
+func (x *Icc_EmbedderIcAssemblerId) SetCountryCode(v *v1.Ia5StringValue) {
 	x.xxx_hidden_CountryCode = v
 }
 
-func (x *Icc_EmbedderIcAssemblerId) SetModuleEmbedder(v *v1.StringValue) {
+func (x *Icc_EmbedderIcAssemblerId) SetModuleEmbedder(v *v1.Ia5StringValue) {
 	x.xxx_hidden_ModuleEmbedder = v
 }
 
@@ -410,14 +410,14 @@ type Icc_EmbedderIcAssemblerId_builder struct {
 	// ASN.1 Definition:
 	//
 	//	IA5String(SIZE(2))
-	CountryCode *v1.StringValue
+	CountryCode *v1.Ia5StringValue
 	// 2-character code identifying the module embedder.
 	//
 	// See Data Dictionary, Section 2.65, `moduleEmbedder`.
 	// ASN.1 Definition:
 	//
 	//	IA5String(SIZE(2))
-	ModuleEmbedder *v1.StringValue
+	ModuleEmbedder *v1.Ia5StringValue
 	// Manufacturer-specific information.
 	//
 	// See Data Dictionary, Section 2.65, `manufacturerInformation`.
@@ -444,18 +444,18 @@ var File_wayplatform_connect_tachograph_card_v1_icc_proto protoreflect.FileDescr
 
 const file_wayplatform_connect_tachograph_card_v1_icc_proto_rawDesc = "" +
 	"\n" +
-	"0wayplatform/connect/tachograph/card/v1/icc.proto\x12&wayplatform.connect.tachograph.card.v1\x1a:wayplatform/connect/tachograph/dd/v1/clock_stop_mode.proto\x1aAwayplatform/connect/tachograph/dd/v1/extended_serial_number.proto\x1a7wayplatform/connect/tachograph/dd/v1/string_value.proto\"\x93\x06\n" +
+	"0wayplatform/connect/tachograph/card/v1/icc.proto\x12&wayplatform.connect.tachograph.card.v1\x1a:wayplatform/connect/tachograph/dd/v1/clock_stop_mode.proto\x1aAwayplatform/connect/tachograph/dd/v1/extended_serial_number.proto\x1a;wayplatform/connect/tachograph/dd/v1/ia5_string_value.proto\"\x9c\x06\n" +
 	"\x03Icc\x12R\n" +
 	"\n" +
 	"clock_stop\x18\x01 \x01(\x0e23.wayplatform.connect.tachograph.dd.v1.ClockStopModeR\tclockStop\x12y\n" +
-	"\x1bcard_extended_serial_number\x18\x02 \x01(\v2:.wayplatform.connect.tachograph.dd.v1.ExtendedSerialNumberR\x18cardExtendedSerialNumber\x12c\n" +
-	"\x14card_approval_number\x18\x03 \x01(\v21.wayplatform.connect.tachograph.dd.v1.StringValueR\x12cardApprovalNumber\x120\n" +
+	"\x1bcard_extended_serial_number\x18\x02 \x01(\v2:.wayplatform.connect.tachograph.dd.v1.ExtendedSerialNumberR\x18cardExtendedSerialNumber\x12f\n" +
+	"\x14card_approval_number\x18\x03 \x01(\v24.wayplatform.connect.tachograph.dd.v1.Ia5StringValueR\x12cardApprovalNumber\x120\n" +
 	"\x14card_personaliser_id\x18\x04 \x01(\x05R\x12cardPersonaliserId\x12z\n" +
 	"\x18embedder_ic_assembler_id\x18\x05 \x01(\v2A.wayplatform.connect.tachograph.card.v1.Icc.EmbedderIcAssemblerIdR\x15embedderIcAssemblerId\x12#\n" +
-	"\ric_identifier\x18\x06 \x01(\fR\ficIdentifier\x1a\x84\x02\n" +
-	"\x15EmbedderIcAssemblerId\x12T\n" +
-	"\fcountry_code\x18\x01 \x01(\v21.wayplatform.connect.tachograph.dd.v1.StringValueR\vcountryCode\x12Z\n" +
-	"\x0fmodule_embedder\x18\x02 \x01(\v21.wayplatform.connect.tachograph.dd.v1.StringValueR\x0emoduleEmbedder\x129\n" +
+	"\ric_identifier\x18\x06 \x01(\fR\ficIdentifier\x1a\x8a\x02\n" +
+	"\x15EmbedderIcAssemblerId\x12W\n" +
+	"\fcountry_code\x18\x01 \x01(\v24.wayplatform.connect.tachograph.dd.v1.Ia5StringValueR\vcountryCode\x12]\n" +
+	"\x0fmodule_embedder\x18\x02 \x01(\v24.wayplatform.connect.tachograph.dd.v1.Ia5StringValueR\x0emoduleEmbedder\x129\n" +
 	"\x18manufacturer_information\x18\x03 \x01(\x05R\x17manufacturerInformationB\xd5\x02\n" +
 	"*com.wayplatform.connect.tachograph.card.v1B\bIccProtoP\x01Z`github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1;cardv1\xa2\x02\x04WCTC\xaa\x02&Wayplatform.Connect.Tachograph.Card.V1\xca\x02&Wayplatform\\Connect\\Tachograph\\Card\\V1\xe2\x022Wayplatform\\Connect\\Tachograph\\Card\\V1\\GPBMetadata\xea\x02*Wayplatform::Connect::Tachograph::Card::V1b\beditionsp\xe8\a"
 
@@ -465,15 +465,15 @@ var file_wayplatform_connect_tachograph_card_v1_icc_proto_goTypes = []any{
 	(*Icc_EmbedderIcAssemblerId)(nil), // 1: wayplatform.connect.tachograph.card.v1.Icc.EmbedderIcAssemblerId
 	(v1.ClockStopMode)(0),             // 2: wayplatform.connect.tachograph.dd.v1.ClockStopMode
 	(*v1.ExtendedSerialNumber)(nil),   // 3: wayplatform.connect.tachograph.dd.v1.ExtendedSerialNumber
-	(*v1.StringValue)(nil),            // 4: wayplatform.connect.tachograph.dd.v1.StringValue
+	(*v1.Ia5StringValue)(nil),         // 4: wayplatform.connect.tachograph.dd.v1.Ia5StringValue
 }
 var file_wayplatform_connect_tachograph_card_v1_icc_proto_depIdxs = []int32{
 	2, // 0: wayplatform.connect.tachograph.card.v1.Icc.clock_stop:type_name -> wayplatform.connect.tachograph.dd.v1.ClockStopMode
 	3, // 1: wayplatform.connect.tachograph.card.v1.Icc.card_extended_serial_number:type_name -> wayplatform.connect.tachograph.dd.v1.ExtendedSerialNumber
-	4, // 2: wayplatform.connect.tachograph.card.v1.Icc.card_approval_number:type_name -> wayplatform.connect.tachograph.dd.v1.StringValue
+	4, // 2: wayplatform.connect.tachograph.card.v1.Icc.card_approval_number:type_name -> wayplatform.connect.tachograph.dd.v1.Ia5StringValue
 	1, // 3: wayplatform.connect.tachograph.card.v1.Icc.embedder_ic_assembler_id:type_name -> wayplatform.connect.tachograph.card.v1.Icc.EmbedderIcAssemblerId
-	4, // 4: wayplatform.connect.tachograph.card.v1.Icc.EmbedderIcAssemblerId.country_code:type_name -> wayplatform.connect.tachograph.dd.v1.StringValue
-	4, // 5: wayplatform.connect.tachograph.card.v1.Icc.EmbedderIcAssemblerId.module_embedder:type_name -> wayplatform.connect.tachograph.dd.v1.StringValue
+	4, // 4: wayplatform.connect.tachograph.card.v1.Icc.EmbedderIcAssemblerId.country_code:type_name -> wayplatform.connect.tachograph.dd.v1.Ia5StringValue
+	4, // 5: wayplatform.connect.tachograph.card.v1.Icc.EmbedderIcAssemblerId.module_embedder:type_name -> wayplatform.connect.tachograph.dd.v1.Ia5StringValue
 	6, // [6:6] is the sub-list for method output_type
 	6, // [6:6] is the sub-list for method input_type
 	6, // [6:6] is the sub-list for extension type_name

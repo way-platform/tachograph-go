@@ -58,4 +58,3 @@ message VehiclesUsedG2 {
   //     Signature ::= OCTET STRING (SIZE(128))
   bytes signature = 4;
 }
-

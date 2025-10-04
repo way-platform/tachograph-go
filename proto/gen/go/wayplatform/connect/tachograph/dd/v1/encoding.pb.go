@@ -45,30 +45,28 @@ const (
 	Encoding_ENCODING_DEFAULT Encoding = 2
 	// Empty/unassigned string (protocol value 255 for code-paged strings).
 	Encoding_ENCODING_EMPTY Encoding = 3
-	// IA5 (ASCII) encoding.
-	Encoding_IA5 Encoding = 4
 	// ISO/IEC 8859-1: Latin alphabet No. 1
-	Encoding_ISO_8859_1 Encoding = 5
+	Encoding_ISO_8859_1 Encoding = 4
 	// ISO/IEC 8859-2: Latin alphabet No. 2
-	Encoding_ISO_8859_2 Encoding = 6
+	Encoding_ISO_8859_2 Encoding = 5
 	// ISO/IEC 8859-3: Latin alphabet No. 3
-	Encoding_ISO_8859_3 Encoding = 7
+	Encoding_ISO_8859_3 Encoding = 6
 	// ISO/IEC 8859-5: Latin/Cyrillic alphabet
-	Encoding_ISO_8859_5 Encoding = 8
+	Encoding_ISO_8859_5 Encoding = 7
 	// ISO/IEC 8859-7: Latin/Greek alphabet
-	Encoding_ISO_8859_7 Encoding = 9
+	Encoding_ISO_8859_7 Encoding = 8
 	// ISO/IEC 8859-9: Latin alphabet No. 5
-	Encoding_ISO_8859_9 Encoding = 10
+	Encoding_ISO_8859_9 Encoding = 9
 	// ISO/IEC 8859-13: Latin alphabet No. 7
-	Encoding_ISO_8859_13 Encoding = 11
+	Encoding_ISO_8859_13 Encoding = 10
 	// ISO/IEC 8859-15: Latin alphabet No. 9
-	Encoding_ISO_8859_15 Encoding = 12
+	Encoding_ISO_8859_15 Encoding = 11
 	// ISO/IEC 8859-16: Latin alphabet No. 10
-	Encoding_ISO_8859_16 Encoding = 13
+	Encoding_ISO_8859_16 Encoding = 12
 	// KOI8-R: Cyrillic
-	Encoding_KOI8_R Encoding = 14
+	Encoding_KOI8_R Encoding = 13
 	// KOI8-U: Ukrainian
-	Encoding_KOI8_U Encoding = 15
+	Encoding_KOI8_U Encoding = 14
 )
 
 // Enum value maps for Encoding.
@@ -78,36 +76,34 @@ var (
 		1:  "ENCODING_UNRECOGNIZED",
 		2:  "ENCODING_DEFAULT",
 		3:  "ENCODING_EMPTY",
-		4:  "IA5",
-		5:  "ISO_8859_1",
-		6:  "ISO_8859_2",
-		7:  "ISO_8859_3",
-		8:  "ISO_8859_5",
-		9:  "ISO_8859_7",
-		10: "ISO_8859_9",
-		11: "ISO_8859_13",
-		12: "ISO_8859_15",
-		13: "ISO_8859_16",
-		14: "KOI8_R",
-		15: "KOI8_U",
+		4:  "ISO_8859_1",
+		5:  "ISO_8859_2",
+		6:  "ISO_8859_3",
+		7:  "ISO_8859_5",
+		8:  "ISO_8859_7",
+		9:  "ISO_8859_9",
+		10: "ISO_8859_13",
+		11: "ISO_8859_15",
+		12: "ISO_8859_16",
+		13: "KOI8_R",
+		14: "KOI8_U",
 	}
 	Encoding_value = map[string]int32{
 		"ENCODING_UNSPECIFIED":  0,
 		"ENCODING_UNRECOGNIZED": 1,
 		"ENCODING_DEFAULT":      2,
 		"ENCODING_EMPTY":        3,
-		"IA5":                   4,
-		"ISO_8859_1":            5,
-		"ISO_8859_2":            6,
-		"ISO_8859_3":            7,
-		"ISO_8859_5":            8,
-		"ISO_8859_7":            9,
-		"ISO_8859_9":            10,
-		"ISO_8859_13":           11,
-		"ISO_8859_15":           12,
-		"ISO_8859_16":           13,
-		"KOI8_R":                14,
-		"KOI8_U":                15,
+		"ISO_8859_1":            4,
+		"ISO_8859_2":            5,
+		"ISO_8859_3":            6,
+		"ISO_8859_5":            7,
+		"ISO_8859_7":            8,
+		"ISO_8859_9":            9,
+		"ISO_8859_13":           10,
+		"ISO_8859_15":           11,
+		"ISO_8859_16":           12,
+		"KOI8_R":                13,
+		"KOI8_U":                14,
 	}
 )
 
@@ -137,31 +133,30 @@ var File_wayplatform_connect_tachograph_dd_v1_encoding_proto protoreflect.FileDe
 
 const file_wayplatform_connect_tachograph_dd_v1_encoding_proto_rawDesc = "" +
 	"\n" +
-	"3wayplatform/connect/tachograph/dd/v1/encoding.proto\x12$wayplatform.connect.tachograph.dd.v1\x1a6wayplatform/connect/tachograph/dd/v1/annotations.proto*\xf9\x02\n" +
+	"3wayplatform/connect/tachograph/dd/v1/encoding.proto\x12$wayplatform.connect.tachograph.dd.v1\x1a6wayplatform/connect/tachograph/dd/v1/annotations.proto*\xf0\x02\n" +
 	"\bEncoding\x12\x18\n" +
 	"\x14ENCODING_UNSPECIFIED\x10\x00\x12\x19\n" +
 	"\x15ENCODING_UNRECOGNIZED\x10\x01\x12\x1b\n" +
 	"\x10ENCODING_DEFAULT\x10\x02\x1a\x05\xa0\xaf\x9c\x02\x00\x12\x1a\n" +
-	"\x0eENCODING_EMPTY\x10\x03\x1a\x06\xa0\xaf\x9c\x02\xff\x01\x12\a\n" +
-	"\x03IA5\x10\x04\x12\x15\n" +
+	"\x0eENCODING_EMPTY\x10\x03\x1a\x06\xa0\xaf\x9c\x02\xff\x01\x12\x15\n" +
 	"\n" +
-	"ISO_8859_1\x10\x05\x1a\x05\xa0\xaf\x9c\x02\x01\x12\x15\n" +
+	"ISO_8859_1\x10\x04\x1a\x05\xa0\xaf\x9c\x02\x01\x12\x15\n" +
 	"\n" +
-	"ISO_8859_2\x10\x06\x1a\x05\xa0\xaf\x9c\x02\x02\x12\x15\n" +
+	"ISO_8859_2\x10\x05\x1a\x05\xa0\xaf\x9c\x02\x02\x12\x15\n" +
 	"\n" +
-	"ISO_8859_3\x10\a\x1a\x05\xa0\xaf\x9c\x02\x03\x12\x15\n" +
+	"ISO_8859_3\x10\x06\x1a\x05\xa0\xaf\x9c\x02\x03\x12\x15\n" +
 	"\n" +
-	"ISO_8859_5\x10\b\x1a\x05\xa0\xaf\x9c\x02\x05\x12\x15\n" +
+	"ISO_8859_5\x10\a\x1a\x05\xa0\xaf\x9c\x02\x05\x12\x15\n" +
 	"\n" +
-	"ISO_8859_7\x10\t\x1a\x05\xa0\xaf\x9c\x02\a\x12\x15\n" +
+	"ISO_8859_7\x10\b\x1a\x05\xa0\xaf\x9c\x02\a\x12\x15\n" +
 	"\n" +
-	"ISO_8859_9\x10\n" +
-	"\x1a\x05\xa0\xaf\x9c\x02\t\x12\x16\n" +
-	"\vISO_8859_13\x10\v\x1a\x05\xa0\xaf\x9c\x02\r\x12\x16\n" +
-	"\vISO_8859_15\x10\f\x1a\x05\xa0\xaf\x9c\x02\x0f\x12\x16\n" +
-	"\vISO_8859_16\x10\r\x1a\x05\xa0\xaf\x9c\x02\x10\x12\x11\n" +
-	"\x06KOI8_R\x10\x0e\x1a\x05\xa0\xaf\x9c\x02P\x12\x11\n" +
-	"\x06KOI8_U\x10\x0f\x1a\x05\xa0\xaf\x9c\x02UB\xcc\x02\n" +
+	"ISO_8859_9\x10\t\x1a\x05\xa0\xaf\x9c\x02\t\x12\x16\n" +
+	"\vISO_8859_13\x10\n" +
+	"\x1a\x05\xa0\xaf\x9c\x02\r\x12\x16\n" +
+	"\vISO_8859_15\x10\v\x1a\x05\xa0\xaf\x9c\x02\x0f\x12\x16\n" +
+	"\vISO_8859_16\x10\f\x1a\x05\xa0\xaf\x9c\x02\x10\x12\x11\n" +
+	"\x06KOI8_R\x10\r\x1a\x05\xa0\xaf\x9c\x02P\x12\x11\n" +
+	"\x06KOI8_U\x10\x0e\x1a\x05\xa0\xaf\x9c\x02UB\xcc\x02\n" +
 	"(com.wayplatform.connect.tachograph.dd.v1B\rEncodingProtoP\x01Z\\github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1;ddv1\xa2\x02\x04WCTD\xaa\x02$Wayplatform.Connect.Tachograph.Dd.V1\xca\x02$Wayplatform\\Connect\\Tachograph\\Dd\\V1\xe2\x020Wayplatform\\Connect\\Tachograph\\Dd\\V1\\GPBMetadata\xea\x02(Wayplatform::Connect::Tachograph::Dd::V1b\beditionsp\xe8\a"
 
 var file_wayplatform_connect_tachograph_dd_v1_encoding_proto_enumTypes = make([]protoimpl.EnumInfo, 1)

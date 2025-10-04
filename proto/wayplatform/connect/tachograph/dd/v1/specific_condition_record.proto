@@ -30,4 +30,3 @@ message SpecificConditionRecord {
   // encountered during parsing.
   int32 unrecognized_specific_condition_type = 3;
 }
-

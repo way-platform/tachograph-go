@@ -186,13 +186,12 @@ func AnonymizeDrivingLicenceInfo(dli *cardv1.DrivingLicenceInfo) *cardv1.Driving
 
 	// Replace licence number with static test value (IA5String, 16 bytes)
 	if dli.GetDrivingLicenceNumber() != nil {
-		sv := &ddv1.StringValue{}
+		sv := &ddv1.Ia5StringValue{}
 		sv.SetValue("TEST-DL-123")
-		sv.SetEncoding(ddv1.Encoding_IA5)
+
 		sv.SetLength(16)
 		anonymized.SetDrivingLicenceNumber(sv)
 	}
 
 	return anonymized
 }
-

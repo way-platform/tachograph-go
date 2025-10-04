@@ -193,23 +193,23 @@ func AnonymizeControlActivityData(ca *cardv1.ControlActivityData) *cardv1.Contro
 			if driverID := fcn.GetDriverIdentification(); driverID != nil {
 				anonymizedDriverID := &ddv1.DriverIdentification{}
 				if driverID.GetDriverIdentificationNumber() != nil {
-					sv := &ddv1.StringValue{}
+					sv := &ddv1.Ia5StringValue{}
 					sv.SetValue("CTRL-DRV-001")
-					sv.SetEncoding(ddv1.Encoding_IA5)
+
 					sv.SetLength(14)
 					anonymizedDriverID.SetDriverIdentificationNumber(sv)
 				}
 				if driverID.GetCardReplacementIndex() != nil {
-					sv := &ddv1.StringValue{}
+					sv := &ddv1.Ia5StringValue{}
 					sv.SetValue("0")
-					sv.SetEncoding(ddv1.Encoding_IA5)
+
 					sv.SetLength(1)
 					anonymizedDriverID.SetCardReplacementIndex(sv)
 				}
 				if driverID.GetCardRenewalIndex() != nil {
-					sv := &ddv1.StringValue{}
+					sv := &ddv1.Ia5StringValue{}
 					sv.SetValue("0")
-					sv.SetEncoding(ddv1.Encoding_IA5)
+
 					sv.SetLength(1)
 					anonymizedDriverID.SetCardRenewalIndex(sv)
 				}
@@ -217,30 +217,30 @@ func AnonymizeControlActivityData(ca *cardv1.ControlActivityData) *cardv1.Contro
 			} else if ownerID := fcn.GetOwnerIdentification(); ownerID != nil {
 				anonymizedOwnerID := &ddv1.OwnerIdentification{}
 				if ownerID.GetOwnerIdentification() != nil {
-					sv := &ddv1.StringValue{}
+					sv := &ddv1.Ia5StringValue{}
 					sv.SetValue("CTRL-OWN-001")
-					sv.SetEncoding(ddv1.Encoding_IA5)
+
 					sv.SetLength(13)
 					anonymizedOwnerID.SetOwnerIdentification(sv)
 				}
 				if ownerID.GetConsecutiveIndex() != nil {
-					sv := &ddv1.StringValue{}
+					sv := &ddv1.Ia5StringValue{}
 					sv.SetValue("0")
-					sv.SetEncoding(ddv1.Encoding_IA5)
+
 					sv.SetLength(1)
 					anonymizedOwnerID.SetConsecutiveIndex(sv)
 				}
 				if ownerID.GetReplacementIndex() != nil {
-					sv := &ddv1.StringValue{}
+					sv := &ddv1.Ia5StringValue{}
 					sv.SetValue("0")
-					sv.SetEncoding(ddv1.Encoding_IA5)
+
 					sv.SetLength(1)
 					anonymizedOwnerID.SetReplacementIndex(sv)
 				}
 				if ownerID.GetRenewalIndex() != nil {
-					sv := &ddv1.StringValue{}
+					sv := &ddv1.Ia5StringValue{}
 					sv.SetValue("0")
-					sv.SetEncoding(ddv1.Encoding_IA5)
+
 					sv.SetLength(1)
 					anonymizedOwnerID.SetRenewalIndex(sv)
 				}
@@ -261,7 +261,7 @@ func AnonymizeControlActivityData(ca *cardv1.ControlActivityData) *cardv1.Contro
 		testRegNum := &ddv1.StringValue{}
 		testRegNum.SetValue("TEST-VRN")
 		testRegNum.SetEncoding(ddv1.Encoding_ISO_8859_1) // Code page 1 (Latin-1)
-		testRegNum.SetLength(13)                               // Length of data bytes (not including code page)
+		testRegNum.SetLength(13)                         // Length of data bytes (not including code page)
 		anonymizedReg.SetNumber(testRegNum)
 
 		anonymized.SetControlVehicleRegistration(anonymizedReg)

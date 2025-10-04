@@ -112,4 +112,3 @@ message PlaceRecordG2 {
   // contain partially overwritten records.
   bool valid = 10;
 }
-

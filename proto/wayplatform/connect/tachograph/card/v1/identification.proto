@@ -6,6 +6,7 @@ import "google/protobuf/timestamp.proto";
 import "wayplatform/connect/tachograph/card/v1/card_type.proto";
 import "wayplatform/connect/tachograph/dd/v1/date.proto";
 import "wayplatform/connect/tachograph/dd/v1/driver_identification.proto";
+import "wayplatform/connect/tachograph/dd/v1/ia5_string_value.proto";
 import "wayplatform/connect/tachograph/dd/v1/nation_numeric.proto";
 import "wayplatform/connect/tachograph/dd/v1/owner_identification.proto";
 import "wayplatform/connect/tachograph/dd/v1/string_value.proto";
@@ -117,7 +118,7 @@ message Identification {
     // ASN.1 Definition:
     //
     //     Language ::= IA5String (SIZE(2))
-    wayplatform.connect.tachograph.dd.v1.StringValue card_holder_preferred_language = 4;
+    wayplatform.connect.tachograph.dd.v1.Ia5StringValue card_holder_preferred_language = 4;
   }
 
   // Represents the identification of the workshop card holder.

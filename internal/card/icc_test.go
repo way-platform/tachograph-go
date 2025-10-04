@@ -208,9 +208,9 @@ func AnonymizeIcc(icc *cardv1.Icc) *cardv1.Icc {
 
 	// Anonymize card approval number (IA5String, 8 bytes)
 	if icc.GetCardApprovalNumber() != nil {
-		sv := &ddv1.StringValue{}
+		sv := &ddv1.Ia5StringValue{}
 		sv.SetValue("TEST0001")
-		sv.SetEncoding(ddv1.Encoding_IA5)
+
 		sv.SetLength(8)
 		anonymized.SetCardApprovalNumber(sv)
 	}
@@ -224,19 +224,19 @@ func AnonymizeIcc(icc *cardv1.Icc) *cardv1.Icc {
 
 		// Country code (IA5String, 2 bytes)
 		if eia.GetCountryCode() != nil {
-			sv := &ddv1.StringValue{}
+			sv := &ddv1.Ia5StringValue{}
 			sv.SetValue("FI")
-			sv.SetEncoding(ddv1.Encoding_IA5)
+
 			sv.SetLength(2)
 			anonymizedEIA.SetCountryCode(sv)
 		}
 
-		// Module embedder (IA5String, 3 bytes)
+		// Module embedder (IA5String, 2 bytes)
 		if eia.GetModuleEmbedder() != nil {
-			sv := &ddv1.StringValue{}
-			sv.SetValue("TEST")
-			sv.SetEncoding(ddv1.Encoding_IA5)
-			sv.SetLength(3)
+			sv := &ddv1.Ia5StringValue{}
+			sv.SetValue("AB")
+
+			sv.SetLength(2)
 			anonymizedEIA.SetModuleEmbedder(sv)
 		}
 

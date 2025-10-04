@@ -36,28 +36,28 @@ func (opts UnmarshalOptions) UnmarshalOwnerIdentification(data []byte) (*ddv1.Ow
 	ownerID := &ddv1.OwnerIdentification{}
 
 	// Parse owner identification number (13 bytes)
-	identificationNumber, err := opts.UnmarshalIA5StringValue(data[0:13])
+	identificationNumber, err := opts.UnmarshalIa5StringValue(data[0:13])
 	if err != nil {
 		return nil, fmt.Errorf("failed to parse owner identification number: %w", err)
 	}
 	ownerID.SetOwnerIdentification(identificationNumber)
 
 	// Parse card consecutive index (1 byte)
-	consecutiveIndex, err := opts.UnmarshalIA5StringValue(data[13:14])
+	consecutiveIndex, err := opts.UnmarshalIa5StringValue(data[13:14])
 	if err != nil {
 		return nil, fmt.Errorf("failed to parse card consecutive index: %w", err)
 	}
 	ownerID.SetConsecutiveIndex(consecutiveIndex)
 
 	// Parse card replacement index (1 byte)
-	replacementIndex, err := opts.UnmarshalIA5StringValue(data[14:15])
+	replacementIndex, err := opts.UnmarshalIa5StringValue(data[14:15])
 	if err != nil {
 		return nil, fmt.Errorf("failed to parse card replacement index: %w", err)
 	}
 	ownerID.SetReplacementIndex(replacementIndex)
 
 	// Parse card renewal index (1 byte)
-	renewalIndex, err := opts.UnmarshalIA5StringValue(data[15:16])
+	renewalIndex, err := opts.UnmarshalIa5StringValue(data[15:16])
 	if err != nil {
 		return nil, fmt.Errorf("failed to parse card renewal index: %w", err)
 	}
@@ -91,25 +91,25 @@ func AppendOwnerIdentification(dst []byte, ownerID *ddv1.OwnerIdentification) ([
 
 	// Append owner identification number (13 bytes)
 	var err error
-	dst, err = AppendStringValue(dst, ownerID.GetOwnerIdentification())
+	dst, err = AppendIa5StringValue(dst, ownerID.GetOwnerIdentification())
 	if err != nil {
 		return nil, fmt.Errorf("failed to append owner identification number: %w", err)
 	}
 
 	// Append card consecutive index (1 byte)
-	dst, err = AppendStringValue(dst, ownerID.GetConsecutiveIndex())
+	dst, err = AppendIa5StringValue(dst, ownerID.GetConsecutiveIndex())
 	if err != nil {
 		return nil, fmt.Errorf("failed to append card consecutive index: %w", err)
 	}
 
 	// Append card replacement index (1 byte)
-	dst, err = AppendStringValue(dst, ownerID.GetReplacementIndex())
+	dst, err = AppendIa5StringValue(dst, ownerID.GetReplacementIndex())
 	if err != nil {
 		return nil, fmt.Errorf("failed to append card replacement index: %w", err)
 	}
 
 	// Append card renewal index (1 byte)
-	dst, err = AppendStringValue(dst, ownerID.GetRenewalIndex())
+	dst, err = AppendIa5StringValue(dst, ownerID.GetRenewalIndex())
 	if err != nil {
 		return nil, fmt.Errorf("failed to append card renewal index: %w", err)
 	}

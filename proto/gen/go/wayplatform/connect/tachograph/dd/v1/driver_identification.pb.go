@@ -34,9 +34,9 @@ const (
 //	}
 type DriverIdentification struct {
 	state                                 protoimpl.MessageState `protogen:"opaque.v1"`
-	xxx_hidden_DriverIdentificationNumber *StringValue           `protobuf:"bytes,1,opt,name=driver_identification_number,json=driverIdentificationNumber"`
-	xxx_hidden_CardReplacementIndex       *StringValue           `protobuf:"bytes,2,opt,name=card_replacement_index,json=cardReplacementIndex"`
-	xxx_hidden_CardRenewalIndex           *StringValue           `protobuf:"bytes,3,opt,name=card_renewal_index,json=cardRenewalIndex"`
+	xxx_hidden_DriverIdentificationNumber *Ia5StringValue        `protobuf:"bytes,1,opt,name=driver_identification_number,json=driverIdentificationNumber"`
+	xxx_hidden_CardReplacementIndex       *Ia5StringValue        `protobuf:"bytes,2,opt,name=card_replacement_index,json=cardReplacementIndex"`
+	xxx_hidden_CardRenewalIndex           *Ia5StringValue        `protobuf:"bytes,3,opt,name=card_renewal_index,json=cardRenewalIndex"`
 	unknownFields                         protoimpl.UnknownFields
 	sizeCache                             protoimpl.SizeCache
 }
@@ -66,36 +66,36 @@ func (x *DriverIdentification) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-func (x *DriverIdentification) GetDriverIdentificationNumber() *StringValue {
+func (x *DriverIdentification) GetDriverIdentificationNumber() *Ia5StringValue {
 	if x != nil {
 		return x.xxx_hidden_DriverIdentificationNumber
 	}
 	return nil
 }
 
-func (x *DriverIdentification) GetCardReplacementIndex() *StringValue {
+func (x *DriverIdentification) GetCardReplacementIndex() *Ia5StringValue {
 	if x != nil {
 		return x.xxx_hidden_CardReplacementIndex
 	}
 	return nil
 }
 
-func (x *DriverIdentification) GetCardRenewalIndex() *StringValue {
+func (x *DriverIdentification) GetCardRenewalIndex() *Ia5StringValue {
 	if x != nil {
 		return x.xxx_hidden_CardRenewalIndex
 	}
 	return nil
 }
 
-func (x *DriverIdentification) SetDriverIdentificationNumber(v *StringValue) {
+func (x *DriverIdentification) SetDriverIdentificationNumber(v *Ia5StringValue) {
 	x.xxx_hidden_DriverIdentificationNumber = v
 }
 
-func (x *DriverIdentification) SetCardReplacementIndex(v *StringValue) {
+func (x *DriverIdentification) SetCardReplacementIndex(v *Ia5StringValue) {
 	x.xxx_hidden_CardReplacementIndex = v
 }
 
-func (x *DriverIdentification) SetCardRenewalIndex(v *StringValue) {
+func (x *DriverIdentification) SetCardRenewalIndex(v *Ia5StringValue) {
 	x.xxx_hidden_CardRenewalIndex = v
 }
 
@@ -138,17 +138,17 @@ type DriverIdentification_builder struct {
 	// The core driver identification number string.
 	//
 	// Corresponds to `driverIdentificationNumber`.
-	DriverIdentificationNumber *StringValue
+	DriverIdentificationNumber *Ia5StringValue
 	// The card replacement index.
 	//
 	// Corresponds to `cardReplacementIndex`.
 	// See Data Dictionary, Section 2.31.
-	CardReplacementIndex *StringValue
+	CardReplacementIndex *Ia5StringValue
 	// The card renewal index.
 	//
 	// Corresponds to `cardRenewalIndex`.
 	// See Data Dictionary, Section 2.30.
-	CardRenewalIndex *StringValue
+	CardRenewalIndex *Ia5StringValue
 }
 
 func (b0 DriverIdentification_builder) Build() *DriverIdentification {
@@ -165,22 +165,22 @@ var File_wayplatform_connect_tachograph_dd_v1_driver_identification_proto protor
 
 const file_wayplatform_connect_tachograph_dd_v1_driver_identification_proto_rawDesc = "" +
 	"\n" +
-	"@wayplatform/connect/tachograph/dd/v1/driver_identification.proto\x12$wayplatform.connect.tachograph.dd.v1\x1a7wayplatform/connect/tachograph/dd/v1/string_value.proto\"\xd5\x02\n" +
-	"\x14DriverIdentification\x12s\n" +
-	"\x1cdriver_identification_number\x18\x01 \x01(\v21.wayplatform.connect.tachograph.dd.v1.StringValueR\x1adriverIdentificationNumber\x12g\n" +
-	"\x16card_replacement_index\x18\x02 \x01(\v21.wayplatform.connect.tachograph.dd.v1.StringValueR\x14cardReplacementIndex\x12_\n" +
-	"\x12card_renewal_index\x18\x03 \x01(\v21.wayplatform.connect.tachograph.dd.v1.StringValueR\x10cardRenewalIndexB\xd8\x02\n" +
+	"@wayplatform/connect/tachograph/dd/v1/driver_identification.proto\x12$wayplatform.connect.tachograph.dd.v1\x1a;wayplatform/connect/tachograph/dd/v1/ia5_string_value.proto\"\xde\x02\n" +
+	"\x14DriverIdentification\x12v\n" +
+	"\x1cdriver_identification_number\x18\x01 \x01(\v24.wayplatform.connect.tachograph.dd.v1.Ia5StringValueR\x1adriverIdentificationNumber\x12j\n" +
+	"\x16card_replacement_index\x18\x02 \x01(\v24.wayplatform.connect.tachograph.dd.v1.Ia5StringValueR\x14cardReplacementIndex\x12b\n" +
+	"\x12card_renewal_index\x18\x03 \x01(\v24.wayplatform.connect.tachograph.dd.v1.Ia5StringValueR\x10cardRenewalIndexB\xd8\x02\n" +
 	"(com.wayplatform.connect.tachograph.dd.v1B\x19DriverIdentificationProtoP\x01Z\\github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1;ddv1\xa2\x02\x04WCTD\xaa\x02$Wayplatform.Connect.Tachograph.Dd.V1\xca\x02$Wayplatform\\Connect\\Tachograph\\Dd\\V1\xe2\x020Wayplatform\\Connect\\Tachograph\\Dd\\V1\\GPBMetadata\xea\x02(Wayplatform::Connect::Tachograph::Dd::V1b\beditionsp\xe8\a"
 
 var file_wayplatform_connect_tachograph_dd_v1_driver_identification_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_wayplatform_connect_tachograph_dd_v1_driver_identification_proto_goTypes = []any{
 	(*DriverIdentification)(nil), // 0: wayplatform.connect.tachograph.dd.v1.DriverIdentification
-	(*StringValue)(nil),          // 1: wayplatform.connect.tachograph.dd.v1.StringValue
+	(*Ia5StringValue)(nil),       // 1: wayplatform.connect.tachograph.dd.v1.Ia5StringValue
 }
 var file_wayplatform_connect_tachograph_dd_v1_driver_identification_proto_depIdxs = []int32{
-	1, // 0: wayplatform.connect.tachograph.dd.v1.DriverIdentification.driver_identification_number:type_name -> wayplatform.connect.tachograph.dd.v1.StringValue
-	1, // 1: wayplatform.connect.tachograph.dd.v1.DriverIdentification.card_replacement_index:type_name -> wayplatform.connect.tachograph.dd.v1.StringValue
-	1, // 2: wayplatform.connect.tachograph.dd.v1.DriverIdentification.card_renewal_index:type_name -> wayplatform.connect.tachograph.dd.v1.StringValue
+	1, // 0: wayplatform.connect.tachograph.dd.v1.DriverIdentification.driver_identification_number:type_name -> wayplatform.connect.tachograph.dd.v1.Ia5StringValue
+	1, // 1: wayplatform.connect.tachograph.dd.v1.DriverIdentification.card_replacement_index:type_name -> wayplatform.connect.tachograph.dd.v1.Ia5StringValue
+	1, // 2: wayplatform.connect.tachograph.dd.v1.DriverIdentification.card_renewal_index:type_name -> wayplatform.connect.tachograph.dd.v1.Ia5StringValue
 	3, // [3:3] is the sub-list for method output_type
 	3, // [3:3] is the sub-list for method input_type
 	3, // [3:3] is the sub-list for extension type_name
@@ -193,7 +193,7 @@ func file_wayplatform_connect_tachograph_dd_v1_driver_identification_proto_init(
 	if File_wayplatform_connect_tachograph_dd_v1_driver_identification_proto != nil {
 		return
 	}
-	file_wayplatform_connect_tachograph_dd_v1_string_value_proto_init()
+	file_wayplatform_connect_tachograph_dd_v1_ia5_string_value_proto_init()
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

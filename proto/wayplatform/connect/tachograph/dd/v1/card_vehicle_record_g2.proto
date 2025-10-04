@@ -88,4 +88,3 @@ message CardVehicleRecordG2 {
   // Size: 48 bytes (fixed for Gen2).
   bytes raw_data = 8;
 }
-

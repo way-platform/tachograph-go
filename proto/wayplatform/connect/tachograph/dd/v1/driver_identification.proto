@@ -2,7 +2,7 @@ edition = "2023";
 
 package wayplatform.connect.tachograph.dd.v1;
 
-import "wayplatform/connect/tachograph/dd/v1/string_value.proto";
+import "wayplatform/connect/tachograph/dd/v1/ia5_string_value.proto";
 
 // Represents the `driverIdentification` sequence from the `CardNumber` CHOICE,
 // which uniquely identifies a driver's card.
@@ -20,17 +20,17 @@ message DriverIdentification {
   // The core driver identification number string.
   //
   // Corresponds to `driverIdentificationNumber`.
-  StringValue driver_identification_number = 1;
+  Ia5StringValue driver_identification_number = 1;
 
   // The card replacement index.
   //
   // Corresponds to `cardReplacementIndex`.
   // See Data Dictionary, Section 2.31.
-  StringValue card_replacement_index = 2;
+  Ia5StringValue card_replacement_index = 2;
 
   // The card renewal index.
   //
   // Corresponds to `cardRenewalIndex`.
   // See Data Dictionary, Section 2.30.
-  StringValue card_renewal_index = 3;
+  Ia5StringValue card_renewal_index = 3;
 }
