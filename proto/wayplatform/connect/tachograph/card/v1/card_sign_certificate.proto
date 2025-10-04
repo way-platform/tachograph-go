@@ -1,0 +1,26 @@
+edition = "2023";
+
+package wayplatform.connect.tachograph.card.v1;
+
+import "wayplatform/connect/tachograph/dd/v1/ecc_certificate.proto";
+
+// Data from EF CardSignCertificate (File ID 'C101h').
+//
+// This certificate is used for creating digital signatures on data downloaded
+// from Generation 2 driver and workshop cards. It uses ECC-based cryptography
+// and ranges from 204-341 bytes depending on the elliptic curve.
+//
+// Note: This EF is not present on Generation 2 control cards and company cards.
+//
+// See Data Dictionary, Section 2.32 (CardSignCertificate).
+// See File Structure, Section 4.2.2 (TCS_152, TCS_154) for driver cards.
+//
+// ASN.1 Definition (Gen2):
+//
+//     Certificate ::= OCTET STRING (SIZE(204..341))
+//
+// Note: This EF is not signed (see Section 3.3, DDP_037).
+message CardSignCertificate {
+  // ECC certificate containing the card's public key for digital signatures.
+  dd.v1.EccCertificate ecc_certificate = 1;
+}

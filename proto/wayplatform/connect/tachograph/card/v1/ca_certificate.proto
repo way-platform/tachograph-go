@@ -1,0 +1,25 @@
+edition = "2023";
+
+package wayplatform.connect.tachograph.card.v1;
+
+import "wayplatform/connect/tachograph/dd/v1/rsa_certificate.proto";
+
+// Data from EF CA_Certificate (File ID 'C108h') for Generation 1 cards.
+//
+// This certificate contains the Member State's Certificate Authority certificate
+// for Generation 1 tachograph cards. It uses RSA-based cryptography and is
+// 194 bytes in length.
+//
+// See Data Dictionary, Section 2.96 (MemberStateCertificate).
+// See File Structure, Section 4.2.1 (TCS_148, TCS_150) for Gen1.
+//
+// ASN.1 Definition (Gen1):
+//
+//     Certificate ::= OCTET STRING (SIZE(194))
+//
+// Note: This EF is not signed (see Section 3.3, DDP_037).
+// Note: For Generation 2 cards, see CaCertificateG2.
+message CaCertificate {
+  // RSA certificate containing the Member State CA's public key.
+  dd.v1.RsaCertificate rsa_certificate = 1;
+}

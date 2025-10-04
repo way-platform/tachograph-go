@@ -1,0 +1,104 @@
+edition = "2023";
+
+package wayplatform.connect.tachograph.dd.v1;
+
+import "google/protobuf/timestamp.proto";
+
+// EccCertificate represents an ECC-based certificate used in second-generation
+// tachograph cards.
+//
+// This certificate type is defined in Appendix 11, Section 9.3.2 (PART B -
+// SECOND-GENERATION TACHOGRAPH SYSTEM), Table 4 of the EU regulation.
+//
+// The certificate uses an ASN.1 TLV structure and ranges from 204 to 341 bytes
+// in length depending on the elliptic curve used.
+//
+// ASN.1 Structure:
+//   ECC Certificate (Tag '7F 21'):
+//     ECC Certificate Body (Tag '7F 4E'):
+//       - Certificate Profile Identifier (Tag '5F 29'): 1 byte
+//       - Certificate Authority Reference (Tag '42'): 8 bytes
+//       - Certificate Holder Authorisation (Tag '5F 4C'): 7 bytes
+//       - Public Key (Tag '7F 49'):
+//         - Domain Parameters (Tag '06'): OID
+//         - Public Point (Tag '86'): variable length
+//       - Certificate Holder Reference (Tag '5F 20'): 8 bytes
+//       - Certificate Effective Date (Tag '5F 25'): 4 bytes (TimeReal)
+//       - Certificate Expiration Date (Tag '5F 24'): 4 bytes (TimeReal)
+//     ECC Certificate Signature (Tag '5F 37'): variable length (R || S)
+message EccCertificate {
+  // Certificate Profile Identifier (CPI) - identifies the certificate profile
+  // version. Version 1 (as specified in Table 4) uses value '00'.
+  int32 certificate_profile_identifier = 1;
+
+  // Certificate Authority Reference (CAR) - identifies the public key to be
+  // used to verify the certificate signature. Equal to the Certificate Holder
+  // Reference in the certificate of the corresponding certificate authority.
+  uint64 certificate_authority_reference = 2;
+
+  // Certificate Holder Authorisation (CHA) - identifies the type of certificate.
+  // Consists of the six most significant bytes of the Tachograph Application ID,
+  // concatenated with the equipment type.
+  // - Gen2: FF 53 4D 52 44 54 (FF SMRDT) + equipment type byte
+  bytes certificate_holder_authorisation = 3;
+
+  // PublicKey contains the ECC public key information.
+  message PublicKey {
+    // Domain parameters as an ASN.1 Object Identifier referencing a set of
+    // standardized domain parameters (elliptic curve).
+    // Common values (see Table 1 in Section 8.2.2):
+    //   - brainpoolP256r1: 1.3.36.3.3.2.8.1.1.7
+    //   - brainpoolP384r1: 1.3.36.3.3.2.8.1.1.11
+    //   - brainpoolP512r1: 1.3.36.3.3.2.8.1.1.13
+    //   - nistP256:        1.2.840.10045.3.1.7
+    //   - nistP384:        1.3.132.0.34
+    //   - nistP521:        1.3.132.0.35
+    string domain_parameters_oid = 1;
+
+    // Public point X coordinate (uncompressed encoding).
+    bytes public_point_x = 2;
+
+    // Public point Y coordinate (uncompressed encoding).
+    bytes public_point_y = 3;
+  }
+
+  // Public key for this certificate.
+  PublicKey public_key = 4;
+
+  // Certificate Holder Reference (CHR) - uniquely identifies the certificate
+  // holder and serves as a Subject Key Identifier to reference the public key.
+  uint64 certificate_holder_reference = 5;
+
+  // Certificate Effective Date - the date from which the certificate is valid.
+  google.protobuf.Timestamp certificate_effective_date = 6;
+
+  // Certificate Expiration Date - the date after which the certificate is
+  // no longer valid.
+  google.protobuf.Timestamp certificate_expiration_date = 7;
+
+  // EccSignature contains the ECDSA signature over the certificate body.
+  message EccSignature {
+    // R component of the ECDSA signature.
+    // Length depends on the curve: 32, 48, or 64-66 bytes.
+    bytes r = 1;
+
+    // S component of the ECDSA signature.
+    // Length depends on the curve: 32, 48, or 64-66 bytes.
+    bytes s = 2;
+  }
+
+  // Digital signature over the certificate body.
+  // The signature is computed over the full ASN.1 encoding of the certificate
+  // body (including tag and length).
+  EccSignature signature = 8;
+
+  // Indicates whether the signature was successfully verified during parsing.
+  // This field is only populated if the Certificate Authority's public key
+  // was available at parse time.
+  bool signature_valid = 9;
+
+  // Raw certificate data as stored in the file - variable length (204-341 bytes).
+  // This includes the complete ASN.1 TLV structure.
+  bytes raw_data = 10;
+}
+

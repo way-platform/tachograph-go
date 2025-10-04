@@ -1,0 +1,24 @@
+edition = "2023";
+
+package wayplatform.connect.tachograph.card.v1;
+
+import "wayplatform/connect/tachograph/dd/v1/ecc_certificate.proto";
+
+// Data from EF CardMA_Certificate (File ID 'C100h').
+//
+// This certificate is used for mutual authentication in Generation 2 tachograph
+// cards, replacing the Gen1 Card_Certificate. It uses ECC-based cryptography
+// and ranges from 204-341 bytes depending on the elliptic curve.
+//
+// See Data Dictionary, Section 2.25 (CardMACertificate).
+// See File Structure, Section 4.2.2 (TCS_152, TCS_154).
+//
+// ASN.1 Definition (Gen2):
+//
+//     Certificate ::= OCTET STRING (SIZE(204..341))
+//
+// Note: This EF is not signed (see Section 3.3, DDP_037).
+message CardMaCertificate {
+  // ECC certificate containing the card's public key for mutual authentication.
+  dd.v1.EccCertificate ecc_certificate = 1;
+}

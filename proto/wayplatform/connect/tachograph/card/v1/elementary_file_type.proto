@@ -106,21 +106,24 @@ enum ElementaryFileType {
   // Directory of applications on the card.
   EF_DIR = 33 [(file_id) = 0x2f00];
 
-  // Card public key certificate for authentication.
+  // Card public key certificate for authentication (Generation 1).
   EF_CARD_CERTIFICATE = 34 [(file_id) = 0xC100];
 
-  // Card public key certificate for digital signatures.
-  EF_CARD_SIGN_CERTIFICATE = 35 [(file_id) = 0xC101];
+  // Card public key certificate for mutual authentication (Generation 2).
+  EF_CARD_MA_CERTIFICATE = 35 [(file_id) = 0xC100];
 
-  // Certification Authority certificate.
-  EF_CA_CERTIFICATE = 36 [(file_id) = 0xC108];
+  // Card public key certificate for digital signatures (Generation 2).
+  EF_CARD_SIGN_CERTIFICATE = 36 [(file_id) = 0xC101];
 
-  // Link certificate for chaining root CAs.
-  EF_LINK_CERTIFICATE = 37 [(file_id) = 0xC109];
+  // Certification Authority certificate (both generations).
+  EF_CA_CERTIFICATE = 37 [(file_id) = 0xC108];
+
+  // Link certificate for chaining root CAs (Generation 2).
+  EF_LINK_CERTIFICATE = 38 [(file_id) = 0xC109];
 
   // Elementary file for the external GNSS facility.
-  EF_EGF = 38 [(file_id) = 0x2F2F];
+  EF_EGF = 39 [(file_id) = 0x2F2F];
 
   // Elementary file for the vehicle unit data on the GNSS facility.
-  EF_VU = 39 [(file_id) = 0x2F30];
+  EF_VU = 40 [(file_id) = 0x2F30];
 }

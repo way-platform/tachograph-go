@@ -91,18 +91,20 @@ const (
 	ElementaryFileType_EF_VU_CONFIGURATION ElementaryFileType = 32
 	// Directory of applications on the card.
 	ElementaryFileType_EF_DIR ElementaryFileType = 33
-	// Card public key certificate for authentication.
+	// Card public key certificate for authentication (Generation 1).
 	ElementaryFileType_EF_CARD_CERTIFICATE ElementaryFileType = 34
-	// Card public key certificate for digital signatures.
-	ElementaryFileType_EF_CARD_SIGN_CERTIFICATE ElementaryFileType = 35
-	// Certification Authority certificate.
-	ElementaryFileType_EF_CA_CERTIFICATE ElementaryFileType = 36
-	// Link certificate for chaining root CAs.
-	ElementaryFileType_EF_LINK_CERTIFICATE ElementaryFileType = 37
+	// Card public key certificate for mutual authentication (Generation 2).
+	ElementaryFileType_EF_CARD_MA_CERTIFICATE ElementaryFileType = 35
+	// Card public key certificate for digital signatures (Generation 2).
+	ElementaryFileType_EF_CARD_SIGN_CERTIFICATE ElementaryFileType = 36
+	// Certification Authority certificate (both generations).
+	ElementaryFileType_EF_CA_CERTIFICATE ElementaryFileType = 37
+	// Link certificate for chaining root CAs (Generation 2).
+	ElementaryFileType_EF_LINK_CERTIFICATE ElementaryFileType = 38
 	// Elementary file for the external GNSS facility.
-	ElementaryFileType_EF_EGF ElementaryFileType = 38
+	ElementaryFileType_EF_EGF ElementaryFileType = 39
 	// Elementary file for the vehicle unit data on the GNSS facility.
-	ElementaryFileType_EF_VU ElementaryFileType = 39
+	ElementaryFileType_EF_VU ElementaryFileType = 40
 )
 
 // Enum value maps for ElementaryFileType.
@@ -142,11 +144,12 @@ var (
 		32: "EF_VU_CONFIGURATION",
 		33: "EF_DIR",
 		34: "EF_CARD_CERTIFICATE",
-		35: "EF_CARD_SIGN_CERTIFICATE",
-		36: "EF_CA_CERTIFICATE",
-		37: "EF_LINK_CERTIFICATE",
-		38: "EF_EGF",
-		39: "EF_VU",
+		35: "EF_CARD_MA_CERTIFICATE",
+		36: "EF_CARD_SIGN_CERTIFICATE",
+		37: "EF_CA_CERTIFICATE",
+		38: "EF_LINK_CERTIFICATE",
+		39: "EF_EGF",
+		40: "EF_VU",
 	}
 	ElementaryFileType_value = map[string]int32{
 		"ELEMENTARY_FILE_UNSPECIFIED":      0,
@@ -183,11 +186,12 @@ var (
 		"EF_VU_CONFIGURATION":              32,
 		"EF_DIR":                           33,
 		"EF_CARD_CERTIFICATE":              34,
-		"EF_CARD_SIGN_CERTIFICATE":         35,
-		"EF_CA_CERTIFICATE":                36,
-		"EF_LINK_CERTIFICATE":              37,
-		"EF_EGF":                           38,
-		"EF_VU":                            39,
+		"EF_CARD_MA_CERTIFICATE":           35,
+		"EF_CARD_SIGN_CERTIFICATE":         36,
+		"EF_CA_CERTIFICATE":                37,
+		"EF_LINK_CERTIFICATE":              38,
+		"EF_EGF":                           39,
+		"EF_VU":                            40,
 	}
 )
 
@@ -217,7 +221,8 @@ var File_wayplatform_connect_tachograph_card_v1_elementary_file_type_proto proto
 
 const file_wayplatform_connect_tachograph_card_v1_elementary_file_type_proto_rawDesc = "" +
 	"\n" +
-	"Awayplatform/connect/tachograph/card/v1/elementary_file_type.proto\x12&wayplatform.connect.tachograph.card.v1\x1a4wayplatform/connect/tachograph/card/v1/file_id.proto*\xe9\t\n" +
+	"Awayplatform/connect/tachograph/card/v1/elementary_file_type.proto\x12&wayplatform.connect.tachograph.card.v1\x1a4wayplatform/connect/tachograph/card/v1/file_id.proto*\x8d\n" +
+	"\n" +
 	"\x12ElementaryFileType\x12\x1f\n" +
 	"\x1bELEMENTARY_FILE_UNSPECIFIED\x10\x00\x12\x10\n" +
 	"\x06EF_ICC\x10\x01\x1a\x04\x88\xb5\x18\x02\x12\x0f\n" +
@@ -280,12 +285,13 @@ const file_wayplatform_connect_tachograph_card_v1_elementary_file_type_proto_raw
 	"\x13EF_VU_CONFIGURATION\x10 \x1a\x05\x88\xb5\x18\xc0\n" +
 	"\x12\x11\n" +
 	"\x06EF_DIR\x10!\x1a\x05\x88\xb5\x18\x80^\x12\x1f\n" +
-	"\x13EF_CARD_CERTIFICATE\x10\"\x1a\x06\x88\xb5\x18\x80\x82\x03\x12$\n" +
-	"\x18EF_CARD_SIGN_CERTIFICATE\x10#\x1a\x06\x88\xb5\x18\x81\x82\x03\x12\x1d\n" +
-	"\x11EF_CA_CERTIFICATE\x10$\x1a\x06\x88\xb5\x18\x88\x82\x03\x12\x1f\n" +
-	"\x13EF_LINK_CERTIFICATE\x10%\x1a\x06\x88\xb5\x18\x89\x82\x03\x12\x11\n" +
-	"\x06EF_EGF\x10&\x1a\x05\x88\xb5\x18\xaf^\x12\x10\n" +
-	"\x05EF_VU\x10'\x1a\x05\x88\xb5\x18\xb0^B\xe4\x02\n" +
+	"\x13EF_CARD_CERTIFICATE\x10\"\x1a\x06\x88\xb5\x18\x80\x82\x03\x12\"\n" +
+	"\x16EF_CARD_MA_CERTIFICATE\x10#\x1a\x06\x88\xb5\x18\x80\x82\x03\x12$\n" +
+	"\x18EF_CARD_SIGN_CERTIFICATE\x10$\x1a\x06\x88\xb5\x18\x81\x82\x03\x12\x1d\n" +
+	"\x11EF_CA_CERTIFICATE\x10%\x1a\x06\x88\xb5\x18\x88\x82\x03\x12\x1f\n" +
+	"\x13EF_LINK_CERTIFICATE\x10&\x1a\x06\x88\xb5\x18\x89\x82\x03\x12\x11\n" +
+	"\x06EF_EGF\x10'\x1a\x05\x88\xb5\x18\xaf^\x12\x10\n" +
+	"\x05EF_VU\x10(\x1a\x05\x88\xb5\x18\xb0^B\xe4\x02\n" +
 	"*com.wayplatform.connect.tachograph.card.v1B\x17ElementaryFileTypeProtoP\x01Z`github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1;cardv1\xa2\x02\x04WCTC\xaa\x02&Wayplatform.Connect.Tachograph.Card.V1\xca\x02&Wayplatform\\Connect\\Tachograph\\Card\\V1\xe2\x022Wayplatform\\Connect\\Tachograph\\Card\\V1\\GPBMetadata\xea\x02*Wayplatform::Connect::Tachograph::Card::V1b\beditionsp\xe8\a"
 
 var file_wayplatform_connect_tachograph_card_v1_elementary_file_type_proto_enumTypes = make([]protoimpl.EnumInfo, 1)

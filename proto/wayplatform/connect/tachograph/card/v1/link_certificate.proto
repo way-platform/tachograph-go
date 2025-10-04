@@ -1,0 +1,30 @@
+edition = "2023";
+
+package wayplatform.connect.tachograph.card.v1;
+
+import "wayplatform/connect/tachograph/dd/v1/ecc_certificate.proto";
+
+// Data from EF Link_Certificate (File ID 'C109h').
+//
+// This certificate is used for validating certificate chains when the root
+// Certificate Authority (ERCA) is replaced. It links the old ERCA root
+// certificate to the new one, allowing validation of certificates signed
+// by either. It uses ECC-based cryptography and ranges from 204-341 bytes
+// depending on the elliptic curve.
+//
+// For link certificates:
+// - Certificate Holder Reference (CHR) = CHR of new ERCA root certificate
+// - Certificate Authority Reference (CAR) = CHR of previous ERCA root certificate
+//
+// See Data Dictionary, Section 2.90b (LinkCertificate).
+// See File Structure, Section 4.2.2 (TCS_152, TCS_154).
+//
+// ASN.1 Definition (Gen2):
+//
+//     Certificate ::= OCTET STRING (SIZE(204..341))
+//
+// Note: This EF is not signed (see Section 3.3, DDP_037).
+message LinkCertificate {
+  // ECC certificate for linking old and new ERCA root certificates.
+  dd.v1.EccCertificate ecc_certificate = 1;
+}

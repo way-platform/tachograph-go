@@ -6,9 +6,14 @@ import "wayplatform/connect/tachograph/card/v1/application_identification.proto"
 import "wayplatform/connect/tachograph/card/v1/application_identification_g2.proto";
 import "wayplatform/connect/tachograph/card/v1/application_identification_v2.proto";
 import "wayplatform/connect/tachograph/card/v1/border_crossings.proto";
+import "wayplatform/connect/tachograph/card/v1/ca_certificate.proto";
+import "wayplatform/connect/tachograph/card/v1/ca_certificate_g2.proto";
+import "wayplatform/connect/tachograph/card/v1/card_certificate.proto";
 import "wayplatform/connect/tachograph/card/v1/card_download_driver.proto";
-import "wayplatform/connect/tachograph/card/v1/certificates.proto";
+import "wayplatform/connect/tachograph/card/v1/card_ma_certificate.proto";
+import "wayplatform/connect/tachograph/card/v1/card_sign_certificate.proto";
 import "wayplatform/connect/tachograph/card/v1/company_activity_data.proto";
+import "wayplatform/connect/tachograph/card/v1/link_certificate.proto";
 import "wayplatform/connect/tachograph/card/v1/control_activity_data.proto";
 import "wayplatform/connect/tachograph/card/v1/current_usage.proto";
 import "wayplatform/connect/tachograph/card/v1/driver_activity_data.proto";
@@ -148,10 +153,13 @@ message DriverCardFile {
     // Signed (see Section 3.3, DDP_035).
     SpecificConditions specific_conditions = 12;
 
-    // Certificate data from EF Card_Certificate (File ID 'C100h') and
-    // EF CA_Certificate (File ID 'C108h').
+    // Data from EF Card_Certificate (File ID 'C100h').
     // Not signed (see Section 3.3, DDP_037).
-    Certificates certificates = 13;
+    CardCertificate card_certificate = 13;
+
+    // Data from EF CA_Certificate (File ID 'C108h').
+    // Not signed (see Section 3.3, DDP_037).
+    CaCertificate ca_certificate = 14;
   }
 
   // Represents data from the Tachograph_G2 DF (Generation 2 driver card application).
@@ -297,10 +305,20 @@ message DriverCardFile {
     // Signed (see Section 3.3, DDP_035).
     VuConfiguration vu_configuration = 22;
 
-    // Certificate data from EF CardMA_Certificate (File ID 'C100h'),
-    // EF CardSignCertificate (File ID 'C101h'), EF CA_Certificate (File ID 'C108h'),
-    // and EF Link_Certificate (File ID 'C109h').
+    // Data from EF CardMA_Certificate (File ID 'C100h').
     // Not signed (see Section 3.3, DDP_037).
-    Certificates certificates = 23;
+    CardMaCertificate card_ma_certificate = 23;
+
+    // Data from EF CardSignCertificate (File ID 'C101h').
+    // Not signed (see Section 3.3, DDP_037).
+    CardSignCertificate card_sign_certificate = 24;
+
+    // Data from EF CA_Certificate (File ID 'C108h').
+    // Not signed (see Section 3.3, DDP_037).
+    CaCertificateG2 ca_certificate = 25;
+
+    // Data from EF Link_Certificate (File ID 'C109h').
+    // Not signed (see Section 3.3, DDP_037).
+    LinkCertificate link_certificate = 26;
   }
 }

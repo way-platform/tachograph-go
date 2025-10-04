@@ -1,0 +1,53 @@
+edition = "2023";
+
+package wayplatform.connect.tachograph.dd.v1;
+
+import "google/protobuf/timestamp.proto";
+
+// RsaCertificate represents an RSA-based certificate used in first-generation
+// tachograph cards.
+//
+// This certificate type is defined in Appendix 11, Section 3.3 (PART A -
+// FIRST-GENERATION TACHOGRAPH SYSTEM) of the EU regulation.
+//
+// The certificate is 194 bytes in length and uses a digital signature with
+// partial recovery in accordance with ISO/IEC 9796-2.
+//
+// Structure (from Section 3.3.2):
+//   X.C = X.CA.SK['6A' || Cr || Hash(Cc) || 'BC'] || Cn || X.CAR
+//   - 128 bytes: Signature (Sign)
+//   - 58 bytes:  Certificate remainder (Cn)
+//   - 8 bytes:   Certificate Authority Reference (CAR)
+//
+// Certificate content (Cr || Cn = 164 bytes total):
+//   - 1 byte:    Certificate Profile Identifier (CPI)
+//   - 8 bytes:   Certificate Authority Reference (CAR)
+//   - 7 bytes:   Certificate Holder Authorisation (CHA)
+//   - 4 bytes:   End of Validity (EOV) as TimeReal, or 0xFFFFFFFF
+//   - 8 bytes:   Certificate Holder Reference (CHR)
+//   - 128 bytes: RSA modulus (n)
+//   - 8 bytes:   RSA public exponent (e)
+message RsaCertificate {
+  // Certificate Holder Reference (CHR) - uniquely identifies the certificate
+  // holder and serves as a Subject Key Identifier to reference the public key.
+  uint64 certificate_holder_reference = 1;
+
+  // Certificate Authority Reference (CAR) - identifies the certification
+  // authority that issued this certificate.
+  uint64 certificate_authority_reference = 2;
+
+  // End of validity timestamp for this certificate.
+  // May be set to 0xFFFFFFFF (2106-02-07 06:28:15 UTC) if no expiry.
+  google.protobuf.Timestamp end_of_validity = 3;
+
+  // RSA public key modulus (n) - 128 bytes.
+  bytes rsa_modulus = 4;
+
+  // RSA public key exponent (e) - 8 bytes.
+  bytes rsa_exponent = 5;
+
+  // Raw certificate data as stored in the file - always 194 bytes.
+  // This includes the signature, remainder, and CAR appended to the signature.
+  bytes raw_data = 6;
+}
+

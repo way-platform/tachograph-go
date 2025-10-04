@@ -1,0 +1,23 @@
+edition = "2023";
+
+package wayplatform.connect.tachograph.card.v1;
+
+import "wayplatform/connect/tachograph/dd/v1/ecc_certificate.proto";
+
+// CaCertificateG2 holds data from EF CA_Certificate (FID 'C108h').
+//
+// This certificate contains the Member State's Certificate Authority certificate
+// for Generation 2 tachograph cards. It uses ECC-based cryptography and ranges
+// from 204-341 bytes depending on the elliptic curve.
+//
+// The certificate itself is not digitally signed (see Section 3.3, DDP_037).
+// It contains the CA's public key used to verify other certificates in the
+// certificate chain.
+//
+// This EF only appears in the Generation 2 DF (Tachograph_G2).
+// For Generation 1 cards, see CaCertificate.
+message CaCertificateG2 {
+  // ECC certificate containing the Member State CA's public key.
+  dd.v1.EccCertificate ecc_certificate = 1;
+}
+

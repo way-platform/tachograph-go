@@ -8,6 +8,7 @@ import (
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/reflect/protoreflect"
 
+	"github.com/way-platform/tachograph-go/internal/dd"
 	cardv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1"
 	ddv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
 )
@@ -492,56 +493,116 @@ func unmarshalDriverCardFile(input *cardv1.RawCardFile) (*cardv1.DriverCardFile,
 			tachographG2DF.SetApplicationIdentificationV2(appIdV2)
 
 		case cardv1.ElementaryFileType_EF_CARD_CERTIFICATE:
-			// Certificates are shared between Gen1 and Gen2 (based on which DF they appear in)
-			// Route to appropriate DF based on generation
-			switch efGeneration {
-			case ddv1.Generation_GENERATION_1:
-				if tachographDF == nil {
-					tachographDF = &cardv1.DriverCardFile_Tachograph{}
-				}
-				if tachographDF.GetCertificates() == nil {
-					tachographDF.SetCertificates(&cardv1.Certificates{})
-				}
-				tachographDF.GetCertificates().SetCardCertificate(record.GetValue())
-			case ddv1.Generation_GENERATION_2:
-				if tachographG2DF == nil {
-					tachographG2DF = &cardv1.DriverCardFile_TachographG2{}
-				}
-				if tachographG2DF.GetCertificates() == nil {
-					tachographG2DF.SetCertificates(&cardv1.Certificates{})
-				}
-				tachographG2DF.GetCertificates().SetCardCertificate(record.GetValue())
-			default:
-				return nil, fmt.Errorf("unexpected generation for EF_CARD_CERTIFICATE: %v", efGeneration)
+			// Gen1: Card authentication certificate
+			// Only appears in Gen1 DF (Tachograph)
+			if efGeneration != ddv1.Generation_GENERATION_1 {
+				return nil, fmt.Errorf("EF_CARD_CERTIFICATE should only appear in Gen1 DF, got generation: %v", efGeneration)
 			}
+			if tachographDF == nil {
+				tachographDF = &cardv1.DriverCardFile_Tachograph{}
+			}
+			rsaCert, err := dd.UnmarshalOptions{}.UnmarshalRsaCertificate(record.GetValue())
+			if err != nil {
+				return nil, fmt.Errorf("failed to parse EF_CARD_CERTIFICATE: %w", err)
+			}
+			cert := &cardv1.CardCertificate{}
+			cert.SetRsaCertificate(rsaCert)
+			tachographDF.SetCardCertificate(cert)
 			if signature != nil {
 				return nil, fmt.Errorf("unexpected signature for EF_CARD_CERTIFICATE")
 			}
 
+		case cardv1.ElementaryFileType_EF_CARD_MA_CERTIFICATE:
+			// Gen2: Card mutual authentication certificate (replaces Gen1 Card_Certificate)
+			// Only appears in Gen2 DF (Tachograph_G2)
+			if efGeneration != ddv1.Generation_GENERATION_2 {
+				return nil, fmt.Errorf("EF_CARD_MA_CERTIFICATE should only appear in Gen2 DF, got generation: %v", efGeneration)
+			}
+			if tachographG2DF == nil {
+				tachographG2DF = &cardv1.DriverCardFile_TachographG2{}
+			}
+			eccCert, err := dd.UnmarshalOptions{}.UnmarshalEccCertificate(record.GetValue())
+			if err != nil {
+				return nil, fmt.Errorf("failed to parse EF_CARD_MA_CERTIFICATE: %w", err)
+			}
+			cert := &cardv1.CardMaCertificate{}
+			cert.SetEccCertificate(eccCert)
+			tachographG2DF.SetCardMaCertificate(cert)
+			if signature != nil {
+				return nil, fmt.Errorf("unexpected signature for EF_CARD_MA_CERTIFICATE")
+			}
+
+		case cardv1.ElementaryFileType_EF_CARD_SIGN_CERTIFICATE:
+			// Gen2: Card signature certificate
+			// Only appears in Gen2 DF (Tachograph_G2) on driver and workshop cards
+			if efGeneration != ddv1.Generation_GENERATION_2 {
+				return nil, fmt.Errorf("EF_CARD_SIGN_CERTIFICATE should only appear in Gen2 DF, got generation: %v", efGeneration)
+			}
+			if tachographG2DF == nil {
+				tachographG2DF = &cardv1.DriverCardFile_TachographG2{}
+			}
+			eccCert, err := dd.UnmarshalOptions{}.UnmarshalEccCertificate(record.GetValue())
+			if err != nil {
+				return nil, fmt.Errorf("failed to parse EF_CARD_SIGN_CERTIFICATE: %w", err)
+			}
+			cert := &cardv1.CardSignCertificate{}
+			cert.SetEccCertificate(eccCert)
+			tachographG2DF.SetCardSignCertificate(cert)
+			if signature != nil {
+				return nil, fmt.Errorf("unexpected signature for EF_CARD_SIGN_CERTIFICATE")
+			}
+
 		case cardv1.ElementaryFileType_EF_CA_CERTIFICATE:
+			// CA certificate - present in both Gen1 and Gen2
 			// Route to appropriate DF based on generation
 			switch efGeneration {
 			case ddv1.Generation_GENERATION_1:
 				if tachographDF == nil {
 					tachographDF = &cardv1.DriverCardFile_Tachograph{}
 				}
-				if tachographDF.GetCertificates() == nil {
-					tachographDF.SetCertificates(&cardv1.Certificates{})
+				rsaCert, err := dd.UnmarshalOptions{}.UnmarshalRsaCertificate(record.GetValue())
+				if err != nil {
+					return nil, fmt.Errorf("failed to parse EF_CA_CERTIFICATE (Gen1): %w", err)
 				}
-				tachographDF.GetCertificates().SetCaCertificate(record.GetValue())
+				cert := &cardv1.CaCertificate{}
+				cert.SetRsaCertificate(rsaCert)
+				tachographDF.SetCaCertificate(cert)
 			case ddv1.Generation_GENERATION_2:
 				if tachographG2DF == nil {
 					tachographG2DF = &cardv1.DriverCardFile_TachographG2{}
 				}
-				if tachographG2DF.GetCertificates() == nil {
-					tachographG2DF.SetCertificates(&cardv1.Certificates{})
+				eccCert, err := dd.UnmarshalOptions{}.UnmarshalEccCertificate(record.GetValue())
+				if err != nil {
+					return nil, fmt.Errorf("failed to parse EF_CA_CERTIFICATE (Gen2): %w", err)
 				}
-				tachographG2DF.GetCertificates().SetCaCertificate(record.GetValue())
+				cert := &cardv1.CaCertificateG2{}
+				cert.SetEccCertificate(eccCert)
+				tachographG2DF.SetCaCertificate(cert)
 			default:
 				return nil, fmt.Errorf("unexpected generation for EF_CA_CERTIFICATE: %v", efGeneration)
 			}
 			if signature != nil {
 				return nil, fmt.Errorf("unexpected signature for EF_CA_CERTIFICATE")
+			}
+
+		case cardv1.ElementaryFileType_EF_LINK_CERTIFICATE:
+			// Gen2: Link certificate for CA chaining
+			// Only appears in Gen2 DF (Tachograph_G2)
+			if efGeneration != ddv1.Generation_GENERATION_2 {
+				return nil, fmt.Errorf("EF_LINK_CERTIFICATE should only appear in Gen2 DF, got generation: %v", efGeneration)
+			}
+			if tachographG2DF == nil {
+				tachographG2DF = &cardv1.DriverCardFile_TachographG2{}
+			}
+			eccCert, err := dd.UnmarshalOptions{}.UnmarshalEccCertificate(record.GetValue())
+			if err != nil {
+				return nil, fmt.Errorf("failed to parse EF_LINK_CERTIFICATE: %w", err)
+			}
+			cert := &cardv1.LinkCertificate{}
+			cert.SetEccCertificate(eccCert)
+			tachographG2DF.SetLinkCertificate(cert)
+			if signature != nil {
+				return nil, fmt.Errorf("unexpected signature for EF_LINK_CERTIFICATE")
 			}
 		}
 	}
@@ -692,17 +753,68 @@ func appendDriverCard(dst []byte, card *cardv1.DriverCardFile) ([]byte, error) {
 		}
 	}
 
-	// Append certificate EFs from Gen1 DF
+	// Append certificate EFs from Gen1 DF (in regulation order: SFID 2, 4)
 	if tachograph := card.GetTachograph(); tachograph != nil {
-		if certificates := tachograph.GetCertificates(); certificates != nil {
-			dst, err = appendCertificateEF(dst, cardv1.ElementaryFileType_EF_CARD_CERTIFICATE, certificates.GetCardCertificate())
-			if err != nil {
-				return nil, err
+		// Card authentication certificate (FID C100h)
+		if cert := tachograph.GetCardCertificate(); cert != nil {
+			if rsaCert := cert.GetRsaCertificate(); rsaCert != nil {
+				dst, err = appendCertificateEF(dst, cardv1.ElementaryFileType_EF_CARD_CERTIFICATE, rsaCert.GetRawData())
+				if err != nil {
+					return nil, err
+				}
 			}
+		}
 
-			dst, err = appendCertificateEF(dst, cardv1.ElementaryFileType_EF_CA_CERTIFICATE, certificates.GetCaCertificate())
-			if err != nil {
-				return nil, err
+		// CA certificate (FID C108h)
+		if cert := tachograph.GetCaCertificate(); cert != nil {
+			if rsaCert := cert.GetRsaCertificate(); rsaCert != nil {
+				dst, err = appendCertificateEF(dst, cardv1.ElementaryFileType_EF_CA_CERTIFICATE, rsaCert.GetRawData())
+				if err != nil {
+					return nil, err
+				}
+			}
+		}
+	}
+
+	// Append certificate EFs from Gen2 DF (in regulation order: SFID 2, 3, 4, 5)
+	if tachographG2 := card.GetTachographG2(); tachographG2 != nil {
+		// Card mutual authentication certificate (FID C100h)
+		if cert := tachographG2.GetCardMaCertificate(); cert != nil {
+			if eccCert := cert.GetEccCertificate(); eccCert != nil {
+				dst, err = appendCertificateEFG2(dst, cardv1.ElementaryFileType_EF_CARD_MA_CERTIFICATE, eccCert.GetRawData())
+				if err != nil {
+					return nil, err
+				}
+			}
+		}
+
+		// Card signature certificate (FID C101h)
+		if cert := tachographG2.GetCardSignCertificate(); cert != nil {
+			if eccCert := cert.GetEccCertificate(); eccCert != nil {
+				dst, err = appendCertificateEFG2(dst, cardv1.ElementaryFileType_EF_CARD_SIGN_CERTIFICATE, eccCert.GetRawData())
+				if err != nil {
+					return nil, err
+				}
+			}
+		}
+
+		// CA certificate (FID C108h)
+		if cert := tachographG2.GetCaCertificate(); cert != nil {
+			if eccCert := cert.GetEccCertificate(); eccCert != nil {
+				dst, err = appendCertificateEFG2(dst, cardv1.ElementaryFileType_EF_CA_CERTIFICATE, eccCert.GetRawData())
+				if err != nil {
+					return nil, err
+				}
+			}
+		}
+
+		// Link certificate (FID C109h)
+		if cert := tachographG2.GetLinkCertificate(); cert != nil {
+			if eccCert := cert.GetEccCertificate(); eccCert != nil {
+				dst, err = appendCertificateEFG2(dst, cardv1.ElementaryFileType_EF_LINK_CERTIFICATE, eccCert.GetRawData())
+				if err != nil {
+					return nil, err
+				}
 			}
 		}
 	}
@@ -722,7 +834,8 @@ func (m *compositeMessage) ProtoReflect() protoreflect.Message {
 	return nil // Not needed for our use case
 }
 
-// appendCertificateEF appends a certificate EF (which are not signed)
+// appendCertificateEF appends a Gen1 certificate EF (which are not signed)
+// Uses appendix 0x00 for Gen1 DF (Tachograph)
 func appendCertificateEF(dst []byte, fileType cardv1.ElementaryFileType, certData []byte) ([]byte, error) {
 	if len(certData) == 0 {
 		return dst, nil // Skip empty certificates
@@ -731,9 +844,29 @@ func appendCertificateEF(dst []byte, fileType cardv1.ElementaryFileType, certDat
 	opts := fileType.Descriptor().Values().ByNumber(protoreflect.EnumNumber(fileType)).Options()
 	tag := proto.GetExtension(opts, cardv1.E_FileId).(int32)
 
-	// Write data tag (FID + appendix 0x00) - certificates are NOT signed
+	// Write data tag (FID + appendix 0x00) - Gen1 DF certificates are NOT signed
 	dst = binary.BigEndian.AppendUint16(dst, uint16(tag))
-	dst = append(dst, 0x00) // appendix for data
+	dst = append(dst, 0x00) // appendix for Gen1 data
+	dst = binary.BigEndian.AppendUint16(dst, uint16(len(certData)))
+	dst = append(dst, certData...)
+
+	// Note: Certificates do NOT have signature blocks
+	return dst, nil
+}
+
+// appendCertificateEFG2 appends a Gen2 certificate EF (which are not signed)
+// Uses appendix 0x02 for Gen2 DF (Tachograph_G2)
+func appendCertificateEFG2(dst []byte, fileType cardv1.ElementaryFileType, certData []byte) ([]byte, error) {
+	if len(certData) == 0 {
+		return dst, nil // Skip empty certificates
+	}
+
+	opts := fileType.Descriptor().Values().ByNumber(protoreflect.EnumNumber(fileType)).Options()
+	tag := proto.GetExtension(opts, cardv1.E_FileId).(int32)
+
+	// Write data tag (FID + appendix 0x02) - Gen2 DF certificates are NOT signed
+	dst = binary.BigEndian.AppendUint16(dst, uint16(tag))
+	dst = append(dst, 0x02) // appendix for Gen2 data
 	dst = binary.BigEndian.AppendUint16(dst, uint16(len(certData)))
 	dst = append(dst, certData...)
 
