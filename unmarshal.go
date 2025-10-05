@@ -61,17 +61,3 @@ func UnmarshalFile(data []byte) (*tachographv1.File, error) {
 		return nil, errors.New("unknown or unsupported file type")
 	}
 }
-
-// MarshalFile serializes a protobuf File message into the binary DDD file format.
-func MarshalFile(file *tachographv1.File) ([]byte, error) {
-	switch file.GetType() {
-	case tachographv1.File_DRIVER_CARD:
-		return card.MarshalDriverCardFile(file.GetDriverCard())
-	case tachographv1.File_VEHICLE_UNIT:
-		return vu.MarshalVehicleUnitFile(file.GetVehicleUnit())
-	case tachographv1.File_RAW_CARD:
-		return card.MarshalRawCardFile(file.GetRawCard())
-	default:
-		return nil, fmt.Errorf("unsupported file type for marshaling: %v", file.GetType())
-	}
-}
