@@ -1,4 +1,4 @@
-package dd
+package security
 
 import (
 	"crypto/ecdsa"
@@ -11,11 +11,11 @@ import (
 
 	"github.com/keybase/go-crypto/brainpool"
 
-	ddv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
+	securityv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/security/v1"
 )
 
-// VerifyEccCertificate performs ECDSA signature verification on an ECC certificate.
-// It uses the CA certificate's public key to verify the digital signature.
+// VerifyEccCertificateWithCA performs ECDSA signature verification on an ECC certificate
+// using another ECC certificate as the Certificate Authority.
 //
 // The certificate uses ASN.1 DER encoding as defined in Appendix 11, Section 9.3.2 (PART B), Table 4.
 //
@@ -34,7 +34,7 @@ import (
 // if verification succeeds, or false if it fails.
 //
 // See Appendix 11, Section 9.3.2 for the complete specification.
-func VerifyEccCertificate(cert *ddv1.EccCertificate, caCert *ddv1.EccCertificate) error {
+func VerifyEccCertificateWithCA(cert *securityv1.EccCertificate, caCert *securityv1.EccCertificate) error {
 	if cert == nil {
 		return fmt.Errorf("certificate cannot be nil")
 	}

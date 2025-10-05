@@ -1,4 +1,4 @@
-package dd
+package security
 
 import (
 	"bytes"
@@ -6,13 +6,64 @@ import (
 	"encoding/binary"
 	"fmt"
 	"math/big"
+	"time"
 
-	ddv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
+	securityv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/security/v1"
+	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
-// VerifyRsaCertificate performs signature recovery and verification on an RSA certificate.
-// It uses the CA certificate's public key to recover the certificate content from the
-// signature and extracts semantic fields.
+// unmarshalTimeReal converts a 4-byte TimeReal value to a timestamp.
+func unmarshalTimeReal(data []byte) (*timestamppb.Timestamp, error) {
+	if len(data) != 4 {
+		return nil, fmt.Errorf("invalid TimeReal length: got %d, want 4", len(data))
+	}
+	seconds := binary.BigEndian.Uint32(data)
+	// TimeReal is seconds since 1970-01-01 00:00:00 UTC
+	epoch := time.Date(1970, 1, 1, 0, 0, 0, 0, time.UTC)
+	return timestamppb.New(epoch.Add(time.Duration(seconds) * time.Second)), nil
+}
+
+// VerifyRsaCertificateWithCA performs signature recovery and verification on an RSA certificate
+// using another RSA certificate as the Certificate Authority.
+//
+// The CA certificate must have its public key components (modulus and exponent) populated,
+// typically from a previous verification against a higher-level CA or root certificate.
+//
+// See Appendix 11, Section 3.3 for the complete specification.
+func VerifyRsaCertificateWithCA(cert *securityv1.RsaCertificate, caCert *securityv1.RsaCertificate) error {
+	if caCert == nil {
+		return fmt.Errorf("CA certificate cannot be nil")
+	}
+
+	caModulus := caCert.GetRsaModulus()
+	caExponent := caCert.GetRsaExponent()
+	caCHR := caCert.GetCertificateHolderReference()
+
+	return verifyRsaCertificate(cert, caModulus, caExponent, caCHR)
+}
+
+// VerifyRsaCertificateWithRoot performs signature recovery and verification on an RSA certificate
+// using the ERCA root certificate as the Certificate Authority.
+//
+// The root certificate is trusted a priori and contains the public key components directly.
+// This is typically used to verify Member State CA certificates against the European Root CA.
+//
+// See Appendix 11, Section 2.1 for the root certificate format and Section 3.3 for
+// RSA certificate verification.
+func VerifyRsaCertificateWithRoot(cert *securityv1.RsaCertificate, root *securityv1.RootCertificate) error {
+	if root == nil {
+		return fmt.Errorf("root certificate cannot be nil")
+	}
+
+	rootModulus := root.GetRsaModulus()
+	rootExponent := root.GetRsaExponent()
+	rootKeyID := root.GetKeyId()
+
+	return verifyRsaCertificate(cert, rootModulus, rootExponent, rootKeyID)
+}
+
+// verifyRsaCertificate is the internal implementation that performs signature recovery
+// and verification on an RSA certificate using the provided RSA public key components.
 //
 // The function implements ISO/IEC 9796-2 digital signature scheme with partial message recovery.
 //
@@ -49,12 +100,9 @@ import (
 // If verification fails, signature_valid is set to false and other fields remain unchanged.
 //
 // See Appendix 11, Section 3.3 for the complete specification.
-func VerifyRsaCertificate(cert *ddv1.RsaCertificate, caCert *ddv1.RsaCertificate) error {
+func verifyRsaCertificate(cert *securityv1.RsaCertificate, caModulus, caExponent []byte, caCHR string) error {
 	if cert == nil {
 		return fmt.Errorf("certificate cannot be nil")
-	}
-	if caCert == nil {
-		return fmt.Errorf("CA certificate cannot be nil")
 	}
 
 	rawData := cert.GetRawData()
@@ -62,11 +110,9 @@ func VerifyRsaCertificate(cert *ddv1.RsaCertificate, caCert *ddv1.RsaCertificate
 		return fmt.Errorf("invalid certificate length: got %d, want 194", len(rawData))
 	}
 
-	// CA must have its public key populated (either from raw data or previous verification)
-	caModulus := caCert.GetRsaModulus()
-	caExponent := caCert.GetRsaExponent()
+	// CA public key must be provided
 	if len(caModulus) == 0 || len(caExponent) == 0 {
-		return fmt.Errorf("CA certificate has no public key (modulus or exponent missing)")
+		return fmt.Errorf("CA public key missing (modulus or exponent empty)")
 	}
 
 	// Extract components from certificate
@@ -82,13 +128,14 @@ func VerifyRsaCertificate(cert *ddv1.RsaCertificate, caCert *ddv1.RsaCertificate
 	signature := rawData[idxSignature : idxSignature+lenSignature]
 	cnPrime := rawData[idxCnPrime : idxCnPrime+lenCnPrime]
 	carPrime := binary.BigEndian.Uint64(rawData[idxCARPrime : idxCARPrime+lenCARPrime])
+	carPrimeStr := fmt.Sprintf("%d", carPrime)
 
-	// Verify that CAR' matches the CA certificate's CHR
+	// Verify that CAR' matches the CA's CHR (or root key ID)
 	// (The CAR in the certificate should reference the CA that signed it)
-	if carPrime != caCert.GetCertificateHolderReference() {
+	if carPrimeStr != caCHR {
 		cert.SetSignatureValid(false)
-		return fmt.Errorf("CAR mismatch: certificate references CAR %d, but CA has CHR %d",
-			carPrime, caCert.GetCertificateHolderReference())
+		return fmt.Errorf("CAR mismatch: certificate references CAR %s, but CA has CHR %s",
+			carPrimeStr, caCHR)
 	}
 
 	// Perform RSA signature recovery: signature^e mod n
@@ -170,14 +217,16 @@ func VerifyRsaCertificate(cert *ddv1.RsaCertificate, caCert *ddv1.RsaCertificate
 	// Note: CAR inside C' should match CAR' at the end of the certificate,
 	// but we don't enforce this check as it doesn't affect signature validity
 	car := binary.BigEndian.Uint64(cPrime[idxCAR : idxCAR+lenCAR])
+	carStr := fmt.Sprintf("%d", car)
 
 	// Extract CHR
 	chr := binary.BigEndian.Uint64(cPrime[idxCHR : idxCHR+lenCHR])
+	chrStr := fmt.Sprintf("%d", chr)
 
 	// Extract EOV (End Of Validity)
 	// If parsing fails (e.g., 0xFFFFFFFF indicating no expiry), we continue anyway
 	eovBytes := cPrime[idxEOV : idxEOV+lenEOV]
-	eov, _ := UnmarshalOptions{}.UnmarshalTimeReal(eovBytes)
+	eov, _ := unmarshalTimeReal(eovBytes)
 
 	// Extract RSA public key
 	certModulus := cPrime[idxModulus : idxModulus+lenModulus]
@@ -185,15 +234,13 @@ func VerifyRsaCertificate(cert *ddv1.RsaCertificate, caCert *ddv1.RsaCertificate
 
 	// Signature verification successful! Populate the certificate
 	cert.SetSignatureValid(true)
-	cert.SetCertificateHolderReference(chr)
+	cert.SetCertificateHolderReference(chrStr)
+	cert.SetCertificateAuthorityReference(carStr)
 	if eov != nil {
 		cert.SetEndOfValidity(eov)
 	}
 	cert.SetRsaModulus(certModulus)
 	cert.SetRsaExponent(certExponent)
-
-	// CAR was already set during parsing, but update it to the verified value
-	cert.SetCertificateAuthorityReference(car)
 
 	return nil
 }

@@ -1,95 +1,93 @@
 package dd
 
 import (
-	"encoding/binary"
 	"fmt"
 
+	"github.com/way-platform/tachograph-go/internal/security"
 	ddv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
+	securityv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/security/v1"
 )
 
-// UnmarshalRsaCertificate parses an RSA certificate from Generation 1 tachograph cards.
+// UnmarshalRsaCertificate parses an RSA certificate from binary data.
 //
-// The certificate format is specified in Appendix 11, Section 3.3 (PART A).
-// It uses ISO/IEC 9796-2 digital signature scheme with partial message recovery.
+// This function delegates to internal/security and converts the result to ddv1 format
+// for backwards compatibility with existing card file proto definitions.
 //
-// Certificate Structure (194 bytes fixed):
-//
-//	Bytes 0-127:   Sr (Digital signature with partial message recovery)
-//	Bytes 128-185: Cn' (non-recoverable part of certificate content)
-//	Bytes 186-193: CAR' (Certificate Authority Reference)
-//
-// The recovered message Sr contains:
-//
-//	Byte 0:        Header (0x6A)
-//	Bytes 1-106:   Cr' (recoverable part of certificate content)
-//	Bytes 107-126: H' (SHA-1 hash of C' = Cr' || Cn')
-//	Byte 127:      Trailer (0xBC)
-//
-// The complete certificate content C' = Cr' || Cn' (164 bytes) contains:
-//
-//	Byte 0:        CPI (Certificate Profile Identifier, 0x01)
-//	Bytes 1-8:     CAR (Certification Authority Reference)
-//	Bytes 9-15:    CHA (Certificate Holder Authorisation)
-//	Bytes 16-19:   EOV (End Of Validity, TimeReal, or 0xFFFFFFFF)
-//	Bytes 20-27:   CHR (Certificate Holder Reference)
-//	Bytes 28-155:  n (RSA modulus, 128 bytes)
-//	Bytes 156-163: e (RSA exponent, 8 bytes)
-//
-// Note: Full extraction of CHR, EOV, modulus, and exponent requires signature
-// recovery using the CA's RSA public key, which is not performed here.
-// Only the CAR can be extracted without signature verification.
-//
-// See Appendix 11, Section 3.3 for the complete certificate format specification.
+// See Appendix 11, Section 3.3 for the certificate format specification.
 func (opts UnmarshalOptions) UnmarshalRsaCertificate(data []byte) (*ddv1.RsaCertificate, error) {
-	const (
-		lenRsaCertificate = 194
-		idxCAR            = 186
-	)
-
-	if len(data) != lenRsaCertificate {
-		return nil, fmt.Errorf("invalid data length for RsaCertificate: got %d, want %d", len(data), lenRsaCertificate)
+	secCert, err := security.UnmarshalRsaCertificate(data)
+	if err != nil {
+		return nil, err
 	}
-
-	cert := &ddv1.RsaCertificate{}
-	cert.SetRawData(data)
-
-	// Extract CAR' (Certificate Authority Reference) from bytes 186-193
-	// This can be extracted without signature verification
-	car := binary.BigEndian.Uint64(data[idxCAR : idxCAR+8])
-	cert.SetCertificateAuthorityReference(car)
-
-	// Note: CHR, EOV, RSA modulus, and RSA exponent can only be extracted
-	// after signature recovery, which requires the CA's public key.
-	// Signature verification is intentionally not performed during parsing.
-
-	return cert, nil
+	return ConvertRsaCertificateFromSecurity(secCert)
 }
 
 // AppendRsaCertificate marshals an RSA certificate to binary format.
 //
-// This function uses the raw data painting strategy: if raw_data is available,
-// it is used as-is. Otherwise, the certificate would need to be reconstructed
-// from semantic fields (CHR, CAR, EOV, modulus, exponent) and signed, which
-// requires private key access.
+// This function delegates to internal/security for the actual marshalling.
 //
 // See Appendix 11, Section 3.3 for the certificate format specification.
 func AppendRsaCertificate(dst []byte, cert *ddv1.RsaCertificate) ([]byte, error) {
-	const lenRsaCertificate = 194
+	secCert, err := ConvertRsaCertificateToSecurity(cert)
+	if err != nil {
+		return nil, err
+	}
+	return security.AppendRsaCertificate(dst, secCert)
+}
 
+// ConvertRsaCertificateToSecurity converts a ddv1.RsaCertificate to securityv1.RsaCertificate.
+func ConvertRsaCertificateToSecurity(cert *ddv1.RsaCertificate) (*securityv1.RsaCertificate, error) {
 	if cert == nil {
-		return nil, fmt.Errorf("RsaCertificate cannot be nil")
+		return nil, fmt.Errorf("certificate cannot be nil")
 	}
 
-	// Use raw_data if available (raw data painting strategy)
-	if rawData := cert.GetRawData(); len(rawData) > 0 {
-		if len(rawData) != lenRsaCertificate {
-			return nil, fmt.Errorf("invalid raw_data length for RsaCertificate: got %d, want %d", len(rawData), lenRsaCertificate)
+	sec := &securityv1.RsaCertificate{}
+
+	// Convert uint64 references to string
+	car := cert.GetCertificateAuthorityReference()
+	carStr := fmt.Sprintf("%d", car)
+	sec.SetCertificateAuthorityReference(carStr)
+
+	chr := cert.GetCertificateHolderReference()
+	chrStr := fmt.Sprintf("%d", chr)
+	sec.SetCertificateHolderReference(chrStr)
+
+	sec.SetEndOfValidity(cert.GetEndOfValidity())
+	sec.SetRsaModulus(cert.GetRsaModulus())
+	sec.SetRsaExponent(cert.GetRsaExponent())
+	sec.SetRawData(cert.GetRawData())
+	sec.SetSignatureValid(cert.GetSignatureValid())
+
+	return sec, nil
+}
+
+// ConvertRsaCertificateFromSecurity converts a securityv1.RsaCertificate to ddv1.RsaCertificate.
+func ConvertRsaCertificateFromSecurity(cert *securityv1.RsaCertificate) (*ddv1.RsaCertificate, error) {
+	if cert == nil {
+		return nil, fmt.Errorf("certificate cannot be nil")
+	}
+
+	dd := &ddv1.RsaCertificate{}
+
+	// Convert string references to uint64
+	var car, chr uint64
+	if _, err := fmt.Sscanf(cert.GetCertificateAuthorityReference(), "%d", &car); err != nil {
+		return nil, fmt.Errorf("invalid CAR format: %w", err)
+	}
+	dd.SetCertificateAuthorityReference(car)
+
+	if chrStr := cert.GetCertificateHolderReference(); chrStr != "" {
+		if _, err := fmt.Sscanf(chrStr, "%d", &chr); err != nil {
+			return nil, fmt.Errorf("invalid CHR format: %w", err)
 		}
-		return append(dst, rawData...), nil
+		dd.SetCertificateHolderReference(chr)
 	}
 
-	// If no raw_data, we would need to construct the certificate from semantic fields
-	// and sign it, which requires CA private key access. This is not typically needed
-	// for parsing/marshalling existing card data.
-	return nil, fmt.Errorf("cannot marshal RsaCertificate without raw_data (certificate signing requires CA private key)")
+	dd.SetEndOfValidity(cert.GetEndOfValidity())
+	dd.SetRsaModulus(cert.GetRsaModulus())
+	dd.SetRsaExponent(cert.GetRsaExponent())
+	dd.SetRawData(cert.GetRawData())
+	dd.SetSignatureValid(cert.GetSignatureValid())
+
+	return dd, nil
 }
