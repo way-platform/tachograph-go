@@ -1,0 +1,45 @@
+edition = "2023";
+
+package wayplatform.connect.tachograph.security.v1;
+
+// RootCertificate represents the European Root CA (ERCA) public key.
+//
+// The ERCA public key is distributed in a special 144-byte format that contains
+// the public key components directly, without a signature. This root certificate
+// is trusted a priori and serves as the trust anchor for all Member State
+// certificates.
+//
+// See Appendix 11, Section 2.1 "European Root Public Key".
+//
+// Binary Structure (144 bytes):
+//
+//     Bytes 0-7:     Key Identifier (serves as both CAR and CHR)
+//     Bytes 8-135:   RSA Modulus (128 bytes)
+//     Bytes 136-143: RSA Public Exponent (8 bytes)
+//
+// The Key Identifier uniquely identifies this root public key. For the European
+// Root CA, the CAR and CHR are identical as the certificate is self-signed.
+//
+// The RSA public key components (modulus and exponent) are provided directly
+// without encryption or signature, as this is the root of trust for the entire
+// tachograph PKI hierarchy.
+message RootCertificate {
+  // Key identifier that serves as both the Certificate Authority Reference (CAR)
+  // and Certificate Holder Reference (CHR) for the self-signed root.
+  //
+  // Stored as a decimal string representation of the 64-bit key identifier value.
+  // For example, "18250066869723594497" for the ERCA key.
+  string key_id = 1;
+
+  // RSA modulus (n) of the root public key.
+  //
+  // This is the modulus component of the RSA public key pair, encoded as a
+  // 128-byte (1024-bit) big-endian integer.
+  bytes rsa_modulus = 2;
+
+  // RSA public exponent (e) of the root public key.
+  //
+  // This is the exponent component of the RSA public key pair, encoded as an
+  // 8-byte (64-bit) big-endian integer. The most common value is 65537 (0x010001).
+  bytes rsa_exponent = 3;
+}

@@ -1,6 +1,7 @@
 package card
 
 import (
+	"context"
 	"encoding/binary"
 	"fmt"
 	"reflect"
@@ -9,8 +10,10 @@ import (
 	"google.golang.org/protobuf/reflect/protoreflect"
 
 	"github.com/way-platform/tachograph-go/internal/dd"
+	"github.com/way-platform/tachograph-go/internal/security"
 	cardv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1"
 	ddv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
+	securityv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/security/v1"
 )
 
 // UnmarshalDriverCardFile parses driver card data into a protobuf DriverCardFile message.
@@ -1009,4 +1012,191 @@ func appendTlvG2[T proto.Message](
 	dst = append(dst, signature...)
 
 	return dst, nil
+}
+
+// CertificateResolver provides access to tachograph certificates
+// needed for signature verification.
+type CertificateResolver interface {
+	// GetRootCertificate retrieves the European Root CA certificate.
+	GetRootCertificate(ctx context.Context) (*securityv1.RootCertificate, error)
+
+	// GetRsaCertificate retrieves an RSA certificate (Generation 1)
+	// by its Certificate Holder Reference (CHR).
+	GetRsaCertificate(ctx context.Context, chr string) (*securityv1.RsaCertificate, error)
+
+	// GetEccCertificate retrieves an ECC certificate (Generation 2)
+	// by its Certificate Holder Reference (CHR).
+	GetEccCertificate(ctx context.Context, chr string) (*securityv1.EccCertificate, error)
+}
+
+// VerifyOptions configures the signature verification process for driver card files.
+type VerifyOptions struct {
+	// CertificateResolver is used to resolve CA certificates by their Certificate Authority Reference (CAR).
+	// If provided, it will be used to fetch CA certificates for verification.
+	// If nil, verification will use the embedded CA certificates from the card file itself.
+	CertificateResolver CertificateResolver
+}
+
+// VerifyDriverCardFile verifies the certificates in a driver card file.
+//
+// This function verifies:
+//   - Generation 1: Card certificate using the CA certificate
+//   - Generation 2: Card sign certificate using the CA certificate
+//
+// The verification process uses a certificate resolver to fetch CA certificates
+// by their Certificate Authority Reference (CAR). If no resolver is configured,
+// it falls back to using the embedded CA certificates from the card file itself,
+// which contain the public keys needed to verify the card's certificates.
+//
+// This function mutates the certificate structures by setting their signature_valid
+// fields to true or false based on the verification result.
+//
+// Returns an error if verification fails for any certificate.
+func (o VerifyOptions) VerifyDriverCardFile(ctx context.Context, file *cardv1.DriverCardFile) error {
+	if file == nil {
+		return fmt.Errorf("driver card file cannot be nil")
+	}
+
+	// Verify Generation 1 certificates (RSA)
+	if tachograph := file.GetTachograph(); tachograph != nil {
+		if err := o.verifyGen1Certificates(ctx, tachograph); err != nil {
+			return fmt.Errorf("Gen1 certificate verification failed: %w", err)
+		}
+	}
+
+	// Verify Generation 2 certificates (ECC)
+	if tachographG2 := file.GetTachographG2(); tachographG2 != nil {
+		if err := o.verifyGen2Certificates(ctx, tachographG2); err != nil {
+			return fmt.Errorf("Gen2 certificate verification failed: %w", err)
+		}
+	}
+
+	return nil
+}
+
+// verifyGen1Certificates verifies Generation 1 RSA certificates.
+// If a certificate resolver is configured, it fetches CA certificates from the resolver.
+// Otherwise, it uses the embedded CA certificate from the card file.
+func (o VerifyOptions) verifyGen1Certificates(ctx context.Context, tachograph *cardv1.DriverCardFile_Tachograph) error {
+	cardCert := tachograph.GetCardCertificate().GetRsaCertificate()
+
+	if cardCert == nil {
+		return fmt.Errorf("card certificate is missing")
+	}
+
+	var caCert *ddv1.RsaCertificate
+	var err error
+
+	// Convert certificates to security types for verification
+	cardCertSec, err := dd.ConvertRsaCertificateToSecurity(cardCert)
+	if err != nil {
+		return fmt.Errorf("failed to convert card certificate: %w", err)
+	}
+
+	var caCertSec *securityv1.RsaCertificate
+
+	if o.CertificateResolver != nil {
+		// Use certificate resolver to fetch CA certificate
+		car := fmt.Sprintf("%d", cardCert.GetCertificateAuthorityReference())
+		caCertSec, err = o.CertificateResolver.GetRsaCertificate(ctx, car)
+		if err != nil {
+			return fmt.Errorf("failed to fetch CA certificate from resolver: %w", err)
+		}
+
+		// For RSA certificates, the public key is extracted during signature recovery.
+		// If the CA certificate doesn't have its public key yet, we need to verify it
+		// against the root CA first to populate it.
+		if len(caCertSec.GetRsaModulus()) == 0 || len(caCertSec.GetRsaExponent()) == 0 {
+			// Fetch the root CA certificate
+			rootCert, err := o.CertificateResolver.GetRootCertificate(ctx)
+			if err != nil {
+				return fmt.Errorf("failed to get root CA certificate: %w", err)
+			}
+
+			// Verify the CA certificate against the root CA to populate its public key
+			if err := security.VerifyRsaCertificateWithRoot(caCertSec, rootCert); err != nil {
+				return fmt.Errorf("CA certificate verification failed: %w", err)
+			}
+		}
+	} else {
+		// Fall back to embedded CA certificate from card file
+		caCert = tachograph.GetCaCertificate().GetRsaCertificate()
+		if caCert == nil {
+			return fmt.Errorf("CA certificate is missing from card file")
+		}
+		caCertSec, err = dd.ConvertRsaCertificateToSecurity(caCert)
+		if err != nil {
+			return fmt.Errorf("failed to convert CA certificate: %w", err)
+		}
+	}
+
+	// Verify the card certificate using the CA certificate
+	if err := security.VerifyRsaCertificateWithCA(cardCertSec, caCertSec); err != nil {
+		return fmt.Errorf("card certificate verification failed: %w", err)
+	}
+
+	// Copy the verification results back to the original ddv1 certificate
+	cardCert.SetSignatureValid(cardCertSec.GetSignatureValid())
+	cardCert.SetCertificateHolderReference(parseUint64(cardCertSec.GetCertificateHolderReference()))
+	cardCert.SetEndOfValidity(cardCertSec.GetEndOfValidity())
+	cardCert.SetRsaModulus(cardCertSec.GetRsaModulus())
+	cardCert.SetRsaExponent(cardCertSec.GetRsaExponent())
+
+	return nil
+}
+
+// parseUint64 converts a decimal string to uint64, returning 0 on error.
+func parseUint64(s string) uint64 {
+	var v uint64
+	_, _ = fmt.Sscanf(s, "%d", &v)
+	return v
+}
+
+// verifyGen2Certificates verifies Generation 2 ECC certificates.
+// If a certificate resolver is configured, it fetches CA certificates from the resolver.
+// Otherwise, it uses the embedded CA certificate from the card file.
+func (o VerifyOptions) verifyGen2Certificates(ctx context.Context, tachographG2 *cardv1.DriverCardFile_TachographG2) error {
+	cardSignCert := tachographG2.GetCardSignCertificate().GetEccCertificate()
+
+	if cardSignCert == nil {
+		return fmt.Errorf("card sign certificate is missing")
+	}
+
+	// Convert card sign certificate to security type for verification
+	cardSignCertSec, err := dd.ConvertEccCertificateToSecurity(cardSignCert)
+	if err != nil {
+		return fmt.Errorf("failed to convert card sign certificate: %w", err)
+	}
+
+	var caCertSec *securityv1.EccCertificate
+
+	if o.CertificateResolver != nil {
+		// Use certificate resolver to fetch CA certificate
+		car := fmt.Sprintf("%d", cardSignCert.GetCertificateAuthorityReference())
+		caCertSec, err = o.CertificateResolver.GetEccCertificate(ctx, car)
+		if err != nil {
+			return fmt.Errorf("failed to fetch CA certificate from resolver: %w", err)
+		}
+	} else {
+		// Fall back to embedded CA certificate from card file
+		caCert := tachographG2.GetCaCertificate().GetEccCertificate()
+		if caCert == nil {
+			return fmt.Errorf("CA certificate is missing from card file")
+		}
+		caCertSec, err = dd.ConvertEccCertificateToSecurity(caCert)
+		if err != nil {
+			return fmt.Errorf("failed to convert CA certificate: %w", err)
+		}
+	}
+
+	// Verify the card sign certificate using the CA certificate
+	if err := security.VerifyEccCertificateWithCA(cardSignCertSec, caCertSec); err != nil {
+		return fmt.Errorf("card sign certificate verification failed: %w", err)
+	}
+
+	// Copy the verification results back to the original ddv1 certificate
+	cardSignCert.SetSignatureValid(cardSignCertSec.GetSignatureValid())
+	cardSignCert.SetCertificateHolderReference(parseUint64(cardSignCertSec.GetCertificateHolderReference()))
+
+	return nil
 }

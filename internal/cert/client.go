@@ -7,16 +7,16 @@ import (
 	"net/http"
 
 	"github.com/way-platform/tachograph-go/internal/cert/certcache"
-	"github.com/way-platform/tachograph-go/internal/dd"
-	ddv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
+	"github.com/way-platform/tachograph-go/internal/security"
+	securityv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/security/v1"
 )
 
-// Client is a client retreiving certificates from the Digital Tachograph Joint Research Centre.
+// Client retrieves certificates from the Digital Tachograph Joint Research Centre.
 type Client struct {
 	httpClient *http.Client
 }
 
-var _ Store = &Client{}
+var _ Resolver = &Client{}
 
 // NewClient creates a new [Client].
 func NewClient(httpClient *http.Client) *Client {
@@ -25,8 +25,13 @@ func NewClient(httpClient *http.Client) *Client {
 	}
 }
 
-// GetCertificateG1 retrieves a Gen1 certificate by its CHR.
-func (c *Client) GetCertificateG1(ctx context.Context, chr string) (*ddv1.RsaCertificate, error) {
+// GetRootCertificate retrieves the European Root CA certificate.
+func (c *Client) GetRootCertificate(ctx context.Context) (*securityv1.RootCertificate, error) {
+	return nil, fmt.Errorf("not implemented")
+}
+
+// GetRsaCertificate retrieves an RSA certificate by its CHR.
+func (c *Client) GetRsaCertificate(ctx context.Context, chr string) (*securityv1.RsaCertificate, error) {
 	index, err := certcache.LoadIndex()
 	if err != nil {
 		return nil, err
@@ -57,15 +62,11 @@ func (c *Client) GetCertificateG1(ctx context.Context, chr string) (*ddv1.RsaCer
 	if err != nil {
 		return nil, err
 	}
-	result, err := (dd.UnmarshalOptions{}).UnmarshalRsaCertificate(body)
-	if err != nil {
-		return nil, err
-	}
-	return result, nil
+	return security.UnmarshalRsaCertificate(body)
 }
 
-// GetCertificateG2 retrieves a Gen2 certificate by its CHR.
-func (c *Client) GetCertificateG2(ctx context.Context, chr string) (*ddv1.EccCertificate, error) {
+// GetEccCertificate retrieves an ECC certificate by its CHR.
+func (c *Client) GetEccCertificate(ctx context.Context, chr string) (*securityv1.EccCertificate, error) {
 	index, err := certcache.LoadIndex()
 	if err != nil {
 		return nil, err
@@ -96,9 +97,5 @@ func (c *Client) GetCertificateG2(ctx context.Context, chr string) (*ddv1.EccCer
 	if err != nil {
 		return nil, err
 	}
-	result, err := (dd.UnmarshalOptions{}).UnmarshalEccCertificate(body)
-	if err != nil {
-		return nil, err
-	}
-	return result, nil
+	return security.UnmarshalEccCertificate(body)
 }

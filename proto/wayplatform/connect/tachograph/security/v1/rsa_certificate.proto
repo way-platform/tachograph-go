@@ -1,0 +1,116 @@
+edition = "2023";
+
+package wayplatform.connect.tachograph.security.v1;
+
+import "google/protobuf/timestamp.proto";
+
+// RsaCertificate represents an RSA-based certificate used in first-generation
+// tachograph systems.
+//
+// This certificate type implements the digital signature scheme specified in
+// Appendix 11, Section 3.3 (PART A - FIRST-GENERATION TACHOGRAPH SYSTEM).
+//
+// The certificate uses ISO/IEC 9796-2 digital signature with partial message
+// recovery. This scheme embeds part of the certificate content within the
+// signature itself, allowing verification and content extraction in a single
+// operation.
+//
+// See Appendix 11, Section 3.3 for the complete specification.
+//
+// Binary Structure (194 bytes):
+//
+//     Bytes 0-127:   Sr  - Digital signature with partial message recovery
+//     Bytes 128-185: Cn' - Non-recoverable certificate content (58 bytes)
+//     Bytes 186-193: CAR'- Certificate Authority Reference (8 bytes)
+//
+// The signature Sr embeds the recoverable part of the certificate:
+//
+//     Byte 0:        Header (0x6A)
+//     Bytes 1-106:   Cr' - Recoverable certificate content
+//     Bytes 107-126: H'  - SHA-1 hash of complete content (Cr' || Cn')
+//     Byte 127:      Trailer (0xBC)
+//
+// Complete Certificate Content C' = Cr' || Cn' (164 bytes):
+//
+//     Byte 0:        CPI - Certificate Profile Identifier (0x01)
+//     Bytes 1-8:     CAR - Certificate Authority Reference
+//     Bytes 9-15:    CHA - Certificate Holder Authorisation
+//     Bytes 16-19:   EOV - End of Validity (TimeReal, or 0xFFFFFFFF)
+//     Bytes 20-27:   CHR - Certificate Holder Reference
+//     Bytes 28-155:  n   - RSA modulus (128 bytes)
+//     Bytes 156-163: e   - RSA public exponent (8 bytes)
+//
+// Signature Recovery Process:
+//
+// 1. Extract CAR' from bytes 186-193 to identify the CA public key
+// 2. Apply RSA operation: Sr' = Sr^e mod n (using CA's public key)
+// 3. Verify header (0x6A) and trailer (0xBC) in Sr'
+// 4. Extract Cr' from Sr'
+// 5. Reconstruct C' = Cr' || Cn'
+// 6. Extract H' from Sr' and verify SHA-1(C') = H'
+// 7. If verification succeeds, extract semantic fields from C'
+//
+// See Appendix 11, Section 3.3.2 for the detailed recovery algorithm.
+message RsaCertificate {
+  // Certificate Holder Reference (CHR) - uniquely identifies the certificate
+  // holder and serves as a Subject Key Identifier.
+  //
+  // Extracted from bytes 20-27 of the recovered certificate content during
+  // signature recovery. Stored as a decimal string representation of the
+  // 64-bit value (e.g., "234554709598273281").
+  string certificate_holder_reference = 1;
+
+  // Certificate Authority Reference (CAR) - identifies the certification
+  // authority that issued and signed this certificate.
+  //
+  // This value appears twice in the certificate structure:
+  // - At bytes 1-8 of the recovered content (signed)
+  // - At bytes 186-193 of the certificate (cleartext, as CAR')
+  //
+  // The cleartext CAR' allows identification of the CA public key needed for
+  // signature recovery without requiring prior knowledge. Stored as a decimal
+  // string representation of the 64-bit value.
+  string certificate_authority_reference = 2;
+
+  // End of Validity timestamp for this certificate.
+  //
+  // Extracted from bytes 16-19 of the recovered certificate content. This
+  // timestamp indicates when the certificate expires. A value of 0xFFFFFFFF
+  // (2106-02-07 06:28:15 UTC) indicates no expiry date.
+  google.protobuf.Timestamp end_of_validity = 3;
+
+  // RSA public key modulus (n) - 128 bytes.
+  //
+  // Extracted from bytes 28-155 of the recovered certificate content during
+  // signature recovery. This is the modulus component of the RSA public key
+  // pair being certified, encoded as a 128-byte (1024-bit) big-endian integer.
+  bytes rsa_modulus = 4;
+
+  // RSA public key exponent (e) - 8 bytes.
+  //
+  // Extracted from bytes 156-163 of the recovered certificate content during
+  // signature recovery. This is the exponent component of the RSA public key
+  // pair being certified, encoded as an 8-byte (64-bit) big-endian integer.
+  bytes rsa_exponent = 5;
+
+  // Raw certificate data as stored in the file - always 194 bytes.
+  //
+  // This includes the complete binary representation: the signature Sr (128 bytes),
+  // the non-recoverable content Cn' (58 bytes), and the cleartext CAR' (8 bytes).
+  //
+  // Preserving the raw data ensures perfect round-trip fidelity and allows
+  // re-verification of the signature.
+  bytes raw_data = 6;
+
+  // Indicates whether the certificate's signature has been successfully verified.
+  //
+  // When true, the signature recovery process (as specified in Appendix 11,
+  // Section 3.3.2) has completed successfully:
+  // - The header and trailer bytes were correct (0x6A and 0xBC)
+  // - The recovered hash H' matched SHA-1(Cr' || Cn')
+  // - The semantic fields (CHR, EOV, modulus, exponent) were extracted
+  //
+  // When false or unset, either verification has not been performed or the
+  // signature is invalid.
+  bool signature_valid = 7;
+}

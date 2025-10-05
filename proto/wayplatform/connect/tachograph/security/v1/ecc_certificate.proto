@@ -1,0 +1,198 @@
+edition = "2023";
+
+package wayplatform.connect.tachograph.security.v1;
+
+import "google/protobuf/timestamp.proto";
+
+// EccCertificate represents an ECC-based certificate used in second-generation
+// tachograph systems.
+//
+// This certificate type implements the digital signature scheme specified in
+// Appendix 11, Section 9.3.2 (PART B - SECOND-GENERATION TACHOGRAPH SYSTEM).
+//
+// The certificate uses ASN.1 DER encoding with a TLV (Tag-Length-Value) structure.
+// The total length ranges from 204 to 341 bytes depending on the elliptic curve
+// parameters used.
+//
+// See Appendix 11, Section 9.3.2, Table 4 for the complete specification.
+//
+// ASN.1 Structure:
+//
+//     ECC Certificate (Tag '7F 21'):
+//       ECC Certificate Body (Tag '7F 4E'):
+//         Certificate Profile Identifier (Tag '5F 29'): 1 byte
+//         Certificate Authority Reference (Tag '42'): 8 bytes
+//         Certificate Holder Authorisation (Tag '5F 4C'): 7 bytes
+//         Public Key (Tag '7F 49'):
+//           Domain Parameters (Tag '06'): OID (variable length)
+//           Public Point (Tag '86'): variable length (uncompressed EC point)
+//         Certificate Holder Reference (Tag '5F 20'): 8 bytes
+//         Certificate Effective Date (Tag '5F 25'): 4 bytes (TimeReal)
+//         Certificate Expiration Date (Tag '5F 24'): 4 bytes (TimeReal)
+//       ECC Certificate Signature (Tag '5F 37'): variable length (R || S)
+//
+// The certificate body is signed using ECDSA. The signature consists of two
+// components (R and S) concatenated together, with lengths determined by the
+// curve used.
+//
+// Supported Elliptic Curves:
+//
+// The domain parameters are identified by ASN.1 Object Identifiers (OIDs).
+// Common curves (see Appendix 11, Section 8.2.2, Table 1):
+//
+//     Brainpool curves (recommended):
+//       - brainpoolP256r1: 1.3.36.3.3.2.8.1.1.7  (256-bit)
+//       - brainpoolP384r1: 1.3.36.3.3.2.8.1.1.11 (384-bit)
+//       - brainpoolP512r1: 1.3.36.3.3.2.8.1.1.13 (512-bit)
+//
+//     NIST curves:
+//       - nistP256: 1.2.840.10045.3.1.7 (256-bit, aka secp256r1)
+//       - nistP384: 1.3.132.0.34        (384-bit, aka secp384r1)
+//       - nistP521: 1.3.132.0.35        (521-bit, aka secp521r1)
+//
+// Signature Verification Process:
+//
+// 1. Parse the certificate body from the raw ASN.1 structure
+// 2. Extract the signature (R, S) components
+// 3. Retrieve the CA's public key using the CAR field
+// 4. Verify the ECDSA signature over the complete certificate body
+// 5. If verification succeeds, extract and populate semantic fields
+//
+// See Appendix 11, Section 9.3.2 for the detailed verification algorithm.
+message EccCertificate {
+  // Certificate Profile Identifier (CPI) - identifies the certificate profile
+  // version.
+  //
+  // As specified in Table 4, profile version 1 uses value 0x00. This field
+  // allows for future extensions to the certificate format.
+  int32 certificate_profile_identifier = 1;
+
+  // Certificate Authority Reference (CAR) - identifies the certification
+  // authority that issued and signed this certificate.
+  //
+  // Equals the Certificate Holder Reference (CHR) in the certificate of the
+  // issuing CA. It is used to identify which CA public key should be used to
+  // verify this certificate's signature. Stored as a decimal string
+  // representation of the 64-bit value.
+  string certificate_authority_reference = 2;
+
+  // Certificate Holder Authorisation (CHA) - identifies the type of equipment
+  // or entity this certificate is issued to.
+  //
+  // For Generation 2 tachograph certificates, this consists of:
+  // - Bytes 0-5: Tachograph Application ID: FF 53 4D 52 44 54 (FF SMRDT)
+  // - Byte 6: Equipment type code
+  //
+  // Equipment type codes (see Data Dictionary, Section 2.67):
+  // - 0x01: Driver Card
+  // - 0x02: Workshop Card
+  // - 0x06: Vehicle Unit
+  // - 0x11: Driver Card (Sign)
+  // - 0x12: Workshop Card (Sign)
+  // - 0x13: Vehicle Unit (Sign)
+  //
+  // The CHA field distinguishes between certificates used for mutual
+  // authentication (0x01, 0x02, 0x06) and those used for creating digital
+  // signatures (0x11, 0x12, 0x13).
+  bytes certificate_holder_authorisation = 3;
+
+  // PublicKey contains the ECC public key being certified.
+  //
+  // The public key consists of domain parameters (identifying the elliptic
+  // curve) and a public point on that curve.
+  message PublicKey {
+    // Domain parameters as an ASN.1 Object Identifier.
+    //
+    // This OID references a standardized set of elliptic curve parameters,
+    // including the curve equation, base point, and order. See the message-level
+    // comment for a list of supported curves.
+    string domain_parameters_oid = 1;
+
+    // Public point X coordinate (uncompressed encoding).
+    //
+    // The X coordinate of the public key point on the elliptic curve. Length
+    // depends on the curve: 32 bytes (256-bit), 48 bytes (384-bit), or
+    // 64-66 bytes (512/521-bit).
+    bytes public_point_x = 2;
+
+    // Public point Y coordinate (uncompressed encoding).
+    //
+    // The Y coordinate of the public key point on the elliptic curve. Length
+    // matches public_point_x.
+    bytes public_point_y = 3;
+  }
+
+  // Public key for this certificate.
+  //
+  // This is the ECC public key being certified by this certificate. The curve
+  // parameters and public point are extracted from the certificate body during
+  // parsing.
+  PublicKey public_key = 4;
+
+  // Certificate Holder Reference (CHR) - uniquely identifies the certificate
+  // holder and serves as a Subject Key Identifier.
+  //
+  // Uniquely identifies the holder of this certificate and serves as a key
+  // identifier to reference the certified public key in other contexts. Stored
+  // as a decimal string representation of the 64-bit value.
+  string certificate_holder_reference = 5;
+
+  // Certificate Effective Date - the date and time from which the certificate
+  // is valid.
+  //
+  // Encoded as TimeReal (seconds since 1970-01-01 00:00:00 UTC). The certificate
+  // must not be used before this timestamp.
+  google.protobuf.Timestamp certificate_effective_date = 6;
+
+  // Certificate Expiration Date - the date and time after which the certificate
+  // is no longer valid.
+  //
+  // Encoded as TimeReal (seconds since 1970-01-01 00:00:00 UTC). The certificate
+  // must not be used after this timestamp.
+  google.protobuf.Timestamp certificate_expiration_date = 7;
+
+  // EccSignature contains the ECDSA signature over the certificate body.
+  //
+  // The signature is computed according to the ECDSA algorithm specified in
+  // ANSI X9.62. It consists of two integer components (R, S) that together
+  // prove the certificate was signed by the holder of the CA's private key.
+  message EccSignature {
+    // R component of the ECDSA signature.
+    //
+    // Length depends on the curve: 32 bytes (256-bit), 48 bytes (384-bit),
+    // or 64-66 bytes (512/521-bit). Encoded as a big-endian integer.
+    bytes r = 1;
+
+    // S component of the ECDSA signature.
+    //
+    // Length matches the R component. Encoded as a big-endian integer.
+    bytes s = 2;
+  }
+
+  // Digital signature over the certificate body.
+  //
+  // The signature is computed over the complete ASN.1 DER encoding of the
+  // certificate body (tag '7F 4E', including tag and length bytes). The
+  // signature algorithm used is ECDSA with SHA-256, SHA-384, or SHA-512,
+  // depending on the curve.
+  EccSignature signature = 8;
+
+  // Indicates whether the signature was successfully verified.
+  //
+  // When true, the ECDSA signature verification succeeded:
+  // - The CA's public key was available
+  // - The signature (R, S) was mathematically valid
+  // - The signature verified correctly over the certificate body
+  //
+  // When false or unset, either verification has not been performed or the
+  // signature is invalid.
+  bool signature_valid = 9;
+
+  // Raw certificate data as stored in the file.
+  //
+  // This includes the complete ASN.1 DER-encoded TLV structure, ranging from
+  // 204 to 341 bytes depending on the curve used. Preserving the raw data
+  // ensures perfect round-trip fidelity and allows re-verification of the
+  // signature.
+  bytes raw_data = 10;
+}
