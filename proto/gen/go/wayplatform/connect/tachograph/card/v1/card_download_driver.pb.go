@@ -34,13 +34,14 @@ const (
 //
 //	LastCardDownload ::= TimeReal
 type CardDownloadDriver struct {
-	state                  protoimpl.MessageState `protogen:"opaque.v1"`
-	xxx_hidden_Timestamp   *timestamppb.Timestamp `protobuf:"bytes,1,opt,name=timestamp"`
-	xxx_hidden_Signature   []byte                 `protobuf:"bytes,2,opt,name=signature"`
-	XXX_raceDetectHookData protoimpl.RaceDetectHookData
-	XXX_presence           [1]uint32
-	unknownFields          protoimpl.UnknownFields
-	sizeCache              protoimpl.SizeCache
+	state                        protoimpl.MessageState `protogen:"opaque.v1"`
+	xxx_hidden_Timestamp         *timestamppb.Timestamp `protobuf:"bytes,1,opt,name=timestamp"`
+	xxx_hidden_Signature         []byte                 `protobuf:"bytes,2,opt,name=signature"`
+	xxx_hidden_SignatureVerified bool                   `protobuf:"varint,3,opt,name=signature_verified,json=signatureVerified"`
+	XXX_raceDetectHookData       protoimpl.RaceDetectHookData
+	XXX_presence                 [1]uint32
+	unknownFields                protoimpl.UnknownFields
+	sizeCache                    protoimpl.SizeCache
 }
 
 func (x *CardDownloadDriver) Reset() {
@@ -82,6 +83,13 @@ func (x *CardDownloadDriver) GetSignature() []byte {
 	return nil
 }
 
+func (x *CardDownloadDriver) GetSignatureVerified() bool {
+	if x != nil {
+		return x.xxx_hidden_SignatureVerified
+	}
+	return false
+}
+
 func (x *CardDownloadDriver) SetTimestamp(v *timestamppb.Timestamp) {
 	x.xxx_hidden_Timestamp = v
 }
@@ -91,7 +99,12 @@ func (x *CardDownloadDriver) SetSignature(v []byte) {
 		v = []byte{}
 	}
 	x.xxx_hidden_Signature = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 2)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 3)
+}
+
+func (x *CardDownloadDriver) SetSignatureVerified(v bool) {
+	x.xxx_hidden_SignatureVerified = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 3)
 }
 
 func (x *CardDownloadDriver) HasTimestamp() bool {
@@ -108,6 +121,13 @@ func (x *CardDownloadDriver) HasSignature() bool {
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 1)
 }
 
+func (x *CardDownloadDriver) HasSignatureVerified() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 2)
+}
+
 func (x *CardDownloadDriver) ClearTimestamp() {
 	x.xxx_hidden_Timestamp = nil
 }
@@ -115,6 +135,11 @@ func (x *CardDownloadDriver) ClearTimestamp() {
 func (x *CardDownloadDriver) ClearSignature() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 1)
 	x.xxx_hidden_Signature = nil
+}
+
+func (x *CardDownloadDriver) ClearSignatureVerified() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 2)
+	x.xxx_hidden_SignatureVerified = false
 }
 
 type CardDownloadDriver_builder struct {
@@ -145,6 +170,8 @@ type CardDownloadDriver_builder struct {
 	// - 384-bit curves: ~96 bytes
 	// - 512/521-bit curves: ~128-132 bytes
 	Signature []byte
+	// Indicates if the signature has been successfully verified.
+	SignatureVerified *bool
 }
 
 func (b0 CardDownloadDriver_builder) Build() *CardDownloadDriver {
@@ -153,8 +180,12 @@ func (b0 CardDownloadDriver_builder) Build() *CardDownloadDriver {
 	_, _ = b, x
 	x.xxx_hidden_Timestamp = b.Timestamp
 	if b.Signature != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 2)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 3)
 		x.xxx_hidden_Signature = b.Signature
+	}
+	if b.SignatureVerified != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 3)
+		x.xxx_hidden_SignatureVerified = *b.SignatureVerified
 	}
 	return m0
 }
@@ -163,10 +194,11 @@ var File_wayplatform_connect_tachograph_card_v1_card_download_driver_proto proto
 
 const file_wayplatform_connect_tachograph_card_v1_card_download_driver_proto_rawDesc = "" +
 	"\n" +
-	"Awayplatform/connect/tachograph/card/v1/card_download_driver.proto\x12&wayplatform.connect.tachograph.card.v1\x1a\x1fgoogle/protobuf/timestamp.proto\"l\n" +
+	"Awayplatform/connect/tachograph/card/v1/card_download_driver.proto\x12&wayplatform.connect.tachograph.card.v1\x1a\x1fgoogle/protobuf/timestamp.proto\"\x9b\x01\n" +
 	"\x12CardDownloadDriver\x128\n" +
 	"\ttimestamp\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\ttimestamp\x12\x1c\n" +
-	"\tsignature\x18\x02 \x01(\fR\tsignatureB\xe4\x02\n" +
+	"\tsignature\x18\x02 \x01(\fR\tsignature\x12-\n" +
+	"\x12signature_verified\x18\x03 \x01(\bR\x11signatureVerifiedB\xe4\x02\n" +
 	"*com.wayplatform.connect.tachograph.card.v1B\x17CardDownloadDriverProtoP\x01Z`github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1;cardv1\xa2\x02\x04WCTC\xaa\x02&Wayplatform.Connect.Tachograph.Card.V1\xca\x02&Wayplatform\\Connect\\Tachograph\\Card\\V1\xe2\x022Wayplatform\\Connect\\Tachograph\\Card\\V1\\GPBMetadata\xea\x02*Wayplatform::Connect::Tachograph::Card::V1b\beditionsp\xe8\a"
 
 var file_wayplatform_connect_tachograph_card_v1_card_download_driver_proto_msgTypes = make([]protoimpl.MessageInfo, 1)

@@ -45,6 +45,7 @@ type VehicleUnitsUsed struct {
 	xxx_hidden_VehicleUnitPointerNewestRecord int32                       `protobuf:"varint,1,opt,name=vehicle_unit_pointer_newest_record,json=vehicleUnitPointerNewestRecord"`
 	xxx_hidden_Records                        *[]*VehicleUnitsUsed_Record `protobuf:"bytes,2,rep,name=records"`
 	xxx_hidden_Signature                      []byte                      `protobuf:"bytes,3,opt,name=signature"`
+	xxx_hidden_SignatureVerified              bool                        `protobuf:"varint,4,opt,name=signature_verified,json=signatureVerified"`
 	XXX_raceDetectHookData                    protoimpl.RaceDetectHookData
 	XXX_presence                              [1]uint32
 	unknownFields                             protoimpl.UnknownFields
@@ -99,9 +100,16 @@ func (x *VehicleUnitsUsed) GetSignature() []byte {
 	return nil
 }
 
+func (x *VehicleUnitsUsed) GetSignatureVerified() bool {
+	if x != nil {
+		return x.xxx_hidden_SignatureVerified
+	}
+	return false
+}
+
 func (x *VehicleUnitsUsed) SetVehicleUnitPointerNewestRecord(v int32) {
 	x.xxx_hidden_VehicleUnitPointerNewestRecord = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 3)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 4)
 }
 
 func (x *VehicleUnitsUsed) SetRecords(v []*VehicleUnitsUsed_Record) {
@@ -113,7 +121,12 @@ func (x *VehicleUnitsUsed) SetSignature(v []byte) {
 		v = []byte{}
 	}
 	x.xxx_hidden_Signature = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 3)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 4)
+}
+
+func (x *VehicleUnitsUsed) SetSignatureVerified(v bool) {
+	x.xxx_hidden_SignatureVerified = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 3, 4)
 }
 
 func (x *VehicleUnitsUsed) HasVehicleUnitPointerNewestRecord() bool {
@@ -130,6 +143,13 @@ func (x *VehicleUnitsUsed) HasSignature() bool {
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 2)
 }
 
+func (x *VehicleUnitsUsed) HasSignatureVerified() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 3)
+}
+
 func (x *VehicleUnitsUsed) ClearVehicleUnitPointerNewestRecord() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 0)
 	x.xxx_hidden_VehicleUnitPointerNewestRecord = 0
@@ -138,6 +158,11 @@ func (x *VehicleUnitsUsed) ClearVehicleUnitPointerNewestRecord() {
 func (x *VehicleUnitsUsed) ClearSignature() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 2)
 	x.xxx_hidden_Signature = nil
+}
+
+func (x *VehicleUnitsUsed) ClearSignatureVerified() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 3)
+	x.xxx_hidden_SignatureVerified = false
 }
 
 type VehicleUnitsUsed_builder struct {
@@ -172,6 +197,8 @@ type VehicleUnitsUsed_builder struct {
 	// - 384-bit curves: ~96 bytes
 	// - 512/521-bit curves: ~128-132 bytes
 	Signature []byte
+	// Indicates if the signature has been successfully verified.
+	SignatureVerified *bool
 }
 
 func (b0 VehicleUnitsUsed_builder) Build() *VehicleUnitsUsed {
@@ -179,13 +206,17 @@ func (b0 VehicleUnitsUsed_builder) Build() *VehicleUnitsUsed {
 	b, x := &b0, m0
 	_, _ = b, x
 	if b.VehicleUnitPointerNewestRecord != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 3)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 4)
 		x.xxx_hidden_VehicleUnitPointerNewestRecord = *b.VehicleUnitPointerNewestRecord
 	}
 	x.xxx_hidden_Records = &b.Records
 	if b.Signature != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 3)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 4)
 		x.xxx_hidden_Signature = b.Signature
+	}
+	if b.SignatureVerified != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 3, 4)
+		x.xxx_hidden_SignatureVerified = *b.SignatureVerified
 	}
 	return m0
 }
@@ -396,11 +427,12 @@ var File_wayplatform_connect_tachograph_card_v1_vehicle_units_used_proto protore
 
 const file_wayplatform_connect_tachograph_card_v1_vehicle_units_used_proto_rawDesc = "" +
 	"\n" +
-	"?wayplatform/connect/tachograph/card/v1/vehicle_units_used.proto\x12&wayplatform.connect.tachograph.card.v1\x1a\x1fgoogle/protobuf/timestamp.proto\"\x96\x03\n" +
+	"?wayplatform/connect/tachograph/card/v1/vehicle_units_used.proto\x12&wayplatform.connect.tachograph.card.v1\x1a\x1fgoogle/protobuf/timestamp.proto\"\xc5\x03\n" +
 	"\x10VehicleUnitsUsed\x12J\n" +
 	"\"vehicle_unit_pointer_newest_record\x18\x01 \x01(\x05R\x1evehicleUnitPointerNewestRecord\x12Y\n" +
 	"\arecords\x18\x02 \x03(\v2?.wayplatform.connect.tachograph.card.v1.VehicleUnitsUsed.RecordR\arecords\x12\x1c\n" +
-	"\tsignature\x18\x03 \x01(\fR\tsignature\x1a\xbc\x01\n" +
+	"\tsignature\x18\x03 \x01(\fR\tsignature\x12-\n" +
+	"\x12signature_verified\x18\x04 \x01(\bR\x11signatureVerified\x1a\xbc\x01\n" +
 	"\x06Record\x128\n" +
 	"\ttimestamp\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\ttimestamp\x12+\n" +
 	"\x11manufacturer_code\x18\x02 \x01(\x05R\x10manufacturerCode\x12\x1b\n" +

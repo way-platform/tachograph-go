@@ -51,9 +51,6 @@ func unmarshalOverview(data []byte, offset int, overview *vuv1.Overview, generat
 }
 
 func unmarshalOverviewGen1(data []byte, offset int, overview *vuv1.Overview, startOffset int) (int, error) {
-	// Gen1 Overview structure based on benchmark definitions
-	// See VuOverviewFirstGen in benchmark/tachoparser/pkg/decoder/definitions.go
-
 	var opts dd.UnmarshalOptions
 	// MemberStateCertificate (194 bytes)
 	memberStateCert, offset, err := readBytesFromBytes(data, offset, 194)
@@ -308,9 +305,6 @@ func appendOverview(buf *bytes.Buffer, overview *vuv1.Overview) {
 
 //nolint:unused
 func appendOverviewGen1(buf *bytes.Buffer, overview *vuv1.Overview) {
-	// Gen1 Overview structure based on benchmark definitions
-	// See VuOverviewFirstGen in benchmark/tachoparser/pkg/decoder/definitions.go
-
 	// MemberStateCertificate (194 bytes)
 	memberStateCert := overview.GetMemberStateCertificate()
 	if len(memberStateCert) >= 194 {

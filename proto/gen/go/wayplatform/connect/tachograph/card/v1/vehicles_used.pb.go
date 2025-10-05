@@ -47,6 +47,7 @@ type VehiclesUsed struct {
 	xxx_hidden_Records           *[]*v1.CardVehicleRecord `protobuf:"bytes,2,rep,name=records"`
 	xxx_hidden_RawData           []byte                   `protobuf:"bytes,3,opt,name=raw_data,json=rawData"`
 	xxx_hidden_Signature         []byte                   `protobuf:"bytes,4,opt,name=signature"`
+	xxx_hidden_SignatureVerified bool                     `protobuf:"varint,5,opt,name=signature_verified,json=signatureVerified"`
 	XXX_raceDetectHookData       protoimpl.RaceDetectHookData
 	XXX_presence                 [1]uint32
 	unknownFields                protoimpl.UnknownFields
@@ -108,9 +109,16 @@ func (x *VehiclesUsed) GetSignature() []byte {
 	return nil
 }
 
+func (x *VehiclesUsed) GetSignatureVerified() bool {
+	if x != nil {
+		return x.xxx_hidden_SignatureVerified
+	}
+	return false
+}
+
 func (x *VehiclesUsed) SetNewestRecordIndex(v int32) {
 	x.xxx_hidden_NewestRecordIndex = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 4)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 5)
 }
 
 func (x *VehiclesUsed) SetRecords(v []*v1.CardVehicleRecord) {
@@ -122,7 +130,7 @@ func (x *VehiclesUsed) SetRawData(v []byte) {
 		v = []byte{}
 	}
 	x.xxx_hidden_RawData = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 4)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 5)
 }
 
 func (x *VehiclesUsed) SetSignature(v []byte) {
@@ -130,7 +138,12 @@ func (x *VehiclesUsed) SetSignature(v []byte) {
 		v = []byte{}
 	}
 	x.xxx_hidden_Signature = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 3, 4)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 3, 5)
+}
+
+func (x *VehiclesUsed) SetSignatureVerified(v bool) {
+	x.xxx_hidden_SignatureVerified = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 4, 5)
 }
 
 func (x *VehiclesUsed) HasNewestRecordIndex() bool {
@@ -154,6 +167,13 @@ func (x *VehiclesUsed) HasSignature() bool {
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 3)
 }
 
+func (x *VehiclesUsed) HasSignatureVerified() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 4)
+}
+
 func (x *VehiclesUsed) ClearNewestRecordIndex() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 0)
 	x.xxx_hidden_NewestRecordIndex = 0
@@ -167,6 +187,11 @@ func (x *VehiclesUsed) ClearRawData() {
 func (x *VehiclesUsed) ClearSignature() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 3)
 	x.xxx_hidden_Signature = nil
+}
+
+func (x *VehiclesUsed) ClearSignatureVerified() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 4)
+	x.xxx_hidden_SignatureVerified = false
 }
 
 type VehiclesUsed_builder struct {
@@ -201,6 +226,8 @@ type VehiclesUsed_builder struct {
 	//
 	//	Signature ::= OCTET STRING (SIZE(128))
 	Signature []byte
+	// Indicates if the signature has been successfully verified.
+	SignatureVerified *bool
 }
 
 func (b0 VehiclesUsed_builder) Build() *VehiclesUsed {
@@ -208,17 +235,21 @@ func (b0 VehiclesUsed_builder) Build() *VehiclesUsed {
 	b, x := &b0, m0
 	_, _ = b, x
 	if b.NewestRecordIndex != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 4)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 5)
 		x.xxx_hidden_NewestRecordIndex = *b.NewestRecordIndex
 	}
 	x.xxx_hidden_Records = &b.Records
 	if b.RawData != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 4)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 5)
 		x.xxx_hidden_RawData = b.RawData
 	}
 	if b.Signature != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 3, 4)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 3, 5)
 		x.xxx_hidden_Signature = b.Signature
+	}
+	if b.SignatureVerified != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 4, 5)
+		x.xxx_hidden_SignatureVerified = *b.SignatureVerified
 	}
 	return m0
 }
@@ -227,12 +258,13 @@ var File_wayplatform_connect_tachograph_card_v1_vehicles_used_proto protoreflect
 
 const file_wayplatform_connect_tachograph_card_v1_vehicles_used_proto_rawDesc = "" +
 	"\n" +
-	":wayplatform/connect/tachograph/card/v1/vehicles_used.proto\x12&wayplatform.connect.tachograph.card.v1\x1a>wayplatform/connect/tachograph/dd/v1/card_vehicle_record.proto\"\xca\x01\n" +
+	":wayplatform/connect/tachograph/card/v1/vehicles_used.proto\x12&wayplatform.connect.tachograph.card.v1\x1a>wayplatform/connect/tachograph/dd/v1/card_vehicle_record.proto\"\xf9\x01\n" +
 	"\fVehiclesUsed\x12.\n" +
 	"\x13newest_record_index\x18\x01 \x01(\x05R\x11newestRecordIndex\x12Q\n" +
 	"\arecords\x18\x02 \x03(\v27.wayplatform.connect.tachograph.dd.v1.CardVehicleRecordR\arecords\x12\x19\n" +
 	"\braw_data\x18\x03 \x01(\fR\arawData\x12\x1c\n" +
-	"\tsignature\x18\x04 \x01(\fR\tsignatureB\xde\x02\n" +
+	"\tsignature\x18\x04 \x01(\fR\tsignature\x12-\n" +
+	"\x12signature_verified\x18\x05 \x01(\bR\x11signatureVerifiedB\xde\x02\n" +
 	"*com.wayplatform.connect.tachograph.card.v1B\x11VehiclesUsedProtoP\x01Z`github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1;cardv1\xa2\x02\x04WCTC\xaa\x02&Wayplatform.Connect.Tachograph.Card.V1\xca\x02&Wayplatform\\Connect\\Tachograph\\Card\\V1\xe2\x022Wayplatform\\Connect\\Tachograph\\Card\\V1\\GPBMetadata\xea\x02*Wayplatform::Connect::Tachograph::Card::V1b\beditionsp\xe8\a"
 
 var file_wayplatform_connect_tachograph_card_v1_vehicles_used_proto_msgTypes = make([]protoimpl.MessageInfo, 1)

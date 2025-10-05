@@ -45,6 +45,7 @@ type DriverActivityData struct {
 	xxx_hidden_DailyRecords         *[]*DriverActivityData_DailyRecord `protobuf:"bytes,3,rep,name=daily_records,json=dailyRecords"`
 	xxx_hidden_RawData              []byte                             `protobuf:"bytes,5,opt,name=raw_data,json=rawData"`
 	xxx_hidden_Signature            []byte                             `protobuf:"bytes,4,opt,name=signature"`
+	xxx_hidden_SignatureVerified    bool                               `protobuf:"varint,6,opt,name=signature_verified,json=signatureVerified"`
 	XXX_raceDetectHookData          protoimpl.RaceDetectHookData
 	XXX_presence                    [1]uint32
 	unknownFields                   protoimpl.UnknownFields
@@ -113,14 +114,21 @@ func (x *DriverActivityData) GetSignature() []byte {
 	return nil
 }
 
+func (x *DriverActivityData) GetSignatureVerified() bool {
+	if x != nil {
+		return x.xxx_hidden_SignatureVerified
+	}
+	return false
+}
+
 func (x *DriverActivityData) SetOldestDayRecordIndex(v int32) {
 	x.xxx_hidden_OldestDayRecordIndex = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 5)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 6)
 }
 
 func (x *DriverActivityData) SetNewestDayRecordIndex(v int32) {
 	x.xxx_hidden_NewestDayRecordIndex = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 5)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 6)
 }
 
 func (x *DriverActivityData) SetDailyRecords(v []*DriverActivityData_DailyRecord) {
@@ -132,7 +140,7 @@ func (x *DriverActivityData) SetRawData(v []byte) {
 		v = []byte{}
 	}
 	x.xxx_hidden_RawData = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 3, 5)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 3, 6)
 }
 
 func (x *DriverActivityData) SetSignature(v []byte) {
@@ -140,7 +148,12 @@ func (x *DriverActivityData) SetSignature(v []byte) {
 		v = []byte{}
 	}
 	x.xxx_hidden_Signature = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 4, 5)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 4, 6)
+}
+
+func (x *DriverActivityData) SetSignatureVerified(v bool) {
+	x.xxx_hidden_SignatureVerified = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 5, 6)
 }
 
 func (x *DriverActivityData) HasOldestDayRecordIndex() bool {
@@ -171,6 +184,13 @@ func (x *DriverActivityData) HasSignature() bool {
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 4)
 }
 
+func (x *DriverActivityData) HasSignatureVerified() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 5)
+}
+
 func (x *DriverActivityData) ClearOldestDayRecordIndex() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 0)
 	x.xxx_hidden_OldestDayRecordIndex = 0
@@ -189,6 +209,11 @@ func (x *DriverActivityData) ClearRawData() {
 func (x *DriverActivityData) ClearSignature() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 4)
 	x.xxx_hidden_Signature = nil
+}
+
+func (x *DriverActivityData) ClearSignatureVerified() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 5)
+	x.xxx_hidden_SignatureVerified = false
 }
 
 type DriverActivityData_builder struct {
@@ -235,6 +260,8 @@ type DriverActivityData_builder struct {
 	//
 	//	Signature ::= OCTET STRING (SIZE(128 for Gen1))
 	Signature []byte
+	// Indicates if the signature has been successfully verified.
+	SignatureVerified *bool
 }
 
 func (b0 DriverActivityData_builder) Build() *DriverActivityData {
@@ -242,21 +269,25 @@ func (b0 DriverActivityData_builder) Build() *DriverActivityData {
 	b, x := &b0, m0
 	_, _ = b, x
 	if b.OldestDayRecordIndex != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 5)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 6)
 		x.xxx_hidden_OldestDayRecordIndex = *b.OldestDayRecordIndex
 	}
 	if b.NewestDayRecordIndex != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 5)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 6)
 		x.xxx_hidden_NewestDayRecordIndex = *b.NewestDayRecordIndex
 	}
 	x.xxx_hidden_DailyRecords = &b.DailyRecords
 	if b.RawData != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 3, 5)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 3, 6)
 		x.xxx_hidden_RawData = b.RawData
 	}
 	if b.Signature != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 4, 5)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 4, 6)
 		x.xxx_hidden_Signature = b.Signature
+	}
+	if b.SignatureVerified != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 5, 6)
+		x.xxx_hidden_SignatureVerified = *b.SignatureVerified
 	}
 	return m0
 }
@@ -580,13 +611,14 @@ var File_wayplatform_connect_tachograph_card_v1_driver_activity_data_proto proto
 
 const file_wayplatform_connect_tachograph_card_v1_driver_activity_data_proto_rawDesc = "" +
 	"\n" +
-	"Awayplatform/connect/tachograph/card/v1/driver_activity_data.proto\x12&wayplatform.connect.tachograph.card.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a?wayplatform/connect/tachograph/dd/v1/activity_change_info.proto\x1a5wayplatform/connect/tachograph/dd/v1/bcd_string.proto\"\xcc\x06\n" +
+	"Awayplatform/connect/tachograph/card/v1/driver_activity_data.proto\x12&wayplatform.connect.tachograph.card.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a?wayplatform/connect/tachograph/dd/v1/activity_change_info.proto\x1a5wayplatform/connect/tachograph/dd/v1/bcd_string.proto\"\xfb\x06\n" +
 	"\x12DriverActivityData\x125\n" +
 	"\x17oldest_day_record_index\x18\x01 \x01(\x05R\x14oldestDayRecordIndex\x125\n" +
 	"\x17newest_day_record_index\x18\x02 \x01(\x05R\x14newestDayRecordIndex\x12k\n" +
 	"\rdaily_records\x18\x03 \x03(\v2F.wayplatform.connect.tachograph.card.v1.DriverActivityData.DailyRecordR\fdailyRecords\x12\x19\n" +
 	"\braw_data\x18\x05 \x01(\fR\arawData\x12\x1c\n" +
-	"\tsignature\x18\x04 \x01(\fR\tsignature\x1a\xa1\x04\n" +
+	"\tsignature\x18\x04 \x01(\fR\tsignature\x12-\n" +
+	"\x12signature_verified\x18\x06 \x01(\bR\x11signatureVerified\x1a\xa1\x04\n" +
 	"\vDailyRecord\x12\x14\n" +
 	"\x05valid\x18\x01 \x01(\bR\x05valid\x12E\n" +
 	"\x1factivity_previous_record_length\x18\x02 \x01(\x05R\x1cactivityPreviousRecordLength\x124\n" +

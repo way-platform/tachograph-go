@@ -53,6 +53,7 @@ type RsaCertificate struct {
 	xxx_hidden_RsaModulus                    []byte                 `protobuf:"bytes,4,opt,name=rsa_modulus,json=rsaModulus"`
 	xxx_hidden_RsaExponent                   []byte                 `protobuf:"bytes,5,opt,name=rsa_exponent,json=rsaExponent"`
 	xxx_hidden_RawData                       []byte                 `protobuf:"bytes,6,opt,name=raw_data,json=rawData"`
+	xxx_hidden_SignatureValid                bool                   `protobuf:"varint,7,opt,name=signature_valid,json=signatureValid"`
 	XXX_raceDetectHookData                   protoimpl.RaceDetectHookData
 	XXX_presence                             [1]uint32
 	unknownFields                            protoimpl.UnknownFields
@@ -126,14 +127,21 @@ func (x *RsaCertificate) GetRawData() []byte {
 	return nil
 }
 
+func (x *RsaCertificate) GetSignatureValid() bool {
+	if x != nil {
+		return x.xxx_hidden_SignatureValid
+	}
+	return false
+}
+
 func (x *RsaCertificate) SetCertificateHolderReference(v uint64) {
 	x.xxx_hidden_CertificateHolderReference = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 6)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 7)
 }
 
 func (x *RsaCertificate) SetCertificateAuthorityReference(v uint64) {
 	x.xxx_hidden_CertificateAuthorityReference = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 6)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 7)
 }
 
 func (x *RsaCertificate) SetEndOfValidity(v *timestamppb.Timestamp) {
@@ -145,7 +153,7 @@ func (x *RsaCertificate) SetRsaModulus(v []byte) {
 		v = []byte{}
 	}
 	x.xxx_hidden_RsaModulus = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 3, 6)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 3, 7)
 }
 
 func (x *RsaCertificate) SetRsaExponent(v []byte) {
@@ -153,7 +161,7 @@ func (x *RsaCertificate) SetRsaExponent(v []byte) {
 		v = []byte{}
 	}
 	x.xxx_hidden_RsaExponent = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 4, 6)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 4, 7)
 }
 
 func (x *RsaCertificate) SetRawData(v []byte) {
@@ -161,7 +169,12 @@ func (x *RsaCertificate) SetRawData(v []byte) {
 		v = []byte{}
 	}
 	x.xxx_hidden_RawData = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 5, 6)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 5, 7)
+}
+
+func (x *RsaCertificate) SetSignatureValid(v bool) {
+	x.xxx_hidden_SignatureValid = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 6, 7)
 }
 
 func (x *RsaCertificate) HasCertificateHolderReference() bool {
@@ -206,6 +219,13 @@ func (x *RsaCertificate) HasRawData() bool {
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 5)
 }
 
+func (x *RsaCertificate) HasSignatureValid() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 6)
+}
+
 func (x *RsaCertificate) ClearCertificateHolderReference() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 0)
 	x.xxx_hidden_CertificateHolderReference = 0
@@ -235,6 +255,11 @@ func (x *RsaCertificate) ClearRawData() {
 	x.xxx_hidden_RawData = nil
 }
 
+func (x *RsaCertificate) ClearSignatureValid() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 6)
+	x.xxx_hidden_SignatureValid = false
+}
+
 type RsaCertificate_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
@@ -254,6 +279,11 @@ type RsaCertificate_builder struct {
 	// Raw certificate data as stored in the file - always 194 bytes.
 	// This includes the signature, remainder, and CAR appended to the signature.
 	RawData []byte
+	// Indicates if the certificate's signature has been successfully verified.
+	// This field is populated during signature recovery when the CA certificate
+	// is available. If true, the semantic fields (CHR, EOV, modulus, exponent)
+	// have been extracted and validated.
+	SignatureValid *bool
 }
 
 func (b0 RsaCertificate_builder) Build() *RsaCertificate {
@@ -261,25 +291,29 @@ func (b0 RsaCertificate_builder) Build() *RsaCertificate {
 	b, x := &b0, m0
 	_, _ = b, x
 	if b.CertificateHolderReference != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 6)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 7)
 		x.xxx_hidden_CertificateHolderReference = *b.CertificateHolderReference
 	}
 	if b.CertificateAuthorityReference != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 6)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 7)
 		x.xxx_hidden_CertificateAuthorityReference = *b.CertificateAuthorityReference
 	}
 	x.xxx_hidden_EndOfValidity = b.EndOfValidity
 	if b.RsaModulus != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 3, 6)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 3, 7)
 		x.xxx_hidden_RsaModulus = b.RsaModulus
 	}
 	if b.RsaExponent != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 4, 6)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 4, 7)
 		x.xxx_hidden_RsaExponent = b.RsaExponent
 	}
 	if b.RawData != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 5, 6)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 5, 7)
 		x.xxx_hidden_RawData = b.RawData
+	}
+	if b.SignatureValid != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 6, 7)
+		x.xxx_hidden_SignatureValid = *b.SignatureValid
 	}
 	return m0
 }
@@ -288,7 +322,7 @@ var File_wayplatform_connect_tachograph_dd_v1_rsa_certificate_proto protoreflect
 
 const file_wayplatform_connect_tachograph_dd_v1_rsa_certificate_proto_rawDesc = "" +
 	"\n" +
-	":wayplatform/connect/tachograph/dd/v1/rsa_certificate.proto\x12$wayplatform.connect.tachograph.dd.v1\x1a\x1fgoogle/protobuf/timestamp.proto\"\xbd\x02\n" +
+	":wayplatform/connect/tachograph/dd/v1/rsa_certificate.proto\x12$wayplatform.connect.tachograph.dd.v1\x1a\x1fgoogle/protobuf/timestamp.proto\"\xe6\x02\n" +
 	"\x0eRsaCertificate\x12@\n" +
 	"\x1ccertificate_holder_reference\x18\x01 \x01(\x04R\x1acertificateHolderReference\x12F\n" +
 	"\x1fcertificate_authority_reference\x18\x02 \x01(\x04R\x1dcertificateAuthorityReference\x12B\n" +
@@ -296,7 +330,8 @@ const file_wayplatform_connect_tachograph_dd_v1_rsa_certificate_proto_rawDesc = 
 	"\vrsa_modulus\x18\x04 \x01(\fR\n" +
 	"rsaModulus\x12!\n" +
 	"\frsa_exponent\x18\x05 \x01(\fR\vrsaExponent\x12\x19\n" +
-	"\braw_data\x18\x06 \x01(\fR\arawDataB\xd2\x02\n" +
+	"\braw_data\x18\x06 \x01(\fR\arawData\x12'\n" +
+	"\x0fsignature_valid\x18\a \x01(\bR\x0esignatureValidB\xd2\x02\n" +
 	"(com.wayplatform.connect.tachograph.dd.v1B\x13RsaCertificateProtoP\x01Z\\github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1;ddv1\xa2\x02\x04WCTD\xaa\x02$Wayplatform.Connect.Tachograph.Dd.V1\xca\x02$Wayplatform\\Connect\\Tachograph\\Dd\\V1\xe2\x020Wayplatform\\Connect\\Tachograph\\Dd\\V1\\GPBMetadata\xea\x02(Wayplatform::Connect::Tachograph::Dd::V1b\beditionsp\xe8\a"
 
 var file_wayplatform_connect_tachograph_dd_v1_rsa_certificate_proto_msgTypes = make([]protoimpl.MessageInfo, 1)

@@ -51,13 +51,14 @@ const (
 // event_type field, allowing consumers to filter by type while maintaining the
 // temporal order in which events actually occurred.
 type EventsData struct {
-	state                  protoimpl.MessageState `protogen:"opaque.v1"`
-	xxx_hidden_Events      *[]*EventsData_Record  `protobuf:"bytes,1,rep,name=events"`
-	xxx_hidden_Signature   []byte                 `protobuf:"bytes,2,opt,name=signature"`
-	XXX_raceDetectHookData protoimpl.RaceDetectHookData
-	XXX_presence           [1]uint32
-	unknownFields          protoimpl.UnknownFields
-	sizeCache              protoimpl.SizeCache
+	state                        protoimpl.MessageState `protogen:"opaque.v1"`
+	xxx_hidden_Events            *[]*EventsData_Record  `protobuf:"bytes,1,rep,name=events"`
+	xxx_hidden_Signature         []byte                 `protobuf:"bytes,2,opt,name=signature"`
+	xxx_hidden_SignatureVerified bool                   `protobuf:"varint,3,opt,name=signature_verified,json=signatureVerified"`
+	XXX_raceDetectHookData       protoimpl.RaceDetectHookData
+	XXX_presence                 [1]uint32
+	unknownFields                protoimpl.UnknownFields
+	sizeCache                    protoimpl.SizeCache
 }
 
 func (x *EventsData) Reset() {
@@ -101,6 +102,13 @@ func (x *EventsData) GetSignature() []byte {
 	return nil
 }
 
+func (x *EventsData) GetSignatureVerified() bool {
+	if x != nil {
+		return x.xxx_hidden_SignatureVerified
+	}
+	return false
+}
+
 func (x *EventsData) SetEvents(v []*EventsData_Record) {
 	x.xxx_hidden_Events = &v
 }
@@ -110,7 +118,12 @@ func (x *EventsData) SetSignature(v []byte) {
 		v = []byte{}
 	}
 	x.xxx_hidden_Signature = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 2)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 3)
+}
+
+func (x *EventsData) SetSignatureVerified(v bool) {
+	x.xxx_hidden_SignatureVerified = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 3)
 }
 
 func (x *EventsData) HasSignature() bool {
@@ -120,9 +133,21 @@ func (x *EventsData) HasSignature() bool {
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 1)
 }
 
+func (x *EventsData) HasSignatureVerified() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 2)
+}
+
 func (x *EventsData) ClearSignature() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 1)
 	x.xxx_hidden_Signature = nil
+}
+
+func (x *EventsData) ClearSignatureVerified() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 2)
+	x.xxx_hidden_SignatureVerified = false
 }
 
 type EventsData_builder struct {
@@ -138,6 +163,8 @@ type EventsData_builder struct {
 	//
 	//	Signature ::= OCTET STRING (SIZE(128 for Gen1))
 	Signature []byte
+	// Indicates if the signature has been successfully verified.
+	SignatureVerified *bool
 }
 
 func (b0 EventsData_builder) Build() *EventsData {
@@ -146,8 +173,12 @@ func (b0 EventsData_builder) Build() *EventsData {
 	_, _ = b, x
 	x.xxx_hidden_Events = &b.Events
 	if b.Signature != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 2)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 3)
 		x.xxx_hidden_Signature = b.Signature
+	}
+	if b.SignatureVerified != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 3)
+		x.xxx_hidden_SignatureVerified = *b.SignatureVerified
 	}
 	return m0
 }
@@ -412,11 +443,12 @@ var File_wayplatform_connect_tachograph_card_v1_events_data_proto protoreflect.F
 
 const file_wayplatform_connect_tachograph_card_v1_events_data_proto_rawDesc = "" +
 	"\n" +
-	"8wayplatform/connect/tachograph/card/v1/events_data.proto\x12&wayplatform.connect.tachograph.card.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a;wayplatform/connect/tachograph/dd/v1/event_fault_type.proto\x1aNwayplatform/connect/tachograph/dd/v1/vehicle_registration_identification.proto\"\x9e\x04\n" +
+	"8wayplatform/connect/tachograph/card/v1/events_data.proto\x12&wayplatform.connect.tachograph.card.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a;wayplatform/connect/tachograph/dd/v1/event_fault_type.proto\x1aNwayplatform/connect/tachograph/dd/v1/vehicle_registration_identification.proto\"\xcd\x04\n" +
 	"\n" +
 	"EventsData\x12Q\n" +
 	"\x06events\x18\x01 \x03(\v29.wayplatform.connect.tachograph.card.v1.EventsData.RecordR\x06events\x12\x1c\n" +
-	"\tsignature\x18\x02 \x01(\fR\tsignature\x1a\x9e\x03\n" +
+	"\tsignature\x18\x02 \x01(\fR\tsignature\x12-\n" +
+	"\x12signature_verified\x18\x03 \x01(\bR\x11signatureVerified\x1a\x9e\x03\n" +
 	"\x06Record\x12\x14\n" +
 	"\x05valid\x18\x01 \x01(\bR\x05valid\x12S\n" +
 	"\n" +

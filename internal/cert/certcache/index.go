@@ -29,8 +29,6 @@ type Entry struct {
 	Country string `json:"country"`
 	// URL is the URL of the certificate.
 	URL string `json:"url"`
-	// Filename is the filename of the certificate.
-	Filename string `json:"filename"`
 	// ExpirationDate is the expiration date of the certificate.
 	ExpirationDate string `json:"expirationDate,omitzero"`
 }

@@ -45,6 +45,7 @@ type GnssPlaces struct {
 	xxx_hidden_NewestRecordIndex int32                  `protobuf:"varint,1,opt,name=newest_record_index,json=newestRecordIndex"`
 	xxx_hidden_Records           *[]*GnssPlaces_Record  `protobuf:"bytes,2,rep,name=records"`
 	xxx_hidden_Signature         []byte                 `protobuf:"bytes,3,opt,name=signature"`
+	xxx_hidden_SignatureVerified bool                   `protobuf:"varint,4,opt,name=signature_verified,json=signatureVerified"`
 	XXX_raceDetectHookData       protoimpl.RaceDetectHookData
 	XXX_presence                 [1]uint32
 	unknownFields                protoimpl.UnknownFields
@@ -99,9 +100,16 @@ func (x *GnssPlaces) GetSignature() []byte {
 	return nil
 }
 
+func (x *GnssPlaces) GetSignatureVerified() bool {
+	if x != nil {
+		return x.xxx_hidden_SignatureVerified
+	}
+	return false
+}
+
 func (x *GnssPlaces) SetNewestRecordIndex(v int32) {
 	x.xxx_hidden_NewestRecordIndex = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 3)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 4)
 }
 
 func (x *GnssPlaces) SetRecords(v []*GnssPlaces_Record) {
@@ -113,7 +121,12 @@ func (x *GnssPlaces) SetSignature(v []byte) {
 		v = []byte{}
 	}
 	x.xxx_hidden_Signature = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 3)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 4)
+}
+
+func (x *GnssPlaces) SetSignatureVerified(v bool) {
+	x.xxx_hidden_SignatureVerified = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 3, 4)
 }
 
 func (x *GnssPlaces) HasNewestRecordIndex() bool {
@@ -130,6 +143,13 @@ func (x *GnssPlaces) HasSignature() bool {
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 2)
 }
 
+func (x *GnssPlaces) HasSignatureVerified() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 3)
+}
+
 func (x *GnssPlaces) ClearNewestRecordIndex() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 0)
 	x.xxx_hidden_NewestRecordIndex = 0
@@ -138,6 +158,11 @@ func (x *GnssPlaces) ClearNewestRecordIndex() {
 func (x *GnssPlaces) ClearSignature() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 2)
 	x.xxx_hidden_Signature = nil
+}
+
+func (x *GnssPlaces) ClearSignatureVerified() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 3)
+	x.xxx_hidden_SignatureVerified = false
 }
 
 type GnssPlaces_builder struct {
@@ -172,6 +197,8 @@ type GnssPlaces_builder struct {
 	// - 384-bit curves: ~96 bytes
 	// - 512/521-bit curves: ~128-132 bytes
 	Signature []byte
+	// Indicates if the signature has been successfully verified.
+	SignatureVerified *bool
 }
 
 func (b0 GnssPlaces_builder) Build() *GnssPlaces {
@@ -179,13 +206,17 @@ func (b0 GnssPlaces_builder) Build() *GnssPlaces {
 	b, x := &b0, m0
 	_, _ = b, x
 	if b.NewestRecordIndex != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 3)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 4)
 		x.xxx_hidden_NewestRecordIndex = *b.NewestRecordIndex
 	}
 	x.xxx_hidden_Records = &b.Records
 	if b.Signature != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 3)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 4)
 		x.xxx_hidden_Signature = b.Signature
+	}
+	if b.SignatureVerified != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 3, 4)
+		x.xxx_hidden_SignatureVerified = *b.SignatureVerified
 	}
 	return m0
 }
@@ -345,12 +376,13 @@ var File_wayplatform_connect_tachograph_card_v1_gnss_places_proto protoreflect.F
 
 const file_wayplatform_connect_tachograph_card_v1_gnss_places_proto_rawDesc = "" +
 	"\n" +
-	"8wayplatform/connect/tachograph/card/v1/gnss_places.proto\x12&wayplatform.connect.tachograph.card.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a<wayplatform/connect/tachograph/dd/v1/gnss_place_record.proto\"\x87\x03\n" +
+	"8wayplatform/connect/tachograph/card/v1/gnss_places.proto\x12&wayplatform.connect.tachograph.card.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a<wayplatform/connect/tachograph/dd/v1/gnss_place_record.proto\"\xb6\x03\n" +
 	"\n" +
 	"GnssPlaces\x12.\n" +
 	"\x13newest_record_index\x18\x01 \x01(\x05R\x11newestRecordIndex\x12S\n" +
 	"\arecords\x18\x02 \x03(\v29.wayplatform.connect.tachograph.card.v1.GnssPlaces.RecordR\arecords\x12\x1c\n" +
-	"\tsignature\x18\x03 \x01(\fR\tsignature\x1a\xd5\x01\n" +
+	"\tsignature\x18\x03 \x01(\fR\tsignature\x12-\n" +
+	"\x12signature_verified\x18\x04 \x01(\bR\x11signatureVerified\x1a\xd5\x01\n" +
 	"\x06Record\x128\n" +
 	"\ttimestamp\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\ttimestamp\x12a\n" +
 	"\x11gnss_place_record\x18\x02 \x01(\v25.wayplatform.connect.tachograph.dd.v1.GNSSPlaceRecordR\x0fgnssPlaceRecord\x12.\n" +

@@ -141,4 +141,7 @@ message DriverActivityData {
   //
   //     Signature ::= OCTET STRING (SIZE(128 for Gen1))
   bytes signature = 4;
+
+  // Indicates if the signature has been successfully verified.
+  bool signature_verified = 6;
 }

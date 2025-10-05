@@ -1,7 +1,10 @@
-proprietary-*
-cmd/tachograph/tachograph
-docs/regulation/**/*.pdf
 build/
 dist/
 .semrel
 .generated-go-semantic-release-changelog.md
+
+docs/regulation/**/*.pdf
+proprietary-*
+cmd/tachograph/tachograph
+tools/cmd/fetch-certs/fetch-certs
+*.bin

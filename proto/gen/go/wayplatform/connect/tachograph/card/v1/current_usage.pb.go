@@ -43,6 +43,7 @@ type CurrentUsage struct {
 	xxx_hidden_SessionOpenTime    *timestamppb.Timestamp                `protobuf:"bytes,1,opt,name=session_open_time,json=sessionOpenTime"`
 	xxx_hidden_SessionOpenVehicle *v1.VehicleRegistrationIdentification `protobuf:"bytes,2,opt,name=session_open_vehicle,json=sessionOpenVehicle"`
 	xxx_hidden_Signature          []byte                                `protobuf:"bytes,3,opt,name=signature"`
+	xxx_hidden_SignatureVerified  bool                                  `protobuf:"varint,4,opt,name=signature_verified,json=signatureVerified"`
 	XXX_raceDetectHookData        protoimpl.RaceDetectHookData
 	XXX_presence                  [1]uint32
 	unknownFields                 protoimpl.UnknownFields
@@ -95,6 +96,13 @@ func (x *CurrentUsage) GetSignature() []byte {
 	return nil
 }
 
+func (x *CurrentUsage) GetSignatureVerified() bool {
+	if x != nil {
+		return x.xxx_hidden_SignatureVerified
+	}
+	return false
+}
+
 func (x *CurrentUsage) SetSessionOpenTime(v *timestamppb.Timestamp) {
 	x.xxx_hidden_SessionOpenTime = v
 }
@@ -108,7 +116,12 @@ func (x *CurrentUsage) SetSignature(v []byte) {
 		v = []byte{}
 	}
 	x.xxx_hidden_Signature = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 3)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 4)
+}
+
+func (x *CurrentUsage) SetSignatureVerified(v bool) {
+	x.xxx_hidden_SignatureVerified = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 3, 4)
 }
 
 func (x *CurrentUsage) HasSessionOpenTime() bool {
@@ -132,6 +145,13 @@ func (x *CurrentUsage) HasSignature() bool {
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 2)
 }
 
+func (x *CurrentUsage) HasSignatureVerified() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 3)
+}
+
 func (x *CurrentUsage) ClearSessionOpenTime() {
 	x.xxx_hidden_SessionOpenTime = nil
 }
@@ -143,6 +163,11 @@ func (x *CurrentUsage) ClearSessionOpenVehicle() {
 func (x *CurrentUsage) ClearSignature() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 2)
 	x.xxx_hidden_Signature = nil
+}
+
+func (x *CurrentUsage) ClearSignatureVerified() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 3)
+	x.xxx_hidden_SignatureVerified = false
 }
 
 type CurrentUsage_builder struct {
@@ -169,6 +194,8 @@ type CurrentUsage_builder struct {
 	//
 	//	Signature ::= OCTET STRING (SIZE(128 for Gen1))
 	Signature []byte
+	// Indicates if the signature has been successfully verified.
+	SignatureVerified *bool
 }
 
 func (b0 CurrentUsage_builder) Build() *CurrentUsage {
@@ -178,8 +205,12 @@ func (b0 CurrentUsage_builder) Build() *CurrentUsage {
 	x.xxx_hidden_SessionOpenTime = b.SessionOpenTime
 	x.xxx_hidden_SessionOpenVehicle = b.SessionOpenVehicle
 	if b.Signature != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 3)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 4)
 		x.xxx_hidden_Signature = b.Signature
+	}
+	if b.SignatureVerified != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 3, 4)
+		x.xxx_hidden_SignatureVerified = *b.SignatureVerified
 	}
 	return m0
 }
@@ -188,11 +219,12 @@ var File_wayplatform_connect_tachograph_card_v1_current_usage_proto protoreflect
 
 const file_wayplatform_connect_tachograph_card_v1_current_usage_proto_rawDesc = "" +
 	"\n" +
-	":wayplatform/connect/tachograph/card/v1/current_usage.proto\x12&wayplatform.connect.tachograph.card.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1aNwayplatform/connect/tachograph/dd/v1/vehicle_registration_identification.proto\"\xef\x01\n" +
+	":wayplatform/connect/tachograph/card/v1/current_usage.proto\x12&wayplatform.connect.tachograph.card.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1aNwayplatform/connect/tachograph/dd/v1/vehicle_registration_identification.proto\"\x9e\x02\n" +
 	"\fCurrentUsage\x12F\n" +
 	"\x11session_open_time\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\x0fsessionOpenTime\x12y\n" +
 	"\x14session_open_vehicle\x18\x02 \x01(\v2G.wayplatform.connect.tachograph.dd.v1.VehicleRegistrationIdentificationR\x12sessionOpenVehicle\x12\x1c\n" +
-	"\tsignature\x18\x03 \x01(\fR\tsignatureB\xde\x02\n" +
+	"\tsignature\x18\x03 \x01(\fR\tsignature\x12-\n" +
+	"\x12signature_verified\x18\x04 \x01(\bR\x11signatureVerifiedB\xde\x02\n" +
 	"*com.wayplatform.connect.tachograph.card.v1B\x11CurrentUsageProtoP\x01Z`github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1;cardv1\xa2\x02\x04WCTC\xaa\x02&Wayplatform.Connect.Tachograph.Card.V1\xca\x02&Wayplatform\\Connect\\Tachograph\\Card\\V1\xe2\x022Wayplatform\\Connect\\Tachograph\\Card\\V1\\GPBMetadata\xea\x02*Wayplatform::Connect::Tachograph::Card::V1b\beditionsp\xe8\a"
 
 var file_wayplatform_connect_tachograph_card_v1_current_usage_proto_msgTypes = make([]protoimpl.MessageInfo, 1)

@@ -41,6 +41,7 @@ type Identification struct {
 	xxx_hidden_ControlCardHolder  *Identification_ControlCardHolder  `protobuf:"bytes,5,opt,name=control_card_holder,json=controlCardHolder"`
 	xxx_hidden_CompanyCardHolder  *Identification_CompanyCardHolder  `protobuf:"bytes,6,opt,name=company_card_holder,json=companyCardHolder"`
 	xxx_hidden_Signature          []byte                             `protobuf:"bytes,7,opt,name=signature"`
+	xxx_hidden_SignatureVerified  bool                               `protobuf:"varint,8,opt,name=signature_verified,json=signatureVerified"`
 	XXX_raceDetectHookData        protoimpl.RaceDetectHookData
 	XXX_presence                  [1]uint32
 	unknownFields                 protoimpl.UnknownFields
@@ -123,13 +124,20 @@ func (x *Identification) GetSignature() []byte {
 	return nil
 }
 
+func (x *Identification) GetSignatureVerified() bool {
+	if x != nil {
+		return x.xxx_hidden_SignatureVerified
+	}
+	return false
+}
+
 func (x *Identification) SetCard(v *Identification_Card) {
 	x.xxx_hidden_Card = v
 }
 
 func (x *Identification) SetCardType(v CardType) {
 	x.xxx_hidden_CardType = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 7)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 8)
 }
 
 func (x *Identification) SetDriverCardHolder(v *Identification_DriverCardHolder) {
@@ -153,7 +161,12 @@ func (x *Identification) SetSignature(v []byte) {
 		v = []byte{}
 	}
 	x.xxx_hidden_Signature = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 6, 7)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 6, 8)
+}
+
+func (x *Identification) SetSignatureVerified(v bool) {
+	x.xxx_hidden_SignatureVerified = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 7, 8)
 }
 
 func (x *Identification) HasCard() bool {
@@ -205,6 +218,13 @@ func (x *Identification) HasSignature() bool {
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 6)
 }
 
+func (x *Identification) HasSignatureVerified() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 7)
+}
+
 func (x *Identification) ClearCard() {
 	x.xxx_hidden_Card = nil
 }
@@ -233,6 +253,11 @@ func (x *Identification) ClearCompanyCardHolder() {
 func (x *Identification) ClearSignature() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 6)
 	x.xxx_hidden_Signature = nil
+}
+
+func (x *Identification) ClearSignatureVerified() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 7)
+	x.xxx_hidden_SignatureVerified = false
 }
 
 type Identification_builder struct {
@@ -273,6 +298,10 @@ type Identification_builder struct {
 	// - 384-bit curves: ~96 bytes
 	// - 512/521-bit curves: ~128-132 bytes
 	Signature []byte
+	// Indicates if the signature has been successfully verified.
+	// This field is populated by VerifyIdentification() and remains false
+	// if verification has not been performed or failed.
+	SignatureVerified *bool
 }
 
 func (b0 Identification_builder) Build() *Identification {
@@ -281,7 +310,7 @@ func (b0 Identification_builder) Build() *Identification {
 	_, _ = b, x
 	x.xxx_hidden_Card = b.Card
 	if b.CardType != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 7)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 8)
 		x.xxx_hidden_CardType = *b.CardType
 	}
 	x.xxx_hidden_DriverCardHolder = b.DriverCardHolder
@@ -289,8 +318,12 @@ func (b0 Identification_builder) Build() *Identification {
 	x.xxx_hidden_ControlCardHolder = b.ControlCardHolder
 	x.xxx_hidden_CompanyCardHolder = b.CompanyCardHolder
 	if b.Signature != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 6, 7)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 6, 8)
 		x.xxx_hidden_Signature = b.Signature
+	}
+	if b.SignatureVerified != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 7, 8)
+		x.xxx_hidden_SignatureVerified = *b.SignatureVerified
 	}
 	return m0
 }
@@ -1287,7 +1320,7 @@ var File_wayplatform_connect_tachograph_card_v1_identification_proto protoreflec
 
 const file_wayplatform_connect_tachograph_card_v1_identification_proto_rawDesc = "" +
 	"\n" +
-	";wayplatform/connect/tachograph/card/v1/identification.proto\x12&wayplatform.connect.tachograph.card.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a6wayplatform/connect/tachograph/card/v1/card_type.proto\x1a/wayplatform/connect/tachograph/dd/v1/date.proto\x1a@wayplatform/connect/tachograph/dd/v1/driver_identification.proto\x1a;wayplatform/connect/tachograph/dd/v1/ia5_string_value.proto\x1a9wayplatform/connect/tachograph/dd/v1/nation_numeric.proto\x1a?wayplatform/connect/tachograph/dd/v1/owner_identification.proto\x1a7wayplatform/connect/tachograph/dd/v1/string_value.proto\"\x85\x19\n" +
+	";wayplatform/connect/tachograph/card/v1/identification.proto\x12&wayplatform.connect.tachograph.card.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a6wayplatform/connect/tachograph/card/v1/card_type.proto\x1a/wayplatform/connect/tachograph/dd/v1/date.proto\x1a@wayplatform/connect/tachograph/dd/v1/driver_identification.proto\x1a;wayplatform/connect/tachograph/dd/v1/ia5_string_value.proto\x1a9wayplatform/connect/tachograph/dd/v1/nation_numeric.proto\x1a?wayplatform/connect/tachograph/dd/v1/owner_identification.proto\x1a7wayplatform/connect/tachograph/dd/v1/string_value.proto\"\xb4\x19\n" +
 	"\x0eIdentification\x12O\n" +
 	"\x04card\x18\x01 \x01(\v2;.wayplatform.connect.tachograph.card.v1.Identification.CardR\x04card\x12M\n" +
 	"\tcard_type\x18\x02 \x01(\x0e20.wayplatform.connect.tachograph.card.v1.CardTypeR\bcardType\x12u\n" +
@@ -1295,7 +1328,8 @@ const file_wayplatform_connect_tachograph_card_v1_identification_proto_rawDesc =
 	"\x14workshop_card_holder\x18\x04 \x01(\v2I.wayplatform.connect.tachograph.card.v1.Identification.WorkshopCardHolderR\x12workshopCardHolder\x12x\n" +
 	"\x13control_card_holder\x18\x05 \x01(\v2H.wayplatform.connect.tachograph.card.v1.Identification.ControlCardHolderR\x11controlCardHolder\x12x\n" +
 	"\x13company_card_holder\x18\x06 \x01(\v2H.wayplatform.connect.tachograph.card.v1.Identification.CompanyCardHolderR\x11companyCardHolder\x12\x1c\n" +
-	"\tsignature\x18\a \x01(\fR\tsignature\x1a\x9d\x05\n" +
+	"\tsignature\x18\a \x01(\fR\tsignature\x12-\n" +
+	"\x12signature_verified\x18\b \x01(\bR\x11signatureVerified\x1a\x9d\x05\n" +
 	"\x04Card\x12n\n" +
 	"\x19card_issuing_member_state\x18\x01 \x01(\x0e23.wayplatform.connect.tachograph.dd.v1.NationNumericR\x16cardIssuingMemberState\x12o\n" +
 	"\x15driver_identification\x18\x02 \x01(\v2:.wayplatform.connect.tachograph.dd.v1.DriverIdentificationR\x14driverIdentification\x12l\n" +

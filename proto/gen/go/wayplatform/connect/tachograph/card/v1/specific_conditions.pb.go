@@ -39,14 +39,15 @@ const (
 //
 //	SpecificConditions ::= SET SIZE(56) OF SpecificConditionRecord
 type SpecificConditions struct {
-	state                  protoimpl.MessageState         `protogen:"opaque.v1"`
-	xxx_hidden_Records     *[]*v1.SpecificConditionRecord `protobuf:"bytes,1,rep,name=records"`
-	xxx_hidden_RawData     []byte                         `protobuf:"bytes,2,opt,name=raw_data,json=rawData"`
-	xxx_hidden_Signature   []byte                         `protobuf:"bytes,3,opt,name=signature"`
-	XXX_raceDetectHookData protoimpl.RaceDetectHookData
-	XXX_presence           [1]uint32
-	unknownFields          protoimpl.UnknownFields
-	sizeCache              protoimpl.SizeCache
+	state                        protoimpl.MessageState         `protogen:"opaque.v1"`
+	xxx_hidden_Records           *[]*v1.SpecificConditionRecord `protobuf:"bytes,1,rep,name=records"`
+	xxx_hidden_RawData           []byte                         `protobuf:"bytes,2,opt,name=raw_data,json=rawData"`
+	xxx_hidden_Signature         []byte                         `protobuf:"bytes,3,opt,name=signature"`
+	xxx_hidden_SignatureVerified bool                           `protobuf:"varint,4,opt,name=signature_verified,json=signatureVerified"`
+	XXX_raceDetectHookData       protoimpl.RaceDetectHookData
+	XXX_presence                 [1]uint32
+	unknownFields                protoimpl.UnknownFields
+	sizeCache                    protoimpl.SizeCache
 }
 
 func (x *SpecificConditions) Reset() {
@@ -97,6 +98,13 @@ func (x *SpecificConditions) GetSignature() []byte {
 	return nil
 }
 
+func (x *SpecificConditions) GetSignatureVerified() bool {
+	if x != nil {
+		return x.xxx_hidden_SignatureVerified
+	}
+	return false
+}
+
 func (x *SpecificConditions) SetRecords(v []*v1.SpecificConditionRecord) {
 	x.xxx_hidden_Records = &v
 }
@@ -106,7 +114,7 @@ func (x *SpecificConditions) SetRawData(v []byte) {
 		v = []byte{}
 	}
 	x.xxx_hidden_RawData = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 3)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 4)
 }
 
 func (x *SpecificConditions) SetSignature(v []byte) {
@@ -114,7 +122,12 @@ func (x *SpecificConditions) SetSignature(v []byte) {
 		v = []byte{}
 	}
 	x.xxx_hidden_Signature = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 3)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 4)
+}
+
+func (x *SpecificConditions) SetSignatureVerified(v bool) {
+	x.xxx_hidden_SignatureVerified = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 3, 4)
 }
 
 func (x *SpecificConditions) HasRawData() bool {
@@ -131,6 +144,13 @@ func (x *SpecificConditions) HasSignature() bool {
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 2)
 }
 
+func (x *SpecificConditions) HasSignatureVerified() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 3)
+}
+
 func (x *SpecificConditions) ClearRawData() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 1)
 	x.xxx_hidden_RawData = nil
@@ -139,6 +159,11 @@ func (x *SpecificConditions) ClearRawData() {
 func (x *SpecificConditions) ClearSignature() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 2)
 	x.xxx_hidden_Signature = nil
+}
+
+func (x *SpecificConditions) ClearSignatureVerified() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 3)
+	x.xxx_hidden_SignatureVerified = false
 }
 
 type SpecificConditions_builder struct {
@@ -175,6 +200,8 @@ type SpecificConditions_builder struct {
 	// - 384-bit curves: ~96 bytes
 	// - 512/521-bit curves: ~128-132 bytes
 	Signature []byte
+	// Indicates if the signature has been successfully verified.
+	SignatureVerified *bool
 }
 
 func (b0 SpecificConditions_builder) Build() *SpecificConditions {
@@ -183,12 +210,16 @@ func (b0 SpecificConditions_builder) Build() *SpecificConditions {
 	_, _ = b, x
 	x.xxx_hidden_Records = &b.Records
 	if b.RawData != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 3)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 4)
 		x.xxx_hidden_RawData = b.RawData
 	}
 	if b.Signature != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 3)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 4)
 		x.xxx_hidden_Signature = b.Signature
+	}
+	if b.SignatureVerified != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 3, 4)
+		x.xxx_hidden_SignatureVerified = *b.SignatureVerified
 	}
 	return m0
 }
@@ -197,11 +228,12 @@ var File_wayplatform_connect_tachograph_card_v1_specific_conditions_proto protor
 
 const file_wayplatform_connect_tachograph_card_v1_specific_conditions_proto_rawDesc = "" +
 	"\n" +
-	"@wayplatform/connect/tachograph/card/v1/specific_conditions.proto\x12&wayplatform.connect.tachograph.card.v1\x1aDwayplatform/connect/tachograph/dd/v1/specific_condition_record.proto\"\xa6\x01\n" +
+	"@wayplatform/connect/tachograph/card/v1/specific_conditions.proto\x12&wayplatform.connect.tachograph.card.v1\x1aDwayplatform/connect/tachograph/dd/v1/specific_condition_record.proto\"\xd5\x01\n" +
 	"\x12SpecificConditions\x12W\n" +
 	"\arecords\x18\x01 \x03(\v2=.wayplatform.connect.tachograph.dd.v1.SpecificConditionRecordR\arecords\x12\x19\n" +
 	"\braw_data\x18\x02 \x01(\fR\arawData\x12\x1c\n" +
-	"\tsignature\x18\x03 \x01(\fR\tsignatureB\xe4\x02\n" +
+	"\tsignature\x18\x03 \x01(\fR\tsignature\x12-\n" +
+	"\x12signature_verified\x18\x04 \x01(\bR\x11signatureVerifiedB\xe4\x02\n" +
 	"*com.wayplatform.connect.tachograph.card.v1B\x17SpecificConditionsProtoP\x01Z`github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1;cardv1\xa2\x02\x04WCTC\xaa\x02&Wayplatform.Connect.Tachograph.Card.V1\xca\x02&Wayplatform\\Connect\\Tachograph\\Card\\V1\xe2\x022Wayplatform\\Connect\\Tachograph\\Card\\V1\\GPBMetadata\xea\x02*Wayplatform::Connect::Tachograph::Card::V1b\beditionsp\xe8\a"
 
 var file_wayplatform_connect_tachograph_card_v1_specific_conditions_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
