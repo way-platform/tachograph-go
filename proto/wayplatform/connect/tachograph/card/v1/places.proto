@@ -61,4 +61,7 @@ message Places {
   //
   //     Signature ::= OCTET STRING (SIZE(128))
   bytes signature = 4;
+
+  // Indicates if the signature has been successfully verified.
+  bool signature_verified = 5;
 }

@@ -173,4 +173,9 @@ message ApplicationIdentification {
   //
   //     Signature ::= OCTET STRING (SIZE(128))
   bytes signature = 8;
+
+  // Indicates if the signature has been successfully verified.
+  // This field is populated by VerifyApplicationIdentification() and remains
+  // false if verification has not been performed or failed.
+  bool signature_verified = 9;
 }

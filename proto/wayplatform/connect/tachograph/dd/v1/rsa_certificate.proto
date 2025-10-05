@@ -49,5 +49,10 @@ message RsaCertificate {
   // Raw certificate data as stored in the file - always 194 bytes.
   // This includes the signature, remainder, and CAR appended to the signature.
   bytes raw_data = 6;
-}
 
+  // Indicates if the certificate's signature has been successfully verified.
+  // This field is populated during signature recovery when the CA certificate
+  // is available. If true, the semantic fields (CHR, EOV, modulus, exponent)
+  // have been extracted and validated.
+  bool signature_valid = 7;
+}

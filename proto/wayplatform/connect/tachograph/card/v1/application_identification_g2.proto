@@ -202,4 +202,7 @@ message ApplicationIdentificationG2 {
   // - 384-bit curves: ~96 bytes
   // - 512/521-bit curves: ~128-132 bytes
   bytes signature = 8;
+
+  // Indicates if the signature has been successfully verified.
+  bool signature_verified = 9;
 }

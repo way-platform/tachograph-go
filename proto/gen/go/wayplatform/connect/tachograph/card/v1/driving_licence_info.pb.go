@@ -47,6 +47,7 @@ type DrivingLicenceInfo struct {
 	xxx_hidden_DrivingLicenceIssuingNation    v1.NationNumeric       `protobuf:"varint,2,opt,name=driving_licence_issuing_nation,json=drivingLicenceIssuingNation,enum=wayplatform.connect.tachograph.dd.v1.NationNumeric"`
 	xxx_hidden_DrivingLicenceNumber           *v1.Ia5StringValue     `protobuf:"bytes,3,opt,name=driving_licence_number,json=drivingLicenceNumber"`
 	xxx_hidden_Signature                      []byte                 `protobuf:"bytes,4,opt,name=signature"`
+	xxx_hidden_SignatureVerified              bool                   `protobuf:"varint,5,opt,name=signature_verified,json=signatureVerified"`
 	XXX_raceDetectHookData                    protoimpl.RaceDetectHookData
 	XXX_presence                              [1]uint32
 	unknownFields                             protoimpl.UnknownFields
@@ -108,13 +109,20 @@ func (x *DrivingLicenceInfo) GetSignature() []byte {
 	return nil
 }
 
+func (x *DrivingLicenceInfo) GetSignatureVerified() bool {
+	if x != nil {
+		return x.xxx_hidden_SignatureVerified
+	}
+	return false
+}
+
 func (x *DrivingLicenceInfo) SetDrivingLicenceIssuingAuthority(v *v1.StringValue) {
 	x.xxx_hidden_DrivingLicenceIssuingAuthority = v
 }
 
 func (x *DrivingLicenceInfo) SetDrivingLicenceIssuingNation(v v1.NationNumeric) {
 	x.xxx_hidden_DrivingLicenceIssuingNation = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 4)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 5)
 }
 
 func (x *DrivingLicenceInfo) SetDrivingLicenceNumber(v *v1.Ia5StringValue) {
@@ -126,7 +134,12 @@ func (x *DrivingLicenceInfo) SetSignature(v []byte) {
 		v = []byte{}
 	}
 	x.xxx_hidden_Signature = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 3, 4)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 3, 5)
+}
+
+func (x *DrivingLicenceInfo) SetSignatureVerified(v bool) {
+	x.xxx_hidden_SignatureVerified = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 4, 5)
 }
 
 func (x *DrivingLicenceInfo) HasDrivingLicenceIssuingAuthority() bool {
@@ -157,6 +170,13 @@ func (x *DrivingLicenceInfo) HasSignature() bool {
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 3)
 }
 
+func (x *DrivingLicenceInfo) HasSignatureVerified() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 4)
+}
+
 func (x *DrivingLicenceInfo) ClearDrivingLicenceIssuingAuthority() {
 	x.xxx_hidden_DrivingLicenceIssuingAuthority = nil
 }
@@ -173,6 +193,11 @@ func (x *DrivingLicenceInfo) ClearDrivingLicenceNumber() {
 func (x *DrivingLicenceInfo) ClearSignature() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 3)
 	x.xxx_hidden_Signature = nil
+}
+
+func (x *DrivingLicenceInfo) ClearSignatureVerified() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 4)
+	x.xxx_hidden_SignatureVerified = false
 }
 
 type DrivingLicenceInfo_builder struct {
@@ -217,6 +242,8 @@ type DrivingLicenceInfo_builder struct {
 	// - 384-bit curves: ~96 bytes
 	// - 512/521-bit curves: ~128-132 bytes
 	Signature []byte
+	// Indicates if the signature has been successfully verified.
+	SignatureVerified *bool
 }
 
 func (b0 DrivingLicenceInfo_builder) Build() *DrivingLicenceInfo {
@@ -225,13 +252,17 @@ func (b0 DrivingLicenceInfo_builder) Build() *DrivingLicenceInfo {
 	_, _ = b, x
 	x.xxx_hidden_DrivingLicenceIssuingAuthority = b.DrivingLicenceIssuingAuthority
 	if b.DrivingLicenceIssuingNation != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 4)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 5)
 		x.xxx_hidden_DrivingLicenceIssuingNation = *b.DrivingLicenceIssuingNation
 	}
 	x.xxx_hidden_DrivingLicenceNumber = b.DrivingLicenceNumber
 	if b.Signature != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 3, 4)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 3, 5)
 		x.xxx_hidden_Signature = b.Signature
+	}
+	if b.SignatureVerified != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 4, 5)
+		x.xxx_hidden_SignatureVerified = *b.SignatureVerified
 	}
 	return m0
 }
@@ -240,12 +271,13 @@ var File_wayplatform_connect_tachograph_card_v1_driving_licence_info_proto proto
 
 const file_wayplatform_connect_tachograph_card_v1_driving_licence_info_proto_rawDesc = "" +
 	"\n" +
-	"Awayplatform/connect/tachograph/card/v1/driving_licence_info.proto\x12&wayplatform.connect.tachograph.card.v1\x1a;wayplatform/connect/tachograph/dd/v1/ia5_string_value.proto\x1a9wayplatform/connect/tachograph/dd/v1/nation_numeric.proto\x1a7wayplatform/connect/tachograph/dd/v1/string_value.proto\"\x96\x03\n" +
+	"Awayplatform/connect/tachograph/card/v1/driving_licence_info.proto\x12&wayplatform.connect.tachograph.card.v1\x1a;wayplatform/connect/tachograph/dd/v1/ia5_string_value.proto\x1a9wayplatform/connect/tachograph/dd/v1/nation_numeric.proto\x1a7wayplatform/connect/tachograph/dd/v1/string_value.proto\"\xc5\x03\n" +
 	"\x12DrivingLicenceInfo\x12|\n" +
 	"!driving_licence_issuing_authority\x18\x01 \x01(\v21.wayplatform.connect.tachograph.dd.v1.StringValueR\x1edrivingLicenceIssuingAuthority\x12x\n" +
 	"\x1edriving_licence_issuing_nation\x18\x02 \x01(\x0e23.wayplatform.connect.tachograph.dd.v1.NationNumericR\x1bdrivingLicenceIssuingNation\x12j\n" +
 	"\x16driving_licence_number\x18\x03 \x01(\v24.wayplatform.connect.tachograph.dd.v1.Ia5StringValueR\x14drivingLicenceNumber\x12\x1c\n" +
-	"\tsignature\x18\x04 \x01(\fR\tsignatureB\xe4\x02\n" +
+	"\tsignature\x18\x04 \x01(\fR\tsignature\x12-\n" +
+	"\x12signature_verified\x18\x05 \x01(\bR\x11signatureVerifiedB\xe4\x02\n" +
 	"*com.wayplatform.connect.tachograph.card.v1B\x17DrivingLicenceInfoProtoP\x01Z`github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1;cardv1\xa2\x02\x04WCTC\xaa\x02&Wayplatform.Connect.Tachograph.Card.V1\xca\x02&Wayplatform\\Connect\\Tachograph\\Card\\V1\xe2\x022Wayplatform\\Connect\\Tachograph\\Card\\V1\\GPBMetadata\xea\x02*Wayplatform::Connect::Tachograph::Card::V1b\beditionsp\xe8\a"
 
 var file_wayplatform_connect_tachograph_card_v1_driving_licence_info_proto_msgTypes = make([]protoimpl.MessageInfo, 1)

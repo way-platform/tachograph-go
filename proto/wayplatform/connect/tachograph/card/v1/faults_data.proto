@@ -100,4 +100,7 @@ message FaultsData {
   //
   //     Signature ::= OCTET STRING (SIZE(128 for Gen1))
   bytes signature = 2;
+
+  // Indicates if the signature has been successfully verified.
+  bool signature_verified = 3;
 }

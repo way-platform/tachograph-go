@@ -55,4 +55,7 @@ message SpecificConditionsG2 {
   //
   // See Data Dictionary, Section 2.149, `Signature`.
   bytes signature = 4;
+
+  // Indicates if the signature has been successfully verified.
+  bool signature_verified = 5;
 }

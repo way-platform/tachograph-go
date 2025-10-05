@@ -38,6 +38,7 @@ type ApplicationIdentificationG2 struct {
 	xxx_hidden_Company                *ApplicationIdentificationG2_Company  `protobuf:"bytes,6,opt,name=company"`
 	xxx_hidden_Control                *ApplicationIdentificationG2_Control  `protobuf:"bytes,7,opt,name=control"`
 	xxx_hidden_Signature              []byte                                `protobuf:"bytes,8,opt,name=signature"`
+	xxx_hidden_SignatureVerified      bool                                  `protobuf:"varint,9,opt,name=signature_verified,json=signatureVerified"`
 	XXX_raceDetectHookData            protoimpl.RaceDetectHookData
 	XXX_presence                      [1]uint32
 	unknownFields                     protoimpl.UnknownFields
@@ -129,14 +130,21 @@ func (x *ApplicationIdentificationG2) GetSignature() []byte {
 	return nil
 }
 
+func (x *ApplicationIdentificationG2) GetSignatureVerified() bool {
+	if x != nil {
+		return x.xxx_hidden_SignatureVerified
+	}
+	return false
+}
+
 func (x *ApplicationIdentificationG2) SetCardType(v CardType) {
 	x.xxx_hidden_CardType = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 8)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 9)
 }
 
 func (x *ApplicationIdentificationG2) SetTypeOfTachographCardId(v v1.EquipmentType) {
 	x.xxx_hidden_TypeOfTachographCardId = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 8)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 9)
 }
 
 func (x *ApplicationIdentificationG2) SetCardStructureVersion(v *v1.CardStructureVersion) {
@@ -164,7 +172,12 @@ func (x *ApplicationIdentificationG2) SetSignature(v []byte) {
 		v = []byte{}
 	}
 	x.xxx_hidden_Signature = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 7, 8)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 7, 9)
+}
+
+func (x *ApplicationIdentificationG2) SetSignatureVerified(v bool) {
+	x.xxx_hidden_SignatureVerified = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 8, 9)
 }
 
 func (x *ApplicationIdentificationG2) HasCardType() bool {
@@ -223,6 +236,13 @@ func (x *ApplicationIdentificationG2) HasSignature() bool {
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 7)
 }
 
+func (x *ApplicationIdentificationG2) HasSignatureVerified() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 8)
+}
+
 func (x *ApplicationIdentificationG2) ClearCardType() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 0)
 	x.xxx_hidden_CardType = CardType_CARD_TYPE_UNSPECIFIED
@@ -256,6 +276,11 @@ func (x *ApplicationIdentificationG2) ClearControl() {
 func (x *ApplicationIdentificationG2) ClearSignature() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 7)
 	x.xxx_hidden_Signature = nil
+}
+
+func (x *ApplicationIdentificationG2) ClearSignatureVerified() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 8)
+	x.xxx_hidden_SignatureVerified = false
 }
 
 type ApplicationIdentificationG2_builder struct {
@@ -297,6 +322,8 @@ type ApplicationIdentificationG2_builder struct {
 	// - 384-bit curves: ~96 bytes
 	// - 512/521-bit curves: ~128-132 bytes
 	Signature []byte
+	// Indicates if the signature has been successfully verified.
+	SignatureVerified *bool
 }
 
 func (b0 ApplicationIdentificationG2_builder) Build() *ApplicationIdentificationG2 {
@@ -304,11 +331,11 @@ func (b0 ApplicationIdentificationG2_builder) Build() *ApplicationIdentification
 	b, x := &b0, m0
 	_, _ = b, x
 	if b.CardType != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 8)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 9)
 		x.xxx_hidden_CardType = *b.CardType
 	}
 	if b.TypeOfTachographCardId != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 8)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 9)
 		x.xxx_hidden_TypeOfTachographCardId = *b.TypeOfTachographCardId
 	}
 	x.xxx_hidden_CardStructureVersion = b.CardStructureVersion
@@ -317,8 +344,12 @@ func (b0 ApplicationIdentificationG2_builder) Build() *ApplicationIdentification
 	x.xxx_hidden_Company = b.Company
 	x.xxx_hidden_Control = b.Control
 	if b.Signature != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 7, 8)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 7, 9)
 		x.xxx_hidden_Signature = b.Signature
+	}
+	if b.SignatureVerified != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 8, 9)
+		x.xxx_hidden_SignatureVerified = *b.SignatureVerified
 	}
 	return m0
 }
@@ -1093,7 +1124,7 @@ var File_wayplatform_connect_tachograph_card_v1_application_identification_g2_pr
 
 const file_wayplatform_connect_tachograph_card_v1_application_identification_g2_proto_rawDesc = "" +
 	"\n" +
-	"Jwayplatform/connect/tachograph/card/v1/application_identification_g2.proto\x12&wayplatform.connect.tachograph.card.v1\x1a6wayplatform/connect/tachograph/card/v1/card_type.proto\x1aAwayplatform/connect/tachograph/dd/v1/card_structure_version.proto\x1a9wayplatform/connect/tachograph/dd/v1/equipment_type.proto\"\xef\r\n" +
+	"Jwayplatform/connect/tachograph/card/v1/application_identification_g2.proto\x12&wayplatform.connect.tachograph.card.v1\x1a6wayplatform/connect/tachograph/card/v1/card_type.proto\x1aAwayplatform/connect/tachograph/dd/v1/card_structure_version.proto\x1a9wayplatform/connect/tachograph/dd/v1/equipment_type.proto\"\x9e\x0e\n" +
 	"\x1bApplicationIdentificationG2\x12M\n" +
 	"\tcard_type\x18\x01 \x01(\x0e20.wayplatform.connect.tachograph.card.v1.CardTypeR\bcardType\x12o\n" +
 	"\x1atype_of_tachograph_card_id\x18\x02 \x01(\x0e23.wayplatform.connect.tachograph.dd.v1.EquipmentTypeR\x16typeOfTachographCardId\x12p\n" +
@@ -1102,7 +1133,8 @@ const file_wayplatform_connect_tachograph_card_v1_application_identification_g2_
 	"\bworkshop\x18\x05 \x01(\v2L.wayplatform.connect.tachograph.card.v1.ApplicationIdentificationG2.WorkshopR\bworkshop\x12e\n" +
 	"\acompany\x18\x06 \x01(\v2K.wayplatform.connect.tachograph.card.v1.ApplicationIdentificationG2.CompanyR\acompany\x12e\n" +
 	"\acontrol\x18\a \x01(\v2K.wayplatform.connect.tachograph.card.v1.ApplicationIdentificationG2.ControlR\acontrol\x12\x1c\n" +
-	"\tsignature\x18\b \x01(\fR\tsignature\x1a\xe2\x03\n" +
+	"\tsignature\x18\b \x01(\fR\tsignature\x12-\n" +
+	"\x12signature_verified\x18\t \x01(\bR\x11signatureVerified\x1a\xe2\x03\n" +
 	"\x06Driver\x121\n" +
 	"\x15events_per_type_count\x18\x01 \x01(\x05R\x12eventsPerTypeCount\x121\n" +
 	"\x15faults_per_type_count\x18\x02 \x01(\x05R\x12faultsPerTypeCount\x12:\n" +

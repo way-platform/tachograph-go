@@ -23,17 +23,18 @@ const (
 // Represents data from EF_Application_Identification_V2, which contains
 // additional capacity information for Gen2v2 cards.
 type ApplicationIdentificationV2 struct {
-	state                  protoimpl.MessageState                `protogen:"opaque.v1"`
-	xxx_hidden_CardType    CardType                              `protobuf:"varint,1,opt,name=card_type,json=cardType,enum=wayplatform.connect.tachograph.card.v1.CardType"`
-	xxx_hidden_Driver      *ApplicationIdentificationV2_Driver   `protobuf:"bytes,2,opt,name=driver"`
-	xxx_hidden_Workshop    *ApplicationIdentificationV2_Workshop `protobuf:"bytes,3,opt,name=workshop"`
-	xxx_hidden_Company     *ApplicationIdentificationV2_Company  `protobuf:"bytes,4,opt,name=company"`
-	xxx_hidden_Control     *ApplicationIdentificationV2_Control  `protobuf:"bytes,5,opt,name=control"`
-	xxx_hidden_Signature   []byte                                `protobuf:"bytes,6,opt,name=signature"`
-	XXX_raceDetectHookData protoimpl.RaceDetectHookData
-	XXX_presence           [1]uint32
-	unknownFields          protoimpl.UnknownFields
-	sizeCache              protoimpl.SizeCache
+	state                        protoimpl.MessageState                `protogen:"opaque.v1"`
+	xxx_hidden_CardType          CardType                              `protobuf:"varint,1,opt,name=card_type,json=cardType,enum=wayplatform.connect.tachograph.card.v1.CardType"`
+	xxx_hidden_Driver            *ApplicationIdentificationV2_Driver   `protobuf:"bytes,2,opt,name=driver"`
+	xxx_hidden_Workshop          *ApplicationIdentificationV2_Workshop `protobuf:"bytes,3,opt,name=workshop"`
+	xxx_hidden_Company           *ApplicationIdentificationV2_Company  `protobuf:"bytes,4,opt,name=company"`
+	xxx_hidden_Control           *ApplicationIdentificationV2_Control  `protobuf:"bytes,5,opt,name=control"`
+	xxx_hidden_Signature         []byte                                `protobuf:"bytes,6,opt,name=signature"`
+	xxx_hidden_SignatureVerified bool                                  `protobuf:"varint,7,opt,name=signature_verified,json=signatureVerified"`
+	XXX_raceDetectHookData       protoimpl.RaceDetectHookData
+	XXX_presence                 [1]uint32
+	unknownFields                protoimpl.UnknownFields
+	sizeCache                    protoimpl.SizeCache
 }
 
 func (x *ApplicationIdentificationV2) Reset() {
@@ -105,9 +106,16 @@ func (x *ApplicationIdentificationV2) GetSignature() []byte {
 	return nil
 }
 
+func (x *ApplicationIdentificationV2) GetSignatureVerified() bool {
+	if x != nil {
+		return x.xxx_hidden_SignatureVerified
+	}
+	return false
+}
+
 func (x *ApplicationIdentificationV2) SetCardType(v CardType) {
 	x.xxx_hidden_CardType = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 6)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 7)
 }
 
 func (x *ApplicationIdentificationV2) SetDriver(v *ApplicationIdentificationV2_Driver) {
@@ -131,7 +139,12 @@ func (x *ApplicationIdentificationV2) SetSignature(v []byte) {
 		v = []byte{}
 	}
 	x.xxx_hidden_Signature = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 5, 6)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 5, 7)
+}
+
+func (x *ApplicationIdentificationV2) SetSignatureVerified(v bool) {
+	x.xxx_hidden_SignatureVerified = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 6, 7)
 }
 
 func (x *ApplicationIdentificationV2) HasCardType() bool {
@@ -176,6 +189,13 @@ func (x *ApplicationIdentificationV2) HasSignature() bool {
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 5)
 }
 
+func (x *ApplicationIdentificationV2) HasSignatureVerified() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 6)
+}
+
 func (x *ApplicationIdentificationV2) ClearCardType() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 0)
 	x.xxx_hidden_CardType = CardType_CARD_TYPE_UNSPECIFIED
@@ -200,6 +220,11 @@ func (x *ApplicationIdentificationV2) ClearControl() {
 func (x *ApplicationIdentificationV2) ClearSignature() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 5)
 	x.xxx_hidden_Signature = nil
+}
+
+func (x *ApplicationIdentificationV2) ClearSignatureVerified() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 6)
+	x.xxx_hidden_SignatureVerified = false
 }
 
 type ApplicationIdentificationV2_builder struct {
@@ -233,6 +258,8 @@ type ApplicationIdentificationV2_builder struct {
 	// - 384-bit curves: ~96 bytes
 	// - 512/521-bit curves: ~128-132 bytes
 	Signature []byte
+	// Indicates if the signature has been successfully verified.
+	SignatureVerified *bool
 }
 
 func (b0 ApplicationIdentificationV2_builder) Build() *ApplicationIdentificationV2 {
@@ -240,7 +267,7 @@ func (b0 ApplicationIdentificationV2_builder) Build() *ApplicationIdentification
 	b, x := &b0, m0
 	_, _ = b, x
 	if b.CardType != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 6)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 7)
 		x.xxx_hidden_CardType = *b.CardType
 	}
 	x.xxx_hidden_Driver = b.Driver
@@ -248,8 +275,12 @@ func (b0 ApplicationIdentificationV2_builder) Build() *ApplicationIdentification
 	x.xxx_hidden_Company = b.Company
 	x.xxx_hidden_Control = b.Control
 	if b.Signature != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 5, 6)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 5, 7)
 		x.xxx_hidden_Signature = b.Signature
+	}
+	if b.SignatureVerified != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 6, 7)
+		x.xxx_hidden_SignatureVerified = *b.SignatureVerified
 	}
 	return m0
 }
@@ -922,14 +953,15 @@ var File_wayplatform_connect_tachograph_card_v1_application_identification_v2_pr
 
 const file_wayplatform_connect_tachograph_card_v1_application_identification_v2_proto_rawDesc = "" +
 	"\n" +
-	"Jwayplatform/connect/tachograph/card/v1/application_identification_v2.proto\x12&wayplatform.connect.tachograph.card.v1\x1a6wayplatform/connect/tachograph/card/v1/card_type.proto\"\xc6\v\n" +
+	"Jwayplatform/connect/tachograph/card/v1/application_identification_v2.proto\x12&wayplatform.connect.tachograph.card.v1\x1a6wayplatform/connect/tachograph/card/v1/card_type.proto\"\xf5\v\n" +
 	"\x1bApplicationIdentificationV2\x12M\n" +
 	"\tcard_type\x18\x01 \x01(\x0e20.wayplatform.connect.tachograph.card.v1.CardTypeR\bcardType\x12b\n" +
 	"\x06driver\x18\x02 \x01(\v2J.wayplatform.connect.tachograph.card.v1.ApplicationIdentificationV2.DriverR\x06driver\x12h\n" +
 	"\bworkshop\x18\x03 \x01(\v2L.wayplatform.connect.tachograph.card.v1.ApplicationIdentificationV2.WorkshopR\bworkshop\x12e\n" +
 	"\acompany\x18\x04 \x01(\v2K.wayplatform.connect.tachograph.card.v1.ApplicationIdentificationV2.CompanyR\acompany\x12e\n" +
 	"\acontrol\x18\x05 \x01(\v2K.wayplatform.connect.tachograph.card.v1.ApplicationIdentificationV2.ControlR\acontrol\x12\x1c\n" +
-	"\tsignature\x18\x06 \x01(\fR\tsignature\x1a\xc4\x02\n" +
+	"\tsignature\x18\x06 \x01(\fR\tsignature\x12-\n" +
+	"\x12signature_verified\x18\a \x01(\bR\x11signatureVerified\x1a\xc4\x02\n" +
 	"\x06Driver\x127\n" +
 	"\x18length_of_following_data\x18\x01 \x01(\x05R\x15lengthOfFollowingData\x12A\n" +
 	"\x1dborder_crossing_records_count\x18\x02 \x01(\x05R\x1aborderCrossingRecordsCount\x129\n" +

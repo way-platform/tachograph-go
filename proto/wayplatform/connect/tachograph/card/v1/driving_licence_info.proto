@@ -69,4 +69,7 @@ message DrivingLicenceInfo {
   // - 384-bit curves: ~96 bytes
   // - 512/521-bit curves: ~128-132 bytes
   bytes signature = 4;
+
+  // Indicates if the signature has been successfully verified.
+  bool signature_verified = 5;
 }

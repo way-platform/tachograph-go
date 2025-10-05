@@ -47,13 +47,14 @@ const (
 // fault_type field, allowing consumers to filter by type while maintaining the
 // temporal order in which faults actually occurred.
 type FaultsData struct {
-	state                  protoimpl.MessageState `protogen:"opaque.v1"`
-	xxx_hidden_Faults      *[]*FaultsData_Record  `protobuf:"bytes,1,rep,name=faults"`
-	xxx_hidden_Signature   []byte                 `protobuf:"bytes,2,opt,name=signature"`
-	XXX_raceDetectHookData protoimpl.RaceDetectHookData
-	XXX_presence           [1]uint32
-	unknownFields          protoimpl.UnknownFields
-	sizeCache              protoimpl.SizeCache
+	state                        protoimpl.MessageState `protogen:"opaque.v1"`
+	xxx_hidden_Faults            *[]*FaultsData_Record  `protobuf:"bytes,1,rep,name=faults"`
+	xxx_hidden_Signature         []byte                 `protobuf:"bytes,2,opt,name=signature"`
+	xxx_hidden_SignatureVerified bool                   `protobuf:"varint,3,opt,name=signature_verified,json=signatureVerified"`
+	XXX_raceDetectHookData       protoimpl.RaceDetectHookData
+	XXX_presence                 [1]uint32
+	unknownFields                protoimpl.UnknownFields
+	sizeCache                    protoimpl.SizeCache
 }
 
 func (x *FaultsData) Reset() {
@@ -97,6 +98,13 @@ func (x *FaultsData) GetSignature() []byte {
 	return nil
 }
 
+func (x *FaultsData) GetSignatureVerified() bool {
+	if x != nil {
+		return x.xxx_hidden_SignatureVerified
+	}
+	return false
+}
+
 func (x *FaultsData) SetFaults(v []*FaultsData_Record) {
 	x.xxx_hidden_Faults = &v
 }
@@ -106,7 +114,12 @@ func (x *FaultsData) SetSignature(v []byte) {
 		v = []byte{}
 	}
 	x.xxx_hidden_Signature = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 2)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 3)
+}
+
+func (x *FaultsData) SetSignatureVerified(v bool) {
+	x.xxx_hidden_SignatureVerified = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 3)
 }
 
 func (x *FaultsData) HasSignature() bool {
@@ -116,9 +129,21 @@ func (x *FaultsData) HasSignature() bool {
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 1)
 }
 
+func (x *FaultsData) HasSignatureVerified() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 2)
+}
+
 func (x *FaultsData) ClearSignature() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 1)
 	x.xxx_hidden_Signature = nil
+}
+
+func (x *FaultsData) ClearSignatureVerified() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 2)
+	x.xxx_hidden_SignatureVerified = false
 }
 
 type FaultsData_builder struct {
@@ -134,6 +159,8 @@ type FaultsData_builder struct {
 	//
 	//	Signature ::= OCTET STRING (SIZE(128 for Gen1))
 	Signature []byte
+	// Indicates if the signature has been successfully verified.
+	SignatureVerified *bool
 }
 
 func (b0 FaultsData_builder) Build() *FaultsData {
@@ -142,8 +169,12 @@ func (b0 FaultsData_builder) Build() *FaultsData {
 	_, _ = b, x
 	x.xxx_hidden_Faults = &b.Faults
 	if b.Signature != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 2)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 3)
 		x.xxx_hidden_Signature = b.Signature
+	}
+	if b.SignatureVerified != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 3)
+		x.xxx_hidden_SignatureVerified = *b.SignatureVerified
 	}
 	return m0
 }
@@ -408,11 +439,12 @@ var File_wayplatform_connect_tachograph_card_v1_faults_data_proto protoreflect.F
 
 const file_wayplatform_connect_tachograph_card_v1_faults_data_proto_rawDesc = "" +
 	"\n" +
-	"8wayplatform/connect/tachograph/card/v1/faults_data.proto\x12&wayplatform.connect.tachograph.card.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a;wayplatform/connect/tachograph/dd/v1/event_fault_type.proto\x1aNwayplatform/connect/tachograph/dd/v1/vehicle_registration_identification.proto\"\x9e\x04\n" +
+	"8wayplatform/connect/tachograph/card/v1/faults_data.proto\x12&wayplatform.connect.tachograph.card.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a;wayplatform/connect/tachograph/dd/v1/event_fault_type.proto\x1aNwayplatform/connect/tachograph/dd/v1/vehicle_registration_identification.proto\"\xcd\x04\n" +
 	"\n" +
 	"FaultsData\x12Q\n" +
 	"\x06faults\x18\x01 \x03(\v29.wayplatform.connect.tachograph.card.v1.FaultsData.RecordR\x06faults\x12\x1c\n" +
-	"\tsignature\x18\x02 \x01(\fR\tsignature\x1a\x9e\x03\n" +
+	"\tsignature\x18\x02 \x01(\fR\tsignature\x12-\n" +
+	"\x12signature_verified\x18\x03 \x01(\bR\x11signatureVerified\x1a\x9e\x03\n" +
 	"\x06Record\x12\x14\n" +
 	"\x05valid\x18\x01 \x01(\bR\x05valid\x12S\n" +
 	"\n" +

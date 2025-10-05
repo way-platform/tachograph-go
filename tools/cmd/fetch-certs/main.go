@@ -88,9 +88,6 @@ type CertificateEntry struct {
 	// ExpirationDate is when the certificate expires (ISO 8601 format)
 	ExpirationDate string `json:"expirationDate,omitempty"`
 
-	// Filename is the suggested filename for embedded storage
-	Filename string `json:"filename"`
-
 	// Path is the relative path to the certificate file from the index location
 	Path string `json:"path"`
 }
@@ -136,13 +133,12 @@ func main() {
 	// For the root certificate, CAR and CHR are the same (self-signed)
 	// Country is not set for the root certificate as it's the European-level CA
 	index.Root = &CertificateEntry{
-		CAR:      fmt.Sprintf("%d", ercaKeyID),
-		CHR:      fmt.Sprintf("%d", ercaKeyID), // Self-signed
-		URL:      "https://dtc.jrc.ec.europa.eu/erca_of_doc/EC_PK.zip",
-		Filename: "EC_PK.bin",
-		Path:     "root/EC_PK.bin",
+		CAR:  fmt.Sprintf("%d", ercaKeyID),
+		CHR:  fmt.Sprintf("%d", ercaKeyID), // Self-signed
+		URL:  "https://dtc.jrc.ec.europa.eu/erca_of_doc/EC_PK.zip",
+		Path: "root/EC_PK.bin",
 	}
-	log.Printf("Root certificate: %s (Key ID: %s)", index.Root.Filename, index.Root.CAR)
+	log.Printf("Root certificate: %s (Key ID: %s)", index.Root.Path, index.Root.CAR)
 
 	// Extract public key components for signature recovery
 	ercaModulus, ercaExponent, err := extractERCA(ercaCertData)
@@ -340,7 +336,6 @@ func indexAndDownloadGen1Certificates(ctx context.Context, baseURL, outputDir st
 				Country:        meta.country,
 				URL:            meta.downloadURL,
 				ExpirationDate: eov,
-				Filename:       filename,
 				Path:           filepath.Join("g1", filename),
 			}
 
@@ -441,7 +436,6 @@ func indexAndDownloadGen2Certificates(ctx context.Context, baseURL, outputDir st
 				Country:        meta.country,
 				URL:            meta.downloadURL,
 				ExpirationDate: meta.expirationDate,
-				Filename:       filename,
 				Path:           filepath.Join("g2", filename),
 			}
 
@@ -659,82 +653,6 @@ func extractGen1CHRAndEOV(cPrime []byte) (chr uint64, eov string, err error) {
 	eov = eovTime.UTC().Format(time.RFC3339)
 
 	return chr, eov, nil
-}
-
-// extractGen1PublicKey extracts the RSA public key (modulus and exponent) from a Gen1 certificate.
-// This requires signature recovery using the issuer's public key.
-func extractGen1PublicKey(certData []byte, issuerModulus, issuerExponent []byte) (modulus []byte, exponent []byte, err error) {
-	const (
-		lenCert = 194
-		idxSig  = 0
-		idxCn   = 128
-		idxCAR  = 186
-	)
-
-	if len(certData) != lenCert {
-		return nil, nil, fmt.Errorf("invalid certificate size: got %d, want %d", len(certData), lenCert)
-	}
-
-	// Extract signature and non-recoverable part
-	signature := certData[idxSig:idxCn]
-	cnPrime := certData[idxCn:idxCAR]
-
-	// Perform RSA signature recovery
-	n := new(big.Int).SetBytes(issuerModulus)
-	e := new(big.Int).SetBytes(issuerExponent)
-	sigBig := new(big.Int).SetBytes(signature)
-
-	srPrimeBig := new(big.Int).Exp(sigBig, e, n)
-	srPrime := srPrimeBig.Bytes()
-
-	// Pad to 128 bytes if necessary
-	if len(srPrime) < 128 {
-		padded := make([]byte, 128)
-		copy(padded[128-len(srPrime):], srPrime)
-		srPrime = padded
-	} else if len(srPrime) > 128 {
-		return nil, nil, fmt.Errorf("recovered signature too long: %d bytes", len(srPrime))
-	}
-
-	// Verify structure
-	const (
-		srPrimeHeader  = 0x6A
-		srPrimeTrailer = 0xBC
-		lenCrPrime     = 106
-		lenHPrime      = 20
-	)
-
-	if srPrime[0] != srPrimeHeader || srPrime[127] != srPrimeTrailer {
-		return nil, nil, fmt.Errorf("invalid recovered signature format")
-	}
-
-	crPrime := srPrime[1 : 1+lenCrPrime]
-	hPrime := srPrime[1+lenCrPrime : 1+lenCrPrime+lenHPrime]
-
-	// Reconstruct and verify
-	cPrime := append(crPrime, cnPrime...)
-	hash := sha1.Sum(cPrime)
-	for i := range hPrime {
-		if hPrime[i] != hash[i] {
-			return nil, nil, fmt.Errorf("hash mismatch")
-		}
-	}
-
-	// Extract modulus (bytes 28-155) and exponent (bytes 156-163)
-	const (
-		idxModulus  = 28
-		lenModulus  = 128
-		idxExponent = 156
-		lenExponent = 8
-	)
-
-	modulus = make([]byte, lenModulus)
-	copy(modulus, cPrime[idxModulus:idxModulus+lenModulus])
-
-	exponent = make([]byte, lenExponent)
-	copy(exponent, cPrime[idxExponent:idxExponent+lenExponent])
-
-	return modulus, exponent, nil
 }
 
 // extractGen2CAR extracts the Certificate Authority Reference from a Gen2 certificate.
