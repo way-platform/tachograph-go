@@ -69,6 +69,16 @@ func Generate() error {
 	})
 }
 
+// CertCache downloads and indexes all certificates from the EU DTC website.
+func CertCache() error {
+	return cmd(
+		root("tools"),
+		"go", "run",
+		"./cmd/fetch-certs",
+		"-dir", root("internal", "cert", "certcache"),
+	).Run()
+}
+
 // CLI builds the CLI.
 func CLI() error {
 	return cmd(root("cmd/tachograph"), "go", "install", ".").Run()

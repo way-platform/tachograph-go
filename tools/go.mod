@@ -11,7 +11,11 @@ tool (
 	google.golang.org/protobuf/cmd/protoc-gen-go
 )
 
-require github.com/magefile/mage v1.15.0
+require (
+	github.com/magefile/mage v1.15.0
+	golang.org/x/net v0.41.0
+	golang.org/x/sync v0.16.0
+)
 
 require (
 	4d63.com/gocheckcompilerdirectives v1.3.0 // indirect
@@ -314,8 +318,6 @@ require (
 	golang.org/x/exp/typeparams v0.0.0-20250210185358-939b2ce775ac // indirect
 	golang.org/x/image v0.27.0 // indirect
 	golang.org/x/mod v0.25.0 // indirect
-	golang.org/x/net v0.41.0 // indirect
-	golang.org/x/sync v0.16.0 // indirect
 	golang.org/x/sys v0.35.0 // indirect
 	golang.org/x/term v0.33.0 // indirect
 	golang.org/x/text v0.27.0 // indirect
