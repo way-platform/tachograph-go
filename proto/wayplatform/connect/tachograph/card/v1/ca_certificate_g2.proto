@@ -2,7 +2,7 @@ edition = "2023";
 
 package wayplatform.connect.tachograph.card.v1;
 
-import "wayplatform/connect/tachograph/dd/v1/ecc_certificate.proto";
+import "wayplatform/connect/tachograph/security/v1/ecc_certificate.proto";
 
 // CaCertificateG2 holds data from EF CA_Certificate (FID 'C108h').
 //
@@ -18,6 +18,6 @@ import "wayplatform/connect/tachograph/dd/v1/ecc_certificate.proto";
 // For Generation 1 cards, see CaCertificate.
 message CaCertificateG2 {
   // ECC certificate containing the Member State CA's public key.
-  dd.v1.EccCertificate ecc_certificate = 1;
+  security.v1.EccCertificate ecc_certificate = 1;
 }
 

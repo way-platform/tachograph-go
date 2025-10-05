@@ -2,7 +2,7 @@ edition = "2023";
 
 package wayplatform.connect.tachograph.card.v1;
 
-import "wayplatform/connect/tachograph/dd/v1/rsa_certificate.proto";
+import "wayplatform/connect/tachograph/security/v1/rsa_certificate.proto";
 
 // Data from EF CA_Certificate (File ID 'C108h') for Generation 1 cards.
 //
@@ -21,5 +21,5 @@ import "wayplatform/connect/tachograph/dd/v1/rsa_certificate.proto";
 // Note: For Generation 2 cards, see CaCertificateG2.
 message CaCertificate {
   // RSA certificate containing the Member State CA's public key.
-  dd.v1.RsaCertificate rsa_certificate = 1;
+  security.v1.RsaCertificate rsa_certificate = 1;
 }

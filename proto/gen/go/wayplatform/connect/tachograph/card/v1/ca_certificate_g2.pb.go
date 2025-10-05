@@ -7,7 +7,7 @@
 package cardv1
 
 import (
-	v1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
+	v1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/security/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -106,18 +106,18 @@ var File_wayplatform_connect_tachograph_card_v1_ca_certificate_g2_proto protoref
 
 const file_wayplatform_connect_tachograph_card_v1_ca_certificate_g2_proto_rawDesc = "" +
 	"\n" +
-	">wayplatform/connect/tachograph/card/v1/ca_certificate_g2.proto\x12&wayplatform.connect.tachograph.card.v1\x1a:wayplatform/connect/tachograph/dd/v1/ecc_certificate.proto\"p\n" +
-	"\x0fCaCertificateG2\x12]\n" +
-	"\x0fecc_certificate\x18\x01 \x01(\v24.wayplatform.connect.tachograph.dd.v1.EccCertificateR\x0eeccCertificateB\xe1\x02\n" +
+	">wayplatform/connect/tachograph/card/v1/ca_certificate_g2.proto\x12&wayplatform.connect.tachograph.card.v1\x1a@wayplatform/connect/tachograph/security/v1/ecc_certificate.proto\"v\n" +
+	"\x0fCaCertificateG2\x12c\n" +
+	"\x0fecc_certificate\x18\x01 \x01(\v2:.wayplatform.connect.tachograph.security.v1.EccCertificateR\x0eeccCertificateB\xe1\x02\n" +
 	"*com.wayplatform.connect.tachograph.card.v1B\x14CaCertificateG2ProtoP\x01Z`github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1;cardv1\xa2\x02\x04WCTC\xaa\x02&Wayplatform.Connect.Tachograph.Card.V1\xca\x02&Wayplatform\\Connect\\Tachograph\\Card\\V1\xe2\x022Wayplatform\\Connect\\Tachograph\\Card\\V1\\GPBMetadata\xea\x02*Wayplatform::Connect::Tachograph::Card::V1b\beditionsp\xe8\a"
 
 var file_wayplatform_connect_tachograph_card_v1_ca_certificate_g2_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_wayplatform_connect_tachograph_card_v1_ca_certificate_g2_proto_goTypes = []any{
 	(*CaCertificateG2)(nil),   // 0: wayplatform.connect.tachograph.card.v1.CaCertificateG2
-	(*v1.EccCertificate)(nil), // 1: wayplatform.connect.tachograph.dd.v1.EccCertificate
+	(*v1.EccCertificate)(nil), // 1: wayplatform.connect.tachograph.security.v1.EccCertificate
 }
 var file_wayplatform_connect_tachograph_card_v1_ca_certificate_g2_proto_depIdxs = []int32{
-	1, // 0: wayplatform.connect.tachograph.card.v1.CaCertificateG2.ecc_certificate:type_name -> wayplatform.connect.tachograph.dd.v1.EccCertificate
+	1, // 0: wayplatform.connect.tachograph.card.v1.CaCertificateG2.ecc_certificate:type_name -> wayplatform.connect.tachograph.security.v1.EccCertificate
 	1, // [1:1] is the sub-list for method output_type
 	1, // [1:1] is the sub-list for method input_type
 	1, // [1:1] is the sub-list for extension type_name

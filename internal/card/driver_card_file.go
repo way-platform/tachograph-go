@@ -9,7 +9,6 @@ import (
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/reflect/protoreflect"
 
-	"github.com/way-platform/tachograph-go/internal/dd"
 	"github.com/way-platform/tachograph-go/internal/security"
 	cardv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1"
 	ddv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
@@ -504,7 +503,7 @@ func unmarshalDriverCardFile(input *cardv1.RawCardFile) (*cardv1.DriverCardFile,
 			if tachographDF == nil {
 				tachographDF = &cardv1.DriverCardFile_Tachograph{}
 			}
-			rsaCert, err := dd.UnmarshalOptions{}.UnmarshalRsaCertificate(record.GetValue())
+			rsaCert, err := security.UnmarshalRsaCertificate(record.GetValue())
 			if err != nil {
 				return nil, fmt.Errorf("failed to parse EF_CARD_CERTIFICATE: %w", err)
 			}
@@ -524,7 +523,7 @@ func unmarshalDriverCardFile(input *cardv1.RawCardFile) (*cardv1.DriverCardFile,
 			if tachographG2DF == nil {
 				tachographG2DF = &cardv1.DriverCardFile_TachographG2{}
 			}
-			eccCert, err := dd.UnmarshalOptions{}.UnmarshalEccCertificate(record.GetValue())
+			eccCert, err := security.UnmarshalEccCertificate(record.GetValue())
 			if err != nil {
 				return nil, fmt.Errorf("failed to parse EF_CARD_MA_CERTIFICATE: %w", err)
 			}
@@ -544,7 +543,7 @@ func unmarshalDriverCardFile(input *cardv1.RawCardFile) (*cardv1.DriverCardFile,
 			if tachographG2DF == nil {
 				tachographG2DF = &cardv1.DriverCardFile_TachographG2{}
 			}
-			eccCert, err := dd.UnmarshalOptions{}.UnmarshalEccCertificate(record.GetValue())
+			eccCert, err := security.UnmarshalEccCertificate(record.GetValue())
 			if err != nil {
 				return nil, fmt.Errorf("failed to parse EF_CARD_SIGN_CERTIFICATE: %w", err)
 			}
@@ -563,7 +562,7 @@ func unmarshalDriverCardFile(input *cardv1.RawCardFile) (*cardv1.DriverCardFile,
 				if tachographDF == nil {
 					tachographDF = &cardv1.DriverCardFile_Tachograph{}
 				}
-				rsaCert, err := dd.UnmarshalOptions{}.UnmarshalRsaCertificate(record.GetValue())
+				rsaCert, err := security.UnmarshalRsaCertificate(record.GetValue())
 				if err != nil {
 					return nil, fmt.Errorf("failed to parse EF_CA_CERTIFICATE (Gen1): %w", err)
 				}
@@ -574,7 +573,7 @@ func unmarshalDriverCardFile(input *cardv1.RawCardFile) (*cardv1.DriverCardFile,
 				if tachographG2DF == nil {
 					tachographG2DF = &cardv1.DriverCardFile_TachographG2{}
 				}
-				eccCert, err := dd.UnmarshalOptions{}.UnmarshalEccCertificate(record.GetValue())
+				eccCert, err := security.UnmarshalEccCertificate(record.GetValue())
 				if err != nil {
 					return nil, fmt.Errorf("failed to parse EF_CA_CERTIFICATE (Gen2): %w", err)
 				}
@@ -597,7 +596,7 @@ func unmarshalDriverCardFile(input *cardv1.RawCardFile) (*cardv1.DriverCardFile,
 			if tachographG2DF == nil {
 				tachographG2DF = &cardv1.DriverCardFile_TachographG2{}
 			}
-			eccCert, err := dd.UnmarshalOptions{}.UnmarshalEccCertificate(record.GetValue())
+			eccCert, err := security.UnmarshalEccCertificate(record.GetValue())
 			if err != nil {
 				return nil, fmt.Errorf("failed to parse EF_LINK_CERTIFICATE: %w", err)
 			}
@@ -1084,21 +1083,13 @@ func (o VerifyOptions) verifyGen1Certificates(ctx context.Context, tachograph *c
 		return fmt.Errorf("card certificate is missing")
 	}
 
-	var caCert *ddv1.RsaCertificate
+	var caCert *securityv1.RsaCertificate
 	var err error
-
-	// Convert certificates to security types for verification
-	cardCertSec, err := dd.ConvertRsaCertificateToSecurity(cardCert)
-	if err != nil {
-		return fmt.Errorf("failed to convert card certificate: %w", err)
-	}
-
-	var caCertSec *securityv1.RsaCertificate
 
 	if o.CertificateResolver != nil {
 		// Use certificate resolver to fetch CA certificate
-		car := fmt.Sprintf("%d", cardCert.GetCertificateAuthorityReference())
-		caCertSec, err = o.CertificateResolver.GetRsaCertificate(ctx, car)
+		car := cardCert.GetCertificateAuthorityReference()
+		caCert, err = o.CertificateResolver.GetRsaCertificate(ctx, car)
 		if err != nil {
 			return fmt.Errorf("failed to fetch CA certificate from resolver: %w", err)
 		}
@@ -1106,7 +1097,7 @@ func (o VerifyOptions) verifyGen1Certificates(ctx context.Context, tachograph *c
 		// For RSA certificates, the public key is extracted during signature recovery.
 		// If the CA certificate doesn't have its public key yet, we need to verify it
 		// against the root CA first to populate it.
-		if len(caCertSec.GetRsaModulus()) == 0 || len(caCertSec.GetRsaExponent()) == 0 {
+		if len(caCert.GetRsaModulus()) == 0 || len(caCert.GetRsaExponent()) == 0 {
 			// Fetch the root CA certificate
 			rootCert, err := o.CertificateResolver.GetRootCertificate(ctx)
 			if err != nil {
@@ -1114,7 +1105,7 @@ func (o VerifyOptions) verifyGen1Certificates(ctx context.Context, tachograph *c
 			}
 
 			// Verify the CA certificate against the root CA to populate its public key
-			if err := security.VerifyRsaCertificateWithRoot(caCertSec, rootCert); err != nil {
+			if err := security.VerifyRsaCertificateWithRoot(caCert, rootCert); err != nil {
 				return fmt.Errorf("CA certificate verification failed: %w", err)
 			}
 		}
@@ -1124,32 +1115,14 @@ func (o VerifyOptions) verifyGen1Certificates(ctx context.Context, tachograph *c
 		if caCert == nil {
 			return fmt.Errorf("CA certificate is missing from card file")
 		}
-		caCertSec, err = dd.ConvertRsaCertificateToSecurity(caCert)
-		if err != nil {
-			return fmt.Errorf("failed to convert CA certificate: %w", err)
-		}
 	}
 
 	// Verify the card certificate using the CA certificate
-	if err := security.VerifyRsaCertificateWithCA(cardCertSec, caCertSec); err != nil {
+	if err := security.VerifyRsaCertificateWithCA(cardCert, caCert); err != nil {
 		return fmt.Errorf("card certificate verification failed: %w", err)
 	}
 
-	// Copy the verification results back to the original ddv1 certificate
-	cardCert.SetSignatureValid(cardCertSec.GetSignatureValid())
-	cardCert.SetCertificateHolderReference(parseUint64(cardCertSec.GetCertificateHolderReference()))
-	cardCert.SetEndOfValidity(cardCertSec.GetEndOfValidity())
-	cardCert.SetRsaModulus(cardCertSec.GetRsaModulus())
-	cardCert.SetRsaExponent(cardCertSec.GetRsaExponent())
-
 	return nil
-}
-
-// parseUint64 converts a decimal string to uint64, returning 0 on error.
-func parseUint64(s string) uint64 {
-	var v uint64
-	_, _ = fmt.Sscanf(s, "%d", &v)
-	return v
 }
 
 // verifyGen2Certificates verifies Generation 2 ECC certificates.
@@ -1162,41 +1135,28 @@ func (o VerifyOptions) verifyGen2Certificates(ctx context.Context, tachographG2 
 		return fmt.Errorf("card sign certificate is missing")
 	}
 
-	// Convert card sign certificate to security type for verification
-	cardSignCertSec, err := dd.ConvertEccCertificateToSecurity(cardSignCert)
-	if err != nil {
-		return fmt.Errorf("failed to convert card sign certificate: %w", err)
-	}
-
-	var caCertSec *securityv1.EccCertificate
+	var caCert *securityv1.EccCertificate
+	var err error
 
 	if o.CertificateResolver != nil {
 		// Use certificate resolver to fetch CA certificate
-		car := fmt.Sprintf("%d", cardSignCert.GetCertificateAuthorityReference())
-		caCertSec, err = o.CertificateResolver.GetEccCertificate(ctx, car)
+		car := cardSignCert.GetCertificateAuthorityReference()
+		caCert, err = o.CertificateResolver.GetEccCertificate(ctx, car)
 		if err != nil {
 			return fmt.Errorf("failed to fetch CA certificate from resolver: %w", err)
 		}
 	} else {
 		// Fall back to embedded CA certificate from card file
-		caCert := tachographG2.GetCaCertificate().GetEccCertificate()
+		caCert = tachographG2.GetCaCertificate().GetEccCertificate()
 		if caCert == nil {
 			return fmt.Errorf("CA certificate is missing from card file")
-		}
-		caCertSec, err = dd.ConvertEccCertificateToSecurity(caCert)
-		if err != nil {
-			return fmt.Errorf("failed to convert CA certificate: %w", err)
 		}
 	}
 
 	// Verify the card sign certificate using the CA certificate
-	if err := security.VerifyEccCertificateWithCA(cardSignCertSec, caCertSec); err != nil {
+	if err := security.VerifyEccCertificateWithCA(cardSignCert, caCert); err != nil {
 		return fmt.Errorf("card sign certificate verification failed: %w", err)
 	}
-
-	// Copy the verification results back to the original ddv1 certificate
-	cardSignCert.SetSignatureValid(cardSignCertSec.GetSignatureValid())
-	cardSignCert.SetCertificateHolderReference(parseUint64(cardSignCertSec.GetCertificateHolderReference()))
 
 	return nil
 }

@@ -2,7 +2,7 @@ edition = "2023";
 
 package wayplatform.connect.tachograph.card.v1;
 
-import "wayplatform/connect/tachograph/dd/v1/ecc_certificate.proto";
+import "wayplatform/connect/tachograph/security/v1/ecc_certificate.proto";
 
 // Data from EF CardMA_Certificate (File ID 'C100h').
 //
@@ -20,5 +20,5 @@ import "wayplatform/connect/tachograph/dd/v1/ecc_certificate.proto";
 // Note: This EF is not signed (see Section 3.3, DDP_037).
 message CardMaCertificate {
   // ECC certificate containing the card's public key for mutual authentication.
-  dd.v1.EccCertificate ecc_certificate = 1;
+  security.v1.EccCertificate ecc_certificate = 1;
 }
