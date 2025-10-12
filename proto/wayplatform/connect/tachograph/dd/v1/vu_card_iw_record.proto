@@ -1,0 +1,87 @@
+edition = "2023";
+
+package wayplatform.connect.tachograph.dd.v1;
+
+import "google/protobuf/timestamp.proto";
+import "wayplatform/connect/tachograph/dd/v1/card_slot_number.proto";
+import "wayplatform/connect/tachograph/dd/v1/date.proto";
+import "wayplatform/connect/tachograph/dd/v1/full_card_number.proto";
+import "wayplatform/connect/tachograph/dd/v1/holder_name.proto";
+import "wayplatform/connect/tachograph/dd/v1/previous_vehicle_info.proto";
+
+// Represents an insertion and withdrawal cycle of a driver or workshop card
+// in a vehicle unit.
+//
+// See Data Dictionary, Section 2.177.
+//
+// ASN.1 Definition (Gen1):
+//
+//     VuCardIWRecord ::= SEQUENCE {
+//         cardHolderName HolderName,
+//         fullCardNumber FullCardNumber,
+//         cardExpiryDate Datef,
+//         cardInsertionTime TimeReal,
+//         vehicleOdometerValueAtInsertion OdometerShort,
+//         cardSlotNumber CardSlotNumber,
+//         cardWithdrawalTime TimeReal,
+//         vehicleOdometerValueAtWithdrawal OdometerShort,
+//         previousVehicleInfo PreviousVehicleInfo,
+//         manualInputFlag ManualInputFlag
+//     }
+//
+// Binary Layout: 129 bytes (fixed)
+message VuCardIWRecord {
+  // The name of the card holder.
+  //
+  // See Data Dictionary, Section 2.83, `HolderName`.
+  HolderName card_holder_name = 1;
+
+  // The full card number of the inserted card.
+  //
+  // See Data Dictionary, Section 2.73, `FullCardNumber`.
+  FullCardNumber full_card_number = 2;
+
+  // The expiry date of the card.
+  //
+  // See Data Dictionary, Section 2.57, `Datef`.
+  Date card_expiry_date = 3;
+
+  // The time the card was inserted.
+  //
+  // See Data Dictionary, Section 2.162, `TimeReal`.
+  google.protobuf.Timestamp card_insertion_time = 4;
+
+  // The odometer value at the time of card insertion in kilometers.
+  //
+  // See Data Dictionary, Section 2.113, `OdometerShort`.
+  int32 odometer_at_insertion_km = 5;
+
+  // The slot the card was inserted into.
+  //
+  // See Data Dictionary, Section 2.33, `CardSlotNumber`.
+  CardSlotNumber card_slot_number = 6;
+
+  // The time the card was withdrawn.
+  //
+  // See Data Dictionary, Section 2.162, `TimeReal`.
+  google.protobuf.Timestamp card_withdrawal_time = 7;
+
+  // The odometer value at the time of card withdrawal in kilometers.
+  //
+  // See Data Dictionary, Section 2.113, `OdometerShort`.
+  int32 odometer_at_withdrawal_km = 8;
+
+  // Information about the previous vehicle used.
+  //
+  // See Data Dictionary, Section 2.118, `PreviousVehicleInfo`.
+  PreviousVehicleInfo previous_vehicle_info = 9;
+
+  // Indicates if manual entries were made.
+  //
+  // See Data Dictionary, Section 2.93, `ManualInputFlag`.
+  // Protocol values: 0 = noEntry, 1 = manualEntries.
+  bool manual_input_flag = 10;
+
+  // The raw binary data for this record (for round-trip fidelity).
+  bytes raw_data = 99;
+}

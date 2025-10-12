@@ -23,36 +23,44 @@ import (
 //	    ownerIdentification    SEQUENCE { ... }
 //	}
 //
-// Binary Layout (variable length):
+// Binary Layout (fixed length, 18 bytes):
 //   - Card Type (1 byte): EquipmentType
 //   - Issuing Member State (1 byte): NationNumeric
-//   - Card Number (variable): CardNumber CHOICE based on card type
+//   - Card Number (16 bytes): CardNumber CHOICE based on card type (padded to 16 bytes)
 func (opts UnmarshalOptions) UnmarshalFullCardNumber(data []byte) (*ddv1.FullCardNumber, error) {
-	if len(data) < 2 {
-		return nil, fmt.Errorf("insufficient data for FullCardNumber: got %d, want at least 2", len(data))
+	const lenFullCardNumber = 18
+	const lenCardNumberField = 16
+
+	if len(data) != lenFullCardNumber {
+		return nil, fmt.Errorf("invalid data length for FullCardNumber: got %d, want %d", len(data), lenFullCardNumber)
 	}
 
 	cardNumber := &ddv1.FullCardNumber{}
 
 	// Parse card type (1 byte)
-	cardType := data[0]
-	cardNumber.SetCardType(ddv1.EquipmentType(cardType))
+	cardType, err := UnmarshalEnum[ddv1.EquipmentType](data[0])
+	if err != nil {
+		return nil, fmt.Errorf("failed to parse card type: %w", err)
+	}
+	cardNumber.SetCardType(cardType)
 
 	// Parse issuing member state (1 byte)
 	issuingState := data[1]
 	cardNumber.SetCardIssuingMemberState(ddv1.NationNumeric(issuingState))
 
-	// Parse card number based on card type
-	remainingData := data[2:]
-	switch ddv1.EquipmentType(cardType) {
+	// Parse card number based on card type (16 bytes, may have padding)
+	cardNumberData := data[2:18]
+	switch cardType {
 	case ddv1.EquipmentType_DRIVER_CARD:
-		driverID, err := opts.UnmarshalDriverIdentification(remainingData)
+		// DriverIdentification is 14 bytes + 2 bytes padding
+		driverID, err := opts.UnmarshalDriverIdentification(cardNumberData[:14])
 		if err != nil {
 			return nil, fmt.Errorf("failed to parse driver identification: %w", err)
 		}
 		cardNumber.SetDriverIdentification(driverID)
 	case ddv1.EquipmentType_WORKSHOP_CARD, ddv1.EquipmentType_COMPANY_CARD:
-		ownerID, err := opts.UnmarshalOwnerIdentification(remainingData)
+		// OwnerIdentification is 16 bytes (no padding)
+		ownerID, err := opts.UnmarshalOwnerIdentification(cardNumberData)
 		if err != nil {
 			return nil, fmt.Errorf("failed to parse owner identification: %w", err)
 		}
@@ -81,39 +89,54 @@ func (opts UnmarshalOptions) UnmarshalFullCardNumber(data []byte) (*ddv1.FullCar
 //	    ownerIdentification    SEQUENCE { ... }
 //	}
 //
-// Binary Layout (variable length):
+// Binary Layout (fixed length, 18 bytes):
 //   - Card Type (1 byte): EquipmentType
 //   - Issuing Member State (1 byte): NationNumeric
-//   - Card Number (variable): CardNumber CHOICE based on card type
+//   - Card Number (16 bytes): CardNumber CHOICE based on card type (padded to 16 bytes)
 func AppendFullCardNumber(dst []byte, cardNumber *ddv1.FullCardNumber) ([]byte, error) {
 	if cardNumber == nil {
 		return nil, fmt.Errorf("cardNumber cannot be nil")
 	}
 
 	// Append card type (1 byte)
-	dst = append(dst, byte(cardNumber.GetCardType()))
+	cardTypeByte, err := MarshalEnum(cardNumber.GetCardType())
+	if err != nil {
+		return nil, fmt.Errorf("failed to marshal card type: %w", err)
+	}
+	dst = append(dst, cardTypeByte)
 
 	// Append issuing member state (1 byte)
 	dst = append(dst, byte(cardNumber.GetCardIssuingMemberState()))
 
-	// Append card number based on card type
+	// Append card number based on card type (16 bytes with padding if needed)
 	switch cardNumber.GetCardType() {
 	case ddv1.EquipmentType_DRIVER_CARD:
 		if driverID := cardNumber.GetDriverIdentification(); driverID != nil {
-			var err error
+			// DriverIdentification is 14 bytes, pad to 16
 			dst, err = AppendDriverIdentification(dst, driverID)
 			if err != nil {
 				return nil, fmt.Errorf("failed to append driver identification: %w", err)
 			}
+			// Add 2 bytes padding
+			dst = append(dst, 0x00, 0x00)
+		} else {
+			// Empty driver ID: 16 zero bytes
+			dst = append(dst, make([]byte, 16)...)
 		}
 	case ddv1.EquipmentType_WORKSHOP_CARD, ddv1.EquipmentType_COMPANY_CARD:
 		if ownerID := cardNumber.GetOwnerIdentification(); ownerID != nil {
-			var err error
+			// OwnerIdentification is 16 bytes (no padding needed)
 			dst, err = AppendOwnerIdentification(dst, ownerID)
 			if err != nil {
 				return nil, fmt.Errorf("failed to append owner identification: %w", err)
 			}
+		} else {
+			// Empty owner ID: 16 zero bytes
+			dst = append(dst, make([]byte, 16)...)
 		}
+	default:
+		// Unknown card type: 16 zero bytes
+		dst = append(dst, make([]byte, 16)...)
 	}
 
 	return dst, nil

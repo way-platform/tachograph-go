@@ -1,11 +1,81 @@
 package vu
 
 import (
+	"encoding/binary"
 	"fmt"
 
 	ddv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
 	vuv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/vu/v1"
 )
+
+// ===== sizeOf Functions =====
+
+// sizeOfDetailedSpeed dispatches to generation-specific size calculation.
+func sizeOfDetailedSpeed(data []byte, transferType vuv1.TransferType) (int, error) {
+	switch transferType {
+	case vuv1.TransferType_DETAILED_SPEED_GEN1:
+		return sizeOfDetailedSpeedGen1(data)
+	case vuv1.TransferType_DETAILED_SPEED_GEN2:
+		return sizeOfDetailedSpeedGen2(data)
+	default:
+		return 0, fmt.Errorf("unsupported transfer type for DetailedSpeed: %v", transferType)
+	}
+}
+
+// sizeOfDetailedSpeedGen1 calculates total size for Gen1 Detailed Speed including signature.
+//
+// Detailed Speed Gen1 structure (from Appendix 7, Section 2.2.6.5):
+// - VuDetailedSpeedData (Data Dictionary 2.192): 2 bytes + (noOfSpeedBlocks * 64 bytes)
+//   - noOfSpeedBlocks: INTEGER(0..2^16-1) = 2 bytes
+//   - vuDetailedSpeedBlocks: SET SIZE(noOfSpeedBlocks) OF VuDetailedSpeedBlock
+//   - VuDetailedSpeedBlock (Data Dictionary 2.190): 64 bytes total
+//   - speedBlockBeginDate: TimeReal = 4 bytes
+//   - speedsPerSecond: 60 bytes (60 Speed values, one per second)
+//
+// - Signature: 128 bytes (RSA)
+func sizeOfDetailedSpeedGen1(data []byte) (int, error) {
+	offset := 0
+
+	// VuDetailedSpeedData: 2 bytes count + variable speed blocks
+	if len(data[offset:]) < 2 {
+		return 0, fmt.Errorf("insufficient data for noOfSpeedBlocks")
+	}
+	noOfSpeedBlocks := binary.BigEndian.Uint16(data[offset:])
+	offset += 2
+
+	// Each VuDetailedSpeedBlock: 64 bytes (4 TimeReal + 60 Speed bytes)
+	// Per Data Dictionary 2.190
+	const vuDetailedSpeedBlockSize = 64
+	offset += int(noOfSpeedBlocks) * vuDetailedSpeedBlockSize
+
+	// Signature: 128 bytes for Gen1 RSA
+	offset += 128
+
+	return offset, nil
+}
+
+// sizeOfDetailedSpeedGen2 calculates size by parsing Gen2 RecordArrays.
+func sizeOfDetailedSpeedGen2(data []byte) (int, error) {
+	offset := 0
+
+	// VuDetailedSpeedBlockRecordArray
+	size, err := sizeOfRecordArray(data, offset)
+	if err != nil {
+		return 0, fmt.Errorf("VuDetailedSpeedBlockRecordArray: %w", err)
+	}
+	offset += size
+
+	// SignatureRecordArray (last)
+	size, err = sizeOfRecordArray(data, offset)
+	if err != nil {
+		return 0, fmt.Errorf("SignatureRecordArray: %w", err)
+	}
+	offset += size
+
+	return offset, nil
+}
+
+// ===== Unmarshal Functions =====
 
 // UnmarshalVuDetailedSpeed unmarshals VU detailed speed data from a VU transfer.
 //
@@ -68,42 +138,3 @@ func UnmarshalVuDetailedSpeed(data []byte, offset int, target *vuv1.DetailedSpee
 //	}
 
 // appendVuDetailedSpeedBytes appends VU detailed speed data to a byte slice
-func appendVuDetailedSpeedBytes(dst []byte, detailedSpeed *vuv1.DetailedSpeed) ([]byte, error) {
-	if detailedSpeed == nil {
-		return dst, nil
-	}
-
-	if detailedSpeed.GetGeneration() == ddv1.Generation_GENERATION_1 {
-		return appendVuDetailedSpeedGen1Bytes(dst, detailedSpeed)
-	} else {
-		return appendVuDetailedSpeedGen2Bytes(dst, detailedSpeed)
-	}
-}
-
-// appendVuDetailedSpeedGen1Bytes appends Generation 1 VU detailed speed data
-func appendVuDetailedSpeedGen1Bytes(dst []byte, detailedSpeed *vuv1.DetailedSpeed) ([]byte, error) {
-	// For now, implement a simplified version that just writes signature data
-	// This matches the current unmarshal behavior which reads all data as signature
-	// This ensures the interface is complete while allowing for future enhancement
-
-	signature := detailedSpeed.GetSignatureGen1()
-	if len(signature) > 0 {
-		dst = append(dst, signature...)
-	}
-
-	return dst, nil
-}
-
-// appendVuDetailedSpeedGen2Bytes appends Generation 2 VU detailed speed data
-func appendVuDetailedSpeedGen2Bytes(dst []byte, detailedSpeed *vuv1.DetailedSpeed) ([]byte, error) {
-	// For now, implement a simplified version that just writes signature data
-	// This matches the current unmarshal behavior which reads all data as signature
-	// This ensures the interface is complete while allowing for future enhancement
-
-	signature := detailedSpeed.GetSignatureGen2()
-	if len(signature) > 0 {
-		dst = append(dst, signature...)
-	}
-
-	return dst, nil
-}

@@ -41,6 +41,7 @@ type Activities struct {
 	xxx_hidden_LoadUnloadOperations   *[]*Activities_LoadUnloadRecord     `protobuf:"bytes,11,rep,name=load_unload_operations,json=loadUnloadOperations"`
 	xxx_hidden_SignatureGen1          []byte                              `protobuf:"bytes,12,opt,name=signature_gen1,json=signatureGen1"`
 	xxx_hidden_SignatureGen2          []byte                              `protobuf:"bytes,13,opt,name=signature_gen2,json=signatureGen2"`
+	xxx_hidden_RawData                []byte                              `protobuf:"bytes,14,opt,name=raw_data,json=rawData"`
 	XXX_raceDetectHookData            protoimpl.RaceDetectHookData
 	XXX_presence                      [1]uint32
 	unknownFields                     protoimpl.UnknownFields
@@ -181,14 +182,21 @@ func (x *Activities) GetSignatureGen2() []byte {
 	return nil
 }
 
+func (x *Activities) GetRawData() []byte {
+	if x != nil {
+		return x.xxx_hidden_RawData
+	}
+	return nil
+}
+
 func (x *Activities) SetGeneration(v v1.Generation) {
 	x.xxx_hidden_Generation = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 13)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 14)
 }
 
 func (x *Activities) SetVersion(v v1.Version) {
 	x.xxx_hidden_Version = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 13)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 14)
 }
 
 func (x *Activities) SetDateOfDay(v *timestamppb.Timestamp) {
@@ -197,7 +205,7 @@ func (x *Activities) SetDateOfDay(v *timestamppb.Timestamp) {
 
 func (x *Activities) SetOdometerMidnightKm(v int32) {
 	x.xxx_hidden_OdometerMidnightKm = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 3, 13)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 3, 14)
 }
 
 func (x *Activities) SetCardIwData(v []*Activities_CardIWRecord) {
@@ -233,7 +241,7 @@ func (x *Activities) SetSignatureGen1(v []byte) {
 		v = []byte{}
 	}
 	x.xxx_hidden_SignatureGen1 = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 11, 13)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 11, 14)
 }
 
 func (x *Activities) SetSignatureGen2(v []byte) {
@@ -241,7 +249,15 @@ func (x *Activities) SetSignatureGen2(v []byte) {
 		v = []byte{}
 	}
 	x.xxx_hidden_SignatureGen2 = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 12, 13)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 12, 14)
+}
+
+func (x *Activities) SetRawData(v []byte) {
+	if v == nil {
+		v = []byte{}
+	}
+	x.xxx_hidden_RawData = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 13, 14)
 }
 
 func (x *Activities) HasGeneration() bool {
@@ -286,6 +302,13 @@ func (x *Activities) HasSignatureGen2() bool {
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 12)
 }
 
+func (x *Activities) HasRawData() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 13)
+}
+
 func (x *Activities) ClearGeneration() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 0)
 	x.xxx_hidden_Generation = v1.Generation_GENERATION_UNSPECIFIED
@@ -313,6 +336,11 @@ func (x *Activities) ClearSignatureGen1() {
 func (x *Activities) ClearSignatureGen2() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 12)
 	x.xxx_hidden_SignatureGen2 = nil
+}
+
+func (x *Activities) ClearRawData() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 13)
+	x.xxx_hidden_RawData = nil
 }
 
 type Activities_builder struct {
@@ -369,6 +397,10 @@ type Activities_builder struct {
 	//
 	// See Data Dictionary, Section 2.149, `Signature`.
 	SignatureGen2 []byte
+	// The raw, unparsed binary data of the complete Activities transfer value.
+	// This field is preserved for data fidelity and lossless round-trips.
+	// It includes all data structures and the embedded signature.
+	RawData []byte
 }
 
 func (b0 Activities_builder) Build() *Activities {
@@ -376,16 +408,16 @@ func (b0 Activities_builder) Build() *Activities {
 	b, x := &b0, m0
 	_, _ = b, x
 	if b.Generation != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 13)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 14)
 		x.xxx_hidden_Generation = *b.Generation
 	}
 	if b.Version != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 13)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 14)
 		x.xxx_hidden_Version = *b.Version
 	}
 	x.xxx_hidden_DateOfDay = b.DateOfDay
 	if b.OdometerMidnightKm != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 3, 13)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 3, 14)
 		x.xxx_hidden_OdometerMidnightKm = *b.OdometerMidnightKm
 	}
 	x.xxx_hidden_CardIwData = &b.CardIwData
@@ -396,12 +428,16 @@ func (b0 Activities_builder) Build() *Activities {
 	x.xxx_hidden_BorderCrossings = &b.BorderCrossings
 	x.xxx_hidden_LoadUnloadOperations = &b.LoadUnloadOperations
 	if b.SignatureGen1 != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 11, 13)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 11, 14)
 		x.xxx_hidden_SignatureGen1 = b.SignatureGen1
 	}
 	if b.SignatureGen2 != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 12, 13)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 12, 14)
 		x.xxx_hidden_SignatureGen2 = b.SignatureGen2
+	}
+	if b.RawData != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 13, 14)
+		x.xxx_hidden_RawData = b.RawData
 	}
 	return m0
 }
@@ -1771,7 +1807,7 @@ var File_wayplatform_connect_tachograph_vu_v1_activities_proto protoreflect.File
 
 const file_wayplatform_connect_tachograph_vu_v1_activities_proto_rawDesc = "" +
 	"\n" +
-	"5wayplatform/connect/tachograph/vu/v1/activities.proto\x12$wayplatform.connect.tachograph.vu.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a?wayplatform/connect/tachograph/dd/v1/activity_change_info.proto\x1a;wayplatform/connect/tachograph/dd/v1/card_slot_number.proto\x1a/wayplatform/connect/tachograph/dd/v1/date.proto\x1aGwayplatform/connect/tachograph/dd/v1/entry_type_daily_work_period.proto\x1a;wayplatform/connect/tachograph/dd/v1/full_card_number.proto\x1aJwayplatform/connect/tachograph/dd/v1/full_card_number_and_generation.proto\x1a5wayplatform/connect/tachograph/dd/v1/generation.proto\x1a:wayplatform/connect/tachograph/dd/v1/geo_coordinates.proto\x1a6wayplatform/connect/tachograph/dd/v1/holder_name.proto\x1a9wayplatform/connect/tachograph/dd/v1/nation_numeric.proto\x1a9wayplatform/connect/tachograph/dd/v1/operation_type.proto\x1aIwayplatform/connect/tachograph/dd/v1/position_authentication_status.proto\x1a@wayplatform/connect/tachograph/dd/v1/previous_vehicle_info.proto\x1aDwayplatform/connect/tachograph/dd/v1/specific_condition_record.proto\x1aBwayplatform/connect/tachograph/dd/v1/specific_condition_type.proto\x1aNwayplatform/connect/tachograph/dd/v1/vehicle_registration_identification.proto\x1a2wayplatform/connect/tachograph/dd/v1/version.proto\"\xd9\x1d\n" +
+	"5wayplatform/connect/tachograph/vu/v1/activities.proto\x12$wayplatform.connect.tachograph.vu.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a?wayplatform/connect/tachograph/dd/v1/activity_change_info.proto\x1a;wayplatform/connect/tachograph/dd/v1/card_slot_number.proto\x1a/wayplatform/connect/tachograph/dd/v1/date.proto\x1aGwayplatform/connect/tachograph/dd/v1/entry_type_daily_work_period.proto\x1a;wayplatform/connect/tachograph/dd/v1/full_card_number.proto\x1aJwayplatform/connect/tachograph/dd/v1/full_card_number_and_generation.proto\x1a5wayplatform/connect/tachograph/dd/v1/generation.proto\x1a:wayplatform/connect/tachograph/dd/v1/geo_coordinates.proto\x1a6wayplatform/connect/tachograph/dd/v1/holder_name.proto\x1a9wayplatform/connect/tachograph/dd/v1/nation_numeric.proto\x1a9wayplatform/connect/tachograph/dd/v1/operation_type.proto\x1aIwayplatform/connect/tachograph/dd/v1/position_authentication_status.proto\x1a@wayplatform/connect/tachograph/dd/v1/previous_vehicle_info.proto\x1aDwayplatform/connect/tachograph/dd/v1/specific_condition_record.proto\x1aBwayplatform/connect/tachograph/dd/v1/specific_condition_type.proto\x1aNwayplatform/connect/tachograph/dd/v1/vehicle_registration_identification.proto\x1a2wayplatform/connect/tachograph/dd/v1/version.proto\"\xf4\x1d\n" +
 	"\n" +
 	"Activities\x12P\n" +
 	"\n" +
@@ -1790,7 +1826,8 @@ const file_wayplatform_connect_tachograph_vu_v1_activities_proto_rawDesc = "" +
 	" \x03(\v2E.wayplatform.connect.tachograph.vu.v1.Activities.BorderCrossingRecordR\x0fborderCrossings\x12w\n" +
 	"\x16load_unload_operations\x18\v \x03(\v2A.wayplatform.connect.tachograph.vu.v1.Activities.LoadUnloadRecordR\x14loadUnloadOperations\x12%\n" +
 	"\x0esignature_gen1\x18\f \x01(\fR\rsignatureGen1\x12%\n" +
-	"\x0esignature_gen2\x18\r \x01(\fR\rsignatureGen2\x1a\xd3\x06\n" +
+	"\x0esignature_gen2\x18\r \x01(\fR\rsignatureGen2\x12\x19\n" +
+	"\braw_data\x18\x0e \x01(\fR\arawData\x1a\xd3\x06\n" +
 	"\fCardIWRecord\x12Z\n" +
 	"\x10card_holder_name\x18\x01 \x01(\v20.wayplatform.connect.tachograph.dd.v1.HolderNameR\x0ecardHolderName\x12\x87\x01\n" +
 	"\x1ffull_card_number_and_generation\x18\x02 \x01(\v2A.wayplatform.connect.tachograph.dd.v1.FullCardNumberAndGenerationR\x1bfullCardNumberAndGeneration\x12T\n" +

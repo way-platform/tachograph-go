@@ -1,0 +1,207 @@
+edition = "2023";
+
+package wayplatform.connect.tachograph.vu.v1;
+
+import "google/protobuf/timestamp.proto";
+import "wayplatform/connect/tachograph/dd/v1/control_type.proto";
+import "wayplatform/connect/tachograph/dd/v1/downloadable_period.proto";
+import "wayplatform/connect/tachograph/dd/v1/full_card_number_and_generation.proto";
+import "wayplatform/connect/tachograph/dd/v1/ia5_string_value.proto";
+import "wayplatform/connect/tachograph/dd/v1/slot_card_type.proto";
+import "wayplatform/connect/tachograph/dd/v1/string_value.proto";
+import "wayplatform/connect/tachograph/dd/v1/vehicle_registration_identification.proto";
+
+// Overview data for Generation 2, Version 1 VU downloads.
+//
+// See Appendix 7, Section 2.2.6.2 (TREP 21 Hex).
+//
+// Gen2 V1 uses RecordArray structures with 5-byte headers for each section.
+//
+// ASN.1 Definition:
+//
+//     VuOverviewSecondGen ::= SEQUENCE {
+//         memberStateCertificateRecordArray MemberStateCertificateRecordArray,
+//         vuCertificateRecordArray VuCertificateRecordArray,
+//         vehicleIdentificationNumberRecordArray VehicleIdentificationNumberRecordArray,
+//         vehicleRegistrationIdentificationRecordArray VehicleRegistrationIdentificationRecordArray,
+//         currentDateTimeRecordArray CurrentDateTimeRecordArray,
+//         vuDownloadablePeriodRecordArray VuDownloadablePeriodRecordArray,
+//         cardSlotsStatusRecordArray CardSlotsStatusRecordArray,
+//         vuDownloadActivityDataRecordArray VuDownloadActivityDataRecordArray,
+//         vuCompanyLocksRecordArray VuCompanyLocksRecordArray,
+//         vuControlActivityRecordArray VuControlActivityRecordArray,
+//         signatureRecordArray SignatureRecordArray
+//     }
+message OverviewGen2V1 {
+  // Represents a record of a download activity from the VU.
+  //
+  // See Data Dictionary, Section 2.195, `VuDownloadActivityData`.
+  //
+  // ASN.1 Definition:
+  //
+  //     VuDownloadActivityData ::= SEQUENCE {
+  //         downloadingTime TimeReal,
+  //         fullCardNumberAndGeneration FullCardNumberAndGeneration,
+  //         companyOrWorkshopName Name
+  //     }
+  message DownloadActivity {
+    // The time the download was performed.
+    //
+    // See Data Dictionary, Section 2.162, `TimeReal`.
+    google.protobuf.Timestamp downloading_time = 1;
+
+    // The card number and generation of the company or workshop that performed the download.
+    //
+    // See Data Dictionary, Section 2.74, `FullCardNumberAndGeneration`.
+    dd.v1.FullCardNumberAndGeneration full_card_number_and_generation = 2;
+
+    // The name of the company or workshop.
+    //
+    // See Data Dictionary, Section 2.99, `Name`.
+    wayplatform.connect.tachograph.dd.v1.StringValue company_or_workshop_name = 3;
+  }
+
+  // Represents a company lock record.
+  //
+  // See Data Dictionary, Section 2.184, `VuCompanyLocksRecord`.
+  //
+  // ASN.1 Definition:
+  //
+  //     VuCompanyLocksRecord ::= SEQUENCE {
+  //         lockInTime TimeReal,
+  //         lockOutTime TimeReal,
+  //         companyName Name,
+  //         companyAddress Address,
+  //         companyCardNumberAndGeneration FullCardNumberAndGeneration
+  //     }
+  message CompanyLock {
+    // The time the lock was engaged.
+    //
+    // See Data Dictionary, Section 2.162, `TimeReal`.
+    google.protobuf.Timestamp lock_in_time = 1;
+
+    // The time the lock was disengaged.
+    //
+    // See Data Dictionary, Section 2.162, `TimeReal`.
+    google.protobuf.Timestamp lock_out_time = 2;
+
+    // The name of the company that applied the lock.
+    //
+    // See Data Dictionary, Section 2.99, `Name`.
+    wayplatform.connect.tachograph.dd.v1.StringValue company_name = 3;
+
+    // The address of the company.
+    //
+    // See Data Dictionary, Section 2.2, `Address`.
+    wayplatform.connect.tachograph.dd.v1.StringValue company_address = 4;
+
+    // The card number and generation of the company.
+    //
+    // See Data Dictionary, Section 2.74, `FullCardNumberAndGeneration`.
+    dd.v1.FullCardNumberAndGeneration company_card_number_and_generation = 5;
+  }
+
+  // Represents a control activity record.
+  //
+  // See Data Dictionary, Section 2.187, `VuControlActivityRecord`.
+  //
+  // ASN.1 Definition:
+  //
+  //     VuControlActivityRecord ::= SEQUENCE {
+  //         controlType ControlType,
+  //         controlTime TimeReal,
+  //         controlCardNumberAndGeneration FullCardNumberAndGeneration,
+  //         downloadPeriodBeginTime TimeReal,
+  //         downloadPeriodEndTime TimeReal
+  //     }
+  message ControlActivity {
+    // The type of control activity.
+    //
+    // See Data Dictionary, Section 2.53, `ControlType`.
+    wayplatform.connect.tachograph.dd.v1.ControlType control_type = 1;
+
+    // The time of the control.
+    //
+    // See Data Dictionary, Section 2.162, `TimeReal`.
+    google.protobuf.Timestamp control_time = 2;
+
+    // The card number and generation of the control officer.
+    //
+    // See Data Dictionary, Section 2.74, `FullCardNumberAndGeneration`.
+    dd.v1.FullCardNumberAndGeneration control_card_number_and_generation = 3;
+
+    // The start of the downloaded period.
+    //
+    // See Data Dictionary, Section 2.162, `TimeReal`.
+    google.protobuf.Timestamp download_period_begin_time = 4;
+
+    // The end of the downloaded period.
+    //
+    // See Data Dictionary, Section 2.162, `TimeReal`.
+    google.protobuf.Timestamp download_period_end_time = 5;
+  }
+
+  // VU Security certificate from the Member State.
+  //
+  // See Data Dictionary, Section 2.96, `MemberStateCertificate`.
+  bytes member_state_certificate = 1;
+
+  // The VU's own security certificate.
+  //
+  // See Data Dictionary, Section 2.181, `VuCertificate`.
+  bytes vu_certificate = 2;
+
+  // The Vehicle Identification Number.
+  //
+  // See Data Dictionary, Section 2.164, `VehicleIdentificationNumber`.
+  //
+  // ASN.1 Definition:
+  //
+  //     VehicleIdentificationNumber ::= IA5String(SIZE(17))
+  wayplatform.connect.tachograph.dd.v1.Ia5StringValue vehicle_identification_number = 3;
+
+  // The vehicle registration, including nation.
+  //
+  // See Data Dictionary, Section 2.166, `VehicleRegistrationIdentification`.
+  dd.v1.VehicleRegistrationIdentification vehicle_registration_with_nation = 4;
+
+  // Current date and time of the VU.
+  //
+  // See Data Dictionary, Section 2.54, `CurrentDateTime`.
+  google.protobuf.Timestamp current_date_time = 5;
+
+  // The range of dates for which data can be downloaded.
+  dd.v1.DownloadablePeriod downloadable_period = 6;
+
+  // Type of card in the driver slot.
+  dd.v1.SlotCardType driver_slot_card = 7;
+
+  // Type of card in the co-driver slot.
+  dd.v1.SlotCardType co_driver_slot_card = 8;
+
+  // Information about recent download activities.
+  //
+  // See Data Dictionary, Section 2.196, `VuDownloadActivityDataRecordArray`.
+  repeated DownloadActivity download_activities = 9;
+
+  // All company locks stored in the VU.
+  //
+  // See Data Dictionary, Section 2.185, `VuCompanyLocksRecordArray`.
+  repeated CompanyLock company_locks = 10;
+
+  // All control records stored in the VU.
+  //
+  // See Data Dictionary, Section 2.188, `VuControlActivityRecordArray`.
+  repeated ControlActivity control_activities = 11;
+
+  // Signature for Gen2 data (ECC, variable length in SignatureRecordArray).
+  //
+  // See Data Dictionary, Section 2.149, `Signature`.
+  bytes signature = 12;
+
+  // The raw, unparsed binary data of the complete Overview transfer value.
+  // This field is preserved for data fidelity and lossless round-trips.
+  // It includes all data structures and the embedded signature.
+  bytes raw_data = 13;
+}
+

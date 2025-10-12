@@ -1,0 +1,55 @@
+edition = "2023";
+
+package wayplatform.connect.tachograph.vu.v1;
+
+import "google/protobuf/timestamp.proto";
+
+// Detailed Speed data for Generation 1 VU downloads.
+//
+// See Appendix 7, Section 2.2.6.5 (TREP 04 Hex).
+//
+// ASN.1 Definition:
+//
+//     VuDetailedSpeedFirstGen ::= SEQUENCE {
+//         vuDetailedSpeedData VuDetailedSpeedData,
+//         signature SignatureFirstGen
+//     }
+message DetailedSpeedGen1 {
+  // Represents speed data for a single minute.
+  //
+  // See Data Dictionary, Section 2.190, `VuDetailedSpeedBlock`.
+  //
+  // ASN.1 Definition:
+  //
+  //     VuDetailedSpeedBlock ::= SEQUENCE {
+  //         speedBlockBeginDate TimeReal,
+  //         speedsPerSecond SET SIZE(60) OF Speed
+  //     }
+  message DetailedSpeedBlock {
+    // Timestamp for the beginning of the minute.
+    //
+    // See Data Dictionary, Section 2.162, `TimeReal`.
+    google.protobuf.Timestamp begin_date = 1;
+
+    // 60 speed values (in km/h), one for each second of the minute.
+    //
+    // See Data Dictionary, Section 2.155, `Speed`.
+    repeated int32 speeds_kmh = 2;
+  }
+
+  // All detailed speed stored in the VU.
+  //
+  // See Data Dictionary, Section 2.192, `VuDetailedSpeedData`.
+  repeated DetailedSpeedBlock speed_blocks = 1;
+
+  // Signature for Gen1 data (RSA, 128 bytes).
+  //
+  // See Data Dictionary, Section 2.149, `Signature`.
+  bytes signature = 2;
+
+  // The raw, unparsed binary data of the complete Detailed Speed transfer value.
+  // This field is preserved for data fidelity and lossless round-trips.
+  // It includes all data structures and the embedded signature.
+  bytes raw_data = 3;
+}
+

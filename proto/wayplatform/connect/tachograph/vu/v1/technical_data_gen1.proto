@@ -1,0 +1,221 @@
+edition = "2023";
+
+package wayplatform.connect.tachograph.vu.v1;
+
+import "google/protobuf/timestamp.proto";
+import "wayplatform/connect/tachograph/dd/v1/calibration_purpose.proto";
+import "wayplatform/connect/tachograph/dd/v1/date.proto";
+import "wayplatform/connect/tachograph/dd/v1/extended_serial_number.proto";
+import "wayplatform/connect/tachograph/dd/v1/full_card_number.proto";
+import "wayplatform/connect/tachograph/dd/v1/software_identification.proto";
+import "wayplatform/connect/tachograph/dd/v1/string_value.proto";
+import "wayplatform/connect/tachograph/dd/v1/vehicle_registration_identification.proto";
+
+// Technical Data for Generation 1 VU downloads.
+//
+// See Appendix 7, Section 2.2.6.6 (TREP 05 Hex).
+//
+// ASN.1 Definition:
+//
+//     VuTechnicalDataFirstGen ::= SEQUENCE {
+//         vuIdentification VuIdentification,
+//         sensorPaired SensorPaired,
+//         vuCalibrationData VuCalibrationData,
+//         signature SignatureFirstGen
+//     }
+message TechnicalDataGen1 {
+  // Represents the identification data of the vehicle unit.
+  //
+  // See Data Dictionary, Section 2.205, `VuIdentification`.
+  //
+  // ASN.1 Definition:
+  //
+  //     VuIdentification ::= SEQUENCE {
+  //         vuManufacturerName VuManufacturerName,
+  //         vuManufacturerAddress VuManufacturerAddress,
+  //         vuPartNumber VuPartNumber,
+  //         vuSerialNumber VuSerialNumber,
+  //         vuSoftwareIdentification VuSoftwareIdentification,
+  //         vuManufacturingDate VuManufacturingDate,
+  //         vuApprovalNumber VuApprovalNumber
+  //     }
+  message VuIdentification {
+    // The name of the VU manufacturer.
+    //
+    // See Data Dictionary, Section 2.210, `VuManufacturerName`.
+    wayplatform.connect.tachograph.dd.v1.StringValue manufacturer_name = 1;
+
+    // The address of the VU manufacturer.
+    //
+    // See Data Dictionary, Section 2.209, `VuManufacturerAddress`.
+    wayplatform.connect.tachograph.dd.v1.StringValue manufacturer_address = 2;
+
+    // The part number of the VU.
+    //
+    // See Data Dictionary, Section 2.217, `VuPartNumber`.
+    wayplatform.connect.tachograph.dd.v1.StringValue part_number = 3;
+
+    // The serial number of the VU.
+    //
+    // See Data Dictionary, Section 2.223, `VuSerialNumber`.
+    dd.v1.ExtendedSerialNumber serial_number = 4;
+
+    // The software identification of the VU.
+    dd.v1.SoftwareIdentification software_identification = 5;
+
+    // The manufacturing date of the VU.
+    //
+    // See Data Dictionary, Section 2.211, `VuManufacturingDate`.
+    google.protobuf.Timestamp manufacturing_date = 6;
+
+    // The approval number of the VU (Gen1: 8 bytes).
+    //
+    // See Data Dictionary, Section 2.172, `VuApprovalNumber`.
+    wayplatform.connect.tachograph.dd.v1.StringValue approval_number = 7;
+  }
+
+  // Represents a paired motion sensor.
+  //
+  // See Data Dictionary, Section 2.144, `SensorPaired`.
+  //
+  // ASN.1 Definition:
+  //
+  //     SensorPaired ::= SEQUENCE {
+  //         sensorSerialNumber SensorSerialNumber,
+  //         sensorApprovalNumber SensorApprovalNumber,
+  //         sensorPairingDate SensorPairingDate
+  //     }
+  message PairedSensor {
+    // The serial number of the motion sensor.
+    //
+    // See Data Dictionary, Section 2.148, `SensorSerialNumber`.
+    dd.v1.ExtendedSerialNumber serial_number = 1;
+
+    // The approval number of the motion sensor (Gen1: 8 bytes).
+    //
+    // See Data Dictionary, Section 2.131, `SensorApprovalNumber`.
+    wayplatform.connect.tachograph.dd.v1.StringValue approval_number = 2;
+
+    // The date the sensor was paired.
+    //
+    // See Data Dictionary, Section 2.146, `SensorPairingDate`.
+    google.protobuf.Timestamp pairing_date = 3;
+  }
+
+  // Represents a calibration record.
+  //
+  // See Data Dictionary, Section 2.174, `VuCalibrationRecord`.
+  message CalibrationRecord {
+    // The purpose of the calibration.
+    //
+    // See Data Dictionary, Section 2.8, `CalibrationPurpose`.
+    dd.v1.CalibrationPurpose purpose = 1;
+    int32 unrecognized_purpose = 2;
+
+    // The name of the workshop.
+    //
+    // See Data Dictionary, Section 2.99, `Name`.
+    wayplatform.connect.tachograph.dd.v1.StringValue workshop_name = 3;
+
+    // The address of the workshop.
+    //
+    // See Data Dictionary, Section 2.2, `Address`.
+    wayplatform.connect.tachograph.dd.v1.StringValue workshop_address = 4;
+
+    // The card number of the workshop.
+    //
+    // See Data Dictionary, Section 2.73, `FullCardNumber`.
+    dd.v1.FullCardNumber workshop_card_number = 5;
+
+    // The expiry date of the workshop card.
+    //
+    // See Data Dictionary, Section 2.57, `Datef`.
+    wayplatform.connect.tachograph.dd.v1.Date workshop_card_expiry_date = 6;
+
+    // The Vehicle Identification Number.
+    //
+    // See Data Dictionary, Section 2.164, `VehicleIdentificationNumber`.
+    wayplatform.connect.tachograph.dd.v1.StringValue vin = 7;
+
+    // The vehicle registration identifier.
+    //
+    // See Data Dictionary, Section 2.166, `VehicleRegistrationIdentification`.
+    dd.v1.VehicleRegistrationIdentification vehicle_registration = 8;
+
+    // The vehicle characteristic constant.
+    //
+    // See Data Dictionary, Section 2.239, `W-VehicleCharacteristicConstant`.
+    int32 w_vehicle_characteristic_constant = 9;
+
+    // The constant of the recording equipment.
+    //
+    // See Data Dictionary, Section 2.85, `K-ConstantOfRecordingEquipment`.
+    int32 k_constant_of_recording_equipment = 10;
+
+    // The tyre circumference in 1/8ths of a mm.
+    //
+    // See Data Dictionary, Section 2.91, `L-TyreCircumference`.
+    int32 l_tyre_circumference_eighths_mm = 11;
+
+    // The tyre size designation.
+    //
+    // See Data Dictionary, Section 2.163, `TyreSize`.
+    wayplatform.connect.tachograph.dd.v1.StringValue tyre_size = 12;
+
+    // The authorised speed in km/h.
+    //
+    // See Data Dictionary, Section 2.156, `SpeedAuthorised`.
+    int32 authorised_speed_kmh = 13;
+
+    // The odometer value before calibration in km.
+    //
+    // See Data Dictionary, Section 2.113, `OdometerShort`.
+    int32 old_odometer_value_km = 14;
+
+    // The odometer value after calibration in km.
+    //
+    // See Data Dictionary, Section 2.113, `OdometerShort`.
+    int32 new_odometer_value_km = 15;
+
+    // The time value before calibration.
+    //
+    // See Data Dictionary, Section 2.162, `TimeReal`.
+    google.protobuf.Timestamp old_time_value = 16;
+
+    // The time value after calibration.
+    //
+    // See Data Dictionary, Section 2.162, `TimeReal`.
+    google.protobuf.Timestamp new_time_value = 17;
+
+    // The date of the next calibration.
+    //
+    // See Data Dictionary, Section 2.162, `TimeReal`.
+    google.protobuf.Timestamp next_calibration_date = 18;
+  }
+
+  // Vehicle unit identification data.
+  //
+  // See Data Dictionary, Section 2.205, `VuIdentification`.
+  VuIdentification vu_identification = 1;
+
+  // The single paired sensor (Gen1 only).
+  //
+  // See Data Dictionary, Section 2.144, `SensorPaired`.
+  PairedSensor paired_sensor = 2;
+
+  // All calibration records stored in the VU.
+  //
+  // See Data Dictionary, Section 2.173, `VuCalibrationData`.
+  repeated CalibrationRecord calibration_records = 3;
+
+  // Signature for Gen1 data (RSA, 128 bytes).
+  //
+  // See Data Dictionary, Section 2.149, `Signature`.
+  bytes signature = 4;
+
+  // The raw, unparsed binary data of the complete Technical Data transfer value.
+  // This field is preserved for data fidelity and lossless round-trips.
+  // It includes all data structures and the embedded signature.
+  bytes raw_data = 5;
+}
+

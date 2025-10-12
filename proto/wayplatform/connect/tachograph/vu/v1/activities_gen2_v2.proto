@@ -1,0 +1,355 @@
+edition = "2023";
+
+package wayplatform.connect.tachograph.vu.v1;
+
+import "google/protobuf/timestamp.proto";
+import "wayplatform/connect/tachograph/dd/v1/activity_change_info.proto";
+import "wayplatform/connect/tachograph/dd/v1/card_slot_number.proto";
+import "wayplatform/connect/tachograph/dd/v1/date.proto";
+import "wayplatform/connect/tachograph/dd/v1/entry_type_daily_work_period.proto";
+import "wayplatform/connect/tachograph/dd/v1/full_card_number_and_generation.proto";
+import "wayplatform/connect/tachograph/dd/v1/geo_coordinates.proto";
+import "wayplatform/connect/tachograph/dd/v1/holder_name.proto";
+import "wayplatform/connect/tachograph/dd/v1/nation_numeric.proto";
+import "wayplatform/connect/tachograph/dd/v1/operation_type.proto";
+import "wayplatform/connect/tachograph/dd/v1/position_authentication_status.proto";
+import "wayplatform/connect/tachograph/dd/v1/previous_vehicle_info_g2.proto";
+import "wayplatform/connect/tachograph/dd/v1/specific_condition_record.proto";
+
+// Activities data for Generation 2, Version 2 VU downloads.
+//
+// See Appendix 7, Section 2.2.6.3 (TREP 32 Hex).
+//
+// Gen2 V2 extends Gen2 V1 with border crossing and load/unload records.
+//
+// ASN.1 Definition:
+//
+//     VuActivitiesSecondGenV2 ::= SEQUENCE {
+//         timeReal TimeReal,
+//         odometerValueMidnight OdometerValueMidnight,
+//         vuCardIWRecordArray VuCardIWRecordArray,
+//         vuActivityDailyRecordArray VuActivityDailyRecordArray,
+//         vuPlaceDailyWorkPeriodRecordArray VuPlaceDailyWorkPeriodRecordArray,
+//         vuGNSSADRecordArray VuGNSSADRecordArray,
+//         vuSpecificConditionRecordArray VuSpecificConditionRecordArray,
+//         vuBorderCrossingRecordArray VuBorderCrossingRecordArray,
+//         vuLoadUnloadRecordArray VuLoadUnloadRecordArray,
+//         signatureRecordArray SignatureRecordArray
+//     }
+message ActivitiesGen2V2 {
+  // Represents a card insertion and withdrawal record.
+  //
+  // Binary Layout: 132 bytes total (Gen2)
+  //
+  // See Data Dictionary, Section 2.177, `VuCardIWRecord`.
+  message CardIWRecord {
+    // The name of the card holder.
+    //
+    // See Data Dictionary, Section 2.83, `HolderName`.
+    dd.v1.HolderName card_holder_name = 1;
+
+    // The full card number and generation of the inserted card.
+    //
+    // See Data Dictionary, Section 2.74, `FullCardNumberAndGeneration`.
+    dd.v1.FullCardNumberAndGeneration full_card_number_and_generation = 2;
+
+    // The expiry date of the card.
+    //
+    // See Data Dictionary, Section 2.57, `Datef`.
+    dd.v1.Date card_expiry_date = 3;
+
+    // The time the card was inserted.
+    //
+    // See Data Dictionary, Section 2.162, `TimeReal`.
+    google.protobuf.Timestamp card_insertion_time = 4;
+
+    // The odometer value at the time of card insertion in kilometers.
+    //
+    // See Data Dictionary, Section 2.113, `OdometerShort`.
+    int32 odometer_at_insertion_km = 5;
+
+    // The slot the card was inserted into.
+    //
+    // See Data Dictionary, Section 2.33, `CardSlotNumber`.
+    dd.v1.CardSlotNumber card_slot_number = 6;
+
+    // The time the card was withdrawn.
+    //
+    // See Data Dictionary, Section 2.162, `TimeReal`.
+    google.protobuf.Timestamp card_withdrawal_time = 7;
+
+    // The odometer value at the time of card withdrawal in kilometers.
+    //
+    // See Data Dictionary, Section 2.113, `OdometerShort`.
+    int32 odometer_at_withdrawal_km = 8;
+
+    // Information about the previous vehicle used.
+    //
+    // See Data Dictionary, Section 2.118, `PreviousVehicleInfo`.
+    dd.v1.PreviousVehicleInfoG2 previous_vehicle_info = 9;
+
+    // Indicates if manual entries were made.
+    //
+    // See Data Dictionary, Section 2.93, `ManualInputFlag`.
+    bool manual_input_flag = 10;
+  }
+
+  // Represents a place record for the beginning or end of a daily work period.
+  //
+  // Binary Layout: 21 bytes (Gen2)
+  //
+  // See Data Dictionary, Section 2.117, `PlaceRecord`.
+  message PlaceRecord {
+    // Time of the entry.
+    //
+    // See Data Dictionary, Section 2.162, `TimeReal`.
+    google.protobuf.Timestamp entry_time = 1;
+
+    // Type of entry (begin or end).
+    //
+    // See Data Dictionary, Section 2.66, `EntryTypeDailyWorkPeriod`.
+    dd.v1.EntryTypeDailyWorkPeriod entry_type = 2;
+
+    // Country code.
+    //
+    // See Data Dictionary, Section 2.101, `NationNumeric`.
+    dd.v1.NationNumeric country = 3;
+
+    // Region code.
+    //
+    // See Data Dictionary, Section 2.122, `RegionNumeric`.
+    bytes region = 4;
+
+    // Odometer value at the time of entry in kilometers.
+    //
+    // See Data Dictionary, Section 2.113, `OdometerShort`.
+    int32 odometer_km = 5;
+
+    // GNSS position at the time of entry (Gen2 addition).
+    //
+    // See Data Dictionary, Section 2.79, `GNSSPlaceRecord`.
+    GnssPlaceRecord gnss_place_record = 6;
+  }
+
+  // Represents a GNSS place record (without authentication status).
+  //
+  // Binary Layout: 11 bytes
+  //
+  // See Data Dictionary, Section 2.79, `GNSSPlaceRecord`.
+  message GnssPlaceRecord {
+    // Timestamp of the position fix.
+    //
+    // See Data Dictionary, Section 2.162, `TimeReal`.
+    google.protobuf.Timestamp timestamp = 1;
+
+    // Accuracy of the GNSS fix.
+    //
+    // See Data Dictionary, Section 2.77, `GNSSAccuracy`.
+    int32 gnss_accuracy = 2;
+
+    // Geographic coordinates of the position.
+    //
+    // See Data Dictionary, Section 2.76, `GeoCoordinates`.
+    wayplatform.connect.tachograph.dd.v1.GeoCoordinates geo_coordinates = 3;
+  }
+
+  // Represents a GNSS accumulated driving record (with authentication status).
+  //
+  // Binary Layout: 12 bytes
+  //
+  // See Data Dictionary, Section 2.203, `VuGNSSADRecord`.
+  message GnssAccumulatedDrivingRecord {
+    // Timestamp of the position fix.
+    //
+    // See Data Dictionary, Section 2.162, `TimeReal`.
+    google.protobuf.Timestamp timestamp = 1;
+
+    // Accuracy of the GNSS fix.
+    //
+    // See Data Dictionary, Section 2.77, `GNSSAccuracy`.
+    int32 gnss_accuracy = 2;
+
+    // Geographic coordinates of the position.
+    //
+    // See Data Dictionary, Section 2.76, `GeoCoordinates`.
+    wayplatform.connect.tachograph.dd.v1.GeoCoordinates geo_coordinates = 3;
+
+    // Authentication status of the GNSS position.
+    //
+    // See Data Dictionary, Section 2.117a, `PositionAuthenticationStatus`.
+    dd.v1.PositionAuthenticationStatus authentication_status = 4;
+
+    // Preserved raw protocol value when authentication_status is UNRECOGNIZED.
+    int32 unrecognized_authentication_status = 5;
+  }
+
+  // Represents a border crossing record (Gen2 V2 only).
+  //
+  // Binary Layout: 57 bytes
+  //
+  // See Data Dictionary, Section 2.203a, `VuBorderCrossingRecord`.
+  //
+  // ASN.1 Definition:
+  //
+  //     VuBorderCrossingRecord ::= SEQUENCE {
+  //         cardNumberAndGenDriverSlot FullCardNumberAndGeneration,
+  //         cardNumberAndGenCodriverSlot FullCardNumberAndGeneration,
+  //         countryLeft NationNumeric,
+  //         countryEntered NationNumeric,
+  //         gnssPlaceAuthRecord GNSSPlaceAuthRecord,
+  //         vehicleOdometerValue OdometerShort
+  //     }
+  message BorderCrossingRecord {
+    // Card information for the driver slot.
+    dd.v1.FullCardNumberAndGeneration card_number_driver_slot = 1;
+
+    // Card information for the co-driver slot.
+    dd.v1.FullCardNumberAndGeneration card_number_codriver_slot = 2;
+
+    // Country the vehicle is leaving.
+    //
+    // See Data Dictionary, Section 2.101, `NationNumeric`.
+    dd.v1.NationNumeric country_left = 3;
+
+    // Country the vehicle is entering.
+    //
+    // See Data Dictionary, Section 2.101, `NationNumeric`.
+    dd.v1.NationNumeric country_entered = 4;
+
+    // GNSS position with authentication at the time of crossing.
+    //
+    // See Data Dictionary, Section 2.79c, `GNSSPlaceAuthRecord`.
+    GnssPlaceAuthRecord gnss_place_auth_record = 5;
+
+    // Odometer value at the time of crossing in kilometers.
+    //
+    // See Data Dictionary, Section 2.113, `OdometerShort`.
+    int32 odometer_km = 6;
+  }
+
+  // Represents a GNSS place record with authentication status.
+  //
+  // Binary Layout: 12 bytes
+  //
+  // See Data Dictionary, Section 2.79c, `GNSSPlaceAuthRecord`.
+  message GnssPlaceAuthRecord {
+    // Timestamp of the position fix.
+    //
+    // See Data Dictionary, Section 2.162, `TimeReal`.
+    google.protobuf.Timestamp timestamp = 1;
+
+    // Accuracy of the GNSS fix.
+    //
+    // See Data Dictionary, Section 2.77, `GNSSAccuracy`.
+    int32 gnss_accuracy = 2;
+
+    // Geographic coordinates of the position.
+    //
+    // See Data Dictionary, Section 2.76, `GeoCoordinates`.
+    wayplatform.connect.tachograph.dd.v1.GeoCoordinates geo_coordinates = 3;
+
+    // Authentication status of the GNSS position.
+    //
+    // See Data Dictionary, Section 2.117a, `PositionAuthenticationStatus`.
+    dd.v1.PositionAuthenticationStatus authentication_status = 4;
+
+    // Preserved raw protocol value when authentication_status is UNRECOGNIZED.
+    int32 unrecognized_authentication_status = 5;
+  }
+
+  // Represents a load/unload operation record (Gen2 V2 only).
+  //
+  // Binary Layout: 60 bytes
+  //
+  // See Data Dictionary, Section 2.208a, `VuLoadUnloadRecord`.
+  //
+  // ASN.1 Definition:
+  //
+  //     VuLoadUnloadRecord ::= SEQUENCE {
+  //         timeStamp TimeReal,
+  //         operationType OperationType,
+  //         cardNumberAndGenDriverSlot FullCardNumberAndGeneration,
+  //         cardNumberAndGenCodriverSlot FullCardNumberAndGeneration,
+  //         gnssPlaceAuthRecord GNSSPlaceAuthRecord,
+  //         vehicleOdometerValue OdometerShort
+  //     }
+  message LoadUnloadRecord {
+    // Timestamp of the operation.
+    google.protobuf.Timestamp timestamp = 1;
+
+    // Type of operation (load, unload, or both).
+    wayplatform.connect.tachograph.dd.v1.OperationType operation_type = 2;
+
+    // Card information for the driver slot.
+    dd.v1.FullCardNumberAndGeneration card_number_driver_slot = 3;
+
+    // Card information for the co-driver slot.
+    dd.v1.FullCardNumberAndGeneration card_number_codriver_slot = 4;
+
+    // GNSS position with authentication at the time of the operation.
+    //
+    // See Data Dictionary, Section 2.79c, `GNSSPlaceAuthRecord`.
+    GnssPlaceAuthRecord gnss_place_auth_record = 5;
+
+    // Odometer value at the time of the operation in kilometers.
+    //
+    // See Data Dictionary, Section 2.113, `OdometerShort`.
+    int32 odometer_km = 6;
+  }
+
+  // Date of the downloaded day.
+  //
+  // See Data Dictionary, Section 2.162, `TimeReal`.
+  google.protobuf.Timestamp date_of_day = 1;
+
+  // Odometer value at midnight in kilometers.
+  //
+  // See Data Dictionary, Section 2.114, `OdometerValueMidnight`.
+  int32 odometer_midnight_km = 2;
+
+  // Card insertion and withdrawal data.
+  //
+  // See Data Dictionary, Section 2.178, `VuCardIWRecordArray`.
+  repeated CardIWRecord card_iw_data = 3;
+
+  // Driver activity changes.
+  //
+  // See Data Dictionary, Section 2.171, `VuActivityDailyRecordArray`.
+  repeated dd.v1.ActivityChangeInfo activity_changes = 4;
+
+  // Daily work period place entries.
+  //
+  // See Data Dictionary, Section 2.220, `VuPlaceDailyWorkPeriodRecordArray`.
+  repeated PlaceRecord places = 5;
+
+  // GNSS positions recorded at 3-hour accumulated driving time intervals.
+  //
+  // See Data Dictionary, Section 2.204, `VuGNSSADRecordArray`.
+  repeated GnssAccumulatedDrivingRecord gnss_accumulated_driving = 6;
+
+  // Specific conditions data.
+  //
+  // See Data Dictionary, Section 2.228, `VuSpecificConditionRecordArray`.
+  repeated dd.v1.SpecificConditionRecord specific_conditions = 7;
+
+  // Border crossing records (Gen2 V2 addition).
+  //
+  // See Data Dictionary, Section 2.203b, `VuBorderCrossingRecordArray`.
+  repeated BorderCrossingRecord border_crossings = 8;
+
+  // Load/unload operation records (Gen2 V2 addition).
+  //
+  // See Data Dictionary, Section 2.208b, `VuLoadUnloadRecordArray`.
+  repeated LoadUnloadRecord load_unload_operations = 9;
+
+  // Signature for Gen2 data (ECC, variable length in SignatureRecordArray).
+  //
+  // See Data Dictionary, Section 2.149, `Signature`.
+  bytes signature = 10;
+
+  // The raw, unparsed binary data of the complete Activities transfer value.
+  // This field is preserved for data fidelity and lossless round-trips.
+  // It includes all data structures and the embedded signature.
+  bytes raw_data = 11;
+}
+

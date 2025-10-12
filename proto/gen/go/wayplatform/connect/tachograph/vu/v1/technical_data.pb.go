@@ -39,6 +39,7 @@ type TechnicalData struct {
 	xxx_hidden_PowerSupplyInterruptions *[]*TechnicalData_PowerSupplyInterruptionRecord `protobuf:"bytes,9,rep,name=power_supply_interruptions,json=powerSupplyInterruptions"`
 	xxx_hidden_SignatureGen1            []byte                                          `protobuf:"bytes,10,opt,name=signature_gen1,json=signatureGen1"`
 	xxx_hidden_SignatureGen2            []byte                                          `protobuf:"bytes,11,opt,name=signature_gen2,json=signatureGen2"`
+	xxx_hidden_RawData                  []byte                                          `protobuf:"bytes,12,opt,name=raw_data,json=rawData"`
 	XXX_raceDetectHookData              protoimpl.RaceDetectHookData
 	XXX_presence                        [1]uint32
 	unknownFields                       protoimpl.UnknownFields
@@ -161,9 +162,16 @@ func (x *TechnicalData) GetSignatureGen2() []byte {
 	return nil
 }
 
+func (x *TechnicalData) GetRawData() []byte {
+	if x != nil {
+		return x.xxx_hidden_RawData
+	}
+	return nil
+}
+
 func (x *TechnicalData) SetGeneration(v v1.Generation) {
 	x.xxx_hidden_Generation = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 11)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 12)
 }
 
 func (x *TechnicalData) SetVuIdentification(v *TechnicalData_VuIdentification) {
@@ -203,7 +211,7 @@ func (x *TechnicalData) SetSignatureGen1(v []byte) {
 		v = []byte{}
 	}
 	x.xxx_hidden_SignatureGen1 = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 9, 11)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 9, 12)
 }
 
 func (x *TechnicalData) SetSignatureGen2(v []byte) {
@@ -211,7 +219,15 @@ func (x *TechnicalData) SetSignatureGen2(v []byte) {
 		v = []byte{}
 	}
 	x.xxx_hidden_SignatureGen2 = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 10, 11)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 10, 12)
+}
+
+func (x *TechnicalData) SetRawData(v []byte) {
+	if v == nil {
+		v = []byte{}
+	}
+	x.xxx_hidden_RawData = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 11, 12)
 }
 
 func (x *TechnicalData) HasGeneration() bool {
@@ -249,6 +265,13 @@ func (x *TechnicalData) HasSignatureGen2() bool {
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 10)
 }
 
+func (x *TechnicalData) HasRawData() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 11)
+}
+
 func (x *TechnicalData) ClearGeneration() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 0)
 	x.xxx_hidden_Generation = v1.Generation_GENERATION_UNSPECIFIED
@@ -270,6 +293,11 @@ func (x *TechnicalData) ClearSignatureGen1() {
 func (x *TechnicalData) ClearSignatureGen2() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 10)
 	x.xxx_hidden_SignatureGen2 = nil
+}
+
+func (x *TechnicalData) ClearRawData() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 11)
+	x.xxx_hidden_RawData = nil
 }
 
 type TechnicalData_builder struct {
@@ -313,6 +341,10 @@ type TechnicalData_builder struct {
 	//
 	// See Data Dictionary, Section 2.149, `Signature`.
 	SignatureGen2 []byte
+	// The raw, unparsed binary data of the complete Technical Data transfer value.
+	// This field is preserved for data fidelity and lossless round-trips.
+	// It includes all data structures and the embedded signature.
+	RawData []byte
 }
 
 func (b0 TechnicalData_builder) Build() *TechnicalData {
@@ -320,7 +352,7 @@ func (b0 TechnicalData_builder) Build() *TechnicalData {
 	b, x := &b0, m0
 	_, _ = b, x
 	if b.Generation != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 11)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 12)
 		x.xxx_hidden_Generation = *b.Generation
 	}
 	x.xxx_hidden_VuIdentification = b.VuIdentification
@@ -332,12 +364,16 @@ func (b0 TechnicalData_builder) Build() *TechnicalData {
 	x.xxx_hidden_ItsConsentRecords = &b.ItsConsentRecords
 	x.xxx_hidden_PowerSupplyInterruptions = &b.PowerSupplyInterruptions
 	if b.SignatureGen1 != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 9, 11)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 9, 12)
 		x.xxx_hidden_SignatureGen1 = b.SignatureGen1
 	}
 	if b.SignatureGen2 != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 10, 11)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 10, 12)
 		x.xxx_hidden_SignatureGen2 = b.SignatureGen2
+	}
+	if b.RawData != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 11, 12)
+		x.xxx_hidden_RawData = b.RawData
 	}
 	return m0
 }
@@ -2017,7 +2053,7 @@ var File_wayplatform_connect_tachograph_vu_v1_technical_data_proto protoreflect.
 
 const file_wayplatform_connect_tachograph_vu_v1_technical_data_proto_rawDesc = "" +
 	"\n" +
-	"9wayplatform/connect/tachograph/vu/v1/technical_data.proto\x12$wayplatform.connect.tachograph.vu.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a>wayplatform/connect/tachograph/dd/v1/calibration_purpose.proto\x1a;wayplatform/connect/tachograph/dd/v1/card_slot_number.proto\x1aAwayplatform/connect/tachograph/dd/v1/card_structure_version.proto\x1a/wayplatform/connect/tachograph/dd/v1/date.proto\x1a@wayplatform/connect/tachograph/dd/v1/driver_identification.proto\x1a9wayplatform/connect/tachograph/dd/v1/equipment_type.proto\x1aAwayplatform/connect/tachograph/dd/v1/extended_serial_number.proto\x1a;wayplatform/connect/tachograph/dd/v1/full_card_number.proto\x1aJwayplatform/connect/tachograph/dd/v1/full_card_number_and_generation.proto\x1a5wayplatform/connect/tachograph/dd/v1/generation.proto\x1a9wayplatform/connect/tachograph/dd/v1/nation_numeric.proto\x1a?wayplatform/connect/tachograph/dd/v1/owner_identification.proto\x1aBwayplatform/connect/tachograph/dd/v1/software_identification.proto\x1a7wayplatform/connect/tachograph/dd/v1/string_value.proto\x1aNwayplatform/connect/tachograph/dd/v1/vehicle_registration_identification.proto\x1a2wayplatform/connect/tachograph/dd/v1/version.proto\"\xbe%\n" +
+	"9wayplatform/connect/tachograph/vu/v1/technical_data.proto\x12$wayplatform.connect.tachograph.vu.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a>wayplatform/connect/tachograph/dd/v1/calibration_purpose.proto\x1a;wayplatform/connect/tachograph/dd/v1/card_slot_number.proto\x1aAwayplatform/connect/tachograph/dd/v1/card_structure_version.proto\x1a/wayplatform/connect/tachograph/dd/v1/date.proto\x1a@wayplatform/connect/tachograph/dd/v1/driver_identification.proto\x1a9wayplatform/connect/tachograph/dd/v1/equipment_type.proto\x1aAwayplatform/connect/tachograph/dd/v1/extended_serial_number.proto\x1a;wayplatform/connect/tachograph/dd/v1/full_card_number.proto\x1aJwayplatform/connect/tachograph/dd/v1/full_card_number_and_generation.proto\x1a5wayplatform/connect/tachograph/dd/v1/generation.proto\x1a9wayplatform/connect/tachograph/dd/v1/nation_numeric.proto\x1a?wayplatform/connect/tachograph/dd/v1/owner_identification.proto\x1aBwayplatform/connect/tachograph/dd/v1/software_identification.proto\x1a7wayplatform/connect/tachograph/dd/v1/string_value.proto\x1aNwayplatform/connect/tachograph/dd/v1/vehicle_registration_identification.proto\x1a2wayplatform/connect/tachograph/dd/v1/version.proto\"\xd9%\n" +
 	"\rTechnicalData\x12P\n" +
 	"\n" +
 	"generation\x18\x01 \x01(\x0e20.wayplatform.connect.tachograph.dd.v1.GenerationR\n" +
@@ -2032,7 +2068,8 @@ const file_wayplatform_connect_tachograph_vu_v1_technical_data_proto_rawDesc = "
 	"\x1apower_supply_interruptions\x18\t \x03(\v2Q.wayplatform.connect.tachograph.vu.v1.TechnicalData.PowerSupplyInterruptionRecordR\x18powerSupplyInterruptions\x12%\n" +
 	"\x0esignature_gen1\x18\n" +
 	" \x01(\fR\rsignatureGen1\x12%\n" +
-	"\x0esignature_gen2\x18\v \x01(\fR\rsignatureGen2\x1a\xab\x05\n" +
+	"\x0esignature_gen2\x18\v \x01(\fR\rsignatureGen2\x12\x19\n" +
+	"\braw_data\x18\f \x01(\fR\arawData\x1a\xab\x05\n" +
 	"\x10VuIdentification\x12^\n" +
 	"\x11manufacturer_name\x18\x01 \x01(\v21.wayplatform.connect.tachograph.dd.v1.StringValueR\x10manufacturerName\x12d\n" +
 	"\x14manufacturer_address\x18\x02 \x01(\v21.wayplatform.connect.tachograph.dd.v1.StringValueR\x13manufacturerAddress\x12R\n" +

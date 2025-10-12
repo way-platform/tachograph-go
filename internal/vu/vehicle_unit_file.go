@@ -1,9 +1,9 @@
 package vu
 
 import (
-	"encoding/binary"
 	"fmt"
 
+	ddv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
 	vuv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/vu/v1"
 	"google.golang.org/protobuf/proto"
 )
@@ -46,117 +46,223 @@ func MarshalVehicleUnitFile(file *vuv1.VehicleUnitFile) ([]byte, error) {
 //	    }
 //	}
 func unmarshalVehicleUnitFile(input []byte) (*vuv1.VehicleUnitFile, error) {
-	var output vuv1.VehicleUnitFile
-	offset := 0
-
-	for offset+2 <= len(input) { // Need at least 2 bytes for tag
-		// Read Tag - 2 bytes for VU files (TV format)
-		tag := binary.BigEndian.Uint16(input[offset:])
-		offset += 2
-
-		// Determine transfer type from tag
-		transferType := findTransferTypeByTag(tag)
-		if transferType == vuv1.TransferType_TRANSFER_TYPE_UNSPECIFIED {
-			// Skip unknown tags - we need to determine how much data to skip
-			// For now, we'll break out of the loop on unknown tags
-			break
-		}
-
-		// Parse the transfer data based on type
-		transfer := &vuv1.VehicleUnitFile_Transfer{}
-		transfer.SetType(transferType)
-
-		// Parse the specific data type - this will determine how much data to consume
-		var bytesRead int
-		var err error
-
-		switch transferType {
-		case vuv1.TransferType_DOWNLOAD_INTERFACE_VERSION:
-			version := &vuv1.DownloadInterfaceVersion{}
-			bytesRead, err = unmarshalDownloadInterfaceVersion(input, offset, version)
-			if err != nil {
-				return nil, err
-			}
-			transfer.SetDownloadInterfaceVersion(version)
-		case vuv1.TransferType_OVERVIEW_GEN1:
-			overview := &vuv1.Overview{}
-			bytesRead, err = unmarshalOverview(input, offset, overview, 1)
-			if err != nil {
-				return nil, err
-			}
-			transfer.SetOverview(overview)
-		case vuv1.TransferType_OVERVIEW_GEN2_V1, vuv1.TransferType_OVERVIEW_GEN2_V2:
-			overview := &vuv1.Overview{}
-			generation := 2
-			bytesRead, err = unmarshalOverview(input, offset, overview, generation)
-			if err != nil {
-				return nil, err
-			}
-			transfer.SetOverview(overview)
-		case vuv1.TransferType_ACTIVITIES_GEN1:
-			activities := &vuv1.Activities{}
-			bytesRead, err = unmarshalVuActivitiesGen1(input, offset, activities)
-			if err != nil {
-				return nil, err
-			}
-			transfer.SetActivities(activities)
-		case vuv1.TransferType_ACTIVITIES_GEN2_V1, vuv1.TransferType_ACTIVITIES_GEN2_V2:
-			activities := &vuv1.Activities{}
-			bytesRead, err = unmarshalVuActivitiesGen2(input, offset, activities)
-			if err != nil {
-				return nil, err
-			}
-			transfer.SetActivities(activities)
-		case vuv1.TransferType_EVENTS_AND_FAULTS_GEN1:
-			eventsAndFaults := &vuv1.EventsAndFaults{}
-			bytesRead, err = unmarshalVuEventsAndFaults(input, offset, eventsAndFaults, 1)
-			if err != nil {
-				return nil, err
-			}
-			transfer.SetEventsAndFaults(eventsAndFaults)
-		case vuv1.TransferType_EVENTS_AND_FAULTS_GEN2_V1:
-			eventsAndFaults := &vuv1.EventsAndFaults{}
-			bytesRead, err = unmarshalVuEventsAndFaults(input, offset, eventsAndFaults, 2)
-			if err != nil {
-				return nil, err
-			}
-			transfer.SetEventsAndFaults(eventsAndFaults)
-		case vuv1.TransferType_DETAILED_SPEED_GEN1:
-			detailedSpeed := &vuv1.DetailedSpeed{}
-			bytesRead, err = UnmarshalVuDetailedSpeed(input, offset, detailedSpeed, 1)
-			if err != nil {
-				return nil, err
-			}
-			transfer.SetDetailedSpeed(detailedSpeed)
-		case vuv1.TransferType_DETAILED_SPEED_GEN2:
-			detailedSpeed := &vuv1.DetailedSpeed{}
-			bytesRead, err = UnmarshalVuDetailedSpeed(input, offset, detailedSpeed, 2)
-			if err != nil {
-				return nil, err
-			}
-			transfer.SetDetailedSpeed(detailedSpeed)
-		case vuv1.TransferType_TECHNICAL_DATA_GEN1:
-			technicalData := &vuv1.TechnicalData{}
-			bytesRead, err = UnmarshalVuTechnicalData(input, offset, technicalData, 1)
-			if err != nil {
-				return nil, err
-			}
-			transfer.SetTechnicalData(technicalData)
-		case vuv1.TransferType_TECHNICAL_DATA_GEN2_V1:
-			technicalData := &vuv1.TechnicalData{}
-			bytesRead, err = UnmarshalVuTechnicalData(input, offset, technicalData, 2)
-			if err != nil {
-				return nil, err
-			}
-			transfer.SetTechnicalData(technicalData)
-		default:
-			// For now, skip unknown transfer types
-		}
-
-		// Advance offset by the number of bytes read
-		offset += bytesRead
-		output.SetTransfers(append(output.GetTransfers(), transfer))
+	// Pass 1: Slice into RawVehicleUnitFile
+	rawFile, err := unmarshalRawVehicleUnitFile(input)
+	if err != nil {
+		return nil, fmt.Errorf("raw unmarshal failed: %w", err)
 	}
+
+	// Determine generation/version
+	if len(rawFile.GetRecords()) == 0 {
+		return nil, fmt.Errorf("empty VU file")
+	}
+
+	firstRecord := rawFile.GetRecords()[0]
+
+	// Dispatch to generation-specific unmarshaller
+	output := &vuv1.VehicleUnitFile{}
+
+	switch firstRecord.GetGeneration() {
+	case ddv1.Generation_GENERATION_1:
+		gen1File, err := unmarshalVehicleUnitFileGen1(rawFile)
+		if err != nil {
+			return nil, err
+		}
+		output.SetGeneration(ddv1.Generation_GENERATION_1)
+		output.SetGen1(gen1File)
+
+	case ddv1.Generation_GENERATION_2:
+		if hasGen2V2Transfers(rawFile) {
+			gen2v2File, err := unmarshalVehicleUnitFileGen2V2(rawFile)
+			if err != nil {
+				return nil, err
+			}
+			output.SetGeneration(ddv1.Generation_GENERATION_2)
+			output.SetVersion(ddv1.Version_VERSION_2)
+			output.SetGen2V2(gen2v2File)
+		} else {
+			gen2v1File, err := unmarshalVehicleUnitFileGen2V1(rawFile)
+			if err != nil {
+				return nil, err
+			}
+			output.SetGeneration(ddv1.Generation_GENERATION_2)
+			output.SetVersion(ddv1.Version_VERSION_1)
+			output.SetGen2V1(gen2v1File)
+		}
+
+	default:
+		return nil, fmt.Errorf("unknown generation: %v", firstRecord.GetGeneration())
+	}
+
+	return output, nil
+}
+
+// hasGen2V2Transfers checks if the raw file contains Gen2 V2 transfers.
+// Gen2 V2 is identified by the presence of TREP 00 (DownloadInterfaceVersion)
+// or TREP 31-35 transfers.
+func hasGen2V2Transfers(rawFile *vuv1.RawVehicleUnitFile) bool {
+	for _, record := range rawFile.GetRecords() {
+		switch record.GetType() {
+		case vuv1.TransferType_DOWNLOAD_INTERFACE_VERSION,
+			vuv1.TransferType_OVERVIEW_GEN2_V2,
+			vuv1.TransferType_ACTIVITIES_GEN2_V2,
+			vuv1.TransferType_EVENTS_AND_FAULTS_GEN2_V2,
+			vuv1.TransferType_TECHNICAL_DATA_GEN2_V2:
+			return true
+		}
+	}
+	return false
+}
+
+// unmarshalVehicleUnitFileGen1 unmarshals a Gen1 VU file from raw records.
+func unmarshalVehicleUnitFileGen1(rawFile *vuv1.RawVehicleUnitFile) (*vuv1.VehicleUnitFileGen1, error) {
+	var output vuv1.VehicleUnitFileGen1
+
+	for _, record := range rawFile.GetRecords() {
+		switch record.GetType() {
+		case vuv1.TransferType_OVERVIEW_GEN1:
+			overview, err := unmarshalOverviewGen1(record.GetValue())
+			if err != nil {
+				return nil, fmt.Errorf("unmarshal Overview Gen1: %w", err)
+			}
+			output.SetOverview(overview)
+
+		case vuv1.TransferType_ACTIVITIES_GEN1:
+			activities, err := unmarshalActivitiesGen1(record.GetValue())
+			if err != nil {
+				return nil, fmt.Errorf("unmarshal Activities Gen1: %w", err)
+			}
+			output.SetActivities(append(output.GetActivities(), activities))
+
+		case vuv1.TransferType_EVENTS_AND_FAULTS_GEN1:
+			eventsAndFaults, err := unmarshalEventsAndFaultsGen1(record.GetValue())
+			if err != nil {
+				return nil, fmt.Errorf("unmarshal Events and Faults Gen1: %w", err)
+			}
+			output.SetEventsAndFaults(append(output.GetEventsAndFaults(), eventsAndFaults))
+
+		case vuv1.TransferType_DETAILED_SPEED_GEN1:
+			detailedSpeed, err := unmarshalDetailedSpeedGen1(record.GetValue())
+			if err != nil {
+				return nil, fmt.Errorf("unmarshal Detailed Speed Gen1: %w", err)
+			}
+			output.SetDetailedSpeed(append(output.GetDetailedSpeed(), detailedSpeed))
+
+		case vuv1.TransferType_TECHNICAL_DATA_GEN1:
+			technicalData, err := unmarshalTechnicalDataGen1(record.GetValue())
+			if err != nil {
+				return nil, fmt.Errorf("unmarshal Technical Data Gen1: %w", err)
+			}
+			output.SetTechnicalData(append(output.GetTechnicalData(), technicalData))
+
+		default:
+			return nil, fmt.Errorf("unexpected transfer type %v in Gen1 file", record.GetType())
+		}
+	}
+
+	return &output, nil
+}
+
+// unmarshalVehicleUnitFileGen2V1 unmarshals a Gen2 V1 VU file from raw records.
+func unmarshalVehicleUnitFileGen2V1(rawFile *vuv1.RawVehicleUnitFile) (*vuv1.VehicleUnitFileGen2V1, error) {
+	var output vuv1.VehicleUnitFileGen2V1
+
+	for _, record := range rawFile.GetRecords() {
+		switch record.GetType() {
+		case vuv1.TransferType_OVERVIEW_GEN2_V1:
+			overview, err := unmarshalOverviewGen2V1(record.GetValue())
+			if err != nil {
+				return nil, fmt.Errorf("unmarshal Overview Gen2 V1: %w", err)
+			}
+			output.SetOverview(overview)
+
+		case vuv1.TransferType_ACTIVITIES_GEN2_V1:
+			activities, err := unmarshalActivitiesGen2V1(record.GetValue())
+			if err != nil {
+				return nil, fmt.Errorf("unmarshal Activities Gen2 V1: %w", err)
+			}
+			output.SetActivities(append(output.GetActivities(), activities))
+
+		case vuv1.TransferType_EVENTS_AND_FAULTS_GEN2_V1:
+			eventsAndFaults, err := unmarshalEventsAndFaultsGen2V1(record.GetValue())
+			if err != nil {
+				return nil, fmt.Errorf("unmarshal Events and Faults Gen2 V1: %w", err)
+			}
+			output.SetEventsAndFaults(append(output.GetEventsAndFaults(), eventsAndFaults))
+
+		case vuv1.TransferType_DETAILED_SPEED_GEN2:
+			detailedSpeed, err := unmarshalDetailedSpeedGen2(record.GetValue())
+			if err != nil {
+				return nil, fmt.Errorf("unmarshal Detailed Speed Gen2: %w", err)
+			}
+			output.SetDetailedSpeed(append(output.GetDetailedSpeed(), detailedSpeed))
+
+		case vuv1.TransferType_TECHNICAL_DATA_GEN2_V1:
+			technicalData, err := unmarshalTechnicalDataGen2V1(record.GetValue())
+			if err != nil {
+				return nil, fmt.Errorf("unmarshal Technical Data Gen2 V1: %w", err)
+			}
+			output.SetTechnicalData(append(output.GetTechnicalData(), technicalData))
+
+		default:
+			return nil, fmt.Errorf("unexpected transfer type %v in Gen2 V1 file", record.GetType())
+		}
+	}
+
+	return &output, nil
+}
+
+// unmarshalVehicleUnitFileGen2V2 unmarshals a Gen2 V2 VU file from raw records.
+func unmarshalVehicleUnitFileGen2V2(rawFile *vuv1.RawVehicleUnitFile) (*vuv1.VehicleUnitFileGen2V2, error) {
+	var output vuv1.VehicleUnitFileGen2V2
+
+	for _, record := range rawFile.GetRecords() {
+		switch record.GetType() {
+		case vuv1.TransferType_DOWNLOAD_INTERFACE_VERSION:
+			// Download interface version can be parsed if needed
+			// For now, skip as it's mainly used for version detection
+			// output.SetDownloadInterfaceVersion(...)
+
+		case vuv1.TransferType_OVERVIEW_GEN2_V2:
+			overview, err := unmarshalOverviewGen2V2(record.GetValue())
+			if err != nil {
+				return nil, fmt.Errorf("unmarshal Overview Gen2 V2: %w", err)
+			}
+			output.SetOverview(overview)
+
+		case vuv1.TransferType_ACTIVITIES_GEN2_V2:
+			activities, err := unmarshalActivitiesGen2V2(record.GetValue())
+			if err != nil {
+				return nil, fmt.Errorf("unmarshal Activities Gen2 V2: %w", err)
+			}
+			output.SetActivities(append(output.GetActivities(), activities))
+
+		case vuv1.TransferType_EVENTS_AND_FAULTS_GEN2_V2:
+			eventsAndFaults, err := unmarshalEventsAndFaultsGen2V2(record.GetValue())
+			if err != nil {
+				return nil, fmt.Errorf("unmarshal Events and Faults Gen2 V2: %w", err)
+			}
+			output.SetEventsAndFaults(append(output.GetEventsAndFaults(), eventsAndFaults))
+
+		case vuv1.TransferType_DETAILED_SPEED_GEN2:
+			detailedSpeed, err := unmarshalDetailedSpeedGen2(record.GetValue())
+			if err != nil {
+				return nil, fmt.Errorf("unmarshal Detailed Speed Gen2: %w", err)
+			}
+			output.SetDetailedSpeed(append(output.GetDetailedSpeed(), detailedSpeed))
+
+		case vuv1.TransferType_TECHNICAL_DATA_GEN2_V2:
+			technicalData, err := unmarshalTechnicalDataGen2V2(record.GetValue())
+			if err != nil {
+				return nil, fmt.Errorf("unmarshal Technical Data Gen2 V2: %w", err)
+			}
+			output.SetTechnicalData(append(output.GetTechnicalData(), technicalData))
+
+		default:
+			return nil, fmt.Errorf("unexpected transfer type %v in Gen2 V2 file", record.GetType())
+		}
+	}
+
 	return &output, nil
 }
 
@@ -202,113 +308,11 @@ func appendVU(dst []byte, vuFile *vuv1.VehicleUnitFile) ([]byte, error) {
 		return dst, nil
 	}
 
-	for _, transfer := range vuFile.GetTransfers() {
-		// Write TV format tag (2 bytes) for this transfer
-		tag, err := getTagForTransferType(transfer.GetType())
-		if err != nil {
-			return nil, fmt.Errorf("failed to get tag for transfer type %v: %w", transfer.GetType(), err)
-		}
-		dst = binary.BigEndian.AppendUint16(dst, tag)
-
-		// Write the transfer data based on type
-		switch transfer.GetType() {
-		case vuv1.TransferType_DOWNLOAD_INTERFACE_VERSION:
-			if version := transfer.GetDownloadInterfaceVersion(); version != nil {
-				// Placeholder implementation - just append some dummy data
-				dst = append(dst, 0x01, 0x01) // 2 bytes for generation and version
-			}
-		case vuv1.TransferType_OVERVIEW_GEN1:
-			if overview := transfer.GetOverview(); overview != nil {
-				// Placeholder implementation - just append some dummy data
-				dst = append(dst, make([]byte, 128)...) // 128 bytes of zeros
-			}
-		case vuv1.TransferType_OVERVIEW_GEN2_V1, vuv1.TransferType_OVERVIEW_GEN2_V2:
-			if overview := transfer.GetOverview(); overview != nil {
-				// Placeholder implementation - just append some dummy data
-				dst = append(dst, make([]byte, 128)...) // 128 bytes of zeros
-			}
-		case vuv1.TransferType_ACTIVITIES_GEN1:
-			if activities := transfer.GetActivities(); activities != nil {
-				dst, err = appendVuActivitiesBytes(dst, activities)
-				if err != nil {
-					return nil, fmt.Errorf("failed to append activities gen1: %w", err)
-				}
-			}
-		case vuv1.TransferType_ACTIVITIES_GEN2_V1, vuv1.TransferType_ACTIVITIES_GEN2_V2:
-			if activities := transfer.GetActivities(); activities != nil {
-				dst, err = appendVuActivitiesBytes(dst, activities)
-				if err != nil {
-					return nil, fmt.Errorf("failed to append activities gen2: %w", err)
-				}
-			}
-		case vuv1.TransferType_EVENTS_AND_FAULTS_GEN1:
-			if eventsAndFaults := transfer.GetEventsAndFaults(); eventsAndFaults != nil {
-				dst, err = appendVuEventsAndFaultsBytes(dst, eventsAndFaults)
-				if err != nil {
-					return nil, fmt.Errorf("failed to append events and faults gen1: %w", err)
-				}
-			}
-		case vuv1.TransferType_EVENTS_AND_FAULTS_GEN2_V1, vuv1.TransferType_EVENTS_AND_FAULTS_GEN2_V2:
-			if eventsAndFaults := transfer.GetEventsAndFaults(); eventsAndFaults != nil {
-				dst, err = appendVuEventsAndFaultsBytes(dst, eventsAndFaults)
-				if err != nil {
-					return nil, fmt.Errorf("failed to append events and faults gen2: %w", err)
-				}
-			}
-		case vuv1.TransferType_DETAILED_SPEED_GEN1:
-			if detailedSpeed := transfer.GetDetailedSpeed(); detailedSpeed != nil {
-				dst, err = appendVuDetailedSpeedBytes(dst, detailedSpeed)
-				if err != nil {
-					return nil, fmt.Errorf("failed to append detailed speed gen1: %w", err)
-				}
-			}
-		case vuv1.TransferType_DETAILED_SPEED_GEN2:
-			if detailedSpeed := transfer.GetDetailedSpeed(); detailedSpeed != nil {
-				dst, err = appendVuDetailedSpeedBytes(dst, detailedSpeed)
-				if err != nil {
-					return nil, fmt.Errorf("failed to append detailed speed gen2: %w", err)
-				}
-			}
-		case vuv1.TransferType_TECHNICAL_DATA_GEN1:
-			if technicalData := transfer.GetTechnicalData(); technicalData != nil {
-				dst, err = appendVuTechnicalDataBytes(dst, technicalData)
-				if err != nil {
-					return nil, fmt.Errorf("failed to append technical data gen1: %w", err)
-				}
-			}
-		case vuv1.TransferType_TECHNICAL_DATA_GEN2_V1, vuv1.TransferType_TECHNICAL_DATA_GEN2_V2:
-			if technicalData := transfer.GetTechnicalData(); technicalData != nil {
-				dst, err = appendVuTechnicalDataBytes(dst, technicalData)
-				if err != nil {
-					return nil, fmt.Errorf("failed to append technical data gen2: %w", err)
-				}
-			}
-		case vuv1.TransferType_CARD_DOWNLOAD:
-			if cardDownload := transfer.GetCardDownload(); cardDownload != nil {
-				// Placeholder implementation - just append some dummy data
-				dst = append(dst, make([]byte, 64)...) // 64 bytes of zeros
-			}
-		default:
-			return nil, fmt.Errorf("unsupported transfer type: %v", transfer.GetType())
-		}
-	}
-
-	return dst, nil
+	// Dispatch to generation-specific marshaller
+	// Note: The plan specifies that VehicleUnitFile marshalling is NOT implemented,
+	// only RawVehicleUnitFile marshalling is used for round-tripping.
+	// Individual transfer marshalling is implemented for testing purposes.
+	return nil, fmt.Errorf("VehicleUnitFile marshalling is not implemented; use RawVehicleUnitFile for binary round-tripping")
 }
 
 // getTagForTransferType returns the TV format tag for a given transfer type
-func getTagForTransferType(transferType vuv1.TransferType) (uint16, error) {
-	values := vuv1.TransferType_TRANSFER_TYPE_UNSPECIFIED.Descriptor().Values()
-	for i := 0; i < values.Len(); i++ {
-		valueDesc := values.Get(i)
-		if vuv1.TransferType(valueDesc.Number()) == transferType {
-			opts := valueDesc.Options()
-			if proto.HasExtension(opts, vuv1.E_TrepValue) {
-				trepValue := proto.GetExtension(opts, vuv1.E_TrepValue).(int32)
-				// VU tags are constructed as 0x76XX where XX is the TREP value
-				return uint16(0x7600 | (uint16(trepValue) & 0xFF)), nil
-			}
-		}
-	}
-	return 0, fmt.Errorf("no TREP value found for transfer type: %v", transferType)
-}

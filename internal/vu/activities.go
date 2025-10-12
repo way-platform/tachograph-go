@@ -15,6 +15,241 @@ import (
 	vuv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/vu/v1"
 )
 
+// ===== sizeOf Functions =====
+
+// sizeOfActivities dispatches to generation-specific size calculation.
+func sizeOfActivities(data []byte, transferType vuv1.TransferType) (int, error) {
+	switch transferType {
+	case vuv1.TransferType_ACTIVITIES_GEN1:
+		return sizeOfActivitiesGen1(data)
+	case vuv1.TransferType_ACTIVITIES_GEN2_V1:
+		return sizeOfActivitiesGen2V1(data)
+	case vuv1.TransferType_ACTIVITIES_GEN2_V2:
+		return sizeOfActivitiesGen2V2(data)
+	default:
+		return 0, fmt.Errorf("unsupported transfer type for Activities: %v", transferType)
+	}
+}
+
+// sizeOfActivitiesGen1 calculates total size for Gen1 Activities including signature.
+//
+// Activities Gen1 structure (from Appendix 7, Section 2.2.6.3):
+// - TimeReal: 4 bytes (date of day downloaded)
+// - OdometerValueMidnight: 3 bytes (OdometerShort)
+// - VuCardIWData: 2 bytes (noOfIWRecords) + (noOfIWRecords * 129 bytes)
+//   - VuCardIWRecordFirstGen: 129 bytes (72+18+4+4+3+1+4+3+19+1)
+//
+// - VuActivityDailyData: 2 bytes (noOfActivityChanges) + (noOfActivityChanges * 2 bytes)
+//   - ActivityChangeInfo: 2 bytes
+//
+// - VuPlaceDailyWorkPeriodData: 1 byte (noOfPlaceRecords) + (noOfPlaceRecords * 28 bytes)
+//   - VuPlaceDailyWorkPeriodRecordFirstGen: 28 bytes (18 + 10)
+//
+// - VuSpecificConditionData: 2 bytes (noOfSpecificConditionRecords) + (noOfSpecificConditionRecords * 5 bytes)
+//   - SpecificConditionRecord: 5 bytes (4 + 1)
+//
+// - Signature: 128 bytes (RSA)
+func sizeOfActivitiesGen1(data []byte) (int, error) {
+	offset := 0
+
+	// Fixed-size header sections (7 bytes total)
+	offset += 4 // TimeReal (date of day downloaded)
+	offset += 3 // OdometerValueMidnight
+
+	// VuCardIWData: 2 bytes count + variable records
+	if len(data[offset:]) < 2 {
+		return 0, fmt.Errorf("insufficient data for noOfIWRecords")
+	}
+	noOfIWRecords := binary.BigEndian.Uint16(data[offset:])
+	offset += 2
+
+	// Each VuCardIWRecordFirstGen: 129 bytes
+	// (cardHolderName 72, fullCardNumber 18, cardExpiryDate 4, cardInsertionTime 4,
+	//  vehicleOdometerValueAtInsertion 3, cardSlotNumber 1, cardWithdrawalTime 4,
+	//  vehicleOdometerValueAtWithdrawal 3, previousVehicleInfo 19, manualInputFlag 1)
+	const vuCardIWRecordSize = 129
+	offset += int(noOfIWRecords) * vuCardIWRecordSize
+
+	// VuActivityDailyData: 2 bytes count + variable activity changes
+	if len(data[offset:]) < 2 {
+		return 0, fmt.Errorf("insufficient data for noOfActivityChanges")
+	}
+	noOfActivityChanges := binary.BigEndian.Uint16(data[offset:])
+	offset += 2
+
+	// Each ActivityChangeInfo: 2 bytes
+	const activityChangeInfoSize = 2
+	offset += int(noOfActivityChanges) * activityChangeInfoSize
+
+	// VuPlaceDailyWorkPeriodData: 1 byte count + variable place records
+	if len(data[offset:]) < 1 {
+		return 0, fmt.Errorf("insufficient data for noOfPlaceRecords")
+	}
+	noOfPlaceRecords := data[offset]
+	offset += 1
+
+	// Each VuPlaceDailyWorkPeriodRecordFirstGen: 28 bytes (18 FullCardNumber + 10 PlaceRecordFirstGen)
+	const vuPlaceDailyWorkPeriodRecordSize = 28
+	offset += int(noOfPlaceRecords) * vuPlaceDailyWorkPeriodRecordSize
+
+	// VuSpecificConditionData: 2 bytes count + variable condition records
+	if len(data[offset:]) < 2 {
+		return 0, fmt.Errorf("insufficient data for noOfSpecificConditionRecords")
+	}
+	noOfSpecificConditionRecords := binary.BigEndian.Uint16(data[offset:])
+	offset += 2
+
+	// Each SpecificConditionRecord: 5 bytes (4 TimeReal + 1 SpecificConditionType)
+	const specificConditionRecordSize = 5
+	offset += int(noOfSpecificConditionRecords) * specificConditionRecordSize
+
+	// Signature: 128 bytes for Gen1 RSA
+	offset += 128
+
+	return offset, nil
+}
+
+// sizeOfActivitiesGen2V1 calculates size by parsing all Gen2 V1 RecordArrays.
+func sizeOfActivitiesGen2V1(data []byte) (int, error) {
+	offset := 0
+
+	// DateOfDayDownloadedRecordArray
+	size, err := sizeOfRecordArray(data, offset)
+	if err != nil {
+		return 0, fmt.Errorf("DateOfDayDownloadedRecordArray: %w", err)
+	}
+	offset += size
+
+	// OdometerValueMidnightRecordArray
+	size, err = sizeOfRecordArray(data, offset)
+	if err != nil {
+		return 0, fmt.Errorf("OdometerValueMidnightRecordArray: %w", err)
+	}
+	offset += size
+
+	// VuCardIWRecordArray
+	size, err = sizeOfRecordArray(data, offset)
+	if err != nil {
+		return 0, fmt.Errorf("VuCardIWRecordArray: %w", err)
+	}
+	offset += size
+
+	// VuActivityDailyRecordArray
+	size, err = sizeOfRecordArray(data, offset)
+	if err != nil {
+		return 0, fmt.Errorf("VuActivityDailyRecordArray: %w", err)
+	}
+	offset += size
+
+	// VuPlaceDailyWorkPeriodRecordArray
+	size, err = sizeOfRecordArray(data, offset)
+	if err != nil {
+		return 0, fmt.Errorf("VuPlaceDailyWorkPeriodRecordArray: %w", err)
+	}
+	offset += size
+
+	// VuSpecificConditionRecordArray
+	size, err = sizeOfRecordArray(data, offset)
+	if err != nil {
+		return 0, fmt.Errorf("VuSpecificConditionRecordArray: %w", err)
+	}
+	offset += size
+
+	// VuGNSSADRecordArray (Gen2+)
+	size, err = sizeOfRecordArray(data, offset)
+	if err != nil {
+		return 0, fmt.Errorf("VuGNSSADRecordArray: %w", err)
+	}
+	offset += size
+
+	// SignatureRecordArray (last)
+	size, err = sizeOfRecordArray(data, offset)
+	if err != nil {
+		return 0, fmt.Errorf("SignatureRecordArray: %w", err)
+	}
+	offset += size
+
+	return offset, nil
+}
+
+// sizeOfActivitiesGen2V2 calculates size by parsing all Gen2 V2 RecordArrays.
+// Must handle VuBorderCrossingRecordArray and VuLoadUnloadRecordArray.
+func sizeOfActivitiesGen2V2(data []byte) (int, error) {
+	offset := 0
+
+	// DateOfDayDownloadedRecordArray
+	size, err := sizeOfRecordArray(data, offset)
+	if err != nil {
+		return 0, fmt.Errorf("DateOfDayDownloadedRecordArray: %w", err)
+	}
+	offset += size
+
+	// OdometerValueMidnightRecordArray
+	size, err = sizeOfRecordArray(data, offset)
+	if err != nil {
+		return 0, fmt.Errorf("OdometerValueMidnightRecordArray: %w", err)
+	}
+	offset += size
+
+	// VuCardIWRecordArray
+	size, err = sizeOfRecordArray(data, offset)
+	if err != nil {
+		return 0, fmt.Errorf("VuCardIWRecordArray: %w", err)
+	}
+	offset += size
+
+	// VuActivityDailyRecordArray
+	size, err = sizeOfRecordArray(data, offset)
+	if err != nil {
+		return 0, fmt.Errorf("VuActivityDailyRecordArray: %w", err)
+	}
+	offset += size
+
+	// VuPlaceDailyWorkPeriodRecordArray
+	size, err = sizeOfRecordArray(data, offset)
+	if err != nil {
+		return 0, fmt.Errorf("VuPlaceDailyWorkPeriodRecordArray: %w", err)
+	}
+	offset += size
+
+	// VuSpecificConditionRecordArray
+	size, err = sizeOfRecordArray(data, offset)
+	if err != nil {
+		return 0, fmt.Errorf("VuSpecificConditionRecordArray: %w", err)
+	}
+	offset += size
+
+	// VuGNSSADRecordArray
+	size, err = sizeOfRecordArray(data, offset)
+	if err != nil {
+		return 0, fmt.Errorf("VuGNSSADRecordArray: %w", err)
+	}
+	offset += size
+
+	// VuBorderCrossingRecordArray (Gen2 V2+)
+	size, err = sizeOfRecordArray(data, offset)
+	if err != nil {
+		return 0, fmt.Errorf("VuBorderCrossingRecordArray: %w", err)
+	}
+	offset += size
+
+	// VuLoadUnloadRecordArray (Gen2 V2+)
+	size, err = sizeOfRecordArray(data, offset)
+	if err != nil {
+		return 0, fmt.Errorf("VuLoadUnloadRecordArray: %w", err)
+	}
+	offset += size
+
+	// SignatureRecordArray (last)
+	size, err = sizeOfRecordArray(data, offset)
+	if err != nil {
+		return 0, fmt.Errorf("SignatureRecordArray: %w", err)
+	}
+	offset += size
+
+	return offset, nil
+}
+
 // UnmarshalVuActivities unmarshals VU activities data from a VU transfer.
 //
 // The data type `VuActivities` is specified in the Data Dictionary, Section 2.2.6.2.
@@ -1587,832 +1822,3 @@ func parseSignatureRecordArray(data []byte, offset int) ([]byte, int, error) {
 //	    vuLoadUnloadRecordArray                  VuLoadUnloadRecordArray OPTIONAL,
 //	    signatureRecordArray                     SignatureRecordArray
 //	}
-
-// appendVuActivitiesBytes appends VU activities data to a byte slice
-func appendVuActivitiesBytes(dst []byte, activities *vuv1.Activities) ([]byte, error) {
-	if activities == nil {
-		return dst, nil
-	}
-
-	if activities.GetGeneration() == ddv1.Generation_GENERATION_1 {
-		return appendVuActivitiesGen1Bytes(dst, activities)
-	} else {
-		return appendVuActivitiesGen2Bytes(dst, activities)
-	}
-}
-
-// appendVuActivitiesGen1Bytes appends Generation 1 VU activities data
-func appendVuActivitiesGen1Bytes(dst []byte, activities *vuv1.Activities) ([]byte, error) {
-	// DateOfDay (TimeReal - 4 bytes)
-	dst = appendVuTimeReal(dst, activities.GetDateOfDay())
-
-	// OdometerValueMidnight (3 bytes)
-	dst = appendVuOdometer(dst, activities.GetOdometerMidnightKm())
-
-	// VuCardIWData
-	var err error
-	dst, err = appendVuCardIWData(dst, activities.GetCardIwData())
-	if err != nil {
-		return nil, fmt.Errorf("failed to append card IW data: %w", err)
-	}
-
-	// VuActivityDailyData
-	dst, err = appendVuActivityDailyData(dst, activities.GetActivityChanges())
-	if err != nil {
-		return nil, fmt.Errorf("failed to append activity daily data: %w", err)
-	}
-
-	// VuPlaceDailyWorkPeriodData
-	dst, err = appendVuPlaceDailyWorkPeriodData(dst, activities.GetPlaces())
-	if err != nil {
-		return nil, fmt.Errorf("failed to append place daily work period data: %w", err)
-	}
-
-	// VuSpecificConditionData
-	dst, err = appendVuSpecificConditionData(dst, activities.GetSpecificConditions())
-	if err != nil {
-		return nil, fmt.Errorf("failed to append specific condition data: %w", err)
-	}
-
-	// Signature (128 bytes for Gen1)
-	signature := activities.GetSignatureGen1()
-	if len(signature) > 0 {
-		dst = append(dst, signature...)
-	} else {
-		// Pad with zeros if no signature
-		dst = append(dst, make([]byte, 128)...)
-	}
-
-	return dst, nil
-}
-
-// appendVuActivitiesGen2Bytes appends Generation 2 VU activities data
-func appendVuActivitiesGen2Bytes(dst []byte, activities *vuv1.Activities) ([]byte, error) {
-	// Gen2 format uses record arrays, each with a header
-	// Append DateOfDayDownloadedRecordArray
-	dates := []*timestamppb.Timestamp{activities.GetDateOfDay()}
-	dst, err := appendDateOfDayDownloadedRecordArray(dst, dates)
-	if err != nil {
-		return nil, fmt.Errorf("failed to append date of day downloaded record array: %w", err)
-	}
-
-	// Append OdometerValueMidnightRecordArray
-	odometerValues := []int32{activities.GetOdometerMidnightKm()}
-	dst, err = appendOdometerValueMidnightRecordArray(dst, odometerValues)
-	if err != nil {
-		return nil, fmt.Errorf("failed to append odometer value midnight record array: %w", err)
-	}
-
-	// Append VuCardIWRecordArray
-	dst, err = appendVuCardIWRecordArray(dst, activities.GetCardIwData())
-	if err != nil {
-		return nil, fmt.Errorf("failed to append card IW record array: %w", err)
-	}
-
-	// Append VuActivityDailyRecordArray
-	dst, err = appendVuActivityDailyRecordArray(dst, activities.GetActivityChanges())
-	if err != nil {
-		return nil, fmt.Errorf("failed to append activity daily record array: %w", err)
-	}
-
-	// Append VuPlaceDailyWorkPeriodRecordArray
-	dst, err = appendVuPlaceDailyWorkPeriodRecordArray(dst, activities.GetPlaces())
-	if err != nil {
-		return nil, fmt.Errorf("failed to append place daily work period record array: %w", err)
-	}
-
-	// Append VuGNSSADRecordArray (Gen2+)
-	dst, err = appendVuGNSSADRecordArray(dst, activities.GetGnssAccumulatedDriving())
-	if err != nil {
-		return nil, fmt.Errorf("failed to append GNSS AD record array: %w", err)
-	}
-
-	// Append VuSpecificConditionRecordArray
-	dst, err = appendVuSpecificConditionRecordArray(dst, activities.GetSpecificConditions())
-	if err != nil {
-		return nil, fmt.Errorf("failed to append specific condition record array: %w", err)
-	}
-
-	// Append Gen2v2 specific arrays if present
-	if activities.GetVersion() == ddv1.Version_VERSION_2 {
-		// Append VuBorderCrossingRecordArray (Gen2v2+)
-		dst, err = appendVuBorderCrossingRecordArray(dst, activities.GetBorderCrossings())
-		if err != nil {
-			return nil, fmt.Errorf("failed to append border crossing record array: %w", err)
-		}
-
-		// Append VuLoadUnloadRecordArray (Gen2v2+)
-		dst, err = appendVuLoadUnloadRecordArray(dst, activities.GetLoadUnloadOperations())
-		if err != nil {
-			return nil, fmt.Errorf("failed to append load/unload record array: %w", err)
-		}
-	}
-
-	// Append SignatureRecordArray
-	dst, err = appendSignatureRecordArray(dst, activities.GetSignatureGen2())
-	if err != nil {
-		return nil, fmt.Errorf("failed to append signature record array: %w", err)
-	}
-
-	return dst, nil
-}
-
-// Helper functions for appending VU data types
-
-// appendVuOdometer appends an odometer value (3 bytes) to dst
-func appendVuOdometer(dst []byte, value int32) []byte {
-	// Convert to 3-byte big-endian
-	odometerBytes := make([]byte, 3)
-	odometerBytes[0] = byte((value >> 16) & 0xFF)
-	odometerBytes[1] = byte((value >> 8) & 0xFF)
-	odometerBytes[2] = byte(value & 0xFF)
-	return append(dst, odometerBytes...)
-}
-
-// appendVuCardIWData appends VuCardIWData to dst
-func appendVuCardIWData(dst []byte, cardIWData []*vuv1.Activities_CardIWRecord) ([]byte, error) {
-	if cardIWData == nil {
-		// Write number of records (1 byte) as 0
-		return append(dst, 0), nil
-	}
-
-	// Write number of records (1 byte)
-	if len(cardIWData) > 255 {
-		return nil, fmt.Errorf("too many card IW records: %d", len(cardIWData))
-	}
-	dst = append(dst, byte(len(cardIWData)))
-
-	// Write each record
-	for _, record := range cardIWData {
-		var err error
-		dst, err = appendVuCardIWRecord(dst, record)
-		if err != nil {
-			return nil, fmt.Errorf("failed to append card IW record: %w", err)
-		}
-	}
-
-	return dst, nil
-}
-
-// appendVuCardIWRecord appends a single VuCardIWRecord to dst
-func appendVuCardIWRecord(dst []byte, record *vuv1.Activities_CardIWRecord) ([]byte, error) {
-	if record == nil {
-		return dst, nil
-	}
-
-	// VuCardIWRecord ::= SEQUENCE {
-	//     cardHolderName HolderName,                    -- 72 bytes
-	//     fullCardNumber FullCardNumber,                -- 19 bytes
-	//     cardExpiryDate Datef,                         -- 4 bytes
-	//     cardInsertionTime TimeReal,                   -- 4 bytes
-	//     vehicleOdometerValueAtInsertion OdometerShort, -- 3 bytes
-	//     cardSlotNumber CardSlotNumber,                -- 1 byte
-	//     cardWithdrawalTime TimeReal,                  -- 4 bytes
-	//     vehicleOdometerValueAtWithdrawal OdometerShort, -- 3 bytes
-	//     previousVehicleInfo PreviousVehicleInfo,      -- 19 bytes (Gen1)
-	//     manualInputFlag ManualInputFlag               -- 1 byte
-	// }
-	// Total: 130 bytes (Gen1)
-
-	var err error
-
-	// Append cardHolderName (HolderName - 72 bytes)
-	holderName := record.GetCardHolderName()
-	if holderName != nil {
-		dst, err = dd.AppendHolderName(dst, holderName)
-		if err != nil {
-			return nil, fmt.Errorf("failed to append holder name: %w", err)
-		}
-	} else {
-		// Pad with spaces if no holder name
-		dst = append(dst, make([]byte, 72)...)
-	}
-
-	// Append fullCardNumber (FullCardNumber - 19 bytes)
-	fullCardNumberAndGeneration := record.GetFullCardNumberAndGeneration()
-	var fullCardNumber *ddv1.FullCardNumber
-	if fullCardNumberAndGeneration != nil {
-		fullCardNumber = fullCardNumberAndGeneration.GetFullCardNumber()
-	}
-	if fullCardNumber != nil {
-		dst, err = dd.AppendFullCardNumber(dst, fullCardNumber)
-		if err != nil {
-			return nil, fmt.Errorf("failed to append full card number: %w", err)
-		}
-	} else {
-		// Pad with zeros if no card number
-		dst = append(dst, make([]byte, 19)...)
-	}
-
-	// Append cardExpiryDate (Datef - 4 bytes)
-	cardExpiryDate := record.GetCardExpiryDate()
-	if cardExpiryDate != nil {
-		var err error
-		dst, err = dd.AppendDate(dst, cardExpiryDate)
-		if err != nil {
-			return nil, fmt.Errorf("failed to append card expiry date: %w", err)
-		}
-	} else {
-		// Append default date (00000000)
-		dst = append(dst, 0x00, 0x00, 0x00, 0x00)
-	}
-
-	// Append cardInsertionTime (TimeReal - 4 bytes)
-	insertionTime := record.GetCardInsertionTime()
-	if insertionTime != nil {
-		dst = appendVuTimeReal(dst, insertionTime)
-	} else {
-		// Append default time (00000000)
-		dst = append(dst, 0x00, 0x00, 0x00, 0x00)
-	}
-
-	// Append vehicleOdometerValueAtInsertion (OdometerShort - 3 bytes)
-	dst = appendVuOdometer(dst, record.GetOdometerAtInsertionKm())
-
-	// Append cardSlotNumber (CardSlotNumber - 1 byte)
-	dst = append(dst, byte(record.GetCardSlotNumber()))
-
-	// Append cardWithdrawalTime (TimeReal - 4 bytes)
-	withdrawalTime := record.GetCardWithdrawalTime()
-	if withdrawalTime != nil {
-		dst = appendVuTimeReal(dst, withdrawalTime)
-	} else {
-		// Append default time (00000000)
-		dst = append(dst, 0x00, 0x00, 0x00, 0x00)
-	}
-
-	// Append vehicleOdometerValueAtWithdrawal (OdometerShort - 3 bytes)
-	dst = appendVuOdometer(dst, record.GetOdometerAtWithdrawalKm())
-
-	// Append previousVehicleInfo (PreviousVehicleInfo - 19 bytes for Gen1)
-	previousVehicleInfo := record.GetPreviousVehicleInfo()
-	dst, err = dd.AppendPreviousVehicleInfo(dst, previousVehicleInfo)
-	if err != nil {
-		return nil, fmt.Errorf("failed to append previous vehicle info: %w", err)
-	}
-
-	// Append manualInputFlag (ManualInputFlag - 1 byte)
-	if record.GetManualInputFlag() {
-		dst = append(dst, 1)
-	} else {
-		dst = append(dst, 0)
-	}
-
-	return dst, nil
-}
-
-// appendVuActivityDailyData appends VuActivityDailyData to dst
-func appendVuActivityDailyData(dst []byte, activityChanges []*ddv1.ActivityChangeInfo) ([]byte, error) {
-	if activityChanges == nil {
-		// Write number of activity changes (1 byte) as 0
-		return append(dst, 0), nil
-	}
-
-	// Write number of activity changes (1 byte)
-	if len(activityChanges) > 255 {
-		return nil, fmt.Errorf("too many activity changes: %d", len(activityChanges))
-	}
-	dst = append(dst, byte(len(activityChanges)))
-
-	// Write each activity change (2 bytes each)
-	for _, change := range activityChanges {
-		var err error
-		dst, err = dd.AppendActivityChangeInfo(dst, change)
-		if err != nil {
-			return nil, fmt.Errorf("failed to append activity change: %w", err)
-		}
-	}
-
-	return dst, nil
-}
-
-// appendVuPlaceDailyWorkPeriodData appends VuPlaceDailyWorkPeriodData to dst
-func appendVuPlaceDailyWorkPeriodData(dst []byte, places []*vuv1.Activities_PlaceRecord) ([]byte, error) {
-	if places == nil {
-		// Write number of place records (1 byte) as 0
-		return append(dst, 0), nil
-	}
-
-	// Write number of place records (1 byte)
-	if len(places) > 255 {
-		return nil, fmt.Errorf("too many place records: %d", len(places))
-	}
-	dst = append(dst, byte(len(places)))
-
-	// Write each place record
-	for _, place := range places {
-		var err error
-		dst, err = appendVuPlaceRecord(dst, place)
-		if err != nil {
-			return nil, fmt.Errorf("failed to append place record: %w", err)
-		}
-	}
-
-	return dst, nil
-}
-
-// appendVuPlaceRecord appends a single PlaceRecord to dst
-func appendVuPlaceRecord(dst []byte, place *vuv1.Activities_PlaceRecord) ([]byte, error) {
-	if place == nil {
-		return dst, nil
-	}
-
-	// PlaceRecord ::= SEQUENCE {
-	//     entryTime TimeReal,                           -- 4 bytes
-	//     entryTypeDailyWorkPeriod EntryTypeDailyWorkPeriod, -- 1 byte
-	//     dailyWorkPeriodCountry NationNumeric,         -- 1 byte
-	//     dailyWorkPeriodRegion RegionNumeric,          -- 1 byte
-	//     vehicleOdometerValue OdometerShort            -- 3 bytes
-	// }
-
-	// Append entryTime (TimeReal - 4 bytes)
-	entryTime := place.GetEntryTime()
-	if entryTime != nil {
-		dst = appendVuTimeReal(dst, entryTime)
-	} else {
-		// Append default time (00000000)
-		dst = append(dst, 0x00, 0x00, 0x00, 0x00)
-	}
-
-	// Append entryTypeDailyWorkPeriod (1 byte)
-	dst = append(dst, byte(place.GetEntryType()))
-
-	// Append dailyWorkPeriodCountry (NationNumeric - 1 byte)
-	dst = append(dst, byte(place.GetCountry()))
-
-	// Append dailyWorkPeriodRegion (RegionNumeric - 1 byte)
-	region := place.GetRegion()
-	if len(region) > 0 {
-		dst = append(dst, region[0])
-	} else {
-		dst = append(dst, 0)
-	}
-
-	// Append vehicleOdometerValue (OdometerShort - 3 bytes)
-	dst = appendVuOdometer(dst, place.GetOdometerKm())
-
-	return dst, nil
-}
-
-// appendVuSpecificConditionData appends VuSpecificConditionData to dst
-func appendVuSpecificConditionData(dst []byte, specificConditions []*ddv1.SpecificConditionRecord) ([]byte, error) {
-	if specificConditions == nil {
-		// Write number of specific condition records (1 byte) as 0
-		return append(dst, 0), nil
-	}
-
-	// Write number of specific condition records (1 byte)
-	if len(specificConditions) > 255 {
-		return nil, fmt.Errorf("too many specific condition records: %d", len(specificConditions))
-	}
-	dst = append(dst, byte(len(specificConditions)))
-
-	// Write each specific condition record using the dd package
-	for _, condition := range specificConditions {
-		var err error
-		dst, err = dd.AppendSpecificConditionRecord(dst, condition)
-		if err != nil {
-			return nil, fmt.Errorf("failed to append specific condition record: %w", err)
-		}
-	}
-
-	return dst, nil
-}
-
-// Gen2 record array append functions
-
-// appendDateOfDayDownloadedRecordArray appends DateOfDayDownloadedRecordArray to dst
-func appendDateOfDayDownloadedRecordArray(dst []byte, dates []*timestamppb.Timestamp) ([]byte, error) {
-	// DateOfDayDownloadedRecordArray ::= SEQUENCE {
-	//     recordType INTEGER(1..65535),           -- 2 bytes
-	//     recordSize INTEGER(0..65535),           -- 2 bytes
-	//     noOfRecords INTEGER(0..65535),          -- 2 bytes
-	//     records SET SIZE(noOfRecords) OF TimeReal -- 4 bytes each
-	// }
-
-	// Write record array header (6 bytes total)
-	recordType := uint16(0x01) // TimeReal
-	recordSize := uint16(4)    // 4 bytes for TimeReal
-	noOfRecords := uint16(len(dates))
-
-	dst = binary.BigEndian.AppendUint16(dst, recordType)
-	dst = binary.BigEndian.AppendUint16(dst, recordSize)
-	dst = binary.BigEndian.AppendUint16(dst, noOfRecords)
-
-	// Write each TimeReal record
-	for _, date := range dates {
-		if date != nil {
-			dst = appendVuTimeReal(dst, date)
-		} else {
-			// Append default time (00000000)
-			dst = append(dst, 0x00, 0x00, 0x00, 0x00)
-		}
-	}
-
-	return dst, nil
-}
-
-// appendOdometerValueMidnightRecordArray appends OdometerValueMidnightRecordArray to dst
-func appendOdometerValueMidnightRecordArray(dst []byte, odometerValues []int32) ([]byte, error) {
-	// OdometerValueMidnightRecordArray ::= SEQUENCE {
-	//     recordType INTEGER(1..65535),           -- 2 bytes
-	//     recordSize INTEGER(0..65535),           -- 2 bytes
-	//     noOfRecords INTEGER(0..65535),          -- 2 bytes
-	//     records SET SIZE(noOfRecords) OF OdometerShort -- 3 bytes each
-	// }
-
-	// Write record array header (6 bytes total)
-	recordType := uint16(0x02) // OdometerShort
-	recordSize := uint16(3)    // 3 bytes for OdometerShort
-	noOfRecords := uint16(len(odometerValues))
-
-	dst = binary.BigEndian.AppendUint16(dst, recordType)
-	dst = binary.BigEndian.AppendUint16(dst, recordSize)
-	dst = binary.BigEndian.AppendUint16(dst, noOfRecords)
-
-	// Write each OdometerShort record
-	for _, value := range odometerValues {
-		dst = appendVuOdometer(dst, value)
-	}
-
-	return dst, nil
-}
-
-// appendVuCardIWRecordArray appends VuCardIWRecordArray to dst
-func appendVuCardIWRecordArray(dst []byte, cardIWData []*vuv1.Activities_CardIWRecord) ([]byte, error) {
-	// VuCardIWRecordArray ::= SEQUENCE {
-	//     recordType INTEGER(1..65535),           -- 2 bytes
-	//     recordSize INTEGER(0..65535),           -- 2 bytes (not used for variable-length)
-	//     noOfRecords INTEGER(0..65535),          -- 2 bytes
-	//     records SET SIZE(noOfRecords) OF VuCardIWRecord -- Variable size each
-	// }
-
-	// Write record array header (6 bytes total)
-	recordType := uint16(0x0D) // VuCardIWRecord
-	recordSize := uint16(0)    // Not used for variable-length records
-	noOfRecords := uint16(len(cardIWData))
-
-	dst = binary.BigEndian.AppendUint16(dst, recordType)
-	dst = binary.BigEndian.AppendUint16(dst, recordSize)
-	dst = binary.BigEndian.AppendUint16(dst, noOfRecords)
-
-	// Write each VuCardIWRecord
-	for _, record := range cardIWData {
-		var err error
-		dst, err = appendVuCardIWRecord(dst, record)
-		if err != nil {
-			return nil, fmt.Errorf("failed to append card IW record: %w", err)
-		}
-	}
-
-	return dst, nil
-}
-
-// appendVuActivityDailyRecordArray appends VuActivityDailyRecordArray to dst
-func appendVuActivityDailyRecordArray(dst []byte, activityChanges []*ddv1.ActivityChangeInfo) ([]byte, error) {
-	// VuActivityDailyRecordArray ::= SEQUENCE {
-	//     recordType INTEGER(1..65535),           -- 2 bytes
-	//     recordSize INTEGER(0..65535),           -- 2 bytes
-	//     noOfRecords INTEGER(0..65535),          -- 2 bytes
-	//     records SET SIZE(noOfRecords) OF ActivityChangeInfo -- 2 bytes each
-	// }
-
-	// Write record array header (6 bytes total)
-	recordType := uint16(0x03) // ActivityChangeInfo
-	recordSize := uint16(2)    // 2 bytes for ActivityChangeInfo
-	noOfRecords := uint16(len(activityChanges))
-
-	dst = binary.BigEndian.AppendUint16(dst, recordType)
-	dst = binary.BigEndian.AppendUint16(dst, recordSize)
-	dst = binary.BigEndian.AppendUint16(dst, noOfRecords)
-
-	// Write each ActivityChangeInfo record
-	for _, change := range activityChanges {
-		var err error
-		dst, err = dd.AppendActivityChangeInfo(dst, change)
-		if err != nil {
-			return nil, fmt.Errorf("failed to append activity change: %w", err)
-		}
-	}
-
-	return dst, nil
-}
-
-// appendVuPlaceDailyWorkPeriodRecordArray appends VuPlaceDailyWorkPeriodRecordArray to dst
-func appendVuPlaceDailyWorkPeriodRecordArray(dst []byte, places []*vuv1.Activities_PlaceRecord) ([]byte, error) {
-	// VuPlaceDailyWorkPeriodRecordArray ::= SEQUENCE {
-	//     recordType INTEGER(1..65535),           -- 2 bytes
-	//     recordSize INTEGER(0..65535),           -- 2 bytes
-	//     noOfRecords INTEGER(0..65535),          -- 2 bytes
-	//     records SET SIZE(noOfRecords) OF PlaceRecord -- 10 bytes each
-	// }
-
-	// Write record array header (6 bytes total)
-	recordType := uint16(0x04) // PlaceRecord
-	recordSize := uint16(10)   // 10 bytes for PlaceRecord
-	noOfRecords := uint16(len(places))
-
-	dst = binary.BigEndian.AppendUint16(dst, recordType)
-	dst = binary.BigEndian.AppendUint16(dst, recordSize)
-	dst = binary.BigEndian.AppendUint16(dst, noOfRecords)
-
-	// Write each PlaceRecord
-	for _, place := range places {
-		var err error
-		dst, err = appendVuPlaceRecord(dst, place)
-		if err != nil {
-			return nil, fmt.Errorf("failed to append place record: %w", err)
-		}
-	}
-
-	return dst, nil
-}
-
-// appendVuGNSSADRecordArray appends VuGNSSADRecordArray to dst
-func appendVuGNSSADRecordArray(dst []byte, gnssRecords []*vuv1.Activities_GnssRecord) ([]byte, error) {
-	// VuGNSSADRecordArray ::= SEQUENCE {
-	//     recordType INTEGER(1..65535),           -- 2 bytes
-	//     recordSize INTEGER(0..65535),           -- 2 bytes
-	//     noOfRecords INTEGER(0..65535),          -- 2 bytes
-	//     records SET SIZE(noOfRecords) OF VuGNSSADRecord -- 14 bytes each
-	// }
-
-	// Write record array header (6 bytes total)
-	recordType := uint16(0x16) // VuGNSSADRecord
-	recordSize := uint16(14)   // 14 bytes for VuGNSSADRecord
-	noOfRecords := uint16(len(gnssRecords))
-
-	dst = binary.BigEndian.AppendUint16(dst, recordType)
-	dst = binary.BigEndian.AppendUint16(dst, recordSize)
-	dst = binary.BigEndian.AppendUint16(dst, noOfRecords)
-
-	// Write each VuGNSSADRecord
-	for _, record := range gnssRecords {
-		var err error
-		dst, err = appendVuGNSSADRecord(dst, record)
-		if err != nil {
-			return nil, fmt.Errorf("failed to append GNSS record: %w", err)
-		}
-	}
-
-	return dst, nil
-}
-
-// appendVuGNSSADRecord appends a single VuGNSSADRecord to dst
-func appendVuGNSSADRecord(dst []byte, record *vuv1.Activities_GnssRecord) ([]byte, error) {
-	if record == nil {
-		return dst, nil
-	}
-
-	// VuGNSSADRecord ::= SEQUENCE {
-	//     timeStamp TimeReal,                    -- 4 bytes
-	//     gnssAccuracy GNSSAccuracy,            -- 1 byte
-	//     geoCoordinates GeoCoordinates,        -- 8 bytes (latitude + longitude)
-	//     positionAuthenticationStatus PositionAuthenticationStatus -- 1 byte
-	// }
-
-	// Append timeStamp (TimeReal - 4 bytes)
-	timestamp := record.GetTimestamp()
-	if timestamp != nil {
-		dst = appendVuTimeReal(dst, timestamp)
-	} else {
-		// Append default time (00000000)
-		dst = append(dst, 0x00, 0x00, 0x00, 0x00)
-	}
-
-	// Append gnssAccuracy (GNSSAccuracy - 1 byte)
-	dst = append(dst, byte(record.GetGnssAccuracy()))
-
-	// Append geoCoordinates (GeoCoordinates - 8 bytes: 4 bytes latitude + 4 bytes longitude)
-	geoCoords := record.GetGeoCoordinates()
-	if geoCoords != nil {
-		// Latitude (4 bytes, signed integer)
-		latitude := geoCoords.GetLatitude()
-		dst = binary.BigEndian.AppendUint32(dst, uint32(latitude))
-		// Longitude (4 bytes, signed integer)
-		longitude := geoCoords.GetLongitude()
-		dst = binary.BigEndian.AppendUint32(dst, uint32(longitude))
-	} else {
-		// Append default coordinates (00000000)
-		dst = append(dst, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00)
-	}
-
-	// Append positionAuthenticationStatus (PositionAuthenticationStatus - 1 byte)
-	dst = append(dst, byte(record.GetAuthenticationStatus()))
-
-	return dst, nil
-}
-
-// appendVuSpecificConditionRecordArray appends VuSpecificConditionRecordArray to dst
-func appendVuSpecificConditionRecordArray(dst []byte, specificConditions []*ddv1.SpecificConditionRecord) ([]byte, error) {
-	// VuSpecificConditionRecordArray ::= SEQUENCE {
-	//     recordType INTEGER(1..65535),           -- 2 bytes
-	//     recordSize INTEGER(0..65535),           -- 2 bytes
-	//     noOfRecords INTEGER(0..65535),          -- 2 bytes
-	//     records SET SIZE(noOfRecords) OF SpecificConditionRecord -- 5 bytes each
-	// }
-
-	// Write record array header (6 bytes total)
-	recordType := uint16(0x09) // SpecificConditionRecord
-	recordSize := uint16(5)    // 5 bytes for SpecificConditionRecord
-	noOfRecords := uint16(len(specificConditions))
-
-	dst = binary.BigEndian.AppendUint16(dst, recordType)
-	dst = binary.BigEndian.AppendUint16(dst, recordSize)
-	dst = binary.BigEndian.AppendUint16(dst, noOfRecords)
-
-	// Write each SpecificConditionRecord using the dd package
-	for _, condition := range specificConditions {
-		var err error
-		dst, err = dd.AppendSpecificConditionRecord(dst, condition)
-		if err != nil {
-			return nil, fmt.Errorf("failed to append specific condition record: %w", err)
-		}
-	}
-
-	return dst, nil
-}
-
-// appendVuBorderCrossingRecordArray appends VuBorderCrossingRecordArray to dst
-func appendVuBorderCrossingRecordArray(dst []byte, borderCrossings []*vuv1.Activities_BorderCrossingRecord) ([]byte, error) {
-	// VuBorderCrossingRecordArray ::= SEQUENCE {
-	//     recordType INTEGER(1..65535),           -- 2 bytes
-	//     recordSize INTEGER(0..65535),           -- 2 bytes
-	//     noOfRecords INTEGER(0..65535),          -- 2 bytes
-	//     records SET SIZE(noOfRecords) OF VuBorderCrossingRecord -- Variable size each
-	// }
-
-	// Write record array header (6 bytes total)
-	recordType := uint16(0x17) // VuBorderCrossingRecord
-	recordSize := uint16(0)    // Not used for variable-length records
-	noOfRecords := uint16(len(borderCrossings))
-
-	dst = binary.BigEndian.AppendUint16(dst, recordType)
-	dst = binary.BigEndian.AppendUint16(dst, recordSize)
-	dst = binary.BigEndian.AppendUint16(dst, noOfRecords)
-
-	// Write each VuBorderCrossingRecord
-	for _, record := range borderCrossings {
-		var err error
-		dst, err = appendVuBorderCrossingRecord(dst, record)
-		if err != nil {
-			return nil, fmt.Errorf("failed to append border crossing record: %w", err)
-		}
-	}
-
-	return dst, nil
-}
-
-// appendVuBorderCrossingRecord appends a single VuBorderCrossingRecord to dst
-func appendVuBorderCrossingRecord(dst []byte, record *vuv1.Activities_BorderCrossingRecord) ([]byte, error) {
-	if record == nil {
-		return dst, nil
-	}
-
-	// VuBorderCrossingRecord ::= SEQUENCE {
-	//     cardNumberAndGenDriverSlot FullCardNumberAndGeneration, -- 20 bytes
-	//     cardNumberAndGenCodriverSlot FullCardNumberAndGeneration, -- 20 bytes
-	//     countryLeft NationNumeric,                              -- 1 byte
-	//     countryEntered NationNumeric,                           -- 1 byte
-	//     placeRecord GNSSPlaceRecord,                            -- 14 bytes (timestamp + coords + auth)
-	//     odometerValue OdometerShort                             -- 3 bytes
-	// }
-
-	// For now, implement simplified versions due to schema limitations
-	// These would need to be completed when the protobuf schema is updated
-
-	// Append cardNumberAndGenDriverSlot (FullCardNumberAndGeneration - 20 bytes)
-	// Note: Schema limitation - using placeholder for now
-	dst = append(dst, make([]byte, 20)...)
-
-	// Append cardNumberAndGenCodriverSlot (FullCardNumberAndGeneration - 20 bytes)
-	// Note: Schema limitation - using placeholder for now
-	dst = append(dst, make([]byte, 20)...)
-
-	// Append countryLeft (NationNumeric - 1 byte)
-	dst = append(dst, byte(record.GetCountryLeft()))
-
-	// Append countryEntered (NationNumeric - 1 byte)
-	dst = append(dst, byte(record.GetCountryEntered()))
-
-	// Append placeRecord (GNSSPlaceRecord - 14 bytes)
-	placeRecord := record.GetPlaceRecord()
-	if placeRecord != nil {
-		var err error
-		dst, err = appendVuGNSSADRecord(dst, placeRecord)
-		if err != nil {
-			return nil, fmt.Errorf("failed to append place record: %w", err)
-		}
-	} else {
-		// Append default place record (14 bytes of zeros)
-		dst = append(dst, make([]byte, 14)...)
-	}
-
-	// Append odometerValue (OdometerShort - 3 bytes)
-	dst = appendVuOdometer(dst, record.GetOdometerKm())
-
-	return dst, nil
-}
-
-// appendVuLoadUnloadRecordArray appends VuLoadUnloadRecordArray to dst
-func appendVuLoadUnloadRecordArray(dst []byte, loadUnloadRecords []*vuv1.Activities_LoadUnloadRecord) ([]byte, error) {
-	// VuLoadUnloadRecordArray ::= SEQUENCE {
-	//     recordType INTEGER(1..65535),           -- 2 bytes
-	//     recordSize INTEGER(0..65535),           -- 2 bytes
-	//     noOfRecords INTEGER(0..65535),          -- 2 bytes
-	//     records SET SIZE(noOfRecords) OF VuLoadUnloadRecord -- Variable size each
-	// }
-
-	// Write record array header (6 bytes total)
-	recordType := uint16(0x18) // VuLoadUnloadRecord
-	recordSize := uint16(0)    // Not used for variable-length records
-	noOfRecords := uint16(len(loadUnloadRecords))
-
-	dst = binary.BigEndian.AppendUint16(dst, recordType)
-	dst = binary.BigEndian.AppendUint16(dst, recordSize)
-	dst = binary.BigEndian.AppendUint16(dst, noOfRecords)
-
-	// Write each VuLoadUnloadRecord
-	for _, record := range loadUnloadRecords {
-		var err error
-		dst, err = appendVuLoadUnloadRecord(dst, record)
-		if err != nil {
-			return nil, fmt.Errorf("failed to append load/unload record: %w", err)
-		}
-	}
-
-	return dst, nil
-}
-
-// appendVuLoadUnloadRecord appends a single VuLoadUnloadRecord to dst
-func appendVuLoadUnloadRecord(dst []byte, record *vuv1.Activities_LoadUnloadRecord) ([]byte, error) {
-	if record == nil {
-		return dst, nil
-	}
-
-	// VuLoadUnloadRecord ::= SEQUENCE {
-	//     cardNumberAndGenDriverSlot FullCardNumberAndGeneration, -- 20 bytes
-	//     cardNumberAndGenCodriverSlot FullCardNumberAndGeneration, -- 20 bytes
-	//     operationType OperationType,                            -- 1 byte
-	//     placeRecord GNSSPlaceRecord,                            -- 14 bytes
-	//     odometerValue OdometerShort                             -- 3 bytes
-	// }
-
-	// For now, implement simplified versions due to schema limitations
-	// These would need to be completed when the protobuf schema is updated
-
-	// Append cardNumberAndGenDriverSlot (FullCardNumberAndGeneration - 20 bytes)
-	// Note: Schema limitation - using placeholder for now
-	dst = append(dst, make([]byte, 20)...)
-
-	// Append cardNumberAndGenCodriverSlot (FullCardNumberAndGeneration - 20 bytes)
-	// Note: Schema limitation - using placeholder for now
-	dst = append(dst, make([]byte, 20)...)
-
-	// Append operationType (OperationType - 1 byte)
-	dst = append(dst, byte(record.GetOperationType()))
-
-	// Append placeRecord (GNSSPlaceRecord - 14 bytes)
-	placeRecord := record.GetPlaceRecord()
-	if placeRecord != nil {
-		var err error
-		dst, err = appendVuGNSSADRecord(dst, placeRecord)
-		if err != nil {
-			return nil, fmt.Errorf("failed to append place record: %w", err)
-		}
-	} else {
-		// Append default place record (14 bytes of zeros)
-		dst = append(dst, make([]byte, 14)...)
-	}
-
-	// Append odometerValue (OdometerShort - 3 bytes)
-	dst = appendVuOdometer(dst, record.GetOdometerKm())
-
-	return dst, nil
-}
-
-// appendSignatureRecordArray appends SignatureRecordArray to dst
-func appendSignatureRecordArray(dst []byte, signature []byte) ([]byte, error) {
-	// SignatureRecordArray ::= SEQUENCE {
-	//     recordType INTEGER(1..65535),           -- 2 bytes
-	//     recordSize INTEGER(0..65535),           -- 2 bytes
-	//     noOfRecords INTEGER(0..65535),          -- 2 bytes (not used for single signature)
-	//     records SET SIZE(noOfRecords) OF Signature -- Variable size each
-	// }
-
-	// Write record array header (6 bytes total)
-	recordType := uint16(0x08) // Signature
-	recordSize := uint16(len(signature))
-	noOfRecords := uint16(1) // Single signature
-
-	dst = binary.BigEndian.AppendUint16(dst, recordType)
-	dst = binary.BigEndian.AppendUint16(dst, recordSize)
-	dst = binary.BigEndian.AppendUint16(dst, noOfRecords)
-
-	// Write the signature data
-	if len(signature) > 0 {
-		dst = append(dst, signature...)
-	}
-
-	return dst, nil
-}

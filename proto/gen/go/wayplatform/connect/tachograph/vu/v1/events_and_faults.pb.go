@@ -36,6 +36,7 @@ type EventsAndFaults struct {
 	xxx_hidden_TimeAdjustments     *[]*EventsAndFaults_TimeAdjustmentRecord    `protobuf:"bytes,6,rep,name=time_adjustments,json=timeAdjustments"`
 	xxx_hidden_SignatureGen1       []byte                                      `protobuf:"bytes,7,opt,name=signature_gen1,json=signatureGen1"`
 	xxx_hidden_SignatureGen2       []byte                                      `protobuf:"bytes,8,opt,name=signature_gen2,json=signatureGen2"`
+	xxx_hidden_RawData             []byte                                      `protobuf:"bytes,9,opt,name=raw_data,json=rawData"`
 	XXX_raceDetectHookData         protoimpl.RaceDetectHookData
 	XXX_presence                   [1]uint32
 	unknownFields                  protoimpl.UnknownFields
@@ -133,9 +134,16 @@ func (x *EventsAndFaults) GetSignatureGen2() []byte {
 	return nil
 }
 
+func (x *EventsAndFaults) GetRawData() []byte {
+	if x != nil {
+		return x.xxx_hidden_RawData
+	}
+	return nil
+}
+
 func (x *EventsAndFaults) SetGeneration(v v1.Generation) {
 	x.xxx_hidden_Generation = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 8)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 9)
 }
 
 func (x *EventsAndFaults) SetFaults(v []*EventsAndFaults_FaultRecord) {
@@ -163,7 +171,7 @@ func (x *EventsAndFaults) SetSignatureGen1(v []byte) {
 		v = []byte{}
 	}
 	x.xxx_hidden_SignatureGen1 = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 6, 8)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 6, 9)
 }
 
 func (x *EventsAndFaults) SetSignatureGen2(v []byte) {
@@ -171,7 +179,15 @@ func (x *EventsAndFaults) SetSignatureGen2(v []byte) {
 		v = []byte{}
 	}
 	x.xxx_hidden_SignatureGen2 = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 7, 8)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 7, 9)
+}
+
+func (x *EventsAndFaults) SetRawData(v []byte) {
+	if v == nil {
+		v = []byte{}
+	}
+	x.xxx_hidden_RawData = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 8, 9)
 }
 
 func (x *EventsAndFaults) HasGeneration() bool {
@@ -202,6 +218,13 @@ func (x *EventsAndFaults) HasSignatureGen2() bool {
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 7)
 }
 
+func (x *EventsAndFaults) HasRawData() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 8)
+}
+
 func (x *EventsAndFaults) ClearGeneration() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 0)
 	x.xxx_hidden_Generation = v1.Generation_GENERATION_UNSPECIFIED
@@ -219,6 +242,11 @@ func (x *EventsAndFaults) ClearSignatureGen1() {
 func (x *EventsAndFaults) ClearSignatureGen2() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 7)
 	x.xxx_hidden_SignatureGen2 = nil
+}
+
+func (x *EventsAndFaults) ClearRawData() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 8)
+	x.xxx_hidden_RawData = nil
 }
 
 type EventsAndFaults_builder struct {
@@ -250,6 +278,10 @@ type EventsAndFaults_builder struct {
 	//
 	// See Data Dictionary, Section 2.149, `Signature`.
 	SignatureGen2 []byte
+	// The raw, unparsed binary data of the complete Events and Faults transfer value.
+	// This field is preserved for data fidelity and lossless round-trips.
+	// It includes all data structures and the embedded signature.
+	RawData []byte
 }
 
 func (b0 EventsAndFaults_builder) Build() *EventsAndFaults {
@@ -257,7 +289,7 @@ func (b0 EventsAndFaults_builder) Build() *EventsAndFaults {
 	b, x := &b0, m0
 	_, _ = b, x
 	if b.Generation != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 8)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 9)
 		x.xxx_hidden_Generation = *b.Generation
 	}
 	x.xxx_hidden_Faults = &b.Faults
@@ -266,12 +298,16 @@ func (b0 EventsAndFaults_builder) Build() *EventsAndFaults {
 	x.xxx_hidden_OverspeedingEvents = &b.OverspeedingEvents
 	x.xxx_hidden_TimeAdjustments = &b.TimeAdjustments
 	if b.SignatureGen1 != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 6, 8)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 6, 9)
 		x.xxx_hidden_SignatureGen1 = b.SignatureGen1
 	}
 	if b.SignatureGen2 != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 7, 8)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 7, 9)
 		x.xxx_hidden_SignatureGen2 = b.SignatureGen2
+	}
+	if b.RawData != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 8, 9)
+		x.xxx_hidden_RawData = b.RawData
 	}
 	return m0
 }
@@ -1743,7 +1779,7 @@ var File_wayplatform_connect_tachograph_vu_v1_events_and_faults_proto protorefle
 
 const file_wayplatform_connect_tachograph_vu_v1_events_and_faults_proto_rawDesc = "" +
 	"\n" +
-	"<wayplatform/connect/tachograph/vu/v1/events_and_faults.proto\x12$wayplatform.connect.tachograph.vu.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1aEwayplatform/connect/tachograph/dd/v1/event_fault_record_purpose.proto\x1a;wayplatform/connect/tachograph/dd/v1/event_fault_type.proto\x1aJwayplatform/connect/tachograph/dd/v1/full_card_number_and_generation.proto\x1a5wayplatform/connect/tachograph/dd/v1/generation.proto\x1a7wayplatform/connect/tachograph/dd/v1/string_value.proto\"\xb8\x1a\n" +
+	"<wayplatform/connect/tachograph/vu/v1/events_and_faults.proto\x12$wayplatform.connect.tachograph.vu.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1aEwayplatform/connect/tachograph/dd/v1/event_fault_record_purpose.proto\x1a;wayplatform/connect/tachograph/dd/v1/event_fault_type.proto\x1aJwayplatform/connect/tachograph/dd/v1/full_card_number_and_generation.proto\x1a5wayplatform/connect/tachograph/dd/v1/generation.proto\x1a7wayplatform/connect/tachograph/dd/v1/string_value.proto\"\xd3\x1a\n" +
 	"\x0fEventsAndFaults\x12P\n" +
 	"\n" +
 	"generation\x18\x01 \x01(\x0e20.wayplatform.connect.tachograph.dd.v1.GenerationR\n" +
@@ -1754,7 +1790,8 @@ const file_wayplatform_connect_tachograph_vu_v1_events_and_faults_proto_rawDesc 
 	"\x13overspeeding_events\x18\x05 \x03(\v2M.wayplatform.connect.tachograph.vu.v1.EventsAndFaults.OverSpeedingEventRecordR\x12overspeedingEvents\x12u\n" +
 	"\x10time_adjustments\x18\x06 \x03(\v2J.wayplatform.connect.tachograph.vu.v1.EventsAndFaults.TimeAdjustmentRecordR\x0ftimeAdjustments\x12%\n" +
 	"\x0esignature_gen1\x18\a \x01(\fR\rsignatureGen1\x12%\n" +
-	"\x0esignature_gen2\x18\b \x01(\fR\rsignatureGen2\x1a\x9e\x04\n" +
+	"\x0esignature_gen2\x18\b \x01(\fR\rsignatureGen2\x12\x19\n" +
+	"\braw_data\x18\t \x01(\fR\arawData\x1a\x9e\x04\n" +
 	"\vFaultRecord\x12S\n" +
 	"\n" +
 	"fault_type\x18\x01 \x01(\x0e24.wayplatform.connect.tachograph.dd.v1.EventFaultTypeR\tfaultType\x126\n" +

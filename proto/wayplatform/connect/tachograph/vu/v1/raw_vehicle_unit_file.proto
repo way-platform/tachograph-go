@@ -1,0 +1,34 @@
+edition = "2023";
+
+package wayplatform.connect.tachograph.vu.v1;
+
+import "wayplatform/connect/tachograph/dd/v1/generation.proto";
+import "wayplatform/connect/tachograph/vu/v1/transfer_type.proto";
+
+// Intermediate format for VU file parsing that preserves exact binary boundaries.
+//
+// This format is the output of the first parsing pass and enables both signature
+// verification and perfect round-trip fidelity. Each record contains the complete
+// binary value including any embedded signature.
+//
+// See Appendix 7, Section 2.2.6 for the TV (Tag-Value) format specification.
+message RawVehicleUnitFile {
+  // A single Tag-Value record from the VU file.
+  message Record {
+    // The 2-byte tag (e.g., 0x7601 for Gen1 Overview).
+    uint32 tag = 1;
+
+    // The transfer type, inferred from the tag.
+    TransferType type = 2;
+
+    // The application generation (Gen1 or Gen2), inferred from the tag.
+    dd.v1.Generation generation = 3;
+
+    // The entire raw byte value of the record, including embedded signature.
+    // The signature is NOT separated - it remains part of this value.
+    bytes value = 4;
+  }
+
+  repeated Record records = 1;
+}
+

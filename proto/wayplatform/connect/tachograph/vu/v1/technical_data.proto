@@ -446,4 +446,9 @@ message TechnicalData {
   //
   // See Data Dictionary, Section 2.149, `Signature`.
   bytes signature_gen2 = 11;
+
+  // The raw, unparsed binary data of the complete Technical Data transfer value.
+  // This field is preserved for data fidelity and lossless round-trips.
+  // It includes all data structures and the embedded signature.
+  bytes raw_data = 12;
 }

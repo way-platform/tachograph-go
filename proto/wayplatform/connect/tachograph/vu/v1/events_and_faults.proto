@@ -412,4 +412,9 @@ message EventsAndFaults {
   //
   // See Data Dictionary, Section 2.149, `Signature`.
   bytes signature_gen2 = 8;
+
+  // The raw, unparsed binary data of the complete Events and Faults transfer value.
+  // This field is preserved for data fidelity and lossless round-trips.
+  // It includes all data structures and the embedded signature.
+  bytes raw_data = 9;
 }

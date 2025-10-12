@@ -1,66 +1,40 @@
 package vu
 
 import (
-	ddv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
+	"fmt"
+
 	vuv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/vu/v1"
 )
 
-// UnmarshalDownloadInterfaceVersion parses the download interface version from VU data
+// ===== sizeOf Functions =====
+
+// sizeOfDownloadInterfaceVersion returns the size of the DownloadInterfaceVersion value.
+// This is a fixed 2-byte structure.
 //
-// The data type `DownloadInterfaceVersion` is specified in the Data Dictionary, Section 2.2.6.1.
+// Binary Layout (2 bytes total):
+//   - generation: 1 byte
+//   - version: 1 byte
 //
-// ASN.1 Definition:
-//
-//	DownloadInterfaceVersion ::= SEQUENCE {
-//	    generation    Generation,
-//	    version       Version
-//	}
-func unmarshalDownloadInterfaceVersion(data []byte, offset int, version *vuv1.DownloadInterfaceVersion) (int, error) {
-	startOffset := offset
-
-	// DownloadInterfaceVersion structure (2 bytes: generation + version)
-	// See Appendix 7, Section 2.2.6.1
-	generationByte, offset, err := readUint8FromBytes(data, offset)
-	if err != nil {
-		return 0, err
+// See Appendix 7, Section 2.2.6.1.
+func sizeOfDownloadInterfaceVersion(data []byte, transferType vuv1.TransferType) (int, error) {
+	const lenDownloadInterfaceVersion = 2
+	if len(data) < lenDownloadInterfaceVersion {
+		return 0, fmt.Errorf("insufficient data for DownloadInterfaceVersion: need %d, have %d", lenDownloadInterfaceVersion, len(data))
 	}
-
-	versionByte, offset, err := readUint8FromBytes(data, offset)
-	if err != nil {
-		return 0, err
-	}
-
-	// Map generation byte to enum
-	switch generationByte {
-	case 1:
-		version.SetGeneration(ddv1.Generation_GENERATION_1)
-	case 2:
-		version.SetGeneration(ddv1.Generation_GENERATION_2)
-	default:
-		version.SetGeneration(ddv1.Generation_GENERATION_UNSPECIFIED)
-	}
-
-	// Map version byte to enum
-	switch versionByte {
-	case 1:
-		version.SetVersion(ddv1.Version_VERSION_1)
-	case 2:
-		version.SetVersion(ddv1.Version_VERSION_2)
-	default:
-		version.SetVersion(ddv1.Version_VERSION_UNSPECIFIED)
-	}
-
-	bytesRead := offset - startOffset
-	return bytesRead, nil
+	return lenDownloadInterfaceVersion, nil
 }
 
-// AppendDownloadInterfaceVersion marshals the download interface version to VU data
+// ===== Unmarshal Functions =====
+
+// unmarshalDownloadInterfaceVersion parses the download interface version from VU data.
+// It accepts the complete value (without the tag) and populates the raw_data field.
 //
-// The data type `DownloadInterfaceVersion` is specified in the Data Dictionary, Section 2.2.6.1.
+// The data type `DownloadInterfaceVersion` is specified in Appendix 7, Section 2.2.6.1.
+//
+// Binary Layout (2 bytes total):
+//   - generation: 1 byte
+//   - version: 1 byte
 //
 // ASN.1 Definition:
 //
-//	DownloadInterfaceVersion ::= SEQUENCE {
-//	    generation    Generation,
-//	    version       Version
-//	}
+//	DownloadInterfaceVersion ::= OCTET STRING (SIZE (2))

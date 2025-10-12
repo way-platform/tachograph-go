@@ -44,6 +44,7 @@ type Overview struct {
 	xxx_hidden_VehicleRegistrationNumberOnly *v1.StringValue                       `protobuf:"bytes,14,opt,name=vehicle_registration_number_only,json=vehicleRegistrationNumberOnly"`
 	xxx_hidden_SignatureGen1                 []byte                                `protobuf:"bytes,15,opt,name=signature_gen1,json=signatureGen1"`
 	xxx_hidden_SignatureGen2                 []byte                                `protobuf:"bytes,16,opt,name=signature_gen2,json=signatureGen2"`
+	xxx_hidden_RawData                       []byte                                `protobuf:"bytes,17,opt,name=raw_data,json=rawData"`
 	XXX_raceDetectHookData                   protoimpl.RaceDetectHookData
 	XXX_presence                             [1]uint32
 	unknownFields                            protoimpl.UnknownFields
@@ -201,14 +202,21 @@ func (x *Overview) GetSignatureGen2() []byte {
 	return nil
 }
 
+func (x *Overview) GetRawData() []byte {
+	if x != nil {
+		return x.xxx_hidden_RawData
+	}
+	return nil
+}
+
 func (x *Overview) SetGeneration(v v1.Generation) {
 	x.xxx_hidden_Generation = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 16)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 17)
 }
 
 func (x *Overview) SetVersion(v v1.Version) {
 	x.xxx_hidden_Version = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 16)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 17)
 }
 
 func (x *Overview) SetMemberStateCertificate(v []byte) {
@@ -216,7 +224,7 @@ func (x *Overview) SetMemberStateCertificate(v []byte) {
 		v = []byte{}
 	}
 	x.xxx_hidden_MemberStateCertificate = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 16)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 17)
 }
 
 func (x *Overview) SetVuCertificate(v []byte) {
@@ -224,7 +232,7 @@ func (x *Overview) SetVuCertificate(v []byte) {
 		v = []byte{}
 	}
 	x.xxx_hidden_VuCertificate = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 3, 16)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 3, 17)
 }
 
 func (x *Overview) SetVehicleIdentificationNumber(v *v1.Ia5StringValue) {
@@ -241,12 +249,12 @@ func (x *Overview) SetDownloadablePeriod(v *v1.DownloadablePeriod) {
 
 func (x *Overview) SetDriverSlotCard(v v1.SlotCardType) {
 	x.xxx_hidden_DriverSlotCard = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 7, 16)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 7, 17)
 }
 
 func (x *Overview) SetCoDriverSlotCard(v v1.SlotCardType) {
 	x.xxx_hidden_CoDriverSlotCard = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 8, 16)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 8, 17)
 }
 
 func (x *Overview) SetDownloadActivities(v []*Overview_DownloadActivity) {
@@ -274,7 +282,7 @@ func (x *Overview) SetSignatureGen1(v []byte) {
 		v = []byte{}
 	}
 	x.xxx_hidden_SignatureGen1 = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 14, 16)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 14, 17)
 }
 
 func (x *Overview) SetSignatureGen2(v []byte) {
@@ -282,7 +290,15 @@ func (x *Overview) SetSignatureGen2(v []byte) {
 		v = []byte{}
 	}
 	x.xxx_hidden_SignatureGen2 = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 15, 16)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 15, 17)
+}
+
+func (x *Overview) SetRawData(v []byte) {
+	if v == nil {
+		v = []byte{}
+	}
+	x.xxx_hidden_RawData = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 16, 17)
 }
 
 func (x *Overview) HasGeneration() bool {
@@ -376,6 +392,13 @@ func (x *Overview) HasSignatureGen2() bool {
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 15)
 }
 
+func (x *Overview) HasRawData() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 16)
+}
+
 func (x *Overview) ClearGeneration() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 0)
 	x.xxx_hidden_Generation = v1.Generation_GENERATION_UNSPECIFIED
@@ -434,6 +457,11 @@ func (x *Overview) ClearSignatureGen1() {
 func (x *Overview) ClearSignatureGen2() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 15)
 	x.xxx_hidden_SignatureGen2 = nil
+}
+
+func (x *Overview) ClearRawData() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 16)
+	x.xxx_hidden_RawData = nil
 }
 
 type Overview_builder struct {
@@ -533,6 +561,10 @@ type Overview_builder struct {
 	//
 	// See Data Dictionary, Section 2.149, `Signature`.
 	SignatureGen2 []byte
+	// The raw, unparsed binary data of the complete Overview transfer value.
+	// This field is preserved for data fidelity and lossless round-trips.
+	// It includes all data structures and the embedded signature.
+	RawData []byte
 }
 
 func (b0 Overview_builder) Build() *Overview {
@@ -540,30 +572,30 @@ func (b0 Overview_builder) Build() *Overview {
 	b, x := &b0, m0
 	_, _ = b, x
 	if b.Generation != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 16)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 17)
 		x.xxx_hidden_Generation = *b.Generation
 	}
 	if b.Version != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 16)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 17)
 		x.xxx_hidden_Version = *b.Version
 	}
 	if b.MemberStateCertificate != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 16)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 17)
 		x.xxx_hidden_MemberStateCertificate = b.MemberStateCertificate
 	}
 	if b.VuCertificate != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 3, 16)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 3, 17)
 		x.xxx_hidden_VuCertificate = b.VuCertificate
 	}
 	x.xxx_hidden_VehicleIdentificationNumber = b.VehicleIdentificationNumber
 	x.xxx_hidden_CurrentDateTime = b.CurrentDateTime
 	x.xxx_hidden_DownloadablePeriod = b.DownloadablePeriod
 	if b.DriverSlotCard != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 7, 16)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 7, 17)
 		x.xxx_hidden_DriverSlotCard = *b.DriverSlotCard
 	}
 	if b.CoDriverSlotCard != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 8, 16)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 8, 17)
 		x.xxx_hidden_CoDriverSlotCard = *b.CoDriverSlotCard
 	}
 	x.xxx_hidden_DownloadActivities = &b.DownloadActivities
@@ -572,12 +604,16 @@ func (b0 Overview_builder) Build() *Overview {
 	x.xxx_hidden_VehicleRegistrationWithNation = b.VehicleRegistrationWithNation
 	x.xxx_hidden_VehicleRegistrationNumberOnly = b.VehicleRegistrationNumberOnly
 	if b.SignatureGen1 != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 14, 16)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 14, 17)
 		x.xxx_hidden_SignatureGen1 = b.SignatureGen1
 	}
 	if b.SignatureGen2 != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 15, 16)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 15, 17)
 		x.xxx_hidden_SignatureGen2 = b.SignatureGen2
+	}
+	if b.RawData != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 16, 17)
+		x.xxx_hidden_RawData = b.RawData
 	}
 	return m0
 }
@@ -1158,7 +1194,7 @@ var File_wayplatform_connect_tachograph_vu_v1_overview_proto protoreflect.FileDe
 
 const file_wayplatform_connect_tachograph_vu_v1_overview_proto_rawDesc = "" +
 	"\n" +
-	"3wayplatform/connect/tachograph/vu/v1/overview.proto\x12$wayplatform.connect.tachograph.vu.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a7wayplatform/connect/tachograph/dd/v1/control_type.proto\x1a>wayplatform/connect/tachograph/dd/v1/downloadable_period.proto\x1a;wayplatform/connect/tachograph/dd/v1/full_card_number.proto\x1aJwayplatform/connect/tachograph/dd/v1/full_card_number_and_generation.proto\x1a5wayplatform/connect/tachograph/dd/v1/generation.proto\x1a;wayplatform/connect/tachograph/dd/v1/ia5_string_value.proto\x1a9wayplatform/connect/tachograph/dd/v1/slot_card_type.proto\x1a7wayplatform/connect/tachograph/dd/v1/string_value.proto\x1aNwayplatform/connect/tachograph/dd/v1/vehicle_registration_identification.proto\x1a2wayplatform/connect/tachograph/dd/v1/version.proto\"\x9c\x15\n" +
+	"3wayplatform/connect/tachograph/vu/v1/overview.proto\x12$wayplatform.connect.tachograph.vu.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a7wayplatform/connect/tachograph/dd/v1/control_type.proto\x1a>wayplatform/connect/tachograph/dd/v1/downloadable_period.proto\x1a;wayplatform/connect/tachograph/dd/v1/full_card_number.proto\x1aJwayplatform/connect/tachograph/dd/v1/full_card_number_and_generation.proto\x1a5wayplatform/connect/tachograph/dd/v1/generation.proto\x1a;wayplatform/connect/tachograph/dd/v1/ia5_string_value.proto\x1a9wayplatform/connect/tachograph/dd/v1/slot_card_type.proto\x1a7wayplatform/connect/tachograph/dd/v1/string_value.proto\x1aNwayplatform/connect/tachograph/dd/v1/vehicle_registration_identification.proto\x1a2wayplatform/connect/tachograph/dd/v1/version.proto\"\xb7\x15\n" +
 	"\bOverview\x12P\n" +
 	"\n" +
 	"generation\x18\x01 \x01(\x0e20.wayplatform.connect.tachograph.dd.v1.GenerationR\n" +
@@ -1178,7 +1214,8 @@ const file_wayplatform_connect_tachograph_vu_v1_overview_proto_rawDesc = "" +
 	" vehicle_registration_with_nation\x18\r \x01(\v2G.wayplatform.connect.tachograph.dd.v1.VehicleRegistrationIdentificationR\x1dvehicleRegistrationWithNation\x12z\n" +
 	" vehicle_registration_number_only\x18\x0e \x01(\v21.wayplatform.connect.tachograph.dd.v1.StringValueR\x1dvehicleRegistrationNumberOnly\x12%\n" +
 	"\x0esignature_gen1\x18\x0f \x01(\fR\rsignatureGen1\x12%\n" +
-	"\x0esignature_gen2\x18\x10 \x01(\fR\rsignatureGen2\x1a\xcf\x02\n" +
+	"\x0esignature_gen2\x18\x10 \x01(\fR\rsignatureGen2\x12\x19\n" +
+	"\braw_data\x18\x11 \x01(\fR\arawData\x1a\xcf\x02\n" +
 	"\x10DownloadActivity\x12E\n" +
 	"\x10downloading_time\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\x0fdownloadingTime\x12\x87\x01\n" +
 	"\x1ffull_card_number_and_generation\x18\x02 \x01(\v2A.wayplatform.connect.tachograph.dd.v1.FullCardNumberAndGenerationR\x1bfullCardNumberAndGeneration\x12j\n" +

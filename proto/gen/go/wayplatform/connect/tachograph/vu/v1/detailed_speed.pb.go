@@ -42,6 +42,7 @@ type DetailedSpeed struct {
 	xxx_hidden_SpeedBlocks   *[]*DetailedSpeed_DetailedSpeedBlock `protobuf:"bytes,2,rep,name=speed_blocks,json=speedBlocks"`
 	xxx_hidden_SignatureGen1 []byte                               `protobuf:"bytes,3,opt,name=signature_gen1,json=signatureGen1"`
 	xxx_hidden_SignatureGen2 []byte                               `protobuf:"bytes,4,opt,name=signature_gen2,json=signatureGen2"`
+	xxx_hidden_RawData       []byte                               `protobuf:"bytes,5,opt,name=raw_data,json=rawData"`
 	XXX_raceDetectHookData   protoimpl.RaceDetectHookData
 	XXX_presence             [1]uint32
 	unknownFields            protoimpl.UnknownFields
@@ -105,9 +106,16 @@ func (x *DetailedSpeed) GetSignatureGen2() []byte {
 	return nil
 }
 
+func (x *DetailedSpeed) GetRawData() []byte {
+	if x != nil {
+		return x.xxx_hidden_RawData
+	}
+	return nil
+}
+
 func (x *DetailedSpeed) SetGeneration(v v1.Generation) {
 	x.xxx_hidden_Generation = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 4)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 5)
 }
 
 func (x *DetailedSpeed) SetSpeedBlocks(v []*DetailedSpeed_DetailedSpeedBlock) {
@@ -119,7 +127,7 @@ func (x *DetailedSpeed) SetSignatureGen1(v []byte) {
 		v = []byte{}
 	}
 	x.xxx_hidden_SignatureGen1 = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 4)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 5)
 }
 
 func (x *DetailedSpeed) SetSignatureGen2(v []byte) {
@@ -127,7 +135,15 @@ func (x *DetailedSpeed) SetSignatureGen2(v []byte) {
 		v = []byte{}
 	}
 	x.xxx_hidden_SignatureGen2 = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 3, 4)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 3, 5)
+}
+
+func (x *DetailedSpeed) SetRawData(v []byte) {
+	if v == nil {
+		v = []byte{}
+	}
+	x.xxx_hidden_RawData = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 4, 5)
 }
 
 func (x *DetailedSpeed) HasGeneration() bool {
@@ -151,6 +167,13 @@ func (x *DetailedSpeed) HasSignatureGen2() bool {
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 3)
 }
 
+func (x *DetailedSpeed) HasRawData() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 4)
+}
+
 func (x *DetailedSpeed) ClearGeneration() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 0)
 	x.xxx_hidden_Generation = v1.Generation_GENERATION_UNSPECIFIED
@@ -164,6 +187,11 @@ func (x *DetailedSpeed) ClearSignatureGen1() {
 func (x *DetailedSpeed) ClearSignatureGen2() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 3)
 	x.xxx_hidden_SignatureGen2 = nil
+}
+
+func (x *DetailedSpeed) ClearRawData() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 4)
+	x.xxx_hidden_RawData = nil
 }
 
 type DetailedSpeed_builder struct {
@@ -185,6 +213,10 @@ type DetailedSpeed_builder struct {
 	//
 	// See Data Dictionary, Section 2.149, `Signature`.
 	SignatureGen2 []byte
+	// The raw, unparsed binary data of the complete Detailed Speed transfer value.
+	// This field is preserved for data fidelity and lossless round-trips.
+	// It includes all data structures and the embedded signature.
+	RawData []byte
 }
 
 func (b0 DetailedSpeed_builder) Build() *DetailedSpeed {
@@ -192,17 +224,21 @@ func (b0 DetailedSpeed_builder) Build() *DetailedSpeed {
 	b, x := &b0, m0
 	_, _ = b, x
 	if b.Generation != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 4)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 5)
 		x.xxx_hidden_Generation = *b.Generation
 	}
 	x.xxx_hidden_SpeedBlocks = &b.SpeedBlocks
 	if b.SignatureGen1 != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 4)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 5)
 		x.xxx_hidden_SignatureGen1 = b.SignatureGen1
 	}
 	if b.SignatureGen2 != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 3, 4)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 3, 5)
 		x.xxx_hidden_SignatureGen2 = b.SignatureGen2
+	}
+	if b.RawData != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 4, 5)
+		x.xxx_hidden_RawData = b.RawData
 	}
 	return m0
 }
@@ -315,14 +351,15 @@ var File_wayplatform_connect_tachograph_vu_v1_detailed_speed_proto protoreflect.
 
 const file_wayplatform_connect_tachograph_vu_v1_detailed_speed_proto_rawDesc = "" +
 	"\n" +
-	"9wayplatform/connect/tachograph/vu/v1/detailed_speed.proto\x12$wayplatform.connect.tachograph.vu.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a5wayplatform/connect/tachograph/dd/v1/generation.proto\"\x8a\x03\n" +
+	"9wayplatform/connect/tachograph/vu/v1/detailed_speed.proto\x12$wayplatform.connect.tachograph.vu.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a5wayplatform/connect/tachograph/dd/v1/generation.proto\"\xa5\x03\n" +
 	"\rDetailedSpeed\x12P\n" +
 	"\n" +
 	"generation\x18\x01 \x01(\x0e20.wayplatform.connect.tachograph.dd.v1.GenerationR\n" +
 	"generation\x12i\n" +
 	"\fspeed_blocks\x18\x02 \x03(\v2F.wayplatform.connect.tachograph.vu.v1.DetailedSpeed.DetailedSpeedBlockR\vspeedBlocks\x12%\n" +
 	"\x0esignature_gen1\x18\x03 \x01(\fR\rsignatureGen1\x12%\n" +
-	"\x0esignature_gen2\x18\x04 \x01(\fR\rsignatureGen2\x1an\n" +
+	"\x0esignature_gen2\x18\x04 \x01(\fR\rsignatureGen2\x12\x19\n" +
+	"\braw_data\x18\x05 \x01(\fR\arawData\x1an\n" +
 	"\x12DetailedSpeedBlock\x129\n" +
 	"\n" +
 	"begin_date\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\tbeginDate\x12\x1d\n" +

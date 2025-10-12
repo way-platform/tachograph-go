@@ -2,46 +2,35 @@ edition = "2023";
 
 package wayplatform.connect.tachograph.vu.v1;
 
-import "wayplatform/connect/tachograph/vu/v1/activities.proto";
-import "wayplatform/connect/tachograph/vu/v1/card_download.proto";
-import "wayplatform/connect/tachograph/vu/v1/detailed_speed.proto";
-import "wayplatform/connect/tachograph/vu/v1/download_interface_version.proto";
-import "wayplatform/connect/tachograph/vu/v1/events_and_faults.proto";
-import "wayplatform/connect/tachograph/vu/v1/overview.proto";
-import "wayplatform/connect/tachograph/vu/v1/technical_data.proto";
-import "wayplatform/connect/tachograph/vu/v1/transfer_type.proto";
+import "wayplatform/connect/tachograph/dd/v1/generation.proto";
+import "wayplatform/connect/tachograph/dd/v1/version.proto";
+import "wayplatform/connect/tachograph/vu/v1/vehicle_unit_file_gen1.proto";
+import "wayplatform/connect/tachograph/vu/v1/vehicle_unit_file_gen2_v1.proto";
+import "wayplatform/connect/tachograph/vu/v1/vehicle_unit_file_gen2_v2.proto";
 
-// VehicleUnitFile completely encapsulates the content of a file downloaded from a Vehicle Unit (VU).
-// These files typically have a .DDD, .V1B, or .C1B extension.
+// Vehicle Unit download file with generation-specific access.
 //
-// The structure preserves the exact sequence of data blocks (transfers) as they appear in the
-// original file, which is essential for ensuring perfect round-trip parsing and writing.
+// A VU download file contains data from ONE generation only. The protocol does not support
+// mixing Gen1 and Gen2 transfers in the same file.
+//
+// See Appendix 7, Section 1.1: "This Appendix specifies therefore two types of data downloads
+// from the VU: Generation 2 type of VU data download, providing the generation 2 data structure;
+// Generation 1 type of VU data download, providing the generation 1 data structure."
+//
+// This message uses a tagged union pattern where the generation and version fields determine
+// which variant field is populated:
+// - For Gen1 files: generation=GENERATION_1, gen1 field populated
+// - For Gen2 V1 files: generation=GENERATION_2, version=VERSION_1, gen2_v1 field populated
+// - For Gen2 V2 files: generation=GENERATION_2, version=VERSION_2, gen2_v2 field populated
 message VehicleUnitFile {
-  // A Transfer represents a single data block within the downloaded file.
-  // It acts as a manually tagged union, where the `type` field is the tag.
-  // The structure of a transfer is defined in Appendix 7 of the regulation.
-  message Transfer {
-    // The semantic type of the data in this transfer, corresponding
-    // directly to the TREP value from the raw file. This serves as the
-    // discriminator for the payload fields below.
-    //
-    // The application should use this `type` to determine which of the payload
-    // fields is valid for this transfer. For example, if the type is
-    // OVERVIEW_GEN1, OVERVIEW_GEN2_V1, or OVERVIEW_GEN2_V2, the `overview` field
-    // will be populated.
-    TransferType type = 1;
+  // Generation of this VU file (determines which field below is populated).
+  dd.v1.Generation generation = 1;
 
-    // The payload fields. Only one of these will be populated for any given Transfer.
-    DownloadInterfaceVersion download_interface_version = 2;
-    Overview overview = 3;
-    Activities activities = 4;
-    EventsAndFaults events_and_faults = 5;
-    DetailedSpeed detailed_speed = 6;
-    TechnicalData technical_data = 7;
-    CardDownload card_download = 8;
-  }
+  // Version of this VU file (only relevant for Gen2).
+  dd.v1.Version version = 2;
 
-  // A VehicleUnitFile consists of a sequence of transfers, preserving the
-  // order from the original downloaded file.
-  repeated Transfer transfers = 1;
+  // Tagged union - only one of these is populated based on generation/version.
+  VehicleUnitFileGen1 gen1 = 3;
+  VehicleUnitFileGen2V1 gen2_v1 = 4;
+  VehicleUnitFileGen2V2 gen2_v2 = 5;
 }

@@ -1,0 +1,44 @@
+edition = "2023";
+
+package wayplatform.connect.tachograph.vu.v1;
+
+import "wayplatform/connect/tachograph/vu/v1/activities_gen2_v1.proto";
+import "wayplatform/connect/tachograph/vu/v1/detailed_speed_gen2.proto";
+import "wayplatform/connect/tachograph/vu/v1/events_faults_gen2_v1.proto";
+import "wayplatform/connect/tachograph/vu/v1/overview_gen2_v1.proto";
+import "wayplatform/connect/tachograph/vu/v1/technical_data_gen2_v1.proto";
+
+// Complete VU download file for Generation 2, Version 1.
+//
+// A Gen2 V1 download session uses TREP values 21-25 and produces only Gen2 V1 data structures.
+//
+// See Appendix 7, Section 1.1: "This Appendix specifies therefore two types of data downloads
+// from the VU: Generation 2 type of VU data download, providing the generation 2 data structure;
+// Generation 1 type of VU data download, providing the generation 1 data structure."
+message VehicleUnitFileGen2V1 {
+  // Overview (single - mandatory per session).
+  //
+  // See Appendix 7, Section 2.2.6.2 (TREP 21 Hex).
+  OverviewGen2V1 overview = 1;
+
+  // Activities (repeated - one per day downloaded).
+  //
+  // See Appendix 7, Section 2.2.6.3 (TREP 22 Hex).
+  repeated ActivitiesGen2V1 activities = 2;
+
+  // Events and Faults (repeated).
+  //
+  // See Appendix 7, Section 2.2.6.4 (TREP 23 Hex).
+  repeated EventsAndFaultsGen2V1 events_and_faults = 3;
+
+  // Detailed Speed (repeated).
+  //
+  // See Appendix 7, Section 2.2.6.5 (TREP 24 Hex).
+  repeated DetailedSpeedGen2 detailed_speed = 4;
+
+  // Technical Data (repeated).
+  //
+  // See Appendix 7, Section 2.2.6.6 (TREP 25 Hex).
+  repeated TechnicalDataGen2V1 technical_data = 5;
+}
+

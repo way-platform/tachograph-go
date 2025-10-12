@@ -1,0 +1,281 @@
+edition = "2023";
+
+package wayplatform.connect.tachograph.vu.v1;
+
+import "google/protobuf/timestamp.proto";
+import "wayplatform/connect/tachograph/dd/v1/calibration_purpose.proto";
+import "wayplatform/connect/tachograph/dd/v1/card_structure_version.proto";
+import "wayplatform/connect/tachograph/dd/v1/date.proto";
+import "wayplatform/connect/tachograph/dd/v1/driver_identification.proto";
+import "wayplatform/connect/tachograph/dd/v1/extended_serial_number.proto";
+import "wayplatform/connect/tachograph/dd/v1/full_card_number_and_generation.proto";
+import "wayplatform/connect/tachograph/dd/v1/owner_identification.proto";
+import "wayplatform/connect/tachograph/dd/v1/software_identification.proto";
+import "wayplatform/connect/tachograph/dd/v1/string_value.proto";
+import "wayplatform/connect/tachograph/dd/v1/vehicle_registration_identification.proto";
+
+// Technical Data for Generation 2, Version 1 VU downloads.
+//
+// See Appendix 7, Section 2.2.6.6 (TREP 25 Hex).
+//
+// Gen2 V1 uses RecordArray structures and includes additional data for sensors, GNSS, and cards.
+//
+// ASN.1 Definition:
+//
+//     VuTechnicalDataSecondGen ::= SEQUENCE {
+//         vuIdentification VuIdentification,
+//         vuCalibrationRecordArray VuCalibrationRecordArray,
+//         vuSensorPairedRecordArray VuSensorPairedRecordArray,
+//         vuSensorExternalGNSSCoupledRecordArray VuSensorExternalGNSSCoupledRecordArray,
+//         vuCardRecordArray VuCardRecordArray,
+//         vuITSConsentRecordArray VuITSConsentRecordArray,
+//         signatureRecordArray SignatureRecordArray
+//     }
+message TechnicalDataGen2V1 {
+  // Represents the identification data of the vehicle unit.
+  //
+  // See Data Dictionary, Section 2.205, `VuIdentification`.
+  message VuIdentification {
+    // The name of the VU manufacturer.
+    //
+    // See Data Dictionary, Section 2.210, `VuManufacturerName`.
+    wayplatform.connect.tachograph.dd.v1.StringValue manufacturer_name = 1;
+
+    // The address of the VU manufacturer.
+    //
+    // See Data Dictionary, Section 2.209, `VuManufacturerAddress`.
+    wayplatform.connect.tachograph.dd.v1.StringValue manufacturer_address = 2;
+
+    // The part number of the VU.
+    //
+    // See Data Dictionary, Section 2.217, `VuPartNumber`.
+    wayplatform.connect.tachograph.dd.v1.StringValue part_number = 3;
+
+    // The serial number of the VU.
+    //
+    // See Data Dictionary, Section 2.223, `VuSerialNumber`.
+    dd.v1.ExtendedSerialNumber serial_number = 4;
+
+    // The software identification of the VU.
+    dd.v1.SoftwareIdentification software_identification = 5;
+
+    // The manufacturing date of the VU.
+    //
+    // See Data Dictionary, Section 2.211, `VuManufacturingDate`.
+    google.protobuf.Timestamp manufacturing_date = 6;
+
+    // The approval number of the VU (Gen2: 16 bytes).
+    //
+    // See Data Dictionary, Section 2.172, `VuApprovalNumber`.
+    wayplatform.connect.tachograph.dd.v1.StringValue approval_number = 7;
+  }
+
+  // Represents a paired motion sensor record.
+  //
+  // See Data Dictionary, Section 2.145, `SensorPairedRecord`.
+  message PairedSensor {
+    // The serial number of the motion sensor.
+    //
+    // See Data Dictionary, Section 2.148, `SensorSerialNumber`.
+    dd.v1.ExtendedSerialNumber serial_number = 1;
+
+    // The approval number of the motion sensor (Gen2: 16 bytes).
+    //
+    // See Data Dictionary, Section 2.131, `SensorApprovalNumber`.
+    wayplatform.connect.tachograph.dd.v1.StringValue approval_number = 2;
+
+    // The date the sensor was paired.
+    //
+    // See Data Dictionary, Section 2.146, `SensorPairingDate`.
+    google.protobuf.Timestamp pairing_date = 3;
+  }
+
+  // Represents a coupled external GNSS facility record.
+  //
+  // See Data Dictionary, Section 2.133, `SensorExternalGNSSCoupledRecord`.
+  message CoupledGnss {
+    // The serial number of the external GNSS.
+    //
+    // See Data Dictionary, Section 2.139, `SensorGNSSSerialNumber`.
+    dd.v1.ExtendedSerialNumber serial_number = 1;
+
+    // The approval number of the external GNSS.
+    //
+    // See Data Dictionary, Section 2.132, `SensorExternalGNSSApprovalNumber`.
+    wayplatform.connect.tachograph.dd.v1.StringValue approval_number = 2;
+
+    // The date the GNSS was coupled.
+    //
+    // See Data Dictionary, Section 2.138, `SensorGNSSCouplingDate`.
+    google.protobuf.Timestamp coupling_date = 3;
+  }
+
+  // Represents a calibration record.
+  //
+  // See Data Dictionary, Section 2.174, `VuCalibrationRecord`.
+  message CalibrationRecord {
+    // The purpose of the calibration.
+    //
+    // See Data Dictionary, Section 2.8, `CalibrationPurpose`.
+    dd.v1.CalibrationPurpose purpose = 1;
+    int32 unrecognized_purpose = 2;
+
+    // The name of the workshop.
+    //
+    // See Data Dictionary, Section 2.99, `Name`.
+    wayplatform.connect.tachograph.dd.v1.StringValue workshop_name = 3;
+
+    // The address of the workshop.
+    //
+    // See Data Dictionary, Section 2.2, `Address`.
+    wayplatform.connect.tachograph.dd.v1.StringValue workshop_address = 4;
+
+    // The card number and generation of the workshop.
+    //
+    // See Data Dictionary, Section 2.74, `FullCardNumberAndGeneration`.
+    dd.v1.FullCardNumberAndGeneration workshop_card_number_and_generation = 5;
+
+    // The expiry date of the workshop card.
+    //
+    // See Data Dictionary, Section 2.57, `Datef`.
+    wayplatform.connect.tachograph.dd.v1.Date workshop_card_expiry_date = 6;
+
+    // The Vehicle Identification Number.
+    //
+    // See Data Dictionary, Section 2.164, `VehicleIdentificationNumber`.
+    wayplatform.connect.tachograph.dd.v1.StringValue vin = 7;
+
+    // The vehicle registration identifier.
+    //
+    // See Data Dictionary, Section 2.166, `VehicleRegistrationIdentification`.
+    dd.v1.VehicleRegistrationIdentification vehicle_registration = 8;
+
+    // The vehicle characteristic constant.
+    //
+    // See Data Dictionary, Section 2.239, `W-VehicleCharacteristicConstant`.
+    int32 w_vehicle_characteristic_constant = 9;
+
+    // The constant of the recording equipment.
+    //
+    // See Data Dictionary, Section 2.85, `K-ConstantOfRecordingEquipment`.
+    int32 k_constant_of_recording_equipment = 10;
+
+    // The tyre circumference in 1/8ths of a mm.
+    //
+    // See Data Dictionary, Section 2.91, `L-TyreCircumference`.
+    int32 l_tyre_circumference_eighths_mm = 11;
+
+    // The tyre size designation.
+    //
+    // See Data Dictionary, Section 2.163, `TyreSize`.
+    wayplatform.connect.tachograph.dd.v1.StringValue tyre_size = 12;
+
+    // The authorised speed in km/h.
+    //
+    // See Data Dictionary, Section 2.156, `SpeedAuthorised`.
+    int32 authorised_speed_kmh = 13;
+
+    // The odometer value before calibration in km.
+    //
+    // See Data Dictionary, Section 2.113, `OdometerShort`.
+    int32 old_odometer_value_km = 14;
+
+    // The odometer value after calibration in km.
+    //
+    // See Data Dictionary, Section 2.113, `OdometerShort`.
+    int32 new_odometer_value_km = 15;
+
+    // The time value before calibration.
+    //
+    // See Data Dictionary, Section 2.162, `TimeReal`.
+    google.protobuf.Timestamp old_time_value = 16;
+
+    // The time value after calibration.
+    //
+    // See Data Dictionary, Section 2.162, `TimeReal`.
+    google.protobuf.Timestamp new_time_value = 17;
+
+    // The date of the next calibration.
+    //
+    // See Data Dictionary, Section 2.162, `TimeReal`.
+    google.protobuf.Timestamp next_calibration_date = 18;
+  }
+
+  // Represents a record of a card used in the VU.
+  //
+  // See Data Dictionary, Section 2.179, `VuCardRecord`.
+  message CardRecord {
+    // The full card number and generation of the card used.
+    //
+    // See Data Dictionary, Section 2.74.
+    dd.v1.FullCardNumberAndGeneration card_number_and_generation = 1;
+
+    // The extended serial number of the card.
+    //
+    // See Data Dictionary, Section 2.72.
+    dd.v1.ExtendedSerialNumber card_extended_serial_number = 2;
+
+    // The structure version of the card.
+    //
+    // See Data Dictionary, Section 2.36.
+    dd.v1.CardStructureVersion card_structure_version = 3;
+
+    // The card number identifier (CHOICE between driver and owner).
+    //
+    // See Data Dictionary, Section 2.26.
+    dd.v1.DriverIdentification driver_identification = 4;
+    dd.v1.OwnerIdentification owner_identification = 5;
+  }
+
+  // Represents a record of ITS consent status for a card (Gen2 only).
+  //
+  // See Data Dictionary, Section 2.207, `VuITSConsentRecord`.
+  message ItsConsentRecord {
+    // The full card number and generation of the card holder.
+    dd.v1.FullCardNumberAndGeneration full_card_number_and_generation = 1;
+
+    // The consent status for ITS data provision.
+    bool consent_status = 2;
+  }
+
+  // Vehicle unit identification data.
+  //
+  // See Data Dictionary, Section 2.205, `VuIdentification`.
+  VuIdentification vu_identification = 1;
+
+  // All calibration records stored in the VU.
+  //
+  // See Data Dictionary, Section 2.175, `VuCalibrationRecordArray`.
+  repeated CalibrationRecord calibration_records = 2;
+
+  // List of paired sensors (Gen2).
+  //
+  // See Data Dictionary, Section 2.243, `VuSensorPairedRecordArray`.
+  repeated PairedSensor paired_sensors = 3;
+
+  // List of coupled external GNSS facilities (Gen2).
+  //
+  // See Data Dictionary, Section 2.242, `VuSensorExternalGNSSCoupledRecordArray`.
+  repeated CoupledGnss coupled_gnss_facilities = 4;
+
+  // List of cards that have been used in the VU (Gen2).
+  //
+  // See Data Dictionary, Section 2.180, `VuCardRecordArray`.
+  repeated CardRecord card_records = 5;
+
+  // List of ITS consent records (Gen2).
+  //
+  // See Data Dictionary, Section 2.208, `VuITSConsentRecordArray`.
+  repeated ItsConsentRecord its_consent_records = 6;
+
+  // Signature for Gen2 data (ECC, variable length in SignatureRecordArray).
+  //
+  // See Data Dictionary, Section 2.149, `Signature`.
+  bytes signature = 7;
+
+  // The raw, unparsed binary data of the complete Technical Data transfer value.
+  // This field is preserved for data fidelity and lossless round-trips.
+  // It includes all data structures and the embedded signature.
+  bytes raw_data = 8;
+}
+
