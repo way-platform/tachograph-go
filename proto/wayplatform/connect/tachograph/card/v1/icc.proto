@@ -5,6 +5,7 @@ package wayplatform.connect.tachograph.card.v1;
 import "wayplatform/connect/tachograph/dd/v1/clock_stop_mode.proto";
 import "wayplatform/connect/tachograph/dd/v1/extended_serial_number.proto";
 import "wayplatform/connect/tachograph/dd/v1/ia5_string_value.proto";
+import "wayplatform/connect/tachograph/security/v1/authentication.proto";
 
 // Represents the content of the EF_ICC file, which contains identification data
 // for the Integrated Circuit Card.
@@ -105,4 +106,19 @@ message Icc {
   //
   //     OCTET STRING (SIZE(2))
   bytes ic_identifier = 6;
+
+  // Signature (non-compliant per Section 3.3, captured for data fidelity).
+  //
+  // ASN.1 Definition (Gen1):
+  //
+  //     Signature ::= OCTET STRING (SIZE(128))
+  //
+  // ASN.1 Definition (Gen2):
+  //
+  //     Signature ::= OCTET STRING (variable size, depends on elliptic curve)
+  bytes signature = 7;
+
+  // Result of cryptographic signature authentication for this Elementary File.
+  // Present when signature verification has been performed.
+  tachograph.security.v1.Authentication authentication = 99;
 }

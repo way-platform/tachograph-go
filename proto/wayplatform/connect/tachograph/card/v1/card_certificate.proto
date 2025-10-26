@@ -2,6 +2,7 @@ edition = "2023";
 
 package wayplatform.connect.tachograph.card.v1;
 
+import "wayplatform/connect/tachograph/security/v1/authentication.proto";
 import "wayplatform/connect/tachograph/security/v1/rsa_certificate.proto";
 
 // Data from EF Card_Certificate (File ID 'C100h').
@@ -20,4 +21,15 @@ import "wayplatform/connect/tachograph/security/v1/rsa_certificate.proto";
 message CardCertificate {
   // RSA certificate containing the card's public key for authentication.
   security.v1.RsaCertificate rsa_certificate = 1;
+
+  // Signature (non-compliant per Section 3.3, captured for data fidelity).
+  //
+  // ASN.1 Definition (Gen1):
+  //
+  //     Signature ::= OCTET STRING (SIZE(128))
+  bytes signature = 2;
+
+  // Result of cryptographic signature authentication for this Elementary File.
+  // Present when signature verification has been performed.
+  tachograph.security.v1.Authentication authentication = 99;
 }

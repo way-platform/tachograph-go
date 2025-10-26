@@ -8,6 +8,7 @@ package cardv1
 
 import (
 	v1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
+	v11 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/security/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -49,6 +50,8 @@ type Icc struct {
 	xxx_hidden_CardPersonaliserId       int32                      `protobuf:"varint,4,opt,name=card_personaliser_id,json=cardPersonaliserId"`
 	xxx_hidden_EmbedderIcAssemblerId    *Icc_EmbedderIcAssemblerId `protobuf:"bytes,5,opt,name=embedder_ic_assembler_id,json=embedderIcAssemblerId"`
 	xxx_hidden_IcIdentifier             []byte                     `protobuf:"bytes,6,opt,name=ic_identifier,json=icIdentifier"`
+	xxx_hidden_Signature                []byte                     `protobuf:"bytes,7,opt,name=signature"`
+	xxx_hidden_Authentication           *v11.Authentication        `protobuf:"bytes,99,opt,name=authentication"`
 	XXX_raceDetectHookData              protoimpl.RaceDetectHookData
 	XXX_presence                        [1]uint32
 	unknownFields                       protoimpl.UnknownFields
@@ -124,9 +127,23 @@ func (x *Icc) GetIcIdentifier() []byte {
 	return nil
 }
 
+func (x *Icc) GetSignature() []byte {
+	if x != nil {
+		return x.xxx_hidden_Signature
+	}
+	return nil
+}
+
+func (x *Icc) GetAuthentication() *v11.Authentication {
+	if x != nil {
+		return x.xxx_hidden_Authentication
+	}
+	return nil
+}
+
 func (x *Icc) SetClockStop(v v1.ClockStopMode) {
 	x.xxx_hidden_ClockStop = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 6)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 8)
 }
 
 func (x *Icc) SetCardExtendedSerialNumber(v *v1.ExtendedSerialNumber) {
@@ -139,7 +156,7 @@ func (x *Icc) SetCardApprovalNumber(v *v1.Ia5StringValue) {
 
 func (x *Icc) SetCardPersonaliserId(v int32) {
 	x.xxx_hidden_CardPersonaliserId = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 3, 6)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 3, 8)
 }
 
 func (x *Icc) SetEmbedderIcAssemblerId(v *Icc_EmbedderIcAssemblerId) {
@@ -151,7 +168,19 @@ func (x *Icc) SetIcIdentifier(v []byte) {
 		v = []byte{}
 	}
 	x.xxx_hidden_IcIdentifier = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 5, 6)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 5, 8)
+}
+
+func (x *Icc) SetSignature(v []byte) {
+	if v == nil {
+		v = []byte{}
+	}
+	x.xxx_hidden_Signature = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 6, 8)
+}
+
+func (x *Icc) SetAuthentication(v *v11.Authentication) {
+	x.xxx_hidden_Authentication = v
 }
 
 func (x *Icc) HasClockStop() bool {
@@ -196,6 +225,20 @@ func (x *Icc) HasIcIdentifier() bool {
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 5)
 }
 
+func (x *Icc) HasSignature() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 6)
+}
+
+func (x *Icc) HasAuthentication() bool {
+	if x == nil {
+		return false
+	}
+	return x.xxx_hidden_Authentication != nil
+}
+
 func (x *Icc) ClearClockStop() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 0)
 	x.xxx_hidden_ClockStop = v1.ClockStopMode_CLOCK_STOP_MODE_UNSPECIFIED
@@ -221,6 +264,15 @@ func (x *Icc) ClearEmbedderIcAssemblerId() {
 func (x *Icc) ClearIcIdentifier() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 5)
 	x.xxx_hidden_IcIdentifier = nil
+}
+
+func (x *Icc) ClearSignature() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 6)
+	x.xxx_hidden_Signature = nil
+}
+
+func (x *Icc) ClearAuthentication() {
+	x.xxx_hidden_Authentication = nil
 }
 
 type Icc_builder struct {
@@ -262,6 +314,19 @@ type Icc_builder struct {
 	//
 	//	OCTET STRING (SIZE(2))
 	IcIdentifier []byte
+	// Signature (non-compliant per Section 3.3, captured for data fidelity).
+	//
+	// ASN.1 Definition (Gen1):
+	//
+	//	Signature ::= OCTET STRING (SIZE(128))
+	//
+	// ASN.1 Definition (Gen2):
+	//
+	//	Signature ::= OCTET STRING (variable size, depends on elliptic curve)
+	Signature []byte
+	// Result of cryptographic signature authentication for this Elementary File.
+	// Present when signature verification has been performed.
+	Authentication *v11.Authentication
 }
 
 func (b0 Icc_builder) Build() *Icc {
@@ -269,20 +334,25 @@ func (b0 Icc_builder) Build() *Icc {
 	b, x := &b0, m0
 	_, _ = b, x
 	if b.ClockStop != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 6)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 8)
 		x.xxx_hidden_ClockStop = *b.ClockStop
 	}
 	x.xxx_hidden_CardExtendedSerialNumber = b.CardExtendedSerialNumber
 	x.xxx_hidden_CardApprovalNumber = b.CardApprovalNumber
 	if b.CardPersonaliserId != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 3, 6)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 3, 8)
 		x.xxx_hidden_CardPersonaliserId = *b.CardPersonaliserId
 	}
 	x.xxx_hidden_EmbedderIcAssemblerId = b.EmbedderIcAssemblerId
 	if b.IcIdentifier != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 5, 6)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 5, 8)
 		x.xxx_hidden_IcIdentifier = b.IcIdentifier
 	}
+	if b.Signature != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 6, 8)
+		x.xxx_hidden_Signature = b.Signature
+	}
+	x.xxx_hidden_Authentication = b.Authentication
 	return m0
 }
 
@@ -444,7 +514,7 @@ var File_wayplatform_connect_tachograph_card_v1_icc_proto protoreflect.FileDescr
 
 const file_wayplatform_connect_tachograph_card_v1_icc_proto_rawDesc = "" +
 	"\n" +
-	"0wayplatform/connect/tachograph/card/v1/icc.proto\x12&wayplatform.connect.tachograph.card.v1\x1a:wayplatform/connect/tachograph/dd/v1/clock_stop_mode.proto\x1aAwayplatform/connect/tachograph/dd/v1/extended_serial_number.proto\x1a;wayplatform/connect/tachograph/dd/v1/ia5_string_value.proto\"\x9c\x06\n" +
+	"0wayplatform/connect/tachograph/card/v1/icc.proto\x12&wayplatform.connect.tachograph.card.v1\x1a:wayplatform/connect/tachograph/dd/v1/clock_stop_mode.proto\x1aAwayplatform/connect/tachograph/dd/v1/extended_serial_number.proto\x1a;wayplatform/connect/tachograph/dd/v1/ia5_string_value.proto\x1a?wayplatform/connect/tachograph/security/v1/authentication.proto\"\x9e\a\n" +
 	"\x03Icc\x12R\n" +
 	"\n" +
 	"clock_stop\x18\x01 \x01(\x0e23.wayplatform.connect.tachograph.dd.v1.ClockStopModeR\tclockStop\x12y\n" +
@@ -452,7 +522,9 @@ const file_wayplatform_connect_tachograph_card_v1_icc_proto_rawDesc = "" +
 	"\x14card_approval_number\x18\x03 \x01(\v24.wayplatform.connect.tachograph.dd.v1.Ia5StringValueR\x12cardApprovalNumber\x120\n" +
 	"\x14card_personaliser_id\x18\x04 \x01(\x05R\x12cardPersonaliserId\x12z\n" +
 	"\x18embedder_ic_assembler_id\x18\x05 \x01(\v2A.wayplatform.connect.tachograph.card.v1.Icc.EmbedderIcAssemblerIdR\x15embedderIcAssemblerId\x12#\n" +
-	"\ric_identifier\x18\x06 \x01(\fR\ficIdentifier\x1a\x8a\x02\n" +
+	"\ric_identifier\x18\x06 \x01(\fR\ficIdentifier\x12\x1c\n" +
+	"\tsignature\x18\a \x01(\fR\tsignature\x12b\n" +
+	"\x0eauthentication\x18c \x01(\v2:.wayplatform.connect.tachograph.security.v1.AuthenticationR\x0eauthentication\x1a\x8a\x02\n" +
 	"\x15EmbedderIcAssemblerId\x12W\n" +
 	"\fcountry_code\x18\x01 \x01(\v24.wayplatform.connect.tachograph.dd.v1.Ia5StringValueR\vcountryCode\x12]\n" +
 	"\x0fmodule_embedder\x18\x02 \x01(\v24.wayplatform.connect.tachograph.dd.v1.Ia5StringValueR\x0emoduleEmbedder\x129\n" +
@@ -466,19 +538,21 @@ var file_wayplatform_connect_tachograph_card_v1_icc_proto_goTypes = []any{
 	(v1.ClockStopMode)(0),             // 2: wayplatform.connect.tachograph.dd.v1.ClockStopMode
 	(*v1.ExtendedSerialNumber)(nil),   // 3: wayplatform.connect.tachograph.dd.v1.ExtendedSerialNumber
 	(*v1.Ia5StringValue)(nil),         // 4: wayplatform.connect.tachograph.dd.v1.Ia5StringValue
+	(*v11.Authentication)(nil),        // 5: wayplatform.connect.tachograph.security.v1.Authentication
 }
 var file_wayplatform_connect_tachograph_card_v1_icc_proto_depIdxs = []int32{
 	2, // 0: wayplatform.connect.tachograph.card.v1.Icc.clock_stop:type_name -> wayplatform.connect.tachograph.dd.v1.ClockStopMode
 	3, // 1: wayplatform.connect.tachograph.card.v1.Icc.card_extended_serial_number:type_name -> wayplatform.connect.tachograph.dd.v1.ExtendedSerialNumber
 	4, // 2: wayplatform.connect.tachograph.card.v1.Icc.card_approval_number:type_name -> wayplatform.connect.tachograph.dd.v1.Ia5StringValue
 	1, // 3: wayplatform.connect.tachograph.card.v1.Icc.embedder_ic_assembler_id:type_name -> wayplatform.connect.tachograph.card.v1.Icc.EmbedderIcAssemblerId
-	4, // 4: wayplatform.connect.tachograph.card.v1.Icc.EmbedderIcAssemblerId.country_code:type_name -> wayplatform.connect.tachograph.dd.v1.Ia5StringValue
-	4, // 5: wayplatform.connect.tachograph.card.v1.Icc.EmbedderIcAssemblerId.module_embedder:type_name -> wayplatform.connect.tachograph.dd.v1.Ia5StringValue
-	6, // [6:6] is the sub-list for method output_type
-	6, // [6:6] is the sub-list for method input_type
-	6, // [6:6] is the sub-list for extension type_name
-	6, // [6:6] is the sub-list for extension extendee
-	0, // [0:6] is the sub-list for field type_name
+	5, // 4: wayplatform.connect.tachograph.card.v1.Icc.authentication:type_name -> wayplatform.connect.tachograph.security.v1.Authentication
+	4, // 5: wayplatform.connect.tachograph.card.v1.Icc.EmbedderIcAssemblerId.country_code:type_name -> wayplatform.connect.tachograph.dd.v1.Ia5StringValue
+	4, // 6: wayplatform.connect.tachograph.card.v1.Icc.EmbedderIcAssemblerId.module_embedder:type_name -> wayplatform.connect.tachograph.dd.v1.Ia5StringValue
+	7, // [7:7] is the sub-list for method output_type
+	7, // [7:7] is the sub-list for method input_type
+	7, // [7:7] is the sub-list for extension type_name
+	7, // [7:7] is the sub-list for extension extendee
+	0, // [0:7] is the sub-list for field type_name
 }
 
 func init() { file_wayplatform_connect_tachograph_card_v1_icc_proto_init() }

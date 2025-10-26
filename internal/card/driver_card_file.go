@@ -73,8 +73,13 @@ func (opts ParseOptions) ParseRawDriverCardFile(input *cardv1.RawCardFile) (*car
 			if err != nil {
 				return nil, err
 			}
+			// Signature is non-compliant per regulation but captured for data fidelity.
 			if signature != nil {
-				return nil, fmt.Errorf("unexpected signature for EF_ICC")
+				icc.SetSignature(signature)
+			}
+			// Propagate authentication
+			if auth := record.GetAuthentication(); auth != nil {
+				icc.SetAuthentication(auth)
 			}
 			output.SetIcc(icc)
 
@@ -83,8 +88,13 @@ func (opts ParseOptions) ParseRawDriverCardFile(input *cardv1.RawCardFile) (*car
 			if err != nil {
 				return nil, err
 			}
+			// Signature is non-compliant per regulation but captured for data fidelity.
 			if signature != nil {
-				return nil, fmt.Errorf("unexpected signature for EF_IC")
+				ic.SetSignature(signature)
+			}
+			// Propagate authentication
+			if auth := record.GetAuthentication(); auth != nil {
+				ic.SetAuthentication(auth)
 			}
 			output.SetIc(ic)
 
@@ -464,8 +474,13 @@ func (opts ParseOptions) ParseRawDriverCardFile(input *cardv1.RawCardFile) (*car
 			if err != nil {
 				return nil, err
 			}
+			// Signature is non-compliant per regulation but captured for data fidelity.
 			if signature != nil {
-				return nil, fmt.Errorf("unexpected signature for EF_CARD_DOWNLOAD_DRIVER")
+				cardDownload.SetSignature(signature)
+			}
+			// Propagate authentication
+			if auth := record.GetAuthentication(); auth != nil {
+				cardDownload.SetAuthentication(auth)
 			}
 
 			// Route to appropriate DF based on generation
@@ -556,10 +571,15 @@ func (opts ParseOptions) ParseRawDriverCardFile(input *cardv1.RawCardFile) (*car
 			}
 			cert := &cardv1.CardCertificate{}
 			cert.SetRsaCertificate(rsaCert)
-			tachographDF.SetCardCertificate(cert)
+			// Signature is non-compliant per regulation but captured for data fidelity.
 			if signature != nil {
-				return nil, fmt.Errorf("unexpected signature for EF_CARD_CERTIFICATE")
+				cert.SetSignature(signature)
 			}
+			// Propagate authentication
+			if auth := record.GetAuthentication(); auth != nil {
+				cert.SetAuthentication(auth)
+			}
+			tachographDF.SetCardCertificate(cert)
 
 		case cardv1.ElementaryFileType_EF_CARD_MA_CERTIFICATE:
 			// Gen2: Card mutual authentication certificate (replaces Gen1 Card_Certificate)
@@ -576,10 +596,15 @@ func (opts ParseOptions) ParseRawDriverCardFile(input *cardv1.RawCardFile) (*car
 			}
 			cert := &cardv1.CardMaCertificate{}
 			cert.SetEccCertificate(eccCert)
-			tachographG2DF.SetCardMaCertificate(cert)
+			// Signature is non-compliant per regulation but captured for data fidelity.
 			if signature != nil {
-				return nil, fmt.Errorf("unexpected signature for EF_CARD_MA_CERTIFICATE")
+				cert.SetSignature(signature)
 			}
+			// Propagate authentication
+			if auth := record.GetAuthentication(); auth != nil {
+				cert.SetAuthentication(auth)
+			}
+			tachographG2DF.SetCardMaCertificate(cert)
 
 		case cardv1.ElementaryFileType_EF_CARD_SIGN_CERTIFICATE:
 			// Gen2: Card signature certificate
@@ -596,10 +621,15 @@ func (opts ParseOptions) ParseRawDriverCardFile(input *cardv1.RawCardFile) (*car
 			}
 			cert := &cardv1.CardSignCertificate{}
 			cert.SetEccCertificate(eccCert)
-			tachographG2DF.SetCardSignCertificate(cert)
+			// Signature is non-compliant per regulation but captured for data fidelity.
 			if signature != nil {
-				return nil, fmt.Errorf("unexpected signature for EF_CARD_SIGN_CERTIFICATE")
+				cert.SetSignature(signature)
 			}
+			// Propagate authentication
+			if auth := record.GetAuthentication(); auth != nil {
+				cert.SetAuthentication(auth)
+			}
+			tachographG2DF.SetCardSignCertificate(cert)
 
 		case cardv1.ElementaryFileType_EF_CA_CERTIFICATE:
 			// CA certificate - present in both Gen1 and Gen2
@@ -615,6 +645,16 @@ func (opts ParseOptions) ParseRawDriverCardFile(input *cardv1.RawCardFile) (*car
 				}
 				cert := &cardv1.CaCertificate{}
 				cert.SetRsaCertificate(rsaCert)
+				// Per regulation (Chapter 12, Section 3.3), certificate EFs should NOT have signatures.
+				// However, some real-world cards may incorrectly include one. We capture it for
+				// data fidelity while noting it's non-compliant. It will not be written during marshalling.
+				if signature != nil {
+					cert.SetSignature(signature)
+				}
+				// Propagate authentication
+				if auth := record.GetAuthentication(); auth != nil {
+					cert.SetAuthentication(auth)
+				}
 				tachographDF.SetCaCertificate(cert)
 			case ddv1.Generation_GENERATION_2:
 				if tachographG2DF == nil {
@@ -626,12 +666,19 @@ func (opts ParseOptions) ParseRawDriverCardFile(input *cardv1.RawCardFile) (*car
 				}
 				cert := &cardv1.CaCertificateG2{}
 				cert.SetEccCertificate(eccCert)
+				// Per regulation (Chapter 12, Section 3.3), certificate EFs should NOT have signatures.
+				// However, some real-world cards may incorrectly include one. We capture it for
+				// data fidelity while noting it's non-compliant. It will not be written during marshalling.
+				if signature != nil {
+					cert.SetSignature(signature)
+				}
+				// Propagate authentication
+				if auth := record.GetAuthentication(); auth != nil {
+					cert.SetAuthentication(auth)
+				}
 				tachographG2DF.SetCaCertificate(cert)
 			default:
 				return nil, fmt.Errorf("unexpected generation for EF_CA_CERTIFICATE: %v", efGeneration)
-			}
-			if signature != nil {
-				return nil, fmt.Errorf("unexpected signature for EF_CA_CERTIFICATE")
 			}
 
 		case cardv1.ElementaryFileType_EF_LINK_CERTIFICATE:
@@ -649,10 +696,15 @@ func (opts ParseOptions) ParseRawDriverCardFile(input *cardv1.RawCardFile) (*car
 			}
 			cert := &cardv1.LinkCertificate{}
 			cert.SetEccCertificate(eccCert)
-			tachographG2DF.SetLinkCertificate(cert)
+			// Signature is non-compliant per regulation but captured for data fidelity.
 			if signature != nil {
-				return nil, fmt.Errorf("unexpected signature for EF_LINK_CERTIFICATE")
+				cert.SetSignature(signature)
 			}
+			// Propagate authentication
+			if auth := record.GetAuthentication(); auth != nil {
+				cert.SetAuthentication(auth)
+			}
+			tachographG2DF.SetLinkCertificate(cert)
 		}
 	}
 

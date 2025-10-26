@@ -151,10 +151,7 @@ type CardDownloadDriver_builder struct {
 	//
 	//	TimeReal ::= INTEGER (0..2^32-1)
 	Timestamp *timestamppb.Timestamp
-	// Signature data from the following file block, if tagged as a signature for
-	// this EF according to the card file format specification (Appendix 2).
-	//
-	// See Data Dictionary, Section 2.149, `Signature`.
+	// Signature (non-compliant per Section 3.3, captured for data fidelity).
 	//
 	// ASN.1 Definition (Gen1):
 	//
@@ -163,11 +160,6 @@ type CardDownloadDriver_builder struct {
 	// ASN.1 Definition (Gen2):
 	//
 	//	Signature ::= OCTET STRING (variable size, depends on elliptic curve)
-	//
-	// Gen2 uses ECDSA signatures with variable lengths based on the curve:
-	// - 256-bit curves: ~64 bytes
-	// - 384-bit curves: ~96 bytes
-	// - 512/521-bit curves: ~128-132 bytes
 	Signature []byte
 	// Result of cryptographic signature authentication for this Elementary File.
 	// Present when signature verification has been performed.

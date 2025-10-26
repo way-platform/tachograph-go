@@ -2,6 +2,8 @@ edition = "2023";
 
 package wayplatform.connect.tachograph.card.v1;
 
+import "wayplatform/connect/tachograph/security/v1/authentication.proto";
+
 // Represents the content of the EF_IC file, which contains identification data
 // for the integrated circuit chip.
 //
@@ -38,4 +40,19 @@ message Ic {
   //
   //     OCTET STRING (SIZE(4))
   bytes ic_manufacturing_references = 2;
+
+  // Signature (non-compliant per Section 3.3, captured for data fidelity).
+  //
+  // ASN.1 Definition (Gen1):
+  //
+  //     Signature ::= OCTET STRING (SIZE(128))
+  //
+  // ASN.1 Definition (Gen2):
+  //
+  //     Signature ::= OCTET STRING (variable size, depends on elliptic curve)
+  bytes signature = 3;
+
+  // Result of cryptographic signature authentication for this Elementary File.
+  // Present when signature verification has been performed.
+  tachograph.security.v1.Authentication authentication = 99;
 }

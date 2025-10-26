@@ -331,6 +331,22 @@ for i := 0; i < len(records); i++ {
 }
 ```
 
+### Handling Non-Compliant Signatures
+
+According to the regulation, unsigned EFs (ICC, IC, certificates, Card_Download) should NOT have signatures. However, some real-world card files may incorrectly include signatures on these EFs due to:
+
+- Non-compliant card personalization systems
+- Manufacturer-specific implementations
+- Legacy or regional variations
+
+**Parsing Policy (Be Liberal):**
+
+When parsing, we silently ignore signatures on unsigned EFs rather than rejecting the file. This follows the "be liberal in what you accept" principle, making the parser more robust for real-world data. The signature is not attached to the protobuf message, maintaining regulation compliance in our data model.
+
+**Marshalling Policy (Be Strict):**
+
+When marshalling, we strictly follow the regulation and never write signatures for unsigned EFs. This ensures generated files are always compliant.
+
 ## Generation-Specific Type Splitting
 
 ### Principle: Split Types by Generation for Structural Differences

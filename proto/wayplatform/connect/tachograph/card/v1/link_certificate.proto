@@ -2,6 +2,7 @@ edition = "2023";
 
 package wayplatform.connect.tachograph.card.v1;
 
+import "wayplatform/connect/tachograph/security/v1/authentication.proto";
 import "wayplatform/connect/tachograph/security/v1/ecc_certificate.proto";
 
 // Data from EF Link_Certificate (File ID 'C109h').
@@ -27,4 +28,15 @@ import "wayplatform/connect/tachograph/security/v1/ecc_certificate.proto";
 message LinkCertificate {
   // ECC certificate for linking old and new ERCA root certificates.
   security.v1.EccCertificate ecc_certificate = 1;
+
+  // Signature (non-compliant per Section 3.3, captured for data fidelity).
+  //
+  // ASN.1 Definition (Gen2):
+  //
+  //     Signature ::= OCTET STRING (variable size, depends on elliptic curve)
+  bytes signature = 2;
+
+  // Result of cryptographic signature authentication for this Elementary File.
+  // Present when signature verification has been performed.
+  tachograph.security.v1.Authentication authentication = 99;
 }

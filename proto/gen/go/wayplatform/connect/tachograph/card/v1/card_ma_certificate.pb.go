@@ -38,6 +38,10 @@ const (
 type CardMaCertificate struct {
 	state                     protoimpl.MessageState `protogen:"opaque.v1"`
 	xxx_hidden_EccCertificate *v1.EccCertificate     `protobuf:"bytes,1,opt,name=ecc_certificate,json=eccCertificate"`
+	xxx_hidden_Signature      []byte                 `protobuf:"bytes,2,opt,name=signature"`
+	xxx_hidden_Authentication *v1.Authentication     `protobuf:"bytes,99,opt,name=authentication"`
+	XXX_raceDetectHookData    protoimpl.RaceDetectHookData
+	XXX_presence              [1]uint32
 	unknownFields             protoimpl.UnknownFields
 	sizeCache                 protoimpl.SizeCache
 }
@@ -74,8 +78,34 @@ func (x *CardMaCertificate) GetEccCertificate() *v1.EccCertificate {
 	return nil
 }
 
+func (x *CardMaCertificate) GetSignature() []byte {
+	if x != nil {
+		return x.xxx_hidden_Signature
+	}
+	return nil
+}
+
+func (x *CardMaCertificate) GetAuthentication() *v1.Authentication {
+	if x != nil {
+		return x.xxx_hidden_Authentication
+	}
+	return nil
+}
+
 func (x *CardMaCertificate) SetEccCertificate(v *v1.EccCertificate) {
 	x.xxx_hidden_EccCertificate = v
+}
+
+func (x *CardMaCertificate) SetSignature(v []byte) {
+	if v == nil {
+		v = []byte{}
+	}
+	x.xxx_hidden_Signature = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 3)
+}
+
+func (x *CardMaCertificate) SetAuthentication(v *v1.Authentication) {
+	x.xxx_hidden_Authentication = v
 }
 
 func (x *CardMaCertificate) HasEccCertificate() bool {
@@ -85,8 +115,31 @@ func (x *CardMaCertificate) HasEccCertificate() bool {
 	return x.xxx_hidden_EccCertificate != nil
 }
 
+func (x *CardMaCertificate) HasSignature() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 1)
+}
+
+func (x *CardMaCertificate) HasAuthentication() bool {
+	if x == nil {
+		return false
+	}
+	return x.xxx_hidden_Authentication != nil
+}
+
 func (x *CardMaCertificate) ClearEccCertificate() {
 	x.xxx_hidden_EccCertificate = nil
+}
+
+func (x *CardMaCertificate) ClearSignature() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 1)
+	x.xxx_hidden_Signature = nil
+}
+
+func (x *CardMaCertificate) ClearAuthentication() {
+	x.xxx_hidden_Authentication = nil
 }
 
 type CardMaCertificate_builder struct {
@@ -94,6 +147,15 @@ type CardMaCertificate_builder struct {
 
 	// ECC certificate containing the card's public key for mutual authentication.
 	EccCertificate *v1.EccCertificate
+	// Signature (non-compliant per Section 3.3, captured for data fidelity).
+	//
+	// ASN.1 Definition (Gen2):
+	//
+	//	Signature ::= OCTET STRING (variable size, depends on elliptic curve)
+	Signature []byte
+	// Result of cryptographic signature authentication for this Elementary File.
+	// Present when signature verification has been performed.
+	Authentication *v1.Authentication
 }
 
 func (b0 CardMaCertificate_builder) Build() *CardMaCertificate {
@@ -101,6 +163,11 @@ func (b0 CardMaCertificate_builder) Build() *CardMaCertificate {
 	b, x := &b0, m0
 	_, _ = b, x
 	x.xxx_hidden_EccCertificate = b.EccCertificate
+	if b.Signature != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 3)
+		x.xxx_hidden_Signature = b.Signature
+	}
+	x.xxx_hidden_Authentication = b.Authentication
 	return m0
 }
 
@@ -108,23 +175,27 @@ var File_wayplatform_connect_tachograph_card_v1_card_ma_certificate_proto protor
 
 const file_wayplatform_connect_tachograph_card_v1_card_ma_certificate_proto_rawDesc = "" +
 	"\n" +
-	"@wayplatform/connect/tachograph/card/v1/card_ma_certificate.proto\x12&wayplatform.connect.tachograph.card.v1\x1a@wayplatform/connect/tachograph/security/v1/ecc_certificate.proto\"x\n" +
+	"@wayplatform/connect/tachograph/card/v1/card_ma_certificate.proto\x12&wayplatform.connect.tachograph.card.v1\x1a?wayplatform/connect/tachograph/security/v1/authentication.proto\x1a@wayplatform/connect/tachograph/security/v1/ecc_certificate.proto\"\xfa\x01\n" +
 	"\x11CardMaCertificate\x12c\n" +
-	"\x0fecc_certificate\x18\x01 \x01(\v2:.wayplatform.connect.tachograph.security.v1.EccCertificateR\x0eeccCertificateB\xe3\x02\n" +
+	"\x0fecc_certificate\x18\x01 \x01(\v2:.wayplatform.connect.tachograph.security.v1.EccCertificateR\x0eeccCertificate\x12\x1c\n" +
+	"\tsignature\x18\x02 \x01(\fR\tsignature\x12b\n" +
+	"\x0eauthentication\x18c \x01(\v2:.wayplatform.connect.tachograph.security.v1.AuthenticationR\x0eauthenticationB\xe3\x02\n" +
 	"*com.wayplatform.connect.tachograph.card.v1B\x16CardMaCertificateProtoP\x01Z`github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1;cardv1\xa2\x02\x04WCTC\xaa\x02&Wayplatform.Connect.Tachograph.Card.V1\xca\x02&Wayplatform\\Connect\\Tachograph\\Card\\V1\xe2\x022Wayplatform\\Connect\\Tachograph\\Card\\V1\\GPBMetadata\xea\x02*Wayplatform::Connect::Tachograph::Card::V1b\beditionsp\xe8\a"
 
 var file_wayplatform_connect_tachograph_card_v1_card_ma_certificate_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_wayplatform_connect_tachograph_card_v1_card_ma_certificate_proto_goTypes = []any{
 	(*CardMaCertificate)(nil), // 0: wayplatform.connect.tachograph.card.v1.CardMaCertificate
 	(*v1.EccCertificate)(nil), // 1: wayplatform.connect.tachograph.security.v1.EccCertificate
+	(*v1.Authentication)(nil), // 2: wayplatform.connect.tachograph.security.v1.Authentication
 }
 var file_wayplatform_connect_tachograph_card_v1_card_ma_certificate_proto_depIdxs = []int32{
 	1, // 0: wayplatform.connect.tachograph.card.v1.CardMaCertificate.ecc_certificate:type_name -> wayplatform.connect.tachograph.security.v1.EccCertificate
-	1, // [1:1] is the sub-list for method output_type
-	1, // [1:1] is the sub-list for method input_type
-	1, // [1:1] is the sub-list for extension type_name
-	1, // [1:1] is the sub-list for extension extendee
-	0, // [0:1] is the sub-list for field type_name
+	2, // 1: wayplatform.connect.tachograph.card.v1.CardMaCertificate.authentication:type_name -> wayplatform.connect.tachograph.security.v1.Authentication
+	2, // [2:2] is the sub-list for method output_type
+	2, // [2:2] is the sub-list for method input_type
+	2, // [2:2] is the sub-list for extension type_name
+	2, // [2:2] is the sub-list for extension extendee
+	0, // [0:2] is the sub-list for field type_name
 }
 
 func init() { file_wayplatform_connect_tachograph_card_v1_card_ma_certificate_proto_init() }

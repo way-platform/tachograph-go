@@ -7,6 +7,7 @@
 package cardv1
 
 import (
+	v1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/security/v1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -40,6 +41,8 @@ type Ic struct {
 	state                                protoimpl.MessageState `protogen:"opaque.v1"`
 	xxx_hidden_IcSerialNumber            []byte                 `protobuf:"bytes,1,opt,name=ic_serial_number,json=icSerialNumber"`
 	xxx_hidden_IcManufacturingReferences []byte                 `protobuf:"bytes,2,opt,name=ic_manufacturing_references,json=icManufacturingReferences"`
+	xxx_hidden_Signature                 []byte                 `protobuf:"bytes,3,opt,name=signature"`
+	xxx_hidden_Authentication            *v1.Authentication     `protobuf:"bytes,99,opt,name=authentication"`
 	XXX_raceDetectHookData               protoimpl.RaceDetectHookData
 	XXX_presence                         [1]uint32
 	unknownFields                        protoimpl.UnknownFields
@@ -85,12 +88,26 @@ func (x *Ic) GetIcManufacturingReferences() []byte {
 	return nil
 }
 
+func (x *Ic) GetSignature() []byte {
+	if x != nil {
+		return x.xxx_hidden_Signature
+	}
+	return nil
+}
+
+func (x *Ic) GetAuthentication() *v1.Authentication {
+	if x != nil {
+		return x.xxx_hidden_Authentication
+	}
+	return nil
+}
+
 func (x *Ic) SetIcSerialNumber(v []byte) {
 	if v == nil {
 		v = []byte{}
 	}
 	x.xxx_hidden_IcSerialNumber = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 2)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 4)
 }
 
 func (x *Ic) SetIcManufacturingReferences(v []byte) {
@@ -98,7 +115,19 @@ func (x *Ic) SetIcManufacturingReferences(v []byte) {
 		v = []byte{}
 	}
 	x.xxx_hidden_IcManufacturingReferences = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 2)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 4)
+}
+
+func (x *Ic) SetSignature(v []byte) {
+	if v == nil {
+		v = []byte{}
+	}
+	x.xxx_hidden_Signature = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 4)
+}
+
+func (x *Ic) SetAuthentication(v *v1.Authentication) {
+	x.xxx_hidden_Authentication = v
 }
 
 func (x *Ic) HasIcSerialNumber() bool {
@@ -115,6 +144,20 @@ func (x *Ic) HasIcManufacturingReferences() bool {
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 1)
 }
 
+func (x *Ic) HasSignature() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 2)
+}
+
+func (x *Ic) HasAuthentication() bool {
+	if x == nil {
+		return false
+	}
+	return x.xxx_hidden_Authentication != nil
+}
+
 func (x *Ic) ClearIcSerialNumber() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 0)
 	x.xxx_hidden_IcSerialNumber = nil
@@ -123,6 +166,15 @@ func (x *Ic) ClearIcSerialNumber() {
 func (x *Ic) ClearIcManufacturingReferences() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 1)
 	x.xxx_hidden_IcManufacturingReferences = nil
+}
+
+func (x *Ic) ClearSignature() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 2)
+	x.xxx_hidden_Signature = nil
+}
+
+func (x *Ic) ClearAuthentication() {
+	x.xxx_hidden_Authentication = nil
 }
 
 type Ic_builder struct {
@@ -146,6 +198,19 @@ type Ic_builder struct {
 	//
 	//	OCTET STRING (SIZE(4))
 	IcManufacturingReferences []byte
+	// Signature (non-compliant per Section 3.3, captured for data fidelity).
+	//
+	// ASN.1 Definition (Gen1):
+	//
+	//	Signature ::= OCTET STRING (SIZE(128))
+	//
+	// ASN.1 Definition (Gen2):
+	//
+	//	Signature ::= OCTET STRING (variable size, depends on elliptic curve)
+	Signature []byte
+	// Result of cryptographic signature authentication for this Elementary File.
+	// Present when signature verification has been performed.
+	Authentication *v1.Authentication
 }
 
 func (b0 Ic_builder) Build() *Ic {
@@ -153,13 +218,18 @@ func (b0 Ic_builder) Build() *Ic {
 	b, x := &b0, m0
 	_, _ = b, x
 	if b.IcSerialNumber != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 2)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 4)
 		x.xxx_hidden_IcSerialNumber = b.IcSerialNumber
 	}
 	if b.IcManufacturingReferences != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 2)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 4)
 		x.xxx_hidden_IcManufacturingReferences = b.IcManufacturingReferences
 	}
+	if b.Signature != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 4)
+		x.xxx_hidden_Signature = b.Signature
+	}
+	x.xxx_hidden_Authentication = b.Authentication
 	return m0
 }
 
@@ -167,22 +237,26 @@ var File_wayplatform_connect_tachograph_card_v1_ic_proto protoreflect.FileDescri
 
 const file_wayplatform_connect_tachograph_card_v1_ic_proto_rawDesc = "" +
 	"\n" +
-	"/wayplatform/connect/tachograph/card/v1/ic.proto\x12&wayplatform.connect.tachograph.card.v1\"n\n" +
+	"/wayplatform/connect/tachograph/card/v1/ic.proto\x12&wayplatform.connect.tachograph.card.v1\x1a?wayplatform/connect/tachograph/security/v1/authentication.proto\"\xf0\x01\n" +
 	"\x02Ic\x12(\n" +
 	"\x10ic_serial_number\x18\x01 \x01(\fR\x0eicSerialNumber\x12>\n" +
-	"\x1bic_manufacturing_references\x18\x02 \x01(\fR\x19icManufacturingReferencesB\xd4\x02\n" +
+	"\x1bic_manufacturing_references\x18\x02 \x01(\fR\x19icManufacturingReferences\x12\x1c\n" +
+	"\tsignature\x18\x03 \x01(\fR\tsignature\x12b\n" +
+	"\x0eauthentication\x18c \x01(\v2:.wayplatform.connect.tachograph.security.v1.AuthenticationR\x0eauthenticationB\xd4\x02\n" +
 	"*com.wayplatform.connect.tachograph.card.v1B\aIcProtoP\x01Z`github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1;cardv1\xa2\x02\x04WCTC\xaa\x02&Wayplatform.Connect.Tachograph.Card.V1\xca\x02&Wayplatform\\Connect\\Tachograph\\Card\\V1\xe2\x022Wayplatform\\Connect\\Tachograph\\Card\\V1\\GPBMetadata\xea\x02*Wayplatform::Connect::Tachograph::Card::V1b\beditionsp\xe8\a"
 
 var file_wayplatform_connect_tachograph_card_v1_ic_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_wayplatform_connect_tachograph_card_v1_ic_proto_goTypes = []any{
-	(*Ic)(nil), // 0: wayplatform.connect.tachograph.card.v1.Ic
+	(*Ic)(nil),                // 0: wayplatform.connect.tachograph.card.v1.Ic
+	(*v1.Authentication)(nil), // 1: wayplatform.connect.tachograph.security.v1.Authentication
 }
 var file_wayplatform_connect_tachograph_card_v1_ic_proto_depIdxs = []int32{
-	0, // [0:0] is the sub-list for method output_type
-	0, // [0:0] is the sub-list for method input_type
-	0, // [0:0] is the sub-list for extension type_name
-	0, // [0:0] is the sub-list for extension extendee
-	0, // [0:0] is the sub-list for field type_name
+	1, // 0: wayplatform.connect.tachograph.card.v1.Ic.authentication:type_name -> wayplatform.connect.tachograph.security.v1.Authentication
+	1, // [1:1] is the sub-list for method output_type
+	1, // [1:1] is the sub-list for method input_type
+	1, // [1:1] is the sub-list for extension type_name
+	1, // [1:1] is the sub-list for extension extendee
+	0, // [0:1] is the sub-list for field type_name
 }
 
 func init() { file_wayplatform_connect_tachograph_card_v1_ic_proto_init() }

@@ -39,6 +39,10 @@ const (
 type CaCertificate struct {
 	state                     protoimpl.MessageState `protogen:"opaque.v1"`
 	xxx_hidden_RsaCertificate *v1.RsaCertificate     `protobuf:"bytes,1,opt,name=rsa_certificate,json=rsaCertificate"`
+	xxx_hidden_Signature      []byte                 `protobuf:"bytes,2,opt,name=signature"`
+	xxx_hidden_Authentication *v1.Authentication     `protobuf:"bytes,99,opt,name=authentication"`
+	XXX_raceDetectHookData    protoimpl.RaceDetectHookData
+	XXX_presence              [1]uint32
 	unknownFields             protoimpl.UnknownFields
 	sizeCache                 protoimpl.SizeCache
 }
@@ -75,8 +79,34 @@ func (x *CaCertificate) GetRsaCertificate() *v1.RsaCertificate {
 	return nil
 }
 
+func (x *CaCertificate) GetSignature() []byte {
+	if x != nil {
+		return x.xxx_hidden_Signature
+	}
+	return nil
+}
+
+func (x *CaCertificate) GetAuthentication() *v1.Authentication {
+	if x != nil {
+		return x.xxx_hidden_Authentication
+	}
+	return nil
+}
+
 func (x *CaCertificate) SetRsaCertificate(v *v1.RsaCertificate) {
 	x.xxx_hidden_RsaCertificate = v
+}
+
+func (x *CaCertificate) SetSignature(v []byte) {
+	if v == nil {
+		v = []byte{}
+	}
+	x.xxx_hidden_Signature = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 3)
+}
+
+func (x *CaCertificate) SetAuthentication(v *v1.Authentication) {
+	x.xxx_hidden_Authentication = v
 }
 
 func (x *CaCertificate) HasRsaCertificate() bool {
@@ -86,8 +116,31 @@ func (x *CaCertificate) HasRsaCertificate() bool {
 	return x.xxx_hidden_RsaCertificate != nil
 }
 
+func (x *CaCertificate) HasSignature() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 1)
+}
+
+func (x *CaCertificate) HasAuthentication() bool {
+	if x == nil {
+		return false
+	}
+	return x.xxx_hidden_Authentication != nil
+}
+
 func (x *CaCertificate) ClearRsaCertificate() {
 	x.xxx_hidden_RsaCertificate = nil
+}
+
+func (x *CaCertificate) ClearSignature() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 1)
+	x.xxx_hidden_Signature = nil
+}
+
+func (x *CaCertificate) ClearAuthentication() {
+	x.xxx_hidden_Authentication = nil
 }
 
 type CaCertificate_builder struct {
@@ -95,6 +148,15 @@ type CaCertificate_builder struct {
 
 	// RSA certificate containing the Member State CA's public key.
 	RsaCertificate *v1.RsaCertificate
+	// Signature (non-compliant per Section 3.3, captured for data fidelity).
+	//
+	// ASN.1 Definition (Gen1):
+	//
+	//	Signature ::= OCTET STRING (SIZE(128))
+	Signature []byte
+	// Result of cryptographic signature authentication for this Elementary File.
+	// Present when signature verification has been performed.
+	Authentication *v1.Authentication
 }
 
 func (b0 CaCertificate_builder) Build() *CaCertificate {
@@ -102,6 +164,11 @@ func (b0 CaCertificate_builder) Build() *CaCertificate {
 	b, x := &b0, m0
 	_, _ = b, x
 	x.xxx_hidden_RsaCertificate = b.RsaCertificate
+	if b.Signature != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 3)
+		x.xxx_hidden_Signature = b.Signature
+	}
+	x.xxx_hidden_Authentication = b.Authentication
 	return m0
 }
 
@@ -109,23 +176,27 @@ var File_wayplatform_connect_tachograph_card_v1_ca_certificate_proto protoreflec
 
 const file_wayplatform_connect_tachograph_card_v1_ca_certificate_proto_rawDesc = "" +
 	"\n" +
-	";wayplatform/connect/tachograph/card/v1/ca_certificate.proto\x12&wayplatform.connect.tachograph.card.v1\x1a@wayplatform/connect/tachograph/security/v1/rsa_certificate.proto\"t\n" +
+	";wayplatform/connect/tachograph/card/v1/ca_certificate.proto\x12&wayplatform.connect.tachograph.card.v1\x1a?wayplatform/connect/tachograph/security/v1/authentication.proto\x1a@wayplatform/connect/tachograph/security/v1/rsa_certificate.proto\"\xf6\x01\n" +
 	"\rCaCertificate\x12c\n" +
-	"\x0frsa_certificate\x18\x01 \x01(\v2:.wayplatform.connect.tachograph.security.v1.RsaCertificateR\x0ersaCertificateB\xdf\x02\n" +
+	"\x0frsa_certificate\x18\x01 \x01(\v2:.wayplatform.connect.tachograph.security.v1.RsaCertificateR\x0ersaCertificate\x12\x1c\n" +
+	"\tsignature\x18\x02 \x01(\fR\tsignature\x12b\n" +
+	"\x0eauthentication\x18c \x01(\v2:.wayplatform.connect.tachograph.security.v1.AuthenticationR\x0eauthenticationB\xdf\x02\n" +
 	"*com.wayplatform.connect.tachograph.card.v1B\x12CaCertificateProtoP\x01Z`github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1;cardv1\xa2\x02\x04WCTC\xaa\x02&Wayplatform.Connect.Tachograph.Card.V1\xca\x02&Wayplatform\\Connect\\Tachograph\\Card\\V1\xe2\x022Wayplatform\\Connect\\Tachograph\\Card\\V1\\GPBMetadata\xea\x02*Wayplatform::Connect::Tachograph::Card::V1b\beditionsp\xe8\a"
 
 var file_wayplatform_connect_tachograph_card_v1_ca_certificate_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_wayplatform_connect_tachograph_card_v1_ca_certificate_proto_goTypes = []any{
 	(*CaCertificate)(nil),     // 0: wayplatform.connect.tachograph.card.v1.CaCertificate
 	(*v1.RsaCertificate)(nil), // 1: wayplatform.connect.tachograph.security.v1.RsaCertificate
+	(*v1.Authentication)(nil), // 2: wayplatform.connect.tachograph.security.v1.Authentication
 }
 var file_wayplatform_connect_tachograph_card_v1_ca_certificate_proto_depIdxs = []int32{
 	1, // 0: wayplatform.connect.tachograph.card.v1.CaCertificate.rsa_certificate:type_name -> wayplatform.connect.tachograph.security.v1.RsaCertificate
-	1, // [1:1] is the sub-list for method output_type
-	1, // [1:1] is the sub-list for method input_type
-	1, // [1:1] is the sub-list for extension type_name
-	1, // [1:1] is the sub-list for extension extendee
-	0, // [0:1] is the sub-list for field type_name
+	2, // 1: wayplatform.connect.tachograph.card.v1.CaCertificate.authentication:type_name -> wayplatform.connect.tachograph.security.v1.Authentication
+	2, // [2:2] is the sub-list for method output_type
+	2, // [2:2] is the sub-list for method input_type
+	2, // [2:2] is the sub-list for extension type_name
+	2, // [2:2] is the sub-list for extension extendee
+	0, // [0:2] is the sub-list for field type_name
 }
 
 func init() { file_wayplatform_connect_tachograph_card_v1_ca_certificate_proto_init() }
