@@ -95,13 +95,16 @@ func unmarshalRawCardFileRecord(input []byte, strict bool) (*cardv1.RawCardFile_
 		output.SetContentType(cardv1.ContentType_DATA)
 	}
 	// Extract generation from bit 1
+	var generation ddv1.Generation
 	if appendix&0x02 != 0 {
+		generation = ddv1.Generation_GENERATION_2
 		output.SetGeneration(ddv1.Generation_GENERATION_2)
 	} else {
+		generation = ddv1.Generation_GENERATION_1
 		output.SetGeneration(ddv1.Generation_GENERATION_1)
 	}
 	// Map FID to elementary file type
-	fileType, found := mapFidToElementaryFileType(fid)
+	fileType, found := mapFidToElementaryFileType(fid, generation)
 	if !found && strict {
 		return nil, fmt.Errorf("unrecognized file ID 0x%04X in strict mode", fid)
 	}

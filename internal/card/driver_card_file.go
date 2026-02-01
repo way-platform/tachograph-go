@@ -690,21 +690,34 @@ func (opts ParseOptions) ParseRawDriverCardFile(input *cardv1.RawCardFile) (*car
 			if tachographG2DF == nil {
 				tachographG2DF = &cardv1.DriverCardFile_TachographG2{}
 			}
-			eccCert, err := security.UnmarshalEccCertificate(record.GetValue())
-			if err != nil {
-				return nil, fmt.Errorf("failed to parse EF_LINK_CERTIFICATE: %w", err)
+
+			// Check if the certificate data is zero-filled (empty/unused)
+			data := record.GetValue()
+			isZero := true
+			for _, b := range data {
+				if b != 0 {
+					isZero = false
+					break
+				}
 			}
-			cert := &cardv1.LinkCertificate{}
-			cert.SetEccCertificate(eccCert)
-			// Signature is non-compliant per regulation but captured for data fidelity.
-			if signature != nil {
-				cert.SetSignature(signature)
+
+			if !isZero && len(data) > 0 {
+				eccCert, err := security.UnmarshalEccCertificate(data)
+				if err != nil {
+					return nil, fmt.Errorf("failed to parse EF_LINK_CERTIFICATE: %w", err)
+				}
+				cert := &cardv1.LinkCertificate{}
+				cert.SetEccCertificate(eccCert)
+				// Signature is non-compliant per regulation but captured for data fidelity.
+				if signature != nil {
+					cert.SetSignature(signature)
+				}
+				// Propagate authentication
+				if auth := record.GetAuthentication(); auth != nil {
+					cert.SetAuthentication(auth)
+				}
+				tachographG2DF.SetLinkCertificate(cert)
 			}
-			// Propagate authentication
-			if auth := record.GetAuthentication(); auth != nil {
-				cert.SetAuthentication(auth)
-			}
-			tachographG2DF.SetLinkCertificate(cert)
 		}
 	}
 

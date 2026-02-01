@@ -3,7 +3,7 @@ edition = "2023";
 package wayplatform.connect.tachograph.card.v1;
 
 import "google/protobuf/timestamp.proto";
-import "wayplatform/connect/tachograph/card/v1/gnss_place_auth_record.proto";
+import "wayplatform/connect/tachograph/dd/v1/gnss_place_auth_record.proto";
 import "wayplatform/connect/tachograph/dd/v1/operation_type.proto";
 
 // Represents the content of the EF_Load_Unload_Operations file.
@@ -49,7 +49,7 @@ message LoadUnloadOperations {
     // The authenticated position of the vehicle.
     //
     // See Data Dictionary, Section 2.79c, `GNSSPlaceAuthRecord`.
-    GnssPlaceAuthRecord gnss_place_auth_record = 3;
+    wayplatform.connect.tachograph.dd.v1.GNSSPlaceAuthRecord gnss_place_auth_record = 3;
 
     // The odometer value at the beginning of the operation in kilometers.
     //

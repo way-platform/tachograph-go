@@ -21,9 +21,10 @@ Reference these skills for deep procedural guides:
 - **No linter errors**: Zero tolerance.
 - **Testing**: Use standard `testing` and `cmp` packages only.
 - **Golden Files**:
-  - Location: `testdata/`
-  - Update: Run tests with `-update` flag (if supported).
-  - Policy: All test data must be deterministically anonymized.
+  - **Full Files**: `testdata/*.DDD` -> `*.json`. Driven by `unmarshal_test.go`. Run `go test -v -update ./...` to refresh.
+  - **EF Extraction**: Extract raw EFs to `testdata/records/*.hexdump`. Use `testdata_helpers_test.go` helpers.
+  - **Policy**: All test data must be deterministically anonymized.
+- **Synthetic Data**: For unimplemented/empty EFs (e.g. Gen2v2), create manual byte slice unit tests based on spec until real data is acquired.
 
 ### Documentation
 - **Log Files**: `docs/logs/YYYY-MM-DDTHH-MM-description.md`.

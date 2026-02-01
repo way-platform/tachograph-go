@@ -137,7 +137,7 @@ enum CardType {
           },
           {
             type: EF
-            ef: EF_CARD_CERTIFICATE
+            ef: EF_CARD_MA_CERTIFICATE
           },
           {
             type: EF
@@ -350,7 +350,7 @@ enum CardType {
           },
           {
             type: EF
-            ef: EF_CARD_CERTIFICATE
+            ef: EF_CARD_MA_CERTIFICATE
           },
           {
             type: EF
@@ -532,7 +532,7 @@ enum CardType {
           },
           {
             type: EF
-            ef: EF_CARD_CERTIFICATE
+            ef: EF_CARD_MA_CERTIFICATE
           },
           {
             type: EF
@@ -632,7 +632,7 @@ enum CardType {
           },
           {
             type: EF
-            ef: EF_CARD_CERTIFICATE
+            ef: EF_CARD_MA_CERTIFICATE
           },
           {
             type: EF

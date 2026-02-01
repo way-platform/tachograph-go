@@ -26,7 +26,7 @@ func TestUnmarshalFile_golden(t *testing.T) {
 		if err != nil {
 			return err
 		}
-		if d.IsDir() || !strings.HasSuffix(d.Name(), ".DDD") {
+		if d.IsDir() || !strings.HasSuffix(strings.ToLower(d.Name()), ".ddd") {
 			return nil
 		}
 		goldenFile := strings.TrimSuffix(path, ".DDD") + ".json"
