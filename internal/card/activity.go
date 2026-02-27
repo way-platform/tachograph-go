@@ -285,12 +285,21 @@ func NewCyclicRecordIterator(buffer []byte, startPos int) *cyclicRecordIterator 
 // Returns true if a record was found, false if end of chain or error.
 // The iterator traverses backwards from newest to oldest record.
 func (it *cyclicRecordIterator) Next() bool {
-	const maxRecords = 366 // Safety limit to prevent infinite loops (max days per year + 1)
+	// Safety limit derived from buffer size: the buffer cannot contain more records
+	// than buffer_size / min_record_size. The iterator rejects records with length < 4
+	// (below), so 4 bytes is the absolute minimum per record. This catches infinite
+	// loops from corrupted linked-list pointers while accepting any valid card,
+	// including cards with >366 daily records (observed on a real Gen1 card with
+	// activityStructureLength=13776 containing 379 daily records).
+	maxRecords := len(it.buffer) / 4
+	if maxRecords == 0 {
+		maxRecords = 1
+	}
 	if it.err != nil {
 		return false
 	}
 	if it.recordCount >= maxRecords {
-		it.err = fmt.Errorf("exceeded maximum record count (%d), possible infinite loop", maxRecords)
+		it.err = fmt.Errorf("exceeded maximum record count (%d for %d-byte buffer), possible infinite loop", maxRecords, len(it.buffer))
 		return false
 	}
 	if len(it.buffer) == 0 {
