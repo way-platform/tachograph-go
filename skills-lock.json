@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "skills": {
+    "claude-md-improver": {
+      "source": "anthropics/claude-plugins-official",
+      "sourceType": "github",
+      "computedHash": "d6707ed0467d9664d0f9d2c44724c8fb1814475ec6d3c62a5d54bbbe807e0775"
+    },
+    "way-go-style": {
+      "source": "way-platform/skills",
+      "sourceType": "github",
+      "computedHash": "786907e7b6fec712353685fad08256d7bd46cb8ac735444d561e51fa3f0700e6"
+    },
+    "way-magefile": {
+      "source": "way-platform/skills",
+      "sourceType": "github",
+      "computedHash": "eef0e89b850cec77b87899714e907d5ffb21c43915da6e838e36620faafe0edb"
+    }
+  }
+}

@@ -7,6 +7,7 @@
 3. [Dependency Management](#3-dependency-management-toolsgomod)
 4. [Standard Magefile Structure](#4-standard-magefile-structure)
 5. [Documentation](#5-documentation)
+6. [Linter Configuration](#6-linter-configuration)
 
 Way Platform follows specific patterns for Magefiles to ensure consistency and reliable dependency management.
 
@@ -57,8 +58,8 @@ go 1.24
 
 tool (
     github.com/magefile/mage
-    github.com/bufbuild/buf/cmd/buf
-    // ... other tools
+    github.com/golangci/golangci-lint/v2/cmd/golangci-lint
+    // ... other tools (e.g. github.com/bufbuild/buf/cmd/buf)
 )
 
 require github.com/magefile/mage v1.15.0 // ...
@@ -161,10 +162,10 @@ func Format() error {
 	return tool(root(), "buf", "format", "-w").Run()
 }
 
-// Lint runs linters.
+// Lint runs linters and fixes code style issues.
 func Lint() error {
-	log.Println("linting code")
-	return tool(root(), "golangci-lint", "run").Run()
+	log.Println("linting and fixing code")
+	return tool(root(), "golangci-lint", "run", "--fix").Run()
 }
 
 // Generate runs code generation.
@@ -198,4 +199,21 @@ All exported targets MUST have a documentation comment:
 func Build() {
     // ...
 }
+```
+
+## 6. Linter Configuration
+
+Use `golangci-lint` v2 with standard formatters enabled to maintain consistent code style.
+
+**Path**: `.golangci.yml`
+
+```yaml
+version: "2"
+
+formatters:
+  enable:
+    - gci
+    - gofumpt
+    - goimports
+    - golines
 ```
