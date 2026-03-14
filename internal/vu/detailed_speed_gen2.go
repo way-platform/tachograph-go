@@ -3,8 +3,8 @@ package vu
 import (
 	"fmt"
 
+	"github.com/way-platform/tachograph-go/internal/dd"
 	vuv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/vu/v1"
-	"google.golang.org/protobuf/proto"
 )
 
 // unmarshalDetailedSpeedGen2 parses Gen2 Detailed Speed data from the complete transfer value.
@@ -14,12 +14,8 @@ import (
 //
 // Gen2 Detailed Speed structure uses RecordArray format.
 //
-// Note: This is a minimal implementation that stores raw_data for round-trip fidelity.
-// Gen2 has no V2 variant - both V1 and V2 use the same structure.
+// Note: Gen2 has no V2 variant - both V1 and V2 use the same structure.
 func unmarshalDetailedSpeedGen2(value []byte) (*vuv1.DetailedSpeedGen2, error) {
-	// Split transfer value into data and signature
-	// Gen2 uses variable-length ECDSA signatures stored as SignatureRecordArray
-	// We use the sizeOf function to determine where to split
 	totalSize, signatureSize, err := sizeOfDetailedSpeedGen2(value)
 	if err != nil {
 		return nil, fmt.Errorf("failed to calculate size: %w", err)
@@ -33,25 +29,18 @@ func unmarshalDetailedSpeedGen2(value []byte) (*vuv1.DetailedSpeedGen2, error) {
 	signature := value[dataSize:]
 
 	detailedSpeed := &vuv1.DetailedSpeedGen2{}
-	detailedSpeed.SetRawData(value) // Store complete transfer value for painting
+	detailedSpeed.SetRawData(value)
 
-	// Validate structure by skipping through all record arrays
 	offset := 0
-	skipRecordArray := func(name string) error {
-		size, err := sizeOfRecordArray(data, offset)
-		if err != nil {
-			return fmt.Errorf("%s: %w", name, err)
-		}
-		offset += size
-		return nil
-	}
 
-	// VuDetailedSpeedRecordArray
-	if err := skipRecordArray("VuDetailedSpeed"); err != nil {
-		return nil, err
+	// VuDetailedSpeedBlockRecordArray
+	speedBlocks, bytesRead, err := parseVuDetailedSpeedBlockRecordArray(data, offset)
+	if err != nil {
+		return nil, fmt.Errorf("parse VuDetailedSpeedBlockRecordArray: %w", err)
 	}
+	detailedSpeed.SetSpeedBlocks(speedBlocks)
+	offset += bytesRead
 
-	// Store signature (extracted at the beginning)
 	detailedSpeed.SetSignature(signature)
 
 	if offset != len(data) {
@@ -61,7 +50,7 @@ func unmarshalDetailedSpeedGen2(value []byte) (*vuv1.DetailedSpeedGen2, error) {
 	return detailedSpeed, nil
 }
 
-// MarshalDetailedSpeedGen2 marshals Gen2 Detailed Speed data using raw data painting.
+// MarshalDetailedSpeedGen2 marshals Gen2 Detailed Speed data.
 func (opts MarshalOptions) MarshalDetailedSpeedGen2(detailedSpeed *vuv1.DetailedSpeedGen2) ([]byte, error) {
 	if detailedSpeed == nil {
 		return nil, fmt.Errorf("detailedSpeed cannot be nil")
@@ -69,26 +58,106 @@ func (opts MarshalOptions) MarshalDetailedSpeedGen2(detailedSpeed *vuv1.Detailed
 
 	raw := detailedSpeed.GetRawData()
 	if len(raw) > 0 {
-		// raw_data contains complete transfer value (data + signature)
 		return raw, nil
 	}
 
-	return nil, fmt.Errorf("cannot marshal Detailed Speed Gen2 without raw_data (semantic marshalling not yet implemented)")
+	var result []byte
+	marshalOpts := dd.MarshalOptions{}
+
+	// VuDetailedSpeedBlockRecordArray (64 bytes per block)
+	blocks := detailedSpeed.GetSpeedBlocks()
+	speedBlockData, err := marshalVuDetailedSpeedBlocks(marshalOpts, blocks)
+	if err != nil {
+		return nil, fmt.Errorf("marshal VuDetailedSpeedBlockRecordArray: %w", err)
+	}
+	result = appendRecordArrayHeader(result, 0x01, 64, uint16(len(blocks)))
+	result = append(result, speedBlockData...)
+
+	result = append(result, detailedSpeed.GetSignature()...)
+	return result, nil
 }
 
 // anonymizeDetailedSpeedGen2 anonymizes Gen2 Detailed Speed data.
-// TODO: Implement full semantic anonymization (anonymize speed records if needed).
+// Speed data contains no PII; only signature and raw_data are cleared.
 func (opts AnonymizeOptions) anonymizeDetailedSpeedGen2(ds *vuv1.DetailedSpeedGen2) *vuv1.DetailedSpeedGen2 {
 	if ds == nil {
 		return nil
 	}
-	result := proto.Clone(ds).(*vuv1.DetailedSpeedGen2)
-	// Set signature to empty bytes (TV format: maintains structure)
-	// Gen2 uses variable-length ECDSA signatures
+
+	result := &vuv1.DetailedSpeedGen2{}
+	result.SetSpeedBlocks(ds.GetSpeedBlocks())
 	result.SetSignature([]byte{})
-
-	// Note: We intentionally keep raw_data here because MarshalDetailedSpeedGen2
-	// currently requires raw_data (semantic marshalling not yet implemented).
-
 	return result
+}
+
+// parseVuDetailedSpeedBlockRecordArray parses a VuDetailedSpeedBlockRecordArray.
+//
+// Each VuDetailedSpeedBlock is 64 bytes:
+//   - speedBlockBeginDate: TimeReal = 4 bytes
+//   - speedsPerSecond: 60 bytes (1 byte per km/h value)
+func parseVuDetailedSpeedBlockRecordArray(data []byte, offset int) ([]*vuv1.DetailedSpeedGen2_DetailedSpeedBlock, int, error) {
+	_, recordSize, noOfRecords, headerSize, err := parseRecordArrayHeader(data, offset)
+	if err != nil {
+		return nil, 0, err
+	}
+
+	const expectedRecordSize = 64
+	if recordSize != expectedRecordSize {
+		return nil, 0, fmt.Errorf("expected VuDetailedSpeedBlock size %d, got %d", expectedRecordSize, recordSize)
+	}
+
+	var unmarshalOpts dd.UnmarshalOptions
+	records := make([]*vuv1.DetailedSpeedGen2_DetailedSpeedBlock, 0, noOfRecords)
+	recordStart := offset + headerSize
+
+	for i := range noOfRecords {
+		recordEnd := recordStart + int(recordSize)
+		if recordEnd > len(data) {
+			return nil, 0, fmt.Errorf("insufficient data for DetailedSpeedBlock %d", i)
+		}
+
+		rec := data[recordStart:recordEnd]
+
+		beginDate, err := unmarshalOpts.UnmarshalTimeReal(rec[:4])
+		if err != nil {
+			return nil, 0, fmt.Errorf("DetailedSpeedBlock %d begin date: %w", i, err)
+		}
+
+		speedsKmh := make([]int32, 60)
+		for j := range 60 {
+			speedsKmh[j] = int32(rec[4+j])
+		}
+
+		block := &vuv1.DetailedSpeedGen2_DetailedSpeedBlock{}
+		block.SetBeginDate(beginDate)
+		block.SetSpeedsKmh(speedsKmh)
+
+		records = append(records, block)
+		recordStart = recordEnd
+	}
+
+	totalSize := headerSize + int(recordSize)*int(noOfRecords)
+	return records, totalSize, nil
+}
+
+// marshalVuDetailedSpeedBlocks marshals detailed speed blocks to binary.
+func marshalVuDetailedSpeedBlocks(opts dd.MarshalOptions, blocks []*vuv1.DetailedSpeedGen2_DetailedSpeedBlock) ([]byte, error) {
+	result := make([]byte, 0, len(blocks)*64)
+	for i, block := range blocks {
+		beginDateBytes, err := opts.MarshalTimeReal(block.GetBeginDate())
+		if err != nil {
+			return nil, fmt.Errorf("DetailedSpeedBlock %d begin date: %w", i, err)
+		}
+		result = append(result, beginDateBytes...)
+
+		speeds := block.GetSpeedsKmh()
+		for j := range 60 {
+			if j < len(speeds) {
+				result = append(result, byte(speeds[j]))
+			} else {
+				result = append(result, 0)
+			}
+		}
+	}
+	return result, nil
 }
