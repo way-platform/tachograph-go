@@ -9,5 +9,17 @@ cmd/tachograph/tachograph
 tools/cmd/fetch-certs/fetch-certs
 *.bin
 
-# Ignore all testdata directories
-testdata/
+# Ignore root testdata directory (internal/*/testdata/ is committed)
+/testdata/
+
+# Internal testdata: PII-named extraction dirs and raw full-file goldens
+internal/card/testdata/raw/
+internal/card/testdata/records/[0-9]*-[^a]/
+internal/vu/testdata/*.golden.json
+
+# Tachograph binary files (proprietary, never commit)
+*.DDD
+*.ddd
+*.V1B
+*.v1b
+fleetboard/
