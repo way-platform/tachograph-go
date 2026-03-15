@@ -1,8 +1,6 @@
 package card
 
 import (
-	"bytes"
-	"encoding/binary"
 	"fmt"
 
 	cardv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1"
@@ -20,52 +18,40 @@ import (
 //	    noOfLoadTypeEntryRecords     INTEGER(0..255),
 //	    vuConfigurationLengthRange   INTEGER(0..255)
 //	}
-func (opts UnmarshalOptions) unmarshalApplicationIdentificationV2(data []byte) (*cardv1.ApplicationIdentificationV2, error) {
-	const (
-		lenEfApplicationIdentificationV2 = 4 // EF_ApplicationIdentificationV2 record size
-	)
+func (opts UnmarshalOptions) unmarshalApplicationIdentificationV2(
+	data []byte, cardType cardv1.CardType,
+) (*cardv1.ApplicationIdentificationV2, error) {
+	const lenEfApplicationIdentificationV2 = 4
 
 	if len(data) < lenEfApplicationIdentificationV2 {
 		return nil, fmt.Errorf("insufficient data for application identification V2: got %d bytes, need %d", len(data), lenEfApplicationIdentificationV2)
 	}
 	var target cardv1.ApplicationIdentificationV2
-	r := bytes.NewReader(data)
-
-	// For now, assume this is a driver card and create the driver data
-	driver := &cardv1.ApplicationIdentificationV2_Driver{}
-
-	// Read border crossing records count (1 byte)
-	var borderCrossingCount byte
-	if err := binary.Read(r, binary.BigEndian, &borderCrossingCount); err != nil {
-		return nil, fmt.Errorf("failed to read border crossing records count: %w", err)
+	switch cardType {
+	case cardv1.CardType_DRIVER_CARD:
+		driver := &cardv1.ApplicationIdentificationV2_Driver{}
+		driver.SetBorderCrossingRecordsCount(int32(data[0]))
+		driver.SetLoadUnloadRecordsCount(int32(data[1]))
+		driver.SetLoadTypeEntryRecordsCount(int32(data[2]))
+		driver.SetVuConfigurationLengthRange(int32(data[3]))
+		target.SetDriver(driver)
+	case cardv1.CardType_WORKSHOP_CARD:
+		workshop := &cardv1.ApplicationIdentificationV2_Workshop{}
+		workshop.SetBorderCrossingRecordsCount(int32(data[0]))
+		workshop.SetLoadUnloadRecordsCount(int32(data[1]))
+		workshop.SetLoadTypeEntryRecordsCount(int32(data[2]))
+		workshop.SetVuConfigurationLengthRange(int32(data[3]))
+		target.SetWorkshop(workshop)
+	case cardv1.CardType_COMPANY_CARD:
+		company := &cardv1.ApplicationIdentificationV2_Company{}
+		company.SetVuConfigurationLengthRange(int32(data[3]))
+		target.SetCompany(company)
+	case cardv1.CardType_CONTROL_CARD:
+		control := &cardv1.ApplicationIdentificationV2_Control{}
+		control.SetVuConfigurationLengthRange(int32(data[3]))
+		target.SetControl(control)
 	}
-	driver.SetBorderCrossingRecordsCount(int32(borderCrossingCount))
-
-	// Read load/unload records count (1 byte)
-	var loadUnloadCount byte
-	if err := binary.Read(r, binary.BigEndian, &loadUnloadCount); err != nil {
-		return nil, fmt.Errorf("failed to read load/unload records count: %w", err)
-	}
-	driver.SetLoadUnloadRecordsCount(int32(loadUnloadCount))
-
-	// Read load type entry records count (1 byte)
-	var loadTypeCount byte
-	if err := binary.Read(r, binary.BigEndian, &loadTypeCount); err != nil {
-		return nil, fmt.Errorf("failed to read load type entry records count: %w", err)
-	}
-	driver.SetLoadTypeEntryRecordsCount(int32(loadTypeCount))
-
-	// Read VU configuration length range (1 byte)
-	var vuConfigRange byte
-	if err := binary.Read(r, binary.BigEndian, &vuConfigRange); err != nil {
-		return nil, fmt.Errorf("failed to read VU configuration length range: %w", err)
-	}
-	driver.SetVuConfigurationLengthRange(int32(vuConfigRange))
-
-	// Set the driver data and card type
-	target.SetDriver(driver)
-	target.SetCardType(cardv1.CardType_DRIVER_CARD)
-
+	target.SetCardType(cardType)
 	return &target, nil
 }
 

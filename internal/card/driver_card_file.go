@@ -538,7 +538,7 @@ func (opts ParseOptions) ParseRawDriverCardFile(input *cardv1.RawCardFile) (*car
 			tachographG2DF.SetGnssPlaces(gnssPlaces)
 
 		case cardv1.ElementaryFileType_EF_APPLICATION_IDENTIFICATION_V2:
-			appIdV2, err := unmarshalOpts.unmarshalApplicationIdentificationV2(record.GetValue())
+			appIdV2, err := unmarshalOpts.unmarshalApplicationIdentificationV2(record.GetValue(), cardv1.CardType_DRIVER_CARD)
 			if err != nil {
 				return nil, err
 			}
