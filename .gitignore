@@ -16,6 +16,7 @@ tools/cmd/fetch-certs/fetch-certs
 internal/card/testdata/raw/
 internal/card/testdata/records/[0-9]*-[^a]/
 internal/vu/testdata/*.golden.json
+internal/card/testdata/*.golden.json
 
 # Tachograph binary files (proprietary, never commit)
 *.DDD

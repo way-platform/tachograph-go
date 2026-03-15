@@ -22,7 +22,7 @@ func TestVehiclesUsedG2_Generation2(t *testing.T) {
 		t.Fatalf("Failed to discover hexdump files: %v", err)
 	}
 	if len(hexdumpFiles) == 0 {
-		t.Fatal("No hexdump files found for EF_VEHICLES_USED GENERATION_2")
+		t.Skip("no hexdump files found for EF_VEHICLES_USED GENERATION_2 (run extract-testdata-records to regenerate)")
 	}
 
 	// Run subtest for each discovered file

@@ -1,0 +1,3664 @@
+{
+  "newestRecordIndex": 128,
+  "records": [
+    {
+      "vehicleOdometerBeginKm": 99178,
+      "vehicleOdometerEndKm": 99605,
+      "vehicleFirstUse": "2023-08-31T04:23:25Z",
+      "vehicleLastUse": "2023-08-31T14:05:29Z",
+      "vehicleRegistration": {
+        "nation": "NETHERLANDS",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "TEST001"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 1,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000000"
+    },
+    {
+      "vehicleOdometerBeginKm": 99605,
+      "vehicleOdometerEndKm": 99930,
+      "vehicleFirstUse": "2023-09-01T04:17:01Z",
+      "vehicleLastUse": "2023-09-01T13:39:14Z",
+      "vehicleRegistration": {
+        "nation": "NETHERLANDS",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "TEST002"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 2,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000000"
+    },
+    {
+      "vehicleOdometerBeginKm": 99930,
+      "vehicleOdometerEndKm": 100349,
+      "vehicleFirstUse": "2023-09-04T04:54:32Z",
+      "vehicleLastUse": "2023-09-04T13:36:27Z",
+      "vehicleRegistration": {
+        "nation": "NETHERLANDS",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "TEST003"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 3,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000000"
+    },
+    {
+      "vehicleOdometerBeginKm": 100349,
+      "vehicleOdometerEndKm": 100804,
+      "vehicleFirstUse": "2023-09-05T04:22:50Z",
+      "vehicleLastUse": "2023-09-05T13:45:33Z",
+      "vehicleRegistration": {
+        "nation": "NETHERLANDS",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "TEST004"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 4,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000000"
+    },
+    {
+      "vehicleOdometerBeginKm": 100804,
+      "vehicleOdometerEndKm": 101258,
+      "vehicleFirstUse": "2023-09-06T04:18:15Z",
+      "vehicleLastUse": "2023-09-06T13:58:47Z",
+      "vehicleRegistration": {
+        "nation": "NETHERLANDS",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "TEST005"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 5,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000000"
+    },
+    {
+      "vehicleOdometerBeginKm": 101258,
+      "vehicleOdometerEndKm": 101813,
+      "vehicleFirstUse": "2023-09-07T04:20:16Z",
+      "vehicleLastUse": "2023-09-07T16:53:58Z",
+      "vehicleRegistration": {
+        "nation": "NETHERLANDS",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "TEST006"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 6,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000000"
+    },
+    {
+      "vehicleOdometerBeginKm": 100364,
+      "vehicleOdometerEndKm": 100820,
+      "vehicleFirstUse": "2023-09-11T04:20:16Z",
+      "vehicleLastUse": "2023-09-11T13:52:58Z",
+      "vehicleRegistration": {
+        "nation": "NETHERLANDS",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "TEST007"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 7,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000000"
+    },
+    {
+      "vehicleOdometerBeginKm": 100820,
+      "vehicleOdometerEndKm": 101278,
+      "vehicleFirstUse": "2023-09-12T04:21:55Z",
+      "vehicleLastUse": "2023-09-12T13:53:46Z",
+      "vehicleRegistration": {
+        "nation": "NETHERLANDS",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "TEST008"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 8,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000000"
+    },
+    {
+      "vehicleOdometerBeginKm": 101278,
+      "vehicleOdometerEndKm": 101704,
+      "vehicleFirstUse": "2023-09-13T04:22:46Z",
+      "vehicleLastUse": "2023-09-13T13:56:50Z",
+      "vehicleRegistration": {
+        "nation": "NETHERLANDS",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "TEST009"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 9,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000000"
+    },
+    {
+      "vehicleOdometerBeginKm": 101704,
+      "vehicleOdometerEndKm": 102130,
+      "vehicleFirstUse": "2023-09-14T04:19:25Z",
+      "vehicleLastUse": "2023-09-14T13:31:05Z",
+      "vehicleRegistration": {
+        "nation": "NETHERLANDS",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "TEST010"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 10,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000001"
+    },
+    {
+      "vehicleOdometerBeginKm": 102130,
+      "vehicleOdometerEndKm": 102489,
+      "vehicleFirstUse": "2023-09-15T04:25:55Z",
+      "vehicleLastUse": "2023-09-15T12:16:38Z",
+      "vehicleRegistration": {
+        "nation": "NETHERLANDS",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "TEST011"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 11,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000001"
+    },
+    {
+      "vehicleOdometerBeginKm": 102489,
+      "vehicleOdometerEndKm": 102849,
+      "vehicleFirstUse": "2023-09-18T04:35:35Z",
+      "vehicleLastUse": "2023-09-18T12:42:14Z",
+      "vehicleRegistration": {
+        "nation": "NETHERLANDS",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "TEST012"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 12,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000001"
+    },
+    {
+      "vehicleOdometerBeginKm": 102849,
+      "vehicleOdometerEndKm": 103308,
+      "vehicleFirstUse": "2023-09-19T04:16:48Z",
+      "vehicleLastUse": "2023-09-19T14:10:20Z",
+      "vehicleRegistration": {
+        "nation": "NETHERLANDS",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "TEST013"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 13,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000001"
+    },
+    {
+      "vehicleOdometerBeginKm": 103308,
+      "vehicleOdometerEndKm": 103717,
+      "vehicleFirstUse": "2023-09-20T04:23:38Z",
+      "vehicleLastUse": "2023-09-20T13:29:05Z",
+      "vehicleRegistration": {
+        "nation": "NETHERLANDS",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "TEST014"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 14,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000001"
+    },
+    {
+      "vehicleOdometerBeginKm": 103717,
+      "vehicleOdometerEndKm": 104148,
+      "vehicleFirstUse": "2023-09-21T04:21:07Z",
+      "vehicleLastUse": "2023-09-21T14:01:26Z",
+      "vehicleRegistration": {
+        "nation": "NETHERLANDS",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "TEST015"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 15,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000001"
+    },
+    {
+      "vehicleOdometerBeginKm": 104148,
+      "vehicleOdometerEndKm": 104517,
+      "vehicleFirstUse": "2023-09-22T04:19:27Z",
+      "vehicleLastUse": "2023-09-22T13:12:36Z",
+      "vehicleRegistration": {
+        "nation": "NETHERLANDS",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "TEST016"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 16,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000001"
+    },
+    {
+      "vehicleOdometerBeginKm": 104517,
+      "vehicleOdometerEndKm": 104921,
+      "vehicleFirstUse": "2023-09-25T04:21:23Z",
+      "vehicleLastUse": "2023-09-25T13:29:23Z",
+      "vehicleRegistration": {
+        "nation": "NETHERLANDS",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "TEST017"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 17,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000001"
+    },
+    {
+      "vehicleOdometerBeginKm": 104921,
+      "vehicleOdometerEndKm": 105321,
+      "vehicleFirstUse": "2023-09-26T04:19:48Z",
+      "vehicleLastUse": "2023-09-26T13:12:54Z",
+      "vehicleRegistration": {
+        "nation": "NETHERLANDS",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "TEST018"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 18,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000001"
+    },
+    {
+      "vehicleOdometerBeginKm": 105321,
+      "vehicleOdometerEndKm": 105755,
+      "vehicleFirstUse": "2023-09-27T04:19:14Z",
+      "vehicleLastUse": "2023-09-27T13:48:20Z",
+      "vehicleRegistration": {
+        "nation": "NETHERLANDS",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "TEST019"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 19,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000001"
+    },
+    {
+      "vehicleOdometerBeginKm": 105755,
+      "vehicleOdometerEndKm": 106191,
+      "vehicleFirstUse": "2023-09-28T04:19:21Z",
+      "vehicleLastUse": "2023-09-28T13:56:56Z",
+      "vehicleRegistration": {
+        "nation": "NETHERLANDS",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "TEST020"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 20,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000002"
+    },
+    {
+      "vehicleOdometerBeginKm": 106191,
+      "vehicleOdometerEndKm": 106560,
+      "vehicleFirstUse": "2023-09-29T04:23:34Z",
+      "vehicleLastUse": "2023-09-29T12:49:45Z",
+      "vehicleRegistration": {
+        "nation": "NETHERLANDS",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "TEST021"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 21,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000002"
+    },
+    {
+      "vehicleOdometerBeginKm": 6576,
+      "vehicleOdometerEndKm": 6594,
+      "vehicleFirstUse": "2023-10-03T09:48:47Z",
+      "vehicleLastUse": "2023-10-03T11:04:34Z",
+      "vehicleRegistration": {
+        "nation": "NETHERLANDS",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "TEST022"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 22,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000002"
+    },
+    {
+      "vehicleOdometerBeginKm": 85240,
+      "vehicleOdometerEndKm": 85679,
+      "vehicleFirstUse": "2023-10-04T04:20:13Z",
+      "vehicleLastUse": "2023-10-04T13:53:24Z",
+      "vehicleRegistration": {
+        "nation": "NETHERLANDS",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "TEST023"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 23,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000002"
+    },
+    {
+      "vehicleOdometerBeginKm": 112759,
+      "vehicleOdometerEndKm": 112915,
+      "vehicleFirstUse": "2023-10-05T04:03:03Z",
+      "vehicleLastUse": "2023-10-05T13:22:02Z",
+      "vehicleRegistration": {
+        "nation": "NETHERLANDS",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "TEST024"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 24,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000002"
+    },
+    {
+      "vehicleOdometerBeginKm": 112915,
+      "vehicleOdometerEndKm": 113030,
+      "vehicleFirstUse": "2023-10-06T04:07:06Z",
+      "vehicleLastUse": "2023-10-06T12:35:55Z",
+      "vehicleRegistration": {
+        "nation": "NETHERLANDS",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "TEST025"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 25,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000002"
+    },
+    {
+      "vehicleOdometerBeginKm": 86593,
+      "vehicleOdometerEndKm": 87203,
+      "vehicleFirstUse": "2023-10-09T02:58:18Z",
+      "vehicleLastUse": "2023-10-09T16:12:25Z",
+      "vehicleRegistration": {
+        "nation": "NETHERLANDS",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "TEST026"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 26,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000002"
+    },
+    {
+      "vehicleOdometerBeginKm": 112799,
+      "vehicleOdometerEndKm": 113251,
+      "vehicleFirstUse": "2023-10-25T04:20:58Z",
+      "vehicleLastUse": "2023-10-25T13:42:18Z",
+      "vehicleRegistration": {
+        "nation": "NETHERLANDS",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "TEST027"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 27,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000002"
+    },
+    {
+      "vehicleOdometerBeginKm": 18506,
+      "vehicleOdometerEndKm": 18674,
+      "vehicleFirstUse": "2023-10-27T03:49:58Z",
+      "vehicleLastUse": "2023-10-27T12:23:14Z",
+      "vehicleRegistration": {
+        "nation": "NETHERLANDS",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "TEST028"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 28,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000002"
+    },
+    {
+      "vehicleOdometerBeginKm": 103555,
+      "vehicleOdometerEndKm": 103691,
+      "vehicleFirstUse": "2023-11-01T05:07:22Z",
+      "vehicleLastUse": "2023-11-01T14:09:28Z",
+      "vehicleRegistration": {
+        "nation": "NETHERLANDS",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "TEST029"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 29,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000002"
+    },
+    {
+      "vehicleOdometerBeginKm": 10181,
+      "vehicleOdometerEndKm": 10331,
+      "vehicleFirstUse": "2023-11-06T04:51:15Z",
+      "vehicleLastUse": "2023-11-06T11:58:58Z",
+      "vehicleRegistration": {
+        "nation": "NETHERLANDS",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "TEST030"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 30,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000003"
+    },
+    {
+      "vehicleOdometerBeginKm": 126320,
+      "vehicleOdometerEndKm": 126742,
+      "vehicleFirstUse": "2023-11-07T05:18:12Z",
+      "vehicleLastUse": "2023-11-07T14:40:47Z",
+      "vehicleRegistration": {
+        "nation": "NETHERLANDS",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "TEST031"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 31,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000003"
+    },
+    {
+      "vehicleOdometerBeginKm": 20873,
+      "vehicleOdometerEndKm": 21034,
+      "vehicleFirstUse": "2023-11-21T05:07:11Z",
+      "vehicleLastUse": "2023-11-21T13:08:27Z",
+      "vehicleRegistration": {
+        "nation": "NETHERLANDS",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "TEST032"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 32,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000003"
+    },
+    {
+      "vehicleOdometerBeginKm": 105273,
+      "vehicleOdometerEndKm": 105427,
+      "vehicleFirstUse": "2023-11-22T04:55:15Z",
+      "vehicleLastUse": "2023-11-22T14:12:58Z",
+      "vehicleRegistration": {
+        "nation": "NETHERLANDS",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "TEST033"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 33,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000003"
+    },
+    {
+      "vehicleOdometerBeginKm": 112696,
+      "vehicleOdometerEndKm": 112930,
+      "vehicleFirstUse": "2023-11-23T03:34:51Z",
+      "vehicleLastUse": "2023-11-23T14:09:13Z",
+      "vehicleRegistration": {
+        "nation": "NETHERLANDS",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "TEST034"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 34,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000003"
+    },
+    {
+      "vehicleOdometerBeginKm": 124624,
+      "vehicleOdometerEndKm": 124808,
+      "vehicleFirstUse": "2023-11-24T04:50:50Z",
+      "vehicleLastUse": "2023-11-24T12:59:08Z",
+      "vehicleRegistration": {
+        "nation": "NETHERLANDS",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "TEST035"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 35,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000003"
+    },
+    {
+      "vehicleOdometerBeginKm": 113059,
+      "vehicleOdometerEndKm": 113234,
+      "vehicleFirstUse": "2023-11-27T04:51:08Z",
+      "vehicleLastUse": "2023-11-27T14:18:38Z",
+      "vehicleRegistration": {
+        "nation": "NETHERLANDS",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "TEST036"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 36,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000003"
+    },
+    {
+      "vehicleOdometerBeginKm": 113234,
+      "vehicleOdometerEndKm": 113385,
+      "vehicleFirstUse": "2023-11-28T04:46:43Z",
+      "vehicleLastUse": "2023-11-28T14:13:50Z",
+      "vehicleRegistration": {
+        "nation": "NETHERLANDS",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "TEST037"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 37,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000003"
+    },
+    {
+      "vehicleOdometerBeginKm": 101225,
+      "vehicleOdometerEndKm": 101331,
+      "vehicleFirstUse": "2023-11-29T04:33:40Z",
+      "vehicleLastUse": "2023-11-29T16:02:40Z",
+      "vehicleRegistration": {
+        "nation": "NETHERLANDS",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "TEST038"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 38,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000003"
+    },
+    {
+      "vehicleOdometerBeginKm": 113529,
+      "vehicleOdometerEndKm": 113681,
+      "vehicleFirstUse": "2023-11-30T04:54:12Z",
+      "vehicleLastUse": "2023-11-30T14:15:36Z",
+      "vehicleRegistration": {
+        "nation": "NETHERLANDS",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "TEST039"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 39,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000003"
+    },
+    {
+      "vehicleOdometerBeginKm": 120480,
+      "vehicleOdometerEndKm": 120810,
+      "vehicleFirstUse": "2023-12-01T05:12:14Z",
+      "vehicleLastUse": "2023-12-01T13:14:52Z",
+      "vehicleRegistration": {
+        "nation": "NETHERLANDS",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "TEST040"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 40,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000004"
+    },
+    {
+      "vehicleOdometerBeginKm": 120810,
+      "vehicleOdometerEndKm": 121235,
+      "vehicleFirstUse": "2023-12-04T05:12:06Z",
+      "vehicleLastUse": "2023-12-04T14:33:52Z",
+      "vehicleRegistration": {
+        "nation": "NETHERLANDS",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "TEST041"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 41,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000004"
+    },
+    {
+      "vehicleOdometerBeginKm": 121235,
+      "vehicleOdometerEndKm": 121665,
+      "vehicleFirstUse": "2023-12-05T05:14:54Z",
+      "vehicleLastUse": "2023-12-05T14:40:38Z",
+      "vehicleRegistration": {
+        "nation": "NETHERLANDS",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "TEST042"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 42,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000004"
+    },
+    {
+      "vehicleOdometerBeginKm": 121665,
+      "vehicleOdometerEndKm": 122093,
+      "vehicleFirstUse": "2023-12-06T05:13:34Z",
+      "vehicleLastUse": "2023-12-06T14:43:06Z",
+      "vehicleRegistration": {
+        "nation": "NETHERLANDS",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "TEST043"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 43,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000004"
+    },
+    {
+      "vehicleOdometerBeginKm": 122093,
+      "vehicleOdometerEndKm": 122520,
+      "vehicleFirstUse": "2023-12-07T05:14:56Z",
+      "vehicleLastUse": "2023-12-07T14:36:23Z",
+      "vehicleRegistration": {
+        "nation": "NETHERLANDS",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "TEST044"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 44,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000004"
+    },
+    {
+      "vehicleOdometerBeginKm": 122520,
+      "vehicleOdometerEndKm": 122914,
+      "vehicleFirstUse": "2023-12-08T05:16:05Z",
+      "vehicleLastUse": "2023-12-08T14:19:31Z",
+      "vehicleRegistration": {
+        "nation": "NETHERLANDS",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "TEST045"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 45,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000004"
+    },
+    {
+      "vehicleOdometerBeginKm": 13979,
+      "vehicleOdometerEndKm": 14154,
+      "vehicleFirstUse": "2023-12-11T04:30:26Z",
+      "vehicleLastUse": "2023-12-11T13:47:43Z",
+      "vehicleRegistration": {
+        "nation": "NETHERLANDS",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "TEST046"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 46,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000004"
+    },
+    {
+      "vehicleOdometerBeginKm": 23354,
+      "vehicleOdometerEndKm": 23517,
+      "vehicleFirstUse": "2023-12-13T05:13:02Z",
+      "vehicleLastUse": "2023-12-13T12:53:30Z",
+      "vehicleRegistration": {
+        "nation": "NETHERLANDS",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "TEST047"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 47,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000004"
+    },
+    {
+      "vehicleOdometerBeginKm": 107631,
+      "vehicleOdometerEndKm": 107846,
+      "vehicleFirstUse": "2023-12-14T04:14:36Z",
+      "vehicleLastUse": "2023-12-14T14:05:42Z",
+      "vehicleRegistration": {
+        "nation": "NETHERLANDS",
+        "number": {
+          "encoding": "ISO_8859_15",
+          "length": 13,
+          "value": "TEST048"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 48,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000004"
+    },
+    {
+      "vehicleOdometerBeginKm": 23672,
+      "vehicleOdometerEndKm": 23818,
+      "vehicleFirstUse": "2023-12-15T04:53:49Z",
+      "vehicleLastUse": "2023-12-15T12:37:19Z",
+      "vehicleRegistration": {
+        "nation": "NETHERLANDS",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "TEST049"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 49,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000004"
+    },
+    {
+      "vehicleOdometerBeginKm": 34381,
+      "vehicleOdometerEndKm": 34639,
+      "vehicleFirstUse": "2024-05-07T06:58:32Z",
+      "vehicleLastUse": "2024-05-07T14:45:57Z",
+      "vehicleRegistration": {
+        "nation": "NETHERLANDS",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "TEST050"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 50,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000005"
+    },
+    {
+      "vehicleOdometerBeginKm": 34639,
+      "vehicleOdometerEndKm": 35184,
+      "vehicleFirstUse": "2024-05-08T02:30:00Z",
+      "vehicleLastUse": "2024-05-08T15:26:16Z",
+      "vehicleRegistration": {
+        "nation": "NETHERLANDS",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "TEST051"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 51,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000005"
+    },
+    {
+      "vehicleOdometerBeginKm": 35184,
+      "vehicleOdometerEndKm": 35604,
+      "vehicleFirstUse": "2024-05-10T02:17:10Z",
+      "vehicleLastUse": "2024-05-10T13:49:24Z",
+      "vehicleRegistration": {
+        "nation": "NETHERLANDS",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "TEST052"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 52,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000005"
+    },
+    {
+      "vehicleOdometerBeginKm": 35604,
+      "vehicleOdometerEndKm": 36000,
+      "vehicleFirstUse": "2024-05-13T02:25:58Z",
+      "vehicleLastUse": "2024-05-13T12:02:36Z",
+      "vehicleRegistration": {
+        "nation": "NETHERLANDS",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "TEST053"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 53,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000005"
+    },
+    {
+      "vehicleOdometerBeginKm": 36000,
+      "vehicleOdometerEndKm": 36585,
+      "vehicleFirstUse": "2024-05-14T02:16:24Z",
+      "vehicleLastUse": "2024-05-14T17:09:37Z",
+      "vehicleRegistration": {
+        "nation": "NETHERLANDS",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "TEST054"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 54,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000005"
+    },
+    {
+      "vehicleOdometerBeginKm": 36585,
+      "vehicleOdometerEndKm": 36963,
+      "vehicleFirstUse": "2024-05-15T03:36:31Z",
+      "vehicleLastUse": "2024-05-15T15:11:42Z",
+      "vehicleRegistration": {
+        "nation": "NETHERLANDS",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "TEST055"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 55,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000005"
+    },
+    {
+      "vehicleOdometerBeginKm": 36963,
+      "vehicleOdometerEndKm": 37283,
+      "vehicleFirstUse": "2024-05-16T01:59:36Z",
+      "vehicleLastUse": "2024-05-16T14:20:51Z",
+      "vehicleRegistration": {
+        "nation": "NETHERLANDS",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "TEST056"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 56,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000005"
+    },
+    {
+      "vehicleOdometerBeginKm": 37283,
+      "vehicleOdometerEndKm": 37786,
+      "vehicleFirstUse": "2024-05-17T02:04:09Z",
+      "vehicleLastUse": "2024-05-17T16:13:04Z",
+      "vehicleRegistration": {
+        "nation": "NETHERLANDS",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "TEST057"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 57,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000005"
+    },
+    {
+      "vehicleOdometerBeginKm": 37786,
+      "vehicleOdometerEndKm": 38274,
+      "vehicleFirstUse": "2024-05-21T01:59:50Z",
+      "vehicleLastUse": "2024-05-21T12:41:30Z",
+      "vehicleRegistration": {
+        "nation": "NETHERLANDS",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "TEST058"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 58,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000005"
+    },
+    {
+      "vehicleOdometerBeginKm": 223,
+      "vehicleOdometerEndKm": 460,
+      "vehicleFirstUse": "2024-05-21T12:50:22Z",
+      "vehicleLastUse": "2024-05-21T17:20:14Z",
+      "vehicleRegistration": {
+        "nation": "NETHERLANDS",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "TEST059"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 59,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000005"
+    },
+    {
+      "vehicleOdometerBeginKm": 460,
+      "vehicleOdometerEndKm": 1012,
+      "vehicleFirstUse": "2024-05-22T02:59:16Z",
+      "vehicleLastUse": "2024-05-22T14:58:42Z",
+      "vehicleRegistration": {
+        "nation": "NETHERLANDS",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "TEST060"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 60,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000006"
+    },
+    {
+      "vehicleOdometerBeginKm": 1077,
+      "vehicleOdometerEndKm": 1646,
+      "vehicleFirstUse": "2024-05-24T02:23:47Z",
+      "vehicleLastUse": "2024-05-24T16:00:34Z",
+      "vehicleRegistration": {
+        "nation": "NETHERLANDS",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "TEST061"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 61,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000006"
+    },
+    {
+      "vehicleOdometerBeginKm": 1646,
+      "vehicleOdometerEndKm": 2173,
+      "vehicleFirstUse": "2024-05-27T02:30:27Z",
+      "vehicleLastUse": "2024-05-27T15:45:39Z",
+      "vehicleRegistration": {
+        "nation": "NETHERLANDS",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "TEST062"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 62,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000006"
+    },
+    {
+      "vehicleOdometerBeginKm": 2173,
+      "vehicleOdometerEndKm": 2617,
+      "vehicleFirstUse": "2024-05-28T02:30:53Z",
+      "vehicleLastUse": "2024-05-28T12:25:50Z",
+      "vehicleRegistration": {
+        "nation": "NETHERLANDS",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "TEST063"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 63,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000006"
+    },
+    {
+      "vehicleOdometerBeginKm": 2617,
+      "vehicleOdometerEndKm": 3146,
+      "vehicleFirstUse": "2024-05-29T01:57:22Z",
+      "vehicleLastUse": "2024-05-29T13:59:13Z",
+      "vehicleRegistration": {
+        "nation": "NETHERLANDS",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "TEST064"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 64,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000006"
+    },
+    {
+      "vehicleOdometerBeginKm": 3146,
+      "vehicleOdometerEndKm": 3578,
+      "vehicleFirstUse": "2024-05-30T02:06:48Z",
+      "vehicleLastUse": "2024-05-30T12:46:24Z",
+      "vehicleRegistration": {
+        "nation": "NETHERLANDS",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "TEST065"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 65,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000006"
+    },
+    {
+      "vehicleOdometerBeginKm": 3578,
+      "vehicleOdometerEndKm": 4022,
+      "vehicleFirstUse": "2024-05-31T02:28:22Z",
+      "vehicleLastUse": "2024-05-31T11:49:09Z",
+      "vehicleRegistration": {
+        "nation": "NETHERLANDS",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "TEST066"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 66,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000006"
+    },
+    {
+      "vehicleOdometerBeginKm": 4022,
+      "vehicleOdometerEndKm": 4295,
+      "vehicleFirstUse": "2024-06-03T02:55:42Z",
+      "vehicleLastUse": "2024-06-03T14:51:06Z",
+      "vehicleRegistration": {
+        "nation": "NETHERLANDS",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "TEST067"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 67,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000006"
+    },
+    {
+      "vehicleOdometerBeginKm": 4295,
+      "vehicleOdometerEndKm": 4695,
+      "vehicleFirstUse": "2024-06-04T02:34:50Z",
+      "vehicleLastUse": "2024-06-04T13:47:39Z",
+      "vehicleRegistration": {
+        "nation": "NETHERLANDS",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "TEST068"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 68,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000006"
+    },
+    {
+      "vehicleOdometerBeginKm": 4695,
+      "vehicleOdometerEndKm": 5146,
+      "vehicleFirstUse": "2024-06-05T03:21:20Z",
+      "vehicleLastUse": "2024-06-05T17:43:21Z",
+      "vehicleRegistration": {
+        "nation": "NETHERLANDS",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "TEST069"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 69,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000006"
+    },
+    {
+      "vehicleOdometerBeginKm": 5146,
+      "vehicleOdometerEndKm": 5431,
+      "vehicleFirstUse": "2024-06-06T03:04:21Z",
+      "vehicleLastUse": "2024-06-06T13:43:01Z",
+      "vehicleRegistration": {
+        "nation": "NETHERLANDS",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "TEST070"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 70,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000007"
+    },
+    {
+      "vehicleOdometerBeginKm": 5431,
+      "vehicleOdometerEndKm": 5770,
+      "vehicleFirstUse": "2024-06-07T01:41:39Z",
+      "vehicleLastUse": "2024-06-07T12:27:42Z",
+      "vehicleRegistration": {
+        "nation": "NETHERLANDS",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "TEST071"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 71,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000007"
+    },
+    {
+      "vehicleOdometerBeginKm": 5770,
+      "vehicleOdometerEndKm": 6223,
+      "vehicleFirstUse": "2024-06-10T02:49:17Z",
+      "vehicleLastUse": "2024-06-10T15:01:50Z",
+      "vehicleRegistration": {
+        "nation": "NETHERLANDS",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "TEST072"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 72,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000007"
+    },
+    {
+      "vehicleOdometerBeginKm": 6223,
+      "vehicleOdometerEndKm": 6556,
+      "vehicleFirstUse": "2024-06-11T03:02:52Z",
+      "vehicleLastUse": "2024-06-11T14:23:37Z",
+      "vehicleRegistration": {
+        "nation": "NETHERLANDS",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "TEST073"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 73,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000007"
+    },
+    {
+      "vehicleOdometerBeginKm": 6556,
+      "vehicleOdometerEndKm": 7063,
+      "vehicleFirstUse": "2024-06-12T03:05:59Z",
+      "vehicleLastUse": "2024-06-12T15:14:26Z",
+      "vehicleRegistration": {
+        "nation": "NETHERLANDS",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "TEST074"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 74,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000007"
+    },
+    {
+      "vehicleOdometerBeginKm": 7066,
+      "vehicleOdometerEndKm": 7433,
+      "vehicleFirstUse": "2024-06-14T03:32:36Z",
+      "vehicleLastUse": "2024-06-14T13:45:30Z",
+      "vehicleRegistration": {
+        "nation": "NETHERLANDS",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "TEST075"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 75,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000007"
+    },
+    {
+      "vehicleOdometerBeginKm": 7433,
+      "vehicleOdometerEndKm": 7903,
+      "vehicleFirstUse": "2024-06-17T03:33:03Z",
+      "vehicleLastUse": "2024-06-17T15:41:40Z",
+      "vehicleRegistration": {
+        "nation": "NETHERLANDS",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "TEST076"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 76,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000007"
+    },
+    {
+      "vehicleOdometerBeginKm": 7903,
+      "vehicleOdometerEndKm": 8180,
+      "vehicleFirstUse": "2024-06-18T02:10:23Z",
+      "vehicleLastUse": "2024-06-18T11:01:55Z",
+      "vehicleRegistration": {
+        "nation": "NETHERLANDS",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "TEST077"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 77,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000007"
+    },
+    {
+      "vehicleOdometerBeginKm": 8180,
+      "vehicleOdometerEndKm": 8390,
+      "vehicleFirstUse": "2024-06-19T01:41:09Z",
+      "vehicleLastUse": "2024-06-19T06:00:44Z",
+      "vehicleRegistration": {
+        "nation": "NETHERLANDS",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "TEST078"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 78,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000007"
+    },
+    {
+      "vehicleOdometerBeginKm": 8390,
+      "vehicleOdometerEndKm": 8801,
+      "vehicleFirstUse": "2024-06-24T02:04:14Z",
+      "vehicleLastUse": "2024-06-24T14:43:17Z",
+      "vehicleRegistration": {
+        "nation": "NETHERLANDS",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "TEST079"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 79,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000007"
+    },
+    {
+      "vehicleOdometerBeginKm": 8801,
+      "vehicleOdometerEndKm": 9420,
+      "vehicleFirstUse": "2024-06-25T01:05:24Z",
+      "vehicleLastUse": "2024-06-25T16:31:01Z",
+      "vehicleRegistration": {
+        "nation": "NETHERLANDS",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "TEST080"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 80,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000008"
+    },
+    {
+      "vehicleOdometerBeginKm": 9420,
+      "vehicleOdometerEndKm": 9626,
+      "vehicleFirstUse": "2024-06-26T02:29:15Z",
+      "vehicleLastUse": "2024-06-26T14:13:05Z",
+      "vehicleRegistration": {
+        "nation": "NETHERLANDS",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "TEST081"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 81,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000008"
+    },
+    {
+      "vehicleOdometerBeginKm": 9626,
+      "vehicleOdometerEndKm": 10020,
+      "vehicleFirstUse": "2024-06-28T02:00:50Z",
+      "vehicleLastUse": "2024-06-28T13:02:07Z",
+      "vehicleRegistration": {
+        "nation": "NETHERLANDS",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "TEST082"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 82,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000008"
+    },
+    {
+      "vehicleOdometerBeginKm": 10020,
+      "vehicleOdometerEndKm": 10488,
+      "vehicleFirstUse": "2024-07-01T02:30:51Z",
+      "vehicleLastUse": "2024-07-01T16:45:55Z",
+      "vehicleRegistration": {
+        "nation": "NETHERLANDS",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "TEST083"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 83,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000008"
+    },
+    {
+      "vehicleOdometerBeginKm": 10488,
+      "vehicleOdometerEndKm": 10628,
+      "vehicleFirstUse": "2024-07-02T03:27:45Z",
+      "vehicleLastUse": "2024-07-02T12:59:46Z",
+      "vehicleRegistration": {
+        "nation": "NETHERLANDS",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "TEST084"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 84,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000008"
+    },
+    {
+      "vehicleOdometerBeginKm": 10628,
+      "vehicleOdometerEndKm": 10919,
+      "vehicleFirstUse": "2024-07-03T03:53:29Z",
+      "vehicleLastUse": "2024-07-03T14:48:12Z",
+      "vehicleRegistration": {
+        "nation": "NETHERLANDS",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "TEST085"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 85,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000008"
+    },
+    {
+      "vehicleOdometerBeginKm": 10919,
+      "vehicleOdometerEndKm": 11184,
+      "vehicleFirstUse": "2024-07-04T03:31:18Z",
+      "vehicleLastUse": "2024-07-04T13:07:41Z",
+      "vehicleRegistration": {
+        "nation": "NETHERLANDS",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "TEST086"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 86,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000008"
+    },
+    {
+      "vehicleOdometerBeginKm": 11184,
+      "vehicleOdometerEndKm": 11544,
+      "vehicleFirstUse": "2024-07-05T02:29:09Z",
+      "vehicleLastUse": "2024-07-05T14:25:00Z",
+      "vehicleRegistration": {
+        "nation": "NETHERLANDS",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "TEST087"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 87,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000008"
+    },
+    {
+      "vehicleOdometerBeginKm": 11544,
+      "vehicleOdometerEndKm": 11868,
+      "vehicleFirstUse": "2024-07-08T02:24:47Z",
+      "vehicleLastUse": "2024-07-08T13:07:09Z",
+      "vehicleRegistration": {
+        "nation": "NETHERLANDS",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "TEST088"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 88,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000008"
+    },
+    {
+      "vehicleOdometerBeginKm": 11868,
+      "vehicleOdometerEndKm": 12420,
+      "vehicleFirstUse": "2024-07-09T03:04:20Z",
+      "vehicleLastUse": "2024-07-09T16:26:41Z",
+      "vehicleRegistration": {
+        "nation": "NETHERLANDS",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "TEST089"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 89,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000008"
+    },
+    {
+      "vehicleOdometerBeginKm": 12420,
+      "vehicleOdometerEndKm": 12735,
+      "vehicleFirstUse": "2024-07-10T02:59:14Z",
+      "vehicleLastUse": "2024-07-10T13:48:31Z",
+      "vehicleRegistration": {
+        "nation": "NETHERLANDS",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "TEST090"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 90,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000009"
+    },
+    {
+      "vehicleOdometerBeginKm": 12735,
+      "vehicleOdometerEndKm": 13159,
+      "vehicleFirstUse": "2024-07-11T02:25:38Z",
+      "vehicleLastUse": "2024-07-11T14:16:50Z",
+      "vehicleRegistration": {
+        "nation": "NETHERLANDS",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "TEST091"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 91,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000009"
+    },
+    {
+      "vehicleOdometerBeginKm": 13159,
+      "vehicleOdometerEndKm": 13660,
+      "vehicleFirstUse": "2024-07-12T01:51:47Z",
+      "vehicleLastUse": "2024-07-12T14:19:06Z",
+      "vehicleRegistration": {
+        "nation": "NETHERLANDS",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "TEST092"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 92,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000009"
+    },
+    {
+      "vehicleOdometerBeginKm": 13660,
+      "vehicleOdometerEndKm": 14109,
+      "vehicleFirstUse": "2024-07-22T02:42:52Z",
+      "vehicleLastUse": "2024-07-22T14:08:45Z",
+      "vehicleRegistration": {
+        "nation": "NETHERLANDS",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "TEST093"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 93,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000009"
+    },
+    {
+      "vehicleOdometerBeginKm": 14109,
+      "vehicleOdometerEndKm": 14544,
+      "vehicleFirstUse": "2024-07-23T02:32:34Z",
+      "vehicleLastUse": "2024-07-23T14:33:52Z",
+      "vehicleRegistration": {
+        "nation": "NETHERLANDS",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "TEST094"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 94,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000009"
+    },
+    {
+      "vehicleOdometerBeginKm": 14544,
+      "vehicleOdometerEndKm": 14869,
+      "vehicleFirstUse": "2024-07-24T02:55:48Z",
+      "vehicleLastUse": "2024-07-24T16:32:51Z",
+      "vehicleRegistration": {
+        "nation": "NETHERLANDS",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "TEST095"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 95,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000009"
+    },
+    {
+      "vehicleOdometerBeginKm": 14869,
+      "vehicleOdometerEndKm": 15217,
+      "vehicleFirstUse": "2024-07-25T02:32:20Z",
+      "vehicleLastUse": "2024-07-25T13:59:48Z",
+      "vehicleRegistration": {
+        "nation": "NETHERLANDS",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "TEST096"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 96,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000009"
+    },
+    {
+      "vehicleOdometerBeginKm": 15217,
+      "vehicleOdometerEndKm": 15651,
+      "vehicleFirstUse": "2024-07-26T02:00:42Z",
+      "vehicleLastUse": "2024-07-26T14:23:42Z",
+      "vehicleRegistration": {
+        "nation": "NETHERLANDS",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "TEST097"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 97,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000009"
+    },
+    {
+      "vehicleOdometerBeginKm": 15756,
+      "vehicleOdometerEndKm": 16252,
+      "vehicleFirstUse": "2024-08-14T01:00:00Z",
+      "vehicleLastUse": "2024-08-14T13:19:01Z",
+      "vehicleRegistration": {
+        "nation": "NETHERLANDS",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "TEST098"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 98,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000009"
+    },
+    {
+      "vehicleOdometerBeginKm": 16252,
+      "vehicleOdometerEndKm": 16654,
+      "vehicleFirstUse": "2024-08-15T02:31:03Z",
+      "vehicleLastUse": "2024-08-15T12:43:05Z",
+      "vehicleRegistration": {
+        "nation": "NETHERLANDS",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "TEST099"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 99,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000009"
+    },
+    {
+      "vehicleOdometerBeginKm": 16654,
+      "vehicleOdometerEndKm": 17177,
+      "vehicleFirstUse": "2024-08-16T00:52:45Z",
+      "vehicleLastUse": "2024-08-16T13:46:59Z",
+      "vehicleRegistration": {
+        "nation": "NETHERLANDS",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "TEST100"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 100,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000010"
+    },
+    {
+      "vehicleOdometerBeginKm": 17177,
+      "vehicleOdometerEndKm": 17583,
+      "vehicleFirstUse": "2024-08-19T02:28:44Z",
+      "vehicleLastUse": "2024-08-19T13:00:32Z",
+      "vehicleRegistration": {
+        "nation": "NETHERLANDS",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "TEST101"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 101,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000010"
+    },
+    {
+      "vehicleOdometerBeginKm": 17583,
+      "vehicleOdometerEndKm": 18203,
+      "vehicleFirstUse": "2024-08-20T02:23:06Z",
+      "vehicleLastUse": "2024-08-20T15:36:25Z",
+      "vehicleRegistration": {
+        "nation": "NETHERLANDS",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "TEST102"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 102,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000010"
+    },
+    {
+      "vehicleOdometerBeginKm": 18203,
+      "vehicleOdometerEndKm": 18685,
+      "vehicleFirstUse": "2024-08-21T01:51:30Z",
+      "vehicleLastUse": "2024-08-21T12:50:03Z",
+      "vehicleRegistration": {
+        "nation": "NETHERLANDS",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "TEST103"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 103,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000010"
+    },
+    {
+      "vehicleOdometerBeginKm": 18685,
+      "vehicleOdometerEndKm": 19225,
+      "vehicleFirstUse": "2024-08-22T02:00:15Z",
+      "vehicleLastUse": "2024-08-22T14:14:48Z",
+      "vehicleRegistration": {
+        "nation": "NETHERLANDS",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "TEST104"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 104,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000010"
+    },
+    {
+      "vehicleOdometerBeginKm": 19225,
+      "vehicleOdometerEndKm": 19621,
+      "vehicleFirstUse": "2024-08-23T01:53:53Z",
+      "vehicleLastUse": "2024-08-23T10:18:54Z",
+      "vehicleRegistration": {
+        "nation": "NETHERLANDS",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "TEST105"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 105,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000010"
+    },
+    {
+      "vehicleOdometerBeginKm": 19621,
+      "vehicleOdometerEndKm": 20151,
+      "vehicleFirstUse": "2024-08-26T02:24:38Z",
+      "vehicleLastUse": "2024-08-26T12:43:47Z",
+      "vehicleRegistration": {
+        "nation": "NETHERLANDS",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "TEST106"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 106,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000010"
+    },
+    {
+      "vehicleOdometerBeginKm": 20151,
+      "vehicleOdometerEndKm": 20572,
+      "vehicleFirstUse": "2024-08-27T02:29:02Z",
+      "vehicleLastUse": "2024-08-27T13:47:42Z",
+      "vehicleRegistration": {
+        "nation": "NETHERLANDS",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "TEST107"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 107,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000010"
+    },
+    {
+      "vehicleOdometerBeginKm": 20572,
+      "vehicleOdometerEndKm": 21047,
+      "vehicleFirstUse": "2024-08-28T01:50:49Z",
+      "vehicleLastUse": "2024-08-28T15:08:45Z",
+      "vehicleRegistration": {
+        "nation": "NETHERLANDS",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "TEST108"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 108,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000010"
+    },
+    {
+      "vehicleOdometerBeginKm": 21047,
+      "vehicleOdometerEndKm": 21593,
+      "vehicleFirstUse": "2024-08-29T01:55:25Z",
+      "vehicleLastUse": "2024-08-29T14:55:57Z",
+      "vehicleRegistration": {
+        "nation": "NETHERLANDS",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "TEST109"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 109,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000010"
+    },
+    {
+      "vehicleOdometerBeginKm": 21593,
+      "vehicleOdometerEndKm": 21945,
+      "vehicleFirstUse": "2024-08-30T02:58:30Z",
+      "vehicleLastUse": "2024-08-30T12:24:57Z",
+      "vehicleRegistration": {
+        "nation": "NETHERLANDS",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "TEST110"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 110,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000011"
+    },
+    {
+      "vehicleOdometerBeginKm": 21945,
+      "vehicleOdometerEndKm": 22535,
+      "vehicleFirstUse": "2024-09-02T02:49:46Z",
+      "vehicleLastUse": "2024-09-02T15:57:20Z",
+      "vehicleRegistration": {
+        "nation": "NETHERLANDS",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "TEST111"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 111,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000011"
+    },
+    {
+      "vehicleOdometerBeginKm": 22535,
+      "vehicleOdometerEndKm": 22795,
+      "vehicleFirstUse": "2024-09-03T02:26:39Z",
+      "vehicleLastUse": "2024-09-03T12:59:36Z",
+      "vehicleRegistration": {
+        "nation": "NETHERLANDS",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "TEST112"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 112,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000011"
+    },
+    {
+      "vehicleOdometerBeginKm": 22795,
+      "vehicleOdometerEndKm": 23127,
+      "vehicleFirstUse": "2024-09-04T02:29:15Z",
+      "vehicleLastUse": "2024-09-04T13:44:35Z",
+      "vehicleRegistration": {
+        "nation": "NETHERLANDS",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "TEST113"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 113,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000011"
+    },
+    {
+      "vehicleOdometerBeginKm": 23127,
+      "vehicleOdometerEndKm": 23481,
+      "vehicleFirstUse": "2024-09-05T03:40:31Z",
+      "vehicleLastUse": "2024-09-05T14:30:07Z",
+      "vehicleRegistration": {
+        "nation": "NETHERLANDS",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "TEST114"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 114,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000011"
+    },
+    {
+      "vehicleOdometerBeginKm": 23481,
+      "vehicleOdometerEndKm": 23918,
+      "vehicleFirstUse": "2024-09-06T02:30:43Z",
+      "vehicleLastUse": "2024-09-06T13:29:01Z",
+      "vehicleRegistration": {
+        "nation": "NETHERLANDS",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "TEST115"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 115,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000011"
+    },
+    {
+      "vehicleOdometerBeginKm": 23918,
+      "vehicleOdometerEndKm": 24494,
+      "vehicleFirstUse": "2024-09-09T02:21:22Z",
+      "vehicleLastUse": "2024-09-09T15:35:02Z",
+      "vehicleRegistration": {
+        "nation": "NETHERLANDS",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "TEST116"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 116,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000011"
+    },
+    {
+      "vehicleOdometerBeginKm": 24494,
+      "vehicleOdometerEndKm": 25081,
+      "vehicleFirstUse": "2024-09-10T02:22:48Z",
+      "vehicleLastUse": "2024-09-10T13:16:00Z",
+      "vehicleRegistration": {
+        "nation": "NETHERLANDS",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "TEST117"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 117,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000011"
+    },
+    {
+      "vehicleOdometerBeginKm": 25081,
+      "vehicleOdometerEndKm": 25436,
+      "vehicleFirstUse": "2024-09-11T02:08:15Z",
+      "vehicleLastUse": "2024-09-11T11:22:40Z",
+      "vehicleRegistration": {
+        "nation": "NETHERLANDS",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "TEST118"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 118,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000011"
+    },
+    {
+      "vehicleOdometerBeginKm": 25436,
+      "vehicleOdometerEndKm": 25857,
+      "vehicleFirstUse": "2024-09-12T03:30:13Z",
+      "vehicleLastUse": "2024-09-12T13:52:31Z",
+      "vehicleRegistration": {
+        "nation": "NETHERLANDS",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "TEST119"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 119,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000011"
+    },
+    {
+      "vehicleOdometerBeginKm": 25857,
+      "vehicleOdometerEndKm": 26432,
+      "vehicleFirstUse": "2024-09-13T02:18:55Z",
+      "vehicleLastUse": "2024-09-13T15:56:56Z",
+      "vehicleRegistration": {
+        "nation": "NETHERLANDS",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "TEST120"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 120,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000012"
+    },
+    {
+      "vehicleOdometerBeginKm": 26432,
+      "vehicleOdometerEndKm": 26900,
+      "vehicleFirstUse": "2024-09-16T02:54:31Z",
+      "vehicleLastUse": "2024-09-16T14:25:15Z",
+      "vehicleRegistration": {
+        "nation": "NETHERLANDS",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "TEST121"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 121,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000012"
+    },
+    {
+      "vehicleOdometerBeginKm": 26900,
+      "vehicleOdometerEndKm": 27272,
+      "vehicleFirstUse": "2024-09-17T03:12:12Z",
+      "vehicleLastUse": "2024-09-17T14:50:34Z",
+      "vehicleRegistration": {
+        "nation": "NETHERLANDS",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "TEST122"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 122,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000012"
+    },
+    {
+      "vehicleOdometerBeginKm": 27272,
+      "vehicleOdometerEndKm": 27612,
+      "vehicleFirstUse": "2024-09-18T02:30:38Z",
+      "vehicleLastUse": "2024-09-18T14:58:19Z",
+      "vehicleRegistration": {
+        "nation": "NETHERLANDS",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "TEST123"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 123,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000012"
+    },
+    {
+      "vehicleOdometerBeginKm": 27612,
+      "vehicleOdometerEndKm": 28018,
+      "vehicleFirstUse": "2024-09-19T02:05:54Z",
+      "vehicleLastUse": "2024-09-19T11:42:36Z",
+      "vehicleRegistration": {
+        "nation": "NETHERLANDS",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "TEST124"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 124,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000012"
+    },
+    {
+      "vehicleOdometerBeginKm": 28018,
+      "vehicleOdometerEndKm": 28561,
+      "vehicleFirstUse": "2024-09-20T02:26:57Z",
+      "vehicleLastUse": "2024-09-20T16:37:53Z",
+      "vehicleRegistration": {
+        "nation": "NETHERLANDS",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "TEST125"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 125,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000012"
+    },
+    {
+      "vehicleOdometerBeginKm": 28561,
+      "vehicleOdometerEndKm": 28903,
+      "vehicleFirstUse": "2024-09-23T02:17:01Z",
+      "vehicleLastUse": "2024-09-23T13:44:24Z",
+      "vehicleRegistration": {
+        "nation": "NETHERLANDS",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "TEST126"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 126,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000012"
+    },
+    {
+      "vehicleOdometerBeginKm": 28903,
+      "vehicleOdometerEndKm": 29308,
+      "vehicleFirstUse": "2024-09-24T01:04:01Z",
+      "vehicleLastUse": "2024-09-24T10:55:19Z",
+      "vehicleRegistration": {
+        "nation": "NETHERLANDS",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "TEST127"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 127,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000012"
+    },
+    {
+      "vehicleOdometerBeginKm": 29308,
+      "vehicleOdometerEndKm": 29605,
+      "vehicleFirstUse": "2024-09-25T02:24:00Z",
+      "vehicleLastUse": "2024-09-25T13:42:50Z",
+      "vehicleRegistration": {
+        "nation": "NETHERLANDS",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "TEST128"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 128,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000012"
+    },
+    {
+      "vehicleOdometerBeginKm": 29605,
+      "vehicleOdometerEndKm": 29803,
+      "vehicleFirstUse": "2024-09-26T02:26:44Z",
+      "vehicleLastUse": "2024-09-26T07:09:56Z",
+      "vehicleRegistration": {
+        "nation": "NETHERLANDS",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "TEST129"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 129,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000012"
+    },
+    {
+      "vehicleOdometerBeginKm": 0,
+      "vehicleOdometerEndKm": 0,
+      "vehicleRegistration": {
+        "nation": "NATION_NUMERIC_DEFAULT",
+        "number": {
+          "encoding": "ENCODING_DEFAULT",
+          "length": 13,
+          "value": "TEST130"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 0,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000013"
+    },
+    {
+      "vehicleOdometerBeginKm": 0,
+      "vehicleOdometerEndKm": 0,
+      "vehicleRegistration": {
+        "nation": "NATION_NUMERIC_DEFAULT",
+        "number": {
+          "encoding": "ENCODING_DEFAULT",
+          "length": 13,
+          "value": "TEST131"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 0,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000013"
+    },
+    {
+      "vehicleOdometerBeginKm": 0,
+      "vehicleOdometerEndKm": 0,
+      "vehicleRegistration": {
+        "nation": "NATION_NUMERIC_DEFAULT",
+        "number": {
+          "encoding": "ENCODING_DEFAULT",
+          "length": 13,
+          "value": "TEST132"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 0,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000013"
+    },
+    {
+      "vehicleOdometerBeginKm": 0,
+      "vehicleOdometerEndKm": 0,
+      "vehicleRegistration": {
+        "nation": "NATION_NUMERIC_DEFAULT",
+        "number": {
+          "encoding": "ENCODING_DEFAULT",
+          "length": 13,
+          "value": "TEST133"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 0,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000013"
+    },
+    {
+      "vehicleOdometerBeginKm": 0,
+      "vehicleOdometerEndKm": 0,
+      "vehicleRegistration": {
+        "nation": "NATION_NUMERIC_DEFAULT",
+        "number": {
+          "encoding": "ENCODING_DEFAULT",
+          "length": 13,
+          "value": "TEST134"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 0,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000013"
+    },
+    {
+      "vehicleOdometerBeginKm": 0,
+      "vehicleOdometerEndKm": 0,
+      "vehicleRegistration": {
+        "nation": "NATION_NUMERIC_DEFAULT",
+        "number": {
+          "encoding": "ENCODING_DEFAULT",
+          "length": 13,
+          "value": "TEST135"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 0,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000013"
+    },
+    {
+      "vehicleOdometerBeginKm": 0,
+      "vehicleOdometerEndKm": 0,
+      "vehicleRegistration": {
+        "nation": "NATION_NUMERIC_DEFAULT",
+        "number": {
+          "encoding": "ENCODING_DEFAULT",
+          "length": 13,
+          "value": "TEST136"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 0,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000013"
+    },
+    {
+      "vehicleOdometerBeginKm": 0,
+      "vehicleOdometerEndKm": 0,
+      "vehicleRegistration": {
+        "nation": "NATION_NUMERIC_DEFAULT",
+        "number": {
+          "encoding": "ENCODING_DEFAULT",
+          "length": 13,
+          "value": "TEST137"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 0,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000013"
+    },
+    {
+      "vehicleOdometerBeginKm": 0,
+      "vehicleOdometerEndKm": 0,
+      "vehicleRegistration": {
+        "nation": "NATION_NUMERIC_DEFAULT",
+        "number": {
+          "encoding": "ENCODING_DEFAULT",
+          "length": 13,
+          "value": "TEST138"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 0,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000013"
+    },
+    {
+      "vehicleOdometerBeginKm": 0,
+      "vehicleOdometerEndKm": 0,
+      "vehicleRegistration": {
+        "nation": "NATION_NUMERIC_DEFAULT",
+        "number": {
+          "encoding": "ENCODING_DEFAULT",
+          "length": 13,
+          "value": "TEST139"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 0,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000013"
+    },
+    {
+      "vehicleOdometerBeginKm": 0,
+      "vehicleOdometerEndKm": 0,
+      "vehicleRegistration": {
+        "nation": "NATION_NUMERIC_DEFAULT",
+        "number": {
+          "encoding": "ENCODING_DEFAULT",
+          "length": 13,
+          "value": "TEST140"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 0,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000014"
+    },
+    {
+      "vehicleOdometerBeginKm": 0,
+      "vehicleOdometerEndKm": 0,
+      "vehicleRegistration": {
+        "nation": "NATION_NUMERIC_DEFAULT",
+        "number": {
+          "encoding": "ENCODING_DEFAULT",
+          "length": 13,
+          "value": "TEST141"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 0,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000014"
+    },
+    {
+      "vehicleOdometerBeginKm": 0,
+      "vehicleOdometerEndKm": 0,
+      "vehicleRegistration": {
+        "nation": "NATION_NUMERIC_DEFAULT",
+        "number": {
+          "encoding": "ENCODING_DEFAULT",
+          "length": 13,
+          "value": "TEST142"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 0,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000014"
+    },
+    {
+      "vehicleOdometerBeginKm": 0,
+      "vehicleOdometerEndKm": 0,
+      "vehicleRegistration": {
+        "nation": "NATION_NUMERIC_DEFAULT",
+        "number": {
+          "encoding": "ENCODING_DEFAULT",
+          "length": 13,
+          "value": "TEST143"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 0,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000014"
+    },
+    {
+      "vehicleOdometerBeginKm": 0,
+      "vehicleOdometerEndKm": 0,
+      "vehicleRegistration": {
+        "nation": "NATION_NUMERIC_DEFAULT",
+        "number": {
+          "encoding": "ENCODING_DEFAULT",
+          "length": 13,
+          "value": "TEST144"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 0,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000014"
+    },
+    {
+      "vehicleOdometerBeginKm": 0,
+      "vehicleOdometerEndKm": 0,
+      "vehicleRegistration": {
+        "nation": "NATION_NUMERIC_DEFAULT",
+        "number": {
+          "encoding": "ENCODING_DEFAULT",
+          "length": 13,
+          "value": "TEST145"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 0,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000014"
+    },
+    {
+      "vehicleOdometerBeginKm": 0,
+      "vehicleOdometerEndKm": 0,
+      "vehicleRegistration": {
+        "nation": "NATION_NUMERIC_DEFAULT",
+        "number": {
+          "encoding": "ENCODING_DEFAULT",
+          "length": 13,
+          "value": "TEST146"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 0,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000014"
+    },
+    {
+      "vehicleOdometerBeginKm": 0,
+      "vehicleOdometerEndKm": 0,
+      "vehicleRegistration": {
+        "nation": "NATION_NUMERIC_DEFAULT",
+        "number": {
+          "encoding": "ENCODING_DEFAULT",
+          "length": 13,
+          "value": "TEST147"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 0,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000014"
+    },
+    {
+      "vehicleOdometerBeginKm": 0,
+      "vehicleOdometerEndKm": 0,
+      "vehicleRegistration": {
+        "nation": "NATION_NUMERIC_DEFAULT",
+        "number": {
+          "encoding": "ENCODING_DEFAULT",
+          "length": 13,
+          "value": "TEST148"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 0,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000014"
+    },
+    {
+      "vehicleOdometerBeginKm": 0,
+      "vehicleOdometerEndKm": 0,
+      "vehicleRegistration": {
+        "nation": "NATION_NUMERIC_DEFAULT",
+        "number": {
+          "encoding": "ENCODING_DEFAULT",
+          "length": 13,
+          "value": "TEST149"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 0,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000014"
+    },
+    {
+      "vehicleOdometerBeginKm": 0,
+      "vehicleOdometerEndKm": 0,
+      "vehicleRegistration": {
+        "nation": "NATION_NUMERIC_DEFAULT",
+        "number": {
+          "encoding": "ENCODING_DEFAULT",
+          "length": 13,
+          "value": "TEST150"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 0,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000015"
+    },
+    {
+      "vehicleOdometerBeginKm": 0,
+      "vehicleOdometerEndKm": 0,
+      "vehicleRegistration": {
+        "nation": "NATION_NUMERIC_DEFAULT",
+        "number": {
+          "encoding": "ENCODING_DEFAULT",
+          "length": 13,
+          "value": "TEST151"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 0,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000015"
+    },
+    {
+      "vehicleOdometerBeginKm": 0,
+      "vehicleOdometerEndKm": 0,
+      "vehicleRegistration": {
+        "nation": "NATION_NUMERIC_DEFAULT",
+        "number": {
+          "encoding": "ENCODING_DEFAULT",
+          "length": 13,
+          "value": "TEST152"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 0,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000015"
+    },
+    {
+      "vehicleOdometerBeginKm": 0,
+      "vehicleOdometerEndKm": 0,
+      "vehicleRegistration": {
+        "nation": "NATION_NUMERIC_DEFAULT",
+        "number": {
+          "encoding": "ENCODING_DEFAULT",
+          "length": 13,
+          "value": "TEST153"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 0,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000015"
+    },
+    {
+      "vehicleOdometerBeginKm": 0,
+      "vehicleOdometerEndKm": 0,
+      "vehicleRegistration": {
+        "nation": "NATION_NUMERIC_DEFAULT",
+        "number": {
+          "encoding": "ENCODING_DEFAULT",
+          "length": 13,
+          "value": "TEST154"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 0,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000015"
+    },
+    {
+      "vehicleOdometerBeginKm": 0,
+      "vehicleOdometerEndKm": 0,
+      "vehicleRegistration": {
+        "nation": "NATION_NUMERIC_DEFAULT",
+        "number": {
+          "encoding": "ENCODING_DEFAULT",
+          "length": 13,
+          "value": "TEST155"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 0,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000015"
+    },
+    {
+      "vehicleOdometerBeginKm": 0,
+      "vehicleOdometerEndKm": 0,
+      "vehicleRegistration": {
+        "nation": "NATION_NUMERIC_DEFAULT",
+        "number": {
+          "encoding": "ENCODING_DEFAULT",
+          "length": 13,
+          "value": "TEST156"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 0,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000015"
+    },
+    {
+      "vehicleOdometerBeginKm": 0,
+      "vehicleOdometerEndKm": 0,
+      "vehicleRegistration": {
+        "nation": "NATION_NUMERIC_DEFAULT",
+        "number": {
+          "encoding": "ENCODING_DEFAULT",
+          "length": 13,
+          "value": "TEST157"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 0,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000015"
+    },
+    {
+      "vehicleOdometerBeginKm": 0,
+      "vehicleOdometerEndKm": 0,
+      "vehicleRegistration": {
+        "nation": "NATION_NUMERIC_DEFAULT",
+        "number": {
+          "encoding": "ENCODING_DEFAULT",
+          "length": 13,
+          "value": "TEST158"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 0,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000015"
+    },
+    {
+      "vehicleOdometerBeginKm": 0,
+      "vehicleOdometerEndKm": 0,
+      "vehicleRegistration": {
+        "nation": "NATION_NUMERIC_DEFAULT",
+        "number": {
+          "encoding": "ENCODING_DEFAULT",
+          "length": 13,
+          "value": "TEST159"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 0,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000015"
+    },
+    {
+      "vehicleOdometerBeginKm": 0,
+      "vehicleOdometerEndKm": 0,
+      "vehicleRegistration": {
+        "nation": "NATION_NUMERIC_DEFAULT",
+        "number": {
+          "encoding": "ENCODING_DEFAULT",
+          "length": 13,
+          "value": "TEST160"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 0,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000016"
+    },
+    {
+      "vehicleOdometerBeginKm": 0,
+      "vehicleOdometerEndKm": 0,
+      "vehicleRegistration": {
+        "nation": "NATION_NUMERIC_DEFAULT",
+        "number": {
+          "encoding": "ENCODING_DEFAULT",
+          "length": 13,
+          "value": "TEST161"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 0,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000016"
+    },
+    {
+      "vehicleOdometerBeginKm": 0,
+      "vehicleOdometerEndKm": 0,
+      "vehicleRegistration": {
+        "nation": "NATION_NUMERIC_DEFAULT",
+        "number": {
+          "encoding": "ENCODING_DEFAULT",
+          "length": 13,
+          "value": "TEST162"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 0,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000016"
+    },
+    {
+      "vehicleOdometerBeginKm": 0,
+      "vehicleOdometerEndKm": 0,
+      "vehicleRegistration": {
+        "nation": "NATION_NUMERIC_DEFAULT",
+        "number": {
+          "encoding": "ENCODING_DEFAULT",
+          "length": 13,
+          "value": "TEST163"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 0,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000016"
+    },
+    {
+      "vehicleOdometerBeginKm": 0,
+      "vehicleOdometerEndKm": 0,
+      "vehicleRegistration": {
+        "nation": "NATION_NUMERIC_DEFAULT",
+        "number": {
+          "encoding": "ENCODING_DEFAULT",
+          "length": 13,
+          "value": "TEST164"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 0,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000016"
+    },
+    {
+      "vehicleOdometerBeginKm": 0,
+      "vehicleOdometerEndKm": 0,
+      "vehicleRegistration": {
+        "nation": "NATION_NUMERIC_DEFAULT",
+        "number": {
+          "encoding": "ENCODING_DEFAULT",
+          "length": 13,
+          "value": "TEST165"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 0,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000016"
+    },
+    {
+      "vehicleOdometerBeginKm": 0,
+      "vehicleOdometerEndKm": 0,
+      "vehicleRegistration": {
+        "nation": "NATION_NUMERIC_DEFAULT",
+        "number": {
+          "encoding": "ENCODING_DEFAULT",
+          "length": 13,
+          "value": "TEST166"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 0,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000016"
+    },
+    {
+      "vehicleOdometerBeginKm": 0,
+      "vehicleOdometerEndKm": 0,
+      "vehicleRegistration": {
+        "nation": "NATION_NUMERIC_DEFAULT",
+        "number": {
+          "encoding": "ENCODING_DEFAULT",
+          "length": 13,
+          "value": "TEST167"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 0,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000016"
+    },
+    {
+      "vehicleOdometerBeginKm": 0,
+      "vehicleOdometerEndKm": 0,
+      "vehicleRegistration": {
+        "nation": "NATION_NUMERIC_DEFAULT",
+        "number": {
+          "encoding": "ENCODING_DEFAULT",
+          "length": 13,
+          "value": "TEST168"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 0,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000016"
+    },
+    {
+      "vehicleOdometerBeginKm": 0,
+      "vehicleOdometerEndKm": 0,
+      "vehicleRegistration": {
+        "nation": "NATION_NUMERIC_DEFAULT",
+        "number": {
+          "encoding": "ENCODING_DEFAULT",
+          "length": 13,
+          "value": "TEST169"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 0,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000016"
+    },
+    {
+      "vehicleOdometerBeginKm": 0,
+      "vehicleOdometerEndKm": 0,
+      "vehicleRegistration": {
+        "nation": "NATION_NUMERIC_DEFAULT",
+        "number": {
+          "encoding": "ENCODING_DEFAULT",
+          "length": 13,
+          "value": "TEST170"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 0,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000017"
+    },
+    {
+      "vehicleOdometerBeginKm": 0,
+      "vehicleOdometerEndKm": 0,
+      "vehicleRegistration": {
+        "nation": "NATION_NUMERIC_DEFAULT",
+        "number": {
+          "encoding": "ENCODING_DEFAULT",
+          "length": 13,
+          "value": "TEST171"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 0,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000017"
+    },
+    {
+      "vehicleOdometerBeginKm": 0,
+      "vehicleOdometerEndKm": 0,
+      "vehicleRegistration": {
+        "nation": "NATION_NUMERIC_DEFAULT",
+        "number": {
+          "encoding": "ENCODING_DEFAULT",
+          "length": 13,
+          "value": "TEST172"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 0,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000017"
+    },
+    {
+      "vehicleOdometerBeginKm": 0,
+      "vehicleOdometerEndKm": 0,
+      "vehicleRegistration": {
+        "nation": "NATION_NUMERIC_DEFAULT",
+        "number": {
+          "encoding": "ENCODING_DEFAULT",
+          "length": 13,
+          "value": "TEST173"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 0,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000017"
+    },
+    {
+      "vehicleOdometerBeginKm": 0,
+      "vehicleOdometerEndKm": 0,
+      "vehicleRegistration": {
+        "nation": "NATION_NUMERIC_DEFAULT",
+        "number": {
+          "encoding": "ENCODING_DEFAULT",
+          "length": 13,
+          "value": "TEST174"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 0,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000017"
+    },
+    {
+      "vehicleOdometerBeginKm": 0,
+      "vehicleOdometerEndKm": 0,
+      "vehicleRegistration": {
+        "nation": "NATION_NUMERIC_DEFAULT",
+        "number": {
+          "encoding": "ENCODING_DEFAULT",
+          "length": 13,
+          "value": "TEST175"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 0,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000017"
+    },
+    {
+      "vehicleOdometerBeginKm": 0,
+      "vehicleOdometerEndKm": 0,
+      "vehicleRegistration": {
+        "nation": "NATION_NUMERIC_DEFAULT",
+        "number": {
+          "encoding": "ENCODING_DEFAULT",
+          "length": 13,
+          "value": "TEST176"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 0,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000017"
+    },
+    {
+      "vehicleOdometerBeginKm": 0,
+      "vehicleOdometerEndKm": 0,
+      "vehicleRegistration": {
+        "nation": "NATION_NUMERIC_DEFAULT",
+        "number": {
+          "encoding": "ENCODING_DEFAULT",
+          "length": 13,
+          "value": "TEST177"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 0,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000017"
+    },
+    {
+      "vehicleOdometerBeginKm": 0,
+      "vehicleOdometerEndKm": 0,
+      "vehicleRegistration": {
+        "nation": "NATION_NUMERIC_DEFAULT",
+        "number": {
+          "encoding": "ENCODING_DEFAULT",
+          "length": 13,
+          "value": "TEST178"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 0,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000017"
+    },
+    {
+      "vehicleOdometerBeginKm": 0,
+      "vehicleOdometerEndKm": 0,
+      "vehicleRegistration": {
+        "nation": "NATION_NUMERIC_DEFAULT",
+        "number": {
+          "encoding": "ENCODING_DEFAULT",
+          "length": 13,
+          "value": "TEST179"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 0,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000017"
+    },
+    {
+      "vehicleOdometerBeginKm": 0,
+      "vehicleOdometerEndKm": 0,
+      "vehicleRegistration": {
+        "nation": "NATION_NUMERIC_DEFAULT",
+        "number": {
+          "encoding": "ENCODING_DEFAULT",
+          "length": 13,
+          "value": "TEST180"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 0,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000018"
+    },
+    {
+      "vehicleOdometerBeginKm": 0,
+      "vehicleOdometerEndKm": 0,
+      "vehicleRegistration": {
+        "nation": "NATION_NUMERIC_DEFAULT",
+        "number": {
+          "encoding": "ENCODING_DEFAULT",
+          "length": 13,
+          "value": "TEST181"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 0,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000018"
+    },
+    {
+      "vehicleOdometerBeginKm": 0,
+      "vehicleOdometerEndKm": 0,
+      "vehicleRegistration": {
+        "nation": "NATION_NUMERIC_DEFAULT",
+        "number": {
+          "encoding": "ENCODING_DEFAULT",
+          "length": 13,
+          "value": "TEST182"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 0,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000018"
+    },
+    {
+      "vehicleOdometerBeginKm": 0,
+      "vehicleOdometerEndKm": 0,
+      "vehicleRegistration": {
+        "nation": "NATION_NUMERIC_DEFAULT",
+        "number": {
+          "encoding": "ENCODING_DEFAULT",
+          "length": 13,
+          "value": "TEST183"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 0,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000018"
+    },
+    {
+      "vehicleOdometerBeginKm": 0,
+      "vehicleOdometerEndKm": 0,
+      "vehicleRegistration": {
+        "nation": "NATION_NUMERIC_DEFAULT",
+        "number": {
+          "encoding": "ENCODING_DEFAULT",
+          "length": 13,
+          "value": "TEST184"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 0,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000018"
+    },
+    {
+      "vehicleOdometerBeginKm": 0,
+      "vehicleOdometerEndKm": 0,
+      "vehicleRegistration": {
+        "nation": "NATION_NUMERIC_DEFAULT",
+        "number": {
+          "encoding": "ENCODING_DEFAULT",
+          "length": 13,
+          "value": "TEST185"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 0,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000018"
+    },
+    {
+      "vehicleOdometerBeginKm": 0,
+      "vehicleOdometerEndKm": 0,
+      "vehicleRegistration": {
+        "nation": "NATION_NUMERIC_DEFAULT",
+        "number": {
+          "encoding": "ENCODING_DEFAULT",
+          "length": 13,
+          "value": "TEST186"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 0,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000018"
+    },
+    {
+      "vehicleOdometerBeginKm": 0,
+      "vehicleOdometerEndKm": 0,
+      "vehicleRegistration": {
+        "nation": "NATION_NUMERIC_DEFAULT",
+        "number": {
+          "encoding": "ENCODING_DEFAULT",
+          "length": 13,
+          "value": "TEST187"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 0,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000018"
+    },
+    {
+      "vehicleOdometerBeginKm": 0,
+      "vehicleOdometerEndKm": 0,
+      "vehicleRegistration": {
+        "nation": "NATION_NUMERIC_DEFAULT",
+        "number": {
+          "encoding": "ENCODING_DEFAULT",
+          "length": 13,
+          "value": "TEST188"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 0,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000018"
+    },
+    {
+      "vehicleOdometerBeginKm": 0,
+      "vehicleOdometerEndKm": 0,
+      "vehicleRegistration": {
+        "nation": "NATION_NUMERIC_DEFAULT",
+        "number": {
+          "encoding": "ENCODING_DEFAULT",
+          "length": 13,
+          "value": "TEST189"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 0,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000018"
+    },
+    {
+      "vehicleOdometerBeginKm": 0,
+      "vehicleOdometerEndKm": 0,
+      "vehicleRegistration": {
+        "nation": "NATION_NUMERIC_DEFAULT",
+        "number": {
+          "encoding": "ENCODING_DEFAULT",
+          "length": 13,
+          "value": "TEST190"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 0,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000019"
+    },
+    {
+      "vehicleOdometerBeginKm": 0,
+      "vehicleOdometerEndKm": 0,
+      "vehicleRegistration": {
+        "nation": "NATION_NUMERIC_DEFAULT",
+        "number": {
+          "encoding": "ENCODING_DEFAULT",
+          "length": 13,
+          "value": "TEST191"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 0,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000019"
+    },
+    {
+      "vehicleOdometerBeginKm": 0,
+      "vehicleOdometerEndKm": 0,
+      "vehicleRegistration": {
+        "nation": "NATION_NUMERIC_DEFAULT",
+        "number": {
+          "encoding": "ENCODING_DEFAULT",
+          "length": 13,
+          "value": "TEST192"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 0,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000019"
+    },
+    {
+      "vehicleOdometerBeginKm": 0,
+      "vehicleOdometerEndKm": 0,
+      "vehicleRegistration": {
+        "nation": "NATION_NUMERIC_DEFAULT",
+        "number": {
+          "encoding": "ENCODING_DEFAULT",
+          "length": 13,
+          "value": "TEST193"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 0,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000019"
+    },
+    {
+      "vehicleOdometerBeginKm": 0,
+      "vehicleOdometerEndKm": 0,
+      "vehicleRegistration": {
+        "nation": "NATION_NUMERIC_DEFAULT",
+        "number": {
+          "encoding": "ENCODING_DEFAULT",
+          "length": 13,
+          "value": "TEST194"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 0,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000019"
+    },
+    {
+      "vehicleOdometerBeginKm": 0,
+      "vehicleOdometerEndKm": 0,
+      "vehicleRegistration": {
+        "nation": "NATION_NUMERIC_DEFAULT",
+        "number": {
+          "encoding": "ENCODING_DEFAULT",
+          "length": 13,
+          "value": "TEST195"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 0,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000019"
+    },
+    {
+      "vehicleOdometerBeginKm": 0,
+      "vehicleOdometerEndKm": 0,
+      "vehicleRegistration": {
+        "nation": "NATION_NUMERIC_DEFAULT",
+        "number": {
+          "encoding": "ENCODING_DEFAULT",
+          "length": 13,
+          "value": "TEST196"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 0,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000019"
+    },
+    {
+      "vehicleOdometerBeginKm": 0,
+      "vehicleOdometerEndKm": 0,
+      "vehicleRegistration": {
+        "nation": "NATION_NUMERIC_DEFAULT",
+        "number": {
+          "encoding": "ENCODING_DEFAULT",
+          "length": 13,
+          "value": "TEST197"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 0,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000019"
+    },
+    {
+      "vehicleOdometerBeginKm": 0,
+      "vehicleOdometerEndKm": 0,
+      "vehicleRegistration": {
+        "nation": "NATION_NUMERIC_DEFAULT",
+        "number": {
+          "encoding": "ENCODING_DEFAULT",
+          "length": 13,
+          "value": "TEST198"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 0,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000019"
+    },
+    {
+      "vehicleOdometerBeginKm": 0,
+      "vehicleOdometerEndKm": 0,
+      "vehicleRegistration": {
+        "nation": "NATION_NUMERIC_DEFAULT",
+        "number": {
+          "encoding": "ENCODING_DEFAULT",
+          "length": 13,
+          "value": "TEST199"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 0,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000019"
+    },
+    {
+      "vehicleOdometerBeginKm": 0,
+      "vehicleOdometerEndKm": 0,
+      "vehicleRegistration": {
+        "nation": "NATION_NUMERIC_DEFAULT",
+        "number": {
+          "encoding": "ENCODING_DEFAULT",
+          "length": 13,
+          "value": "TEST200"
+        }
+      },
+      "vuDataBlockCounter": {
+        "value": 0,
+        "length": 2
+      },
+      "vehicleIdentificationNumber": "TESTVIN0000000020"
+    }
+  ],
+  "rawData": "AIABg2oBhRVk8BW9ZPCeKSYPVEVTVDAwMSAgICAgIAABVEVTVFZJTjAwMDAwMDAwMDABhRUBhlpk8WW9ZPHpgiYPVEVTVDAwMiAgICAgIAACVEVTVFZJTjAwMDAwMDAwMDABhloBh/1k9WMIZPXdWyYPVEVTVDAwMyAgICAgIAADVEVTVFZJTjAwMDAwMDAwMDABh/0BicRk9q0aZPcw/SYPVEVTVDAwNCAgICAgIAAEVEVTVFZJTjAwMDAwMDAwMDABicQBi4pk9/2HZPiFlyYPVEVTVDAwNSAgICAgIAAFVEVTVFZJTjAwMDAwMDAwMDABi4oBjbVk+U+AZPoAJiYPVEVTVDAwNiAgICAgIAAGVEVTVFZJTjAwMDAwMDAwMDABiAwBidRk/pWAZP8buiYPVEVTVDAwNyAgICAgIAAHVEVTVFZJTjAwMDAwMDAwMDABidQBi55k/+djZQBtaiYPVEVTVDAwOCAgICAgIAAIVEVTVFZJTjAwMDAwMDAwMDABi54BjUhlATkWZQG/oiYPVEVTVDAwOSAgICAgIAAJVEVTVFZJTjAwMDAwMDAwMDABjUgBjvJlAonNZQMLGSYPVEVTVDAxMCAgICAgIAAQVEVTVFZJTjAwMDAwMDAwMDEBjvIBkFllA9zTZQRLJiYPVEVTVDAxMSAgICAgIAARVEVTVFZJTjAwMDAwMDAwMDEBkFkBkcFlB9OXZQhFpiYPVEVTVDAxMiAgICAgIAASVEVTVFZJTjAwMDAwMDAwMDEBkcEBk4xlCSCwZQmrzCYPVEVTVDAxMyAgICAgIAATVEVTVFZJTjAwMDAwMDAwMDEBk4wBlSVlCnPKZQrzoSYPVEVTVDAxNCAgICAgIAAUVEVTVFZJTjAwMDAwMDAwMDEBlSUBltRlC8SzZQxMtiYPVEVTVDAxNSAgICAgIAAVVEVTVFZJTjAwMDAwMDAwMDEBltQBmEVlDRXPZQ2SxCYPVEVTVDAxNiAgICAgIAAWVEVTVFZJTjAwMDAwMDAwMDEBmEUBmdllEQrDZRGLMyYPVEVTVDAxNyAgICAgIAAXVEVTVFZJTjAwMDAwMDAwMDEBmdkBm2llElvkZRLY1iYPVEVTVDAxOCAgICAgIAAYVEVTVFZJTjAwMDAwMDAwMDEBm2kBnRtlE61CZRQypCYPVEVTVDAxOSAgICAgIAAZVEVTVFZJTjAwMDAwMDAwMDEBnRsBns9lFP7JZRWGKCYPVEVTVDAyMCAgICAgIAAgVEVTVFZJTjAwMDAwMDAwMDIBns8BoEBlFlFGZRbH6SYPVEVTVDAyMSAgICAgIAAhVEVTVFZJTjAwMDAwMDAwMDIAGbAAGcJlG+N/ZRv1QiYBVEVTVDAyMiAgICAgIAAiVEVTVFZJTjAwMDAwMDAwMDIBTPgBTq9lHOf9ZR1uVCYPVEVTVDAyMyAgICAgIAAjVEVTVFZJTjAwMDAwMDAwMDIBuHcBuRNlHjV3ZR64eiYPVEVTVDAyNCAgICAgIAAkVEVTVFZJTjAwMDAwMDAwMDIBuRMBuYZlH4fqZR//KyYPVEVTVDAyNSAgICAgIAAlVEVTVFZJTjAwMDAwMDAwMDIBUkEBVKNlI2xKZSQmaSYPVEVTVDAyNiAgICAgIAAmVEVTVFZJTjAwMDAwMDAwMDIBuJ8BumNlOJeqZTkbOiYPVEVTVDAyNyAgICAgIAAnVEVTVFZJTjAwMDAwMDAwMDIASEoASPJlOzNmZTursiYBVEVTVDAyOCAgICAgIAAoVEVTVFZJTjAwMDAwMDAwMDIBlIMBlQtlQd0KZUJcGCYPVEVTVDAyOSAgICAgIAApVEVTVFZJTjAwMDAwMDAwMDIAJ8UAKFtlSHDDZUjVAiYBVEVTVDAzMCAgICAgIAAwVEVTVFZJTjAwMDAwMDAwMDMB7XAB7xZlSciUZUpMbyYPVEVTVDAzMSAgICAgIAAxVEVTVFZJTjAwMDAwMDAwMDMAUYkAUiplXDr/ZVyryyYBVEVTVDAzMiAgICAgIAAyVEVTVFZJTjAwMDAwMDAwMDMBmzkBm9NlXYmzZV4MaiYPVEVTVDAzMyAgICAgIAAzVEVTVFZJTjAwMDAwMDAwMDMBuDgBuSJlXshbZV9dCSYPVEVTVDAzNCAgICAgIAA0VEVTVFZJTjAwMDAwMDAwMDMB5tAB54hlYCuqZWCeHCYPVEVTVDAzNSAgICAgIAA1VEVTVFZJTjAwMDAwMDAwMDMBuaMBulJlZCA8ZWSlPiYPVEVTVDAzNiAgICAgIAA2VEVTVFZJTjAwMDAwMDAwMDMBulIBuullZXCzZWX1niYPVEVTVDAzNyAgICAgIAA3VEVTVFZJTjAwMDAwMDAwMDMBi2kBi9NlZr8kZWdgoCYBVEVTVDAzOCAgICAgIAA4VEVTVFZJTjAwMDAwMDAwMDMBu3kBvBFlaBV0ZWiZCCYPVEVTVDAzOSAgICAgIAA5VEVTVFZJTjAwMDAwMDAwMDMB1qAB1+plaWsuZWncTCYPVEVTVDA0MCAgICAgIABAVEVTVFZJTjAwMDAwMDAwMDQB1+oB2ZNlbV+mZW3jUCYPVEVTVDA0MSAgICAgIABBVEVTVFZJTjAwMDAwMDAwMDQB2ZMB20FlbrHOZW82ZiYPVEVTVDA0MiAgICAgIABCVEVTVFZJTjAwMDAwMDAwMDQB20EB3O1lcAL+ZXCIeiYPVEVTVDA0MyAgICAgIABDVEVTVFZJTjAwMDAwMDAwMDQB3O0B3phlcVTQZXHYZyYPVEVTVDA0NCAgICAgIABEVEVTVFZJTjAwMDAwMDAwMDQB3pgB4CJlcqaVZXMl8yYPVEVTVDA0NSAgICAgIABFVEVTVFZJTjAwMDAwMDAwMDQANpsAN0pldpBiZXcS/yYBVEVTVDA0NiAgICAgIABGVEVTVFZJTjAwMDAwMDAwMDQAWzoAW91leT1eZXmpSiYBVEVTVDA0NyAgICAgIABHVEVTVFZJTjAwMDAwMDAwMDQBpG8BpUZleoEsZXsLtiYPVEVTVDA0OCAgICAgIABIVEVTVFZJTjAwMDAwMDAwMDQAXHgAXQple9vdZXxIfyYBVEVTVDA0OSAgICAgIABJVEVTVFZJTjAwMDAwMDAwMDQAhk0Ah09mOdEYZjo+pSYBVEVTVDA1MCAgICAgIABQVEVTVFZJTjAwMDAwMDAwMDUAh08AiXBmOuOoZjuZmCYBVEVTVDA1MSAgICAgIABRVEVTVFZJTjAwMDAwMDAwMDUAiXAAixRmPYOmZj4l5CYBVEVTVDA1MiAgICAgIABSVEVTVFZJTjAwMDAwMDAwMDUAixQAjKBmQXo2ZkIBXCYBVEVTVDA1MyAgICAgIABTVEVTVFZJTjAwMDAwMDAwMDUAjKAAjulmQsl4ZkOa0SYBVEVTVDA1NCAgICAgIABUVEVTVFZJTjAwMDAwMDAwMDUAjukAkGNmRC2/ZkTQriYBVEVTVDA1NSAgICAgIABVVEVTVFZJTjAwMDAwMDAwMDUAkGMAkaNmRWiIZkYWQyYBVEVTVDA1NiAgICAgIABWVEVTVFZJTjAwMDAwMDAwMDUAkaMAk5pmRrsZZkeCECYBVEVTVDA1NyAgICAgIABXVEVTVFZJTjAwMDAwMDAwMDUAk5oAlYJmTAAWZkyWeiYBVEVTVDA1OCAgICAgIABYVEVTVFZJTjAwMDAwMDAwMDUAAN8AAcxmTJiOZkzXziYBVEVTVDA1OSAgICAgIABZVEVTVFZJTjAwMDAwMDAwMDUAAcwAA/RmTV+EZk4IIiYBVEVTVDA2MCAgICAgIABgVEVTVFZJTjAwMDAwMDAwMDYABDUABm5mT/ozZlC5oiYBVEVTVDA2MSAgICAgIABhVEVTVFZJTjAwMDAwMDAwMDYABm4ACH1mU/BDZlSqoyYBVEVTVDA2MiAgICAgIABiVEVTVFZJTjAwMDAwMDAwMDYACH0ACjlmVUHdZlXNTiYBVEVTVDA2MyAgICAgIABjVEVTVFZJTjAwMDAwMDAwMDYACjkADEpmVouCZlc0sSYBVEVTVDA2NCAgICAgIABkVEVTVFZJTjAwMDAwMDAwMDYADEoADfpmV984Zlh1ICYBVEVTVDA2NSAgICAgIABlVEVTVFZJTjAwMDAwMDAwMDYADfoAD7ZmWTXGZlm5NSYBVEVTVDA2NiAgICAgIABmVEVTVFZJTjAwMDAwMDAwMDYAD7YAEMdmXTCuZl3YWiYBVEVTVDA2NyAgICAgIABnVEVTVFZJTjAwMDAwMDAwMDYAEMcAEldmXn1KZl8a+yYBVEVTVDA2OCAgICAgIABoVEVTVFZJTjAwMDAwMDAwMDYAElcAFBpmX9mwZmCjuSYBVEVTVDA2OSAgICAgIABpVEVTVFZJTjAwMDAwMDAwMDYAFBoAFTdmYSc1ZmG85SYBVEVTVDA3MCAgICAgIABwVEVTVFZJTjAwMDAwMDAwMDcAFTcAFopmYmVTZmL8viYBVEVTVDA3MSAgICAgIABxVEVTVFZJTjAwMDAwMDAwMDcAFooAGE9mZmmtZmcVXiYBVEVTVDA3MiAgICAgIAByVEVTVFZJTjAwMDAwMDAwMDcAGE8AGZxmZ75cZmhd6SYBVEVTVDA3MyAgICAgIABzVEVTVFZJTjAwMDAwMDAwMDcAGZwAG5dmaRCXZmm7UiYBVEVTVDA3NCAgICAgIAB0VEVTVFZJTjAwMDAwMDAwMDcAG5oAHQlma7nUZmxJeiYBVEVTVDA3NSAgICAgIAB1VEVTVFZJTjAwMDAwMDAwMDcAHQkAHt9mb65vZnBZNCYBVEVTVDA3NiAgICAgIAB2VEVTVFZJTjAwMDAwMDAwMDcAHt8AH/RmcOyPZnFpIyYBVEVTVDA3NyAgICAgIAB3VEVTVFZJTjAwMDAwMDAwMDcAH/QAIMZmcjc1ZnJ0DCYBVEVTVDA3OCAgICAgIAB4VEVTVFZJTjAwMDAwMDAwMDcAIMYAImFmeNQeZnmGBSYBVEVTVDA3OSAgICAgIAB5VEVTVFZJTjAwMDAwMDAwMDcAImEAJMxmehfUZnrwxSYBVEVTVDA4MCAgICAgIACAVEVTVFZJTjAwMDAwMDAwMDgAJMwAJZpme3z7Znwh8SYBVEVTVDA4MSAgICAgIACBVEVTVFZJTjAwMDAwMDAwMDgAJZoAJyRmfhlSZn60TyYBVEVTVDA4MiAgICAgIACCVEVTVFZJTjAwMDAwMDAwMDgAJyQAKPhmghTbZoLdQyYBVEVTVDA4MyAgICAgIACDVEVTVFZJTjAwMDAwMDAwMDgAKPgAKYRmg3OxZoP5wiYBVEVTVDA4NCAgICAgIACEVEVTVFZJTjAwMDAwMDAwMDgAKYQAKqdmhMs5ZoVkrCYBVEVTVDA4NSAgICAgIACFVEVTVFZJTjAwMDAwMDAwMDgAKqcAK7BmhheGZoaenSYBVEVTVDA4NiAgICAgIACGVEVTVFZJTjAwMDAwMDAwMDgAK7AALRhmh1p1ZogCPCYBVEVTVDA4NyAgICAgIACHVEVTVFZJTjAwMDAwMDAwMDgALRgALlxmi03vZovkfSYBVEVTVDA4OCAgICAgIACIVEVTVFZJTjAwMDAwMDAwMDgALlwAMIRmjKi0Zo1kwSYBVEVTVDA4OSAgICAgIACJVEVTVFZJTjAwMDAwMDAwMDgAMIQAMb9mjfkCZo6RLyYBVEVTVDA5MCAgICAgIACQVEVTVFZJTjAwMDAwMDAwMDkAMb8AM2dmj0KiZo/pUiYBVEVTVDA5MSAgICAgIACRVEVTVFZJTjAwMDAwMDAwMDkAM2cANVxmkIwzZpE7WiYBVEVTVDA5MiAgICAgIACSVEVTVFZJTjAwMDAwMDAwMDkANVwANx1mnccsZp5n7SYBVEVTVDA5MyAgICAgIACTVEVTVFZJTjAwMDAwMDAwMDkANx0AONBmnxZCZp+/UCYBVEVTVDA5NCAgICAgIACUVEVTVFZJTjAwMDAwMDAwMDkAONAAOhVmoG00ZqEssyYBVEVTVDA5NSAgICAgIACVVEVTVFZJTjAwMDAwMDAwMDkAOhUAO3Fmobk0ZqJaVCYBVEVTVDA5NiAgICAgIACWVEVTVFZJTjAwMDAwMDAwMDkAO3EAPSNmowNKZqOxbiYBVEVTVDA5NyAgICAgIACXVEVTVFZJTjAwMDAwMDAwMDkAPYwAP3xmvAGQZryuxSYBVEVTVDA5OCAgICAgIACYVEVTVFZJTjAwMDAwMDAwMDkAP3wAQQ5mvWhnZr332SYBVEVTVDA5OSAgICAgIACZVEVTVFZJTjAwMDAwMDAwMDkAQQ4AQxlmvqLdZr9YUyYBVEVTVDEwMCAgICAgIAEAVEVTVFZJTjAwMDAwMDAwMTAAQxkARK9mwq3cZsNB8CYBVEVTVDEwMSAgICAgIAEBVEVTVFZJTjAwMDAwMDAwMTAARK8ARxtmw/4KZsS3+SYBVEVTVDEwMiAgICAgIAECVEVTVFZJTjAwMDAwMDAwMTAARxsASP1mxUgiZsXieyYBVEVTVDEwMyAgICAgIAEDVEVTVFZJTjAwMDAwMDAwMTAASP0ASxlmxpuvZsdH2CYBVEVTVDEwNCAgICAgIAEEVEVTVFZJTjAwMDAwMDAwMTAASxkATKVmx+uxZshiDiYBVEVTVDEwNSAgICAgIAEFVEVTVFZJTjAwMDAwMDAwMTAATKUATrdmy+dmZsx4gyYBVEVTVDEwNiAgICAgIAEGVEVTVFZJTjAwMDAwMDAwMTAATrcAUFxmzTnuZs3Y/iYBVEVTVDEwNyAgICAgIAEHVEVTVFZJTjAwMDAwMDAwMTAAUFwAUjdmzoJ5Zs89fSYBVEVTVDEwOCAgICAgIAEIVEVTVFZJTjAwMDAwMDAwMTAAUjcAVFlmz9UNZtCL/SYBVEVTVDEwOSAgICAgIAEJVEVTVFZJTjAwMDAwMDAwMTAAVFkAVblm0TVWZtG6GSYBVEVTVDExMCAgICAgIAEQVEVTVFZJTjAwMDAwMDAwMTEAVbkAWAdm1SfKZtXgYCYBVEVTVDExMSAgICAgIAERVEVTVFZJTjAwMDAwMDAwMTEAWAcAWQtm1nPfZtcIOCYBVEVTVDExMiAgICAgIAESVEVTVFZJTjAwMDAwMDAwMTEAWQsAWldm18X7ZthkQyYBVEVTVDExMyAgICAgIAETVEVTVFZJTjAwMDAwMDAwMTEAWlcAW7lm2SgvZtnAbyYBVEVTVDExNCAgICAgIAEUVEVTVFZJTjAwMDAwMDAwMTEAW7kAXW5m2mlTZtsDnSYBVEVTVDExNSAgICAgIAEVVEVTVFZJTjAwMDAwMDAwMTEAXW4AX65m3luiZt8VpiYBVEVTVDExNiAgICAgIAEWVEVTVFZJTjAwMDAwMDAwMTEAX64AYflm3614ZuBGkCYBVEVTVDExNyAgICAgIAEXVEVTVFZJTjAwMDAwMDAwMTEAYfkAY1xm4PuPZuF9gCYBVEVTVDExOCAgICAgIAEYVEVTVFZJTjAwMDAwMDAwMTEAY1wAZQFm4mBFZuLyHyYBVEVTVDExOSAgICAgIAEZVEVTVFZJTjAwMDAwMDAwMTEAZQEAZ0Bm46EPZuRgyCYBVEVTVDEyMCAgICAgIAEgVEVTVFZJTjAwMDAwMDAwMTIAZ0AAaRRm553nZug/yyYBVEVTVDEyMSAgICAgIAEhVEVTVFZJTjAwMDAwMDAwMTIAaRQAaohm6POMZumXOiYBVEVTVDEyMiAgICAgIAEiVEVTVFZJTjAwMDAwMDAwMTIAaogAa9xm6jtOZurqiyYBVEVTVDEyMyAgICAgIAEjVEVTVFZJTjAwMDAwMDAwMTIAa9wAbXJm64cCZuwOLCYBVEVTVDEyNCAgICAgIAEkVEVTVFZJTjAwMDAwMDAwMTIAbXIAb5Fm7N1xZu2k4SYBVEVTVDEyNSAgICAgIAElVEVTVFZJTjAwMDAwMDAwMTIAb5EAcOdm8M+dZvFwuCYBVEVTVDEyNiAgICAgIAEmVEVTVFZJTjAwMDAwMDAwMTIAcOcAcnxm8hABZvKalyYBVEVTVDEyNyAgICAgIAEnVEVTVFZJTjAwMDAwMDAwMTIAcnwAc6Vm83RAZvQTWiYBVEVTVDEyOCAgICAgIAEoVEVTVFZJTjAwMDAwMDAwMTIAc6UAdGtm9MZkZvUIxCYBVEVTVDEyOSAgICAgIAEpVEVTVFZJTjAwMDAwMDAwMTIAAAAAAAAAAAAAAAAAAAAAVEVTVDEzMCAgICAgIAAAVEVTVFZJTjAwMDAwMDAwMTMAAAAAAAAAAAAAAAAAAAAAVEVTVDEzMSAgICAgIAAAVEVTVFZJTjAwMDAwMDAwMTMAAAAAAAAAAAAAAAAAAAAAVEVTVDEzMiAgICAgIAAAVEVTVFZJTjAwMDAwMDAwMTMAAAAAAAAAAAAAAAAAAAAAVEVTVDEzMyAgICAgIAAAVEVTVFZJTjAwMDAwMDAwMTMAAAAAAAAAAAAAAAAAAAAAVEVTVDEzNCAgICAgIAAAVEVTVFZJTjAwMDAwMDAwMTMAAAAAAAAAAAAAAAAAAAAAVEVTVDEzNSAgICAgIAAAVEVTVFZJTjAwMDAwMDAwMTMAAAAAAAAAAAAAAAAAAAAAVEVTVDEzNiAgICAgIAAAVEVTVFZJTjAwMDAwMDAwMTMAAAAAAAAAAAAAAAAAAAAAVEVTVDEzNyAgICAgIAAAVEVTVFZJTjAwMDAwMDAwMTMAAAAAAAAAAAAAAAAAAAAAVEVTVDEzOCAgICAgIAAAVEVTVFZJTjAwMDAwMDAwMTMAAAAAAAAAAAAAAAAAAAAAVEVTVDEzOSAgICAgIAAAVEVTVFZJTjAwMDAwMDAwMTMAAAAAAAAAAAAAAAAAAAAAVEVTVDE0MCAgICAgIAAAVEVTVFZJTjAwMDAwMDAwMTQAAAAAAAAAAAAAAAAAAAAAVEVTVDE0MSAgICAgIAAAVEVTVFZJTjAwMDAwMDAwMTQAAAAAAAAAAAAAAAAAAAAAVEVTVDE0MiAgICAgIAAAVEVTVFZJTjAwMDAwMDAwMTQAAAAAAAAAAAAAAAAAAAAAVEVTVDE0MyAgICAgIAAAVEVTVFZJTjAwMDAwMDAwMTQAAAAAAAAAAAAAAAAAAAAAVEVTVDE0NCAgICAgIAAAVEVTVFZJTjAwMDAwMDAwMTQAAAAAAAAAAAAAAAAAAAAAVEVTVDE0NSAgICAgIAAAVEVTVFZJTjAwMDAwMDAwMTQAAAAAAAAAAAAAAAAAAAAAVEVTVDE0NiAgICAgIAAAVEVTVFZJTjAwMDAwMDAwMTQAAAAAAAAAAAAAAAAAAAAAVEVTVDE0NyAgICAgIAAAVEVTVFZJTjAwMDAwMDAwMTQAAAAAAAAAAAAAAAAAAAAAVEVTVDE0OCAgICAgIAAAVEVTVFZJTjAwMDAwMDAwMTQAAAAAAAAAAAAAAAAAAAAAVEVTVDE0OSAgICAgIAAAVEVTVFZJTjAwMDAwMDAwMTQAAAAAAAAAAAAAAAAAAAAAVEVTVDE1MCAgICAgIAAAVEVTVFZJTjAwMDAwMDAwMTUAAAAAAAAAAAAAAAAAAAAAVEVTVDE1MSAgICAgIAAAVEVTVFZJTjAwMDAwMDAwMTUAAAAAAAAAAAAAAAAAAAAAVEVTVDE1MiAgICAgIAAAVEVTVFZJTjAwMDAwMDAwMTUAAAAAAAAAAAAAAAAAAAAAVEVTVDE1MyAgICAgIAAAVEVTVFZJTjAwMDAwMDAwMTUAAAAAAAAAAAAAAAAAAAAAVEVTVDE1NCAgICAgIAAAVEVTVFZJTjAwMDAwMDAwMTUAAAAAAAAAAAAAAAAAAAAAVEVTVDE1NSAgICAgIAAAVEVTVFZJTjAwMDAwMDAwMTUAAAAAAAAAAAAAAAAAAAAAVEVTVDE1NiAgICAgIAAAVEVTVFZJTjAwMDAwMDAwMTUAAAAAAAAAAAAAAAAAAAAAVEVTVDE1NyAgICAgIAAAVEVTVFZJTjAwMDAwMDAwMTUAAAAAAAAAAAAAAAAAAAAAVEVTVDE1OCAgICAgIAAAVEVTVFZJTjAwMDAwMDAwMTUAAAAAAAAAAAAAAAAAAAAAVEVTVDE1OSAgICAgIAAAVEVTVFZJTjAwMDAwMDAwMTUAAAAAAAAAAAAAAAAAAAAAVEVTVDE2MCAgICAgIAAAVEVTVFZJTjAwMDAwMDAwMTYAAAAAAAAAAAAAAAAAAAAAVEVTVDE2MSAgICAgIAAAVEVTVFZJTjAwMDAwMDAwMTYAAAAAAAAAAAAAAAAAAAAAVEVTVDE2MiAgICAgIAAAVEVTVFZJTjAwMDAwMDAwMTYAAAAAAAAAAAAAAAAAAAAAVEVTVDE2MyAgICAgIAAAVEVTVFZJTjAwMDAwMDAwMTYAAAAAAAAAAAAAAAAAAAAAVEVTVDE2NCAgICAgIAAAVEVTVFZJTjAwMDAwMDAwMTYAAAAAAAAAAAAAAAAAAAAAVEVTVDE2NSAgICAgIAAAVEVTVFZJTjAwMDAwMDAwMTYAAAAAAAAAAAAAAAAAAAAAVEVTVDE2NiAgICAgIAAAVEVTVFZJTjAwMDAwMDAwMTYAAAAAAAAAAAAAAAAAAAAAVEVTVDE2NyAgICAgIAAAVEVTVFZJTjAwMDAwMDAwMTYAAAAAAAAAAAAAAAAAAAAAVEVTVDE2OCAgICAgIAAAVEVTVFZJTjAwMDAwMDAwMTYAAAAAAAAAAAAAAAAAAAAAVEVTVDE2OSAgICAgIAAAVEVTVFZJTjAwMDAwMDAwMTYAAAAAAAAAAAAAAAAAAAAAVEVTVDE3MCAgICAgIAAAVEVTVFZJTjAwMDAwMDAwMTcAAAAAAAAAAAAAAAAAAAAAVEVTVDE3MSAgICAgIAAAVEVTVFZJTjAwMDAwMDAwMTcAAAAAAAAAAAAAAAAAAAAAVEVTVDE3MiAgICAgIAAAVEVTVFZJTjAwMDAwMDAwMTcAAAAAAAAAAAAAAAAAAAAAVEVTVDE3MyAgICAgIAAAVEVTVFZJTjAwMDAwMDAwMTcAAAAAAAAAAAAAAAAAAAAAVEVTVDE3NCAgICAgIAAAVEVTVFZJTjAwMDAwMDAwMTcAAAAAAAAAAAAAAAAAAAAAVEVTVDE3NSAgICAgIAAAVEVTVFZJTjAwMDAwMDAwMTcAAAAAAAAAAAAAAAAAAAAAVEVTVDE3NiAgICAgIAAAVEVTVFZJTjAwMDAwMDAwMTcAAAAAAAAAAAAAAAAAAAAAVEVTVDE3NyAgICAgIAAAVEVTVFZJTjAwMDAwMDAwMTcAAAAAAAAAAAAAAAAAAAAAVEVTVDE3OCAgICAgIAAAVEVTVFZJTjAwMDAwMDAwMTcAAAAAAAAAAAAAAAAAAAAAVEVTVDE3OSAgICAgIAAAVEVTVFZJTjAwMDAwMDAwMTcAAAAAAAAAAAAAAAAAAAAAVEVTVDE4MCAgICAgIAAAVEVTVFZJTjAwMDAwMDAwMTgAAAAAAAAAAAAAAAAAAAAAVEVTVDE4MSAgICAgIAAAVEVTVFZJTjAwMDAwMDAwMTgAAAAAAAAAAAAAAAAAAAAAVEVTVDE4MiAgICAgIAAAVEVTVFZJTjAwMDAwMDAwMTgAAAAAAAAAAAAAAAAAAAAAVEVTVDE4MyAgICAgIAAAVEVTVFZJTjAwMDAwMDAwMTgAAAAAAAAAAAAAAAAAAAAAVEVTVDE4NCAgICAgIAAAVEVTVFZJTjAwMDAwMDAwMTgAAAAAAAAAAAAAAAAAAAAAVEVTVDE4NSAgICAgIAAAVEVTVFZJTjAwMDAwMDAwMTgAAAAAAAAAAAAAAAAAAAAAVEVTVDE4NiAgICAgIAAAVEVTVFZJTjAwMDAwMDAwMTgAAAAAAAAAAAAAAAAAAAAAVEVTVDE4NyAgICAgIAAAVEVTVFZJTjAwMDAwMDAwMTgAAAAAAAAAAAAAAAAAAAAAVEVTVDE4OCAgICAgIAAAVEVTVFZJTjAwMDAwMDAwMTgAAAAAAAAAAAAAAAAAAAAAVEVTVDE4OSAgICAgIAAAVEVTVFZJTjAwMDAwMDAwMTgAAAAAAAAAAAAAAAAAAAAAVEVTVDE5MCAgICAgIAAAVEVTVFZJTjAwMDAwMDAwMTkAAAAAAAAAAAAAAAAAAAAAVEVTVDE5MSAgICAgIAAAVEVTVFZJTjAwMDAwMDAwMTkAAAAAAAAAAAAAAAAAAAAAVEVTVDE5MiAgICAgIAAAVEVTVFZJTjAwMDAwMDAwMTkAAAAAAAAAAAAAAAAAAAAAVEVTVDE5MyAgICAgIAAAVEVTVFZJTjAwMDAwMDAwMTkAAAAAAAAAAAAAAAAAAAAAVEVTVDE5NCAgICAgIAAAVEVTVFZJTjAwMDAwMDAwMTkAAAAAAAAAAAAAAAAAAAAAVEVTVDE5NSAgICAgIAAAVEVTVFZJTjAwMDAwMDAwMTkAAAAAAAAAAAAAAAAAAAAAVEVTVDE5NiAgICAgIAAAVEVTVFZJTjAwMDAwMDAwMTkAAAAAAAAAAAAAAAAAAAAAVEVTVDE5NyAgICAgIAAAVEVTVFZJTjAwMDAwMDAwMTkAAAAAAAAAAAAAAAAAAAAAVEVTVDE5OCAgICAgIAAAVEVTVFZJTjAwMDAwMDAwMTkAAAAAAAAAAAAAAAAAAAAAVEVTVDE5OSAgICAgIAAAVEVTVFZJTjAwMDAwMDAwMTkAAAAAAAAAAAAAAAAAAAAAVEVTVDIwMCAgICAgIAAAVEVTVFZJTjAwMDAwMDAwMjA="
+}

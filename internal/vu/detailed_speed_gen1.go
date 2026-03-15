@@ -227,7 +227,6 @@ func (opts MarshalOptions) marshalDetailedSpeedBlock(block *vuv1.DetailedSpeedGe
 }
 
 // anonymizeDetailedSpeedGen1 anonymizes Gen1 Detailed Speed data.
-// TODO: Implement full semantic anonymization (anonymize speed records if needed).
 func (opts AnonymizeOptions) anonymizeDetailedSpeedGen1(ds *vuv1.DetailedSpeedGen1) *vuv1.DetailedSpeedGen1 {
 	if ds == nil {
 		return nil

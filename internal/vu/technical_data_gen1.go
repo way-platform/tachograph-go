@@ -189,7 +189,6 @@ func (opts MarshalOptions) MarshalTechnicalDataGen1(technicalData *vuv1.Technica
 }
 
 // anonymizeTechnicalDataGen1 anonymizes Gen1 Technical Data.
-// TODO: Implement full semantic anonymization (anonymize VIN, VRN, sensor IDs, etc.).
 func (opts AnonymizeOptions) anonymizeTechnicalDataGen1(td *vuv1.TechnicalDataGen1) *vuv1.TechnicalDataGen1 {
 	if td == nil {
 		return nil

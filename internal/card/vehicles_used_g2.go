@@ -150,12 +150,19 @@ func (opts AnonymizeOptions) anonymizeVehiclesUsedG2(v *cardv1.VehiclesUsedG2) *
 		testVIN := fmt.Sprintf("TESTVIN%011d", i+1)
 		anonRecord.SetVehicleIdentificationNumber(testVIN)
 
-		// Anonymize VRN
-		if vrn := anonRecord.GetVehicleRegistration(); vrn != nil {
+		// Anonymize VRN — build fresh to avoid raw_data leaking from clone
+		if vrn := record.GetVehicleRegistration(); vrn != nil {
+			freshVRN := &ddv1.VehicleRegistrationIdentification{}
+			freshVRN.SetNation(vrn.GetNation())
 			if vrnNum := vrn.GetNumber(); vrnNum != nil {
 				testVRN := fmt.Sprintf("TEST%03d", i+1)
-				vrnNum.SetValue(testVRN)
+				freshNum := &ddv1.StringValue{}
+				freshNum.SetEncoding(vrnNum.GetEncoding())
+				freshNum.SetLength(vrnNum.GetLength())
+				freshNum.SetValue(testVRN)
+				freshVRN.SetNumber(freshNum)
 			}
+			anonRecord.SetVehicleRegistration(freshVRN)
 		}
 
 		anonymizedRecords = append(anonymizedRecords, anonRecord)

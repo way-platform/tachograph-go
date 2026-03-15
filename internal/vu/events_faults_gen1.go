@@ -278,7 +278,6 @@ func (opts MarshalOptions) MarshalEventsAndFaultsGen1(eventsAndFaults *vuv1.Even
 }
 
 // anonymizeEventsAndFaultsGen1 anonymizes Gen1 Events and Faults data.
-// TODO: Implement full semantic anonymization (anonymize event/fault records, timestamps, etc.).
 func (opts AnonymizeOptions) anonymizeEventsAndFaultsGen1(ef *vuv1.EventsAndFaultsGen1) *vuv1.EventsAndFaultsGen1 {
 	if ef == nil {
 		return nil

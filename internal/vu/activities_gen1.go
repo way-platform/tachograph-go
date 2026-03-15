@@ -54,8 +54,6 @@ import (
 //
 // - Signature: 128 bytes (RSA-1024)
 //
-// Note: This is a minimal implementation that validates the binary structure and stores raw_data.
-// Full semantic parsing of all nested records is TODO.
 func unmarshalActivitiesGen1(value []byte) (*vuv1.ActivitiesGen1, error) {
 	// Split transfer value into data and signature
 	// Gen1 uses fixed 128-byte RSA-1024 signatures
@@ -348,7 +346,6 @@ func (opts MarshalOptions) MarshalActivitiesGen1(activities *vuv1.ActivitiesGen1
 }
 
 // anonymizeActivitiesGen1 anonymizes Gen1 Activities data.
-// TODO: Implement full semantic anonymization (anonymize card numbers, timestamps, etc.).
 func (opts AnonymizeOptions) anonymizeActivitiesGen1(activities *vuv1.ActivitiesGen1) *vuv1.ActivitiesGen1 {
 	if activities == nil {
 		return nil
@@ -435,6 +432,18 @@ func (opts AnonymizeOptions) anonymizeActivitiesGen1(activities *vuv1.Activities
 		anonymizedPlaceRecords = append(anonymizedPlaceRecords, ddOpts.AnonymizeVuPlaceDailyWorkPeriodRecord(placeRecord))
 	}
 	result.SetPlaceRecords(anonymizedPlaceRecords)
+
+	// Anonymize specific condition records (timestamps are PII)
+	var anonymizedSpecificConditions []*ddv1.SpecificConditionRecord
+	for _, sc := range result.GetSpecificConditions() {
+		if sc == nil {
+			continue
+		}
+		anonSC := proto.Clone(sc).(*ddv1.SpecificConditionRecord)
+		anonSC.SetEntryTime(ddOpts.AnonymizeTimestamp(sc.GetEntryTime()))
+		anonymizedSpecificConditions = append(anonymizedSpecificConditions, anonSC)
+	}
+	result.SetSpecificConditions(anonymizedSpecificConditions)
 
 	// Set signature to zero bytes (TV format: maintains structure)
 	// Gen1 uses fixed 128-byte RSA-1024 signatures

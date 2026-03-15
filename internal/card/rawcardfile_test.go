@@ -14,6 +14,88 @@ import (
 	"google.golang.org/protobuf/testing/protocmp"
 )
 
+// TestDriverCardFileGolden validates full semantic card file parsing against golden JSON files.
+//
+// Run with -update flag to regenerate golden files.
+func TestDriverCardFileGolden(t *testing.T) {
+	testFiles, err := filepath.Glob("../../testdata/card/driver/*.DDD")
+	if err != nil {
+		t.Fatalf("failed to glob test files: %v", err)
+	}
+
+	if len(testFiles) == 0 {
+		t.Skip("no card driver test files found")
+	}
+
+	for _, testFile := range testFiles {
+		t.Run(filepath.Base(testFile), func(t *testing.T) {
+			data, err := os.ReadFile(testFile)
+			if err != nil {
+				t.Fatalf("failed to read test file: %v", err)
+			}
+
+			rawFile, err := UnmarshalOptions{}.UnmarshalRawCardFile(data)
+			if err != nil {
+				t.Fatalf("UnmarshalOptions.UnmarshalRawCardFile failed: %v", err)
+			}
+			cardFile, err := ParseOptions{}.ParseRawDriverCardFile(rawFile)
+			if err != nil {
+				t.Fatalf("ParseOptions.ParseRawDriverCardFile failed: %v", err)
+			}
+
+			goldenPath := filepath.Join("testdata", filepath.Base(testFile)+".golden.json")
+
+			m := protojson.MarshalOptions{
+				UseProtoNames: true,
+			}
+			gotJSON, err := m.Marshal(cardFile)
+			if err != nil {
+				t.Fatalf("failed to marshal to JSON: %v", err)
+			}
+
+			if *update {
+				var indentedJSON bytes.Buffer
+				if err := json.Indent(&indentedJSON, gotJSON, "", "  "); err != nil {
+					t.Fatalf("failed to indent JSON: %v", err)
+				}
+
+				if err := os.MkdirAll("testdata", 0o755); err != nil {
+					t.Fatalf("failed to create testdata directory: %v", err)
+				}
+				if err := os.WriteFile(goldenPath, indentedJSON.Bytes(), 0o644); err != nil {
+					t.Fatalf("failed to write golden file: %v", err)
+				}
+				t.Logf("Updated golden file: %s", goldenPath)
+				return
+			}
+
+			wantJSON, err := os.ReadFile(goldenPath)
+			if err != nil {
+				if os.IsNotExist(err) {
+					t.Skipf("Golden file does not exist: %s. Run with -update to create it.", goldenPath)
+				}
+				t.Fatalf("failed to read golden file %s: %v", goldenPath, err)
+			}
+
+			var indentedGotJSON bytes.Buffer
+			if err := json.Indent(&indentedGotJSON, gotJSON, "", "  "); err != nil {
+				t.Fatalf("failed to indent got JSON: %v", err)
+			}
+
+			var indentedWantJSON bytes.Buffer
+			if err := json.Indent(&indentedWantJSON, wantJSON, "", "  "); err != nil {
+				t.Fatalf("failed to indent golden file JSON: %v", err)
+			}
+
+			if diff := cmp.Diff(indentedWantJSON.String(), indentedGotJSON.String()); diff != "" {
+				t.Errorf("Golden file mismatch (-want +got):\n%s", diff)
+			}
+
+			t.Logf("Successfully validated against golden file")
+		})
+	}
+}
+
 // Test_roundTrip_rawCardFile tests that RawCardFile → Binary → RawCardFile conversion is 100% perfect
 func Test_roundTrip_rawCardFile(t *testing.T) {
 	// Check if testdata directory exists
