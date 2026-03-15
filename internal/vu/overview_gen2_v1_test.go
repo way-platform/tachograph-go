@@ -3,11 +3,58 @@ package vu
 import (
 	"strings"
 	"testing"
+	"time"
 
 	"github.com/google/go-cmp/cmp"
 
+	ddv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
 	vuv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/vu/v1"
+	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
 )
+
+func TestAnonymizeOverview_Gen2V1(t *testing.T) {
+	// No real Gen2V1 VU hexdumps available; use synthetic construction.
+	vin := &ddv1.Ia5StringValue{}
+	vin.SetValue("WDB9634031L123456")
+
+	overview := &vuv1.OverviewGen2V1{}
+	overview.SetVehicleIdentificationNumber(vin)
+	ts := timestamppb.New(time.Date(2025, 9, 12, 10, 0, 0, 0, time.UTC))
+	overview.SetCurrentDateTime(ts)
+	period := &ddv1.DownloadablePeriod{}
+	period.SetMinTime(timestamppb.New(time.Date(2025, 9, 1, 0, 0, 0, 0, time.UTC)))
+	period.SetMaxTime(timestamppb.New(time.Date(2025, 9, 12, 0, 0, 0, 0, time.UTC)))
+	overview.SetDownloadablePeriod(period)
+
+	anon := AnonymizeOptions{}.anonymizeOverviewGen2V1(overview)
+	if anon == nil {
+		t.Fatal("anonymize returned nil")
+	}
+
+	// Certificates cleared (set to empty bytes)
+	if len(anon.GetMemberStateCertificate()) != 0 {
+		t.Error("expected MemberStateCertificate to be empty after anonymization")
+	}
+	if len(anon.GetVuCertificate()) != 0 {
+		t.Error("expected VuCertificate to be empty after anonymization")
+	}
+
+	// VIN anonymized (all asterisks)
+	if vinVal := anon.GetVehicleIdentificationNumber().GetValue(); strings.Trim(vinVal, "*") != "" {
+		t.Errorf("expected VehicleIdentificationNumber to be all asterisks, got %q", vinVal)
+	}
+
+	// CurrentDateTime and DownloadablePeriod preserved
+	if diff := cmp.Diff(overview.GetCurrentDateTime().GetSeconds(), anon.GetCurrentDateTime().GetSeconds()); diff != "" {
+		t.Errorf("CurrentDateTime changed (-want +got):\n%s", diff)
+	}
+	if diff := cmp.Diff(
+		overview.GetDownloadablePeriod().GetMinTime().GetSeconds(),
+		anon.GetDownloadablePeriod().GetMinTime().GetSeconds(),
+	); diff != "" {
+		t.Errorf("DownloadablePeriod.MinTime changed (-want +got):\n%s", diff)
+	}
+}
 
 func TestOverview_Gen2V1(t *testing.T) {
 	// Discover all matching hexdump files
