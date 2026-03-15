@@ -11,3 +11,10 @@ tools/cmd/fetch-certs/fetch-certs
 
 # Ignore all testdata directories
 testdata/
+
+# Tachograph binary files (proprietary, never commit)
+*.DDD
+*.ddd
+*.V1B
+*.v1b
+fleetboard/
