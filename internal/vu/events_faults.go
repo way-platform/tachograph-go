@@ -181,61 +181,9 @@ func sizeOfEventsAndFaultsGen2V1(data []byte) (totalSize, signatureSize int, err
 }
 
 // sizeOfEventsAndFaultsGen2V2 calculates size by parsing all Gen2 V2 RecordArrays.
-// Gen2 V2 has an additional VuTimeAdjustmentGNSSRecordArray.
+// Gen2 V2 structure is identical to Gen2 V1 (see proto comment in events_faults_gen2_v2.proto).
 func sizeOfEventsAndFaultsGen2V2(data []byte) (totalSize, signatureSize int, err error) {
-	offset := 0
-
-	// VuFaultRecordArray
-	size, sizeErr := sizeOfRecordArray(data, offset)
-	if sizeErr != nil {
-		return 0, 0, fmt.Errorf("VuFaultRecordArray: %w", sizeErr)
-	}
-	offset += size
-
-	// VuEventRecordArray
-	size, sizeErr = sizeOfRecordArray(data, offset)
-	if sizeErr != nil {
-		return 0, 0, fmt.Errorf("VuEventRecordArray: %w", sizeErr)
-	}
-	offset += size
-
-	// VuOverSpeedingControlDataRecordArray
-	size, sizeErr = sizeOfRecordArray(data, offset)
-	if sizeErr != nil {
-		return 0, 0, fmt.Errorf("VuOverSpeedingControlDataRecordArray: %w", sizeErr)
-	}
-	offset += size
-
-	// VuOverSpeedingEventRecordArray
-	size, sizeErr = sizeOfRecordArray(data, offset)
-	if sizeErr != nil {
-		return 0, 0, fmt.Errorf("VuOverSpeedingEventRecordArray: %w", sizeErr)
-	}
-	offset += size
-
-	// VuTimeAdjustmentRecordArray
-	size, sizeErr = sizeOfRecordArray(data, offset)
-	if sizeErr != nil {
-		return 0, 0, fmt.Errorf("VuTimeAdjustmentRecordArray: %w", sizeErr)
-	}
-	offset += size
-
-	// VuTimeAdjustmentGNSSRecordArray (Gen2 V2+)
-	size, sizeErr = sizeOfRecordArray(data, offset)
-	if sizeErr != nil {
-		return 0, 0, fmt.Errorf("VuTimeAdjustmentGNSSRecordArray: %w", sizeErr)
-	}
-	offset += size
-
-	// SignatureRecordArray (last)
-	size, sizeErr = sizeOfRecordArray(data, offset)
-	if sizeErr != nil {
-		return 0, 0, fmt.Errorf("SignatureRecordArray: %w", sizeErr)
-	}
-	signatureSizeGen2 := size
-	offset += size
-
-	return offset, signatureSizeGen2, nil
+	return sizeOfEventsAndFaultsGen2V1(data)
 }
 
 // ===== Unmarshal Functions =====

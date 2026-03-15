@@ -85,9 +85,9 @@ func unmarshalActivitiesGen2V2(value []byte) (*vuv1.ActivitiesGen2V2, error) {
 	activities.SetActivityChanges(activityChanges)
 	offset += bytesRead
 
-	// VuPlaceDailyWorkPeriodRecordArray (Gen2v1 format - 41 bytes per record)
-	// Note: Gen2v2 may eventually use PlaceAuthRecord (42 bytes), but currently using Gen2v1 format
-	vuPlaceRecords, bytesRead, err := parseVuPlaceDailyWorkPeriodRecordArrayG2(data, offset)
+	// VuPlaceDailyWorkPeriodRecordArray (Gen2v2 - 41 bytes per record: 19 FullCardNumber + 22 PlaceAuthRecord)
+	// PlaceAuthRecord[0:21] == PlaceRecordG2 (same layout; auth byte at index 21 is dropped).
+	vuPlaceRecords, bytesRead, err := parseVuPlaceDailyWorkPeriodRecordArrayG2V2(data, offset)
 	if err != nil {
 		return nil, fmt.Errorf("parse VuPlaceDailyWorkPeriodRecordArray: %w", err)
 	}
@@ -178,12 +178,12 @@ func (opts MarshalOptions) MarshalActivitiesGen2V2(activities *vuv1.ActivitiesGe
 	result = appendRecordArrayHeader(result, 0x02, 3, 1)
 	result = append(result, odometerData...)
 
-	// VuCardIWRecordArray (Gen2 - 132 bytes per record)
+	// VuCardIWRecordArray (Gen2 - 131 bytes per record)
 	cardIWData, err := marshalCardIWRecordsG2V2(activities.GetCardIwData())
 	if err != nil {
 		return nil, fmt.Errorf("marshal VuCardIWRecordArray: %w", err)
 	}
-	result = appendRecordArrayHeader(result, 0x03, 132, uint16(len(activities.GetCardIwData())))
+	result = appendRecordArrayHeader(result, 0x03, 131, uint16(len(activities.GetCardIwData())))
 	result = append(result, cardIWData...)
 
 	// VuActivityDailyRecordArray (2 bytes per record)
@@ -194,20 +194,20 @@ func (opts MarshalOptions) MarshalActivitiesGen2V2(activities *vuv1.ActivitiesGe
 	result = appendRecordArrayHeader(result, 0x04, 2, uint16(len(activities.GetActivityChanges())))
 	result = append(result, activityData...)
 
-	// VuPlaceDailyWorkPeriodRecordArray (Gen2v2 - 41 bytes per record)
+	// VuPlaceDailyWorkPeriodRecordArray (Gen2v2 - 40 bytes per record)
 	placeData, err := marshalPlaceRecordsG2V2(activities.GetPlaces())
 	if err != nil {
 		return nil, fmt.Errorf("marshal VuPlaceDailyWorkPeriodRecordArray: %w", err)
 	}
-	result = appendRecordArrayHeader(result, 0x05, 41, uint16(len(activities.GetPlaces())))
+	result = appendRecordArrayHeader(result, 0x05, 40, uint16(len(activities.GetPlaces())))
 	result = append(result, placeData...)
 
-	// VuGNSSADRecordArray (Gen2v2 - 59 bytes per record with authentication)
+	// VuGNSSADRecordArray (Gen2v2 - 57 bytes per record with authentication)
 	gnssData, err := marshalGnssAccumulatedDrivingRecordsV2(activities.GetGnssAccumulatedDriving())
 	if err != nil {
 		return nil, fmt.Errorf("marshal VuGNSSADRecordArray: %w", err)
 	}
-	result = appendRecordArrayHeader(result, 0x06, 59, uint16(len(activities.GetGnssAccumulatedDriving())))
+	result = appendRecordArrayHeader(result, 0x06, 57, uint16(len(activities.GetGnssAccumulatedDriving())))
 	result = append(result, gnssData...)
 
 	// VuSpecificConditionRecordArray (5 bytes per record)
@@ -218,39 +218,84 @@ func (opts MarshalOptions) MarshalActivitiesGen2V2(activities *vuv1.ActivitiesGe
 	result = appendRecordArrayHeader(result, 0x07, 5, uint16(len(activities.GetSpecificConditions())))
 	result = append(result, specificCondData...)
 
-	// VuBorderCrossingRecordArray (Gen2v2 - 57 bytes per record)
+	// VuBorderCrossingRecordArray (Gen2v2 - 55 bytes per record)
 	borderCrossingData, err := marshalBorderCrossingRecords(activities.GetBorderCrossings())
 	if err != nil {
 		return nil, fmt.Errorf("marshal VuBorderCrossingRecordArray: %w", err)
 	}
-	result = appendRecordArrayHeader(result, 0x08, 57, uint16(len(activities.GetBorderCrossings())))
+	result = appendRecordArrayHeader(result, 0x08, 55, uint16(len(activities.GetBorderCrossings())))
 	result = append(result, borderCrossingData...)
 
-	// VuLoadUnloadRecordArray (Gen2v2 - 60 bytes per record)
+	// VuLoadUnloadRecordArray (Gen2v2 - 58 bytes per record)
 	loadUnloadData, err := marshalLoadUnloadRecords(activities.GetLoadUnloadOperations())
 	if err != nil {
 		return nil, fmt.Errorf("marshal VuLoadUnloadRecordArray: %w", err)
 	}
-	result = appendRecordArrayHeader(result, 0x09, 60, uint16(len(activities.GetLoadUnloadOperations())))
+	result = appendRecordArrayHeader(result, 0x09, 58, uint16(len(activities.GetLoadUnloadOperations())))
 	result = append(result, loadUnloadData...)
 
 	// Append signature at the end (TV format: maintains structure)
 	// Gen2 uses variable-length ECDSA signatures
-	result = append(result, activities.GetSignature()...)
+	result = appendSignatureRecordArray(result, activities.GetSignature())
 
 	return result, nil
 }
 
 // Helper functions for parsing Gen2 V2 RecordArrays
 
-// parseVuGNSSADRecordArrayG2 parses a VuGNSSADRecordArray (Gen2v2 - 59 bytes per record with authentication).
+// parseVuPlaceDailyWorkPeriodRecordArrayG2V2 parses a VuPlaceDailyWorkPeriodRecordArray for Gen2v2.
+//
+// Gen2v2 place records are 41 bytes: 19 (FullCardNumberAndGeneration) + 22 (PlaceAuthRecord).
+// PlaceAuthRecord[0:21] has the same binary layout as PlaceRecordG2[0:21]; the final byte
+// of PlaceAuthRecord is an authentication status tag that we drop when converting to PlaceRecordG2.
+func parseVuPlaceDailyWorkPeriodRecordArrayG2V2(data []byte, offset int) ([]*ddv1.VuPlaceDailyWorkPeriodRecordG2, int, error) {
+	_, recordSize, noOfRecords, headerSize, err := parseRecordArrayHeader(data, offset)
+	if err != nil {
+		return nil, 0, err
+	}
+
+	// Accept both 40 bytes (Gen2v1 layout, from our own marshal) and 41 bytes
+	// (Gen2v2 device format: 19 FullCardNumber + 22 PlaceAuthRecord). The
+	// PlaceAuthRecord auth-status byte at index 40 is dropped in both cases.
+	const (
+		v1RecordSize = 40
+		v2RecordSize = 41
+	)
+	if recordSize != v1RecordSize && recordSize != v2RecordSize {
+		return nil, 0, fmt.Errorf("expected VuPlaceDailyWorkPeriodRecord size %d or %d, got %d", v1RecordSize, v2RecordSize, recordSize)
+	}
+
+	opts := dd.UnmarshalOptions{PreserveRawData: true}
+
+	records := make([]*ddv1.VuPlaceDailyWorkPeriodRecordG2, 0, noOfRecords)
+	recStart := offset + headerSize
+
+	for i := range noOfRecords {
+		recEnd := recStart + int(recordSize)
+		if recEnd > len(data) {
+			return nil, 0, fmt.Errorf("insufficient data for VuPlaceDailyWorkPeriodRecord %d", i)
+		}
+		// Parse exactly 40 bytes; the auth-status byte (when recordSize=41) is dropped
+		record, err := opts.UnmarshalVuPlaceDailyWorkPeriodRecordG2(data[recStart : recStart+v1RecordSize])
+		if err != nil {
+			return nil, 0, fmt.Errorf("unmarshal VuPlaceDailyWorkPeriodRecord %d: %w", i, err)
+		}
+		records = append(records, record)
+		recStart = recEnd
+	}
+
+	totalSize := headerSize + int(recordSize)*int(noOfRecords)
+	return records, totalSize, nil
+}
+
+// parseVuGNSSADRecordArrayG2 parses a VuGNSSADRecordArray (Gen2v2 - 57 bytes per record with authentication).
 func parseVuGNSSADRecordArrayG2(data []byte, offset int) ([]*ddv1.VuGNSSADRecordG2, int, error) {
 	_, recordSize, noOfRecords, headerSize, err := parseRecordArrayHeader(data, offset)
 	if err != nil {
 		return nil, 0, err
 	}
 
-	const expectedRecordSize = 59 // Gen2v2
+	const expectedRecordSize = 57 // Gen2v2
 	if recordSize != expectedRecordSize {
 		return nil, 0, fmt.Errorf("expected VuGNSSADRecordG2 size %d, got %d", expectedRecordSize, recordSize)
 	}
@@ -260,7 +305,7 @@ func parseVuGNSSADRecordArrayG2(data []byte, offset int) ([]*ddv1.VuGNSSADRecord
 	records := make([]*ddv1.VuGNSSADRecordG2, 0, noOfRecords)
 	recordStart := offset + headerSize
 
-	for i := uint16(0); i < noOfRecords; i++ {
+	for i := range noOfRecords {
 		recordEnd := recordStart + int(recordSize)
 		if recordEnd > len(data) {
 			return nil, 0, fmt.Errorf("insufficient data for VuGNSSADRecordG2 %d", i)
@@ -286,7 +331,7 @@ func parseVuBorderCrossingRecordArray(data []byte, offset int) ([]*ddv1.VuBorder
 		return nil, 0, err
 	}
 
-	const expectedRecordSize = 57
+	const expectedRecordSize = 55
 	if recordSize != expectedRecordSize {
 		return nil, 0, fmt.Errorf("expected VuBorderCrossingRecord size %d, got %d", expectedRecordSize, recordSize)
 	}
@@ -296,7 +341,7 @@ func parseVuBorderCrossingRecordArray(data []byte, offset int) ([]*ddv1.VuBorder
 	records := make([]*ddv1.VuBorderCrossingRecord, 0, noOfRecords)
 	recordStart := offset + headerSize
 
-	for i := uint16(0); i < noOfRecords; i++ {
+	for i := range noOfRecords {
 		recordEnd := recordStart + int(recordSize)
 		if recordEnd > len(data) {
 			return nil, 0, fmt.Errorf("insufficient data for VuBorderCrossingRecord %d", i)
@@ -322,7 +367,7 @@ func parseVuLoadUnloadRecordArray(data []byte, offset int) ([]*ddv1.VuLoadUnload
 		return nil, 0, err
 	}
 
-	const expectedRecordSize = 60
+	const expectedRecordSize = 58
 	if recordSize != expectedRecordSize {
 		return nil, 0, fmt.Errorf("expected VuLoadUnloadRecord size %d, got %d", expectedRecordSize, recordSize)
 	}
@@ -332,7 +377,7 @@ func parseVuLoadUnloadRecordArray(data []byte, offset int) ([]*ddv1.VuLoadUnload
 	records := make([]*ddv1.VuLoadUnloadRecord, 0, noOfRecords)
 	recordStart := offset + headerSize
 
-	for i := uint16(0); i < noOfRecords; i++ {
+	for i := range noOfRecords {
 		recordEnd := recordStart + int(recordSize)
 		if recordEnd > len(data) {
 			return nil, 0, fmt.Errorf("insufficient data for VuLoadUnloadRecord %d", i)

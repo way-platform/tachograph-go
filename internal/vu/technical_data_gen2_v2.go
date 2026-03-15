@@ -61,20 +61,27 @@ func unmarshalTechnicalDataGen2V2(value []byte) (*vuv1.TechnicalDataGen2V2, erro
 	td.SetPairedSensors(pairedSensors)
 	offset += bytesRead
 
-	// SensorExternalGNSSCoupledRecordArray
-	ddGnss, bytesRead, err := parseSensorExternalGNSSCoupledRecordArrayGen2(data, offset)
-	if err != nil {
-		return nil, fmt.Errorf("parse SensorExternalGNSSCoupledRecordArray: %w", err)
-	}
-	td.SetCoupledGnssFacilities(ddGnss)
-	offset += bytesRead
-
 	// VuCalibrationRecordArray
 	calRecords, bytesRead, err := parseCalibrationRecordArrayGen2V2(data, offset)
 	if err != nil {
 		return nil, fmt.Errorf("parse VuCalibrationRecordArray: %w", err)
 	}
 	td.SetCalibrationRecords(calRecords)
+	offset += bytesRead
+
+	// VuCardRecordArray — skip without parsing (not needed for technical data)
+	skipSize, sizeErr := sizeOfRecordArray(data, offset)
+	if sizeErr != nil {
+		return nil, fmt.Errorf("skip VuCardRecordArray: %w", sizeErr)
+	}
+	offset += skipSize
+
+	// SensorExternalGNSSCoupledRecordArray
+	ddGnss, bytesRead, err := parseSensorExternalGNSSCoupledRecordArrayGen2(data, offset)
+	if err != nil {
+		return nil, fmt.Errorf("parse SensorExternalGNSSCoupledRecordArray: %w", err)
+	}
+	td.SetCoupledGnssFacilities(ddGnss)
 	offset += bytesRead
 
 	// VuITSConsentRecordArray
@@ -133,15 +140,6 @@ func (opts MarshalOptions) MarshalTechnicalDataGen2V2(td *vuv1.TechnicalDataGen2
 	result = appendRecordArrayHeader(result, 0x02, 28, uint16(len(sensors)))
 	result = append(result, sensorData...)
 
-	// SensorExternalGNSSCoupledRecordArray (N records × 28 bytes)
-	gnss := td.GetCoupledGnssFacilities()
-	gnssData, err := marshalCoupledGnssRecordsGen2V2(marshalOpts, gnss)
-	if err != nil {
-		return nil, fmt.Errorf("marshal SensorExternalGNSSCoupledRecordArray: %w", err)
-	}
-	result = appendRecordArrayHeader(result, 0x03, 28, uint16(len(gnss)))
-	result = append(result, gnssData...)
-
 	// VuCalibrationRecordArray (N records × 168 bytes)
 	calRecords := td.GetCalibrationRecords()
 	calData, err := marshalCalibrationRecordsGen2V2(marshalOpts, calRecords)
@@ -150,6 +148,19 @@ func (opts MarshalOptions) MarshalTechnicalDataGen2V2(td *vuv1.TechnicalDataGen2
 	}
 	result = appendRecordArrayHeader(result, 0x04, 168, uint16(len(calRecords)))
 	result = append(result, calData...)
+
+	// VuCardRecordArray — emit empty placeholder (type 0x0c, 0 records) so the
+	// positional parse order matches real Gen2V2 devices.
+	result = appendRecordArrayHeader(result, 0x0c, 0, 0)
+
+	// SensorExternalGNSSCoupledRecordArray (N records × 28 bytes)
+	gnss := td.GetCoupledGnssFacilities()
+	gnssData, err := marshalCoupledGnssRecordsGen2V2(marshalOpts, gnss)
+	if err != nil {
+		return nil, fmt.Errorf("marshal SensorExternalGNSSCoupledRecordArray: %w", err)
+	}
+	result = appendRecordArrayHeader(result, 0x03, 28, uint16(len(gnss)))
+	result = append(result, gnssData...)
 
 	// VuITSConsentRecordArray (N records × 20 bytes)
 	itsConsents := td.GetItsConsentRecords()
@@ -169,7 +180,7 @@ func (opts MarshalOptions) MarshalTechnicalDataGen2V2(td *vuv1.TechnicalDataGen2
 	result = appendRecordArrayHeader(result, 0x06, 5, uint16(len(powerInterruptions)))
 	result = append(result, powerData...)
 
-	result = append(result, td.GetSignature()...)
+	result = appendSignatureRecordArray(result, td.GetSignature())
 	return result, nil
 }
 
@@ -191,7 +202,7 @@ func (opts AnonymizeOptions) anonymizeTechnicalDataGen2V2(td *vuv1.TechnicalData
 		anon := &vuv1.TechnicalDataGen2V2_VuIdentification{}
 		anon.SetManufacturerName(ddOpts.AnonymizeStringValue(vuIdent.GetManufacturerName()))
 		anon.SetManufacturerAddress(ddOpts.AnonymizeStringValue(vuIdent.GetManufacturerAddress()))
-		anon.SetPartNumber(ia5ToStringValue(ddOpts.AnonymizeIa5StringValue(stringValueToIa5(vuIdent.GetPartNumber(), 16))))
+		anon.SetPartNumber(ddOpts.AnonymizeIa5StringValue(vuIdent.GetPartNumber()))
 		if sn := vuIdent.GetSerialNumber(); sn != nil {
 			anonSn := &ddv1.ExtendedSerialNumber{}
 			anonSn.SetType(sn.GetType())
@@ -201,7 +212,7 @@ func (opts AnonymizeOptions) anonymizeTechnicalDataGen2V2(td *vuv1.TechnicalData
 		}
 		anon.SetSoftwareIdentification(vuIdent.GetSoftwareIdentification())
 		anon.SetManufacturingDate(vuIdent.GetManufacturingDate())
-		anon.SetApprovalNumber(ia5ToStringValue(dd.NewIa5StringValue(16, "TEST0001")))
+		anon.SetApprovalNumber(dd.NewIa5StringValue(16, "TEST0001"))
 		result.SetVuIdentification(anon)
 	}
 
@@ -216,7 +227,7 @@ func (opts AnonymizeOptions) anonymizeTechnicalDataGen2V2(td *vuv1.TechnicalData
 			anonSn.SetSerialNumber(0)
 			anon.SetSerialNumber(anonSn)
 		}
-		anon.SetApprovalNumber(ia5ToStringValue(dd.NewIa5StringValue(16, "SENSOR01")))
+		anon.SetApprovalNumber(dd.NewIa5StringValue(16, "SENSOR01"))
 		anon.SetPairingDate(sensor.GetPairingDate())
 		anonSensors[i] = anon
 	}
@@ -233,7 +244,7 @@ func (opts AnonymizeOptions) anonymizeTechnicalDataGen2V2(td *vuv1.TechnicalData
 			anonSn.SetSerialNumber(0)
 			anon.SetSerialNumber(anonSn)
 		}
-		anon.SetApprovalNumber(ia5ToStringValue(dd.NewIa5StringValue(16, "GNSS0001")))
+		anon.SetApprovalNumber(dd.NewIa5StringValue(16, "GNSS0001"))
 		anon.SetCouplingDate(gnss.GetCouplingDate())
 		anonGnss[i] = anon
 	}
@@ -249,12 +260,12 @@ func (opts AnonymizeOptions) anonymizeTechnicalDataGen2V2(td *vuv1.TechnicalData
 		anon.SetWorkshopAddress(ddOpts.AnonymizeStringValue(cal.GetWorkshopAddress()))
 		anon.SetWorkshopCardNumberAndGeneration(ddOpts.AnonymizeFullCardNumberAndGeneration(cal.GetWorkshopCardNumberAndGeneration()))
 		anon.SetWorkshopCardExpiryDate(cal.GetWorkshopCardExpiryDate())
-		anon.SetVin(ia5ToStringValue(ddOpts.AnonymizeIa5StringValue(stringValueToIa5(cal.GetVin(), 17))))
+		anon.SetVin(ddOpts.AnonymizeIa5StringValue(cal.GetVin()))
 		anon.SetVehicleRegistration(ddOpts.AnonymizeVehicleRegistrationIdentification(cal.GetVehicleRegistration()))
 		anon.SetWVehicleCharacteristicConstant(cal.GetWVehicleCharacteristicConstant())
 		anon.SetKConstantOfRecordingEquipment(cal.GetKConstantOfRecordingEquipment())
 		anon.SetLTyreCircumferenceEighthsMm(cal.GetLTyreCircumferenceEighthsMm())
-		anon.SetTyreSize(ia5ToStringValue(ddOpts.AnonymizeIa5StringValue(stringValueToIa5(cal.GetTyreSize(), 15))))
+		anon.SetTyreSize(ddOpts.AnonymizeIa5StringValue(cal.GetTyreSize()))
 		anon.SetAuthorisedSpeedKmh(cal.GetAuthorisedSpeedKmh())
 		anon.SetOldOdometerValueKm(ddOpts.AnonymizeOdometerValue(cal.GetOldOdometerValueKm()))
 		anon.SetNewOdometerValueKm(ddOpts.AnonymizeOdometerValue(cal.GetNewOdometerValueKm()))
@@ -297,9 +308,9 @@ func parseSensorExternalGNSSCoupledRecordArrayGen2(data []byte, offset int) ([]*
 		return nil, 0, err
 	}
 
-	const expectedRecordSize = 28
-	if recordSize != expectedRecordSize {
-		return nil, 0, fmt.Errorf("expected CoupledGnss record size %d, got %d", expectedRecordSize, recordSize)
+	const minRecordSize = 28
+	if recordSize < minRecordSize {
+		return nil, 0, fmt.Errorf("expected CoupledGnss record size >= %d, got %d", minRecordSize, recordSize)
 	}
 
 	var unmarshalOpts dd.UnmarshalOptions
@@ -311,14 +322,14 @@ func parseSensorExternalGNSSCoupledRecordArrayGen2(data []byte, offset int) ([]*
 		if recEnd > len(data) {
 			return nil, 0, fmt.Errorf("insufficient data for CoupledGnss record %d", i)
 		}
-		// Reuse SensorPaired parser — same binary layout
-		sensor, err := unmarshalOpts.UnmarshalSensorPaired(data[recStart:recEnd])
+		// Reuse SensorPaired parser — same 28-byte binary layout; ignore trailing bytes
+		sensor, err := unmarshalOpts.UnmarshalSensorPaired(data[recStart : recStart+minRecordSize])
 		if err != nil {
 			return nil, 0, fmt.Errorf("CoupledGnss record %d: %w", i, err)
 		}
 		gnss := &vuv1.TechnicalDataGen2V2_CoupledGnss{}
 		gnss.SetSerialNumber(sensor.GetSerialNumber())
-		gnss.SetApprovalNumber(ia5ToStringValue(sensor.GetApprovalNumber()))
+		gnss.SetApprovalNumber(sensor.GetApprovalNumber())
 		gnss.SetCouplingDate(sensor.GetPairingDate())
 		records = append(records, gnss)
 		recStart = recEnd
@@ -334,10 +345,7 @@ func parseCalibrationRecordArrayGen2V2(data []byte, offset int) ([]*vuv1.Technic
 		return nil, 0, err
 	}
 
-	const expectedRecordSize = 168
-	if recordSize != expectedRecordSize {
-		return nil, 0, fmt.Errorf("expected Gen2 CalibrationRecord size %d, got %d", expectedRecordSize, recordSize)
-	}
+	// Accept any record size — real devices may report unexpected sizes (e.g. 28 with 0 records)
 
 	var unmarshalOpts dd.UnmarshalOptions
 	records := make([]*vuv1.TechnicalDataGen2V2_CalibrationRecord, 0, noOfRecords)
@@ -415,9 +423,9 @@ func parsePowerSupplyInterruptionRecordArrayGen2V2(data []byte, offset int) ([]*
 		return nil, 0, err
 	}
 
-	const expectedRecordSize = 5
-	if recordSize != expectedRecordSize {
-		return nil, 0, fmt.Errorf("expected PowerSupplyInterruptionRecord size %d, got %d", expectedRecordSize, recordSize)
+	const minPSIRecordSize = 5
+	if recordSize < minPSIRecordSize {
+		return nil, 0, fmt.Errorf("expected PowerSupplyInterruptionRecord size >= %d, got %d", minPSIRecordSize, recordSize)
 	}
 
 	var unmarshalOpts dd.UnmarshalOptions
@@ -429,7 +437,7 @@ func parsePowerSupplyInterruptionRecordArrayGen2V2(data []byte, offset int) ([]*
 		if recEnd > len(data) {
 			return nil, 0, fmt.Errorf("insufficient data for PowerSupplyInterruptionRecord %d", i)
 		}
-		rec := data[recStart:recEnd]
+		rec := data[recStart : recStart+minPSIRecordSize]
 
 		timestamp, err := unmarshalOpts.UnmarshalTimeReal(rec[:4])
 		if err != nil {
@@ -461,11 +469,11 @@ func marshalVuIdentificationGen2V2(opts dd.MarshalOptions, ident *vuv1.Technical
 	ddIdent := &ddv1.VuIdentification{}
 	ddIdent.SetManufacturerName(ident.GetManufacturerName())
 	ddIdent.SetManufacturerAddress(ident.GetManufacturerAddress())
-	ddIdent.SetPartNumber(stringValueToIa5(ident.GetPartNumber(), 16))
+	ddIdent.SetPartNumber(ident.GetPartNumber())
 	ddIdent.SetSerialNumber(ident.GetSerialNumber())
 	ddIdent.SetSoftwareIdentification(ident.GetSoftwareIdentification())
 	ddIdent.SetManufacturingDate(ident.GetManufacturingDate())
-	ddIdent.SetApprovalNumber(stringValueToIa5(ident.GetApprovalNumber(), 16))
+	ddIdent.SetApprovalNumber(ident.GetApprovalNumber())
 	return opts.MarshalVuIdentification(ddIdent)
 }
 
@@ -475,7 +483,7 @@ func marshalSensorPairedRecordsGen2V2(opts dd.MarshalOptions, sensors []*vuv1.Te
 	for i, sensor := range sensors {
 		ddSensor := &ddv1.SensorPaired{}
 		ddSensor.SetSerialNumber(sensor.GetSerialNumber())
-		ddSensor.SetApprovalNumber(stringValueToIa5(sensor.GetApprovalNumber(), 16))
+		ddSensor.SetApprovalNumber(sensor.GetApprovalNumber())
 		ddSensor.SetPairingDate(sensor.GetPairingDate())
 		b, err := opts.MarshalSensorPaired(ddSensor)
 		if err != nil {
@@ -493,7 +501,7 @@ func marshalCoupledGnssRecordsGen2V2(opts dd.MarshalOptions, gnssRecords []*vuv1
 	for i, gnss := range gnssRecords {
 		ddSensor := &ddv1.SensorPaired{}
 		ddSensor.SetSerialNumber(gnss.GetSerialNumber())
-		ddSensor.SetApprovalNumber(stringValueToIa5(gnss.GetApprovalNumber(), 16))
+		ddSensor.SetApprovalNumber(gnss.GetApprovalNumber())
 		ddSensor.SetPairingDate(gnss.GetCouplingDate())
 		b, err := opts.MarshalSensorPaired(ddSensor)
 		if err != nil {
@@ -566,11 +574,11 @@ func vuIdentToGen2V2(ddIdent *ddv1.VuIdentification) *vuv1.TechnicalDataGen2V2_V
 	ident := &vuv1.TechnicalDataGen2V2_VuIdentification{}
 	ident.SetManufacturerName(ddIdent.GetManufacturerName())
 	ident.SetManufacturerAddress(ddIdent.GetManufacturerAddress())
-	ident.SetPartNumber(ia5ToStringValue(ddIdent.GetPartNumber()))
+	ident.SetPartNumber(ddIdent.GetPartNumber())
 	ident.SetSerialNumber(ddIdent.GetSerialNumber())
 	ident.SetSoftwareIdentification(ddIdent.GetSoftwareIdentification())
 	ident.SetManufacturingDate(ddIdent.GetManufacturingDate())
-	ident.SetApprovalNumber(ia5ToStringValue(ddIdent.GetApprovalNumber()))
+	ident.SetApprovalNumber(ddIdent.GetApprovalNumber())
 	return ident
 }
 
@@ -581,7 +589,7 @@ func sensorPairedToGen2V2(s *ddv1.SensorPaired) *vuv1.TechnicalDataGen2V2_Paired
 	}
 	sensor := &vuv1.TechnicalDataGen2V2_PairedSensor{}
 	sensor.SetSerialNumber(s.GetSerialNumber())
-	sensor.SetApprovalNumber(ia5ToStringValue(s.GetApprovalNumber()))
+	sensor.SetApprovalNumber(s.GetApprovalNumber())
 	sensor.SetPairingDate(s.GetPairingDate())
 	return sensor
 }
@@ -595,12 +603,12 @@ func gen2CalibrationToV2(r gen2CalibrationRecord) *vuv1.TechnicalDataGen2V2_Cali
 	rec.SetWorkshopAddress(r.workshopAddress)
 	rec.SetWorkshopCardNumberAndGeneration(r.workshopCardNumberAndGen)
 	rec.SetWorkshopCardExpiryDate(r.workshopCardExpiryDate)
-	rec.SetVin(ia5ToStringValue(r.vin))
+	rec.SetVin(r.vin)
 	rec.SetVehicleRegistration(r.vehicleRegistration)
 	rec.SetWVehicleCharacteristicConstant(r.wVehicleCharConst)
 	rec.SetKConstantOfRecordingEquipment(r.kConstantRecordEquip)
 	rec.SetLTyreCircumferenceEighthsMm(r.lTyreCircumference)
-	rec.SetTyreSize(ia5ToStringValue(r.tyreSize))
+	rec.SetTyreSize(r.tyreSize)
 	rec.SetAuthorisedSpeedKmh(r.authorisedSpeedKmh)
 	rec.SetOldOdometerValueKm(r.oldOdometerValueKm)
 	rec.SetNewOdometerValueKm(r.newOdometerValueKm)
@@ -622,12 +630,12 @@ func gen2CalibrationFromV2(rec *vuv1.TechnicalDataGen2V2_CalibrationRecord) gen2
 		workshopAddress:          rec.GetWorkshopAddress(),
 		workshopCardNumberAndGen: rec.GetWorkshopCardNumberAndGeneration(),
 		workshopCardExpiryDate:   rec.GetWorkshopCardExpiryDate(),
-		vin:                      stringValueToIa5(rec.GetVin(), 17),
+		vin:                      rec.GetVin(),
 		vehicleRegistration:      rec.GetVehicleRegistration(),
 		wVehicleCharConst:        rec.GetWVehicleCharacteristicConstant(),
 		kConstantRecordEquip:     rec.GetKConstantOfRecordingEquipment(),
 		lTyreCircumference:       rec.GetLTyreCircumferenceEighthsMm(),
-		tyreSize:                 stringValueToIa5(rec.GetTyreSize(), 15),
+		tyreSize:                 rec.GetTyreSize(),
 		authorisedSpeedKmh:       rec.GetAuthorisedSpeedKmh(),
 		oldOdometerValueKm:       rec.GetOldOdometerValueKm(),
 		newOdometerValueKm:       rec.GetNewOdometerValueKm(),

@@ -125,61 +125,25 @@ func sizeOfTechnicalDataGen2V1(data []byte) (totalSize, signatureSize int, err e
 	return offset, signatureSizeGen2, nil
 }
 
-// sizeOfTechnicalDataGen2V2 calculates size by parsing all Gen2 V2 RecordArrays.
+// sizeOfTechnicalDataGen2V2 calculates size by scanning all Gen2 V2 RecordArrays generically.
+//
+// Real devices may include unexpected arrays (e.g. VuCard) between the standard ones,
+// so we scan until the end of data rather than expecting a fixed number of arrays.
 func sizeOfTechnicalDataGen2V2(data []byte) (totalSize, signatureSize int, err error) {
 	offset := 0
-
-	// VuIdentificationRecordArray
-	size, sizeErr := sizeOfRecordArray(data, offset)
-	if sizeErr != nil {
-		return 0, 0, fmt.Errorf("VuIdentificationRecordArray: %w", sizeErr)
+	lastSize := 0
+	for offset < len(data) {
+		size, sizeErr := sizeOfRecordArray(data, offset)
+		if sizeErr != nil {
+			return 0, 0, fmt.Errorf("RecordArray at offset %d: %w", offset, sizeErr)
+		}
+		lastSize = size
+		offset += size
 	}
-	offset += size
-
-	// SensorPairedRecordArray
-	size, sizeErr = sizeOfRecordArray(data, offset)
-	if sizeErr != nil {
-		return 0, 0, fmt.Errorf("SensorPairedRecordArray: %w", sizeErr)
+	if lastSize == 0 {
+		return 0, 0, fmt.Errorf("no RecordArrays found in TechnicalDataGen2V2")
 	}
-	offset += size
-
-	// SensorExternalGNSSCoupledRecordArray (Gen2 V2+)
-	size, sizeErr = sizeOfRecordArray(data, offset)
-	if sizeErr != nil {
-		return 0, 0, fmt.Errorf("SensorExternalGNSSCoupledRecordArray: %w", sizeErr)
-	}
-	offset += size
-
-	// VuCalibrationRecordArray
-	size, sizeErr = sizeOfRecordArray(data, offset)
-	if sizeErr != nil {
-		return 0, 0, fmt.Errorf("VuCalibrationRecordArray: %w", sizeErr)
-	}
-	offset += size
-
-	// VuITSConsentRecordArray (Gen2 V2+)
-	size, sizeErr = sizeOfRecordArray(data, offset)
-	if sizeErr != nil {
-		return 0, 0, fmt.Errorf("VuITSConsentRecordArray: %w", sizeErr)
-	}
-	offset += size
-
-	// VuPowerSupplyInterruptionRecordArray (Gen2 V2+)
-	size, sizeErr = sizeOfRecordArray(data, offset)
-	if sizeErr != nil {
-		return 0, 0, fmt.Errorf("VuPowerSupplyInterruptionRecordArray: %w", sizeErr)
-	}
-	offset += size
-
-	// SignatureRecordArray (last)
-	size, sizeErr = sizeOfRecordArray(data, offset)
-	if sizeErr != nil {
-		return 0, 0, fmt.Errorf("SignatureRecordArray: %w", sizeErr)
-	}
-	signatureSizeGen2 := size
-	offset += size
-
-	return offset, signatureSizeGen2, nil
+	return offset, lastSize, nil
 }
 
 // AppendVuTechnicalData appends VU technical data to a buffer.

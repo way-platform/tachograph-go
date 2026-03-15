@@ -73,7 +73,7 @@ func (opts MarshalOptions) MarshalDetailedSpeedGen2(detailedSpeed *vuv1.Detailed
 	result = appendRecordArrayHeader(result, 0x01, 64, uint16(len(blocks)))
 	result = append(result, speedBlockData...)
 
-	result = append(result, detailedSpeed.GetSignature()...)
+	result = appendSignatureRecordArray(result, detailedSpeed.GetSignature())
 	return result, nil
 }
 

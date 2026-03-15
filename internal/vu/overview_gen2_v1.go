@@ -219,7 +219,7 @@ func (opts MarshalOptions) MarshalOverviewGen2V1(overview *vuv1.OverviewGen2V1) 
 	result = appendRecordArrayHeader(result, 0x0A, 32, uint16(len(overview.GetControlActivities())))
 	result = append(result, controlsData...)
 
-	result = append(result, overview.GetSignature()...)
+	result = appendSignatureRecordArray(result, overview.GetSignature())
 	return result, nil
 }
 
