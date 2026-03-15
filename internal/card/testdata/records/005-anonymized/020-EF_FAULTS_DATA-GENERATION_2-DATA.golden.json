@@ -1,0 +1,256 @@
+{
+  "faults": [
+    {
+      "valid": true,
+      "faultType": "FAULT_REC_EQ_ITS_INTERFACE",
+      "faultBeginTime": "2020-01-01T00:00:00Z",
+      "faultEndTime": "2020-01-01T00:30:00Z",
+      "faultVehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "*************"
+        }
+      }
+    },
+    {
+      "valid": true,
+      "faultType": "FAULT_REC_EQ_ITS_INTERFACE",
+      "faultBeginTime": "2020-01-01T01:00:00Z",
+      "faultEndTime": "2020-01-01T01:30:00Z",
+      "faultVehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "*************"
+        }
+      }
+    },
+    {
+      "valid": true,
+      "faultType": "FAULT_REC_EQ_INTERNAL_GNSS_RECEIVER",
+      "faultBeginTime": "2020-01-01T02:00:00Z",
+      "faultEndTime": "2020-01-01T02:30:00Z",
+      "faultVehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "*************"
+        }
+      }
+    },
+    {
+      "valid": true,
+      "faultType": "FAULT_REC_EQ_ITS_INTERFACE",
+      "faultBeginTime": "2020-01-01T03:00:00Z",
+      "faultEndTime": "2020-01-01T03:30:00Z",
+      "faultVehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "*************"
+        }
+      }
+    },
+    {
+      "valid": true,
+      "faultType": "FAULT_REC_EQ_ITS_INTERFACE",
+      "faultBeginTime": "2020-01-01T04:00:00Z",
+      "faultEndTime": "2020-01-01T04:30:00Z",
+      "faultVehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "*************"
+        }
+      }
+    },
+    {
+      "valid": true,
+      "faultType": "FAULT_REC_EQ_ITS_INTERFACE",
+      "faultBeginTime": "2020-01-01T05:00:00Z",
+      "faultEndTime": "2020-01-01T05:30:00Z",
+      "faultVehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "*************"
+        }
+      }
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    }
+  ]
+}

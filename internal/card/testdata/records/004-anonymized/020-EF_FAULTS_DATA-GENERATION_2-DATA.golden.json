@@ -1,0 +1,216 @@
+{
+  "faults": [
+    {
+      "valid": true,
+      "faultType": "FAULT_REC_EQ_VU_INTERNAL_FAULT",
+      "faultBeginTime": "2020-01-01T00:00:00Z",
+      "faultEndTime": "2020-01-01T00:30:00Z",
+      "faultVehicleRegistration": {
+        "nation": "NETHERLANDS",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "*************"
+        }
+      }
+    },
+    {
+      "valid": true,
+      "faultType": "FAULT_REC_EQ_VU_INTERNAL_FAULT",
+      "faultBeginTime": "2020-01-01T01:00:00Z",
+      "faultEndTime": "2020-01-01T01:30:00Z",
+      "faultVehicleRegistration": {
+        "nation": "NETHERLANDS",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "*************"
+        }
+      }
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    }
+  ]
+}

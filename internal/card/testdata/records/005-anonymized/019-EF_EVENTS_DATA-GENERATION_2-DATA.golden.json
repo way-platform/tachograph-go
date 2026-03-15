@@ -1,0 +1,552 @@
+{
+  "events": [
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": true,
+      "eventType": "GENERAL_CARD_INSERTION_WHILE_DRIVING",
+      "eventBeginTime": "2020-01-01T12:00:00Z",
+      "eventEndTime": "2020-01-01T12:30:00Z",
+      "eventVehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "*************"
+        }
+      }
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": true,
+      "eventType": "GENERAL_LAST_CARD_SESSION_NOT_CORRECTLY_CLOSED",
+      "eventBeginTime": "2020-01-02T00:00:00Z",
+      "eventEndTime": "2020-01-02T00:30:00Z",
+      "eventVehicleRegistration": {
+        "nation": "FINLAND",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "*************"
+        }
+      }
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    }
+  ]
+}

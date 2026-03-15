@@ -1,0 +1,11 @@
+{
+  "sessionOpenTime": "2020-01-01T00:00:00Z",
+  "sessionOpenVehicle": {
+    "nation": "NATION_NUMERIC_DEFAULT",
+    "number": {
+      "encoding": "ISO_8859_1",
+      "length": 13,
+      "value": "*************"
+    }
+  }
+}

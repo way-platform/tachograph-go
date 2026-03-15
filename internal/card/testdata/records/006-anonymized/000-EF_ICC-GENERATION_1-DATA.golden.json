@@ -1,0 +1,29 @@
+{
+  "clockStop": "NOT_ALLOWED",
+  "cardExtendedSerialNumber": {
+    "serialNumber": "12345678",
+    "monthYear": {
+      "month": 1,
+      "year": 2020
+    },
+    "type": "DRIVER_CARD",
+    "manufacturerCode": 153
+  },
+  "cardApprovalNumber": {
+    "length": 8,
+    "value": "********"
+  },
+  "cardPersonaliserId": 170,
+  "embedderIcAssemblerId": {
+    "countryCode": {
+      "length": 2,
+      "value": "**"
+    },
+    "moduleEmbedder": {
+      "length": 2,
+      "value": "**"
+    },
+    "manufacturerInformation": 187
+  },
+  "icIdentifier": "zN0="
+}

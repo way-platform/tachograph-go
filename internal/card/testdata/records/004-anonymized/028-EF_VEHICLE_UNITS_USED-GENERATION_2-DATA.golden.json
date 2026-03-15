@@ -1,0 +1,1022 @@
+{
+  "vehicleUnitPointerNewestRecord": 16,
+  "records": [
+    {
+      "timestamp": "2020-01-01T00:00:00Z",
+      "manufacturerCode": 64,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "MDAwMA=="
+    },
+    {
+      "timestamp": "2020-01-01T01:00:00Z",
+      "manufacturerCode": 64,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "MDAwMA=="
+    },
+    {
+      "timestamp": "2020-01-01T02:00:00Z",
+      "manufacturerCode": 64,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "MDAwMA=="
+    },
+    {
+      "timestamp": "2020-01-01T03:00:00Z",
+      "manufacturerCode": 64,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "MDAwMA=="
+    },
+    {
+      "timestamp": "2020-01-01T04:00:00Z",
+      "manufacturerCode": 64,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "MDAwMA=="
+    },
+    {
+      "timestamp": "2020-01-01T05:00:00Z",
+      "manufacturerCode": 64,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "MDAwMA=="
+    },
+    {
+      "timestamp": "2020-01-01T06:00:00Z",
+      "manufacturerCode": 64,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "MDAwMA=="
+    },
+    {
+      "timestamp": "2020-01-01T07:00:00Z",
+      "manufacturerCode": 64,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "MDAwMA=="
+    },
+    {
+      "timestamp": "2020-01-01T08:00:00Z",
+      "manufacturerCode": 64,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "MDAwMA=="
+    },
+    {
+      "timestamp": "2020-01-01T09:00:00Z",
+      "manufacturerCode": 64,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "MDAwMA=="
+    },
+    {
+      "timestamp": "2020-01-01T10:00:00Z",
+      "manufacturerCode": 64,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "MDAwMA=="
+    },
+    {
+      "timestamp": "2020-01-01T11:00:00Z",
+      "manufacturerCode": 64,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "MDAwMA=="
+    },
+    {
+      "timestamp": "2020-01-01T12:00:00Z",
+      "manufacturerCode": 64,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "MDAwMA=="
+    },
+    {
+      "timestamp": "2020-01-01T13:00:00Z",
+      "manufacturerCode": 64,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "MDAwMA=="
+    },
+    {
+      "timestamp": "2020-01-01T14:00:00Z",
+      "manufacturerCode": 64,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "MDAwMA=="
+    },
+    {
+      "timestamp": "2020-01-01T15:00:00Z",
+      "manufacturerCode": 64,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "MDAwMA=="
+    },
+    {
+      "timestamp": "2020-01-01T16:00:00Z",
+      "manufacturerCode": 64,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "MDAwMA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    },
+    {
+      "manufacturerCode": 0,
+      "deviceId": "AA==",
+      "vuSoftwareVersion": "AAAAAA=="
+    }
+  ]
+}

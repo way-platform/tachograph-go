@@ -1,0 +1,12 @@
+{
+  "drivingLicenceIssuingAuthority": {
+    "encoding": "ISO_8859_1",
+    "length": 35,
+    "value": "***********************************"
+  },
+  "drivingLicenceIssuingNation": "NETHERLANDS",
+  "drivingLicenceNumber": {
+    "length": 16,
+    "value": "****************"
+  }
+}

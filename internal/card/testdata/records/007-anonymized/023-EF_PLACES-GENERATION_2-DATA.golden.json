@@ -1,0 +1,1575 @@
+{
+  "newestRecordIndex": 57,
+  "records": [
+    {
+      "entryTime": "2020-01-01T00:00:00Z",
+      "entryTypeDailyWorkPeriod": "END",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 304400,
+      "entryGnssPlaceRecord": {
+        "timestamp": "2020-01-01T00:00:00Z",
+        "gnssAccuracy": 6,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      }
+    },
+    {
+      "entryTypeDailyWorkPeriod": "BEGIN",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 305100,
+      "entryGnssPlaceRecord": {
+        "timestamp": "2020-01-01T01:00:00Z",
+        "gnssAccuracy": 9,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      }
+    },
+    {
+      "entryTypeDailyWorkPeriod": "END",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 305200,
+      "entryGnssPlaceRecord": {
+        "timestamp": "2020-01-01T02:00:00Z",
+        "gnssAccuracy": 8,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      }
+    },
+    {
+      "entryTypeDailyWorkPeriod": "BEGIN",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 307600,
+      "entryGnssPlaceRecord": {
+        "timestamp": "2020-01-01T03:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      }
+    },
+    {
+      "entryTypeDailyWorkPeriod": "END",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 308100,
+      "entryGnssPlaceRecord": {
+        "timestamp": "2020-01-01T04:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      }
+    },
+    {
+      "entryTypeDailyWorkPeriod": "BEGIN",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 308400,
+      "entryGnssPlaceRecord": {
+        "timestamp": "2020-01-01T05:00:00Z",
+        "gnssAccuracy": 6,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      }
+    },
+    {
+      "entryTypeDailyWorkPeriod": "END",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 309000,
+      "entryGnssPlaceRecord": {
+        "timestamp": "2020-01-01T06:00:00Z",
+        "gnssAccuracy": 6,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      }
+    },
+    {
+      "entryTypeDailyWorkPeriod": "BEGIN",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 309200,
+      "entryGnssPlaceRecord": {
+        "timestamp": "2020-01-01T07:00:00Z",
+        "gnssAccuracy": 6,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      }
+    },
+    {
+      "entryTypeDailyWorkPeriod": "END",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 309700,
+      "entryGnssPlaceRecord": {
+        "timestamp": "2020-01-01T08:00:00Z",
+        "gnssAccuracy": 6,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      }
+    },
+    {
+      "entryTypeDailyWorkPeriod": "BEGIN",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 309900,
+      "entryGnssPlaceRecord": {
+        "timestamp": "2020-01-01T09:00:00Z",
+        "gnssAccuracy": 6,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      }
+    },
+    {
+      "entryTypeDailyWorkPeriod": "END",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 310500,
+      "entryGnssPlaceRecord": {
+        "timestamp": "2020-01-01T10:00:00Z",
+        "gnssAccuracy": 6,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      }
+    },
+    {
+      "entryTypeDailyWorkPeriod": "BEGIN",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 310900,
+      "entryGnssPlaceRecord": {
+        "timestamp": "2020-01-01T11:00:00Z",
+        "gnssAccuracy": 6,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      }
+    },
+    {
+      "entryTypeDailyWorkPeriod": "END",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 311400,
+      "entryGnssPlaceRecord": {
+        "timestamp": "2020-01-01T12:00:00Z",
+        "gnssAccuracy": 6,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      }
+    },
+    {
+      "entryTypeDailyWorkPeriod": "BEGIN",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 313000,
+      "entryGnssPlaceRecord": {
+        "timestamp": "2020-01-01T13:00:00Z",
+        "gnssAccuracy": 15,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      }
+    },
+    {
+      "entryTypeDailyWorkPeriod": "END",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 313200,
+      "entryGnssPlaceRecord": {
+        "timestamp": "2020-01-01T14:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      }
+    },
+    {
+      "entryTypeDailyWorkPeriod": "BEGIN",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 313800,
+      "entryGnssPlaceRecord": {
+        "timestamp": "2020-01-01T15:00:00Z",
+        "gnssAccuracy": 8,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      }
+    },
+    {
+      "entryTypeDailyWorkPeriod": "END",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 314000,
+      "entryGnssPlaceRecord": {
+        "timestamp": "2020-01-01T16:00:00Z",
+        "gnssAccuracy": 6,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      }
+    },
+    {
+      "entryTypeDailyWorkPeriod": "BEGIN",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 314500,
+      "entryGnssPlaceRecord": {
+        "timestamp": "2020-01-01T17:00:00Z",
+        "gnssAccuracy": 12,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      }
+    },
+    {
+      "entryTypeDailyWorkPeriod": "END",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 314900,
+      "entryGnssPlaceRecord": {
+        "timestamp": "2020-01-01T18:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      }
+    },
+    {
+      "entryTypeDailyWorkPeriod": "BEGIN",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 315600,
+      "entryGnssPlaceRecord": {
+        "timestamp": "2020-01-01T19:00:00Z",
+        "gnssAccuracy": 8,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      }
+    },
+    {
+      "entryTypeDailyWorkPeriod": "END",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 316200,
+      "entryGnssPlaceRecord": {
+        "timestamp": "2020-01-01T20:00:00Z",
+        "gnssAccuracy": 10,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      }
+    },
+    {
+      "entryTypeDailyWorkPeriod": "BEGIN",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 316500,
+      "entryGnssPlaceRecord": {
+        "timestamp": "2020-01-01T21:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      }
+    },
+    {
+      "entryTypeDailyWorkPeriod": "END",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 317100,
+      "entryGnssPlaceRecord": {
+        "timestamp": "2020-01-01T22:00:00Z",
+        "gnssAccuracy": 8,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      }
+    },
+    {
+      "entryTypeDailyWorkPeriod": "BEGIN",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 317300,
+      "entryGnssPlaceRecord": {
+        "timestamp": "2020-01-01T23:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      }
+    },
+    {
+      "entryTypeDailyWorkPeriod": "END",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 317800,
+      "entryGnssPlaceRecord": {
+        "timestamp": "2020-01-02T00:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      }
+    },
+    {
+      "entryTypeDailyWorkPeriod": "BEGIN",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 318000,
+      "entryGnssPlaceRecord": {
+        "timestamp": "2020-01-02T01:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      }
+    },
+    {
+      "entryTypeDailyWorkPeriod": "END",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 318600,
+      "entryGnssPlaceRecord": {
+        "timestamp": "2020-01-02T02:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      }
+    },
+    {
+      "entryTypeDailyWorkPeriod": "BEGIN",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 318800,
+      "entryGnssPlaceRecord": {
+        "timestamp": "2020-01-02T03:00:00Z",
+        "gnssAccuracy": 9,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      }
+    },
+    {
+      "entryTypeDailyWorkPeriod": "END",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 319400,
+      "entryGnssPlaceRecord": {
+        "timestamp": "2020-01-02T04:00:00Z",
+        "gnssAccuracy": 8,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      }
+    },
+    {
+      "entryTypeDailyWorkPeriod": "BEGIN",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 329000,
+      "entryGnssPlaceRecord": {
+        "timestamp": "2020-01-02T05:00:00Z",
+        "gnssAccuracy": 6,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      }
+    },
+    {
+      "entryTypeDailyWorkPeriod": "END",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 329100,
+      "entryGnssPlaceRecord": {
+        "timestamp": "2020-01-02T06:00:00Z",
+        "gnssAccuracy": 8,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      }
+    },
+    {
+      "entryTypeDailyWorkPeriod": "BEGIN",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 329700,
+      "entryGnssPlaceRecord": {
+        "timestamp": "2020-01-02T07:00:00Z",
+        "gnssAccuracy": 6,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      }
+    },
+    {
+      "entryTypeDailyWorkPeriod": "END",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 330000,
+      "entryGnssPlaceRecord": {
+        "timestamp": "2020-01-02T08:00:00Z",
+        "gnssAccuracy": 8,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      }
+    },
+    {
+      "entryTypeDailyWorkPeriod": "BEGIN",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 330500,
+      "entryGnssPlaceRecord": {
+        "timestamp": "2020-01-02T09:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      }
+    },
+    {
+      "entryTypeDailyWorkPeriod": "END",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 330700,
+      "entryGnssPlaceRecord": {
+        "timestamp": "2020-01-02T10:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      }
+    },
+    {
+      "entryTypeDailyWorkPeriod": "BEGIN",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 331500,
+      "entryGnssPlaceRecord": {
+        "timestamp": "2020-01-02T11:00:00Z",
+        "gnssAccuracy": 8,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      }
+    },
+    {
+      "entryTypeDailyWorkPeriod": "END",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 332000,
+      "entryGnssPlaceRecord": {
+        "timestamp": "2020-01-02T12:00:00Z",
+        "gnssAccuracy": 6,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      }
+    },
+    {
+      "entryTypeDailyWorkPeriod": "BEGIN",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 332300,
+      "entryGnssPlaceRecord": {
+        "timestamp": "2020-01-02T13:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      }
+    },
+    {
+      "entryTypeDailyWorkPeriod": "END",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 332800,
+      "entryGnssPlaceRecord": {
+        "timestamp": "2020-01-02T14:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      }
+    },
+    {
+      "entryTypeDailyWorkPeriod": "BEGIN",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 333000,
+      "entryGnssPlaceRecord": {
+        "timestamp": "2020-01-02T15:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      }
+    },
+    {
+      "entryTypeDailyWorkPeriod": "END",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 333600,
+      "entryGnssPlaceRecord": {
+        "timestamp": "2020-01-02T16:00:00Z",
+        "gnssAccuracy": 8,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      }
+    },
+    {
+      "entryTypeDailyWorkPeriod": "BEGIN",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 333900,
+      "entryGnssPlaceRecord": {
+        "timestamp": "2020-01-02T17:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      }
+    },
+    {
+      "entryTypeDailyWorkPeriod": "END",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 334300,
+      "entryGnssPlaceRecord": {
+        "timestamp": "2020-01-02T18:00:00Z",
+        "gnssAccuracy": 6,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      }
+    },
+    {
+      "entryTypeDailyWorkPeriod": "BEGIN",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 334500,
+      "entryGnssPlaceRecord": {
+        "timestamp": "2020-01-02T19:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      }
+    },
+    {
+      "entryTypeDailyWorkPeriod": "END",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 335100,
+      "entryGnssPlaceRecord": {
+        "timestamp": "2020-01-02T20:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      }
+    },
+    {
+      "entryTypeDailyWorkPeriod": "BEGIN",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 335100,
+      "entryGnssPlaceRecord": {
+        "timestamp": "2020-01-02T21:00:00Z",
+        "gnssAccuracy": 6,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      }
+    },
+    {
+      "entryTypeDailyWorkPeriod": "END",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 335300,
+      "entryGnssPlaceRecord": {
+        "timestamp": "2020-01-02T22:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      }
+    },
+    {
+      "entryTypeDailyWorkPeriod": "BEGIN",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 335800,
+      "entryGnssPlaceRecord": {
+        "timestamp": "2020-01-02T23:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      }
+    },
+    {
+      "entryTypeDailyWorkPeriod": "END",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 336000,
+      "entryGnssPlaceRecord": {
+        "timestamp": "2020-01-03T00:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      }
+    },
+    {
+      "entryTypeDailyWorkPeriod": "BEGIN",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 336500,
+      "entryGnssPlaceRecord": {
+        "timestamp": "2020-01-03T01:00:00Z",
+        "gnssAccuracy": 8,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      }
+    },
+    {
+      "entryTypeDailyWorkPeriod": "END",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 336700,
+      "entryGnssPlaceRecord": {
+        "timestamp": "2020-01-03T02:00:00Z",
+        "gnssAccuracy": 6,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      }
+    },
+    {
+      "entryTypeDailyWorkPeriod": "BEGIN",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 339000,
+      "entryGnssPlaceRecord": {
+        "timestamp": "2020-01-03T03:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      }
+    },
+    {
+      "entryTypeDailyWorkPeriod": "END",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 339600,
+      "entryGnssPlaceRecord": {
+        "timestamp": "2020-01-03T04:00:00Z",
+        "gnssAccuracy": 21,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      }
+    },
+    {
+      "entryTypeDailyWorkPeriod": "BEGIN",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 339800,
+      "entryGnssPlaceRecord": {
+        "timestamp": "2020-01-03T05:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      }
+    },
+    {
+      "entryTypeDailyWorkPeriod": "END",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 340400,
+      "entryGnssPlaceRecord": {
+        "timestamp": "2020-01-03T06:00:00Z",
+        "gnssAccuracy": 18,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      }
+    },
+    {
+      "entryTypeDailyWorkPeriod": "BEGIN",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 340700,
+      "entryGnssPlaceRecord": {
+        "timestamp": "2020-01-03T07:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      }
+    },
+    {
+      "entryTypeDailyWorkPeriod": "END",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 341300,
+      "entryGnssPlaceRecord": {
+        "timestamp": "2020-01-03T08:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      }
+    },
+    {
+      "entryTypeDailyWorkPeriod": "BEGIN",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 341500,
+      "entryGnssPlaceRecord": {
+        "timestamp": "2020-01-03T09:00:00Z",
+        "gnssAccuracy": 6,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      }
+    },
+    {
+      "entryTypeDailyWorkPeriod": "END",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 279000,
+      "entryGnssPlaceRecord": {
+        "timestamp": "2020-01-03T10:00:00Z",
+        "gnssAccuracy": 53,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      }
+    },
+    {
+      "entryTypeDailyWorkPeriod": "BEGIN",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 279200,
+      "entryGnssPlaceRecord": {
+        "timestamp": "2020-01-03T11:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      }
+    },
+    {
+      "entryTypeDailyWorkPeriod": "END",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 279700,
+      "entryGnssPlaceRecord": {
+        "timestamp": "2020-01-03T12:00:00Z",
+        "gnssAccuracy": 8,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      }
+    },
+    {
+      "entryTypeDailyWorkPeriod": "BEGIN",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 279700,
+      "entryGnssPlaceRecord": {
+        "timestamp": "2020-01-03T13:00:00Z",
+        "gnssAccuracy": 18,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      }
+    },
+    {
+      "entryTypeDailyWorkPeriod": "END",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 280000,
+      "entryGnssPlaceRecord": {
+        "timestamp": "2020-01-03T14:00:00Z",
+        "gnssAccuracy": 8,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      }
+    },
+    {
+      "entryTypeDailyWorkPeriod": "BEGIN",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 280500,
+      "entryGnssPlaceRecord": {
+        "timestamp": "2020-01-03T15:00:00Z",
+        "gnssAccuracy": 8,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      }
+    },
+    {
+      "entryTypeDailyWorkPeriod": "END",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 280700,
+      "entryGnssPlaceRecord": {
+        "timestamp": "2020-01-03T16:00:00Z",
+        "gnssAccuracy": 8,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      }
+    },
+    {
+      "entryTypeDailyWorkPeriod": "BEGIN",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 281200,
+      "entryGnssPlaceRecord": {
+        "timestamp": "2020-01-03T17:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      }
+    },
+    {
+      "entryTypeDailyWorkPeriod": "END",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 281400,
+      "entryGnssPlaceRecord": {
+        "timestamp": "2020-01-03T18:00:00Z",
+        "gnssAccuracy": 8,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      }
+    },
+    {
+      "entryTypeDailyWorkPeriod": "BEGIN",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 283800,
+      "entryGnssPlaceRecord": {
+        "timestamp": "2020-01-03T19:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      }
+    },
+    {
+      "entryTypeDailyWorkPeriod": "END",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 284200,
+      "entryGnssPlaceRecord": {
+        "timestamp": "2020-01-03T20:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      }
+    },
+    {
+      "entryTypeDailyWorkPeriod": "BEGIN",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 284500,
+      "entryGnssPlaceRecord": {
+        "timestamp": "2020-01-03T21:00:00Z",
+        "gnssAccuracy": 6,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      }
+    },
+    {
+      "entryTypeDailyWorkPeriod": "END",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 285000,
+      "entryGnssPlaceRecord": {
+        "timestamp": "2020-01-03T22:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      }
+    },
+    {
+      "entryTypeDailyWorkPeriod": "BEGIN",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 285200,
+      "entryGnssPlaceRecord": {
+        "timestamp": "2020-01-03T23:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      }
+    },
+    {
+      "entryTypeDailyWorkPeriod": "END",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 285700,
+      "entryGnssPlaceRecord": {
+        "timestamp": "2020-01-04T00:00:00Z",
+        "gnssAccuracy": 6,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      }
+    },
+    {
+      "entryTypeDailyWorkPeriod": "BEGIN",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 285900,
+      "entryGnssPlaceRecord": {
+        "timestamp": "2020-01-04T01:00:00Z",
+        "gnssAccuracy": 6,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      }
+    },
+    {
+      "entryTypeDailyWorkPeriod": "END",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 286500,
+      "entryGnssPlaceRecord": {
+        "timestamp": "2020-01-04T02:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      }
+    },
+    {
+      "entryTypeDailyWorkPeriod": "BEGIN",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 286700,
+      "entryGnssPlaceRecord": {
+        "timestamp": "2020-01-04T03:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      }
+    },
+    {
+      "entryTypeDailyWorkPeriod": "END",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 287300,
+      "entryGnssPlaceRecord": {
+        "timestamp": "2020-01-04T04:00:00Z",
+        "gnssAccuracy": 6,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      }
+    },
+    {
+      "entryTypeDailyWorkPeriod": "BEGIN",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 287300,
+      "entryGnssPlaceRecord": {
+        "timestamp": "2020-01-04T05:00:00Z",
+        "gnssAccuracy": 6,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      }
+    },
+    {
+      "entryTypeDailyWorkPeriod": "END",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 287400,
+      "entryGnssPlaceRecord": {
+        "timestamp": "2020-01-04T06:00:00Z",
+        "gnssAccuracy": 6,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      }
+    },
+    {
+      "entryTypeDailyWorkPeriod": "BEGIN",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 288000,
+      "entryGnssPlaceRecord": {
+        "timestamp": "2020-01-04T07:00:00Z",
+        "gnssAccuracy": 6,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      }
+    },
+    {
+      "entryTypeDailyWorkPeriod": "END",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 288200,
+      "entryGnssPlaceRecord": {
+        "timestamp": "2020-01-04T08:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      }
+    },
+    {
+      "entryTypeDailyWorkPeriod": "BEGIN",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 288700,
+      "entryGnssPlaceRecord": {
+        "timestamp": "2020-01-04T09:00:00Z",
+        "gnssAccuracy": 6,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      }
+    },
+    {
+      "entryTypeDailyWorkPeriod": "END",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 288900,
+      "entryGnssPlaceRecord": {
+        "timestamp": "2020-01-04T10:00:00Z",
+        "gnssAccuracy": 6,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      }
+    },
+    {
+      "entryTypeDailyWorkPeriod": "BEGIN",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 291500,
+      "entryGnssPlaceRecord": {
+        "timestamp": "2020-01-04T11:00:00Z",
+        "gnssAccuracy": 9,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      }
+    },
+    {
+      "entryTypeDailyWorkPeriod": "END",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 292100,
+      "entryGnssPlaceRecord": {
+        "timestamp": "2020-01-04T12:00:00Z",
+        "gnssAccuracy": 8,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      }
+    },
+    {
+      "entryTypeDailyWorkPeriod": "BEGIN",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 292200,
+      "entryGnssPlaceRecord": {
+        "timestamp": "2020-01-04T13:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      }
+    },
+    {
+      "entryTypeDailyWorkPeriod": "END",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 292800,
+      "entryGnssPlaceRecord": {
+        "timestamp": "2020-01-04T14:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      }
+    },
+    {
+      "entryTypeDailyWorkPeriod": "BEGIN",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 293000,
+      "entryGnssPlaceRecord": {
+        "timestamp": "2020-01-04T15:00:00Z",
+        "gnssAccuracy": 8,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      }
+    },
+    {
+      "entryTypeDailyWorkPeriod": "END",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 293500,
+      "entryGnssPlaceRecord": {
+        "timestamp": "2020-01-04T16:00:00Z",
+        "gnssAccuracy": 6,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      }
+    },
+    {
+      "entryTypeDailyWorkPeriod": "BEGIN",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 293700,
+      "entryGnssPlaceRecord": {
+        "timestamp": "2020-01-04T17:00:00Z",
+        "gnssAccuracy": 8,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      }
+    },
+    {
+      "entryTypeDailyWorkPeriod": "END",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 294300,
+      "entryGnssPlaceRecord": {
+        "timestamp": "2020-01-04T18:00:00Z",
+        "gnssAccuracy": 5,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      }
+    },
+    {
+      "entryTypeDailyWorkPeriod": "BEGIN",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 294600,
+      "entryGnssPlaceRecord": {
+        "timestamp": "2020-01-04T19:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      }
+    },
+    {
+      "entryTypeDailyWorkPeriod": "END",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 295100,
+      "entryGnssPlaceRecord": {
+        "timestamp": "2020-01-04T20:00:00Z",
+        "gnssAccuracy": 8,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      }
+    },
+    {
+      "entryTypeDailyWorkPeriod": "BEGIN",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 295100,
+      "entryGnssPlaceRecord": {
+        "timestamp": "2020-01-04T21:00:00Z",
+        "gnssAccuracy": 11,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      }
+    },
+    {
+      "entryTypeDailyWorkPeriod": "END",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 295300,
+      "entryGnssPlaceRecord": {
+        "timestamp": "2020-01-04T22:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      }
+    },
+    {
+      "entryTypeDailyWorkPeriod": "BEGIN",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 295800,
+      "entryGnssPlaceRecord": {
+        "timestamp": "2020-01-04T23:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      }
+    },
+    {
+      "entryTypeDailyWorkPeriod": "END",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 296200,
+      "entryGnssPlaceRecord": {
+        "timestamp": "2020-01-05T00:00:00Z",
+        "gnssAccuracy": 6,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      }
+    },
+    {
+      "entryTypeDailyWorkPeriod": "BEGIN",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 296800,
+      "entryGnssPlaceRecord": {
+        "timestamp": "2020-01-05T01:00:00Z",
+        "gnssAccuracy": 8,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      }
+    },
+    {
+      "entryTypeDailyWorkPeriod": "END",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 297100,
+      "entryGnssPlaceRecord": {
+        "timestamp": "2020-01-05T02:00:00Z",
+        "gnssAccuracy": 8,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      }
+    },
+    {
+      "entryTypeDailyWorkPeriod": "BEGIN",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 299400,
+      "entryGnssPlaceRecord": {
+        "timestamp": "2020-01-05T03:00:00Z",
+        "gnssAccuracy": 8,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      }
+    },
+    {
+      "entryTypeDailyWorkPeriod": "END",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 300000,
+      "entryGnssPlaceRecord": {
+        "timestamp": "2020-01-05T04:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      }
+    },
+    {
+      "entryTypeDailyWorkPeriod": "BEGIN",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 300100,
+      "entryGnssPlaceRecord": {
+        "timestamp": "2020-01-05T05:00:00Z",
+        "gnssAccuracy": 8,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      }
+    },
+    {
+      "entryTypeDailyWorkPeriod": "END",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 300700,
+      "entryGnssPlaceRecord": {
+        "timestamp": "2020-01-05T06:00:00Z",
+        "gnssAccuracy": 9,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      }
+    },
+    {
+      "entryTypeDailyWorkPeriod": "BEGIN",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 301000,
+      "entryGnssPlaceRecord": {
+        "timestamp": "2020-01-05T07:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      }
+    },
+    {
+      "entryTypeDailyWorkPeriod": "END",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 301500,
+      "entryGnssPlaceRecord": {
+        "timestamp": "2020-01-05T08:00:00Z",
+        "gnssAccuracy": 8,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      }
+    },
+    {
+      "entryTypeDailyWorkPeriod": "BEGIN",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 301700,
+      "entryGnssPlaceRecord": {
+        "timestamp": "2020-01-05T09:00:00Z",
+        "gnssAccuracy": 8,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      }
+    },
+    {
+      "entryTypeDailyWorkPeriod": "END",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 302300,
+      "entryGnssPlaceRecord": {
+        "timestamp": "2020-01-05T10:00:00Z",
+        "gnssAccuracy": 8,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      }
+    },
+    {
+      "entryTypeDailyWorkPeriod": "BEGIN",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 302600,
+      "entryGnssPlaceRecord": {
+        "timestamp": "2020-01-05T11:00:00Z",
+        "gnssAccuracy": 11,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      }
+    },
+    {
+      "entryTypeDailyWorkPeriod": "END",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 303200,
+      "entryGnssPlaceRecord": {
+        "timestamp": "2020-01-05T12:00:00Z",
+        "gnssAccuracy": 9,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      }
+    },
+    {
+      "entryTypeDailyWorkPeriod": "BEGIN",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 303200,
+      "entryGnssPlaceRecord": {
+        "timestamp": "2020-01-05T13:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      }
+    },
+    {
+      "entryTypeDailyWorkPeriod": "END",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 303500,
+      "entryGnssPlaceRecord": {
+        "timestamp": "2020-01-05T14:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      }
+    },
+    {
+      "entryTypeDailyWorkPeriod": "BEGIN",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 304100,
+      "entryGnssPlaceRecord": {
+        "timestamp": "2020-01-05T15:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      }
+    }
+  ],
+  "rawData": "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"
+}

@@ -1,0 +1,4037 @@
+{
+  "newestRecordIndex": 241,
+  "records": [
+    {
+      "timestamp": "2020-01-01T00:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-01T00:00:00Z",
+        "gnssAccuracy": 12,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 199600
+    },
+    {
+      "timestamp": "2020-01-01T01:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-01T01:00:00Z",
+        "gnssAccuracy": 8,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 201400
+    },
+    {
+      "timestamp": "2020-01-01T02:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-01T02:00:00Z",
+        "gnssAccuracy": 8,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 201600
+    },
+    {
+      "timestamp": "2020-01-01T03:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-01T03:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 201800
+    },
+    {
+      "timestamp": "2020-01-01T04:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-01T04:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 202200
+    },
+    {
+      "timestamp": "2020-01-01T05:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-01T05:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 202400
+    },
+    {
+      "timestamp": "2020-01-01T06:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-01T06:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 202600
+    },
+    {
+      "timestamp": "2020-01-01T07:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-01T07:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 203000
+    },
+    {
+      "timestamp": "2020-01-01T08:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-01T08:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 203300
+    },
+    {
+      "timestamp": "2020-01-01T09:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-01T09:00:00Z",
+        "gnssAccuracy": 9,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 203500
+    },
+    {
+      "timestamp": "2020-01-01T10:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-01T10:00:00Z",
+        "gnssAccuracy": 8,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 203800
+    },
+    {
+      "timestamp": "2020-01-01T11:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-01T11:00:00Z",
+        "gnssAccuracy": 6,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 204100
+    },
+    {
+      "timestamp": "2020-01-01T12:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-01T12:00:00Z",
+        "gnssAccuracy": 10,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 204300
+    },
+    {
+      "timestamp": "2020-01-01T13:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-01T13:00:00Z",
+        "gnssAccuracy": 9,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 205800
+    },
+    {
+      "timestamp": "2020-01-01T14:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-01T14:00:00Z",
+        "gnssAccuracy": 8,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 206000
+    },
+    {
+      "timestamp": "2020-01-01T15:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-01T15:00:00Z",
+        "gnssAccuracy": 8,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 206800
+    },
+    {
+      "timestamp": "2020-01-01T16:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-01T16:00:00Z",
+        "gnssAccuracy": 8,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 207600
+    },
+    {
+      "timestamp": "2020-01-01T17:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-01T17:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 208600
+    },
+    {
+      "timestamp": "2020-01-01T18:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-01T18:00:00Z",
+        "gnssAccuracy": 6,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 208900
+    },
+    {
+      "timestamp": "2020-01-01T19:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-01T19:00:00Z",
+        "gnssAccuracy": 9,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 209100
+    },
+    {
+      "timestamp": "2020-01-01T20:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-01T20:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 209600
+    },
+    {
+      "timestamp": "2020-01-01T21:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-01T21:00:00Z",
+        "gnssAccuracy": 8,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 209800
+    },
+    {
+      "timestamp": "2020-01-01T22:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-01T22:00:00Z",
+        "gnssAccuracy": 9,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 210200
+    },
+    {
+      "timestamp": "2020-01-01T23:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-01T23:00:00Z",
+        "gnssAccuracy": 6,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 210400
+    },
+    {
+      "timestamp": "2020-01-02T00:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-02T00:00:00Z",
+        "gnssAccuracy": 8,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 210700
+    },
+    {
+      "timestamp": "2020-01-02T01:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-02T01:00:00Z",
+        "gnssAccuracy": 6,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 211000
+    },
+    {
+      "timestamp": "2020-01-02T02:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-02T02:00:00Z",
+        "gnssAccuracy": 9,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 211200
+    },
+    {
+      "timestamp": "2020-01-02T03:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-02T03:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 211400
+    },
+    {
+      "timestamp": "2020-01-02T04:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-02T04:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 211800
+    },
+    {
+      "timestamp": "2020-01-02T05:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-02T05:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 212000
+    },
+    {
+      "timestamp": "2020-01-02T06:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-02T06:00:00Z",
+        "gnssAccuracy": 11,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 227000
+    },
+    {
+      "timestamp": "2020-01-02T07:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-02T07:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 227800
+    },
+    {
+      "timestamp": "2020-01-02T08:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-02T08:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 228500
+    },
+    {
+      "timestamp": "2020-01-02T09:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-02T09:00:00Z",
+        "gnssAccuracy": 8,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 228600
+    },
+    {
+      "timestamp": "2020-01-02T10:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-02T10:00:00Z",
+        "gnssAccuracy": 6,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 231100
+    },
+    {
+      "timestamp": "2020-01-02T11:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-02T11:00:00Z",
+        "gnssAccuracy": 8,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 231300
+    },
+    {
+      "timestamp": "2020-01-02T12:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-02T12:00:00Z",
+        "gnssAccuracy": 6,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 231800
+    },
+    {
+      "timestamp": "2020-01-02T13:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-02T13:00:00Z",
+        "gnssAccuracy": 10,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 232000
+    },
+    {
+      "timestamp": "2020-01-02T14:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-02T14:00:00Z",
+        "gnssAccuracy": 6,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 232400
+    },
+    {
+      "timestamp": "2020-01-02T15:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-02T15:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 232600
+    },
+    {
+      "timestamp": "2020-01-02T16:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-02T16:00:00Z",
+        "gnssAccuracy": 6,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 232800
+    },
+    {
+      "timestamp": "2020-01-02T17:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-02T17:00:00Z",
+        "gnssAccuracy": 6,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 233200
+    },
+    {
+      "timestamp": "2020-01-02T18:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-02T18:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 233400
+    },
+    {
+      "timestamp": "2020-01-02T19:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-02T19:00:00Z",
+        "gnssAccuracy": 6,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 234000
+    },
+    {
+      "timestamp": "2020-01-02T20:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-02T20:00:00Z",
+        "gnssAccuracy": 8,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 234200
+    },
+    {
+      "timestamp": "2020-01-02T21:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-02T21:00:00Z",
+        "gnssAccuracy": 9,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 235700
+    },
+    {
+      "timestamp": "2020-01-02T22:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-02T22:00:00Z",
+        "gnssAccuracy": 11,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 236500
+    },
+    {
+      "timestamp": "2020-01-02T23:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-02T23:00:00Z",
+        "gnssAccuracy": 8,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 237200
+    },
+    {
+      "timestamp": "2020-01-03T00:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-03T00:00:00Z",
+        "gnssAccuracy": 8,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 237400
+    },
+    {
+      "timestamp": "2020-01-03T01:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-03T01:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 238300
+    },
+    {
+      "timestamp": "2020-01-03T02:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-03T02:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 238500
+    },
+    {
+      "timestamp": "2020-01-03T03:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-03T03:00:00Z",
+        "gnssAccuracy": 8,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 238700
+    },
+    {
+      "timestamp": "2020-01-03T04:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-03T04:00:00Z",
+        "gnssAccuracy": 6,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 239100
+    },
+    {
+      "timestamp": "2020-01-03T05:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-03T05:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 239300
+    },
+    {
+      "timestamp": "2020-01-03T06:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-03T06:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 239500
+    },
+    {
+      "timestamp": "2020-01-03T07:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-03T07:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 239900
+    },
+    {
+      "timestamp": "2020-01-03T08:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-03T08:00:00Z",
+        "gnssAccuracy": 8,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 240100
+    },
+    {
+      "timestamp": "2020-01-03T09:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-03T09:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 240700
+    },
+    {
+      "timestamp": "2020-01-03T10:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-03T10:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 240900
+    },
+    {
+      "timestamp": "2020-01-03T11:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-03T11:00:00Z",
+        "gnssAccuracy": 5,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 241500
+    },
+    {
+      "timestamp": "2020-01-03T12:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-03T12:00:00Z",
+        "gnssAccuracy": 9,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 241700
+    },
+    {
+      "timestamp": "2020-01-03T13:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-03T13:00:00Z",
+        "gnssAccuracy": 58,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 243400
+    },
+    {
+      "timestamp": "2020-01-03T14:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-03T14:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 244200
+    },
+    {
+      "timestamp": "2020-01-03T15:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-03T15:00:00Z",
+        "gnssAccuracy": 6,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 245000
+    },
+    {
+      "timestamp": "2020-01-03T16:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-03T16:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 246100
+    },
+    {
+      "timestamp": "2020-01-03T17:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-03T17:00:00Z",
+        "gnssAccuracy": 6,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 246300
+    },
+    {
+      "timestamp": "2020-01-03T18:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-03T18:00:00Z",
+        "gnssAccuracy": 6,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 246700
+    },
+    {
+      "timestamp": "2020-01-03T19:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-03T19:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 246900
+    },
+    {
+      "timestamp": "2020-01-03T20:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-03T20:00:00Z",
+        "gnssAccuracy": 6,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 247100
+    },
+    {
+      "timestamp": "2020-01-03T21:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-03T21:00:00Z",
+        "gnssAccuracy": 11,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 247500
+    },
+    {
+      "timestamp": "2020-01-03T22:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-03T22:00:00Z",
+        "gnssAccuracy": 8,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 247700
+    },
+    {
+      "timestamp": "2020-01-03T23:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-03T23:00:00Z",
+        "gnssAccuracy": 9,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 248300
+    },
+    {
+      "timestamp": "2020-01-04T00:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-04T00:00:00Z",
+        "gnssAccuracy": 6,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 248500
+    },
+    {
+      "timestamp": "2020-01-04T01:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-04T01:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 248800
+    },
+    {
+      "timestamp": "2020-01-04T02:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-04T02:00:00Z",
+        "gnssAccuracy": 6,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 249100
+    },
+    {
+      "timestamp": "2020-01-04T03:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-04T03:00:00Z",
+        "gnssAccuracy": 8,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 249300
+    },
+    {
+      "timestamp": "2020-01-04T04:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-04T04:00:00Z",
+        "gnssAccuracy": 9,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 254100
+    },
+    {
+      "timestamp": "2020-01-04T05:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-04T05:00:00Z",
+        "gnssAccuracy": 6,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 254300
+    },
+    {
+      "timestamp": "2020-01-04T06:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-04T06:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 254600
+    },
+    {
+      "timestamp": "2020-01-04T07:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-04T07:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 254900
+    },
+    {
+      "timestamp": "2020-01-04T08:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-04T08:00:00Z",
+        "gnssAccuracy": 6,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 255200
+    },
+    {
+      "timestamp": "2020-01-04T09:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-04T09:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 255400
+    },
+    {
+      "timestamp": "2020-01-04T10:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-04T10:00:00Z",
+        "gnssAccuracy": 10,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 255700
+    },
+    {
+      "timestamp": "2020-01-04T11:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-04T11:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 256000
+    },
+    {
+      "timestamp": "2020-01-04T12:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-04T12:00:00Z",
+        "gnssAccuracy": 8,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 256200
+    },
+    {
+      "timestamp": "2020-01-04T13:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-04T13:00:00Z",
+        "gnssAccuracy": 10,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 256600
+    },
+    {
+      "timestamp": "2020-01-04T14:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-04T14:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 256800
+    },
+    {
+      "timestamp": "2020-01-04T15:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-04T15:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 258800
+    },
+    {
+      "timestamp": "2020-01-04T16:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-04T16:00:00Z",
+        "gnssAccuracy": 6,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 259400
+    },
+    {
+      "timestamp": "2020-01-04T17:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-04T17:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 260200
+    },
+    {
+      "timestamp": "2020-01-04T18:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-04T18:00:00Z",
+        "gnssAccuracy": 8,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 261200
+    },
+    {
+      "timestamp": "2020-01-04T19:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-04T19:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 261400
+    },
+    {
+      "timestamp": "2020-01-04T20:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-04T20:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 262000
+    },
+    {
+      "timestamp": "2020-01-04T21:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-04T21:00:00Z",
+        "gnssAccuracy": 9,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 262300
+    },
+    {
+      "timestamp": "2020-01-04T22:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-04T22:00:00Z",
+        "gnssAccuracy": 6,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 262600
+    },
+    {
+      "timestamp": "2020-01-04T23:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-04T23:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 262900
+    },
+    {
+      "timestamp": "2020-01-05T00:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-05T00:00:00Z",
+        "gnssAccuracy": 6,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 263100
+    },
+    {
+      "timestamp": "2020-01-05T01:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-05T01:00:00Z",
+        "gnssAccuracy": 6,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 263500
+    },
+    {
+      "timestamp": "2020-01-05T02:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-05T02:00:00Z",
+        "gnssAccuracy": 9,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 263700
+    },
+    {
+      "timestamp": "2020-01-05T03:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-05T03:00:00Z",
+        "gnssAccuracy": 10,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 263900
+    },
+    {
+      "timestamp": "2020-01-05T04:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-05T04:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 264300
+    },
+    {
+      "timestamp": "2020-01-05T05:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-05T05:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 264500
+    },
+    {
+      "timestamp": "2020-01-05T06:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-05T06:00:00Z",
+        "gnssAccuracy": 6,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 268800
+    },
+    {
+      "timestamp": "2020-01-05T07:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-05T07:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 269000
+    },
+    {
+      "timestamp": "2020-01-05T08:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-05T08:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 269400
+    },
+    {
+      "timestamp": "2020-01-05T09:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-05T09:00:00Z",
+        "gnssAccuracy": 8,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 269600
+    },
+    {
+      "timestamp": "2020-01-05T10:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-05T10:00:00Z",
+        "gnssAccuracy": 8,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 269800
+    },
+    {
+      "timestamp": "2020-01-05T11:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-05T11:00:00Z",
+        "gnssAccuracy": 6,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 270200
+    },
+    {
+      "timestamp": "2020-01-05T12:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-05T12:00:00Z",
+        "gnssAccuracy": 6,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 270400
+    },
+    {
+      "timestamp": "2020-01-05T13:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-05T13:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 270700
+    },
+    {
+      "timestamp": "2020-01-05T14:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-05T14:00:00Z",
+        "gnssAccuracy": 6,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 271000
+    },
+    {
+      "timestamp": "2020-01-05T15:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-05T15:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 271200
+    },
+    {
+      "timestamp": "2020-01-05T16:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-05T16:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 271500
+    },
+    {
+      "timestamp": "2020-01-05T17:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-05T17:00:00Z",
+        "gnssAccuracy": 6,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 271800
+    },
+    {
+      "timestamp": "2020-01-05T18:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-05T18:00:00Z",
+        "gnssAccuracy": 6,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 272000
+    },
+    {
+      "timestamp": "2020-01-05T19:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-05T19:00:00Z",
+        "gnssAccuracy": 6,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 272600
+    },
+    {
+      "timestamp": "2020-01-05T20:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-05T20:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 272800
+    },
+    {
+      "timestamp": "2020-01-05T21:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-05T21:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 273800
+    },
+    {
+      "timestamp": "2020-01-05T22:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-05T22:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 274600
+    },
+    {
+      "timestamp": "2020-01-05T23:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-05T23:00:00Z",
+        "gnssAccuracy": 8,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 275300
+    },
+    {
+      "timestamp": "2020-01-06T00:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-06T00:00:00Z",
+        "gnssAccuracy": 6,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 275500
+    },
+    {
+      "timestamp": "2020-01-06T01:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-06T01:00:00Z",
+        "gnssAccuracy": 8,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 276400
+    },
+    {
+      "timestamp": "2020-01-06T02:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-06T02:00:00Z",
+        "gnssAccuracy": 8,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 276700
+    },
+    {
+      "timestamp": "2020-01-06T03:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-06T03:00:00Z",
+        "gnssAccuracy": 9,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 277000
+    },
+    {
+      "timestamp": "2020-01-06T04:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-06T04:00:00Z",
+        "gnssAccuracy": 8,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 277200
+    },
+    {
+      "timestamp": "2020-01-06T05:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-06T05:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 277500
+    },
+    {
+      "timestamp": "2020-01-06T06:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-06T06:00:00Z",
+        "gnssAccuracy": 6,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 277800
+    },
+    {
+      "timestamp": "2020-01-06T07:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-06T07:00:00Z",
+        "gnssAccuracy": 8,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 278100
+    },
+    {
+      "timestamp": "2020-01-06T08:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-06T08:00:00Z",
+        "gnssAccuracy": 9,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 278300
+    },
+    {
+      "timestamp": "2020-01-06T09:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-06T09:00:00Z",
+        "gnssAccuracy": 6,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 278600
+    },
+    {
+      "timestamp": "2020-01-06T10:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-06T10:00:00Z",
+        "gnssAccuracy": 10,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 278900
+    },
+    {
+      "timestamp": "2020-01-06T11:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-06T11:00:00Z",
+        "gnssAccuracy": 8,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 279200
+    },
+    {
+      "timestamp": "2020-01-06T12:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-06T12:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 279400
+    },
+    {
+      "timestamp": "2020-01-06T13:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-06T13:00:00Z",
+        "gnssAccuracy": 6,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 279700
+    },
+    {
+      "timestamp": "2020-01-06T14:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-06T14:00:00Z",
+        "gnssAccuracy": 9,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 279800
+    },
+    {
+      "timestamp": "2020-01-06T15:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-06T15:00:00Z",
+        "gnssAccuracy": 8,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 280600
+    },
+    {
+      "timestamp": "2020-01-06T16:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-06T16:00:00Z",
+        "gnssAccuracy": 8,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 281300
+    },
+    {
+      "timestamp": "2020-01-06T17:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-06T17:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 283800
+    },
+    {
+      "timestamp": "2020-01-06T18:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-06T18:00:00Z",
+        "gnssAccuracy": 8,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 284000
+    },
+    {
+      "timestamp": "2020-01-06T19:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-06T19:00:00Z",
+        "gnssAccuracy": 9,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 284600
+    },
+    {
+      "timestamp": "2020-01-06T20:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-06T20:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 284800
+    },
+    {
+      "timestamp": "2020-01-06T21:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-06T21:00:00Z",
+        "gnssAccuracy": 8,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 285400
+    },
+    {
+      "timestamp": "2020-01-06T22:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-06T22:00:00Z",
+        "gnssAccuracy": 8,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 285600
+    },
+    {
+      "timestamp": "2020-01-06T23:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-06T23:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 286000
+    },
+    {
+      "timestamp": "2020-01-07T00:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-07T00:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 286200
+    },
+    {
+      "timestamp": "2020-01-07T01:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-07T01:00:00Z",
+        "gnssAccuracy": 8,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 286400
+    },
+    {
+      "timestamp": "2020-01-07T02:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-07T02:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 286800
+    },
+    {
+      "timestamp": "2020-01-07T03:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-07T03:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 287000
+    },
+    {
+      "timestamp": "2020-01-07T04:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-07T04:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 287200
+    },
+    {
+      "timestamp": "2020-01-07T05:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-07T05:00:00Z",
+        "gnssAccuracy": 8,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 287400
+    },
+    {
+      "timestamp": "2020-01-07T06:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-07T06:00:00Z",
+        "gnssAccuracy": 8,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 288000
+    },
+    {
+      "timestamp": "2020-01-07T07:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-07T07:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 288800
+    },
+    {
+      "timestamp": "2020-01-07T08:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-07T08:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 291800
+    },
+    {
+      "timestamp": "2020-01-07T09:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-07T09:00:00Z",
+        "gnssAccuracy": 6,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 292000
+    },
+    {
+      "timestamp": "2020-01-07T10:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-07T10:00:00Z",
+        "gnssAccuracy": 6,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 292400
+    },
+    {
+      "timestamp": "2020-01-07T11:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-07T11:00:00Z",
+        "gnssAccuracy": 9,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 292600
+    },
+    {
+      "timestamp": "2020-01-07T12:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-07T12:00:00Z",
+        "gnssAccuracy": 9,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 293200
+    },
+    {
+      "timestamp": "2020-01-07T13:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-07T13:00:00Z",
+        "gnssAccuracy": 8,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 293400
+    },
+    {
+      "timestamp": "2020-01-07T14:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-07T14:00:00Z",
+        "gnssAccuracy": 6,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 293700
+    },
+    {
+      "timestamp": "2020-01-07T15:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-07T15:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 294000
+    },
+    {
+      "timestamp": "2020-01-07T16:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-07T16:00:00Z",
+        "gnssAccuracy": 8,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 294200
+    },
+    {
+      "timestamp": "2020-01-07T17:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-07T17:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 294600
+    },
+    {
+      "timestamp": "2020-01-07T18:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-07T18:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 294800
+    },
+    {
+      "timestamp": "2020-01-07T19:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-07T19:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 295000
+    },
+    {
+      "timestamp": "2020-01-07T20:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-07T20:00:00Z",
+        "gnssAccuracy": 6,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 295200
+    },
+    {
+      "timestamp": "2020-01-07T21:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-07T21:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 296000
+    },
+    {
+      "timestamp": "2020-01-07T22:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-07T22:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 296200
+    },
+    {
+      "timestamp": "2020-01-07T23:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-07T23:00:00Z",
+        "gnssAccuracy": 8,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 296900
+    },
+    {
+      "timestamp": "2020-01-08T00:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-08T00:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 297000
+    },
+    {
+      "timestamp": "2020-01-08T01:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-08T01:00:00Z",
+        "gnssAccuracy": 8,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 299500
+    },
+    {
+      "timestamp": "2020-01-08T02:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-08T02:00:00Z",
+        "gnssAccuracy": 10,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 299700
+    },
+    {
+      "timestamp": "2020-01-08T03:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-08T03:00:00Z",
+        "gnssAccuracy": 8,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 299900
+    },
+    {
+      "timestamp": "2020-01-08T04:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-08T04:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 300300
+    },
+    {
+      "timestamp": "2020-01-08T05:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-08T05:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 300600
+    },
+    {
+      "timestamp": "2020-01-08T06:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-08T06:00:00Z",
+        "gnssAccuracy": 8,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 301100
+    },
+    {
+      "timestamp": "2020-01-08T07:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-08T07:00:00Z",
+        "gnssAccuracy": 9,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 301300
+    },
+    {
+      "timestamp": "2020-01-08T08:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-08T08:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 301700
+    },
+    {
+      "timestamp": "2020-01-08T09:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-08T09:00:00Z",
+        "gnssAccuracy": 6,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 301900
+    },
+    {
+      "timestamp": "2020-01-08T10:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-08T10:00:00Z",
+        "gnssAccuracy": 6,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 302200
+    },
+    {
+      "timestamp": "2020-01-08T11:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-08T11:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 302700
+    },
+    {
+      "timestamp": "2020-01-08T12:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-08T12:00:00Z",
+        "gnssAccuracy": 10,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 303000
+    },
+    {
+      "timestamp": "2020-01-08T13:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-08T13:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 303200
+    },
+    {
+      "timestamp": "2020-01-08T14:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-08T14:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 303400
+    },
+    {
+      "timestamp": "2020-01-08T15:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-08T15:00:00Z",
+        "gnssAccuracy": 8,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 304200
+    },
+    {
+      "timestamp": "2020-01-08T16:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-08T16:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 304400
+    },
+    {
+      "timestamp": "2020-01-08T17:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-08T17:00:00Z",
+        "gnssAccuracy": 8,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 305100
+    },
+    {
+      "timestamp": "2020-01-08T18:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-08T18:00:00Z",
+        "gnssAccuracy": 6,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 307600
+    },
+    {
+      "timestamp": "2020-01-08T19:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-08T19:00:00Z",
+        "gnssAccuracy": 12,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 307900
+    },
+    {
+      "timestamp": "2020-01-08T20:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-08T20:00:00Z",
+        "gnssAccuracy": 9,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 308100
+    },
+    {
+      "timestamp": "2020-01-08T21:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-08T21:00:00Z",
+        "gnssAccuracy": 8,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 308600
+    },
+    {
+      "timestamp": "2020-01-08T22:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-08T22:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 308800
+    },
+    {
+      "timestamp": "2020-01-08T23:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-08T23:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 309200
+    },
+    {
+      "timestamp": "2020-01-09T00:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-09T00:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 309400
+    },
+    {
+      "timestamp": "2020-01-09T01:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-09T01:00:00Z",
+        "gnssAccuracy": 9,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 309600
+    },
+    {
+      "timestamp": "2020-01-09T02:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-09T02:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 310000
+    },
+    {
+      "timestamp": "2020-01-09T03:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-09T03:00:00Z",
+        "gnssAccuracy": 8,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 310200
+    },
+    {
+      "timestamp": "2020-01-09T04:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-09T04:00:00Z",
+        "gnssAccuracy": 10,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 310400
+    },
+    {
+      "timestamp": "2020-01-09T05:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-09T05:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 311000
+    },
+    {
+      "timestamp": "2020-01-09T06:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-09T06:00:00Z",
+        "gnssAccuracy": 6,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 311200
+    },
+    {
+      "timestamp": "2020-01-09T07:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-09T07:00:00Z",
+        "gnssAccuracy": 10,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 313000
+    },
+    {
+      "timestamp": "2020-01-09T08:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-09T08:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 313200
+    },
+    {
+      "timestamp": "2020-01-09T09:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-09T09:00:00Z",
+        "gnssAccuracy": 6,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 313800
+    },
+    {
+      "timestamp": "2020-01-09T10:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-09T10:00:00Z",
+        "gnssAccuracy": 6,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 314000
+    },
+    {
+      "timestamp": "2020-01-09T11:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-09T11:00:00Z",
+        "gnssAccuracy": 6,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 314600
+    },
+    {
+      "timestamp": "2020-01-09T12:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-09T12:00:00Z",
+        "gnssAccuracy": 9,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 314800
+    },
+    {
+      "timestamp": "2020-01-09T13:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-09T13:00:00Z",
+        "gnssAccuracy": 6,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 315600
+    },
+    {
+      "timestamp": "2020-01-09T14:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-09T14:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 315900
+    },
+    {
+      "timestamp": "2020-01-09T15:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-09T15:00:00Z",
+        "gnssAccuracy": 9,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 316100
+    },
+    {
+      "timestamp": "2020-01-09T16:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-09T16:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 316700
+    },
+    {
+      "timestamp": "2020-01-09T17:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-09T17:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 316900
+    },
+    {
+      "timestamp": "2020-01-09T18:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-09T18:00:00Z",
+        "gnssAccuracy": 6,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 317400
+    },
+    {
+      "timestamp": "2020-01-09T19:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-09T19:00:00Z",
+        "gnssAccuracy": 6,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 317700
+    },
+    {
+      "timestamp": "2020-01-09T20:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-09T20:00:00Z",
+        "gnssAccuracy": 6,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 318200
+    },
+    {
+      "timestamp": "2020-01-09T21:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-09T21:00:00Z",
+        "gnssAccuracy": 8,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 318400
+    },
+    {
+      "timestamp": "2020-01-09T22:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-09T22:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 319000
+    },
+    {
+      "timestamp": "2020-01-09T23:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-09T23:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 319200
+    },
+    {
+      "timestamp": "2020-01-10T00:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-10T00:00:00Z",
+        "gnssAccuracy": 8,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 329000
+    },
+    {
+      "timestamp": "2020-01-10T01:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-10T01:00:00Z",
+        "gnssAccuracy": 11,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 329100
+    },
+    {
+      "timestamp": "2020-01-10T02:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-10T02:00:00Z",
+        "gnssAccuracy": 6,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 329800
+    },
+    {
+      "timestamp": "2020-01-10T03:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-10T03:00:00Z",
+        "gnssAccuracy": 10,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 329900
+    },
+    {
+      "timestamp": "2020-01-10T04:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-10T04:00:00Z",
+        "gnssAccuracy": 8,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 330600
+    },
+    {
+      "timestamp": "2020-01-10T05:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-10T05:00:00Z",
+        "gnssAccuracy": 9,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 331500
+    },
+    {
+      "timestamp": "2020-01-10T06:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-10T06:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 331800
+    },
+    {
+      "timestamp": "2020-01-10T07:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-10T07:00:00Z",
+        "gnssAccuracy": 8,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 332000
+    },
+    {
+      "timestamp": "2020-01-10T08:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-10T08:00:00Z",
+        "gnssAccuracy": 8,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 332300
+    },
+    {
+      "timestamp": "2020-01-10T09:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-10T09:00:00Z",
+        "gnssAccuracy": 6,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 332600
+    },
+    {
+      "timestamp": "2020-01-10T10:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-10T10:00:00Z",
+        "gnssAccuracy": 8,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 332800
+    },
+    {
+      "timestamp": "2020-01-10T11:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-10T11:00:00Z",
+        "gnssAccuracy": 9,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 333100
+    },
+    {
+      "timestamp": "2020-01-10T12:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-10T12:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 333300
+    },
+    {
+      "timestamp": "2020-01-10T13:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-10T13:00:00Z",
+        "gnssAccuracy": 11,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 333600
+    },
+    {
+      "timestamp": "2020-01-10T14:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-10T14:00:00Z",
+        "gnssAccuracy": 9,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 334100
+    },
+    {
+      "timestamp": "2020-01-10T15:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-10T15:00:00Z",
+        "gnssAccuracy": 6,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 334300
+    },
+    {
+      "timestamp": "2020-01-10T16:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-10T16:00:00Z",
+        "gnssAccuracy": 8,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 334600
+    },
+    {
+      "timestamp": "2020-01-10T17:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-10T17:00:00Z",
+        "gnssAccuracy": 8,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 334800
+    },
+    {
+      "timestamp": "2020-01-10T18:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-10T18:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 335000
+    },
+    {
+      "timestamp": "2020-01-10T19:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-10T19:00:00Z",
+        "gnssAccuracy": 8,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 335200
+    },
+    {
+      "timestamp": "2020-01-10T20:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-10T20:00:00Z",
+        "gnssAccuracy": 8,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 336000
+    },
+    {
+      "timestamp": "2020-01-10T21:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-10T21:00:00Z",
+        "gnssAccuracy": 9,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 336600
+    },
+    {
+      "timestamp": "2020-01-10T22:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-10T22:00:00Z",
+        "gnssAccuracy": 11,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 339200
+    },
+    {
+      "timestamp": "2020-01-10T23:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-10T23:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 339400
+    },
+    {
+      "timestamp": "2020-01-11T00:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-11T00:00:00Z",
+        "gnssAccuracy": 8,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 339600
+    },
+    {
+      "timestamp": "2020-01-11T01:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-11T01:00:00Z",
+        "gnssAccuracy": 8,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 339900
+    },
+    {
+      "timestamp": "2020-01-11T02:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-11T02:00:00Z",
+        "gnssAccuracy": 8,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 83900
+    },
+    {
+      "timestamp": "2020-01-11T03:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-11T03:00:00Z",
+        "gnssAccuracy": 6,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 84000
+    },
+    {
+      "timestamp": "2020-01-11T04:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-11T04:00:00Z",
+        "gnssAccuracy": 8,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 84600
+    },
+    {
+      "timestamp": "2020-01-11T05:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-11T05:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 85600
+    },
+    {
+      "timestamp": "2020-01-11T06:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-11T06:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 85900
+    },
+    {
+      "timestamp": "2020-01-11T07:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-11T07:00:00Z",
+        "gnssAccuracy": 10,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 86100
+    },
+    {
+      "timestamp": "2020-01-11T08:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-11T08:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 86400
+    },
+    {
+      "timestamp": "2020-01-11T09:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-11T09:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 86600
+    },
+    {
+      "timestamp": "2020-01-11T10:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-11T10:00:00Z",
+        "gnssAccuracy": 8,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 87200
+    },
+    {
+      "timestamp": "2020-01-11T11:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-11T11:00:00Z",
+        "gnssAccuracy": 8,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 87400
+    },
+    {
+      "timestamp": "2020-01-11T12:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-11T12:00:00Z",
+        "gnssAccuracy": 8,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 87800
+    },
+    {
+      "timestamp": "2020-01-11T13:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-11T13:00:00Z",
+        "gnssAccuracy": 12,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 88000
+    },
+    {
+      "timestamp": "2020-01-11T14:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-11T14:00:00Z",
+        "gnssAccuracy": 8,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 88200
+    },
+    {
+      "timestamp": "2020-01-11T15:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-11T15:00:00Z",
+        "gnssAccuracy": 8,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 88800
+    },
+    {
+      "timestamp": "2020-01-11T16:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-11T16:00:00Z",
+        "gnssAccuracy": 8,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 89000
+    },
+    {
+      "timestamp": "2020-01-11T17:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-11T17:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 163600
+    },
+    {
+      "timestamp": "2020-01-11T18:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-11T18:00:00Z",
+        "gnssAccuracy": 6,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 163800
+    },
+    {
+      "timestamp": "2020-01-11T19:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-11T19:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 164400
+    },
+    {
+      "timestamp": "2020-01-11T20:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-11T20:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 165200
+    },
+    {
+      "timestamp": "2020-01-11T21:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-11T21:00:00Z",
+        "gnssAccuracy": 6,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 166200
+    },
+    {
+      "timestamp": "2020-01-11T22:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-11T22:00:00Z",
+        "gnssAccuracy": 6,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 166400
+    },
+    {
+      "timestamp": "2020-01-11T23:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-11T23:00:00Z",
+        "gnssAccuracy": 6,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 166900
+    },
+    {
+      "timestamp": "2020-01-12T00:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-12T00:00:00Z",
+        "gnssAccuracy": 8,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 167200
+    },
+    {
+      "timestamp": "2020-01-12T01:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-12T01:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 167800
+    },
+    {
+      "timestamp": "2020-01-12T02:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-12T02:00:00Z",
+        "gnssAccuracy": 6,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 168000
+    },
+    {
+      "timestamp": "2020-01-12T03:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-12T03:00:00Z",
+        "gnssAccuracy": 6,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 168600
+    },
+    {
+      "timestamp": "2020-01-12T04:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-12T04:00:00Z",
+        "gnssAccuracy": 6,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 168800
+    },
+    {
+      "timestamp": "2020-01-12T05:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-12T05:00:00Z",
+        "gnssAccuracy": 6,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 169200
+    },
+    {
+      "timestamp": "2020-01-12T06:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-12T06:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 169400
+    },
+    {
+      "timestamp": "2020-01-12T07:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-12T07:00:00Z",
+        "gnssAccuracy": 6,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 169600
+    },
+    {
+      "timestamp": "2020-01-12T08:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-12T08:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 171200
+    },
+    {
+      "timestamp": "2020-01-12T09:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-12T09:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 171900
+    },
+    {
+      "timestamp": "2020-01-12T10:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-12T10:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 173000
+    },
+    {
+      "timestamp": "2020-01-12T11:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-12T11:00:00Z",
+        "gnssAccuracy": 6,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 173200
+    },
+    {
+      "timestamp": "2020-01-12T12:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-12T12:00:00Z",
+        "gnssAccuracy": 9,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 173600
+    },
+    {
+      "timestamp": "2020-01-12T13:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-12T13:00:00Z",
+        "gnssAccuracy": 9,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 173800
+    },
+    {
+      "timestamp": "2020-01-12T14:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-12T14:00:00Z",
+        "gnssAccuracy": 6,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 174000
+    },
+    {
+      "timestamp": "2020-01-12T15:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-12T15:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 174300
+    },
+    {
+      "timestamp": "2020-01-12T16:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-12T16:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 174500
+    },
+    {
+      "timestamp": "2020-01-12T17:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-12T17:00:00Z",
+        "gnssAccuracy": 5,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 174800
+    },
+    {
+      "timestamp": "2020-01-12T18:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-12T18:00:00Z",
+        "gnssAccuracy": 6,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 175100
+    },
+    {
+      "timestamp": "2020-01-12T19:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-12T19:00:00Z",
+        "gnssAccuracy": 8,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 175300
+    },
+    {
+      "timestamp": "2020-01-12T20:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-12T20:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 175500
+    },
+    {
+      "timestamp": "2020-01-12T21:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-12T21:00:00Z",
+        "gnssAccuracy": 8,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 177300
+    },
+    {
+      "timestamp": "2020-01-12T22:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-12T22:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 177900
+    },
+    {
+      "timestamp": "2020-01-12T23:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-12T23:00:00Z",
+        "gnssAccuracy": 8,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 178900
+    },
+    {
+      "timestamp": "2020-01-13T00:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-13T00:00:00Z",
+        "gnssAccuracy": 6,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 179200
+    },
+    {
+      "timestamp": "2020-01-13T01:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-13T01:00:00Z",
+        "gnssAccuracy": 10,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 179700
+    },
+    {
+      "timestamp": "2020-01-13T02:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-13T02:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 179900
+    },
+    {
+      "timestamp": "2020-01-13T03:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-13T03:00:00Z",
+        "gnssAccuracy": 6,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 180300
+    },
+    {
+      "timestamp": "2020-01-13T04:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-13T04:00:00Z",
+        "gnssAccuracy": 8,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 180500
+    },
+    {
+      "timestamp": "2020-01-13T05:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-13T05:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 180700
+    },
+    {
+      "timestamp": "2020-01-13T06:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-13T06:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 181100
+    },
+    {
+      "timestamp": "2020-01-13T07:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-13T07:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 181300
+    },
+    {
+      "timestamp": "2020-01-13T08:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-13T08:00:00Z",
+        "gnssAccuracy": 8,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 181500
+    },
+    {
+      "timestamp": "2020-01-13T09:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-13T09:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 181900
+    },
+    {
+      "timestamp": "2020-01-13T10:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-13T10:00:00Z",
+        "gnssAccuracy": 13,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 182100
+    },
+    {
+      "timestamp": "2020-01-13T11:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-13T11:00:00Z",
+        "gnssAccuracy": 8,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 182300
+    },
+    {
+      "timestamp": "2020-01-13T12:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-13T12:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 182500
+    },
+    {
+      "timestamp": "2020-01-13T13:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-13T13:00:00Z",
+        "gnssAccuracy": 9,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 183300
+    },
+    {
+      "timestamp": "2020-01-13T14:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-13T14:00:00Z",
+        "gnssAccuracy": 11,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 183900
+    },
+    {
+      "timestamp": "2020-01-13T15:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-13T15:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 184100
+    },
+    {
+      "timestamp": "2020-01-13T16:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-13T16:00:00Z",
+        "gnssAccuracy": 6,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 186600
+    },
+    {
+      "timestamp": "2020-01-13T17:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-13T17:00:00Z",
+        "gnssAccuracy": 8,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 186800
+    },
+    {
+      "timestamp": "2020-01-13T18:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-13T18:00:00Z",
+        "gnssAccuracy": 9,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 187000
+    },
+    {
+      "timestamp": "2020-01-13T19:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-13T19:00:00Z",
+        "gnssAccuracy": 6,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 187400
+    },
+    {
+      "timestamp": "2020-01-13T20:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-13T20:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 187600
+    },
+    {
+      "timestamp": "2020-01-13T21:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-13T21:00:00Z",
+        "gnssAccuracy": 6,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 187800
+    },
+    {
+      "timestamp": "2020-01-13T22:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-13T22:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 188200
+    },
+    {
+      "timestamp": "2020-01-13T23:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-13T23:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 188400
+    },
+    {
+      "timestamp": "2020-01-14T00:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-14T00:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 189000
+    },
+    {
+      "timestamp": "2020-01-14T01:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-14T01:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 189200
+    },
+    {
+      "timestamp": "2020-01-14T02:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-14T02:00:00Z",
+        "gnssAccuracy": 6,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 189800
+    },
+    {
+      "timestamp": "2020-01-14T03:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-14T03:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 189900
+    },
+    {
+      "timestamp": "2020-01-14T04:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-14T04:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 191900
+    },
+    {
+      "timestamp": "2020-01-14T05:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-14T05:00:00Z",
+        "gnssAccuracy": 9,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 192600
+    },
+    {
+      "timestamp": "2020-01-14T06:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-14T06:00:00Z",
+        "gnssAccuracy": 8,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 192700
+    },
+    {
+      "timestamp": "2020-01-14T07:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-14T07:00:00Z",
+        "gnssAccuracy": 9,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 193500
+    },
+    {
+      "timestamp": "2020-01-14T08:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-14T08:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 193700
+    },
+    {
+      "timestamp": "2020-01-14T09:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-14T09:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 194000
+    },
+    {
+      "timestamp": "2020-01-14T10:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-14T10:00:00Z",
+        "gnssAccuracy": 8,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 194500
+    },
+    {
+      "timestamp": "2020-01-14T11:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-14T11:00:00Z",
+        "gnssAccuracy": 6,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 194700
+    },
+    {
+      "timestamp": "2020-01-14T12:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-14T12:00:00Z",
+        "gnssAccuracy": 6,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 195100
+    },
+    {
+      "timestamp": "2020-01-14T13:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-14T13:00:00Z",
+        "gnssAccuracy": 8,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 195300
+    },
+    {
+      "timestamp": "2020-01-14T14:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-14T14:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 195900
+    },
+    {
+      "timestamp": "2020-01-14T15:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-14T15:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 196100
+    },
+    {
+      "timestamp": "2020-01-14T16:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-14T16:00:00Z",
+        "gnssAccuracy": 8,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 196500
+    },
+    {
+      "timestamp": "2020-01-14T17:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-14T17:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 196700
+    },
+    {
+      "timestamp": "2020-01-14T18:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-14T18:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 196900
+    },
+    {
+      "timestamp": "2020-01-14T19:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-14T19:00:00Z",
+        "gnssAccuracy": 8,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 197100
+    },
+    {
+      "timestamp": "2020-01-14T20:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-14T20:00:00Z",
+        "gnssAccuracy": 6,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 197900
+    },
+    {
+      "timestamp": "2020-01-14T21:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-14T21:00:00Z",
+        "gnssAccuracy": 8,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 198500
+    },
+    {
+      "timestamp": "2020-01-14T22:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-14T22:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 198700
+    },
+    {
+      "timestamp": "2020-01-14T23:00:00Z",
+      "gnssPlaceRecord": {
+        "timestamp": "2020-01-14T23:00:00Z",
+        "gnssAccuracy": 8,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "vehicleOdometerKm": 199400
+    }
+  ]
+}

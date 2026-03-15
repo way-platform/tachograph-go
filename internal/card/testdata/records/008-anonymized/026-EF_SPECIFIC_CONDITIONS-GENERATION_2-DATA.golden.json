@@ -1,0 +1,346 @@
+{
+  "newestRecordIndex": 3,
+  "records": [
+    {
+      "entryTime": "2024-02-03T11:13:26Z",
+      "specificConditionType": "OUT_OF_SCOPE_BEGIN"
+    },
+    {
+      "entryTime": "2024-02-03T11:42:36Z",
+      "specificConditionType": "OUT_OF_SCOPE_END"
+    },
+    {
+      "entryTime": "2024-02-03T11:52:38Z",
+      "specificConditionType": "OUT_OF_SCOPE_BEGIN"
+    },
+    {
+      "entryTime": "2024-02-03T12:14:52Z",
+      "specificConditionType": "OUT_OF_SCOPE_END"
+    },
+    {
+      "specificConditionType": "RFU"
+    },
+    {
+      "specificConditionType": "RFU"
+    },
+    {
+      "specificConditionType": "RFU"
+    },
+    {
+      "specificConditionType": "RFU"
+    },
+    {
+      "specificConditionType": "RFU"
+    },
+    {
+      "specificConditionType": "RFU"
+    },
+    {
+      "specificConditionType": "RFU"
+    },
+    {
+      "specificConditionType": "RFU"
+    },
+    {
+      "specificConditionType": "RFU"
+    },
+    {
+      "specificConditionType": "RFU"
+    },
+    {
+      "specificConditionType": "RFU"
+    },
+    {
+      "specificConditionType": "RFU"
+    },
+    {
+      "specificConditionType": "RFU"
+    },
+    {
+      "specificConditionType": "RFU"
+    },
+    {
+      "specificConditionType": "RFU"
+    },
+    {
+      "specificConditionType": "RFU"
+    },
+    {
+      "specificConditionType": "RFU"
+    },
+    {
+      "specificConditionType": "RFU"
+    },
+    {
+      "specificConditionType": "RFU"
+    },
+    {
+      "specificConditionType": "RFU"
+    },
+    {
+      "specificConditionType": "RFU"
+    },
+    {
+      "specificConditionType": "RFU"
+    },
+    {
+      "specificConditionType": "RFU"
+    },
+    {
+      "specificConditionType": "RFU"
+    },
+    {
+      "specificConditionType": "RFU"
+    },
+    {
+      "specificConditionType": "RFU"
+    },
+    {
+      "specificConditionType": "RFU"
+    },
+    {
+      "specificConditionType": "RFU"
+    },
+    {
+      "specificConditionType": "RFU"
+    },
+    {
+      "specificConditionType": "RFU"
+    },
+    {
+      "specificConditionType": "RFU"
+    },
+    {
+      "specificConditionType": "RFU"
+    },
+    {
+      "specificConditionType": "RFU"
+    },
+    {
+      "specificConditionType": "RFU"
+    },
+    {
+      "specificConditionType": "RFU"
+    },
+    {
+      "specificConditionType": "RFU"
+    },
+    {
+      "specificConditionType": "RFU"
+    },
+    {
+      "specificConditionType": "RFU"
+    },
+    {
+      "specificConditionType": "RFU"
+    },
+    {
+      "specificConditionType": "RFU"
+    },
+    {
+      "specificConditionType": "RFU"
+    },
+    {
+      "specificConditionType": "RFU"
+    },
+    {
+      "specificConditionType": "RFU"
+    },
+    {
+      "specificConditionType": "RFU"
+    },
+    {
+      "specificConditionType": "RFU"
+    },
+    {
+      "specificConditionType": "RFU"
+    },
+    {
+      "specificConditionType": "RFU"
+    },
+    {
+      "specificConditionType": "RFU"
+    },
+    {
+      "specificConditionType": "RFU"
+    },
+    {
+      "specificConditionType": "RFU"
+    },
+    {
+      "specificConditionType": "RFU"
+    },
+    {
+      "specificConditionType": "RFU"
+    },
+    {
+      "specificConditionType": "RFU"
+    },
+    {
+      "specificConditionType": "RFU"
+    },
+    {
+      "specificConditionType": "RFU"
+    },
+    {
+      "specificConditionType": "RFU"
+    },
+    {
+      "specificConditionType": "RFU"
+    },
+    {
+      "specificConditionType": "RFU"
+    },
+    {
+      "specificConditionType": "RFU"
+    },
+    {
+      "specificConditionType": "RFU"
+    },
+    {
+      "specificConditionType": "RFU"
+    },
+    {
+      "specificConditionType": "RFU"
+    },
+    {
+      "specificConditionType": "RFU"
+    },
+    {
+      "specificConditionType": "RFU"
+    },
+    {
+      "specificConditionType": "RFU"
+    },
+    {
+      "specificConditionType": "RFU"
+    },
+    {
+      "specificConditionType": "RFU"
+    },
+    {
+      "specificConditionType": "RFU"
+    },
+    {
+      "specificConditionType": "RFU"
+    },
+    {
+      "specificConditionType": "RFU"
+    },
+    {
+      "specificConditionType": "RFU"
+    },
+    {
+      "specificConditionType": "RFU"
+    },
+    {
+      "specificConditionType": "RFU"
+    },
+    {
+      "specificConditionType": "RFU"
+    },
+    {
+      "specificConditionType": "RFU"
+    },
+    {
+      "specificConditionType": "RFU"
+    },
+    {
+      "specificConditionType": "RFU"
+    },
+    {
+      "specificConditionType": "RFU"
+    },
+    {
+      "specificConditionType": "RFU"
+    },
+    {
+      "specificConditionType": "RFU"
+    },
+    {
+      "specificConditionType": "RFU"
+    },
+    {
+      "specificConditionType": "RFU"
+    },
+    {
+      "specificConditionType": "RFU"
+    },
+    {
+      "specificConditionType": "RFU"
+    },
+    {
+      "specificConditionType": "RFU"
+    },
+    {
+      "specificConditionType": "RFU"
+    },
+    {
+      "specificConditionType": "RFU"
+    },
+    {
+      "specificConditionType": "RFU"
+    },
+    {
+      "specificConditionType": "RFU"
+    },
+    {
+      "specificConditionType": "RFU"
+    },
+    {
+      "specificConditionType": "RFU"
+    },
+    {
+      "specificConditionType": "RFU"
+    },
+    {
+      "specificConditionType": "RFU"
+    },
+    {
+      "specificConditionType": "RFU"
+    },
+    {
+      "specificConditionType": "RFU"
+    },
+    {
+      "specificConditionType": "RFU"
+    },
+    {
+      "specificConditionType": "RFU"
+    },
+    {
+      "specificConditionType": "RFU"
+    },
+    {
+      "specificConditionType": "RFU"
+    },
+    {
+      "specificConditionType": "RFU"
+    },
+    {
+      "specificConditionType": "RFU"
+    },
+    {
+      "specificConditionType": "RFU"
+    },
+    {
+      "specificConditionType": "RFU"
+    },
+    {
+      "specificConditionType": "RFU"
+    },
+    {
+      "specificConditionType": "RFU"
+    },
+    {
+      "specificConditionType": "RFU"
+    },
+    {
+      "specificConditionType": "RFU"
+    },
+    {
+      "specificConditionType": "RFU"
+    }
+  ],
+  "rawData": "AANlvh/WAWW+JqwCZb4pBgFlvi48AgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=="
+}

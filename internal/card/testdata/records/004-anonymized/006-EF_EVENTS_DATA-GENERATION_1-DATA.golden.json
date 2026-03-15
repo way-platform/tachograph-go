@@ -1,0 +1,382 @@
+{
+  "events": [
+    {
+      "valid": true,
+      "eventType": "GENERAL_TIME_OVERLAP",
+      "eventBeginTime": "2020-01-01T00:00:00Z",
+      "eventEndTime": "2020-01-01T00:30:00Z",
+      "eventVehicleRegistration": {
+        "nation": "NETHERLANDS",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "*************"
+        }
+      }
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": true,
+      "eventType": "GENERAL_CARD_INSERTION_WHILE_DRIVING",
+      "eventBeginTime": "2020-01-01T12:00:00Z",
+      "eventEndTime": "2020-01-01T12:30:00Z",
+      "eventVehicleRegistration": {
+        "nation": "NETHERLANDS",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "*************"
+        }
+      }
+    },
+    {
+      "valid": true,
+      "eventType": "GENERAL_CARD_INSERTION_WHILE_DRIVING",
+      "eventBeginTime": "2020-01-01T13:00:00Z",
+      "eventEndTime": "2020-01-01T13:30:00Z",
+      "eventVehicleRegistration": {
+        "nation": "NETHERLANDS",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "*************"
+        }
+      }
+    },
+    {
+      "valid": true,
+      "eventType": "GENERAL_CARD_INSERTION_WHILE_DRIVING",
+      "eventBeginTime": "2020-01-01T14:00:00Z",
+      "eventEndTime": "2020-01-01T14:30:00Z",
+      "eventVehicleRegistration": {
+        "nation": "NETHERLANDS",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "*************"
+        }
+      }
+    },
+    {
+      "valid": true,
+      "eventType": "GENERAL_CARD_INSERTION_WHILE_DRIVING",
+      "eventBeginTime": "2020-01-01T15:00:00Z",
+      "eventEndTime": "2020-01-01T15:30:00Z",
+      "eventVehicleRegistration": {
+        "nation": "NETHERLANDS",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "*************"
+        }
+      }
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": true,
+      "eventType": "GENERAL_MOTION_DATA_ERROR",
+      "eventBeginTime": "2020-01-03T00:00:00Z",
+      "eventEndTime": "2020-01-03T00:30:00Z",
+      "eventVehicleRegistration": {
+        "nation": "NETHERLANDS",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "*************"
+        }
+      }
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": true,
+      "eventType": "VU_SEC_INCONSISTENCY_MOTION_VS_ACTIVITY",
+      "eventBeginTime": "2020-01-03T12:00:00Z",
+      "eventEndTime": "2020-01-03T12:30:00Z",
+      "eventVehicleRegistration": {
+        "nation": "NETHERLANDS",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "*************"
+        }
+      }
+    },
+    {
+      "valid": true,
+      "eventType": "VU_SEC_INCONSISTENCY_MOTION_VS_ACTIVITY",
+      "eventBeginTime": "2020-01-03T13:00:00Z",
+      "eventEndTime": "2020-01-03T13:30:00Z",
+      "eventVehicleRegistration": {
+        "nation": "NETHERLANDS",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "*************"
+        }
+      }
+    },
+    {
+      "valid": true,
+      "eventType": "VU_SEC_INCONSISTENCY_MOTION_VS_ACTIVITY",
+      "eventBeginTime": "2020-01-03T14:00:00Z",
+      "eventEndTime": "2020-01-03T14:30:00Z",
+      "eventVehicleRegistration": {
+        "nation": "NETHERLANDS",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "*************"
+        }
+      }
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    },
+    {
+      "valid": false,
+      "rawData": "AAAAAAAAAAAAAAAgICAgICAgICAgICAg"
+    }
+  ]
+}
