@@ -1,0 +1,56 @@
+{
+  "memberStateCertificate": "",
+  "vuCertificate": "",
+  "vehicleIdentificationNumber": {
+    "length": 17,
+    "value": "*****************"
+  },
+  "vehicleRegistrationNumber": {
+    "length": 15,
+    "value": "***************"
+  },
+  "currentDateTime": "2026-03-11T22:52:29Z",
+  "downloadablePeriod": {
+    "minTime": "2025-11-28T00:00:00Z",
+    "maxTime": "2026-03-11T22:05:00Z"
+  },
+  "driverSlotCard": "DRIVER_CARD_INSERTED",
+  "coDriverSlotCard": "NO_CARD",
+  "downloadActivities": [
+    {
+      "downloadingTime": "2026-03-11T01:57:34Z",
+      "fullCardNumberAndGeneration": {
+        "fullCardNumber": {
+          "cardType": "COMPANY_CARD",
+          "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+          "ownerIdentification": {
+            "ownerIdentification": {
+              "length": 13,
+              "value": "*************"
+            },
+            "consecutiveIndex": {
+              "length": 1,
+              "value": "*"
+            },
+            "replacementIndex": {
+              "length": 1,
+              "value": "*"
+            },
+            "renewalIndex": {
+              "length": 1,
+              "value": "*"
+            }
+          }
+        },
+        "generation": "GENERATION_2"
+      },
+      "companyOrWorkshopName": {
+        "encoding": "ISO_8859_1",
+        "length": 35,
+        "value": "***********************************"
+      }
+    }
+  ],
+  "signature": "CwAAAAA=",
+  "rawData": "AQAAAAACAAAAAAMAEQABKioqKioqKioqKioqKioqKioEAA8AASoqKioqKioqKioqKioqKgUABAABabHyLQYACAABaSjmAGmx5wwHAAEAAQEIADsAAWmwzA4EACoqKioqKioqKioqKioqKioCASoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqCQBjAAAKACAAAAsAAAAA"
+}

@@ -1,0 +1,140 @@
+{
+  "dateOfDay": "2024-01-01T00:00:00Z",
+  "odometerMidnightKm": 303200,
+  "cardIwData": [
+    {
+      "cardHolderName": {
+        "holderSurname": {
+          "encoding": "ENCODING_EMPTY",
+          "length": 35,
+          "value": "",
+          "rawData": "//8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+        },
+        "holderFirstNames": {
+          "encoding": "ENCODING_DEFAULT",
+          "length": 35,
+          "value": "",
+          "rawData": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+        }
+      },
+      "fullCardNumber": {
+        "fullCardNumber": {
+          "rawData": "AAAAAAAAAAAAAAAAAAAAAAAA"
+        },
+        "generation": "GENERATION_UNSPECIFIED"
+      },
+      "cardExpiryDate": {
+        "rawData": "IDASMQ==",
+        "year": 2030,
+        "month": 12,
+        "day": 31
+      },
+      "cardInsertionTime": "2024-01-01T00:00:00Z",
+      "odometerAtInsertionKm": 302600,
+      "cardSlotNumber": "DRIVER_SLOT",
+      "cardWithdrawalTime": "2024-01-01T01:00:00Z",
+      "odometerAtWithdrawalKm": 303200,
+      "previousVehicleInfo": {
+        "vehicleRegistration": {
+          "nation": "FINLAND",
+          "number": {
+            "encoding": "ISO_8859_1",
+            "length": 13,
+            "value": "*************",
+            "rawData": "ASoqKioqKioqKioqKio="
+          }
+        },
+        "cardWithdrawalTime": "2020-01-01T00:00:00Z",
+        "vuGeneration": "GENERATION_2",
+        "rawData": "EgEqKioqKioqKioqKioqXgvhAAI="
+      },
+      "manualInputFlag": true,
+      "rawData": "//8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAwEjFlkgCABJ4IAGWSDpAEoGASASoqKioqKioqKioqKipeC+EAAgE="
+    }
+  ],
+  "activityChanges": [
+    {
+      "rawData": "GAA=",
+      "slot": "DRIVER_SLOT",
+      "crew": false,
+      "inserted": true,
+      "activity": "DRIVING",
+      "timeOfChangeMinutes": 0
+    },
+    {
+      "rawData": "EB4=",
+      "slot": "DRIVER_SLOT",
+      "crew": false,
+      "inserted": true,
+      "activity": "WORK",
+      "timeOfChangeMinutes": 30
+    },
+    {
+      "rawData": "GDw=",
+      "slot": "DRIVER_SLOT",
+      "crew": false,
+      "inserted": true,
+      "activity": "DRIVING",
+      "timeOfChangeMinutes": 60
+    },
+    {
+      "rawData": "EFo=",
+      "slot": "DRIVER_SLOT",
+      "crew": false,
+      "inserted": true,
+      "activity": "WORK",
+      "timeOfChangeMinutes": 90
+    },
+    {
+      "rawData": "GHg=",
+      "slot": "DRIVER_SLOT",
+      "crew": false,
+      "inserted": true,
+      "activity": "DRIVING",
+      "timeOfChangeMinutes": 120
+    },
+    {
+      "rawData": "EJY=",
+      "slot": "DRIVER_SLOT",
+      "crew": false,
+      "inserted": true,
+      "activity": "WORK",
+      "timeOfChangeMinutes": 150
+    },
+    {
+      "rawData": "MLQ=",
+      "slot": "DRIVER_SLOT",
+      "crew": false,
+      "inserted": false,
+      "activity": "WORK",
+      "timeOfChangeMinutes": 180
+    },
+    {
+      "rawData": "qNI=",
+      "slot": "CO_DRIVER_SLOT",
+      "crew": false,
+      "inserted": false,
+      "activity": "AVAILABILITY",
+      "timeOfChangeMinutes": 210
+    }
+  ],
+  "places": [
+    {
+      "entryTypeDailyWorkPeriod": "END",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 303200,
+      "entryGnssPlaceRecord": {
+        "timestamp": "2025-12-20T03:05:30Z",
+        "gnssAccuracy": 9,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "rawData": "AAAAAAESAQSgYGlGEnoJAOrEAF/w"
+    }
+  ],
+  "signature": "CgAAAAA=",
+  "rawData": "AQAEAAFlkgCAAgADAAEEoGADAIMAAf//AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgMBIxZZIAgASeCABlkg6QBKBgEgEqKioqKioqKioqKioqXgvhAAIBBAACAAgYABAeGDwQWhh4EJYwtKjSBQApAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAESAQSgYGlGEnoJAOrEAF/wAAYAOQAABwAFAAAIADcAAAkAOgAACgAAAAA="
+}

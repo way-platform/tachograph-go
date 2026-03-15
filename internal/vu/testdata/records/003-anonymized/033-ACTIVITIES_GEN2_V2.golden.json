@@ -1,0 +1,72 @@
+{
+  "dateOfDay": "2024-01-01T00:00:00Z",
+  "odometerMidnightKm": 305100,
+  "activityChanges": [
+    {
+      "rawData": "MAA=",
+      "slot": "DRIVER_SLOT",
+      "crew": false,
+      "inserted": false,
+      "activity": "WORK",
+      "timeOfChangeMinutes": 0
+    },
+    {
+      "rawData": "OB4=",
+      "slot": "DRIVER_SLOT",
+      "crew": false,
+      "inserted": false,
+      "activity": "DRIVING",
+      "timeOfChangeMinutes": 30
+    },
+    {
+      "rawData": "MDw=",
+      "slot": "DRIVER_SLOT",
+      "crew": false,
+      "inserted": false,
+      "activity": "WORK",
+      "timeOfChangeMinutes": 60
+    },
+    {
+      "rawData": "OFo=",
+      "slot": "DRIVER_SLOT",
+      "crew": false,
+      "inserted": false,
+      "activity": "DRIVING",
+      "timeOfChangeMinutes": 90
+    },
+    {
+      "rawData": "MHg=",
+      "slot": "DRIVER_SLOT",
+      "crew": false,
+      "inserted": false,
+      "activity": "WORK",
+      "timeOfChangeMinutes": 120
+    },
+    {
+      "rawData": "OJY=",
+      "slot": "DRIVER_SLOT",
+      "crew": false,
+      "inserted": false,
+      "activity": "DRIVING",
+      "timeOfChangeMinutes": 150
+    },
+    {
+      "rawData": "MLQ=",
+      "slot": "DRIVER_SLOT",
+      "crew": false,
+      "inserted": false,
+      "activity": "WORK",
+      "timeOfChangeMinutes": 180
+    },
+    {
+      "rawData": "qNI=",
+      "slot": "CO_DRIVER_SLOT",
+      "crew": false,
+      "inserted": false,
+      "activity": "AVAILABILITY",
+      "timeOfChangeMinutes": 210
+    }
+  ],
+  "signature": "CgAAAAA=",
+  "rawData": "AQAEAAFlkgCAAgADAAEEp8wDAIMAAAQAAgAIMAA4HjA8OFoweDiWMLSo0gUAKQAABgA5AAAHAAUAAAgANwAACQA6AAAKAAAAAA=="
+}

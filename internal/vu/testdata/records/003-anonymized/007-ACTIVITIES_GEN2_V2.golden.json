@@ -1,0 +1,765 @@
+{
+  "dateOfDay": "2024-01-01T00:00:00Z",
+  "odometerMidnightKm": 298300,
+  "cardIwData": [
+    {
+      "cardHolderName": {
+        "holderSurname": {
+          "encoding": "ENCODING_EMPTY",
+          "length": 35,
+          "value": "",
+          "rawData": "//8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+        },
+        "holderFirstNames": {
+          "encoding": "ENCODING_DEFAULT",
+          "length": 35,
+          "value": "",
+          "rawData": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+        }
+      },
+      "fullCardNumber": {
+        "fullCardNumber": {
+          "rawData": "AAAAAAAAAAAAAAAAAAAAAAAA"
+        },
+        "generation": "GENERATION_UNSPECIFIED"
+      },
+      "cardExpiryDate": {
+        "rawData": "IDASMQ==",
+        "year": 2030,
+        "month": 12,
+        "day": 31
+      },
+      "cardInsertionTime": "2024-01-01T00:00:00Z",
+      "odometerAtInsertionKm": 297100,
+      "cardSlotNumber": "DRIVER_SLOT",
+      "cardWithdrawalTime": "2024-01-01T01:00:00Z",
+      "odometerAtWithdrawalKm": 297700,
+      "previousVehicleInfo": {
+        "vehicleRegistration": {
+          "nation": "FINLAND",
+          "number": {
+            "encoding": "ISO_8859_1",
+            "length": 13,
+            "value": "*************",
+            "rawData": "ASoqKioqKioqKioqKio="
+          }
+        },
+        "cardWithdrawalTime": "2020-01-01T00:00:00Z",
+        "vuGeneration": "GENERATION_2",
+        "rawData": "EgEqKioqKioqKioqKioqXgvhAAI="
+      },
+      "manualInputFlag": true,
+      "rawData": "//8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAwEjFlkgCABIiMAGWSDpAEiuQSASoqKioqKioqKioqKipeC+EAAgE="
+    },
+    {
+      "cardHolderName": {
+        "holderSurname": {
+          "encoding": "ENCODING_EMPTY",
+          "length": 35,
+          "value": "",
+          "rawData": "//8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+        },
+        "holderFirstNames": {
+          "encoding": "ENCODING_DEFAULT",
+          "length": 35,
+          "value": "",
+          "rawData": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+        }
+      },
+      "fullCardNumber": {
+        "fullCardNumber": {
+          "rawData": "AAAAAAAAAAAAAAAAAAAAAAAA"
+        },
+        "generation": "GENERATION_UNSPECIFIED"
+      },
+      "cardExpiryDate": {
+        "rawData": "IDASMQ==",
+        "year": 2030,
+        "month": 12,
+        "day": 31
+      },
+      "cardInsertionTime": "2024-01-01T02:00:00Z",
+      "odometerAtInsertionKm": 297700,
+      "cardSlotNumber": "DRIVER_SLOT",
+      "cardWithdrawalTime": "2024-01-01T03:00:00Z",
+      "odometerAtWithdrawalKm": 297700,
+      "previousVehicleInfo": {
+        "vehicleRegistration": {
+          "nation": "FINLAND",
+          "number": {
+            "encoding": "ISO_8859_1",
+            "length": 13,
+            "value": "*************",
+            "rawData": "ASoqKioqKioqKioqKio="
+          }
+        },
+        "cardWithdrawalTime": "2020-01-01T00:00:00Z",
+        "vuGeneration": "GENERATION_2",
+        "rawData": "EgEqKioqKioqKioqKioqXgvhAAI="
+      },
+      "manualInputFlag": false,
+      "rawData": "//8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAwEjFlkhygBIrkAGWSKrAEiuQSASoqKioqKioqKioqKipeC+EAAgA="
+    },
+    {
+      "cardHolderName": {
+        "holderSurname": {
+          "encoding": "ENCODING_EMPTY",
+          "length": 35,
+          "value": "",
+          "rawData": "//8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+        },
+        "holderFirstNames": {
+          "encoding": "ENCODING_DEFAULT",
+          "length": 35,
+          "value": "",
+          "rawData": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+        }
+      },
+      "fullCardNumber": {
+        "fullCardNumber": {
+          "rawData": "AAAAAAAAAAAAAAAAAAAAAAAA"
+        },
+        "generation": "GENERATION_UNSPECIFIED"
+      },
+      "cardExpiryDate": {
+        "rawData": "IDASMQ==",
+        "year": 2030,
+        "month": 12,
+        "day": 31
+      },
+      "cardInsertionTime": "2024-01-01T04:00:00Z",
+      "odometerAtInsertionKm": 297700,
+      "cardSlotNumber": "DRIVER_SLOT",
+      "cardWithdrawalTime": "2024-01-01T05:00:00Z",
+      "odometerAtWithdrawalKm": 297900,
+      "previousVehicleInfo": {
+        "vehicleRegistration": {
+          "nation": "FINLAND",
+          "number": {
+            "encoding": "ISO_8859_1",
+            "length": 13,
+            "value": "*************",
+            "rawData": "ASoqKioqKioqKioqKio="
+          }
+        },
+        "cardWithdrawalTime": "2020-01-01T00:00:00Z",
+        "vuGeneration": "GENERATION_2",
+        "rawData": "EgEqKioqKioqKioqKioqXgvhAAI="
+      },
+      "manualInputFlag": true,
+      "rawData": "//8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAwEjFlkjjABIrkAGWSRtAEi6wSASoqKioqKioqKioqKipeC+EAAgE="
+    },
+    {
+      "cardHolderName": {
+        "holderSurname": {
+          "encoding": "ENCODING_EMPTY",
+          "length": 35,
+          "value": "",
+          "rawData": "//8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+        },
+        "holderFirstNames": {
+          "encoding": "ENCODING_DEFAULT",
+          "length": 35,
+          "value": "",
+          "rawData": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+        }
+      },
+      "fullCardNumber": {
+        "fullCardNumber": {
+          "rawData": "AAAAAAAAAAAAAAAAAAAAAAAA"
+        },
+        "generation": "GENERATION_UNSPECIFIED"
+      },
+      "cardExpiryDate": {
+        "rawData": "IDASMQ==",
+        "year": 2030,
+        "month": 12,
+        "day": 31
+      },
+      "cardInsertionTime": "2024-01-01T06:00:00Z",
+      "odometerAtInsertionKm": 297900,
+      "cardSlotNumber": "DRIVER_SLOT",
+      "cardWithdrawalTime": "2024-01-01T07:00:00Z",
+      "odometerAtWithdrawalKm": 298500,
+      "previousVehicleInfo": {
+        "vehicleRegistration": {
+          "nation": "FINLAND",
+          "number": {
+            "encoding": "ISO_8859_1",
+            "length": 13,
+            "value": "*************",
+            "rawData": "ASoqKioqKioqKioqKio="
+          }
+        },
+        "cardWithdrawalTime": "2020-01-01T00:00:00Z",
+        "vuGeneration": "GENERATION_2",
+        "rawData": "EgEqKioqKioqKioqKioqXgvhAAI="
+      },
+      "manualInputFlag": true,
+      "rawData": "//8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAwEjFlklTgBIusAGWSYvAEjgQSASoqKioqKioqKioqKipeC+EAAgE="
+    }
+  ],
+  "activityChanges": [
+    {
+      "rawData": "GAA=",
+      "slot": "DRIVER_SLOT",
+      "crew": false,
+      "inserted": true,
+      "activity": "DRIVING",
+      "timeOfChangeMinutes": 0
+    },
+    {
+      "rawData": "AB4=",
+      "slot": "DRIVER_SLOT",
+      "crew": false,
+      "inserted": true,
+      "activity": "BREAK_REST",
+      "timeOfChangeMinutes": 30
+    },
+    {
+      "rawData": "GDw=",
+      "slot": "DRIVER_SLOT",
+      "crew": false,
+      "inserted": true,
+      "activity": "DRIVING",
+      "timeOfChangeMinutes": 60
+    },
+    {
+      "rawData": "EFo=",
+      "slot": "DRIVER_SLOT",
+      "crew": false,
+      "inserted": true,
+      "activity": "WORK",
+      "timeOfChangeMinutes": 90
+    },
+    {
+      "rawData": "GHg=",
+      "slot": "DRIVER_SLOT",
+      "crew": false,
+      "inserted": true,
+      "activity": "DRIVING",
+      "timeOfChangeMinutes": 120
+    },
+    {
+      "rawData": "EJY=",
+      "slot": "DRIVER_SLOT",
+      "crew": false,
+      "inserted": true,
+      "activity": "WORK",
+      "timeOfChangeMinutes": 150
+    },
+    {
+      "rawData": "GLQ=",
+      "slot": "DRIVER_SLOT",
+      "crew": false,
+      "inserted": true,
+      "activity": "DRIVING",
+      "timeOfChangeMinutes": 180
+    },
+    {
+      "rawData": "ENI=",
+      "slot": "DRIVER_SLOT",
+      "crew": false,
+      "inserted": true,
+      "activity": "WORK",
+      "timeOfChangeMinutes": 210
+    },
+    {
+      "rawData": "APA=",
+      "slot": "DRIVER_SLOT",
+      "crew": false,
+      "inserted": true,
+      "activity": "BREAK_REST",
+      "timeOfChangeMinutes": 240
+    },
+    {
+      "rawData": "IQ4=",
+      "slot": "DRIVER_SLOT",
+      "crew": false,
+      "inserted": false,
+      "activity": "BREAK_REST",
+      "timeOfChangeMinutes": 270
+    },
+    {
+      "rawData": "MSw=",
+      "slot": "DRIVER_SLOT",
+      "crew": false,
+      "inserted": false,
+      "activity": "WORK",
+      "timeOfChangeMinutes": 300
+    },
+    {
+      "rawData": "EUo=",
+      "slot": "DRIVER_SLOT",
+      "crew": false,
+      "inserted": true,
+      "activity": "WORK",
+      "timeOfChangeMinutes": 330
+    },
+    {
+      "rawData": "GWg=",
+      "slot": "DRIVER_SLOT",
+      "crew": false,
+      "inserted": true,
+      "activity": "DRIVING",
+      "timeOfChangeMinutes": 360
+    },
+    {
+      "rawData": "EYY=",
+      "slot": "DRIVER_SLOT",
+      "crew": false,
+      "inserted": true,
+      "activity": "WORK",
+      "timeOfChangeMinutes": 390
+    },
+    {
+      "rawData": "GaQ=",
+      "slot": "DRIVER_SLOT",
+      "crew": false,
+      "inserted": true,
+      "activity": "DRIVING",
+      "timeOfChangeMinutes": 420
+    },
+    {
+      "rawData": "EcI=",
+      "slot": "DRIVER_SLOT",
+      "crew": false,
+      "inserted": true,
+      "activity": "WORK",
+      "timeOfChangeMinutes": 450
+    },
+    {
+      "rawData": "GeA=",
+      "slot": "DRIVER_SLOT",
+      "crew": false,
+      "inserted": true,
+      "activity": "DRIVING",
+      "timeOfChangeMinutes": 480
+    },
+    {
+      "rawData": "Ef4=",
+      "slot": "DRIVER_SLOT",
+      "crew": false,
+      "inserted": true,
+      "activity": "WORK",
+      "timeOfChangeMinutes": 510
+    },
+    {
+      "rawData": "Ghw=",
+      "slot": "DRIVER_SLOT",
+      "crew": false,
+      "inserted": true,
+      "activity": "DRIVING",
+      "timeOfChangeMinutes": 540
+    },
+    {
+      "rawData": "Ejo=",
+      "slot": "DRIVER_SLOT",
+      "crew": false,
+      "inserted": true,
+      "activity": "WORK",
+      "timeOfChangeMinutes": 570
+    },
+    {
+      "rawData": "Glg=",
+      "slot": "DRIVER_SLOT",
+      "crew": false,
+      "inserted": true,
+      "activity": "DRIVING",
+      "timeOfChangeMinutes": 600
+    },
+    {
+      "rawData": "EnY=",
+      "slot": "DRIVER_SLOT",
+      "crew": false,
+      "inserted": true,
+      "activity": "WORK",
+      "timeOfChangeMinutes": 630
+    },
+    {
+      "rawData": "GpQ=",
+      "slot": "DRIVER_SLOT",
+      "crew": false,
+      "inserted": true,
+      "activity": "DRIVING",
+      "timeOfChangeMinutes": 660
+    },
+    {
+      "rawData": "IrI=",
+      "slot": "DRIVER_SLOT",
+      "crew": false,
+      "inserted": false,
+      "activity": "BREAK_REST",
+      "timeOfChangeMinutes": 690
+    },
+    {
+      "rawData": "AtA=",
+      "slot": "DRIVER_SLOT",
+      "crew": false,
+      "inserted": true,
+      "activity": "BREAK_REST",
+      "timeOfChangeMinutes": 720
+    },
+    {
+      "rawData": "Eu4=",
+      "slot": "DRIVER_SLOT",
+      "crew": false,
+      "inserted": true,
+      "activity": "WORK",
+      "timeOfChangeMinutes": 750
+    },
+    {
+      "rawData": "Gww=",
+      "slot": "DRIVER_SLOT",
+      "crew": false,
+      "inserted": true,
+      "activity": "DRIVING",
+      "timeOfChangeMinutes": 780
+    },
+    {
+      "rawData": "Ayo=",
+      "slot": "DRIVER_SLOT",
+      "crew": false,
+      "inserted": true,
+      "activity": "BREAK_REST",
+      "timeOfChangeMinutes": 810
+    },
+    {
+      "rawData": "G0g=",
+      "slot": "DRIVER_SLOT",
+      "crew": false,
+      "inserted": true,
+      "activity": "DRIVING",
+      "timeOfChangeMinutes": 840
+    },
+    {
+      "rawData": "E2Y=",
+      "slot": "DRIVER_SLOT",
+      "crew": false,
+      "inserted": true,
+      "activity": "WORK",
+      "timeOfChangeMinutes": 870
+    },
+    {
+      "rawData": "G4Q=",
+      "slot": "DRIVER_SLOT",
+      "crew": false,
+      "inserted": true,
+      "activity": "DRIVING",
+      "timeOfChangeMinutes": 900
+    },
+    {
+      "rawData": "E6I=",
+      "slot": "DRIVER_SLOT",
+      "crew": false,
+      "inserted": true,
+      "activity": "WORK",
+      "timeOfChangeMinutes": 930
+    },
+    {
+      "rawData": "G8A=",
+      "slot": "DRIVER_SLOT",
+      "crew": false,
+      "inserted": true,
+      "activity": "DRIVING",
+      "timeOfChangeMinutes": 960
+    },
+    {
+      "rawData": "E94=",
+      "slot": "DRIVER_SLOT",
+      "crew": false,
+      "inserted": true,
+      "activity": "WORK",
+      "timeOfChangeMinutes": 990
+    },
+    {
+      "rawData": "G/w=",
+      "slot": "DRIVER_SLOT",
+      "crew": false,
+      "inserted": true,
+      "activity": "DRIVING",
+      "timeOfChangeMinutes": 1020
+    },
+    {
+      "rawData": "FBo=",
+      "slot": "DRIVER_SLOT",
+      "crew": false,
+      "inserted": true,
+      "activity": "WORK",
+      "timeOfChangeMinutes": 1050
+    },
+    {
+      "rawData": "HDg=",
+      "slot": "DRIVER_SLOT",
+      "crew": false,
+      "inserted": true,
+      "activity": "DRIVING",
+      "timeOfChangeMinutes": 1080
+    },
+    {
+      "rawData": "NFY=",
+      "slot": "DRIVER_SLOT",
+      "crew": false,
+      "inserted": false,
+      "activity": "WORK",
+      "timeOfChangeMinutes": 1110
+    },
+    {
+      "rawData": "FHQ=",
+      "slot": "DRIVER_SLOT",
+      "crew": false,
+      "inserted": true,
+      "activity": "WORK",
+      "timeOfChangeMinutes": 1140
+    },
+    {
+      "rawData": "HJI=",
+      "slot": "DRIVER_SLOT",
+      "crew": false,
+      "inserted": true,
+      "activity": "DRIVING",
+      "timeOfChangeMinutes": 1170
+    },
+    {
+      "rawData": "FLA=",
+      "slot": "DRIVER_SLOT",
+      "crew": false,
+      "inserted": true,
+      "activity": "WORK",
+      "timeOfChangeMinutes": 1200
+    },
+    {
+      "rawData": "HM4=",
+      "slot": "DRIVER_SLOT",
+      "crew": false,
+      "inserted": true,
+      "activity": "DRIVING",
+      "timeOfChangeMinutes": 1230
+    },
+    {
+      "rawData": "FOw=",
+      "slot": "DRIVER_SLOT",
+      "crew": false,
+      "inserted": true,
+      "activity": "WORK",
+      "timeOfChangeMinutes": 1260
+    },
+    {
+      "rawData": "HQo=",
+      "slot": "DRIVER_SLOT",
+      "crew": false,
+      "inserted": true,
+      "activity": "DRIVING",
+      "timeOfChangeMinutes": 1290
+    },
+    {
+      "rawData": "BSg=",
+      "slot": "DRIVER_SLOT",
+      "crew": false,
+      "inserted": true,
+      "activity": "BREAK_REST",
+      "timeOfChangeMinutes": 1320
+    },
+    {
+      "rawData": "HUY=",
+      "slot": "DRIVER_SLOT",
+      "crew": false,
+      "inserted": true,
+      "activity": "DRIVING",
+      "timeOfChangeMinutes": 1350
+    },
+    {
+      "rawData": "rWQ=",
+      "slot": "CO_DRIVER_SLOT",
+      "crew": false,
+      "inserted": false,
+      "activity": "AVAILABILITY",
+      "timeOfChangeMinutes": 1380
+    }
+  ],
+  "places": [
+    {
+      "entryTypeDailyWorkPeriod": "END",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 297700,
+      "entryGnssPlaceRecord": {
+        "timestamp": "2025-12-11T03:10:20Z",
+        "gnssAccuracy": 6,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "rawData": "AAAAAAESAQSK5Gk6NhwGAOrEAF/w"
+    },
+    {
+      "entryTypeDailyWorkPeriod": "END",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 297700,
+      "entryGnssPlaceRecord": {
+        "timestamp": "2025-12-11T09:58:09Z",
+        "gnssAccuracy": 8,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "rawData": "AAAAAAESAQSK5Gk6lbEIAOrEAF/w"
+    },
+    {
+      "entryTypeDailyWorkPeriod": "BEGIN",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 297700,
+      "entryGnssPlaceRecord": {
+        "timestamp": "2025-12-11T09:59:24Z",
+        "gnssAccuracy": 18,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "rawData": "AAAAAAASAQSK5Gk6lfwSAOrEAF/w"
+    },
+    {
+      "entryTypeDailyWorkPeriod": "END",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 297900,
+      "entryGnssPlaceRecord": {
+        "timestamp": "2025-12-11T17:17:30Z",
+        "gnssAccuracy": 9,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "rawData": "AAAAAAESAQSLrGk6/KoJAOrEAF/w"
+    },
+    {
+      "entryTypeDailyWorkPeriod": "BEGIN",
+      "dailyWorkPeriodCountry": "FINLAND",
+      "dailyWorkPeriodRegion": "AQ==",
+      "vehicleOdometerKm": 297900,
+      "entryGnssPlaceRecord": {
+        "timestamp": "2025-12-11T17:32:58Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": 60100,
+          "longitude": 24560
+        }
+      },
+      "rawData": "AAAAAAASAQSLrGk7AEoHAOrEAF/w"
+    }
+  ],
+  "gnssAccumulatedDriving": [
+    {
+      "timeStamp": "2024-01-01T00:00:00Z",
+      "cardNumberDriverSlot": {
+        "fullCardNumber": {
+          "rawData": "AAAAAAAAAAAAAAAAAAAAAAAA"
+        },
+        "generation": "GENERATION_UNSPECIFIED"
+      },
+      "cardNumberCodriverSlot": {
+        "fullCardNumber": {
+          "rawData": "AAAAAAAAAAAAAAAAAAAAAAAA"
+        },
+        "generation": "GENERATION_UNSPECIFIED"
+      },
+      "gnssPlaceAuthRecord": {
+        "timestamp": "2024-01-01T00:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": -6938864,
+          "longitude": 8162784
+        },
+        "authenticationStatus": "AUTHENTICATED"
+      },
+      "vehicleOdometerKm": 297700,
+      "rawData": "ZZIAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAZZIAgAeWHxB8jeABBIrk"
+    },
+    {
+      "timeStamp": "2024-01-01T03:00:00Z",
+      "cardNumberDriverSlot": {
+        "fullCardNumber": {
+          "rawData": "AAAAAAAAAAAAAAAAAAAAAAAA"
+        },
+        "generation": "GENERATION_UNSPECIFIED"
+      },
+      "cardNumberCodriverSlot": {
+        "fullCardNumber": {
+          "rawData": "AAAAAAAAAAAAAAAAAAAAAAAA"
+        },
+        "generation": "GENERATION_UNSPECIFIED"
+      },
+      "gnssPlaceAuthRecord": {
+        "timestamp": "2024-01-01T03:00:00Z",
+        "gnssAccuracy": 9,
+        "geoCoordinates": {
+          "latitude": -6938864,
+          "longitude": 8162784
+        },
+        "authenticationStatus": "AUTHENTICATED"
+      },
+      "vehicleOdometerKm": 297800,
+      "rawData": "ZZIqsAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAZZIqsAmWHxB8jeABBItI"
+    },
+    {
+      "timeStamp": "2024-01-01T06:00:00Z",
+      "cardNumberDriverSlot": {
+        "fullCardNumber": {
+          "rawData": "AAAAAAAAAAAAAAAAAAAAAAAA"
+        },
+        "generation": "GENERATION_UNSPECIFIED"
+      },
+      "cardNumberCodriverSlot": {
+        "fullCardNumber": {
+          "rawData": "AAAAAAAAAAAAAAAAAAAAAAAA"
+        },
+        "generation": "GENERATION_UNSPECIFIED"
+      },
+      "gnssPlaceAuthRecord": {
+        "timestamp": "2024-01-01T06:00:00Z",
+        "gnssAccuracy": 7,
+        "geoCoordinates": {
+          "latitude": -6938864,
+          "longitude": 8162784
+        },
+        "authenticationStatus": "AUTHENTICATED"
+      },
+      "vehicleOdometerKm": 298100,
+      "rawData": "ZZJU4AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAZZJU4AeWHxB8jeABBIx0"
+    },
+    {
+      "timeStamp": "2024-01-01T09:00:00Z",
+      "cardNumberDriverSlot": {
+        "fullCardNumber": {
+          "rawData": "AAAAAAAAAAAAAAAAAAAAAAAA"
+        },
+        "generation": "GENERATION_UNSPECIFIED"
+      },
+      "cardNumberCodriverSlot": {
+        "fullCardNumber": {
+          "rawData": "AAAAAAAAAAAAAAAAAAAAAAAA"
+        },
+        "generation": "GENERATION_UNSPECIFIED"
+      },
+      "gnssPlaceAuthRecord": {
+        "timestamp": "2024-01-01T09:00:00Z",
+        "gnssAccuracy": 8,
+        "geoCoordinates": {
+          "latitude": -6938864,
+          "longitude": 8162784
+        },
+        "authenticationStatus": "AUTHENTICATED"
+      },
+      "vehicleOdometerKm": 298300,
+      "rawData": "ZZJ/EAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAZZJ/EAiWHxB8jeABBI08"
+    }
+  ],
+  "signature": "CgAAAAA=",
+  "rawData": "AQAEAAFlkgCAAgADAAEEjTwDAIMABP//AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgMBIxZZIAgASIjABlkg6QBIrkEgEqKioqKioqKioqKioqXgvhAAIB//8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAwEjFlkhygBIrkAGWSKrAEiuQSASoqKioqKioqKioqKipeC+EAAgD//wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIDASMWWSOMAEiuQAZZJG0ASLrBIBKioqKioqKioqKioqKl4L4QACAf//AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgMBIxZZJU4ASLrABlkmLwBI4EEgEqKioqKioqKioqKioqXgvhAAIBBAACAC8YAAAeGDwQWhh4EJYYtBDSAPAhDjEsEUoZaBGGGaQRwhngEf4aHBI6GlgSdhqUIrIC0BLuGwwDKhtIE2YbhBOiG8AT3hv8FBocODRWFHQckhSwHM4U7B0KBSgdRq1kBQApAAUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAESAQSK5Gk6NhwGAOrEAF/wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAARIBBIrkaTqVsQgA6sQAX/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEgEEiuRpOpX8EgDqxABf8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAESAQSLrGk6/KoJAOrEAF/wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABIBBIusaTsASgcA6sQAX/AABgA5AARlkgCAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABlkgCAB5YfEHyN4AEEiuRlkiqwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABlkiqwCZYfEHyN4AEEi0hlklTgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABlklTgB5YfEHyN4AEEjHRlkn8QAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABlkn8QCJYfEHyN4AEEjTwHAAUAAAgANwAACQA6AAAKAAAAAA=="
+}

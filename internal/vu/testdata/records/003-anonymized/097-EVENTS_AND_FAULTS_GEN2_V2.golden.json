@@ -1,0 +1,659 @@
+{
+  "events": [
+    {
+      "eventType": "GENERAL_LAST_CARD_SESSION_NOT_CORRECTLY_CLOSED",
+      "recordPurpose": "LAST_IN_LAST_10_DAYS",
+      "beginTime": "2026-01-13T04:10:38Z",
+      "endTime": "2026-01-13T04:11:56Z",
+      "cardNumberAndGenDriverSlotBegin": {
+        "fullCardNumber": {},
+        "generation": "GENERATION_UNSPECIFIED"
+      },
+      "cardNumberAndGenCodriverSlotBegin": {
+        "fullCardNumber": {},
+        "generation": "GENERATION_UNSPECIFIED"
+      },
+      "cardNumberAndGenDriverSlotEnd": {
+        "fullCardNumber": {},
+        "generation": "GENERATION_UNSPECIFIED"
+      },
+      "cardNumberAndGenCodriverSlotEnd": {
+        "fullCardNumber": {},
+        "generation": "GENERATION_UNSPECIFIED"
+      },
+      "similarEventsNumber": 1,
+      "manufacturerSpecificData": "AP///w=="
+    },
+    {
+      "eventType": "GENERAL_LAST_CARD_SESSION_NOT_CORRECTLY_CLOSED",
+      "recordPurpose": "LAST_IN_LAST_10_DAYS",
+      "beginTime": "2026-01-19T07:42:06Z",
+      "endTime": "2026-01-19T07:42:16Z",
+      "cardNumberAndGenDriverSlotBegin": {
+        "fullCardNumber": {},
+        "generation": "GENERATION_UNSPECIFIED"
+      },
+      "cardNumberAndGenCodriverSlotBegin": {
+        "fullCardNumber": {},
+        "generation": "GENERATION_UNSPECIFIED"
+      },
+      "cardNumberAndGenDriverSlotEnd": {
+        "fullCardNumber": {},
+        "generation": "GENERATION_UNSPECIFIED"
+      },
+      "cardNumberAndGenCodriverSlotEnd": {
+        "fullCardNumber": {},
+        "generation": "GENERATION_UNSPECIFIED"
+      },
+      "similarEventsNumber": 3,
+      "manufacturerSpecificData": "AP///w=="
+    },
+    {
+      "eventType": "GENERAL_LAST_CARD_SESSION_NOT_CORRECTLY_CLOSED",
+      "recordPurpose": "LAST_IN_LAST_10_DAYS",
+      "beginTime": "2026-01-26T06:07:04Z",
+      "endTime": "2026-01-26T06:07:55Z",
+      "cardNumberAndGenDriverSlotBegin": {
+        "fullCardNumber": {},
+        "generation": "GENERATION_UNSPECIFIED"
+      },
+      "cardNumberAndGenCodriverSlotBegin": {
+        "fullCardNumber": {},
+        "generation": "GENERATION_UNSPECIFIED"
+      },
+      "cardNumberAndGenDriverSlotEnd": {
+        "fullCardNumber": {},
+        "generation": "GENERATION_UNSPECIFIED"
+      },
+      "cardNumberAndGenCodriverSlotEnd": {
+        "fullCardNumber": {},
+        "generation": "GENERATION_UNSPECIFIED"
+      },
+      "similarEventsNumber": 5,
+      "manufacturerSpecificData": "AP///w=="
+    },
+    {
+      "eventType": "GENERAL_LAST_CARD_SESSION_NOT_CORRECTLY_CLOSED",
+      "recordPurpose": "LAST_IN_LAST_10_DAYS",
+      "beginTime": "2026-01-27T03:04:05Z",
+      "endTime": "2026-01-27T03:04:08Z",
+      "cardNumberAndGenDriverSlotBegin": {
+        "fullCardNumber": {},
+        "generation": "GENERATION_UNSPECIFIED"
+      },
+      "cardNumberAndGenCodriverSlotBegin": {
+        "fullCardNumber": {},
+        "generation": "GENERATION_UNSPECIFIED"
+      },
+      "cardNumberAndGenDriverSlotEnd": {
+        "fullCardNumber": {},
+        "generation": "GENERATION_UNSPECIFIED"
+      },
+      "cardNumberAndGenCodriverSlotEnd": {
+        "fullCardNumber": {},
+        "generation": "GENERATION_UNSPECIFIED"
+      },
+      "similarEventsNumber": 1,
+      "manufacturerSpecificData": "AP///w=="
+    },
+    {
+      "eventType": "GENERAL_LAST_CARD_SESSION_NOT_CORRECTLY_CLOSED",
+      "recordPurpose": "LAST_IN_LAST_10_DAYS",
+      "beginTime": "2026-01-29T07:06:14Z",
+      "endTime": "2026-01-29T07:06:30Z",
+      "cardNumberAndGenDriverSlotBegin": {
+        "fullCardNumber": {},
+        "generation": "GENERATION_UNSPECIFIED"
+      },
+      "cardNumberAndGenCodriverSlotBegin": {
+        "fullCardNumber": {},
+        "generation": "GENERATION_UNSPECIFIED"
+      },
+      "cardNumberAndGenDriverSlotEnd": {
+        "fullCardNumber": {},
+        "generation": "GENERATION_UNSPECIFIED"
+      },
+      "cardNumberAndGenCodriverSlotEnd": {
+        "fullCardNumber": {},
+        "generation": "GENERATION_UNSPECIFIED"
+      },
+      "similarEventsNumber": 1,
+      "manufacturerSpecificData": "AP///w=="
+    },
+    {
+      "eventType": "GENERAL_LAST_CARD_SESSION_NOT_CORRECTLY_CLOSED",
+      "recordPurpose": "LAST_IN_LAST_10_DAYS",
+      "beginTime": "2026-02-05T06:47:00Z",
+      "endTime": "2026-02-05T06:47:15Z",
+      "cardNumberAndGenDriverSlotBegin": {
+        "fullCardNumber": {},
+        "generation": "GENERATION_UNSPECIFIED"
+      },
+      "cardNumberAndGenCodriverSlotBegin": {
+        "fullCardNumber": {},
+        "generation": "GENERATION_UNSPECIFIED"
+      },
+      "cardNumberAndGenDriverSlotEnd": {
+        "fullCardNumber": {},
+        "generation": "GENERATION_UNSPECIFIED"
+      },
+      "cardNumberAndGenCodriverSlotEnd": {
+        "fullCardNumber": {},
+        "generation": "GENERATION_UNSPECIFIED"
+      },
+      "similarEventsNumber": 1,
+      "manufacturerSpecificData": "AP///w=="
+    },
+    {
+      "eventType": "GENERAL_LAST_CARD_SESSION_NOT_CORRECTLY_CLOSED",
+      "recordPurpose": "LAST_IN_LAST_10_DAYS",
+      "beginTime": "2026-02-10T07:18:22Z",
+      "endTime": "2026-02-10T07:18:32Z",
+      "cardNumberAndGenDriverSlotBegin": {
+        "fullCardNumber": {},
+        "generation": "GENERATION_UNSPECIFIED"
+      },
+      "cardNumberAndGenCodriverSlotBegin": {
+        "fullCardNumber": {},
+        "generation": "GENERATION_UNSPECIFIED"
+      },
+      "cardNumberAndGenDriverSlotEnd": {
+        "fullCardNumber": {},
+        "generation": "GENERATION_UNSPECIFIED"
+      },
+      "cardNumberAndGenCodriverSlotEnd": {
+        "fullCardNumber": {},
+        "generation": "GENERATION_UNSPECIFIED"
+      },
+      "similarEventsNumber": 1,
+      "manufacturerSpecificData": "AP///w=="
+    },
+    {
+      "eventType": "GENERAL_LAST_CARD_SESSION_NOT_CORRECTLY_CLOSED",
+      "recordPurpose": "LAST_IN_LAST_10_DAYS",
+      "beginTime": "2026-02-14T11:31:03Z",
+      "endTime": "2026-02-14T11:31:47Z",
+      "cardNumberAndGenDriverSlotBegin": {
+        "fullCardNumber": {},
+        "generation": "GENERATION_UNSPECIFIED"
+      },
+      "cardNumberAndGenCodriverSlotBegin": {
+        "fullCardNumber": {},
+        "generation": "GENERATION_UNSPECIFIED"
+      },
+      "cardNumberAndGenDriverSlotEnd": {
+        "fullCardNumber": {},
+        "generation": "GENERATION_UNSPECIFIED"
+      },
+      "cardNumberAndGenCodriverSlotEnd": {
+        "fullCardNumber": {},
+        "generation": "GENERATION_UNSPECIFIED"
+      },
+      "similarEventsNumber": 2,
+      "manufacturerSpecificData": "AP///w=="
+    },
+    {
+      "eventType": "GENERAL_LAST_CARD_SESSION_NOT_CORRECTLY_CLOSED",
+      "recordPurpose": "LAST_IN_LAST_10_DAYS",
+      "beginTime": "2026-03-07T11:48:32Z",
+      "endTime": "2026-03-07T11:58:27Z",
+      "cardNumberAndGenDriverSlotBegin": {
+        "fullCardNumber": {},
+        "generation": "GENERATION_UNSPECIFIED"
+      },
+      "cardNumberAndGenCodriverSlotBegin": {
+        "fullCardNumber": {},
+        "generation": "GENERATION_UNSPECIFIED"
+      },
+      "cardNumberAndGenDriverSlotEnd": {
+        "fullCardNumber": {},
+        "generation": "GENERATION_UNSPECIFIED"
+      },
+      "cardNumberAndGenCodriverSlotEnd": {
+        "fullCardNumber": {},
+        "generation": "GENERATION_UNSPECIFIED"
+      },
+      "similarEventsNumber": 4,
+      "manufacturerSpecificData": "AP///w=="
+    },
+    {
+      "eventType": "GENERAL_LAST_CARD_SESSION_NOT_CORRECTLY_CLOSED",
+      "recordPurpose": "LAST_IN_LAST_10_DAYS",
+      "beginTime": "2026-03-10T07:06:19Z",
+      "endTime": "2026-03-10T07:07:01Z",
+      "cardNumberAndGenDriverSlotBegin": {
+        "fullCardNumber": {},
+        "generation": "GENERATION_UNSPECIFIED"
+      },
+      "cardNumberAndGenCodriverSlotBegin": {
+        "fullCardNumber": {},
+        "generation": "GENERATION_UNSPECIFIED"
+      },
+      "cardNumberAndGenDriverSlotEnd": {
+        "fullCardNumber": {},
+        "generation": "GENERATION_UNSPECIFIED"
+      },
+      "cardNumberAndGenCodriverSlotEnd": {
+        "fullCardNumber": {},
+        "generation": "GENERATION_UNSPECIFIED"
+      },
+      "similarEventsNumber": 1,
+      "manufacturerSpecificData": "AP///w=="
+    },
+    {
+      "eventType": "GENERAL_LAST_CARD_SESSION_NOT_CORRECTLY_CLOSED",
+      "recordPurpose": "MOST_SERIOUS_IN_LAST_10_DAYS",
+      "beginTime": "2026-01-05T13:21:28Z",
+      "endTime": "2026-01-05T13:22:53Z",
+      "cardNumberAndGenDriverSlotBegin": {
+        "fullCardNumber": {},
+        "generation": "GENERATION_UNSPECIFIED"
+      },
+      "cardNumberAndGenCodriverSlotBegin": {
+        "fullCardNumber": {},
+        "generation": "GENERATION_UNSPECIFIED"
+      },
+      "cardNumberAndGenDriverSlotEnd": {
+        "fullCardNumber": {},
+        "generation": "GENERATION_UNSPECIFIED"
+      },
+      "cardNumberAndGenCodriverSlotEnd": {
+        "fullCardNumber": {},
+        "generation": "GENERATION_UNSPECIFIED"
+      },
+      "similarEventsNumber": 0,
+      "manufacturerSpecificData": "AP///w=="
+    },
+    {
+      "eventType": "GENERAL_LAST_CARD_SESSION_NOT_CORRECTLY_CLOSED",
+      "recordPurpose": "MOST_SERIOUS_IN_LAST_10_DAYS",
+      "beginTime": "2026-01-06T12:16:58Z",
+      "endTime": "2026-01-06T12:20:10Z",
+      "cardNumberAndGenDriverSlotBegin": {
+        "fullCardNumber": {},
+        "generation": "GENERATION_UNSPECIFIED"
+      },
+      "cardNumberAndGenCodriverSlotBegin": {
+        "fullCardNumber": {},
+        "generation": "GENERATION_UNSPECIFIED"
+      },
+      "cardNumberAndGenDriverSlotEnd": {
+        "fullCardNumber": {},
+        "generation": "GENERATION_UNSPECIFIED"
+      },
+      "cardNumberAndGenCodriverSlotEnd": {
+        "fullCardNumber": {},
+        "generation": "GENERATION_UNSPECIFIED"
+      },
+      "similarEventsNumber": 0,
+      "manufacturerSpecificData": "AP///w=="
+    },
+    {
+      "eventType": "GENERAL_LAST_CARD_SESSION_NOT_CORRECTLY_CLOSED",
+      "recordPurpose": "MOST_SERIOUS_IN_LAST_10_DAYS",
+      "beginTime": "2026-01-06T12:36:47Z",
+      "endTime": "2026-01-06T12:39:55Z",
+      "cardNumberAndGenDriverSlotBegin": {
+        "fullCardNumber": {},
+        "generation": "GENERATION_UNSPECIFIED"
+      },
+      "cardNumberAndGenCodriverSlotBegin": {
+        "fullCardNumber": {},
+        "generation": "GENERATION_UNSPECIFIED"
+      },
+      "cardNumberAndGenDriverSlotEnd": {
+        "fullCardNumber": {},
+        "generation": "GENERATION_UNSPECIFIED"
+      },
+      "cardNumberAndGenCodriverSlotEnd": {
+        "fullCardNumber": {},
+        "generation": "GENERATION_UNSPECIFIED"
+      },
+      "similarEventsNumber": 0,
+      "manufacturerSpecificData": "AP///w=="
+    },
+    {
+      "eventType": "GENERAL_LAST_CARD_SESSION_NOT_CORRECTLY_CLOSED",
+      "recordPurpose": "MOST_SERIOUS_IN_LAST_10_DAYS",
+      "beginTime": "2026-03-07T10:12:31Z",
+      "endTime": "2026-03-07T10:13:57Z",
+      "cardNumberAndGenDriverSlotBegin": {
+        "fullCardNumber": {},
+        "generation": "GENERATION_UNSPECIFIED"
+      },
+      "cardNumberAndGenCodriverSlotBegin": {
+        "fullCardNumber": {},
+        "generation": "GENERATION_UNSPECIFIED"
+      },
+      "cardNumberAndGenDriverSlotEnd": {
+        "fullCardNumber": {},
+        "generation": "GENERATION_UNSPECIFIED"
+      },
+      "cardNumberAndGenCodriverSlotEnd": {
+        "fullCardNumber": {},
+        "generation": "GENERATION_UNSPECIFIED"
+      },
+      "similarEventsNumber": 0,
+      "manufacturerSpecificData": "AP///w=="
+    },
+    {
+      "eventType": "GENERAL_LAST_CARD_SESSION_NOT_CORRECTLY_CLOSED",
+      "recordPurpose": "MOST_SERIOUS_IN_LAST_10_DAYS",
+      "beginTime": "2026-03-07T11:48:32Z",
+      "endTime": "2026-03-07T11:58:27Z",
+      "cardNumberAndGenDriverSlotBegin": {
+        "fullCardNumber": {},
+        "generation": "GENERATION_UNSPECIFIED"
+      },
+      "cardNumberAndGenCodriverSlotBegin": {
+        "fullCardNumber": {},
+        "generation": "GENERATION_UNSPECIFIED"
+      },
+      "cardNumberAndGenDriverSlotEnd": {
+        "fullCardNumber": {},
+        "generation": "GENERATION_UNSPECIFIED"
+      },
+      "cardNumberAndGenCodriverSlotEnd": {
+        "fullCardNumber": {},
+        "generation": "GENERATION_UNSPECIFIED"
+      },
+      "similarEventsNumber": 0,
+      "manufacturerSpecificData": "AP///w=="
+    },
+    {
+      "eventType": "GENERAL_VEHICLE_MOTION_CONFLICT",
+      "recordPurpose": "LAST_IN_LAST_10_DAYS",
+      "beginTime": "2026-01-05T15:59:50Z",
+      "endTime": "2026-01-05T16:39:07Z",
+      "cardNumberAndGenDriverSlotBegin": {
+        "fullCardNumber": {},
+        "generation": "GENERATION_UNSPECIFIED"
+      },
+      "cardNumberAndGenCodriverSlotBegin": {
+        "fullCardNumber": {},
+        "generation": "GENERATION_UNSPECIFIED"
+      },
+      "cardNumberAndGenDriverSlotEnd": {
+        "fullCardNumber": {},
+        "generation": "GENERATION_UNSPECIFIED"
+      },
+      "cardNumberAndGenCodriverSlotEnd": {
+        "fullCardNumber": {},
+        "generation": "GENERATION_UNSPECIFIED"
+      },
+      "similarEventsNumber": 177,
+      "manufacturerSpecificData": "AP///w=="
+    },
+    {
+      "eventType": "GENERAL_VEHICLE_MOTION_CONFLICT",
+      "recordPurpose": "LAST_IN_LAST_10_DAYS",
+      "beginTime": "2026-03-07T10:19:14Z",
+      "endTime": "2026-03-07T11:40:04Z",
+      "cardNumberAndGenDriverSlotBegin": {
+        "fullCardNumber": {},
+        "generation": "GENERATION_UNSPECIFIED"
+      },
+      "cardNumberAndGenCodriverSlotBegin": {
+        "fullCardNumber": {},
+        "generation": "GENERATION_UNSPECIFIED"
+      },
+      "cardNumberAndGenDriverSlotEnd": {
+        "fullCardNumber": {},
+        "generation": "GENERATION_UNSPECIFIED"
+      },
+      "cardNumberAndGenCodriverSlotEnd": {
+        "fullCardNumber": {},
+        "generation": "GENERATION_UNSPECIFIED"
+      },
+      "similarEventsNumber": 3,
+      "manufacturerSpecificData": "AP///w=="
+    },
+    {
+      "eventType": "GENERAL_VEHICLE_MOTION_CONFLICT",
+      "recordPurpose": "MOST_SERIOUS_IN_LAST_10_DAYS",
+      "beginTime": "2026-01-05T14:08:15Z",
+      "endTime": "2026-01-05T14:09:38Z",
+      "cardNumberAndGenDriverSlotBegin": {
+        "fullCardNumber": {},
+        "generation": "GENERATION_UNSPECIFIED"
+      },
+      "cardNumberAndGenCodriverSlotBegin": {
+        "fullCardNumber": {},
+        "generation": "GENERATION_UNSPECIFIED"
+      },
+      "cardNumberAndGenDriverSlotEnd": {
+        "fullCardNumber": {},
+        "generation": "GENERATION_UNSPECIFIED"
+      },
+      "cardNumberAndGenCodriverSlotEnd": {
+        "fullCardNumber": {},
+        "generation": "GENERATION_UNSPECIFIED"
+      },
+      "similarEventsNumber": 0,
+      "manufacturerSpecificData": "AP///w=="
+    },
+    {
+      "eventType": "GENERAL_VEHICLE_MOTION_CONFLICT",
+      "recordPurpose": "MOST_SERIOUS_IN_LAST_10_DAYS",
+      "beginTime": "2026-01-05T14:09:38Z",
+      "endTime": "2026-01-05T14:11:05Z",
+      "cardNumberAndGenDriverSlotBegin": {
+        "fullCardNumber": {},
+        "generation": "GENERATION_UNSPECIFIED"
+      },
+      "cardNumberAndGenCodriverSlotBegin": {
+        "fullCardNumber": {},
+        "generation": "GENERATION_UNSPECIFIED"
+      },
+      "cardNumberAndGenDriverSlotEnd": {
+        "fullCardNumber": {},
+        "generation": "GENERATION_UNSPECIFIED"
+      },
+      "cardNumberAndGenCodriverSlotEnd": {
+        "fullCardNumber": {},
+        "generation": "GENERATION_UNSPECIFIED"
+      },
+      "similarEventsNumber": 0,
+      "manufacturerSpecificData": "AP///w=="
+    },
+    {
+      "eventType": "GENERAL_VEHICLE_MOTION_CONFLICT",
+      "recordPurpose": "MOST_SERIOUS_IN_LAST_10_DAYS",
+      "beginTime": "2026-01-05T14:34:40Z",
+      "endTime": "2026-01-05T14:36:05Z",
+      "cardNumberAndGenDriverSlotBegin": {
+        "fullCardNumber": {},
+        "generation": "GENERATION_UNSPECIFIED"
+      },
+      "cardNumberAndGenCodriverSlotBegin": {
+        "fullCardNumber": {},
+        "generation": "GENERATION_UNSPECIFIED"
+      },
+      "cardNumberAndGenDriverSlotEnd": {
+        "fullCardNumber": {},
+        "generation": "GENERATION_UNSPECIFIED"
+      },
+      "cardNumberAndGenCodriverSlotEnd": {
+        "fullCardNumber": {},
+        "generation": "GENERATION_UNSPECIFIED"
+      },
+      "similarEventsNumber": 0,
+      "manufacturerSpecificData": "AP///w=="
+    },
+    {
+      "eventType": "GENERAL_VEHICLE_MOTION_CONFLICT",
+      "recordPurpose": "MOST_SERIOUS_IN_LAST_10_DAYS",
+      "beginTime": "2026-01-05T15:59:50Z",
+      "endTime": "2026-01-05T16:39:07Z",
+      "cardNumberAndGenDriverSlotBegin": {
+        "fullCardNumber": {},
+        "generation": "GENERATION_UNSPECIFIED"
+      },
+      "cardNumberAndGenCodriverSlotBegin": {
+        "fullCardNumber": {},
+        "generation": "GENERATION_UNSPECIFIED"
+      },
+      "cardNumberAndGenDriverSlotEnd": {
+        "fullCardNumber": {},
+        "generation": "GENERATION_UNSPECIFIED"
+      },
+      "cardNumberAndGenCodriverSlotEnd": {
+        "fullCardNumber": {},
+        "generation": "GENERATION_UNSPECIFIED"
+      },
+      "similarEventsNumber": 0,
+      "manufacturerSpecificData": "AP///w=="
+    },
+    {
+      "eventType": "GENERAL_VEHICLE_MOTION_CONFLICT",
+      "recordPurpose": "MOST_SERIOUS_IN_LAST_10_DAYS",
+      "beginTime": "2026-03-07T10:19:14Z",
+      "endTime": "2026-03-07T11:40:04Z",
+      "cardNumberAndGenDriverSlotBegin": {
+        "fullCardNumber": {},
+        "generation": "GENERATION_UNSPECIFIED"
+      },
+      "cardNumberAndGenCodriverSlotBegin": {
+        "fullCardNumber": {},
+        "generation": "GENERATION_UNSPECIFIED"
+      },
+      "cardNumberAndGenDriverSlotEnd": {
+        "fullCardNumber": {},
+        "generation": "GENERATION_UNSPECIFIED"
+      },
+      "cardNumberAndGenCodriverSlotEnd": {
+        "fullCardNumber": {},
+        "generation": "GENERATION_UNSPECIFIED"
+      },
+      "similarEventsNumber": 0,
+      "manufacturerSpecificData": "AP///w=="
+    },
+    {
+      "eventType": "GENERAL_TIME_CONFLICT_GNSS_VS_VU",
+      "recordPurpose": "LAST_IN_LAST_10_DAYS",
+      "beginTime": "2026-03-07T06:07:28Z",
+      "endTime": "2026-03-07T08:35:09Z",
+      "cardNumberAndGenDriverSlotBegin": {
+        "fullCardNumber": {},
+        "generation": "GENERATION_UNSPECIFIED"
+      },
+      "cardNumberAndGenCodriverSlotBegin": {
+        "fullCardNumber": {},
+        "generation": "GENERATION_UNSPECIFIED"
+      },
+      "cardNumberAndGenDriverSlotEnd": {
+        "fullCardNumber": {},
+        "generation": "GENERATION_UNSPECIFIED"
+      },
+      "cardNumberAndGenCodriverSlotEnd": {
+        "fullCardNumber": {},
+        "generation": "GENERATION_UNSPECIFIED"
+      },
+      "similarEventsNumber": 1,
+      "manufacturerSpecificData": "AP///w=="
+    },
+    {
+      "eventType": "GENERAL_TIME_CONFLICT_GNSS_VS_VU",
+      "recordPurpose": "MOST_SERIOUS_IN_LAST_10_DAYS",
+      "beginTime": "2026-03-07T06:07:28Z",
+      "endTime": "2026-03-07T08:35:09Z",
+      "cardNumberAndGenDriverSlotBegin": {
+        "fullCardNumber": {},
+        "generation": "GENERATION_UNSPECIFIED"
+      },
+      "cardNumberAndGenCodriverSlotBegin": {
+        "fullCardNumber": {},
+        "generation": "GENERATION_UNSPECIFIED"
+      },
+      "cardNumberAndGenDriverSlotEnd": {
+        "fullCardNumber": {},
+        "generation": "GENERATION_UNSPECIFIED"
+      },
+      "cardNumberAndGenCodriverSlotEnd": {
+        "fullCardNumber": {},
+        "generation": "GENERATION_UNSPECIFIED"
+      },
+      "similarEventsNumber": 0,
+      "manufacturerSpecificData": "AP///w=="
+    },
+    {
+      "eventType": "SENSOR_SEC_NO_FURTHER_DETAILS",
+      "recordPurpose": "FIVE_LONGEST_IN_LAST_365_DAYS",
+      "beginTime": "2026-01-05T16:39:42Z",
+      "endTime": "2026-01-05T16:39:42Z",
+      "cardNumberAndGenDriverSlotBegin": {
+        "fullCardNumber": {},
+        "generation": "GENERATION_UNSPECIFIED"
+      },
+      "cardNumberAndGenCodriverSlotBegin": {
+        "fullCardNumber": {},
+        "generation": "GENERATION_UNSPECIFIED"
+      },
+      "cardNumberAndGenDriverSlotEnd": {
+        "fullCardNumber": {},
+        "generation": "GENERATION_UNSPECIFIED"
+      },
+      "cardNumberAndGenCodriverSlotEnd": {
+        "fullCardNumber": {},
+        "generation": "GENERATION_UNSPECIFIED"
+      },
+      "similarEventsNumber": 0,
+      "manufacturerSpecificData": "AP///w=="
+    },
+    {
+      "eventType": "SENSOR_SEC_NO_FURTHER_DETAILS",
+      "recordPurpose": "FIVE_LONGEST_IN_LAST_365_DAYS",
+      "beginTime": "2026-03-07T08:35:43Z",
+      "endTime": "2026-03-07T08:35:43Z",
+      "cardNumberAndGenDriverSlotBegin": {
+        "fullCardNumber": {},
+        "generation": "GENERATION_UNSPECIFIED"
+      },
+      "cardNumberAndGenCodriverSlotBegin": {
+        "fullCardNumber": {},
+        "generation": "GENERATION_UNSPECIFIED"
+      },
+      "cardNumberAndGenDriverSlotEnd": {
+        "fullCardNumber": {},
+        "generation": "GENERATION_UNSPECIFIED"
+      },
+      "cardNumberAndGenCodriverSlotEnd": {
+        "fullCardNumber": {},
+        "generation": "GENERATION_UNSPECIFIED"
+      },
+      "similarEventsNumber": 0,
+      "manufacturerSpecificData": "AP///w=="
+    },
+    {
+      "eventType": "SENSOR_SEC_NO_FURTHER_DETAILS",
+      "recordPurpose": "FIVE_LONGEST_IN_LAST_365_DAYS",
+      "beginTime": "2026-03-07T11:40:48Z",
+      "endTime": "2026-03-07T11:40:48Z",
+      "cardNumberAndGenDriverSlotBegin": {
+        "fullCardNumber": {},
+        "generation": "GENERATION_UNSPECIFIED"
+      },
+      "cardNumberAndGenCodriverSlotBegin": {
+        "fullCardNumber": {},
+        "generation": "GENERATION_UNSPECIFIED"
+      },
+      "cardNumberAndGenDriverSlotEnd": {
+        "fullCardNumber": {},
+        "generation": "GENERATION_UNSPECIFIED"
+      },
+      "cardNumberAndGenCodriverSlotEnd": {
+        "fullCardNumber": {},
+        "generation": "GENERATION_UNSPECIFIED"
+      },
+      "similarEventsNumber": 0,
+      "manufacturerSpecificData": "AP///w=="
+    }
+  ],
+  "overspeedingControl": {
+    "lastControlTime": "2106-02-07T06:28:15Z",
+    "firstOverspeedSinceLastControl": "2106-02-07T06:28:15Z",
+    "numberOfOverspeedSinceLastControl": 0
+  },
+  "signature": "BgAAAAA=",
+  "rawData": "AQBWAAACAFsAGwYDaWXFvmllxgz///////////////////////8A////////////////////////AP///////////////////////wD///////////////////////8AAQD///8GA2lt4E5pbeBY////////////////////////AP///////////////////////wD///////////////////////8A////////////////////////AAMA////BgNpdwSIaXcEu////////////////////////wD///////////////////////8A////////////////////////AP///////////////////////wAFAP///wYDaXgrJWl4Kyj///////////////////////8A////////////////////////AP///////////////////////wD///////////////////////8AAQD///8GA2l7BuZpewb2////////////////////////AP///////////////////////wD///////////////////////8A////////////////////////AAEA////BgNphDzkaYQ88////////////////////////wD///////////////////////8A////////////////////////AP///////////////////////wABAP///wYDaYrbvmmK28j///////////////////////8A////////////////////////AP///////////////////////wD///////////////////////8AAQD///8GA2mQXPdpkF0j////////////////////////AP///////////////////////wD///////////////////////8A////////////////////////AAIA////BgNprBCQaawS4////////////////////////wD///////////////////////8A////////////////////////AP///////////////////////wAEAP///wYDaa/C62mvwxX///////////////////////8A////////////////////////AP///////////////////////wD///////////////////////8AAQD///8GBGlbuthpW7st////////////////////////AP///////////////////////wD///////////////////////8A////////////////////////AAAA////BgRpXP06aVz9+v///////////////////////wD///////////////////////8A////////////////////////AP///////////////////////wAAAP///wYEaV0B32ldApv///////////////////////8A////////////////////////AP///////////////////////wD///////////////////////8AAAD///8GBGmr+g9pq/pl////////////////////////AP///////////////////////wD///////////////////////8A////////////////////////AAAA////BgRprBCQaawS4////////////////////////wD///////////////////////8A////////////////////////AP///////////////////////wAAAP///woDaVvf9mlb6Sv///////////////////////8A////////////////////////AP///////////////////////wD///////////////////////8AsQD///8KA2mr+6JprA6U////////////////////////AP///////////////////////wD///////////////////////8A////////////////////////AAMA////CgRpW8XPaVvGIv///////////////////////wD///////////////////////8A////////////////////////AP///////////////////////wAAAP///woEaVvGImlbxnn///////////////////////8A////////////////////////AP///////////////////////wD///////////////////////8AAAD///8KBGlbzABpW8xV////////////////////////AP///////////////////////wD///////////////////////8A////////////////////////AAAA////CgRpW9/2aVvpK////////////////////////wD///////////////////////8A////////////////////////AP///////////////////////wAAAP///woEaav7ommsDpT///////////////////////8A////////////////////////AP///////////////////////wD///////////////////////8AAAD///8LA2mrwKBpq+M9////////////////////////AP///////////////////////wD///////////////////////8A////////////////////////AAEA////CwRpq8CgaavjPf///////////////////////wD///////////////////////8A////////////////////////AP///////////////////////wAAAP///yACaVvpTmlb6U7///////////////////////8A////////////////////////AP///////////////////////wD///////////////////////8AAAD///8gAmmr419pq+Nf////////////////////////AP///////////////////////wD///////////////////////8A////////////////////////AAAA////IAJprA7AaawOwP///////////////////////wD///////////////////////8A////////////////////////AP///////////////////////wAAAP///wMACQAB//////////8ABAAgAAAFAGMAAAYAAAAA"
+}

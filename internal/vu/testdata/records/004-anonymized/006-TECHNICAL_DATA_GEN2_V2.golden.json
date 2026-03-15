@@ -1,0 +1,675 @@
+{
+  "vuIdentification": {
+    "manufacturerName": {
+      "encoding": "ISO_8859_1",
+      "length": 35,
+      "value": "***********************************"
+    },
+    "manufacturerAddress": {
+      "encoding": "ISO_8859_1",
+      "length": 35,
+      "value": "***********************************"
+    },
+    "partNumber": {
+      "length": 16,
+      "value": "****************"
+    },
+    "serialNumber": {
+      "serialNumber": "0",
+      "monthYear": {},
+      "type": "VEHICLE_UNIT",
+      "manufacturerCode": 161
+    },
+    "softwareIdentification": {
+      "softwareVersion": {
+        "length": 4,
+        "value": "4140"
+      },
+      "softwareInstallationDate": "2025-09-10T13:10:18Z"
+    },
+    "manufacturingDate": "2025-09-10T00:00:00Z",
+    "approvalNumber": {
+      "length": 16,
+      "value": "TEST0001"
+    }
+  },
+  "calibrationRecords": [
+    {
+      "purpose": "CALIBRATION_PURPOSE_UNRECOGNIZED",
+      "unrecognizedPurpose": 0,
+      "workshopName": {
+        "encoding": "ISO_8859_1",
+        "length": 35,
+        "value": "***********************************"
+      },
+      "workshopAddress": {
+        "encoding": "ISO_8859_1",
+        "length": 35,
+        "value": "***********************************"
+      },
+      "workshopCardNumberAndGeneration": {
+        "fullCardNumber": {
+          "cardType": "WORKSHOP_CARD",
+          "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+          "ownerIdentification": {
+            "ownerIdentification": {
+              "length": 13,
+              "value": "*************"
+            },
+            "consecutiveIndex": {
+              "length": 1,
+              "value": "*"
+            },
+            "replacementIndex": {
+              "length": 1,
+              "value": "*"
+            },
+            "renewalIndex": {
+              "length": 1,
+              "value": "*"
+            }
+          }
+        },
+        "generation": "GENERATION_UNSPECIFIED"
+      },
+      "workshopCardExpiryDate": {
+        "year": 3265,
+        "month": 65,
+        "day": 57
+      },
+      "vin": {
+        "length": 17,
+        "value": "*****************"
+      },
+      "vehicleRegistration": {
+        "nation": "CZECH_REPUBLIC",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "*************"
+        }
+      },
+      "wVehicleCharacteristicConstant": 48185,
+      "kConstantOfRecordingEquipment": 48224,
+      "lTyreCircumferenceEighthsMm": 41011,
+      "tyreSize": {
+        "length": 15,
+        "value": "***************"
+      },
+      "authorisedSpeedKmh": 4,
+      "oldOdometerValueKm": 7238000,
+      "newOdometerValueKm": 16777000,
+      "oldTimeValue": "2020-01-01T00:00:00Z",
+      "newTimeValue": "2020-01-01T00:00:00Z",
+      "nextCalibrationDate": "2020-01-01T00:00:00Z"
+    },
+    {
+      "purpose": "CALIBRATION_PURPOSE_RESERVED",
+      "unrecognizedPurpose": 0,
+      "workshopName": {
+        "encoding": "ISO_8859_1",
+        "length": 35,
+        "value": "***********************************"
+      },
+      "workshopAddress": {
+        "encoding": "ISO_8859_1",
+        "length": 35,
+        "value": "***********************************"
+      },
+      "workshopCardNumberAndGeneration": {
+        "fullCardNumber": {
+          "cardType": "WORKSHOP_CARD",
+          "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+          "ownerIdentification": {
+            "ownerIdentification": {
+              "length": 13,
+              "value": "*************"
+            },
+            "consecutiveIndex": {
+              "length": 1,
+              "value": "*"
+            },
+            "replacementIndex": {
+              "length": 1,
+              "value": "*"
+            },
+            "renewalIndex": {
+              "length": 1,
+              "value": "*"
+            }
+          }
+        },
+        "generation": "GENERATION_UNSPECIFIED"
+      },
+      "workshopCardExpiryDate": {
+        "year": 3265,
+        "month": 65,
+        "day": 57
+      },
+      "vin": {
+        "length": 17,
+        "value": "*****************"
+      },
+      "vehicleRegistration": {
+        "nation": "CZECH_REPUBLIC",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "*************"
+        }
+      },
+      "wVehicleCharacteristicConstant": 48185,
+      "kConstantOfRecordingEquipment": 48224,
+      "lTyreCircumferenceEighthsMm": 41011,
+      "tyreSize": {
+        "length": 15,
+        "value": "***************"
+      },
+      "authorisedSpeedKmh": 4,
+      "oldOdometerValueKm": 7238000,
+      "newOdometerValueKm": 16777000,
+      "oldTimeValue": "2020-01-01T00:00:00Z",
+      "newTimeValue": "2020-01-01T00:00:00Z",
+      "nextCalibrationDate": "2020-01-01T00:00:00Z"
+    },
+    {
+      "purpose": "ACTIVATION",
+      "unrecognizedPurpose": 0,
+      "workshopName": {
+        "encoding": "ISO_8859_1",
+        "length": 35,
+        "value": "***********************************"
+      },
+      "workshopAddress": {
+        "encoding": "ISO_8859_1",
+        "length": 35,
+        "value": "***********************************"
+      },
+      "workshopCardNumberAndGeneration": {
+        "fullCardNumber": {
+          "cardType": "WORKSHOP_CARD",
+          "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+          "ownerIdentification": {
+            "ownerIdentification": {
+              "length": 13,
+              "value": "*************"
+            },
+            "consecutiveIndex": {
+              "length": 1,
+              "value": "*"
+            },
+            "replacementIndex": {
+              "length": 1,
+              "value": "*"
+            },
+            "renewalIndex": {
+              "length": 1,
+              "value": "*"
+            }
+          }
+        },
+        "generation": "GENERATION_UNSPECIFIED"
+      },
+      "workshopCardExpiryDate": {
+        "year": 3265,
+        "month": 65,
+        "day": 57
+      },
+      "vin": {
+        "length": 17,
+        "value": "*****************"
+      },
+      "vehicleRegistration": {
+        "nation": "CZECH_REPUBLIC",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "*************"
+        }
+      },
+      "wVehicleCharacteristicConstant": 48185,
+      "kConstantOfRecordingEquipment": 48224,
+      "lTyreCircumferenceEighthsMm": 41011,
+      "tyreSize": {
+        "length": 15,
+        "value": "***************"
+      },
+      "authorisedSpeedKmh": 4,
+      "oldOdometerValueKm": 7238000,
+      "newOdometerValueKm": 16777000,
+      "oldTimeValue": "2020-01-01T00:00:00Z",
+      "newTimeValue": "2020-01-01T00:00:00Z",
+      "nextCalibrationDate": "2020-01-01T00:00:00Z"
+    },
+    {
+      "purpose": "CALIBRATION_PURPOSE_UNSPECIFIED",
+      "unrecognizedPurpose": 132,
+      "workshopName": {
+        "encoding": "ISO_8859_1",
+        "length": 35,
+        "value": "***********************************"
+      },
+      "workshopAddress": {
+        "encoding": "ISO_8859_1",
+        "length": 35,
+        "value": "***********************************"
+      },
+      "workshopCardNumberAndGeneration": {
+        "fullCardNumber": {
+          "cardType": "WORKSHOP_CARD",
+          "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+          "ownerIdentification": {
+            "ownerIdentification": {
+              "length": 13,
+              "value": "*************"
+            },
+            "consecutiveIndex": {
+              "length": 1,
+              "value": "*"
+            },
+            "replacementIndex": {
+              "length": 1,
+              "value": "*"
+            },
+            "renewalIndex": {
+              "length": 1,
+              "value": "*"
+            }
+          }
+        },
+        "generation": "GENERATION_UNSPECIFIED"
+      },
+      "workshopCardExpiryDate": {
+        "year": 3265,
+        "month": 65,
+        "day": 57
+      },
+      "vin": {
+        "length": 17,
+        "value": "*****************"
+      },
+      "vehicleRegistration": {
+        "nation": "CZECH_REPUBLIC",
+        "number": {
+          "encoding": "ISO_8859_1",
+          "length": 13,
+          "value": "*************"
+        }
+      },
+      "wVehicleCharacteristicConstant": 48185,
+      "kConstantOfRecordingEquipment": 48224,
+      "lTyreCircumferenceEighthsMm": 41011,
+      "tyreSize": {
+        "length": 15,
+        "value": "***************"
+      },
+      "authorisedSpeedKmh": 4,
+      "oldOdometerValueKm": 7238000,
+      "newOdometerValueKm": 16777000,
+      "oldTimeValue": "2020-01-01T00:00:00Z",
+      "newTimeValue": "2020-01-01T00:00:00Z",
+      "nextCalibrationDate": "2020-01-01T00:00:00Z"
+    }
+  ],
+  "pairedSensors": [
+    {
+      "serialNumber": {
+        "serialNumber": "0",
+        "monthYear": {},
+        "type": "MOTION_SENSOR",
+        "manufacturerCode": 161
+      },
+      "approvalNumber": {
+        "length": 16,
+        "value": "SENSOR01"
+      },
+      "pairingDate": "2025-11-28T05:56:36Z"
+    }
+  ],
+  "itsConsentRecords": [
+    {
+      "fullCardNumberAndGeneration": {
+        "fullCardNumber": {
+          "cardType": "WORKSHOP_CARD",
+          "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+          "ownerIdentification": {
+            "ownerIdentification": {
+              "length": 13,
+              "value": "*************"
+            },
+            "consecutiveIndex": {
+              "length": 1,
+              "value": "*"
+            },
+            "replacementIndex": {
+              "length": 1,
+              "value": "*"
+            },
+            "renewalIndex": {
+              "length": 1,
+              "value": "*"
+            }
+          }
+        },
+        "generation": "GENERATION_2"
+      },
+      "consentStatus": true
+    },
+    {
+      "fullCardNumberAndGeneration": {
+        "fullCardNumber": {
+          "cardType": "DRIVER_CARD",
+          "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+          "driverIdentification": {
+            "driverIdentificationNumber": {
+              "length": 14,
+              "value": "**************"
+            },
+            "cardReplacementIndex": {
+              "length": 1,
+              "value": "*"
+            },
+            "cardRenewalIndex": {
+              "length": 1,
+              "value": "*"
+            }
+          }
+        },
+        "generation": "GENERATION_2"
+      },
+      "consentStatus": true
+    },
+    {
+      "fullCardNumberAndGeneration": {
+        "fullCardNumber": {
+          "cardType": "DRIVER_CARD",
+          "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+          "driverIdentification": {
+            "driverIdentificationNumber": {
+              "length": 14,
+              "value": "**************"
+            },
+            "cardReplacementIndex": {
+              "length": 1,
+              "value": "*"
+            },
+            "cardRenewalIndex": {
+              "length": 1,
+              "value": "*"
+            }
+          }
+        },
+        "generation": "GENERATION_2"
+      },
+      "consentStatus": true
+    },
+    {
+      "fullCardNumberAndGeneration": {
+        "fullCardNumber": {
+          "cardType": "COMPANY_CARD",
+          "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+          "ownerIdentification": {
+            "ownerIdentification": {
+              "length": 13,
+              "value": "*************"
+            },
+            "consecutiveIndex": {
+              "length": 1,
+              "value": "*"
+            },
+            "replacementIndex": {
+              "length": 1,
+              "value": "*"
+            },
+            "renewalIndex": {
+              "length": 1,
+              "value": "*"
+            }
+          }
+        },
+        "generation": "GENERATION_2"
+      },
+      "consentStatus": true
+    },
+    {
+      "fullCardNumberAndGeneration": {
+        "fullCardNumber": {
+          "cardType": "DRIVER_CARD",
+          "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+          "driverIdentification": {
+            "driverIdentificationNumber": {
+              "length": 14,
+              "value": "**************"
+            },
+            "cardReplacementIndex": {
+              "length": 1,
+              "value": "*"
+            },
+            "cardRenewalIndex": {
+              "length": 1,
+              "value": "*"
+            }
+          }
+        },
+        "generation": "GENERATION_2"
+      },
+      "consentStatus": true
+    },
+    {
+      "fullCardNumberAndGeneration": {
+        "fullCardNumber": {
+          "cardType": "DRIVER_CARD",
+          "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+          "driverIdentification": {
+            "driverIdentificationNumber": {
+              "length": 14,
+              "value": "**************"
+            },
+            "cardReplacementIndex": {
+              "length": 1,
+              "value": "*"
+            },
+            "cardRenewalIndex": {
+              "length": 1,
+              "value": "*"
+            }
+          }
+        },
+        "generation": "GENERATION_2"
+      },
+      "consentStatus": true
+    },
+    {
+      "fullCardNumberAndGeneration": {
+        "fullCardNumber": {
+          "cardType": "DRIVER_CARD",
+          "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+          "driverIdentification": {
+            "driverIdentificationNumber": {
+              "length": 14,
+              "value": "**************"
+            },
+            "cardReplacementIndex": {
+              "length": 1,
+              "value": "*"
+            },
+            "cardRenewalIndex": {
+              "length": 1,
+              "value": "*"
+            }
+          }
+        },
+        "generation": "GENERATION_2"
+      },
+      "consentStatus": true
+    },
+    {
+      "fullCardNumberAndGeneration": {
+        "fullCardNumber": {
+          "cardType": "DRIVER_CARD",
+          "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+          "driverIdentification": {
+            "driverIdentificationNumber": {
+              "length": 14,
+              "value": "**************"
+            },
+            "cardReplacementIndex": {
+              "length": 1,
+              "value": "*"
+            },
+            "cardRenewalIndex": {
+              "length": 1,
+              "value": "*"
+            }
+          }
+        },
+        "generation": "GENERATION_2"
+      },
+      "consentStatus": true
+    },
+    {
+      "fullCardNumberAndGeneration": {
+        "fullCardNumber": {
+          "cardType": "DRIVER_CARD",
+          "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+          "driverIdentification": {
+            "driverIdentificationNumber": {
+              "length": 14,
+              "value": "**************"
+            },
+            "cardReplacementIndex": {
+              "length": 1,
+              "value": "*"
+            },
+            "cardRenewalIndex": {
+              "length": 1,
+              "value": "*"
+            }
+          }
+        },
+        "generation": "GENERATION_2"
+      },
+      "consentStatus": true
+    },
+    {
+      "fullCardNumberAndGeneration": {
+        "fullCardNumber": {
+          "cardType": "DRIVER_CARD",
+          "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+          "driverIdentification": {
+            "driverIdentificationNumber": {
+              "length": 14,
+              "value": "**************"
+            },
+            "cardReplacementIndex": {
+              "length": 1,
+              "value": "*"
+            },
+            "cardRenewalIndex": {
+              "length": 1,
+              "value": "*"
+            }
+          }
+        },
+        "generation": "GENERATION_2"
+      },
+      "consentStatus": true
+    },
+    {
+      "fullCardNumberAndGeneration": {
+        "fullCardNumber": {
+          "cardType": "COMPANY_CARD",
+          "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+          "ownerIdentification": {
+            "ownerIdentification": {
+              "length": 13,
+              "value": "*************"
+            },
+            "consecutiveIndex": {
+              "length": 1,
+              "value": "*"
+            },
+            "replacementIndex": {
+              "length": 1,
+              "value": "*"
+            },
+            "renewalIndex": {
+              "length": 1,
+              "value": "*"
+            }
+          }
+        },
+        "generation": "GENERATION_2"
+      },
+      "consentStatus": false
+    },
+    {
+      "fullCardNumberAndGeneration": {
+        "fullCardNumber": {
+          "cardType": "COMPANY_CARD",
+          "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+          "ownerIdentification": {
+            "ownerIdentification": {
+              "length": 13,
+              "value": "*************"
+            },
+            "consecutiveIndex": {
+              "length": 1,
+              "value": "*"
+            },
+            "replacementIndex": {
+              "length": 1,
+              "value": "*"
+            },
+            "renewalIndex": {
+              "length": 1,
+              "value": "*"
+            }
+          }
+        },
+        "generation": "GENERATION_2"
+      },
+      "consentStatus": true
+    }
+  ],
+  "powerSupplyInterruptions": [
+    {
+      "timestamp": "1971-02-07T03:59:44Z",
+      "unrecognizedCardSlotNumber": 49
+    },
+    {
+      "timestamp": "1970-07-27T23:30:56Z",
+      "unrecognizedCardSlotNumber": 48
+    },
+    {
+      "timestamp": "1970-07-27T23:30:56Z",
+      "unrecognizedCardSlotNumber": 48
+    },
+    {
+      "timestamp": "1970-07-27T23:30:56Z",
+      "unrecognizedCardSlotNumber": 51
+    },
+    {
+      "timestamp": "1970-07-27T23:30:56Z",
+      "unrecognizedCardSlotNumber": 54
+    },
+    {
+      "timestamp": "1970-07-27T23:30:56Z",
+      "unrecognizedCardSlotNumber": 49
+    },
+    {
+      "timestamp": "1970-07-27T23:30:56Z",
+      "unrecognizedCardSlotNumber": 48
+    },
+    {
+      "timestamp": "1970-07-27T23:30:56Z",
+      "unrecognizedCardSlotNumber": 54
+    },
+    {
+      "timestamp": "1970-07-27T23:30:56Z",
+      "unrecognizedCardSlotNumber": 55
+    }
+  ],
+  "signature": "BwAAAAA=",
+  "rawData": "AQB8AAEBKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioBKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqAAAAAAAABqE0MTQwaMF4umjAv4BURVNUMDAwMSAgICAgICAgAgAcAAEAAAAAAAAHoVNFTlNPUjAxICAgICAgICBpKTmUAwAcAAAEAKgABAEBKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioBKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioCACoqKioqKioqKioqKioqKioAMmVlVyoqKioqKioqKioqKioqKioqDwEqKioqKioqKioqKioqvDm8YKAzKioqKioqKioqKioqKioqBG5xcP//KF4L4QBeC+EAXgvhAAIBKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioBKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioCACoqKioqKioqKioqKioqKioAMmVlVyoqKioqKioqKioqKioqKioqDwEqKioqKioqKioqKioqvDm8YKAzKioqKioqKioqKioqKioqBG5xcP//KF4L4QBeC+EAXgvhAAMBKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioBKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioCACoqKioqKioqKioqKioqKioAMmVlVyoqKioqKioqKioqKioqKioqDwEqKioqKioqKioqKioqvDm8YKAzKioqKioqKioqKioqKioqBG5xcP//KF4L4QBeC+EAXgvhAIQBKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioBKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioCACoqKioqKioqKioqKioqKioAMmVlVyoqKioqKioqKioqKioqKioqDwEqKioqKioqKioqKioqvDm8YKAzKioqKioqKioqKioqKioqBG5xcP//KF4L4QBeC+EAXgvhAAUAFAAMAgAqKioqKioqKioqKioqKioqAgEBACoqKioqKioqKioqKioqKioCAQEAKioqKioqKioqKioqKioqKgIBBAAqKioqKioqKioqKioqKioqAgEBACoqKioqKioqKioqKioqKioCAQEAKioqKioqKioqKioqKioqKgIBAQAqKioqKioqKioqKioqKioqAgEBACoqKioqKioqKioqKioqKioCAQEAKioqKioqKioqKioqKioqKgIBAQAqKioqKioqKioqKioqKioqAgEEACoqKioqKioqKioqKioqKioCAAQAKioqKioqKioqKioqKioqKgIBBgAFAAkCEjMwMQESMTAwARIxMDABEjEwMwESMTA2ARIxMDEBEjEwMAESMTA2ARIxMDcHAAAAAA=="
+}

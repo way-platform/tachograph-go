@@ -1,0 +1,40 @@
+{
+  "dateOfDay": "2024-01-01T00:00:00Z",
+  "odometerMidnightKm": 305100,
+  "activityChanges": [
+    {
+      "rawData": "MAA=",
+      "slot": "DRIVER_SLOT",
+      "crew": false,
+      "inserted": false,
+      "activity": "WORK",
+      "timeOfChangeMinutes": 0
+    },
+    {
+      "rawData": "OB4=",
+      "slot": "DRIVER_SLOT",
+      "crew": false,
+      "inserted": false,
+      "activity": "DRIVING",
+      "timeOfChangeMinutes": 30
+    },
+    {
+      "rawData": "MDw=",
+      "slot": "DRIVER_SLOT",
+      "crew": false,
+      "inserted": false,
+      "activity": "WORK",
+      "timeOfChangeMinutes": 60
+    },
+    {
+      "rawData": "qFo=",
+      "slot": "CO_DRIVER_SLOT",
+      "crew": false,
+      "inserted": false,
+      "activity": "AVAILABILITY",
+      "timeOfChangeMinutes": 90
+    }
+  ],
+  "signature": "CgAAAAA=",
+  "rawData": "AQAEAAFlkgCAAgADAAEEp8wDAIMAAAQAAgAEMAA4HjA8qFoFACkAAAYAOQAABwAFAAAIADcAAAkAOgAACgAAAAA="
+}
