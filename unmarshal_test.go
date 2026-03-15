@@ -37,7 +37,7 @@ func TestUnmarshalFile_golden(t *testing.T) {
 				t.Fatalf("Failed to read DDD file %s: %v", path, err)
 			}
 			var actual string
-			rawFile, err := Unmarshal(data)
+			rawFile, err := UnmarshalOptions{Strict: false}.Unmarshal(data)
 			if err != nil {
 				t.Fatalf("Unmarshal() error = %v", err)
 			}

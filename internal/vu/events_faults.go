@@ -181,7 +181,10 @@ func sizeOfEventsAndFaultsGen2V1(data []byte) (totalSize, signatureSize int, err
 }
 
 // sizeOfEventsAndFaultsGen2V2 calculates size by parsing all Gen2 V2 RecordArrays.
-// Gen2 V2 has an additional VuTimeAdjustmentGNSSRecordArray.
+//
+// Note: the spec defines VuTimeAdjustmentGNSSRecordArray before the signature, but
+// real-world Gen2 V2 devices omit it entirely. The wire layout is therefore identical
+// to Gen2 V1: five data arrays followed by one SignatureRecordArray.
 func sizeOfEventsAndFaultsGen2V2(data []byte) (totalSize, signatureSize int, err error) {
 	offset := 0
 
@@ -217,13 +220,6 @@ func sizeOfEventsAndFaultsGen2V2(data []byte) (totalSize, signatureSize int, err
 	size, sizeErr = sizeOfRecordArray(data, offset)
 	if sizeErr != nil {
 		return 0, 0, fmt.Errorf("VuTimeAdjustmentRecordArray: %w", sizeErr)
-	}
-	offset += size
-
-	// VuTimeAdjustmentGNSSRecordArray (Gen2 V2+)
-	size, sizeErr = sizeOfRecordArray(data, offset)
-	if sizeErr != nil {
-		return 0, 0, fmt.Errorf("VuTimeAdjustmentGNSSRecordArray: %w", sizeErr)
 	}
 	offset += size
 

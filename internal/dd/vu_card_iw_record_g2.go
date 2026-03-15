@@ -6,7 +6,7 @@ import (
 	ddv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
 )
 
-// UnmarshalVuCardIWRecordG2 parses a Generation 2 VuCardIWRecord (132 bytes).
+// UnmarshalVuCardIWRecordG2 parses a Generation 2 VuCardIWRecord (131 bytes).
 //
 // The data type `VuCardIWRecord` is specified in the Data Dictionary, Section 2.177.
 //
@@ -25,33 +25,33 @@ import (
 //	    manualInputFlag                    ManualInputFlag
 //	}
 //
-// Binary Layout (fixed length, 132 bytes):
+// Binary Layout (fixed length, 131 bytes):
 //   - Bytes 0-71: cardHolderName (HolderName)
-//   - Bytes 72-91: fullCardNumberAndGeneration (FullCardNumberAndGeneration)
-//   - Bytes 92-95: cardExpiryDate (Datef)
-//   - Bytes 96-99: cardInsertionTime (TimeReal)
-//   - Bytes 100-102: vehicleOdometerValueAtInsertion (OdometerShort)
-//   - Byte 103: cardSlotNumber (CardSlotNumber)
-//   - Bytes 104-107: cardWithdrawalTime (TimeReal)
-//   - Bytes 108-110: vehicleOdometerValueAtWithdrawal (OdometerShort)
-//   - Bytes 111-130: previousVehicleInfo (PreviousVehicleInfoGen2)
-//   - Byte 131: manualInputFlag (ManualInputFlag)
+//   - Bytes 72-90: fullCardNumberAndGeneration (FullCardNumberAndGeneration, 19 bytes)
+//   - Bytes 91-94: cardExpiryDate (Datef)
+//   - Bytes 95-98: cardInsertionTime (TimeReal)
+//   - Bytes 99-101: vehicleOdometerValueAtInsertion (OdometerShort)
+//   - Byte 102: cardSlotNumber (CardSlotNumber)
+//   - Bytes 103-106: cardWithdrawalTime (TimeReal)
+//   - Bytes 107-109: vehicleOdometerValueAtWithdrawal (OdometerShort)
+//   - Bytes 110-129: previousVehicleInfo (PreviousVehicleInfoGen2)
+//   - Byte 130: manualInputFlag (ManualInputFlag)
 func (opts UnmarshalOptions) UnmarshalVuCardIWRecordG2(data []byte) (*ddv1.VuCardIWRecordG2, error) {
 	const (
 		idxCardHolderName       = 0
 		idxFullCardNumber       = 72
-		idxCardExpiryDate       = 92
-		idxCardInsertionTime    = 96
-		idxOdometerAtInsertion  = 100
-		idxCardSlotNumber       = 103
-		idxCardWithdrawalTime   = 104
-		idxOdometerAtWithdrawal = 108
-		idxPreviousVehicleInfo  = 111
-		idxManualInputFlag      = 131
-		lenVuCardIWRecordG2     = 132
+		idxCardExpiryDate       = 91
+		idxCardInsertionTime    = 95
+		idxOdometerAtInsertion  = 99
+		idxCardSlotNumber       = 102
+		idxCardWithdrawalTime   = 103
+		idxOdometerAtWithdrawal = 107
+		idxPreviousVehicleInfo  = 110
+		idxManualInputFlag      = 130
+		lenVuCardIWRecordG2     = 131
 
 		lenHolderName                  = 72
-		lenFullCardNumberAndGeneration = 20
+		lenFullCardNumberAndGeneration = 19
 		lenDatef                       = 4
 		lenTimeReal                    = 4
 		lenOdometerShort               = 3
@@ -145,7 +145,7 @@ func (opts MarshalOptions) MarshalVuCardIWRecordG2(record *ddv1.VuCardIWRecordG2
 		return nil, fmt.Errorf("record cannot be nil")
 	}
 
-	const lenVuCardIWRecordG2 = 132
+	const lenVuCardIWRecordG2 = 131
 
 	// Use raw data painting strategy if available
 	var canvas [lenVuCardIWRecordG2]byte
@@ -167,13 +167,13 @@ func (opts MarshalOptions) MarshalVuCardIWRecordG2(record *ddv1.VuCardIWRecordG2
 	copy(canvas[offset:offset+72], holderNameBytes)
 	offset += 72
 
-	// fullCardNumberAndGeneration (20 bytes)
+	// fullCardNumberAndGeneration (19 bytes)
 	fullCardNumberBytes, err := opts.MarshalFullCardNumberAndGeneration(record.GetFullCardNumber())
 	if err != nil {
 		return nil, fmt.Errorf("failed to marshal full card number and generation: %w", err)
 	}
-	copy(canvas[offset:offset+20], fullCardNumberBytes)
-	offset += 20
+	copy(canvas[offset:offset+19], fullCardNumberBytes)
+	offset += 19
 
 	// cardExpiryDate (4 bytes)
 	expiryDateBytes, err := opts.MarshalDate(record.GetCardExpiryDate())

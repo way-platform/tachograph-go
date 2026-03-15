@@ -35,11 +35,13 @@ func (opts UnmarshalOptions) UnmarshalFullCardNumberAndGeneration(data []byte) (
 		return nil, fmt.Errorf("insufficient data for FullCardNumberAndGeneration")
 	}
 
-	// Parse generation (last byte)
+	// Parse generation (last byte).
+	// Unknown values (e.g. 0xFF = "no card in slot") are stored as GENERATION_UNSPECIFIED;
+	// round-trip fidelity is preserved via raw_data on the parent record.
 	if generation, err := UnmarshalEnum[ddv1.Generation](data[len(data)-1]); err == nil {
 		fullCardNumberAndGen.SetGeneration(generation)
 	} else {
-		return nil, fmt.Errorf("failed to parse generation: %w", err)
+		fullCardNumberAndGen.SetGeneration(ddv1.Generation_GENERATION_UNSPECIFIED)
 	}
 
 	// Parse full card number (everything except the last byte)
@@ -86,12 +88,19 @@ func (opts MarshalOptions) MarshalFullCardNumberAndGeneration(fullCardNumberAndG
 		dst = append(dst, fullCardNumberBytes...)
 	}
 
-	// Marshal generation (1 byte)
-	generationByte, err := MarshalEnum(fullCardNumberAndGen.GetGeneration())
-	if err != nil {
-		return nil, fmt.Errorf("failed to marshal generation: %w", err)
+	// Marshal generation (1 byte).
+	// GENERATION_UNSPECIFIED means "no card in slot" (wire value 0xFF is unrecognized
+	// and stored as UNSPECIFIED). Re-emit 0xFF to preserve the round-trip.
+	generation := fullCardNumberAndGen.GetGeneration()
+	if generation == ddv1.Generation_GENERATION_UNSPECIFIED {
+		dst = append(dst, 0xFF)
+	} else {
+		generationByte, err := MarshalEnum(generation)
+		if err != nil {
+			return nil, fmt.Errorf("failed to marshal generation: %w", err)
+		}
+		dst = append(dst, generationByte)
 	}
-	dst = append(dst, generationByte)
 
 	return dst, nil
 }

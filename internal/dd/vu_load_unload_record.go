@@ -21,26 +21,26 @@ import (
 //	    vehicleOdometerValue            OdometerShort
 //	}
 //
-// Binary Layout (fixed length, 60 bytes):
+// Binary Layout (fixed length, 58 bytes):
 //   - Bytes 0-3: timeStamp (TimeReal)
 //   - Byte 4: operationType (OperationType)
-//   - Bytes 5-24: cardNumberAndGenDriverSlot (FullCardNumberAndGeneration)
-//   - Bytes 25-44: cardNumberAndGenCodriverSlot (FullCardNumberAndGeneration)
-//   - Bytes 45-56: gnssPlaceAuthRecord (GNSSPlaceAuthRecord)
-//   - Bytes 57-59: vehicleOdometerValue (OdometerShort)
+//   - Bytes 5-23: cardNumberAndGenDriverSlot (FullCardNumberAndGeneration, 19 bytes)
+//   - Bytes 24-42: cardNumberAndGenCodriverSlot (FullCardNumberAndGeneration, 19 bytes)
+//   - Bytes 43-54: gnssPlaceAuthRecord (GNSSPlaceAuthRecord)
+//   - Bytes 55-57: vehicleOdometerValue (OdometerShort)
 func (opts UnmarshalOptions) UnmarshalVuLoadUnloadRecord(data []byte) (*ddv1.VuLoadUnloadRecord, error) {
 	const (
 		idxTimeStamp              = 0
 		idxOperationType          = 4
 		idxCardNumberDriverSlot   = 5
-		idxCardNumberCodriverSlot = 25
-		idxGnssPlaceAuthRecord    = 45
-		idxVehicleOdometerValue   = 57
-		lenVuLoadUnloadRecord     = 60
+		idxCardNumberCodriverSlot = 24
+		idxGnssPlaceAuthRecord    = 43
+		idxVehicleOdometerValue   = 55
+		lenVuLoadUnloadRecord     = 58
 
 		lenTimeReal                    = 4
 		lenOperationType               = 1
-		lenFullCardNumberAndGeneration = 20
+		lenFullCardNumberAndGeneration = 19
 		lenGNSSPlaceAuthRecord         = 12
 		lenOdometerShort               = 3
 	)
@@ -105,7 +105,7 @@ func (opts MarshalOptions) MarshalVuLoadUnloadRecord(record *ddv1.VuLoadUnloadRe
 		return nil, fmt.Errorf("record cannot be nil")
 	}
 
-	const lenVuLoadUnloadRecord = 60
+	const lenVuLoadUnloadRecord = 58
 
 	// Use raw data painting strategy if available
 	var canvas [lenVuLoadUnloadRecord]byte
@@ -137,16 +137,16 @@ func (opts MarshalOptions) MarshalVuLoadUnloadRecord(record *ddv1.VuLoadUnloadRe
 	if err != nil {
 		return nil, fmt.Errorf("failed to marshal card number driver slot: %w", err)
 	}
-	copy(canvas[offset:offset+20], cardNumberDriverSlotBytes)
-	offset += 20
+	copy(canvas[offset:offset+19], cardNumberDriverSlotBytes)
+	offset += 19
 
-	// cardNumberAndGenCodriverSlot (20 bytes)
+	// cardNumberAndGenCodriverSlot (19 bytes)
 	cardNumberCodriverSlotBytes, err := opts.MarshalFullCardNumberAndGeneration(record.GetCardNumberCodriverSlot())
 	if err != nil {
 		return nil, fmt.Errorf("failed to marshal card number codriver slot: %w", err)
 	}
-	copy(canvas[offset:offset+20], cardNumberCodriverSlotBytes)
-	offset += 20
+	copy(canvas[offset:offset+19], cardNumberCodriverSlotBytes)
+	offset += 19
 
 	// gnssPlaceAuthRecord (12 bytes)
 	gnssPlaceAuthRecordBytes, err := opts.MarshalGNSSPlaceAuthRecord(record.GetGnssPlaceAuthRecord())

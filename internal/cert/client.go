@@ -27,14 +27,12 @@ func NewClient(httpClient *http.Client) *Client {
 
 // GetRootCertificate retrieves the European Root CA certificate.
 func (c *Client) GetRootCertificate(ctx context.Context) (*securityv1.RootCertificate, error) {
-	// TODO: Implement
-	return nil, fmt.Errorf("not implemented")
+	return Root()
 }
 
 // GetEccRootCertificate retrieves the Gen2 European Root CA certificate.
 func (c *Client) GetEccRootCertificate(ctx context.Context) (*securityv1.EccCertificate, error) {
-	// TODO: Implement
-	return nil, fmt.Errorf("not implemented")
+	return RootGen2()
 }
 
 // GetRsaCertificate retrieves an RSA certificate by its CHR.

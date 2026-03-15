@@ -9,10 +9,8 @@ import (
 
 // unmarshalEventsAndFaultsGen2V2 parses Gen2 V2 Events and Faults data from the complete transfer value.
 //
-// Gen2 V2 adds VuTimeAdjustmentGNSSRecordArray after the regular VuTimeAdjustmentRecordArray.
-// Both arrays are parsed into the same time_adjustments field.
-//
-// Structure:
+// Note: the spec defines VuTimeAdjustmentGNSSRecordArray before the signature, but
+// real-world Gen2 V2 devices omit it. The wire layout used here is:
 //
 //	VuEventsAndFaultsSecondGenV2 ::= SEQUENCE {
 //	    vuFaultRecordArray                    VuFaultRecordArray,
@@ -20,7 +18,6 @@ import (
 //	    vuOverSpeedingControlDataRecordArray  VuOverSpeedingControlDataRecordArray,
 //	    vuOverSpeedingEventRecordArray        VuOverSpeedingEventRecordArray,
 //	    vuTimeAdjustmentRecordArray           VuTimeAdjustmentRecordArray,
-//	    vuTimeAdjustmentGNSSRecordArray       VuTimeAdjustmentGNSSRecordArray,
 //	    signatureRecordArray                  SignatureRecordArray
 //	}
 func unmarshalEventsAndFaultsGen2V2(value []byte) (*vuv1.EventsAndFaultsGen2V2, error) {
@@ -77,14 +74,7 @@ func unmarshalEventsAndFaultsGen2V2(value []byte) (*vuv1.EventsAndFaultsGen2V2, 
 	if err != nil {
 		return nil, fmt.Errorf("parse VuTimeAdjustmentRecordArray: %w", err)
 	}
-	offset += bytesRead
-
-	// VuTimeAdjustmentGNSSRecordArray — appended to same field
-	gnssAdjs, bytesRead, err := parseVuTimeAdjustmentRecordArrayGen2V2(data, offset)
-	if err != nil {
-		return nil, fmt.Errorf("parse VuTimeAdjustmentGNSSRecordArray: %w", err)
-	}
-	ef.SetTimeAdjustments(append(timeAdjs, gnssAdjs...))
+	ef.SetTimeAdjustments(timeAdjs)
 	offset += bytesRead
 
 	ef.SetSignature(signature)
@@ -142,7 +132,7 @@ func (opts MarshalOptions) MarshalEventsAndFaultsGen2V2(ef *vuv1.EventsAndFaults
 	result = appendRecordArrayHeader(result, 0x04, 32, uint16(len(ef.GetOverspeedingEvents())))
 	result = append(result, overspeedEventData...)
 
-	// VuTimeAdjustmentRecordArray (all adjustments; GNSS distinction lost without raw_data)
+	// VuTimeAdjustmentRecordArray
 	timeAdjData, err := marshalVuTimeAdjustmentRecordsGen2V2(marshalOpts, ef.GetTimeAdjustments())
 	if err != nil {
 		return nil, fmt.Errorf("marshal VuTimeAdjustmentRecordArray: %w", err)
@@ -150,10 +140,7 @@ func (opts MarshalOptions) MarshalEventsAndFaultsGen2V2(ef *vuv1.EventsAndFaults
 	result = appendRecordArrayHeader(result, 0x05, 99, uint16(len(ef.GetTimeAdjustments())))
 	result = append(result, timeAdjData...)
 
-	// VuTimeAdjustmentGNSSRecordArray (empty — GNSS/regular distinction not preserved in proto)
-	result = appendRecordArrayHeader(result, 0x06, 99, 0)
-
-	result = append(result, ef.GetSignature()...)
+	result = appendSignature(result, ef.GetSignature(), 0x06)
 	return result, nil
 }
 

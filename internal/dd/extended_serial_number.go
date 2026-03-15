@@ -101,12 +101,16 @@ func (opts MarshalOptions) MarshalExtendedSerialNumber(esn *ddv1.ExtendedSerialN
 	}
 	dst = append(dst, monthYearBytes...)
 
-	// Marshal equipment type (1 byte)
-	equipmentTypeByte, err := MarshalEnum(esn.GetType())
-	if err != nil {
-		return nil, fmt.Errorf("failed to marshal equipment type: %w", err)
+	// Marshal equipment type (1 byte); unknown wire values stored as UNRECOGNIZED emit 0x00.
+	if esn.GetType() == ddv1.EquipmentType_EQUIPMENT_TYPE_UNRECOGNIZED {
+		dst = append(dst, 0x00)
+	} else {
+		equipmentTypeByte, err := MarshalEnum(esn.GetType())
+		if err != nil {
+			return nil, fmt.Errorf("failed to marshal equipment type: %w", err)
+		}
+		dst = append(dst, equipmentTypeByte)
 	}
-	dst = append(dst, equipmentTypeByte)
 
 	// Marshal manufacturer code (1 byte)
 	dst = append(dst, byte(esn.GetManufacturerCode()))

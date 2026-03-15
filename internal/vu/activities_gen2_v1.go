@@ -168,7 +168,7 @@ func (opts MarshalOptions) MarshalActivitiesGen2V1(activities *vuv1.ActivitiesGe
 	if err != nil {
 		return nil, fmt.Errorf("marshal VuCardIWRecordArray: %w", err)
 	}
-	result = appendRecordArrayHeader(result, 0x03, 132, uint16(len(activities.GetCardIwData())))
+	result = appendRecordArrayHeader(result, 0x03, 131, uint16(len(activities.GetCardIwData())))
 	result = append(result, cardIWData...)
 
 	// VuActivityDailyRecordArray (2 bytes per record)
@@ -179,20 +179,20 @@ func (opts MarshalOptions) MarshalActivitiesGen2V1(activities *vuv1.ActivitiesGe
 	result = appendRecordArrayHeader(result, 0x04, 2, uint16(len(activities.GetActivityChanges())))
 	result = append(result, activityData...)
 
-	// VuPlaceDailyWorkPeriodRecordArray (Gen2v1 - 41 bytes per record)
+	// VuPlaceDailyWorkPeriodRecordArray (Gen2v1 - 40 bytes per record)
 	placeData, err := marshalPlaceRecordsG2V1(activities.GetPlaces())
 	if err != nil {
 		return nil, fmt.Errorf("marshal VuPlaceDailyWorkPeriodRecordArray: %w", err)
 	}
-	result = appendRecordArrayHeader(result, 0x05, 41, uint16(len(activities.GetPlaces())))
+	result = appendRecordArrayHeader(result, 0x05, 40, uint16(len(activities.GetPlaces())))
 	result = append(result, placeData...)
 
-	// VuGNSSADRecordArray (Gen2v1 - 58 bytes per record)
+	// VuGNSSADRecordArray (Gen2v1 - 56 bytes per record)
 	gnssData, err := marshalGnssAccumulatedDrivingRecordsV1(activities.GetGnssAccumulatedDriving())
 	if err != nil {
 		return nil, fmt.Errorf("marshal VuGNSSADRecordArray: %w", err)
 	}
-	result = appendRecordArrayHeader(result, 0x06, 58, uint16(len(activities.GetGnssAccumulatedDriving())))
+	result = appendRecordArrayHeader(result, 0x06, 56, uint16(len(activities.GetGnssAccumulatedDriving())))
 	result = append(result, gnssData...)
 
 	// VuSpecificConditionRecordArray (5 bytes per record)
@@ -203,9 +203,7 @@ func (opts MarshalOptions) MarshalActivitiesGen2V1(activities *vuv1.ActivitiesGe
 	result = appendRecordArrayHeader(result, 0x07, 5, uint16(len(activities.GetSpecificConditions())))
 	result = append(result, specificCondData...)
 
-	// Append signature at the end (TV format: maintains structure)
-	// Gen2 uses variable-length ECDSA signatures
-	result = append(result, activities.GetSignature()...)
+	result = appendSignature(result, activities.GetSignature(), 0x09)
 
 	return result, nil
 }
@@ -286,7 +284,7 @@ func parseVuCardIWRecordArrayG2(data []byte, offset int) ([]*ddv1.VuCardIWRecord
 		return nil, 0, err
 	}
 
-	const expectedRecordSize = 132 // Gen2
+	const expectedRecordSize = 131 // Gen2
 	if recordSize != expectedRecordSize {
 		return nil, 0, fmt.Errorf("expected VuCardIWRecord size %d, got %d", expectedRecordSize, recordSize)
 	}
@@ -353,14 +351,14 @@ func parseVuActivityDailyRecordArray(data []byte, offset int) ([]*ddv1.ActivityC
 	return records, totalSize, nil
 }
 
-// parseVuPlaceDailyWorkPeriodRecordArrayG2 parses a VuPlaceDailyWorkPeriodRecordArray (Gen2v1 - 41 bytes per record).
+// parseVuPlaceDailyWorkPeriodRecordArrayG2 parses a VuPlaceDailyWorkPeriodRecordArray (Gen2v1 - 40 bytes per record).
 func parseVuPlaceDailyWorkPeriodRecordArrayG2(data []byte, offset int) ([]*ddv1.VuPlaceDailyWorkPeriodRecordG2, int, error) {
 	_, recordSize, noOfRecords, headerSize, err := parseRecordArrayHeader(data, offset)
 	if err != nil {
 		return nil, 0, err
 	}
 
-	const expectedRecordSize = 41 // Gen2v1
+	const expectedRecordSize = 40 // Gen2v1
 	if recordSize != expectedRecordSize {
 		return nil, 0, fmt.Errorf("expected VuPlaceDailyWorkPeriodRecord size %d, got %d", expectedRecordSize, recordSize)
 	}
@@ -390,14 +388,14 @@ func parseVuPlaceDailyWorkPeriodRecordArrayG2(data []byte, offset int) ([]*ddv1.
 	return records, totalSize, nil
 }
 
-// parseVuGNSSADRecordArray parses a VuGNSSADRecordArray (Gen2v1 - 58 bytes per record).
+// parseVuGNSSADRecordArray parses a VuGNSSADRecordArray (Gen2v1 - 56 bytes per record).
 func parseVuGNSSADRecordArray(data []byte, offset int) ([]*ddv1.VuGNSSADRecord, int, error) {
 	_, recordSize, noOfRecords, headerSize, err := parseRecordArrayHeader(data, offset)
 	if err != nil {
 		return nil, 0, err
 	}
 
-	const expectedRecordSize = 58 // Gen2v1
+	const expectedRecordSize = 56 // Gen2v1
 	if recordSize != expectedRecordSize {
 		return nil, 0, fmt.Errorf("expected VuGNSSADRecord size %d, got %d", expectedRecordSize, recordSize)
 	}
@@ -474,6 +472,18 @@ func appendRecordArrayHeader(dst []byte, recordType byte, recordSize uint16, noO
 	return dst
 }
 
+// appendSignature appends signature bytes to dst.
+//
+// The signature field stores the complete SignatureRecordArray (5-byte header + sig bytes).
+// When the signature is empty (anonymized data has no real signature), a placeholder 5-byte
+// empty RecordArray header is appended so that sizeOf* functions can still parse the output.
+func appendSignature(dst []byte, signature []byte, recordType byte) []byte {
+	if len(signature) > 0 {
+		return append(dst, signature...)
+	}
+	return appendRecordArrayHeader(dst, recordType, 0, 0)
+}
+
 // marshalCardIWRecordsG2 marshals CardIWRecords for Gen2.
 func marshalCardIWRecordsG2(records []*ddv1.VuCardIWRecordG2) ([]byte, error) {
 	var result []byte
@@ -510,7 +520,7 @@ func marshalPlaceRecordsG2V1(records []*ddv1.PlaceRecordG2) ([]byte, error) {
 	var opts dd.MarshalOptions
 
 	for i, placeRec := range records {
-		// Wrap in VuPlaceDailyWorkPeriodRecordG2 (41 bytes = 20 bytes FullCardNumberAndGeneration + 21 bytes PlaceRecordG2)
+		// Wrap in VuPlaceDailyWorkPeriodRecordG2 (40 bytes = 19 bytes FullCardNumberAndGeneration + 21 bytes PlaceRecordG2)
 		ddRecord := &ddv1.VuPlaceDailyWorkPeriodRecordG2{}
 		// Note: VU place records include a card number, but Gen2v1 proto doesn't expose it
 		// Use empty/zero card number for now

@@ -12,6 +12,7 @@ import "wayplatform/connect/tachograph/dd/v1/extended_serial_number.proto";
 import "wayplatform/connect/tachograph/dd/v1/full_card_number_and_generation.proto";
 import "wayplatform/connect/tachograph/dd/v1/owner_identification.proto";
 import "wayplatform/connect/tachograph/dd/v1/software_identification.proto";
+import "wayplatform/connect/tachograph/dd/v1/ia5_string_value.proto";
 import "wayplatform/connect/tachograph/dd/v1/string_value.proto";
 import "wayplatform/connect/tachograph/dd/v1/vehicle_registration_identification.proto";
 import "wayplatform/connect/tachograph/security/v1/authentication.proto";
@@ -52,7 +53,7 @@ message TechnicalDataGen2V2 {
     // The part number of the VU.
     //
     // See Data Dictionary, Section 2.217, `VuPartNumber`.
-    wayplatform.connect.tachograph.dd.v1.StringValue part_number = 3;
+    wayplatform.connect.tachograph.dd.v1.Ia5StringValue part_number = 3;
 
     // The serial number of the VU.
     //
@@ -70,7 +71,7 @@ message TechnicalDataGen2V2 {
     // The approval number of the VU (Gen2: 16 bytes).
     //
     // See Data Dictionary, Section 2.172, `VuApprovalNumber`.
-    wayplatform.connect.tachograph.dd.v1.StringValue approval_number = 7;
+    wayplatform.connect.tachograph.dd.v1.Ia5StringValue approval_number = 7;
   }
 
   // Represents a paired motion sensor record.
@@ -85,7 +86,7 @@ message TechnicalDataGen2V2 {
     // The approval number of the motion sensor (Gen2: 16 bytes).
     //
     // See Data Dictionary, Section 2.131, `SensorApprovalNumber`.
-    wayplatform.connect.tachograph.dd.v1.StringValue approval_number = 2;
+    wayplatform.connect.tachograph.dd.v1.Ia5StringValue approval_number = 2;
 
     // The date the sensor was paired.
     //
@@ -105,7 +106,7 @@ message TechnicalDataGen2V2 {
     // The approval number of the external GNSS.
     //
     // See Data Dictionary, Section 2.132, `SensorExternalGNSSApprovalNumber`.
-    wayplatform.connect.tachograph.dd.v1.StringValue approval_number = 2;
+    wayplatform.connect.tachograph.dd.v1.Ia5StringValue approval_number = 2;
 
     // The date the GNSS was coupled.
     //
@@ -146,7 +147,7 @@ message TechnicalDataGen2V2 {
     // The Vehicle Identification Number.
     //
     // See Data Dictionary, Section 2.164, `VehicleIdentificationNumber`.
-    wayplatform.connect.tachograph.dd.v1.StringValue vin = 7;
+    wayplatform.connect.tachograph.dd.v1.Ia5StringValue vin = 7;
 
     // The vehicle registration identifier.
     //
@@ -171,7 +172,7 @@ message TechnicalDataGen2V2 {
     // The tyre size designation.
     //
     // See Data Dictionary, Section 2.163, `TyreSize`.
-    wayplatform.connect.tachograph.dd.v1.StringValue tyre_size = 12;
+    wayplatform.connect.tachograph.dd.v1.Ia5StringValue tyre_size = 12;
 
     // The authorised speed in km/h.
     //

@@ -21,24 +21,24 @@ import (
 //	    vehicleOdometerValue            OdometerShort
 //	}
 //
-// Binary Layout (fixed length, 57 bytes):
-//   - Bytes 0-19: cardNumberAndGenDriverSlot (FullCardNumberAndGeneration)
-//   - Bytes 20-39: cardNumberAndGenCodriverSlot (FullCardNumberAndGeneration)
-//   - Byte 40: countryLeft (NationNumeric)
-//   - Byte 41: countryEntered (NationNumeric)
-//   - Bytes 42-53: gnssPlaceAuthRecord (GNSSPlaceAuthRecord)
-//   - Bytes 54-56: vehicleOdometerValue (OdometerShort)
+// Binary Layout (fixed length, 55 bytes):
+//   - Bytes 0-18: cardNumberAndGenDriverSlot (FullCardNumberAndGeneration, 19 bytes)
+//   - Bytes 19-37: cardNumberAndGenCodriverSlot (FullCardNumberAndGeneration, 19 bytes)
+//   - Byte 38: countryLeft (NationNumeric)
+//   - Byte 39: countryEntered (NationNumeric)
+//   - Bytes 40-51: gnssPlaceAuthRecord (GNSSPlaceAuthRecord)
+//   - Bytes 52-54: vehicleOdometerValue (OdometerShort)
 func (opts UnmarshalOptions) UnmarshalVuBorderCrossingRecord(data []byte) (*ddv1.VuBorderCrossingRecord, error) {
 	const (
 		idxCardNumberDriverSlot   = 0
-		idxCardNumberCodriverSlot = 20
-		idxCountryLeft            = 40
-		idxCountryEntered         = 41
-		idxGnssPlaceAuthRecord    = 42
-		idxVehicleOdometerValue   = 54
-		lenVuBorderCrossingRecord = 57
+		idxCardNumberCodriverSlot = 19
+		idxCountryLeft            = 38
+		idxCountryEntered         = 39
+		idxGnssPlaceAuthRecord    = 40
+		idxVehicleOdometerValue   = 52
+		lenVuBorderCrossingRecord = 55
 
-		lenFullCardNumberAndGeneration = 20
+		lenFullCardNumberAndGeneration = 19
 		lenNationNumeric               = 1
 		lenGNSSPlaceAuthRecord         = 12
 		lenOdometerShort               = 3
@@ -104,7 +104,7 @@ func (opts MarshalOptions) MarshalVuBorderCrossingRecord(record *ddv1.VuBorderCr
 		return nil, fmt.Errorf("record cannot be nil")
 	}
 
-	const lenVuBorderCrossingRecord = 57
+	const lenVuBorderCrossingRecord = 55
 
 	// Use raw data painting strategy if available
 	var canvas [lenVuBorderCrossingRecord]byte
@@ -123,16 +123,16 @@ func (opts MarshalOptions) MarshalVuBorderCrossingRecord(record *ddv1.VuBorderCr
 	if err != nil {
 		return nil, fmt.Errorf("failed to marshal card number driver slot: %w", err)
 	}
-	copy(canvas[offset:offset+20], cardNumberDriverSlotBytes)
-	offset += 20
+	copy(canvas[offset:offset+19], cardNumberDriverSlotBytes)
+	offset += 19
 
-	// cardNumberAndGenCodriverSlot (20 bytes)
+	// cardNumberAndGenCodriverSlot (19 bytes)
 	cardNumberCodriverSlotBytes, err := opts.MarshalFullCardNumberAndGeneration(record.GetCardNumberCodriverSlot())
 	if err != nil {
 		return nil, fmt.Errorf("failed to marshal card number codriver slot: %w", err)
 	}
-	copy(canvas[offset:offset+20], cardNumberCodriverSlotBytes)
-	offset += 20
+	copy(canvas[offset:offset+19], cardNumberCodriverSlotBytes)
+	offset += 19
 
 	// countryLeft (1 byte)
 	countryLeftByte, _ := MarshalEnum(record.GetCountryLeft())

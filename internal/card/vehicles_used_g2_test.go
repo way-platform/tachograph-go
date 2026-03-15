@@ -6,6 +6,7 @@ import (
 
 	"github.com/google/go-cmp/cmp"
 
+	"github.com/way-platform/tachograph-go/internal/dd"
 	cardv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1"
 	ddv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
 )
@@ -37,7 +38,7 @@ func TestVehiclesUsedG2_Generation2(t *testing.T) {
 				t.Fatalf("Failed to read hexdump: %v", err)
 			}
 
-			// Unmarshal
+			// Unmarshal for golden comparison (no raw_data for readable JSON)
 			opts := UnmarshalOptions{}
 			vehicles, err := opts.unmarshalVehiclesUsedG2(data)
 			if err != nil {
@@ -48,9 +49,16 @@ func TestVehiclesUsedG2_Generation2(t *testing.T) {
 			goldenPath := goldenJSONPath(hexdumpPath)
 			loadOrCreateGolden(t, vehicles, goldenPath)
 
-			// Round-trip test
+			// Round-trip test: unmarshal with PreserveRawData for binary fidelity.
+			// Without raw_data, null-padded strings lose their padding and get
+			// re-encoded with space padding, breaking the round-trip.
+			rtOpts := UnmarshalOptions{UnmarshalOptions: dd.UnmarshalOptions{PreserveRawData: true}}
+			rtVehicles, err := rtOpts.unmarshalVehiclesUsedG2(data)
+			if err != nil {
+				t.Fatalf("Round-trip unmarshal failed: %v", err)
+			}
 			marshalOpts := MarshalOptions{}
-			marshaled, err := marshalOpts.MarshalVehiclesUsedG2(vehicles)
+			marshaled, err := marshalOpts.MarshalVehiclesUsedG2(rtVehicles)
 			if err != nil {
 				t.Fatalf("Marshal failed: %v", err)
 			}

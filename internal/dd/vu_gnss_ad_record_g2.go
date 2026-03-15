@@ -6,7 +6,7 @@ import (
 	ddv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
 )
 
-// UnmarshalVuGNSSADRecordG2 parses a VuGNSSADRecord (Generation 2, version 2 - 59 bytes).
+// UnmarshalVuGNSSADRecordG2 parses a VuGNSSADRecord (Generation 2, version 2 - 57 bytes).
 //
 // The data type `VuGNSSADRecord` is specified in the Data Dictionary, Section 2.203.
 //
@@ -20,23 +20,23 @@ import (
 //	    vehicleOdometerValue            OdometerShort
 //	}
 //
-// Binary Layout (fixed length, 59 bytes):
+// Binary Layout (fixed length, 57 bytes):
 //   - Bytes 0-3: timeStamp (TimeReal)
-//   - Bytes 4-23: cardNumberAndGenDriverSlot (FullCardNumberAndGeneration)
-//   - Bytes 24-43: cardNumberAndGenCodriverSlot (FullCardNumberAndGeneration)
-//   - Bytes 44-55: gnssPlaceAuthRecord (GNSSPlaceAuthRecord)
-//   - Bytes 56-58: vehicleOdometerValue (OdometerShort)
+//   - Bytes 4-22: cardNumberAndGenDriverSlot (FullCardNumberAndGeneration, 19 bytes)
+//   - Bytes 23-41: cardNumberAndGenCodriverSlot (FullCardNumberAndGeneration, 19 bytes)
+//   - Bytes 42-53: gnssPlaceAuthRecord (GNSSPlaceAuthRecord)
+//   - Bytes 54-56: vehicleOdometerValue (OdometerShort)
 func (opts UnmarshalOptions) UnmarshalVuGNSSADRecordG2(data []byte) (*ddv1.VuGNSSADRecordG2, error) {
 	const (
 		idxTimeStamp              = 0
 		idxCardNumberDriverSlot   = 4
-		idxCardNumberCodriverSlot = 24
-		idxGnssPlaceAuthRecord    = 44
-		idxVehicleOdometerValue   = 56
-		lenVuGNSSADRecordG2       = 59
+		idxCardNumberCodriverSlot = 23
+		idxGnssPlaceAuthRecord    = 42
+		idxVehicleOdometerValue   = 54
+		lenVuGNSSADRecordG2       = 57
 
 		lenTimeReal                    = 4
-		lenFullCardNumberAndGeneration = 20
+		lenFullCardNumberAndGeneration = 19
 		lenGNSSPlaceAuthRecord         = 12
 		lenOdometerShort               = 3
 	)
@@ -94,7 +94,7 @@ func (opts MarshalOptions) MarshalVuGNSSADRecordG2(record *ddv1.VuGNSSADRecordG2
 		return nil, fmt.Errorf("record cannot be nil")
 	}
 
-	const lenVuGNSSADRecordG2 = 59
+	const lenVuGNSSADRecordG2 = 57
 
 	// Use raw data painting strategy if available
 	var canvas [lenVuGNSSADRecordG2]byte
@@ -121,16 +121,16 @@ func (opts MarshalOptions) MarshalVuGNSSADRecordG2(record *ddv1.VuGNSSADRecordG2
 	if err != nil {
 		return nil, fmt.Errorf("failed to marshal card number driver slot: %w", err)
 	}
-	copy(canvas[offset:offset+20], cardNumberDriverSlotBytes)
-	offset += 20
+	copy(canvas[offset:offset+19], cardNumberDriverSlotBytes)
+	offset += 19
 
-	// cardNumberAndGenCodriverSlot (20 bytes)
+	// cardNumberAndGenCodriverSlot (19 bytes)
 	cardNumberCodriverSlotBytes, err := opts.MarshalFullCardNumberAndGeneration(record.GetCardNumberCodriverSlot())
 	if err != nil {
 		return nil, fmt.Errorf("failed to marshal card number codriver slot: %w", err)
 	}
-	copy(canvas[offset:offset+20], cardNumberCodriverSlotBytes)
-	offset += 20
+	copy(canvas[offset:offset+19], cardNumberCodriverSlotBytes)
+	offset += 19
 
 	// gnssPlaceAuthRecord (12 bytes)
 	gnssPlaceAuthRecordBytes, err := opts.MarshalGNSSPlaceAuthRecord(record.GetGnssPlaceAuthRecord())

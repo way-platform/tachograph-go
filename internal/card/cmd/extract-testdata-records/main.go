@@ -14,49 +14,50 @@ import (
 )
 
 var (
-	inputDir  = flag.String("i", "", "Input directory containing .DDD files")
-	outputDir = flag.String("o", "", "Output directory for extracted hexdump files")
+	inputDir   = flag.String("i", "", "Input directory containing .DDD files")
+	outputDir  = flag.String("o", "internal/card/testdata/records", "Output directory for extracted hexdump files")
+	startIndex = flag.Int("start", 0, "Starting index for output directory numbering")
 )
 
 func main() {
 	flag.Parse()
 
-	// Validate required flags
-	if *inputDir == "" || *outputDir == "" {
-		log.Fatal("Both -i (input directory) and -o (output directory) flags are required")
-	}
-
-	// Validate input directory exists
-	if info, err := os.Stat(*inputDir); err != nil || !info.IsDir() {
-		log.Fatalf("Input directory does not exist or is not a directory: %s", *inputDir)
-	}
-
-	// Track file index across all processed files
-	fileIndex := 0
-
-	// Walk the input directory
-	err := filepath.WalkDir(*inputDir, func(path string, d os.DirEntry, err error) error {
+	// Support both -i directory and positional file args
+	var inputFiles []string
+	if *inputDir != "" {
+		if info, err := os.Stat(*inputDir); err != nil || !info.IsDir() {
+			log.Fatalf("Input directory does not exist or is not a directory: %s", *inputDir)
+		}
+		err := filepath.WalkDir(*inputDir, func(path string, d os.DirEntry, err error) error {
+			if err != nil {
+				return err
+			}
+			if !d.IsDir() && strings.HasSuffix(strings.ToUpper(d.Name()), ".DDD") {
+				inputFiles = append(inputFiles, path)
+			}
+			return nil
+		})
 		if err != nil {
-			return err
+			log.Fatalf("Error walking directory: %v", err)
 		}
-
-		// Skip directories and non-.DDD files
-		if d.IsDir() || !strings.HasSuffix(strings.ToUpper(d.Name()), ".DDD") {
-			return nil
+	} else {
+		for _, p := range flag.Args() {
+			if strings.HasSuffix(strings.ToUpper(p), ".DDD") {
+				inputFiles = append(inputFiles, p)
+			} else {
+				log.Printf("Skipping non-.DDD file: %s", p)
+			}
 		}
+	}
 
-		// Process the .DDD file with its index
-		if err := processCardFile(path, fileIndex); err != nil {
+	if len(inputFiles) == 0 {
+		log.Fatal("No .DDD files found: provide -i <dir> or positional file args")
+	}
+
+	for i, path := range inputFiles {
+		if err := processCardFile(path, *startIndex+i); err != nil {
 			log.Printf("Warning: failed to process %s: %v", path, err)
-			// Continue processing other files
-			return nil
 		}
-
-		fileIndex++ // Increment for next file
-		return nil
-	})
-	if err != nil {
-		log.Fatalf("Error walking directory: %v", err)
 	}
 }
 

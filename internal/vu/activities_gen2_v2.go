@@ -85,16 +85,10 @@ func unmarshalActivitiesGen2V2(value []byte) (*vuv1.ActivitiesGen2V2, error) {
 	activities.SetActivityChanges(activityChanges)
 	offset += bytesRead
 
-	// VuPlaceDailyWorkPeriodRecordArray (Gen2v1 format - 41 bytes per record)
-	// Note: Gen2v2 may eventually use PlaceAuthRecord (42 bytes), but currently using Gen2v1 format
-	vuPlaceRecords, bytesRead, err := parseVuPlaceDailyWorkPeriodRecordArrayG2(data, offset)
+	// VuPlaceDailyWorkPeriodRecordArray (Gen2v2 - 41 bytes per record: FCAN(19) + PlaceAuthRecord(22))
+	placeRecords, bytesRead, err := parseVuPlaceDailyWorkPeriodRecordArrayG2V2(data, offset)
 	if err != nil {
 		return nil, fmt.Errorf("parse VuPlaceDailyWorkPeriodRecordArray: %w", err)
-	}
-	// Extract PlaceRecordG2 from VuPlaceDailyWorkPeriodRecordG2 wrapper
-	placeRecords := make([]*ddv1.PlaceRecordG2, 0, len(vuPlaceRecords))
-	for _, vuPlaceRec := range vuPlaceRecords {
-		placeRecords = append(placeRecords, vuPlaceRec.GetPlaceRecord())
 	}
 	activities.SetPlaces(placeRecords)
 	offset += bytesRead
@@ -183,7 +177,7 @@ func (opts MarshalOptions) MarshalActivitiesGen2V2(activities *vuv1.ActivitiesGe
 	if err != nil {
 		return nil, fmt.Errorf("marshal VuCardIWRecordArray: %w", err)
 	}
-	result = appendRecordArrayHeader(result, 0x03, 132, uint16(len(activities.GetCardIwData())))
+	result = appendRecordArrayHeader(result, 0x03, 131, uint16(len(activities.GetCardIwData())))
 	result = append(result, cardIWData...)
 
 	// VuActivityDailyRecordArray (2 bytes per record)
@@ -194,7 +188,7 @@ func (opts MarshalOptions) MarshalActivitiesGen2V2(activities *vuv1.ActivitiesGe
 	result = appendRecordArrayHeader(result, 0x04, 2, uint16(len(activities.GetActivityChanges())))
 	result = append(result, activityData...)
 
-	// VuPlaceDailyWorkPeriodRecordArray (Gen2v2 - 41 bytes per record)
+	// VuPlaceDailyWorkPeriodRecordArray (Gen2v2 - 41 bytes per record: FCAN(19) + PlaceAuthRecord(22))
 	placeData, err := marshalPlaceRecordsG2V2(activities.GetPlaces())
 	if err != nil {
 		return nil, fmt.Errorf("marshal VuPlaceDailyWorkPeriodRecordArray: %w", err)
@@ -207,7 +201,7 @@ func (opts MarshalOptions) MarshalActivitiesGen2V2(activities *vuv1.ActivitiesGe
 	if err != nil {
 		return nil, fmt.Errorf("marshal VuGNSSADRecordArray: %w", err)
 	}
-	result = appendRecordArrayHeader(result, 0x06, 59, uint16(len(activities.GetGnssAccumulatedDriving())))
+	result = appendRecordArrayHeader(result, 0x06, 57, uint16(len(activities.GetGnssAccumulatedDriving())))
 	result = append(result, gnssData...)
 
 	// VuSpecificConditionRecordArray (5 bytes per record)
@@ -223,7 +217,7 @@ func (opts MarshalOptions) MarshalActivitiesGen2V2(activities *vuv1.ActivitiesGe
 	if err != nil {
 		return nil, fmt.Errorf("marshal VuBorderCrossingRecordArray: %w", err)
 	}
-	result = appendRecordArrayHeader(result, 0x08, 57, uint16(len(activities.GetBorderCrossings())))
+	result = appendRecordArrayHeader(result, 0x08, 55, uint16(len(activities.GetBorderCrossings())))
 	result = append(result, borderCrossingData...)
 
 	// VuLoadUnloadRecordArray (Gen2v2 - 60 bytes per record)
@@ -231,17 +225,61 @@ func (opts MarshalOptions) MarshalActivitiesGen2V2(activities *vuv1.ActivitiesGe
 	if err != nil {
 		return nil, fmt.Errorf("marshal VuLoadUnloadRecordArray: %w", err)
 	}
-	result = appendRecordArrayHeader(result, 0x09, 60, uint16(len(activities.GetLoadUnloadOperations())))
+	result = appendRecordArrayHeader(result, 0x09, 58, uint16(len(activities.GetLoadUnloadOperations())))
 	result = append(result, loadUnloadData...)
 
 	// Append signature at the end (TV format: maintains structure)
 	// Gen2 uses variable-length ECDSA signatures
-	result = append(result, activities.GetSignature()...)
+	result = appendSignature(result, activities.GetSignature(), 0x0A)
 
 	return result, nil
 }
 
 // Helper functions for parsing Gen2 V2 RecordArrays
+
+// parseVuPlaceDailyWorkPeriodRecordArrayG2V2 parses a VuPlaceDailyWorkPeriodRecordArray
+// (Gen2v2 - 41 bytes per record: FCAN(19) + PlaceAuthRecord(22)).
+//
+// The first 21 bytes of PlaceAuthRecord are layout-compatible with PlaceRecordG2 — both
+// share TimeReal(4)+EntryType(1)+Country(1)+Region(1)+Odometer(3)+GNSSPlaceRecord(11) — so
+// we extract a PlaceRecordG2 from bytes [19:40], discarding the FCAN prefix and the last
+// byte of PlaceAuthRecord (GNSS authentication status).
+func parseVuPlaceDailyWorkPeriodRecordArrayG2V2(data []byte, offset int) ([]*ddv1.PlaceRecordG2, int, error) {
+	_, recordSize, noOfRecords, headerSize, err := parseRecordArrayHeader(data, offset)
+	if err != nil {
+		return nil, 0, err
+	}
+
+	const expectedRecordSize = 41 // FCAN(19) + PlaceAuthRecord(22)
+	if recordSize != expectedRecordSize {
+		return nil, 0, fmt.Errorf("expected VuPlaceDailyWorkPeriodRecord size %d, got %d", expectedRecordSize, recordSize)
+	}
+
+	opts := dd.UnmarshalOptions{PreserveRawData: true}
+
+	records := make([]*ddv1.PlaceRecordG2, 0, noOfRecords)
+	recordStart := offset + headerSize
+
+	for i := uint16(0); i < noOfRecords; i++ {
+		recordEnd := recordStart + int(recordSize)
+		if recordEnd > len(data) {
+			return nil, 0, fmt.Errorf("insufficient data for VuPlaceDailyWorkPeriodRecord %d", i)
+		}
+
+		// Skip 19-byte FCAN; parse bytes [19:40] as PlaceRecordG2 (21 bytes).
+		// Byte [40] is the GNSS auth status byte from PlaceAuthRecord — intentionally discarded.
+		placeRec, err := opts.UnmarshalPlaceRecordG2(data[recordStart+19 : recordStart+40])
+		if err != nil {
+			return nil, 0, fmt.Errorf("unmarshal VuPlaceDailyWorkPeriodRecord %d: %w", i, err)
+		}
+
+		records = append(records, placeRec)
+		recordStart = recordEnd
+	}
+
+	totalSize := headerSize + int(recordSize)*int(noOfRecords)
+	return records, totalSize, nil
+}
 
 // parseVuGNSSADRecordArrayG2 parses a VuGNSSADRecordArray (Gen2v2 - 59 bytes per record with authentication).
 func parseVuGNSSADRecordArrayG2(data []byte, offset int) ([]*ddv1.VuGNSSADRecordG2, int, error) {
@@ -250,7 +288,7 @@ func parseVuGNSSADRecordArrayG2(data []byte, offset int) ([]*ddv1.VuGNSSADRecord
 		return nil, 0, err
 	}
 
-	const expectedRecordSize = 59 // Gen2v2
+	const expectedRecordSize = 57 // Gen2v2
 	if recordSize != expectedRecordSize {
 		return nil, 0, fmt.Errorf("expected VuGNSSADRecordG2 size %d, got %d", expectedRecordSize, recordSize)
 	}
@@ -286,7 +324,7 @@ func parseVuBorderCrossingRecordArray(data []byte, offset int) ([]*ddv1.VuBorder
 		return nil, 0, err
 	}
 
-	const expectedRecordSize = 57
+	const expectedRecordSize = 55
 	if recordSize != expectedRecordSize {
 		return nil, 0, fmt.Errorf("expected VuBorderCrossingRecord size %d, got %d", expectedRecordSize, recordSize)
 	}
@@ -322,7 +360,7 @@ func parseVuLoadUnloadRecordArray(data []byte, offset int) ([]*ddv1.VuLoadUnload
 		return nil, 0, err
 	}
 
-	const expectedRecordSize = 60
+	const expectedRecordSize = 58
 	if recordSize != expectedRecordSize {
 		return nil, 0, fmt.Errorf("expected VuLoadUnloadRecord size %d, got %d", expectedRecordSize, recordSize)
 	}
@@ -359,10 +397,25 @@ func marshalCardIWRecordsG2V2(records []*ddv1.VuCardIWRecordG2) ([]byte, error) 
 	return marshalCardIWRecordsG2(records)
 }
 
-// marshalPlaceRecordsG2V2 marshals PlaceRecords for Gen2v2 (same format as V1).
+// marshalPlaceRecordsG2V2 marshals PlaceRecords for Gen2v2 (41 bytes each: FCAN(19) + PlaceAuthRecord(22)).
+//
+// The inverse of parseVuPlaceDailyWorkPeriodRecordArrayG2V2: places PlaceRecordG2 bytes at
+// offset 19, with a zero FCAN prefix and a zero GNSS auth status byte appended.
 func marshalPlaceRecordsG2V2(records []*ddv1.PlaceRecordG2) ([]byte, error) {
-	// Gen2v2 uses same format as V1
-	return marshalPlaceRecordsG2V1(records)
+	var opts dd.MarshalOptions
+	result := make([]byte, 0, len(records)*41)
+	for i, placeRec := range records {
+		placeBytes, err := opts.MarshalPlaceRecordG2(placeRec)
+		if err != nil {
+			return nil, fmt.Errorf("marshal PlaceRecord %d: %w", i, err)
+		}
+		var rec [41]byte
+		// [0:19] = FCAN (zero = no card inserted)
+		copy(rec[19:40], placeBytes) // PlaceRecordG2(21) → PlaceAuthRecord[0:21]
+		// rec[40] = 0 (GNSS auth status, not authenticated)
+		result = append(result, rec[:]...)
+	}
+	return result, nil
 }
 
 // marshalGnssAccumulatedDrivingRecordsV2 marshals GnssAccumulatedDrivingRecords for Gen2v2.

@@ -68,7 +68,7 @@ func (opts UnmarshalOptions) unmarshalDriverActivityData(data []byte) (*cardv1.D
 	target.SetRawData(activityData)
 
 	// Parse records using the iterator
-	dailyRecords, err := opts.parseActivityRecordsWithIterator(activityData, int(newestDayRecordPointer))
+	dailyRecords, err := opts.parseActivityRecordsWithIterator(activityData, int(newestDayRecordPointer), int(oldestDayRecordPointer))
 	if err != nil {
 		return nil, fmt.Errorf("failed to parse cyclic activity daily records: %w", err)
 	}
@@ -80,10 +80,10 @@ func (opts UnmarshalOptions) unmarshalDriverActivityData(data []byte) (*cardv1.D
 // parseActivityRecordsWithIterator parses activity records using the CyclicRecordIterator.
 // This separates the complex traversal logic from the parsing logic, improving maintainability
 // and enabling the buffer painting strategy for perfect round-trip fidelity.
-func (opts UnmarshalOptions) parseActivityRecordsWithIterator(buffer []byte, startPos int) ([]*cardv1.DriverActivityData_DailyRecord, error) {
+func (opts UnmarshalOptions) parseActivityRecordsWithIterator(buffer []byte, startPos int, oldestPos int) ([]*cardv1.DriverActivityData_DailyRecord, error) {
 	var records []*cardv1.DriverActivityData_DailyRecord
 
-	iterator := NewCyclicRecordIterator(buffer, startPos)
+	iterator := NewCyclicRecordIterator(buffer, startPos, oldestPos)
 	for iterator.Next() {
 		recordBytes, _, _ := iterator.Record()
 
@@ -263,8 +263,10 @@ func (opts MarshalOptions) MarshalDriverActivity(activity *cardv1.DriverActivity
 type cyclicRecordIterator struct {
 	buffer      []byte
 	currentPos  int
+	oldestPos   int
 	recordCount int
 	err         error
+	seen        map[int]struct{}
 
 	// Current record state
 	recordStart  int
@@ -274,10 +276,13 @@ type cyclicRecordIterator struct {
 
 // NewCyclicRecordIterator creates a new iterator for traversing activity records
 // in the cyclic buffer, starting from the newest record position.
-func NewCyclicRecordIterator(buffer []byte, startPos int) *cyclicRecordIterator {
+// oldestPos is used as the termination condition for wrapped cyclic buffers.
+func NewCyclicRecordIterator(buffer []byte, startPos int, oldestPos int) *cyclicRecordIterator {
 	return &cyclicRecordIterator{
 		buffer:     buffer,
 		currentPos: startPos,
+		oldestPos:  oldestPos,
+		seen:       make(map[int]struct{}),
 	}
 }
 
@@ -285,7 +290,8 @@ func NewCyclicRecordIterator(buffer []byte, startPos int) *cyclicRecordIterator 
 // Returns true if a record was found, false if end of chain or error.
 // The iterator traverses backwards from newest to oldest record.
 func (it *cyclicRecordIterator) Next() bool {
-	const maxRecords = 366 // Safety limit to prevent infinite loops (max days per year + 1)
+	// Safety backstop: gen2 buffer is 55140 bytes; minimum 12-byte records = ~4595 max.
+	const maxRecords = 5000
 	if it.err != nil {
 		return false
 	}
@@ -300,6 +306,11 @@ func (it *cyclicRecordIterator) Next() bool {
 	if it.currentPos < 0 || it.currentPos+4 > len(it.buffer) {
 		return false // Invalid position for header
 	}
+	// Cycle detection: if we've already visited this position, stop.
+	if _, ok := it.seen[it.currentPos]; ok {
+		return false
+	}
+	it.seen[it.currentPos] = struct{}{}
 	// Read record header (4 bytes: prevRecordLength + currentRecordLength)
 	prevRecordLength := int(binary.BigEndian.Uint16(it.buffer[it.currentPos : it.currentPos+2]))
 	currentRecordLength := int(binary.BigEndian.Uint16(it.buffer[it.currentPos+2 : it.currentPos+4]))
@@ -320,10 +331,12 @@ func (it *cyclicRecordIterator) Next() bool {
 		it.recordBytes[i] = it.buffer[(it.currentPos+i)%len(it.buffer)]
 	}
 	it.recordCount++
-	// Move to previous record for next iteration
-	if prevRecordLength == 0 {
-		// End of chain marker - no more records
-		it.currentPos = -1 // Mark as finished
+	// Move to previous record for next iteration.
+	// Stop after processing the oldest record: if the current record is the oldest
+	// (at oldestPos), do not follow its prevRecordLength further — the buffer may be
+	// fully wrapped and the pointer would lead into overwritten/garbage data.
+	if it.recordStart == it.oldestPos || prevRecordLength == 0 {
+		it.currentPos = -1 // Mark as finished after this record
 	} else {
 		// Move backwards by prevRecordLength, handling wrap-around
 		it.currentPos -= prevRecordLength
