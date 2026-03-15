@@ -172,46 +172,116 @@ See `proto/AGENTS.md` for full protobuf design guidelines. Key points:
 
 ## Testing
 
+### Three Tiers
+
+| Tier                  | Source                | Location                                              | Committed?    |
+| --------------------- | --------------------- | ----------------------------------------------------- | ------------- |
+| Unit (dd/)            | Inline test cases     | `internal/dd/*_test.go`                               | N/A           |
+| Record fixtures       | Anonymized hexdumps   | `internal/{card,vu}/testdata/records/NNN-anonymized/` | ✅            |
+| Full-file integration | Proprietary DDD files | `testdata/{card,vu}/*.DDD` (local only)               | ❌ gitignored |
+
+### Integration Test Coverage
+
+VU and card have different integration test depth:
+
+| Test                                      | VU            | Card               |
+| ----------------------------------------- | ------------- | ------------------ |
+| Binary round-trip (`Unmarshal → Marshal`) | ✅            | ✅                 |
+| Raw proto golden (per transfer/EF)        | ✅ gitignored | ❌ not implemented |
+| Semantic golden (per transfer/EF)         | ✅ gitignored | ❌ not implemented |
+
+Card full-file golden tests are a known gap. Record-level fixture tests provide
+good coverage in practice.
+
+### Gitignore Design
+
+- `/testdata/` (root-anchored) — gitignores only the root `testdata/` directory;
+  `internal/*/testdata/` is **committed** and version-controlled
+- `internal/card/testdata/raw/` — gitignored (full-file JSONs, may contain PII)
+- `internal/vu/testdata/*.golden.json` — gitignored (full-file goldens from
+  local DDD files)
+- `*.DDD`, `*.ddd`, `*.V1B`, `*.v1b` — proprietary binaries, never commit
+
+### Record Fixture Layout
+
+```
+internal/vu/testdata/records/
+  NNN-anonymized/               ← COMMITTED: one per source DDD file
+    NNN-<TRANSFER_TYPE>.hexdump
+    NNN-<TRANSFER_TYPE>.golden.json
+
+internal/card/testdata/records/
+  NNN-anonymized/               ← COMMITTED
+    NNN-<EF>-<GEN>-<CONTENT>.hexdump
+    NNN-<EF>-<GEN>-<CONTENT>.golden.json
+```
+
+### Adding New Proprietary DDD Files
+
+1. Place DDD in `testdata/vu/` or `testdata/card/driver/` (gitignored)
+2. Determine N = count of existing `NNN-anonymized/` dirs in target records dir
+3. Run extract tool — creates TWO dirs per file:
+   ```bash
+   # VU
+   go run ./internal/vu/cmd/extract-testdata-records/ -start N testdata/vu/new.DDD
+   # Card (use -i flag for directory walk)
+   go run ./internal/card/cmd/extract-testdata-records/ -start N -i testdata/card/driver/
+   ```
+
+   - `N-<filename>/` — original hexdumps with PII
+   - `N-anonymized/` — anonymized hexdumps — commit these
+4. **Delete PII dirs from disk** (not just gitignored — remove the actual files):
+   ```bash
+   rm -rf internal/vu/testdata/records/[0-9]*-[^a]*/
+   rm -rf internal/card/testdata/records/[0-9]*-[^a]*/
+   ```
+5. Regenerate record-level golden JSONs (no DDD files required):
+   ```bash
+   cd internal/vu && go test -update . && cd ../card && go test -update .
+   ```
+6. Verify + commit `N-anonymized/` directories
+
 ### Golden Files
 
-Two tiers:
+Two kinds — important to distinguish:
 
-- **Full files** — `testdata/{card,vu}/*.DDD` → `*.json`. Driven by root
-  `unmarshal_test.go`.
-- **Individual records** — `internal/{card,vu}/testdata/records/*.hexdump` →
-  `*.golden.json`. Driven by per-type test files.
+| Kind         | Location                                 | Committed?    | When generated                    |
+| ------------ | ---------------------------------------- | ------------- | --------------------------------- |
+| Record-level | `NNN-anonymized/*.golden.json`           | ✅            | Always (from hexdumps)            |
+| Full-file    | `internal/vu/testdata/*.raw.golden.json` | ❌ gitignored | Only when local DDD files present |
 
-Update: `go test -update ./...`
+Update record-level goldens (run from package dir):
+
+```bash
+cd internal/vu && go test -update .
+cd internal/card && go test -update .
+```
+
+Full-file integration goldens are regenerated automatically when running tests
+with local DDD files in `testdata/vu/` — ephemeral, never committed.
 
 ### Hexdump Format
 
-Test fixtures use `hexdump -C` format for human-readable binary:
-
-```
-00000000  48 65 6c 6c 6f 20 57 6f  72 6c 64 21              |Hello World!|
-```
-
-Handled by `internal/hexdump` (marshal/unmarshal). Unmarshaler is intentionally
-forgiving (ignores offsets, ASCII column).
+`hexdump -C` style, handled by `internal/hexdump`. Unmarshaler is forgiving
+(ignores offsets and ASCII column).
 
 ### Assertions
 
-- `github.com/google/go-cmp/cmp` — use `cmp.Diff` for comparisons
+- `github.com/google/go-cmp/cmp` — `cmp.Diff` for all comparisons
 - Standard `testing` only — no testify, no gomock
-- Table-driven tests for parametric data types
-- Round-trip tests: binary → unmarshal → marshal → compare with original
+- Table-driven for parametric types; round-trip tests for binary codecs
+- Round-trip tests use `UnmarshalOptions{PreserveRawData: true}` to ensure
+  lossless binary fidelity (null vs space padding preserved via `raw_data`)
 - `buf.build/go/protovalidate` for proto constraint validation
 
 ### Test Data Policy
 
-- All committed test data must be deterministically anonymized
-- For unimplemented EFs (e.g. Gen2v2 types without real data), create manual
-  byte-slice unit tests based on the regulation spec
+- All committed fixtures must be deterministically anonymized
+- Hexdump content is verified by golden JSON — never contains raw PII
+- For unimplemented EFs without real data: manual byte-slice tests from spec
 
 ## Known Limitations
 
-- Gen2v2 semantic parsing is incomplete — raw data stored but not all types
-  fully parsed
 - `MarshalOptions.UseRawData = false` path (marshal from semantic fields only)
   is not yet implemented
 - Workshop/company card types not implemented (driver card only)

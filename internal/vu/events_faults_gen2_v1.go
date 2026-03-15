@@ -143,7 +143,7 @@ func (opts MarshalOptions) MarshalEventsAndFaultsGen2V1(ef *vuv1.EventsAndFaults
 	result = appendRecordArrayHeader(result, 0x05, 99, uint16(len(ef.GetTimeAdjustments())))
 	result = append(result, timeAdjData...)
 
-	result = append(result, ef.GetSignature()...)
+	result = appendSignature(result, ef.GetSignature(), 0x06)
 	return result, nil
 }
 

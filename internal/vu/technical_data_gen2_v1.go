@@ -115,7 +115,13 @@ func (opts MarshalOptions) MarshalTechnicalDataGen2V1(td *vuv1.TechnicalDataGen2
 	result = appendRecordArrayHeader(result, 0x03, 168, uint16(len(calRecords)))
 	result = append(result, calData...)
 
-	result = append(result, td.GetSignature()...)
+	// Signature: stored as complete SignatureRecordArray bytes (header + sig bytes).
+	// When empty (anonymized data), include a placeholder header so sizeOf can parse the output.
+	if sig := td.GetSignature(); len(sig) > 0 {
+		result = append(result, sig...)
+	} else {
+		result = appendRecordArrayHeader(result, 0x04, 0, 0)
+	}
 	return result, nil
 }
 
@@ -137,7 +143,7 @@ func (opts AnonymizeOptions) anonymizeTechnicalDataGen2V1(td *vuv1.TechnicalData
 		anon := &vuv1.TechnicalDataGen2V1_VuIdentification{}
 		anon.SetManufacturerName(ddOpts.AnonymizeStringValue(vuIdent.GetManufacturerName()))
 		anon.SetManufacturerAddress(ddOpts.AnonymizeStringValue(vuIdent.GetManufacturerAddress()))
-		anon.SetPartNumber(ia5ToStringValue(ddOpts.AnonymizeIa5StringValue(stringValueToIa5(vuIdent.GetPartNumber(), 16))))
+		anon.SetPartNumber(ddOpts.AnonymizeIa5StringValue(vuIdent.GetPartNumber()))
 		if sn := vuIdent.GetSerialNumber(); sn != nil {
 			anonSn := &ddv1.ExtendedSerialNumber{}
 			anonSn.SetType(sn.GetType())
@@ -147,7 +153,7 @@ func (opts AnonymizeOptions) anonymizeTechnicalDataGen2V1(td *vuv1.TechnicalData
 		}
 		anon.SetSoftwareIdentification(vuIdent.GetSoftwareIdentification())
 		anon.SetManufacturingDate(vuIdent.GetManufacturingDate())
-		anon.SetApprovalNumber(ia5ToStringValue(dd.NewIa5StringValue(16, "TEST0001")))
+		anon.SetApprovalNumber(dd.NewIa5StringValue(16, "TEST0001"))
 		result.SetVuIdentification(anon)
 	}
 
@@ -162,7 +168,7 @@ func (opts AnonymizeOptions) anonymizeTechnicalDataGen2V1(td *vuv1.TechnicalData
 			anonSn.SetSerialNumber(0)
 			anon.SetSerialNumber(anonSn)
 		}
-		anon.SetApprovalNumber(ia5ToStringValue(dd.NewIa5StringValue(16, "SENSOR01")))
+		anon.SetApprovalNumber(dd.NewIa5StringValue(16, "SENSOR01"))
 		anon.SetPairingDate(sensor.GetPairingDate())
 		anonSensors[i] = anon
 	}
@@ -178,12 +184,12 @@ func (opts AnonymizeOptions) anonymizeTechnicalDataGen2V1(td *vuv1.TechnicalData
 		anon.SetWorkshopAddress(ddOpts.AnonymizeStringValue(cal.GetWorkshopAddress()))
 		anon.SetWorkshopCardNumberAndGeneration(ddOpts.AnonymizeFullCardNumberAndGeneration(cal.GetWorkshopCardNumberAndGeneration()))
 		anon.SetWorkshopCardExpiryDate(cal.GetWorkshopCardExpiryDate())
-		anon.SetVin(ia5ToStringValue(ddOpts.AnonymizeIa5StringValue(stringValueToIa5(cal.GetVin(), 17))))
+		anon.SetVin(ddOpts.AnonymizeIa5StringValue(cal.GetVin()))
 		anon.SetVehicleRegistration(ddOpts.AnonymizeVehicleRegistrationIdentification(cal.GetVehicleRegistration()))
 		anon.SetWVehicleCharacteristicConstant(cal.GetWVehicleCharacteristicConstant())
 		anon.SetKConstantOfRecordingEquipment(cal.GetKConstantOfRecordingEquipment())
 		anon.SetLTyreCircumferenceEighthsMm(cal.GetLTyreCircumferenceEighthsMm())
-		anon.SetTyreSize(ia5ToStringValue(ddOpts.AnonymizeIa5StringValue(stringValueToIa5(cal.GetTyreSize(), 15))))
+		anon.SetTyreSize(ddOpts.AnonymizeIa5StringValue(cal.GetTyreSize()))
 		anon.SetAuthorisedSpeedKmh(cal.GetAuthorisedSpeedKmh())
 		anon.SetOldOdometerValueKm(ddOpts.AnonymizeOdometerValue(cal.GetOldOdometerValueKm()))
 		anon.SetNewOdometerValueKm(ddOpts.AnonymizeOdometerValue(cal.GetNewOdometerValueKm()))
@@ -202,16 +208,17 @@ func (opts AnonymizeOptions) anonymizeTechnicalDataGen2V1(td *vuv1.TechnicalData
 
 // parseVuIdentificationRecordArrayGen2 parses a VuIdentificationRecordArray.
 //
-// Expects 1 record × 124 bytes (Gen2).
+// Gen2V1 sends 124 bytes; Gen2V2 sends 138 bytes (additional certification fields).
+// UnmarshalVuIdentification handles variable-length records; extra bytes are preserved in raw_data.
 func parseVuIdentificationRecordArrayGen2(data []byte, offset int) (*ddv1.VuIdentification, int, error) {
 	_, recordSize, noOfRecords, headerSize, err := parseRecordArrayHeader(data, offset)
 	if err != nil {
 		return nil, 0, err
 	}
 
-	const expectedRecordSize = 124
-	if recordSize != expectedRecordSize {
-		return nil, 0, fmt.Errorf("expected VuIdentification record size %d, got %d", expectedRecordSize, recordSize)
+	const minRecordSize = 124 // Gen2V1; Gen2V2 is 138
+	if int(recordSize) < minRecordSize {
+		return nil, 0, fmt.Errorf("expected VuIdentification record size >= %d, got %d", minRecordSize, recordSize)
 	}
 	if noOfRecords != 1 {
 		return nil, 0, fmt.Errorf("expected 1 VuIdentification record, got %d", noOfRecords)
@@ -635,12 +642,12 @@ func gen2CalibrationToV1(r gen2CalibrationRecord) *vuv1.TechnicalDataGen2V1_Cali
 	rec.SetWorkshopAddress(r.workshopAddress)
 	rec.SetWorkshopCardNumberAndGeneration(r.workshopCardNumberAndGen)
 	rec.SetWorkshopCardExpiryDate(r.workshopCardExpiryDate)
-	rec.SetVin(ia5ToStringValue(r.vin))
+	rec.SetVin(r.vin)
 	rec.SetVehicleRegistration(r.vehicleRegistration)
 	rec.SetWVehicleCharacteristicConstant(r.wVehicleCharConst)
 	rec.SetKConstantOfRecordingEquipment(r.kConstantRecordEquip)
 	rec.SetLTyreCircumferenceEighthsMm(r.lTyreCircumference)
-	rec.SetTyreSize(ia5ToStringValue(r.tyreSize))
+	rec.SetTyreSize(r.tyreSize)
 	rec.SetAuthorisedSpeedKmh(r.authorisedSpeedKmh)
 	rec.SetOldOdometerValueKm(r.oldOdometerValueKm)
 	rec.SetNewOdometerValueKm(r.newOdometerValueKm)
@@ -662,12 +669,12 @@ func gen2CalibrationFromV1(rec *vuv1.TechnicalDataGen2V1_CalibrationRecord) gen2
 		workshopAddress:          rec.GetWorkshopAddress(),
 		workshopCardNumberAndGen: rec.GetWorkshopCardNumberAndGeneration(),
 		workshopCardExpiryDate:   rec.GetWorkshopCardExpiryDate(),
-		vin:                      stringValueToIa5(rec.GetVin(), 17),
+		vin:                      rec.GetVin(),
 		vehicleRegistration:      rec.GetVehicleRegistration(),
 		wVehicleCharConst:        rec.GetWVehicleCharacteristicConstant(),
 		kConstantRecordEquip:     rec.GetKConstantOfRecordingEquipment(),
 		lTyreCircumference:       rec.GetLTyreCircumferenceEighthsMm(),
-		tyreSize:                 stringValueToIa5(rec.GetTyreSize(), 15),
+		tyreSize:                 rec.GetTyreSize(),
 		authorisedSpeedKmh:       rec.GetAuthorisedSpeedKmh(),
 		oldOdometerValueKm:       rec.GetOldOdometerValueKm(),
 		newOdometerValueKm:       rec.GetNewOdometerValueKm(),
@@ -687,11 +694,11 @@ func marshalVuIdentificationGen2(opts dd.MarshalOptions, ident *vuv1.TechnicalDa
 	ddIdent := &ddv1.VuIdentification{}
 	ddIdent.SetManufacturerName(ident.GetManufacturerName())
 	ddIdent.SetManufacturerAddress(ident.GetManufacturerAddress())
-	ddIdent.SetPartNumber(stringValueToIa5(ident.GetPartNumber(), 16))
+	ddIdent.SetPartNumber(ident.GetPartNumber())
 	ddIdent.SetSerialNumber(ident.GetSerialNumber())
 	ddIdent.SetSoftwareIdentification(ident.GetSoftwareIdentification())
 	ddIdent.SetManufacturingDate(ident.GetManufacturingDate())
-	ddIdent.SetApprovalNumber(stringValueToIa5(ident.GetApprovalNumber(), 16))
+	ddIdent.SetApprovalNumber(ident.GetApprovalNumber())
 	return opts.MarshalVuIdentification(ddIdent)
 }
 
@@ -701,7 +708,7 @@ func marshalSensorPairedRecordsGen2V1(opts dd.MarshalOptions, sensors []*vuv1.Te
 	for i, sensor := range sensors {
 		ddSensor := &ddv1.SensorPaired{}
 		ddSensor.SetSerialNumber(sensor.GetSerialNumber())
-		ddSensor.SetApprovalNumber(stringValueToIa5(sensor.GetApprovalNumber(), 16))
+		ddSensor.SetApprovalNumber(sensor.GetApprovalNumber())
 		ddSensor.SetPairingDate(sensor.GetPairingDate())
 		b, err := opts.MarshalSensorPaired(ddSensor)
 		if err != nil {
@@ -735,11 +742,11 @@ func vuIdentToGen2V1(ddIdent *ddv1.VuIdentification) *vuv1.TechnicalDataGen2V1_V
 	ident := &vuv1.TechnicalDataGen2V1_VuIdentification{}
 	ident.SetManufacturerName(ddIdent.GetManufacturerName())
 	ident.SetManufacturerAddress(ddIdent.GetManufacturerAddress())
-	ident.SetPartNumber(ia5ToStringValue(ddIdent.GetPartNumber()))
+	ident.SetPartNumber(ddIdent.GetPartNumber())
 	ident.SetSerialNumber(ddIdent.GetSerialNumber())
 	ident.SetSoftwareIdentification(ddIdent.GetSoftwareIdentification())
 	ident.SetManufacturingDate(ddIdent.GetManufacturingDate())
-	ident.SetApprovalNumber(ia5ToStringValue(ddIdent.GetApprovalNumber()))
+	ident.SetApprovalNumber(ddIdent.GetApprovalNumber())
 	return ident
 }
 
@@ -750,31 +757,7 @@ func sensorPairedToGen2V1(s *ddv1.SensorPaired) *vuv1.TechnicalDataGen2V1_Paired
 	}
 	sensor := &vuv1.TechnicalDataGen2V1_PairedSensor{}
 	sensor.SetSerialNumber(s.GetSerialNumber())
-	sensor.SetApprovalNumber(ia5ToStringValue(s.GetApprovalNumber()))
+	sensor.SetApprovalNumber(s.GetApprovalNumber())
 	sensor.SetPairingDate(s.GetPairingDate())
 	return sensor
-}
-
-// ===== String conversion helpers (package-level, used by both V1 and V2) =====
-
-// ia5ToStringValue converts an Ia5StringValue to a StringValue.
-// IA5 strings use pure ASCII encoding with no code-page prefix byte.
-func ia5ToStringValue(ia5 *ddv1.Ia5StringValue) *ddv1.StringValue {
-	if ia5 == nil {
-		return nil
-	}
-	sv := &ddv1.StringValue{}
-	sv.SetLength(ia5.GetLength())
-	sv.SetValue(ia5.GetValue())
-	return sv
-}
-
-// stringValueToIa5 converts a StringValue to an Ia5StringValue for binary serialization.
-// length is the fixed binary field size in bytes.
-func stringValueToIa5(sv *ddv1.StringValue, length int32) *ddv1.Ia5StringValue {
-	value := ""
-	if sv != nil {
-		value = sv.GetValue()
-	}
-	return dd.NewIa5StringValue(length, value)
 }
