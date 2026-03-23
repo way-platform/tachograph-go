@@ -183,6 +183,9 @@ func (opts MarshalOptions) MarshalVehicleUnitFile(file *vuv1.VehicleUnitFile) ([
 		return nil, fmt.Errorf("unsupported generation: %v", file.GetGeneration())
 	}
 
+	// Append trailing data for round-trip fidelity
+	dst = append(dst, file.GetTrailingData()...)
+
 	return dst, nil
 }
 
@@ -247,6 +250,11 @@ func (opts ParseOptions) ParseRawVehicleUnitFile(rawFile *vuv1.RawVehicleUnitFil
 
 	default:
 		return nil, fmt.Errorf("unknown generation: %v", firstRecord.GetGeneration())
+	}
+
+	// Propagate trailing data for round-trip fidelity
+	if td := rawFile.GetTrailingData(); len(td) > 0 {
+		output.SetTrailingData(td)
 	}
 
 	return output, nil

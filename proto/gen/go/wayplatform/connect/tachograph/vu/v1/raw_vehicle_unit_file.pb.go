@@ -30,10 +30,13 @@ const (
 //
 // See Appendix 7, Section 2.2.6 for the TV (Tag-Value) format specification.
 type RawVehicleUnitFile struct {
-	state              protoimpl.MessageState        `protogen:"opaque.v1"`
-	xxx_hidden_Records *[]*RawVehicleUnitFile_Record `protobuf:"bytes,1,rep,name=records"`
-	unknownFields      protoimpl.UnknownFields
-	sizeCache          protoimpl.SizeCache
+	state                   protoimpl.MessageState        `protogen:"opaque.v1"`
+	xxx_hidden_Records      *[]*RawVehicleUnitFile_Record `protobuf:"bytes,1,rep,name=records"`
+	xxx_hidden_TrailingData []byte                        `protobuf:"bytes,2,opt,name=trailing_data,json=trailingData"`
+	XXX_raceDetectHookData  protoimpl.RaceDetectHookData
+	XXX_presence            [1]uint32
+	unknownFields           protoimpl.UnknownFields
+	sizeCache               protoimpl.SizeCache
 }
 
 func (x *RawVehicleUnitFile) Reset() {
@@ -70,14 +73,45 @@ func (x *RawVehicleUnitFile) GetRecords() []*RawVehicleUnitFile_Record {
 	return nil
 }
 
+func (x *RawVehicleUnitFile) GetTrailingData() []byte {
+	if x != nil {
+		return x.xxx_hidden_TrailingData
+	}
+	return nil
+}
+
 func (x *RawVehicleUnitFile) SetRecords(v []*RawVehicleUnitFile_Record) {
 	x.xxx_hidden_Records = &v
+}
+
+func (x *RawVehicleUnitFile) SetTrailingData(v []byte) {
+	if v == nil {
+		v = []byte{}
+	}
+	x.xxx_hidden_TrailingData = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 2)
+}
+
+func (x *RawVehicleUnitFile) HasTrailingData() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 1)
+}
+
+func (x *RawVehicleUnitFile) ClearTrailingData() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 1)
+	x.xxx_hidden_TrailingData = nil
 }
 
 type RawVehicleUnitFile_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
 	Records []*RawVehicleUnitFile_Record
+	// Trailing bytes after the last TREP transfer block.
+	// Gen2v2 files may include a file-level SignatureRecordArray (69 bytes:
+	// 5-byte header + 64-byte ECC signature) that is not part of any transfer.
+	TrailingData []byte
 }
 
 func (b0 RawVehicleUnitFile_builder) Build() *RawVehicleUnitFile {
@@ -85,6 +119,10 @@ func (b0 RawVehicleUnitFile_builder) Build() *RawVehicleUnitFile {
 	b, x := &b0, m0
 	_, _ = b, x
 	x.xxx_hidden_Records = &b.Records
+	if b.TrailingData != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 2)
+		x.xxx_hidden_TrailingData = b.TrailingData
+	}
 	return m0
 }
 
@@ -336,9 +374,10 @@ var File_wayplatform_connect_tachograph_vu_v1_raw_vehicle_unit_file_proto protor
 
 const file_wayplatform_connect_tachograph_vu_v1_raw_vehicle_unit_file_proto_rawDesc = "" +
 	"\n" +
-	"@wayplatform/connect/tachograph/vu/v1/raw_vehicle_unit_file.proto\x12$wayplatform.connect.tachograph.vu.v1\x1a5wayplatform/connect/tachograph/dd/v1/generation.proto\x1a?wayplatform/connect/tachograph/security/v1/authentication.proto\x1a8wayplatform/connect/tachograph/vu/v1/transfer_type.proto\"\xc7\x03\n" +
+	"@wayplatform/connect/tachograph/vu/v1/raw_vehicle_unit_file.proto\x12$wayplatform.connect.tachograph.vu.v1\x1a5wayplatform/connect/tachograph/dd/v1/generation.proto\x1a?wayplatform/connect/tachograph/security/v1/authentication.proto\x1a8wayplatform/connect/tachograph/vu/v1/transfer_type.proto\"\xec\x03\n" +
 	"\x12RawVehicleUnitFile\x12Y\n" +
-	"\arecords\x18\x01 \x03(\v2?.wayplatform.connect.tachograph.vu.v1.RawVehicleUnitFile.RecordR\arecords\x1a\xd5\x02\n" +
+	"\arecords\x18\x01 \x03(\v2?.wayplatform.connect.tachograph.vu.v1.RawVehicleUnitFile.RecordR\arecords\x12#\n" +
+	"\rtrailing_data\x18\x02 \x01(\fR\ftrailingData\x1a\xd5\x02\n" +
 	"\x06Record\x12\x10\n" +
 	"\x03tag\x18\x01 \x01(\rR\x03tag\x12F\n" +
 	"\x04type\x18\x02 \x01(\x0e22.wayplatform.connect.tachograph.vu.v1.TransferTypeR\x04type\x12P\n" +

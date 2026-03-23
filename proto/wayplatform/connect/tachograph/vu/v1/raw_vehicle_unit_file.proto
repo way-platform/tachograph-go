@@ -46,4 +46,9 @@ message RawVehicleUnitFile {
   }
 
   repeated Record records = 1;
+
+  // Trailing bytes after the last TREP transfer block.
+  // Gen2v2 files may include a file-level SignatureRecordArray (69 bytes:
+  // 5-byte header + 64-byte ECC signature) that is not part of any transfer.
+  bytes trailing_data = 2;
 }

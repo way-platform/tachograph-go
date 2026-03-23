@@ -52,6 +52,14 @@ func (opts UnmarshalOptions) UnmarshalRawVehicleUnitFile(data []byte) (*vuv1.Raw
 			return nil, fmt.Errorf("insufficient data for tag at offset %d: need 2 bytes, have %d", offset, len(data)-offset)
 		}
 		tag := binary.BigEndian.Uint16(data[offset:])
+
+		// Tags must follow 0x76XX pattern (SID 0x76 + TREP byte).
+		// Non-matching bytes indicate end of transfer data section
+		// (e.g., trailing file-level signature in Gen2v2).
+		if tag>>8 != 0x76 {
+			rawFile.SetTrailingData(data[offset:])
+			break
+		}
 		offset += 2
 
 		// Determine transfer type from tag
@@ -60,10 +68,9 @@ func (opts UnmarshalOptions) UnmarshalRawVehicleUnitFile(data []byte) (*vuv1.Raw
 			if opts.Strict {
 				return nil, fmt.Errorf("unknown tag: 0x%04X at offset %d", tag, offset-2)
 			}
-			// In non-strict mode, skip this tag and try to continue
-			// We can't know the structure without knowing the transfer type,
-			// so we have to stop here
-			fmt.Printf("warning: skipping unknown tag 0x%04X at offset %d\n", tag, offset-2)
+			// In non-strict mode, we can't know the structure without
+			// knowing the transfer type, so we have to stop here.
+			rawFile.SetTrailingData(data[offset-2:])
 			break
 		}
 

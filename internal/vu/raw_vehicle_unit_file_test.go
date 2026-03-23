@@ -138,8 +138,8 @@ func TestRawVehicleUnitFileRoundTrip(t *testing.T) {
 				t.Fatalf("failed to read test file: %v", err)
 			}
 
-			// Unmarshal to RawVehicleUnitFile (strict mode: skip files with unknown tags,
-			// since they cannot round-trip by definition)
+			// Unmarshal to RawVehicleUnitFile (strict mode: skip files with unknown
+			// 0x76XX TREPs, since they cannot round-trip by definition)
 			rawFile, err := UnmarshalOptions{Strict: true}.UnmarshalRawVehicleUnitFile(originalData)
 			if err != nil {
 				t.Skipf("skipping round-trip test (file contains unsupported tags): %v", err)
@@ -154,6 +154,8 @@ func TestRawVehicleUnitFileRoundTrip(t *testing.T) {
 				// Append complete value (already includes signature)
 				reconstructed = append(reconstructed, record.GetValue()...)
 			}
+			// Append trailing data (e.g., file-level signature in Gen2v2)
+			reconstructed = append(reconstructed, rawFile.GetTrailingData()...)
 
 			// Compare binary data
 			if diff := cmp.Diff(originalData, reconstructed); diff != "" {

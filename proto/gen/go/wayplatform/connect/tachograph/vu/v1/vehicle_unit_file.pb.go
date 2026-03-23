@@ -36,16 +36,17 @@ const (
 // - For Gen2 V1 files: generation=GENERATION_2, version=VERSION_1, gen2_v1 field populated
 // - For Gen2 V2 files: generation=GENERATION_2, version=VERSION_2, gen2_v2 field populated
 type VehicleUnitFile struct {
-	state                  protoimpl.MessageState `protogen:"opaque.v1"`
-	xxx_hidden_Generation  v1.Generation          `protobuf:"varint,1,opt,name=generation,enum=wayplatform.connect.tachograph.dd.v1.Generation"`
-	xxx_hidden_Version     v1.Version             `protobuf:"varint,2,opt,name=version,enum=wayplatform.connect.tachograph.dd.v1.Version"`
-	xxx_hidden_Gen1        *VehicleUnitFileGen1   `protobuf:"bytes,3,opt,name=gen1"`
-	xxx_hidden_Gen2V1      *VehicleUnitFileGen2V1 `protobuf:"bytes,4,opt,name=gen2_v1,json=gen2V1"`
-	xxx_hidden_Gen2V2      *VehicleUnitFileGen2V2 `protobuf:"bytes,5,opt,name=gen2_v2,json=gen2V2"`
-	XXX_raceDetectHookData protoimpl.RaceDetectHookData
-	XXX_presence           [1]uint32
-	unknownFields          protoimpl.UnknownFields
-	sizeCache              protoimpl.SizeCache
+	state                   protoimpl.MessageState `protogen:"opaque.v1"`
+	xxx_hidden_Generation   v1.Generation          `protobuf:"varint,1,opt,name=generation,enum=wayplatform.connect.tachograph.dd.v1.Generation"`
+	xxx_hidden_Version      v1.Version             `protobuf:"varint,2,opt,name=version,enum=wayplatform.connect.tachograph.dd.v1.Version"`
+	xxx_hidden_Gen1         *VehicleUnitFileGen1   `protobuf:"bytes,3,opt,name=gen1"`
+	xxx_hidden_Gen2V1       *VehicleUnitFileGen2V1 `protobuf:"bytes,4,opt,name=gen2_v1,json=gen2V1"`
+	xxx_hidden_Gen2V2       *VehicleUnitFileGen2V2 `protobuf:"bytes,5,opt,name=gen2_v2,json=gen2V2"`
+	xxx_hidden_TrailingData []byte                 `protobuf:"bytes,6,opt,name=trailing_data,json=trailingData"`
+	XXX_raceDetectHookData  protoimpl.RaceDetectHookData
+	XXX_presence            [1]uint32
+	unknownFields           protoimpl.UnknownFields
+	sizeCache               protoimpl.SizeCache
 }
 
 func (x *VehicleUnitFile) Reset() {
@@ -112,14 +113,21 @@ func (x *VehicleUnitFile) GetGen2V2() *VehicleUnitFileGen2V2 {
 	return nil
 }
 
+func (x *VehicleUnitFile) GetTrailingData() []byte {
+	if x != nil {
+		return x.xxx_hidden_TrailingData
+	}
+	return nil
+}
+
 func (x *VehicleUnitFile) SetGeneration(v v1.Generation) {
 	x.xxx_hidden_Generation = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 5)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 6)
 }
 
 func (x *VehicleUnitFile) SetVersion(v v1.Version) {
 	x.xxx_hidden_Version = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 5)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 6)
 }
 
 func (x *VehicleUnitFile) SetGen1(v *VehicleUnitFileGen1) {
@@ -132,6 +140,14 @@ func (x *VehicleUnitFile) SetGen2V1(v *VehicleUnitFileGen2V1) {
 
 func (x *VehicleUnitFile) SetGen2V2(v *VehicleUnitFileGen2V2) {
 	x.xxx_hidden_Gen2V2 = v
+}
+
+func (x *VehicleUnitFile) SetTrailingData(v []byte) {
+	if v == nil {
+		v = []byte{}
+	}
+	x.xxx_hidden_TrailingData = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 5, 6)
 }
 
 func (x *VehicleUnitFile) HasGeneration() bool {
@@ -169,6 +185,13 @@ func (x *VehicleUnitFile) HasGen2V2() bool {
 	return x.xxx_hidden_Gen2V2 != nil
 }
 
+func (x *VehicleUnitFile) HasTrailingData() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 5)
+}
+
 func (x *VehicleUnitFile) ClearGeneration() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 0)
 	x.xxx_hidden_Generation = v1.Generation_GENERATION_UNSPECIFIED
@@ -191,6 +214,11 @@ func (x *VehicleUnitFile) ClearGen2V2() {
 	x.xxx_hidden_Gen2V2 = nil
 }
 
+func (x *VehicleUnitFile) ClearTrailingData() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 5)
+	x.xxx_hidden_TrailingData = nil
+}
+
 type VehicleUnitFile_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
@@ -202,6 +230,10 @@ type VehicleUnitFile_builder struct {
 	Gen1   *VehicleUnitFileGen1
 	Gen2V1 *VehicleUnitFileGen2V1
 	Gen2V2 *VehicleUnitFileGen2V2
+	// Trailing bytes after the last TREP transfer block.
+	// Gen2v2 files may include a file-level SignatureRecordArray (69 bytes:
+	// 5-byte header + 64-byte ECC signature) that is not part of any transfer.
+	TrailingData []byte
 }
 
 func (b0 VehicleUnitFile_builder) Build() *VehicleUnitFile {
@@ -209,16 +241,20 @@ func (b0 VehicleUnitFile_builder) Build() *VehicleUnitFile {
 	b, x := &b0, m0
 	_, _ = b, x
 	if b.Generation != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 5)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 6)
 		x.xxx_hidden_Generation = *b.Generation
 	}
 	if b.Version != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 5)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 6)
 		x.xxx_hidden_Version = *b.Version
 	}
 	x.xxx_hidden_Gen1 = b.Gen1
 	x.xxx_hidden_Gen2V1 = b.Gen2V1
 	x.xxx_hidden_Gen2V2 = b.Gen2V2
+	if b.TrailingData != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 5, 6)
+		x.xxx_hidden_TrailingData = b.TrailingData
+	}
 	return m0
 }
 
@@ -226,7 +262,7 @@ var File_wayplatform_connect_tachograph_vu_v1_vehicle_unit_file_proto protorefle
 
 const file_wayplatform_connect_tachograph_vu_v1_vehicle_unit_file_proto_rawDesc = "" +
 	"\n" +
-	"<wayplatform/connect/tachograph/vu/v1/vehicle_unit_file.proto\x12$wayplatform.connect.tachograph.vu.v1\x1a5wayplatform/connect/tachograph/dd/v1/generation.proto\x1a2wayplatform/connect/tachograph/dd/v1/version.proto\x1aAwayplatform/connect/tachograph/vu/v1/vehicle_unit_file_gen1.proto\x1aDwayplatform/connect/tachograph/vu/v1/vehicle_unit_file_gen2_v1.proto\x1aDwayplatform/connect/tachograph/vu/v1/vehicle_unit_file_gen2_v2.proto\"\xa7\x03\n" +
+	"<wayplatform/connect/tachograph/vu/v1/vehicle_unit_file.proto\x12$wayplatform.connect.tachograph.vu.v1\x1a5wayplatform/connect/tachograph/dd/v1/generation.proto\x1a2wayplatform/connect/tachograph/dd/v1/version.proto\x1aAwayplatform/connect/tachograph/vu/v1/vehicle_unit_file_gen1.proto\x1aDwayplatform/connect/tachograph/vu/v1/vehicle_unit_file_gen2_v1.proto\x1aDwayplatform/connect/tachograph/vu/v1/vehicle_unit_file_gen2_v2.proto\"\xcc\x03\n" +
 	"\x0fVehicleUnitFile\x12P\n" +
 	"\n" +
 	"generation\x18\x01 \x01(\x0e20.wayplatform.connect.tachograph.dd.v1.GenerationR\n" +
@@ -234,7 +270,8 @@ const file_wayplatform_connect_tachograph_vu_v1_vehicle_unit_file_proto_rawDesc 
 	"\aversion\x18\x02 \x01(\x0e2-.wayplatform.connect.tachograph.dd.v1.VersionR\aversion\x12M\n" +
 	"\x04gen1\x18\x03 \x01(\v29.wayplatform.connect.tachograph.vu.v1.VehicleUnitFileGen1R\x04gen1\x12T\n" +
 	"\agen2_v1\x18\x04 \x01(\v2;.wayplatform.connect.tachograph.vu.v1.VehicleUnitFileGen2V1R\x06gen2V1\x12T\n" +
-	"\agen2_v2\x18\x05 \x01(\v2;.wayplatform.connect.tachograph.vu.v1.VehicleUnitFileGen2V2R\x06gen2V2B\xd3\x02\n" +
+	"\agen2_v2\x18\x05 \x01(\v2;.wayplatform.connect.tachograph.vu.v1.VehicleUnitFileGen2V2R\x06gen2V2\x12#\n" +
+	"\rtrailing_data\x18\x06 \x01(\fR\ftrailingDataB\xd3\x02\n" +
 	"(com.wayplatform.connect.tachograph.vu.v1B\x14VehicleUnitFileProtoP\x01Z\\github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/vu/v1;vuv1\xa2\x02\x04WCTV\xaa\x02$Wayplatform.Connect.Tachograph.Vu.V1\xca\x02$Wayplatform\\Connect\\Tachograph\\Vu\\V1\xe2\x020Wayplatform\\Connect\\Tachograph\\Vu\\V1\\GPBMetadata\xea\x02(Wayplatform::Connect::Tachograph::Vu::V1b\beditionsp\xe8\a"
 
 var file_wayplatform_connect_tachograph_vu_v1_vehicle_unit_file_proto_msgTypes = make([]protoimpl.MessageInfo, 1)

@@ -33,4 +33,9 @@ message VehicleUnitFile {
   VehicleUnitFileGen1 gen1 = 3;
   VehicleUnitFileGen2V1 gen2_v1 = 4;
   VehicleUnitFileGen2V2 gen2_v2 = 5;
+
+  // Trailing bytes after the last TREP transfer block.
+  // Gen2v2 files may include a file-level SignatureRecordArray (69 bytes:
+  // 5-byte header + 64-byte ECC signature) that is not part of any transfer.
+  bytes trailing_data = 6;
 }
