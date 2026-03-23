@@ -10,6 +10,8 @@ require (
 	google.golang.org/protobuf v1.36.10
 )
 
+replace github.com/way-platform/tachograph-go => ../..
+
 require (
 	buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go v1.36.10-20250912141014-52f32327d4b0.1 // indirect
 	github.com/charmbracelet/colorprofile v0.3.2 // indirect
