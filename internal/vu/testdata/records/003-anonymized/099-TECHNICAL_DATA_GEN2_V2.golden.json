@@ -47,36 +47,29 @@
         "length": 35,
         "value": "***********************************"
       },
-      "workshopCardNumberAndGeneration": {
-        "fullCardNumber": {
-          "cardType": "WORKSHOP_CARD",
-          "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+      "workshopCardNumber": {
+        "cardType": "WORKSHOP_CARD",
+        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "ownerIdentification": {
           "ownerIdentification": {
-            "ownerIdentification": {
-              "length": 13,
-              "value": "*************"
-            },
-            "consecutiveIndex": {
-              "length": 1,
-              "value": "*"
-            },
-            "replacementIndex": {
-              "length": 1,
-              "value": "*"
-            },
-            "renewalIndex": {
-              "length": 1,
-              "value": "*"
-            }
+            "length": 13,
+            "value": "*************"
+          },
+          "consecutiveIndex": {
+            "length": 1,
+            "value": "*"
+          },
+          "replacementIndex": {
+            "length": 1,
+            "value": "*"
+          },
+          "renewalIndex": {
+            "length": 1,
+            "value": "*"
           }
-        },
-        "generation": "GENERATION_UNSPECIFIED"
+        }
       },
-      "workshopCardExpiryDate": {
-        "year": 3265,
-        "month": 65,
-        "day": 57
-      },
+      "workshopCardExpiryDate": "3270-06-26T00:00:00Z",
       "vin": {
         "length": 17,
         "value": "*****************"
@@ -116,36 +109,29 @@
         "length": 35,
         "value": "***********************************"
       },
-      "workshopCardNumberAndGeneration": {
-        "fullCardNumber": {
-          "cardType": "WORKSHOP_CARD",
-          "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+      "workshopCardNumber": {
+        "cardType": "WORKSHOP_CARD",
+        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "ownerIdentification": {
           "ownerIdentification": {
-            "ownerIdentification": {
-              "length": 13,
-              "value": "*************"
-            },
-            "consecutiveIndex": {
-              "length": 1,
-              "value": "*"
-            },
-            "replacementIndex": {
-              "length": 1,
-              "value": "*"
-            },
-            "renewalIndex": {
-              "length": 1,
-              "value": "*"
-            }
+            "length": 13,
+            "value": "*************"
+          },
+          "consecutiveIndex": {
+            "length": 1,
+            "value": "*"
+          },
+          "replacementIndex": {
+            "length": 1,
+            "value": "*"
+          },
+          "renewalIndex": {
+            "length": 1,
+            "value": "*"
           }
-        },
-        "generation": "GENERATION_UNSPECIFIED"
+        }
       },
-      "workshopCardExpiryDate": {
-        "year": 3265,
-        "month": 65,
-        "day": 57
-      },
+      "workshopCardExpiryDate": "3270-06-26T00:00:00Z",
       "vin": {
         "length": 17,
         "value": "*****************"
@@ -185,36 +171,29 @@
         "length": 35,
         "value": "***********************************"
       },
-      "workshopCardNumberAndGeneration": {
-        "fullCardNumber": {
-          "cardType": "WORKSHOP_CARD",
-          "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+      "workshopCardNumber": {
+        "cardType": "WORKSHOP_CARD",
+        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "ownerIdentification": {
           "ownerIdentification": {
-            "ownerIdentification": {
-              "length": 13,
-              "value": "*************"
-            },
-            "consecutiveIndex": {
-              "length": 1,
-              "value": "*"
-            },
-            "replacementIndex": {
-              "length": 1,
-              "value": "*"
-            },
-            "renewalIndex": {
-              "length": 1,
-              "value": "*"
-            }
+            "length": 13,
+            "value": "*************"
+          },
+          "consecutiveIndex": {
+            "length": 1,
+            "value": "*"
+          },
+          "replacementIndex": {
+            "length": 1,
+            "value": "*"
+          },
+          "renewalIndex": {
+            "length": 1,
+            "value": "*"
           }
-        },
-        "generation": "GENERATION_UNSPECIFIED"
+        }
       },
-      "workshopCardExpiryDate": {
-        "year": 3265,
-        "month": 65,
-        "day": 57
-      },
+      "workshopCardExpiryDate": "3270-06-26T00:00:00Z",
       "vin": {
         "length": 17,
         "value": "*****************"
@@ -254,36 +233,29 @@
         "length": 35,
         "value": "***********************************"
       },
-      "workshopCardNumberAndGeneration": {
-        "fullCardNumber": {
-          "cardType": "WORKSHOP_CARD",
-          "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+      "workshopCardNumber": {
+        "cardType": "WORKSHOP_CARD",
+        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "ownerIdentification": {
           "ownerIdentification": {
-            "ownerIdentification": {
-              "length": 13,
-              "value": "*************"
-            },
-            "consecutiveIndex": {
-              "length": 1,
-              "value": "*"
-            },
-            "replacementIndex": {
-              "length": 1,
-              "value": "*"
-            },
-            "renewalIndex": {
-              "length": 1,
-              "value": "*"
-            }
+            "length": 13,
+            "value": "*************"
+          },
+          "consecutiveIndex": {
+            "length": 1,
+            "value": "*"
+          },
+          "replacementIndex": {
+            "length": 1,
+            "value": "*"
+          },
+          "renewalIndex": {
+            "length": 1,
+            "value": "*"
           }
-        },
-        "generation": "GENERATION_UNSPECIFIED"
+        }
       },
-      "workshopCardExpiryDate": {
-        "year": 3265,
-        "month": 65,
-        "day": 57
-      },
+      "workshopCardExpiryDate": "3270-06-26T00:00:00Z",
       "vin": {
         "length": 17,
         "value": "*****************"

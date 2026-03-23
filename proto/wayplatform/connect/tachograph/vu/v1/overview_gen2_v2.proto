@@ -8,6 +8,7 @@ import "wayplatform/connect/tachograph/dd/v1/downloadable_period.proto";
 import "wayplatform/connect/tachograph/dd/v1/full_card_number_and_generation.proto";
 import "wayplatform/connect/tachograph/dd/v1/ia5_string_value.proto";
 import "wayplatform/connect/tachograph/dd/v1/slot_card_type.proto";
+import "wayplatform/connect/tachograph/dd/v1/vehicle_registration_identification.proto";
 import "wayplatform/connect/tachograph/dd/v1/string_value.proto";
 import "wayplatform/connect/tachograph/security/v1/authentication.proto";
 
@@ -160,14 +161,14 @@ message OverviewGen2V2 {
   //     VehicleIdentificationNumber ::= IA5String(SIZE(17))
   wayplatform.connect.tachograph.dd.v1.Ia5StringValue vehicle_identification_number = 3;
 
-  // The vehicle registration number only (Gen2 V2 addition).
+  // The vehicle registration identification (Gen2 V2 addition).
   //
-  // See Data Dictionary, Section 2.167, `VehicleRegistrationNumber`.
+  // Although the regulation specifies VehicleRegistrationNumber (13-byte IA5String),
+  // real VUs write VehicleRegistrationIdentification (15 bytes: nation + codepage + string).
+  // The RecordArray header self-describes the actual record size.
   //
-  // ASN.1 Definition:
-  //
-  //     VehicleRegistrationNumber ::= IA5String(SIZE(13))
-  wayplatform.connect.tachograph.dd.v1.Ia5StringValue vehicle_registration_number = 4;
+  // See Data Dictionary, Section 2.166, `VehicleRegistrationIdentification`.
+  wayplatform.connect.tachograph.dd.v1.VehicleRegistrationIdentification vehicle_registration_identification = 4;
 
   // Current date and time of the VU.
   //

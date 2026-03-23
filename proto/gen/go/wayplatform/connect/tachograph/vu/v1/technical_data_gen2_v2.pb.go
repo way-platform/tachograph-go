@@ -831,29 +831,36 @@ func (b0 TechnicalDataGen2V2_CoupledGnss_builder) Build() *TechnicalDataGen2V2_C
 //
 // See Data Dictionary, Section 2.174, `VuCalibrationRecord`.
 type TechnicalDataGen2V2_CalibrationRecord struct {
-	state                                      protoimpl.MessageState                 `protogen:"opaque.v1"`
-	xxx_hidden_Purpose                         v11.CalibrationPurpose                 `protobuf:"varint,1,opt,name=purpose,enum=wayplatform.connect.tachograph.dd.v1.CalibrationPurpose"`
-	xxx_hidden_UnrecognizedPurpose             int32                                  `protobuf:"varint,2,opt,name=unrecognized_purpose,json=unrecognizedPurpose"`
-	xxx_hidden_WorkshopName                    *v11.StringValue                       `protobuf:"bytes,3,opt,name=workshop_name,json=workshopName"`
-	xxx_hidden_WorkshopAddress                 *v11.StringValue                       `protobuf:"bytes,4,opt,name=workshop_address,json=workshopAddress"`
-	xxx_hidden_WorkshopCardNumberAndGeneration *v11.FullCardNumberAndGeneration       `protobuf:"bytes,5,opt,name=workshop_card_number_and_generation,json=workshopCardNumberAndGeneration"`
-	xxx_hidden_WorkshopCardExpiryDate          *v11.Date                              `protobuf:"bytes,6,opt,name=workshop_card_expiry_date,json=workshopCardExpiryDate"`
-	xxx_hidden_Vin                             *v11.Ia5StringValue                    `protobuf:"bytes,7,opt,name=vin"`
-	xxx_hidden_VehicleRegistration             *v11.VehicleRegistrationIdentification `protobuf:"bytes,8,opt,name=vehicle_registration,json=vehicleRegistration"`
-	xxx_hidden_WVehicleCharacteristicConstant  int32                                  `protobuf:"varint,9,opt,name=w_vehicle_characteristic_constant,json=wVehicleCharacteristicConstant"`
-	xxx_hidden_KConstantOfRecordingEquipment   int32                                  `protobuf:"varint,10,opt,name=k_constant_of_recording_equipment,json=kConstantOfRecordingEquipment"`
-	xxx_hidden_LTyreCircumferenceEighthsMm     int32                                  `protobuf:"varint,11,opt,name=l_tyre_circumference_eighths_mm,json=lTyreCircumferenceEighthsMm"`
-	xxx_hidden_TyreSize                        *v11.Ia5StringValue                    `protobuf:"bytes,12,opt,name=tyre_size,json=tyreSize"`
-	xxx_hidden_AuthorisedSpeedKmh              int32                                  `protobuf:"varint,13,opt,name=authorised_speed_kmh,json=authorisedSpeedKmh"`
-	xxx_hidden_OldOdometerValueKm              int32                                  `protobuf:"varint,14,opt,name=old_odometer_value_km,json=oldOdometerValueKm"`
-	xxx_hidden_NewOdometerValueKm              int32                                  `protobuf:"varint,15,opt,name=new_odometer_value_km,json=newOdometerValueKm"`
-	xxx_hidden_OldTimeValue                    *timestamppb.Timestamp                 `protobuf:"bytes,16,opt,name=old_time_value,json=oldTimeValue"`
-	xxx_hidden_NewTimeValue                    *timestamppb.Timestamp                 `protobuf:"bytes,17,opt,name=new_time_value,json=newTimeValue"`
-	xxx_hidden_NextCalibrationDate             *timestamppb.Timestamp                 `protobuf:"bytes,18,opt,name=next_calibration_date,json=nextCalibrationDate"`
-	XXX_raceDetectHookData                     protoimpl.RaceDetectHookData
-	XXX_presence                               [1]uint32
-	unknownFields                              protoimpl.UnknownFields
-	sizeCache                                  protoimpl.SizeCache
+	state                                     protoimpl.MessageState                 `protogen:"opaque.v1"`
+	xxx_hidden_Purpose                        v11.CalibrationPurpose                 `protobuf:"varint,1,opt,name=purpose,enum=wayplatform.connect.tachograph.dd.v1.CalibrationPurpose"`
+	xxx_hidden_UnrecognizedPurpose            int32                                  `protobuf:"varint,2,opt,name=unrecognized_purpose,json=unrecognizedPurpose"`
+	xxx_hidden_WorkshopName                   *v11.StringValue                       `protobuf:"bytes,3,opt,name=workshop_name,json=workshopName"`
+	xxx_hidden_WorkshopAddress                *v11.StringValue                       `protobuf:"bytes,4,opt,name=workshop_address,json=workshopAddress"`
+	xxx_hidden_WorkshopCardNumber             *v11.FullCardNumber                    `protobuf:"bytes,5,opt,name=workshop_card_number,json=workshopCardNumber"`
+	xxx_hidden_WorkshopCardExpiryDate         *timestamppb.Timestamp                 `protobuf:"bytes,6,opt,name=workshop_card_expiry_date,json=workshopCardExpiryDate"`
+	xxx_hidden_Vin                            *v11.Ia5StringValue                    `protobuf:"bytes,7,opt,name=vin"`
+	xxx_hidden_VehicleRegistration            *v11.VehicleRegistrationIdentification `protobuf:"bytes,8,opt,name=vehicle_registration,json=vehicleRegistration"`
+	xxx_hidden_WVehicleCharacteristicConstant int32                                  `protobuf:"varint,9,opt,name=w_vehicle_characteristic_constant,json=wVehicleCharacteristicConstant"`
+	xxx_hidden_KConstantOfRecordingEquipment  int32                                  `protobuf:"varint,10,opt,name=k_constant_of_recording_equipment,json=kConstantOfRecordingEquipment"`
+	xxx_hidden_LTyreCircumferenceEighthsMm    int32                                  `protobuf:"varint,11,opt,name=l_tyre_circumference_eighths_mm,json=lTyreCircumferenceEighthsMm"`
+	xxx_hidden_TyreSize                       *v11.Ia5StringValue                    `protobuf:"bytes,12,opt,name=tyre_size,json=tyreSize"`
+	xxx_hidden_AuthorisedSpeedKmh             int32                                  `protobuf:"varint,13,opt,name=authorised_speed_kmh,json=authorisedSpeedKmh"`
+	xxx_hidden_OldOdometerValueKm             int32                                  `protobuf:"varint,14,opt,name=old_odometer_value_km,json=oldOdometerValueKm"`
+	xxx_hidden_NewOdometerValueKm             int32                                  `protobuf:"varint,15,opt,name=new_odometer_value_km,json=newOdometerValueKm"`
+	xxx_hidden_OldTimeValue                   *timestamppb.Timestamp                 `protobuf:"bytes,16,opt,name=old_time_value,json=oldTimeValue"`
+	xxx_hidden_NewTimeValue                   *timestamppb.Timestamp                 `protobuf:"bytes,17,opt,name=new_time_value,json=newTimeValue"`
+	xxx_hidden_NextCalibrationDate            *timestamppb.Timestamp                 `protobuf:"bytes,18,opt,name=next_calibration_date,json=nextCalibrationDate"`
+	xxx_hidden_SensorSerialNumber             *v11.ExtendedSerialNumber              `protobuf:"bytes,19,opt,name=sensor_serial_number,json=sensorSerialNumber"`
+	xxx_hidden_SensorGnssSerialNumber         *v11.ExtendedSerialNumber              `protobuf:"bytes,20,opt,name=sensor_gnss_serial_number,json=sensorGnssSerialNumber"`
+	xxx_hidden_RcmSerialNumber                *v11.ExtendedSerialNumber              `protobuf:"bytes,21,opt,name=rcm_serial_number,json=rcmSerialNumber"`
+	xxx_hidden_SealRecords                    *[]*TechnicalDataGen2V2_SealRecord     `protobuf:"bytes,22,rep,name=seal_records,json=sealRecords"`
+	xxx_hidden_LoadType                       int32                                  `protobuf:"varint,23,opt,name=load_type,json=loadType"`
+	xxx_hidden_CalibrationCountry             v11.NationNumeric                      `protobuf:"varint,24,opt,name=calibration_country,json=calibrationCountry,enum=wayplatform.connect.tachograph.dd.v1.NationNumeric"`
+	xxx_hidden_CalibrationCountryTimestamp    *timestamppb.Timestamp                 `protobuf:"bytes,25,opt,name=calibration_country_timestamp,json=calibrationCountryTimestamp"`
+	XXX_raceDetectHookData                    protoimpl.RaceDetectHookData
+	XXX_presence                              [1]uint32
+	unknownFields                             protoimpl.UnknownFields
+	sizeCache                                 protoimpl.SizeCache
 }
 
 func (x *TechnicalDataGen2V2_CalibrationRecord) Reset() {
@@ -911,14 +918,14 @@ func (x *TechnicalDataGen2V2_CalibrationRecord) GetWorkshopAddress() *v11.String
 	return nil
 }
 
-func (x *TechnicalDataGen2V2_CalibrationRecord) GetWorkshopCardNumberAndGeneration() *v11.FullCardNumberAndGeneration {
+func (x *TechnicalDataGen2V2_CalibrationRecord) GetWorkshopCardNumber() *v11.FullCardNumber {
 	if x != nil {
-		return x.xxx_hidden_WorkshopCardNumberAndGeneration
+		return x.xxx_hidden_WorkshopCardNumber
 	}
 	return nil
 }
 
-func (x *TechnicalDataGen2V2_CalibrationRecord) GetWorkshopCardExpiryDate() *v11.Date {
+func (x *TechnicalDataGen2V2_CalibrationRecord) GetWorkshopCardExpiryDate() *timestamppb.Timestamp {
 	if x != nil {
 		return x.xxx_hidden_WorkshopCardExpiryDate
 	}
@@ -1009,14 +1016,67 @@ func (x *TechnicalDataGen2V2_CalibrationRecord) GetNextCalibrationDate() *timest
 	return nil
 }
 
+func (x *TechnicalDataGen2V2_CalibrationRecord) GetSensorSerialNumber() *v11.ExtendedSerialNumber {
+	if x != nil {
+		return x.xxx_hidden_SensorSerialNumber
+	}
+	return nil
+}
+
+func (x *TechnicalDataGen2V2_CalibrationRecord) GetSensorGnssSerialNumber() *v11.ExtendedSerialNumber {
+	if x != nil {
+		return x.xxx_hidden_SensorGnssSerialNumber
+	}
+	return nil
+}
+
+func (x *TechnicalDataGen2V2_CalibrationRecord) GetRcmSerialNumber() *v11.ExtendedSerialNumber {
+	if x != nil {
+		return x.xxx_hidden_RcmSerialNumber
+	}
+	return nil
+}
+
+func (x *TechnicalDataGen2V2_CalibrationRecord) GetSealRecords() []*TechnicalDataGen2V2_SealRecord {
+	if x != nil {
+		if x.xxx_hidden_SealRecords != nil {
+			return *x.xxx_hidden_SealRecords
+		}
+	}
+	return nil
+}
+
+func (x *TechnicalDataGen2V2_CalibrationRecord) GetLoadType() int32 {
+	if x != nil {
+		return x.xxx_hidden_LoadType
+	}
+	return 0
+}
+
+func (x *TechnicalDataGen2V2_CalibrationRecord) GetCalibrationCountry() v11.NationNumeric {
+	if x != nil {
+		if protoimpl.X.Present(&(x.XXX_presence[0]), 23) {
+			return x.xxx_hidden_CalibrationCountry
+		}
+	}
+	return v11.NationNumeric(0)
+}
+
+func (x *TechnicalDataGen2V2_CalibrationRecord) GetCalibrationCountryTimestamp() *timestamppb.Timestamp {
+	if x != nil {
+		return x.xxx_hidden_CalibrationCountryTimestamp
+	}
+	return nil
+}
+
 func (x *TechnicalDataGen2V2_CalibrationRecord) SetPurpose(v v11.CalibrationPurpose) {
 	x.xxx_hidden_Purpose = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 18)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 25)
 }
 
 func (x *TechnicalDataGen2V2_CalibrationRecord) SetUnrecognizedPurpose(v int32) {
 	x.xxx_hidden_UnrecognizedPurpose = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 18)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 25)
 }
 
 func (x *TechnicalDataGen2V2_CalibrationRecord) SetWorkshopName(v *v11.StringValue) {
@@ -1027,11 +1087,11 @@ func (x *TechnicalDataGen2V2_CalibrationRecord) SetWorkshopAddress(v *v11.String
 	x.xxx_hidden_WorkshopAddress = v
 }
 
-func (x *TechnicalDataGen2V2_CalibrationRecord) SetWorkshopCardNumberAndGeneration(v *v11.FullCardNumberAndGeneration) {
-	x.xxx_hidden_WorkshopCardNumberAndGeneration = v
+func (x *TechnicalDataGen2V2_CalibrationRecord) SetWorkshopCardNumber(v *v11.FullCardNumber) {
+	x.xxx_hidden_WorkshopCardNumber = v
 }
 
-func (x *TechnicalDataGen2V2_CalibrationRecord) SetWorkshopCardExpiryDate(v *v11.Date) {
+func (x *TechnicalDataGen2V2_CalibrationRecord) SetWorkshopCardExpiryDate(v *timestamppb.Timestamp) {
 	x.xxx_hidden_WorkshopCardExpiryDate = v
 }
 
@@ -1045,17 +1105,17 @@ func (x *TechnicalDataGen2V2_CalibrationRecord) SetVehicleRegistration(v *v11.Ve
 
 func (x *TechnicalDataGen2V2_CalibrationRecord) SetWVehicleCharacteristicConstant(v int32) {
 	x.xxx_hidden_WVehicleCharacteristicConstant = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 8, 18)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 8, 25)
 }
 
 func (x *TechnicalDataGen2V2_CalibrationRecord) SetKConstantOfRecordingEquipment(v int32) {
 	x.xxx_hidden_KConstantOfRecordingEquipment = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 9, 18)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 9, 25)
 }
 
 func (x *TechnicalDataGen2V2_CalibrationRecord) SetLTyreCircumferenceEighthsMm(v int32) {
 	x.xxx_hidden_LTyreCircumferenceEighthsMm = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 10, 18)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 10, 25)
 }
 
 func (x *TechnicalDataGen2V2_CalibrationRecord) SetTyreSize(v *v11.Ia5StringValue) {
@@ -1064,17 +1124,17 @@ func (x *TechnicalDataGen2V2_CalibrationRecord) SetTyreSize(v *v11.Ia5StringValu
 
 func (x *TechnicalDataGen2V2_CalibrationRecord) SetAuthorisedSpeedKmh(v int32) {
 	x.xxx_hidden_AuthorisedSpeedKmh = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 12, 18)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 12, 25)
 }
 
 func (x *TechnicalDataGen2V2_CalibrationRecord) SetOldOdometerValueKm(v int32) {
 	x.xxx_hidden_OldOdometerValueKm = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 13, 18)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 13, 25)
 }
 
 func (x *TechnicalDataGen2V2_CalibrationRecord) SetNewOdometerValueKm(v int32) {
 	x.xxx_hidden_NewOdometerValueKm = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 14, 18)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 14, 25)
 }
 
 func (x *TechnicalDataGen2V2_CalibrationRecord) SetOldTimeValue(v *timestamppb.Timestamp) {
@@ -1087,6 +1147,36 @@ func (x *TechnicalDataGen2V2_CalibrationRecord) SetNewTimeValue(v *timestamppb.T
 
 func (x *TechnicalDataGen2V2_CalibrationRecord) SetNextCalibrationDate(v *timestamppb.Timestamp) {
 	x.xxx_hidden_NextCalibrationDate = v
+}
+
+func (x *TechnicalDataGen2V2_CalibrationRecord) SetSensorSerialNumber(v *v11.ExtendedSerialNumber) {
+	x.xxx_hidden_SensorSerialNumber = v
+}
+
+func (x *TechnicalDataGen2V2_CalibrationRecord) SetSensorGnssSerialNumber(v *v11.ExtendedSerialNumber) {
+	x.xxx_hidden_SensorGnssSerialNumber = v
+}
+
+func (x *TechnicalDataGen2V2_CalibrationRecord) SetRcmSerialNumber(v *v11.ExtendedSerialNumber) {
+	x.xxx_hidden_RcmSerialNumber = v
+}
+
+func (x *TechnicalDataGen2V2_CalibrationRecord) SetSealRecords(v []*TechnicalDataGen2V2_SealRecord) {
+	x.xxx_hidden_SealRecords = &v
+}
+
+func (x *TechnicalDataGen2V2_CalibrationRecord) SetLoadType(v int32) {
+	x.xxx_hidden_LoadType = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 22, 25)
+}
+
+func (x *TechnicalDataGen2V2_CalibrationRecord) SetCalibrationCountry(v v11.NationNumeric) {
+	x.xxx_hidden_CalibrationCountry = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 23, 25)
+}
+
+func (x *TechnicalDataGen2V2_CalibrationRecord) SetCalibrationCountryTimestamp(v *timestamppb.Timestamp) {
+	x.xxx_hidden_CalibrationCountryTimestamp = v
 }
 
 func (x *TechnicalDataGen2V2_CalibrationRecord) HasPurpose() bool {
@@ -1117,11 +1207,11 @@ func (x *TechnicalDataGen2V2_CalibrationRecord) HasWorkshopAddress() bool {
 	return x.xxx_hidden_WorkshopAddress != nil
 }
 
-func (x *TechnicalDataGen2V2_CalibrationRecord) HasWorkshopCardNumberAndGeneration() bool {
+func (x *TechnicalDataGen2V2_CalibrationRecord) HasWorkshopCardNumber() bool {
 	if x == nil {
 		return false
 	}
-	return x.xxx_hidden_WorkshopCardNumberAndGeneration != nil
+	return x.xxx_hidden_WorkshopCardNumber != nil
 }
 
 func (x *TechnicalDataGen2V2_CalibrationRecord) HasWorkshopCardExpiryDate() bool {
@@ -1215,6 +1305,48 @@ func (x *TechnicalDataGen2V2_CalibrationRecord) HasNextCalibrationDate() bool {
 	return x.xxx_hidden_NextCalibrationDate != nil
 }
 
+func (x *TechnicalDataGen2V2_CalibrationRecord) HasSensorSerialNumber() bool {
+	if x == nil {
+		return false
+	}
+	return x.xxx_hidden_SensorSerialNumber != nil
+}
+
+func (x *TechnicalDataGen2V2_CalibrationRecord) HasSensorGnssSerialNumber() bool {
+	if x == nil {
+		return false
+	}
+	return x.xxx_hidden_SensorGnssSerialNumber != nil
+}
+
+func (x *TechnicalDataGen2V2_CalibrationRecord) HasRcmSerialNumber() bool {
+	if x == nil {
+		return false
+	}
+	return x.xxx_hidden_RcmSerialNumber != nil
+}
+
+func (x *TechnicalDataGen2V2_CalibrationRecord) HasLoadType() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 22)
+}
+
+func (x *TechnicalDataGen2V2_CalibrationRecord) HasCalibrationCountry() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 23)
+}
+
+func (x *TechnicalDataGen2V2_CalibrationRecord) HasCalibrationCountryTimestamp() bool {
+	if x == nil {
+		return false
+	}
+	return x.xxx_hidden_CalibrationCountryTimestamp != nil
+}
+
 func (x *TechnicalDataGen2V2_CalibrationRecord) ClearPurpose() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 0)
 	x.xxx_hidden_Purpose = v11.CalibrationPurpose_CALIBRATION_PURPOSE_UNSPECIFIED
@@ -1233,8 +1365,8 @@ func (x *TechnicalDataGen2V2_CalibrationRecord) ClearWorkshopAddress() {
 	x.xxx_hidden_WorkshopAddress = nil
 }
 
-func (x *TechnicalDataGen2V2_CalibrationRecord) ClearWorkshopCardNumberAndGeneration() {
-	x.xxx_hidden_WorkshopCardNumberAndGeneration = nil
+func (x *TechnicalDataGen2V2_CalibrationRecord) ClearWorkshopCardNumber() {
+	x.xxx_hidden_WorkshopCardNumber = nil
 }
 
 func (x *TechnicalDataGen2V2_CalibrationRecord) ClearWorkshopCardExpiryDate() {
@@ -1295,6 +1427,32 @@ func (x *TechnicalDataGen2V2_CalibrationRecord) ClearNextCalibrationDate() {
 	x.xxx_hidden_NextCalibrationDate = nil
 }
 
+func (x *TechnicalDataGen2V2_CalibrationRecord) ClearSensorSerialNumber() {
+	x.xxx_hidden_SensorSerialNumber = nil
+}
+
+func (x *TechnicalDataGen2V2_CalibrationRecord) ClearSensorGnssSerialNumber() {
+	x.xxx_hidden_SensorGnssSerialNumber = nil
+}
+
+func (x *TechnicalDataGen2V2_CalibrationRecord) ClearRcmSerialNumber() {
+	x.xxx_hidden_RcmSerialNumber = nil
+}
+
+func (x *TechnicalDataGen2V2_CalibrationRecord) ClearLoadType() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 22)
+	x.xxx_hidden_LoadType = 0
+}
+
+func (x *TechnicalDataGen2V2_CalibrationRecord) ClearCalibrationCountry() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 23)
+	x.xxx_hidden_CalibrationCountry = v11.NationNumeric_NATION_NUMERIC_UNSPECIFIED
+}
+
+func (x *TechnicalDataGen2V2_CalibrationRecord) ClearCalibrationCountryTimestamp() {
+	x.xxx_hidden_CalibrationCountryTimestamp = nil
+}
+
 type TechnicalDataGen2V2_CalibrationRecord_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
@@ -1311,14 +1469,14 @@ type TechnicalDataGen2V2_CalibrationRecord_builder struct {
 	//
 	// See Data Dictionary, Section 2.2, `Address`.
 	WorkshopAddress *v11.StringValue
-	// The card number and generation of the workshop.
+	// The card number of the workshop.
 	//
-	// See Data Dictionary, Section 2.74, `FullCardNumberAndGeneration`.
-	WorkshopCardNumberAndGeneration *v11.FullCardNumberAndGeneration
+	// See Data Dictionary, Section 2.73, `FullCardNumber`.
+	WorkshopCardNumber *v11.FullCardNumber
 	// The expiry date of the workshop card.
 	//
-	// See Data Dictionary, Section 2.57, `Datef`.
-	WorkshopCardExpiryDate *v11.Date
+	// See Data Dictionary, Section 2.162, `TimeReal`.
+	WorkshopCardExpiryDate *timestamppb.Timestamp
 	// The Vehicle Identification Number.
 	//
 	// See Data Dictionary, Section 2.164, `VehicleIdentificationNumber`.
@@ -1367,6 +1525,24 @@ type TechnicalDataGen2V2_CalibrationRecord_builder struct {
 	//
 	// See Data Dictionary, Section 2.162, `TimeReal`.
 	NextCalibrationDate *timestamppb.Timestamp
+	// The serial number of the motion sensor at calibration time.
+	SensorSerialNumber *v11.ExtendedSerialNumber
+	// The serial number of the GNSS facility at calibration time.
+	SensorGnssSerialNumber *v11.ExtendedSerialNumber
+	// The serial number of the remote communication module at calibration time.
+	RcmSerialNumber *v11.ExtendedSerialNumber
+	// Seal records. Fixed array of 5 SealRecords.
+	SealRecords []*TechnicalDataGen2V2_SealRecord
+	// The default load type.
+	//
+	// See Data Dictionary, Section 2.92, `LoadType`.
+	LoadType *int32
+	// The nation where calibration was performed.
+	//
+	// See Data Dictionary, Section 2.100, `NationNumeric`.
+	CalibrationCountry *v11.NationNumeric
+	// The timestamp of the calibration country setting.
+	CalibrationCountryTimestamp *timestamppb.Timestamp
 }
 
 func (b0 TechnicalDataGen2V2_CalibrationRecord_builder) Build() *TechnicalDataGen2V2_CalibrationRecord {
@@ -1374,47 +1550,237 @@ func (b0 TechnicalDataGen2V2_CalibrationRecord_builder) Build() *TechnicalDataGe
 	b, x := &b0, m0
 	_, _ = b, x
 	if b.Purpose != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 18)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 25)
 		x.xxx_hidden_Purpose = *b.Purpose
 	}
 	if b.UnrecognizedPurpose != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 18)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 25)
 		x.xxx_hidden_UnrecognizedPurpose = *b.UnrecognizedPurpose
 	}
 	x.xxx_hidden_WorkshopName = b.WorkshopName
 	x.xxx_hidden_WorkshopAddress = b.WorkshopAddress
-	x.xxx_hidden_WorkshopCardNumberAndGeneration = b.WorkshopCardNumberAndGeneration
+	x.xxx_hidden_WorkshopCardNumber = b.WorkshopCardNumber
 	x.xxx_hidden_WorkshopCardExpiryDate = b.WorkshopCardExpiryDate
 	x.xxx_hidden_Vin = b.Vin
 	x.xxx_hidden_VehicleRegistration = b.VehicleRegistration
 	if b.WVehicleCharacteristicConstant != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 8, 18)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 8, 25)
 		x.xxx_hidden_WVehicleCharacteristicConstant = *b.WVehicleCharacteristicConstant
 	}
 	if b.KConstantOfRecordingEquipment != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 9, 18)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 9, 25)
 		x.xxx_hidden_KConstantOfRecordingEquipment = *b.KConstantOfRecordingEquipment
 	}
 	if b.LTyreCircumferenceEighthsMm != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 10, 18)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 10, 25)
 		x.xxx_hidden_LTyreCircumferenceEighthsMm = *b.LTyreCircumferenceEighthsMm
 	}
 	x.xxx_hidden_TyreSize = b.TyreSize
 	if b.AuthorisedSpeedKmh != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 12, 18)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 12, 25)
 		x.xxx_hidden_AuthorisedSpeedKmh = *b.AuthorisedSpeedKmh
 	}
 	if b.OldOdometerValueKm != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 13, 18)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 13, 25)
 		x.xxx_hidden_OldOdometerValueKm = *b.OldOdometerValueKm
 	}
 	if b.NewOdometerValueKm != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 14, 18)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 14, 25)
 		x.xxx_hidden_NewOdometerValueKm = *b.NewOdometerValueKm
 	}
 	x.xxx_hidden_OldTimeValue = b.OldTimeValue
 	x.xxx_hidden_NewTimeValue = b.NewTimeValue
 	x.xxx_hidden_NextCalibrationDate = b.NextCalibrationDate
+	x.xxx_hidden_SensorSerialNumber = b.SensorSerialNumber
+	x.xxx_hidden_SensorGnssSerialNumber = b.SensorGnssSerialNumber
+	x.xxx_hidden_RcmSerialNumber = b.RcmSerialNumber
+	x.xxx_hidden_SealRecords = &b.SealRecords
+	if b.LoadType != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 22, 25)
+		x.xxx_hidden_LoadType = *b.LoadType
+	}
+	if b.CalibrationCountry != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 23, 25)
+		x.xxx_hidden_CalibrationCountry = *b.CalibrationCountry
+	}
+	x.xxx_hidden_CalibrationCountryTimestamp = b.CalibrationCountryTimestamp
+	return m0
+}
+
+// A seal record from the SealDataVu structure.
+type TechnicalDataGen2V2_SealRecord struct {
+	state                                protoimpl.MessageState `protogen:"opaque.v1"`
+	xxx_hidden_EquipmentType             v11.EquipmentType      `protobuf:"varint,1,opt,name=equipment_type,json=equipmentType,enum=wayplatform.connect.tachograph.dd.v1.EquipmentType"`
+	xxx_hidden_UnrecognizedEquipmentType int32                  `protobuf:"varint,2,opt,name=unrecognized_equipment_type,json=unrecognizedEquipmentType"`
+	xxx_hidden_ManufacturerCode          *string                `protobuf:"bytes,3,opt,name=manufacturer_code,json=manufacturerCode"`
+	xxx_hidden_SealIdentifier            *string                `protobuf:"bytes,4,opt,name=seal_identifier,json=sealIdentifier"`
+	XXX_raceDetectHookData               protoimpl.RaceDetectHookData
+	XXX_presence                         [1]uint32
+	unknownFields                        protoimpl.UnknownFields
+	sizeCache                            protoimpl.SizeCache
+}
+
+func (x *TechnicalDataGen2V2_SealRecord) Reset() {
+	*x = TechnicalDataGen2V2_SealRecord{}
+	mi := &file_wayplatform_connect_tachograph_vu_v1_technical_data_gen2_v2_proto_msgTypes[5]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *TechnicalDataGen2V2_SealRecord) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*TechnicalDataGen2V2_SealRecord) ProtoMessage() {}
+
+func (x *TechnicalDataGen2V2_SealRecord) ProtoReflect() protoreflect.Message {
+	mi := &file_wayplatform_connect_tachograph_vu_v1_technical_data_gen2_v2_proto_msgTypes[5]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+func (x *TechnicalDataGen2V2_SealRecord) GetEquipmentType() v11.EquipmentType {
+	if x != nil {
+		if protoimpl.X.Present(&(x.XXX_presence[0]), 0) {
+			return x.xxx_hidden_EquipmentType
+		}
+	}
+	return v11.EquipmentType(0)
+}
+
+func (x *TechnicalDataGen2V2_SealRecord) GetUnrecognizedEquipmentType() int32 {
+	if x != nil {
+		return x.xxx_hidden_UnrecognizedEquipmentType
+	}
+	return 0
+}
+
+func (x *TechnicalDataGen2V2_SealRecord) GetManufacturerCode() string {
+	if x != nil {
+		if x.xxx_hidden_ManufacturerCode != nil {
+			return *x.xxx_hidden_ManufacturerCode
+		}
+		return ""
+	}
+	return ""
+}
+
+func (x *TechnicalDataGen2V2_SealRecord) GetSealIdentifier() string {
+	if x != nil {
+		if x.xxx_hidden_SealIdentifier != nil {
+			return *x.xxx_hidden_SealIdentifier
+		}
+		return ""
+	}
+	return ""
+}
+
+func (x *TechnicalDataGen2V2_SealRecord) SetEquipmentType(v v11.EquipmentType) {
+	x.xxx_hidden_EquipmentType = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 0, 4)
+}
+
+func (x *TechnicalDataGen2V2_SealRecord) SetUnrecognizedEquipmentType(v int32) {
+	x.xxx_hidden_UnrecognizedEquipmentType = v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 4)
+}
+
+func (x *TechnicalDataGen2V2_SealRecord) SetManufacturerCode(v string) {
+	x.xxx_hidden_ManufacturerCode = &v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 4)
+}
+
+func (x *TechnicalDataGen2V2_SealRecord) SetSealIdentifier(v string) {
+	x.xxx_hidden_SealIdentifier = &v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 3, 4)
+}
+
+func (x *TechnicalDataGen2V2_SealRecord) HasEquipmentType() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 0)
+}
+
+func (x *TechnicalDataGen2V2_SealRecord) HasUnrecognizedEquipmentType() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 1)
+}
+
+func (x *TechnicalDataGen2V2_SealRecord) HasManufacturerCode() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 2)
+}
+
+func (x *TechnicalDataGen2V2_SealRecord) HasSealIdentifier() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 3)
+}
+
+func (x *TechnicalDataGen2V2_SealRecord) ClearEquipmentType() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 0)
+	x.xxx_hidden_EquipmentType = v11.EquipmentType_EQUIPMENT_TYPE_UNSPECIFIED
+}
+
+func (x *TechnicalDataGen2V2_SealRecord) ClearUnrecognizedEquipmentType() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 1)
+	x.xxx_hidden_UnrecognizedEquipmentType = 0
+}
+
+func (x *TechnicalDataGen2V2_SealRecord) ClearManufacturerCode() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 2)
+	x.xxx_hidden_ManufacturerCode = nil
+}
+
+func (x *TechnicalDataGen2V2_SealRecord) ClearSealIdentifier() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 3)
+	x.xxx_hidden_SealIdentifier = nil
+}
+
+type TechnicalDataGen2V2_SealRecord_builder struct {
+	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
+
+	// The type of equipment this seal applies to.
+	EquipmentType             *v11.EquipmentType
+	UnrecognizedEquipmentType *int32
+	// The manufacturer code (2-byte IA5String).
+	ManufacturerCode *string
+	// The seal identifier (8-byte IA5String).
+	SealIdentifier *string
+}
+
+func (b0 TechnicalDataGen2V2_SealRecord_builder) Build() *TechnicalDataGen2V2_SealRecord {
+	m0 := &TechnicalDataGen2V2_SealRecord{}
+	b, x := &b0, m0
+	_, _ = b, x
+	if b.EquipmentType != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 0, 4)
+		x.xxx_hidden_EquipmentType = *b.EquipmentType
+	}
+	if b.UnrecognizedEquipmentType != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 4)
+		x.xxx_hidden_UnrecognizedEquipmentType = *b.UnrecognizedEquipmentType
+	}
+	if b.ManufacturerCode != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 4)
+		x.xxx_hidden_ManufacturerCode = b.ManufacturerCode
+	}
+	if b.SealIdentifier != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 3, 4)
+		x.xxx_hidden_SealIdentifier = b.SealIdentifier
+	}
 	return m0
 }
 
@@ -1434,7 +1800,7 @@ type TechnicalDataGen2V2_CardRecord struct {
 
 func (x *TechnicalDataGen2V2_CardRecord) Reset() {
 	*x = TechnicalDataGen2V2_CardRecord{}
-	mi := &file_wayplatform_connect_tachograph_vu_v1_technical_data_gen2_v2_proto_msgTypes[5]
+	mi := &file_wayplatform_connect_tachograph_vu_v1_technical_data_gen2_v2_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1446,7 +1812,7 @@ func (x *TechnicalDataGen2V2_CardRecord) String() string {
 func (*TechnicalDataGen2V2_CardRecord) ProtoMessage() {}
 
 func (x *TechnicalDataGen2V2_CardRecord) ProtoReflect() protoreflect.Message {
-	mi := &file_wayplatform_connect_tachograph_vu_v1_technical_data_gen2_v2_proto_msgTypes[5]
+	mi := &file_wayplatform_connect_tachograph_vu_v1_technical_data_gen2_v2_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1616,7 +1982,7 @@ type TechnicalDataGen2V2_ItsConsentRecord struct {
 
 func (x *TechnicalDataGen2V2_ItsConsentRecord) Reset() {
 	*x = TechnicalDataGen2V2_ItsConsentRecord{}
-	mi := &file_wayplatform_connect_tachograph_vu_v1_technical_data_gen2_v2_proto_msgTypes[6]
+	mi := &file_wayplatform_connect_tachograph_vu_v1_technical_data_gen2_v2_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1628,7 +1994,7 @@ func (x *TechnicalDataGen2V2_ItsConsentRecord) String() string {
 func (*TechnicalDataGen2V2_ItsConsentRecord) ProtoMessage() {}
 
 func (x *TechnicalDataGen2V2_ItsConsentRecord) ProtoReflect() protoreflect.Message {
-	mi := &file_wayplatform_connect_tachograph_vu_v1_technical_data_gen2_v2_proto_msgTypes[6]
+	mi := &file_wayplatform_connect_tachograph_vu_v1_technical_data_gen2_v2_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1722,7 +2088,7 @@ type TechnicalDataGen2V2_PowerSupplyInterruptionRecord struct {
 
 func (x *TechnicalDataGen2V2_PowerSupplyInterruptionRecord) Reset() {
 	*x = TechnicalDataGen2V2_PowerSupplyInterruptionRecord{}
-	mi := &file_wayplatform_connect_tachograph_vu_v1_technical_data_gen2_v2_proto_msgTypes[7]
+	mi := &file_wayplatform_connect_tachograph_vu_v1_technical_data_gen2_v2_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1734,7 +2100,7 @@ func (x *TechnicalDataGen2V2_PowerSupplyInterruptionRecord) String() string {
 func (*TechnicalDataGen2V2_PowerSupplyInterruptionRecord) ProtoMessage() {}
 
 func (x *TechnicalDataGen2V2_PowerSupplyInterruptionRecord) ProtoReflect() protoreflect.Message {
-	mi := &file_wayplatform_connect_tachograph_vu_v1_technical_data_gen2_v2_proto_msgTypes[7]
+	mi := &file_wayplatform_connect_tachograph_vu_v1_technical_data_gen2_v2_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1851,7 +2217,7 @@ var File_wayplatform_connect_tachograph_vu_v1_technical_data_gen2_v2_proto proto
 
 const file_wayplatform_connect_tachograph_vu_v1_technical_data_gen2_v2_proto_rawDesc = "" +
 	"\n" +
-	"Awayplatform/connect/tachograph/vu/v1/technical_data_gen2_v2.proto\x12$wayplatform.connect.tachograph.vu.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a>wayplatform/connect/tachograph/dd/v1/calibration_purpose.proto\x1a;wayplatform/connect/tachograph/dd/v1/card_slot_number.proto\x1aAwayplatform/connect/tachograph/dd/v1/card_structure_version.proto\x1a/wayplatform/connect/tachograph/dd/v1/date.proto\x1a@wayplatform/connect/tachograph/dd/v1/driver_identification.proto\x1aAwayplatform/connect/tachograph/dd/v1/extended_serial_number.proto\x1aJwayplatform/connect/tachograph/dd/v1/full_card_number_and_generation.proto\x1a?wayplatform/connect/tachograph/dd/v1/owner_identification.proto\x1aBwayplatform/connect/tachograph/dd/v1/software_identification.proto\x1a;wayplatform/connect/tachograph/dd/v1/ia5_string_value.proto\x1a7wayplatform/connect/tachograph/dd/v1/string_value.proto\x1aNwayplatform/connect/tachograph/dd/v1/vehicle_registration_identification.proto\x1a?wayplatform/connect/tachograph/security/v1/authentication.proto\"\xb3%\n" +
+	"Awayplatform/connect/tachograph/vu/v1/technical_data_gen2_v2.proto\x12$wayplatform.connect.tachograph.vu.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a>wayplatform/connect/tachograph/dd/v1/calibration_purpose.proto\x1a;wayplatform/connect/tachograph/dd/v1/card_slot_number.proto\x1aAwayplatform/connect/tachograph/dd/v1/card_structure_version.proto\x1a/wayplatform/connect/tachograph/dd/v1/date.proto\x1a@wayplatform/connect/tachograph/dd/v1/driver_identification.proto\x1a9wayplatform/connect/tachograph/dd/v1/equipment_type.proto\x1aAwayplatform/connect/tachograph/dd/v1/extended_serial_number.proto\x1a;wayplatform/connect/tachograph/dd/v1/full_card_number.proto\x1aJwayplatform/connect/tachograph/dd/v1/full_card_number_and_generation.proto\x1a9wayplatform/connect/tachograph/dd/v1/nation_numeric.proto\x1a?wayplatform/connect/tachograph/dd/v1/owner_identification.proto\x1aBwayplatform/connect/tachograph/dd/v1/software_identification.proto\x1a;wayplatform/connect/tachograph/dd/v1/ia5_string_value.proto\x1a7wayplatform/connect/tachograph/dd/v1/string_value.proto\x1aNwayplatform/connect/tachograph/dd/v1/vehicle_registration_identification.proto\x1a?wayplatform/connect/tachograph/security/v1/authentication.proto\"\x93,\n" +
 	"\x13TechnicalDataGen2V2\x12w\n" +
 	"\x11vu_identification\x18\x01 \x01(\v2J.wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V2.VuIdentificationR\x10vuIdentification\x12|\n" +
 	"\x13calibration_records\x18\x02 \x03(\v2K.wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V2.CalibrationRecordR\x12calibrationRecords\x12m\n" +
@@ -1879,14 +2245,14 @@ const file_wayplatform_connect_tachograph_vu_v1_technical_data_gen2_v2_proto_raw
 	"\vCoupledGnss\x12_\n" +
 	"\rserial_number\x18\x01 \x01(\v2:.wayplatform.connect.tachograph.dd.v1.ExtendedSerialNumberR\fserialNumber\x12]\n" +
 	"\x0fapproval_number\x18\x02 \x01(\v24.wayplatform.connect.tachograph.dd.v1.Ia5StringValueR\x0eapprovalNumber\x12?\n" +
-	"\rcoupling_date\x18\x03 \x01(\v2\x1a.google.protobuf.TimestampR\fcouplingDate\x1a\xa7\v\n" +
+	"\rcoupling_date\x18\x03 \x01(\v2\x1a.google.protobuf.TimestampR\fcouplingDate\x1a\x86\x10\n" +
 	"\x11CalibrationRecord\x12R\n" +
 	"\apurpose\x18\x01 \x01(\x0e28.wayplatform.connect.tachograph.dd.v1.CalibrationPurposeR\apurpose\x121\n" +
 	"\x14unrecognized_purpose\x18\x02 \x01(\x05R\x13unrecognizedPurpose\x12V\n" +
 	"\rworkshop_name\x18\x03 \x01(\v21.wayplatform.connect.tachograph.dd.v1.StringValueR\fworkshopName\x12\\\n" +
-	"\x10workshop_address\x18\x04 \x01(\v21.wayplatform.connect.tachograph.dd.v1.StringValueR\x0fworkshopAddress\x12\x8f\x01\n" +
-	"#workshop_card_number_and_generation\x18\x05 \x01(\v2A.wayplatform.connect.tachograph.dd.v1.FullCardNumberAndGenerationR\x1fworkshopCardNumberAndGeneration\x12e\n" +
-	"\x19workshop_card_expiry_date\x18\x06 \x01(\v2*.wayplatform.connect.tachograph.dd.v1.DateR\x16workshopCardExpiryDate\x12F\n" +
+	"\x10workshop_address\x18\x04 \x01(\v21.wayplatform.connect.tachograph.dd.v1.StringValueR\x0fworkshopAddress\x12f\n" +
+	"\x14workshop_card_number\x18\x05 \x01(\v24.wayplatform.connect.tachograph.dd.v1.FullCardNumberR\x12workshopCardNumber\x12U\n" +
+	"\x19workshop_card_expiry_date\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampR\x16workshopCardExpiryDate\x12F\n" +
 	"\x03vin\x18\a \x01(\v24.wayplatform.connect.tachograph.dd.v1.Ia5StringValueR\x03vin\x12z\n" +
 	"\x14vehicle_registration\x18\b \x01(\v2G.wayplatform.connect.tachograph.dd.v1.VehicleRegistrationIdentificationR\x13vehicleRegistration\x12I\n" +
 	"!w_vehicle_characteristic_constant\x18\t \x01(\x05R\x1ewVehicleCharacteristicConstant\x12H\n" +
@@ -1899,7 +2265,20 @@ const file_wayplatform_connect_tachograph_vu_v1_technical_data_gen2_v2_proto_raw
 	"\x15new_odometer_value_km\x18\x0f \x01(\x05R\x12newOdometerValueKm\x12@\n" +
 	"\x0eold_time_value\x18\x10 \x01(\v2\x1a.google.protobuf.TimestampR\foldTimeValue\x12@\n" +
 	"\x0enew_time_value\x18\x11 \x01(\v2\x1a.google.protobuf.TimestampR\fnewTimeValue\x12N\n" +
-	"\x15next_calibration_date\x18\x12 \x01(\v2\x1a.google.protobuf.TimestampR\x13nextCalibrationDate\x1a\xd8\x04\n" +
+	"\x15next_calibration_date\x18\x12 \x01(\v2\x1a.google.protobuf.TimestampR\x13nextCalibrationDate\x12l\n" +
+	"\x14sensor_serial_number\x18\x13 \x01(\v2:.wayplatform.connect.tachograph.dd.v1.ExtendedSerialNumberR\x12sensorSerialNumber\x12u\n" +
+	"\x19sensor_gnss_serial_number\x18\x14 \x01(\v2:.wayplatform.connect.tachograph.dd.v1.ExtendedSerialNumberR\x16sensorGnssSerialNumber\x12f\n" +
+	"\x11rcm_serial_number\x18\x15 \x01(\v2:.wayplatform.connect.tachograph.dd.v1.ExtendedSerialNumberR\x0frcmSerialNumber\x12g\n" +
+	"\fseal_records\x18\x16 \x03(\v2D.wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V2.SealRecordR\vsealRecords\x12\x1b\n" +
+	"\tload_type\x18\x17 \x01(\x05R\bloadType\x12d\n" +
+	"\x13calibration_country\x18\x18 \x01(\x0e23.wayplatform.connect.tachograph.dd.v1.NationNumericR\x12calibrationCountry\x12^\n" +
+	"\x1dcalibration_country_timestamp\x18\x19 \x01(\v2\x1a.google.protobuf.TimestampR\x1bcalibrationCountryTimestamp\x1a\xfe\x01\n" +
+	"\n" +
+	"SealRecord\x12Z\n" +
+	"\x0eequipment_type\x18\x01 \x01(\x0e23.wayplatform.connect.tachograph.dd.v1.EquipmentTypeR\requipmentType\x12>\n" +
+	"\x1bunrecognized_equipment_type\x18\x02 \x01(\x05R\x19unrecognizedEquipmentType\x12+\n" +
+	"\x11manufacturer_code\x18\x03 \x01(\tR\x10manufacturerCode\x12'\n" +
+	"\x0fseal_identifier\x18\x04 \x01(\tR\x0esealIdentifier\x1a\xd8\x04\n" +
 	"\n" +
 	"CardRecord\x12~\n" +
 	"\x1acard_number_and_generation\x18\x01 \x01(\v2A.wayplatform.connect.tachograph.dd.v1.FullCardNumberAndGenerationR\x17cardNumberAndGeneration\x12y\n" +
@@ -1916,77 +2295,87 @@ const file_wayplatform_connect_tachograph_vu_v1_technical_data_gen2_v2_proto_raw
 	"\x1dunrecognized_card_slot_number\x18\x03 \x01(\x05R\x1aunrecognizedCardSlotNumberB\xd7\x02\n" +
 	"(com.wayplatform.connect.tachograph.vu.v1B\x18TechnicalDataGen2V2ProtoP\x01Z\\github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/vu/v1;vuv1\xa2\x02\x04WCTV\xaa\x02$Wayplatform.Connect.Tachograph.Vu.V1\xca\x02$Wayplatform\\Connect\\Tachograph\\Vu\\V1\xe2\x020Wayplatform\\Connect\\Tachograph\\Vu\\V1\\GPBMetadata\xea\x02(Wayplatform::Connect::Tachograph::Vu::V1b\beditionsp\xe8\a"
 
-var file_wayplatform_connect_tachograph_vu_v1_technical_data_gen2_v2_proto_msgTypes = make([]protoimpl.MessageInfo, 8)
+var file_wayplatform_connect_tachograph_vu_v1_technical_data_gen2_v2_proto_msgTypes = make([]protoimpl.MessageInfo, 9)
 var file_wayplatform_connect_tachograph_vu_v1_technical_data_gen2_v2_proto_goTypes = []any{
 	(*TechnicalDataGen2V2)(nil),                               // 0: wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V2
 	(*TechnicalDataGen2V2_VuIdentification)(nil),              // 1: wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V2.VuIdentification
 	(*TechnicalDataGen2V2_PairedSensor)(nil),                  // 2: wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V2.PairedSensor
 	(*TechnicalDataGen2V2_CoupledGnss)(nil),                   // 3: wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V2.CoupledGnss
 	(*TechnicalDataGen2V2_CalibrationRecord)(nil),             // 4: wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V2.CalibrationRecord
-	(*TechnicalDataGen2V2_CardRecord)(nil),                    // 5: wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V2.CardRecord
-	(*TechnicalDataGen2V2_ItsConsentRecord)(nil),              // 6: wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V2.ItsConsentRecord
-	(*TechnicalDataGen2V2_PowerSupplyInterruptionRecord)(nil), // 7: wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V2.PowerSupplyInterruptionRecord
-	(*v1.Authentication)(nil),                                 // 8: wayplatform.connect.tachograph.security.v1.Authentication
-	(*v11.StringValue)(nil),                                   // 9: wayplatform.connect.tachograph.dd.v1.StringValue
-	(*v11.Ia5StringValue)(nil),                                // 10: wayplatform.connect.tachograph.dd.v1.Ia5StringValue
-	(*v11.ExtendedSerialNumber)(nil),                          // 11: wayplatform.connect.tachograph.dd.v1.ExtendedSerialNumber
-	(*v11.SoftwareIdentification)(nil),                        // 12: wayplatform.connect.tachograph.dd.v1.SoftwareIdentification
-	(*timestamppb.Timestamp)(nil),                             // 13: google.protobuf.Timestamp
-	(v11.CalibrationPurpose)(0),                               // 14: wayplatform.connect.tachograph.dd.v1.CalibrationPurpose
-	(*v11.FullCardNumberAndGeneration)(nil),                   // 15: wayplatform.connect.tachograph.dd.v1.FullCardNumberAndGeneration
-	(*v11.Date)(nil),                                          // 16: wayplatform.connect.tachograph.dd.v1.Date
+	(*TechnicalDataGen2V2_SealRecord)(nil),                    // 5: wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V2.SealRecord
+	(*TechnicalDataGen2V2_CardRecord)(nil),                    // 6: wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V2.CardRecord
+	(*TechnicalDataGen2V2_ItsConsentRecord)(nil),              // 7: wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V2.ItsConsentRecord
+	(*TechnicalDataGen2V2_PowerSupplyInterruptionRecord)(nil), // 8: wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V2.PowerSupplyInterruptionRecord
+	(*v1.Authentication)(nil),                                 // 9: wayplatform.connect.tachograph.security.v1.Authentication
+	(*v11.StringValue)(nil),                                   // 10: wayplatform.connect.tachograph.dd.v1.StringValue
+	(*v11.Ia5StringValue)(nil),                                // 11: wayplatform.connect.tachograph.dd.v1.Ia5StringValue
+	(*v11.ExtendedSerialNumber)(nil),                          // 12: wayplatform.connect.tachograph.dd.v1.ExtendedSerialNumber
+	(*v11.SoftwareIdentification)(nil),                        // 13: wayplatform.connect.tachograph.dd.v1.SoftwareIdentification
+	(*timestamppb.Timestamp)(nil),                             // 14: google.protobuf.Timestamp
+	(v11.CalibrationPurpose)(0),                               // 15: wayplatform.connect.tachograph.dd.v1.CalibrationPurpose
+	(*v11.FullCardNumber)(nil),                                // 16: wayplatform.connect.tachograph.dd.v1.FullCardNumber
 	(*v11.VehicleRegistrationIdentification)(nil),             // 17: wayplatform.connect.tachograph.dd.v1.VehicleRegistrationIdentification
-	(*v11.CardStructureVersion)(nil),                          // 18: wayplatform.connect.tachograph.dd.v1.CardStructureVersion
-	(*v11.DriverIdentification)(nil),                          // 19: wayplatform.connect.tachograph.dd.v1.DriverIdentification
-	(*v11.OwnerIdentification)(nil),                           // 20: wayplatform.connect.tachograph.dd.v1.OwnerIdentification
-	(v11.CardSlotNumber)(0),                                   // 21: wayplatform.connect.tachograph.dd.v1.CardSlotNumber
+	(v11.NationNumeric)(0),                                    // 18: wayplatform.connect.tachograph.dd.v1.NationNumeric
+	(v11.EquipmentType)(0),                                    // 19: wayplatform.connect.tachograph.dd.v1.EquipmentType
+	(*v11.FullCardNumberAndGeneration)(nil),                   // 20: wayplatform.connect.tachograph.dd.v1.FullCardNumberAndGeneration
+	(*v11.CardStructureVersion)(nil),                          // 21: wayplatform.connect.tachograph.dd.v1.CardStructureVersion
+	(*v11.DriverIdentification)(nil),                          // 22: wayplatform.connect.tachograph.dd.v1.DriverIdentification
+	(*v11.OwnerIdentification)(nil),                           // 23: wayplatform.connect.tachograph.dd.v1.OwnerIdentification
+	(v11.CardSlotNumber)(0),                                   // 24: wayplatform.connect.tachograph.dd.v1.CardSlotNumber
 }
 var file_wayplatform_connect_tachograph_vu_v1_technical_data_gen2_v2_proto_depIdxs = []int32{
 	1,  // 0: wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V2.vu_identification:type_name -> wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V2.VuIdentification
 	4,  // 1: wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V2.calibration_records:type_name -> wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V2.CalibrationRecord
 	2,  // 2: wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V2.paired_sensors:type_name -> wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V2.PairedSensor
 	3,  // 3: wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V2.coupled_gnss_facilities:type_name -> wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V2.CoupledGnss
-	5,  // 4: wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V2.card_records:type_name -> wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V2.CardRecord
-	6,  // 5: wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V2.its_consent_records:type_name -> wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V2.ItsConsentRecord
-	7,  // 6: wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V2.power_supply_interruptions:type_name -> wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V2.PowerSupplyInterruptionRecord
-	8,  // 7: wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V2.authentication:type_name -> wayplatform.connect.tachograph.security.v1.Authentication
-	9,  // 8: wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V2.VuIdentification.manufacturer_name:type_name -> wayplatform.connect.tachograph.dd.v1.StringValue
-	9,  // 9: wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V2.VuIdentification.manufacturer_address:type_name -> wayplatform.connect.tachograph.dd.v1.StringValue
-	10, // 10: wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V2.VuIdentification.part_number:type_name -> wayplatform.connect.tachograph.dd.v1.Ia5StringValue
-	11, // 11: wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V2.VuIdentification.serial_number:type_name -> wayplatform.connect.tachograph.dd.v1.ExtendedSerialNumber
-	12, // 12: wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V2.VuIdentification.software_identification:type_name -> wayplatform.connect.tachograph.dd.v1.SoftwareIdentification
-	13, // 13: wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V2.VuIdentification.manufacturing_date:type_name -> google.protobuf.Timestamp
-	10, // 14: wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V2.VuIdentification.approval_number:type_name -> wayplatform.connect.tachograph.dd.v1.Ia5StringValue
-	11, // 15: wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V2.PairedSensor.serial_number:type_name -> wayplatform.connect.tachograph.dd.v1.ExtendedSerialNumber
-	10, // 16: wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V2.PairedSensor.approval_number:type_name -> wayplatform.connect.tachograph.dd.v1.Ia5StringValue
-	13, // 17: wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V2.PairedSensor.pairing_date:type_name -> google.protobuf.Timestamp
-	11, // 18: wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V2.CoupledGnss.serial_number:type_name -> wayplatform.connect.tachograph.dd.v1.ExtendedSerialNumber
-	10, // 19: wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V2.CoupledGnss.approval_number:type_name -> wayplatform.connect.tachograph.dd.v1.Ia5StringValue
-	13, // 20: wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V2.CoupledGnss.coupling_date:type_name -> google.protobuf.Timestamp
-	14, // 21: wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V2.CalibrationRecord.purpose:type_name -> wayplatform.connect.tachograph.dd.v1.CalibrationPurpose
-	9,  // 22: wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V2.CalibrationRecord.workshop_name:type_name -> wayplatform.connect.tachograph.dd.v1.StringValue
-	9,  // 23: wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V2.CalibrationRecord.workshop_address:type_name -> wayplatform.connect.tachograph.dd.v1.StringValue
-	15, // 24: wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V2.CalibrationRecord.workshop_card_number_and_generation:type_name -> wayplatform.connect.tachograph.dd.v1.FullCardNumberAndGeneration
-	16, // 25: wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V2.CalibrationRecord.workshop_card_expiry_date:type_name -> wayplatform.connect.tachograph.dd.v1.Date
-	10, // 26: wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V2.CalibrationRecord.vin:type_name -> wayplatform.connect.tachograph.dd.v1.Ia5StringValue
+	6,  // 4: wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V2.card_records:type_name -> wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V2.CardRecord
+	7,  // 5: wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V2.its_consent_records:type_name -> wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V2.ItsConsentRecord
+	8,  // 6: wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V2.power_supply_interruptions:type_name -> wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V2.PowerSupplyInterruptionRecord
+	9,  // 7: wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V2.authentication:type_name -> wayplatform.connect.tachograph.security.v1.Authentication
+	10, // 8: wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V2.VuIdentification.manufacturer_name:type_name -> wayplatform.connect.tachograph.dd.v1.StringValue
+	10, // 9: wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V2.VuIdentification.manufacturer_address:type_name -> wayplatform.connect.tachograph.dd.v1.StringValue
+	11, // 10: wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V2.VuIdentification.part_number:type_name -> wayplatform.connect.tachograph.dd.v1.Ia5StringValue
+	12, // 11: wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V2.VuIdentification.serial_number:type_name -> wayplatform.connect.tachograph.dd.v1.ExtendedSerialNumber
+	13, // 12: wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V2.VuIdentification.software_identification:type_name -> wayplatform.connect.tachograph.dd.v1.SoftwareIdentification
+	14, // 13: wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V2.VuIdentification.manufacturing_date:type_name -> google.protobuf.Timestamp
+	11, // 14: wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V2.VuIdentification.approval_number:type_name -> wayplatform.connect.tachograph.dd.v1.Ia5StringValue
+	12, // 15: wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V2.PairedSensor.serial_number:type_name -> wayplatform.connect.tachograph.dd.v1.ExtendedSerialNumber
+	11, // 16: wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V2.PairedSensor.approval_number:type_name -> wayplatform.connect.tachograph.dd.v1.Ia5StringValue
+	14, // 17: wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V2.PairedSensor.pairing_date:type_name -> google.protobuf.Timestamp
+	12, // 18: wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V2.CoupledGnss.serial_number:type_name -> wayplatform.connect.tachograph.dd.v1.ExtendedSerialNumber
+	11, // 19: wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V2.CoupledGnss.approval_number:type_name -> wayplatform.connect.tachograph.dd.v1.Ia5StringValue
+	14, // 20: wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V2.CoupledGnss.coupling_date:type_name -> google.protobuf.Timestamp
+	15, // 21: wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V2.CalibrationRecord.purpose:type_name -> wayplatform.connect.tachograph.dd.v1.CalibrationPurpose
+	10, // 22: wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V2.CalibrationRecord.workshop_name:type_name -> wayplatform.connect.tachograph.dd.v1.StringValue
+	10, // 23: wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V2.CalibrationRecord.workshop_address:type_name -> wayplatform.connect.tachograph.dd.v1.StringValue
+	16, // 24: wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V2.CalibrationRecord.workshop_card_number:type_name -> wayplatform.connect.tachograph.dd.v1.FullCardNumber
+	14, // 25: wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V2.CalibrationRecord.workshop_card_expiry_date:type_name -> google.protobuf.Timestamp
+	11, // 26: wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V2.CalibrationRecord.vin:type_name -> wayplatform.connect.tachograph.dd.v1.Ia5StringValue
 	17, // 27: wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V2.CalibrationRecord.vehicle_registration:type_name -> wayplatform.connect.tachograph.dd.v1.VehicleRegistrationIdentification
-	10, // 28: wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V2.CalibrationRecord.tyre_size:type_name -> wayplatform.connect.tachograph.dd.v1.Ia5StringValue
-	13, // 29: wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V2.CalibrationRecord.old_time_value:type_name -> google.protobuf.Timestamp
-	13, // 30: wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V2.CalibrationRecord.new_time_value:type_name -> google.protobuf.Timestamp
-	13, // 31: wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V2.CalibrationRecord.next_calibration_date:type_name -> google.protobuf.Timestamp
-	15, // 32: wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V2.CardRecord.card_number_and_generation:type_name -> wayplatform.connect.tachograph.dd.v1.FullCardNumberAndGeneration
-	11, // 33: wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V2.CardRecord.card_extended_serial_number:type_name -> wayplatform.connect.tachograph.dd.v1.ExtendedSerialNumber
-	18, // 34: wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V2.CardRecord.card_structure_version:type_name -> wayplatform.connect.tachograph.dd.v1.CardStructureVersion
-	19, // 35: wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V2.CardRecord.driver_identification:type_name -> wayplatform.connect.tachograph.dd.v1.DriverIdentification
-	20, // 36: wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V2.CardRecord.owner_identification:type_name -> wayplatform.connect.tachograph.dd.v1.OwnerIdentification
-	15, // 37: wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V2.ItsConsentRecord.full_card_number_and_generation:type_name -> wayplatform.connect.tachograph.dd.v1.FullCardNumberAndGeneration
-	13, // 38: wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V2.PowerSupplyInterruptionRecord.timestamp:type_name -> google.protobuf.Timestamp
-	21, // 39: wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V2.PowerSupplyInterruptionRecord.card_slot_number:type_name -> wayplatform.connect.tachograph.dd.v1.CardSlotNumber
-	40, // [40:40] is the sub-list for method output_type
-	40, // [40:40] is the sub-list for method input_type
-	40, // [40:40] is the sub-list for extension type_name
-	40, // [40:40] is the sub-list for extension extendee
-	0,  // [0:40] is the sub-list for field type_name
+	11, // 28: wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V2.CalibrationRecord.tyre_size:type_name -> wayplatform.connect.tachograph.dd.v1.Ia5StringValue
+	14, // 29: wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V2.CalibrationRecord.old_time_value:type_name -> google.protobuf.Timestamp
+	14, // 30: wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V2.CalibrationRecord.new_time_value:type_name -> google.protobuf.Timestamp
+	14, // 31: wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V2.CalibrationRecord.next_calibration_date:type_name -> google.protobuf.Timestamp
+	12, // 32: wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V2.CalibrationRecord.sensor_serial_number:type_name -> wayplatform.connect.tachograph.dd.v1.ExtendedSerialNumber
+	12, // 33: wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V2.CalibrationRecord.sensor_gnss_serial_number:type_name -> wayplatform.connect.tachograph.dd.v1.ExtendedSerialNumber
+	12, // 34: wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V2.CalibrationRecord.rcm_serial_number:type_name -> wayplatform.connect.tachograph.dd.v1.ExtendedSerialNumber
+	5,  // 35: wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V2.CalibrationRecord.seal_records:type_name -> wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V2.SealRecord
+	18, // 36: wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V2.CalibrationRecord.calibration_country:type_name -> wayplatform.connect.tachograph.dd.v1.NationNumeric
+	14, // 37: wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V2.CalibrationRecord.calibration_country_timestamp:type_name -> google.protobuf.Timestamp
+	19, // 38: wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V2.SealRecord.equipment_type:type_name -> wayplatform.connect.tachograph.dd.v1.EquipmentType
+	20, // 39: wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V2.CardRecord.card_number_and_generation:type_name -> wayplatform.connect.tachograph.dd.v1.FullCardNumberAndGeneration
+	12, // 40: wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V2.CardRecord.card_extended_serial_number:type_name -> wayplatform.connect.tachograph.dd.v1.ExtendedSerialNumber
+	21, // 41: wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V2.CardRecord.card_structure_version:type_name -> wayplatform.connect.tachograph.dd.v1.CardStructureVersion
+	22, // 42: wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V2.CardRecord.driver_identification:type_name -> wayplatform.connect.tachograph.dd.v1.DriverIdentification
+	23, // 43: wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V2.CardRecord.owner_identification:type_name -> wayplatform.connect.tachograph.dd.v1.OwnerIdentification
+	20, // 44: wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V2.ItsConsentRecord.full_card_number_and_generation:type_name -> wayplatform.connect.tachograph.dd.v1.FullCardNumberAndGeneration
+	14, // 45: wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V2.PowerSupplyInterruptionRecord.timestamp:type_name -> google.protobuf.Timestamp
+	24, // 46: wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V2.PowerSupplyInterruptionRecord.card_slot_number:type_name -> wayplatform.connect.tachograph.dd.v1.CardSlotNumber
+	47, // [47:47] is the sub-list for method output_type
+	47, // [47:47] is the sub-list for method input_type
+	47, // [47:47] is the sub-list for extension type_name
+	47, // [47:47] is the sub-list for extension extendee
+	0,  // [0:47] is the sub-list for field type_name
 }
 
 func init() { file_wayplatform_connect_tachograph_vu_v1_technical_data_gen2_v2_proto_init() }
@@ -2000,7 +2389,7 @@ func file_wayplatform_connect_tachograph_vu_v1_technical_data_gen2_v2_proto_init
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_wayplatform_connect_tachograph_vu_v1_technical_data_gen2_v2_proto_rawDesc), len(file_wayplatform_connect_tachograph_vu_v1_technical_data_gen2_v2_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   8,
+			NumMessages:   9,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

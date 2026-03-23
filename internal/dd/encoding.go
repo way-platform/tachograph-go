@@ -87,17 +87,18 @@ func getCodePageFromEncoding(encoding ddv1.Encoding) byte {
 	}
 }
 
-// trimSpaceAndZeroBytes trims spaces, 0x00 and 0xff values off a byte slice.
+// trimSpaceAndZeroBytes trims spaces, control characters, and padding bytes off a byte slice.
 //
 // This function removes common padding and control characters that are often
 // used in tachograph string data to pad fixed-length fields. The trimmed
 // characters include:
-// - Whitespace: tab, newline, vertical tab, form feed, carriage return, space
+// - ASCII control characters: 0x00-0x1F (null, SOH, STX, ..., US)
+// - Whitespace: space (0x20)
 // - Control characters: 0x85 (NEL), 0xA0 (non-breaking space)
-// - Padding bytes: 0x00 (null), 0xFF (often used as padding in binary protocols)
+// - Padding bytes: 0xFF (often used as padding in binary protocols)
 func trimSpaceAndZeroBytes(b []byte) []byte {
 	// Define cutset as string - bytes.Trim handles this properly
-	cutset := "\t\n\v\f\r \x85\xA0\x00\xFF"
+	cutset := "\x00\x01\x02\x03\x04\x05\x06\x07\x08\t\n\v\f\r\x0e\x0f\x10\x11\x12\x13\x14\x15\x16\x17\x18\x19\x1a\x1b\x1c\x1d\x1e\x1f \x85\xA0\xFF"
 	return bytes.Trim(b, cutset)
 }
 

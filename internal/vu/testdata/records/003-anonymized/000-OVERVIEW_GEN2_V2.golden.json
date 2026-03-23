@@ -5,9 +5,13 @@
     "length": 17,
     "value": "*****************"
   },
-  "vehicleRegistrationNumber": {
-    "length": 15,
-    "value": "***************"
+  "vehicleRegistrationIdentification": {
+    "nation": "PORTUGAL",
+    "number": {
+      "encoding": "ENCODING_UNRECOGNIZED",
+      "length": 13,
+      "value": "*************"
+    }
   },
   "currentDateTime": "2026-03-10T22:42:52Z",
   "downloadablePeriod": {

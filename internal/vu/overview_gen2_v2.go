@@ -68,12 +68,13 @@ func unmarshalOverviewGen2V2(value []byte) (*vuv1.OverviewGen2V2, error) {
 	overview.SetVehicleIdentificationNumber(vin)
 	offset += bytesRead
 
-	// VehicleRegistrationNumberRecordArray (Gen2 V2 addition: 13-byte IA5String)
+	// VehicleRegistrationNumberRecordArray (Gen2 V2 addition)
+	// Real VUs write VehicleRegistrationIdentification (15 bytes) despite spec saying 13.
 	vrn, bytesRead, err := parseVehicleRegistrationNumberRecordArray(data, offset)
 	if err != nil {
 		return nil, fmt.Errorf("parse VehicleRegistrationNumberRecordArray: %w", err)
 	}
-	overview.SetVehicleRegistrationNumber(vrn)
+	overview.SetVehicleRegistrationIdentification(vrn)
 	offset += bytesRead
 
 	// CurrentDateTimeRecordArray
@@ -162,10 +163,10 @@ func (opts MarshalOptions) MarshalOverviewGen2V2(overview *vuv1.OverviewGen2V2) 
 	result = appendRecordArrayHeader(result, 0x03, uint16(len(vinData)), 1)
 	result = append(result, vinData...)
 
-	// VehicleRegistrationNumberRecordArray (13 bytes)
-	vrnData, err := marshalOpts.MarshalIa5StringValue(overview.GetVehicleRegistrationNumber())
+	// VehicleRegistrationIdentificationRecordArray (15 bytes)
+	vrnData, err := marshalOpts.MarshalVehicleRegistrationIdentification(overview.GetVehicleRegistrationIdentification())
 	if err != nil {
-		return nil, fmt.Errorf("marshal VRN: %w", err)
+		return nil, fmt.Errorf("marshal VRI: %w", err)
 	}
 	result = appendRecordArrayHeader(result, 0x04, uint16(len(vrnData)), 1)
 	result = append(result, vrnData...)
@@ -239,9 +240,9 @@ func (opts AnonymizeOptions) anonymizeOverviewGen2V2(overview *vuv1.OverviewGen2
 	result.SetMemberStateCertificate(nil)
 	result.SetVuCertificate(nil)
 
-	// Anonymize VIN and VRN
+	// Anonymize VIN and VRI
 	result.SetVehicleIdentificationNumber(ddOpts.AnonymizeIa5StringValue(overview.GetVehicleIdentificationNumber()))
-	result.SetVehicleRegistrationNumber(ddOpts.AnonymizeIa5StringValue(overview.GetVehicleRegistrationNumber()))
+	result.SetVehicleRegistrationIdentification(ddOpts.AnonymizeVehicleRegistrationIdentification(overview.GetVehicleRegistrationIdentification()))
 
 	// Preserve timestamps and period (no PII)
 	result.SetCurrentDateTime(overview.GetCurrentDateTime())
@@ -295,8 +296,11 @@ func (opts AnonymizeOptions) anonymizeOverviewGen2V2(overview *vuv1.OverviewGen2
 // ===== V2-specific parse helpers =====
 
 // parseVehicleRegistrationNumberRecordArray parses a VehicleRegistrationNumberRecordArray.
-// Expected: 1 record × 13 bytes (IA5String, Gen2 V2 only).
-func parseVehicleRegistrationNumberRecordArray(data []byte, offset int) (*ddv1.Ia5StringValue, int, error) {
+//
+// The spec says VehicleRegistrationNumber (13-byte IA5String), but real VUs
+// write VehicleRegistrationIdentification (15 bytes: nation + codepage + string).
+// We dispatch on the actual record size from the header.
+func parseVehicleRegistrationNumberRecordArray(data []byte, offset int) (*ddv1.VehicleRegistrationIdentification, int, error) {
 	_, recordSize, noOfRecords, headerSize, err := parseRecordArrayHeader(data, offset)
 	if err != nil {
 		return nil, 0, err
@@ -310,12 +314,30 @@ func parseVehicleRegistrationNumberRecordArray(data []byte, offset int) (*ddv1.I
 		return nil, 0, fmt.Errorf("insufficient data for VRN record")
 	}
 	var unmarshalOpts dd.UnmarshalOptions
-	vrn, err := unmarshalOpts.UnmarshalIa5StringValue(data[recordStart:recordEnd])
+	var vri *ddv1.VehicleRegistrationIdentification
+	switch recordSize {
+	case 15:
+		// VehicleRegistrationIdentification: 1 nation + 1 codepage + 13 string
+		vri, err = unmarshalOpts.UnmarshalVehicleRegistrationIdentification(data[recordStart:recordEnd])
+	case 13:
+		// VehicleRegistrationNumber: 13-byte IA5String (spec-compliant, unlikely in practice)
+		ia5, ia5Err := unmarshalOpts.UnmarshalIa5StringValue(data[recordStart:recordEnd])
+		if ia5Err != nil {
+			return nil, 0, fmt.Errorf("unmarshal VRN as IA5: %w", ia5Err)
+		}
+		// Wrap in VehicleRegistrationIdentification with default nation
+		vri = &ddv1.VehicleRegistrationIdentification{}
+		number := &ddv1.StringValue{}
+		number.SetValue(ia5.GetValue())
+		vri.SetNumber(number)
+	default:
+		return nil, 0, fmt.Errorf("unexpected VRN record size: %d (expected 13 or 15)", recordSize)
+	}
 	if err != nil {
 		return nil, 0, fmt.Errorf("unmarshal VRN: %w", err)
 	}
 	totalSize := headerSize + int(recordSize)
-	return vrn, totalSize, nil
+	return vri, totalSize, nil
 }
 
 // parseDownloadActivityDataRecordArrayGen2V2 parses a VuDownloadActivityDataRecordArray for V2.
