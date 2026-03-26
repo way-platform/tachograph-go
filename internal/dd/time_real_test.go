@@ -37,6 +37,11 @@ func TestUnmarshalTimeReal(t *testing.T) {
 			wantIsNil: true,
 		},
 		{
+			name:      "all ones sentinel",
+			input:     []byte{0xFF, 0xFF, 0xFF, 0xFF},
+			wantIsNil: true,
+		},
+		{
 			name:     "2038-01-19 03:14:07 UTC (max int32)",
 			input:    []byte{0x7F, 0xFF, 0xFF, 0xFF},
 			wantUnix: 2147483647,

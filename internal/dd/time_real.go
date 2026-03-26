@@ -24,8 +24,8 @@ func (opts UnmarshalOptions) UnmarshalTimeReal(data []byte) (*timestamppb.Timest
 		return nil, fmt.Errorf("invalid data length for TimeReal: got %d, want %d", len(data), lenTimeReal)
 	}
 	timeVal := binary.BigEndian.Uint32(data[:lenTimeReal])
-	if timeVal == 0 {
-		return nil, nil // Zero time is represented as nil
+	if timeVal == 0 || timeVal == ^uint32(0) {
+		return nil, nil // Unset time is represented as nil
 	}
 	return timestamppb.New(time.Unix(int64(timeVal), 0)), nil
 }

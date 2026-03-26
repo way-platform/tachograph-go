@@ -14,6 +14,9 @@ func unmarshalTimeReal(data []byte) (*timestamppb.Timestamp, error) {
 		return nil, fmt.Errorf("invalid TimeReal length: got %d, want 4", len(data))
 	}
 	seconds := binary.BigEndian.Uint32(data)
+	if seconds == 0 || seconds == ^uint32(0) {
+		return nil, nil
+	}
 	// TimeReal is seconds since 1970-01-01 00:00:00 UTC
 	epoch := time.Date(1970, 1, 1, 0, 0, 0, 0, time.UTC)
 	return timestamppb.New(epoch.Add(time.Duration(seconds) * time.Second)), nil
