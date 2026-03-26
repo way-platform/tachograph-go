@@ -353,7 +353,10 @@ func (opts MarshalOptions) MarshalOverviewGen1(overview *vuv1.OverviewGen1) ([]b
 
 	// Use raw_data as canvas if available
 	var canvas []byte
-	if raw := overview.GetRawData(); len(raw) == expectedSize {
+	if raw := overview.GetRawData(); len(raw) == expectedSize+128 {
+		canvas = make([]byte, expectedSize)
+		copy(canvas, raw[:expectedSize])
+	} else if raw := overview.GetRawData(); len(raw) == expectedSize {
 		canvas = make([]byte, len(raw))
 		copy(canvas, raw)
 	} else {
@@ -477,7 +480,9 @@ func (opts MarshalOptions) MarshalOverviewGen1(overview *vuv1.OverviewGen1) ([]b
 		if err != nil {
 			return nil, fmt.Errorf("append lock in time: %w", err)
 		}
-		copy(canvas[offset:offset+4], lockInTimeBytes)
+		if lock.GetLockInTime() != nil {
+			copy(canvas[offset:offset+4], lockInTimeBytes)
+		}
 		offset += 4
 
 		// LockOutTime (4 bytes)
@@ -485,7 +490,9 @@ func (opts MarshalOptions) MarshalOverviewGen1(overview *vuv1.OverviewGen1) ([]b
 		if err != nil {
 			return nil, fmt.Errorf("append lock out time: %w", err)
 		}
-		copy(canvas[offset:offset+4], lockOutTimeBytes)
+		if lock.GetLockOutTime() != nil {
+			copy(canvas[offset:offset+4], lockOutTimeBytes)
+		}
 		offset += 4
 
 		// CompanyName (36 bytes)

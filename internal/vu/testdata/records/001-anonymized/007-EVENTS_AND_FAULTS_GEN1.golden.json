@@ -2394,8 +2394,6 @@
     }
   ],
   "overspeedingControl": {
-    "lastOverspeedControlTime": "2106-02-07T06:28:15Z",
-    "firstOverspeedSinceLastControl": "2106-02-07T06:28:15Z",
     "numberOfOverspeedSinceLastControl": 1,
     "rawData": "//////////8B"
   },

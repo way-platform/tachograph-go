@@ -377,10 +377,12 @@ func (opts MarshalOptions) MarshalVuCalibrationRecord(record *ddv1.VuCalibration
 	if err != nil {
 		return nil, fmt.Errorf("failed to marshal old time value: %w", err)
 	}
-	if len(oldTimeValueBytes) != 4 {
+	if len(oldTimeValueBytes) != 4 && record.GetOldTimeValue() != nil {
 		return nil, fmt.Errorf("invalid old time value length: got %d, want 4", len(oldTimeValueBytes))
 	}
-	copy(canvas[offset:offset+4], oldTimeValueBytes)
+	if record.GetOldTimeValue() != nil {
+		copy(canvas[offset:offset+4], oldTimeValueBytes)
+	}
 	offset += 4
 
 	// Marshal new time value (4 bytes)
@@ -388,10 +390,12 @@ func (opts MarshalOptions) MarshalVuCalibrationRecord(record *ddv1.VuCalibration
 	if err != nil {
 		return nil, fmt.Errorf("failed to marshal new time value: %w", err)
 	}
-	if len(newTimeValueBytes) != 4 {
+	if len(newTimeValueBytes) != 4 && record.GetNewTimeValue() != nil {
 		return nil, fmt.Errorf("invalid new time value length: got %d, want 4", len(newTimeValueBytes))
 	}
-	copy(canvas[offset:offset+4], newTimeValueBytes)
+	if record.GetNewTimeValue() != nil {
+		copy(canvas[offset:offset+4], newTimeValueBytes)
+	}
 	offset += 4
 
 	// Marshal next calibration date (4 bytes)
@@ -399,10 +403,12 @@ func (opts MarshalOptions) MarshalVuCalibrationRecord(record *ddv1.VuCalibration
 	if err != nil {
 		return nil, fmt.Errorf("failed to marshal next calibration date: %w", err)
 	}
-	if len(nextCalibrationDateBytes) != 4 {
+	if len(nextCalibrationDateBytes) != 4 && record.GetNextCalibrationDate() != nil {
 		return nil, fmt.Errorf("invalid next calibration date length: got %d, want 4", len(nextCalibrationDateBytes))
 	}
-	copy(canvas[offset:offset+4], nextCalibrationDateBytes)
+	if record.GetNextCalibrationDate() != nil {
+		copy(canvas[offset:offset+4], nextCalibrationDateBytes)
+	}
 	offset += 4
 
 	if offset != size {

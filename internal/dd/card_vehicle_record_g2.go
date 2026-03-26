@@ -122,14 +122,18 @@ func (opts MarshalOptions) MarshalCardVehicleRecordG2(record *ddv1.CardVehicleRe
 	if err != nil {
 		return nil, fmt.Errorf("failed to marshal vehicle first use: %w", err)
 	}
-	copy(canvas[6:10], firstUseBytes)
+	if record.GetVehicleFirstUse() != nil {
+		copy(canvas[6:10], firstUseBytes)
+	}
 
 	// Vehicle last use (4 bytes)
 	lastUseBytes, err := opts.MarshalTimeReal(record.GetVehicleLastUse())
 	if err != nil {
 		return nil, fmt.Errorf("failed to marshal vehicle last use: %w", err)
 	}
-	copy(canvas[10:14], lastUseBytes)
+	if record.GetVehicleLastUse() != nil {
+		copy(canvas[10:14], lastUseBytes)
+	}
 
 	// Vehicle registration (15 bytes)
 	vehicleRegBytes, err := opts.MarshalVehicleRegistration(record.GetVehicleRegistration())

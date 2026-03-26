@@ -122,14 +122,18 @@ func (opts MarshalOptions) MarshalVuTimeAdjustmentRecord(record *ddv1.VuTimeAdju
 	if err != nil {
 		return nil, fmt.Errorf("failed to marshal old time value: %w", err)
 	}
-	copy(canvas[idxOldTimeValue:idxOldTimeValue+lenOldTimeValue], oldTime)
+	if record.GetOldTimeValue() != nil {
+		copy(canvas[idxOldTimeValue:idxOldTimeValue+lenOldTimeValue], oldTime)
+	}
 
 	// Marshal newTimeValue (4 bytes)
 	newTime, err := opts.MarshalTimeReal(record.GetNewTimeValue())
 	if err != nil {
 		return nil, fmt.Errorf("failed to marshal new time value: %w", err)
 	}
-	copy(canvas[idxNewTimeValue:idxNewTimeValue+lenNewTimeValue], newTime)
+	if record.GetNewTimeValue() != nil {
+		copy(canvas[idxNewTimeValue:idxNewTimeValue+lenNewTimeValue], newTime)
+	}
 
 	// Marshal workshopName (36 bytes: 1 byte code page + 35 bytes name)
 	workshopName, err := opts.MarshalStringValue(record.GetWorkshopName())

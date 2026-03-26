@@ -90,14 +90,18 @@ func (opts MarshalOptions) MarshalVuOverspeedControlData(controlData *ddv1.VuOve
 	if err != nil {
 		return nil, fmt.Errorf("failed to marshal last overspeed control time: %w", err)
 	}
-	copy(canvas[idxLastOverspeedControlTime:idxLastOverspeedControlTime+lenLastOverspeedControlTime], lastControlTime)
+	if controlData.GetLastOverspeedControlTime() != nil {
+		copy(canvas[idxLastOverspeedControlTime:idxLastOverspeedControlTime+lenLastOverspeedControlTime], lastControlTime)
+	}
 
 	// Marshal firstOverspeedSince (4 bytes)
 	firstOverspeedSince, err := opts.MarshalTimeReal(controlData.GetFirstOverspeedSinceLastControl())
 	if err != nil {
 		return nil, fmt.Errorf("failed to marshal first overspeed since: %w", err)
 	}
-	copy(canvas[idxFirstOverspeedSince:idxFirstOverspeedSince+lenFirstOverspeedSince], firstOverspeedSince)
+	if controlData.GetFirstOverspeedSinceLastControl() != nil {
+		copy(canvas[idxFirstOverspeedSince:idxFirstOverspeedSince+lenFirstOverspeedSince], firstOverspeedSince)
+	}
 
 	// Marshal numberOfOverspeedSince (1 byte)
 	canvas[idxNumberOfOverspeedSince] = byte(controlData.GetNumberOfOverspeedSinceLastControl())

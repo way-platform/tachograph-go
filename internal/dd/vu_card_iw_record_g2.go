@@ -188,7 +188,9 @@ func (opts MarshalOptions) MarshalVuCardIWRecordG2(record *ddv1.VuCardIWRecordG2
 	if err != nil {
 		return nil, fmt.Errorf("failed to marshal card insertion time: %w", err)
 	}
-	copy(canvas[offset:offset+4], insertionTimeBytes)
+	if record.GetCardInsertionTime() != nil {
+		copy(canvas[offset:offset+4], insertionTimeBytes)
+	}
 	offset += 4
 
 	// vehicleOdometerValueAtInsertion (3 bytes)
@@ -209,7 +211,9 @@ func (opts MarshalOptions) MarshalVuCardIWRecordG2(record *ddv1.VuCardIWRecordG2
 	if err != nil {
 		return nil, fmt.Errorf("failed to marshal card withdrawal time: %w", err)
 	}
-	copy(canvas[offset:offset+4], withdrawalTimeBytes)
+	if record.GetCardWithdrawalTime() != nil {
+		copy(canvas[offset:offset+4], withdrawalTimeBytes)
+	}
 	offset += 4
 
 	// vehicleOdometerValueAtWithdrawal (3 bytes)

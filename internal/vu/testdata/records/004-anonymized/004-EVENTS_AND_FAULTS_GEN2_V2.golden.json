@@ -650,8 +650,6 @@
     }
   ],
   "overspeedingControl": {
-    "lastControlTime": "2106-02-07T06:28:15Z",
-    "firstOverspeedSinceLastControl": "2106-02-07T06:28:15Z",
     "numberOfOverspeedSinceLastControl": 0
   },
   "signature": "BgAAAAA=",
