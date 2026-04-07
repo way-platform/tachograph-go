@@ -72,10 +72,10 @@ func TestUnmarshalVehicleRegistration(t *testing.T) {
 			wantRegNumber: "TEST",
 		},
 		{
-			name:       "insufficient data - 14 bytes",
-			input:      []byte{0x12, 0x0F, 0x46, 0x50, 0x41, 0x2D, 0x38, 0x32, 0x39, 0x20, 0x20, 0x20, 0x20, 0x20},
-			wantErr:    true,
-			errMessage: "invalid data length for VehicleRegistrationIdentification",
+			name:          "14-byte VehicleRegistrationNumber without nation",
+			input:         []byte{0x0F, 0x46, 0x50, 0x41, 0x2D, 0x38, 0x32, 0x39, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20},
+			wantNation:    ddv1.NationNumeric_NATION_NUMERIC_UNSPECIFIED,
+			wantRegNumber: "FPA-829",
 		},
 		{
 			name:       "insufficient data - 10 bytes",
