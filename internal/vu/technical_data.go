@@ -90,39 +90,45 @@ func sizeOfTechnicalDataGen1(data []byte) (totalSize, signatureSize int, err err
 }
 
 // sizeOfTechnicalDataGen2V1 calculates size by parsing all Gen2 V1 RecordArrays.
+//
+// Per the regulation (Appendix 7, Section 2.2.6.6, TREP 25), Gen2 V1 Technical Data
+// contains up to 8 RecordArrays:
+//
+//	VuIdentificationRecordArray              (recordType 0x19)
+//	VuSensorPairedRecordArray                (recordType 0x20)
+//	VuSensorExternalGNSSCoupledRecordArray   (recordType 0x21)
+//	VuCalibrationRecordArray                 (recordType 0x0c)
+//	VuCardRecordArray                        (recordType 0x0e)
+//	VuITSConsentRecordArray                  (recordType 0x17)
+//	VuPowerSupplyInterruptionRecordArray     (recordType 0x1f)
+//	SignatureRecordArray                     (recordType 0x08)
+//
+// We iterate through all present RecordArrays until we find the Signature (always last).
 func sizeOfTechnicalDataGen2V1(data []byte) (totalSize, signatureSize int, err error) {
 	offset := 0
 
-	// VuIdentificationRecordArray
-	size, sizeErr := sizeOfRecordArray(data, offset)
-	if sizeErr != nil {
-		return 0, 0, fmt.Errorf("VuIdentificationRecordArray: %w", sizeErr)
-	}
-	offset += size
+	const recordTypeSignature = 0x08
 
-	// SensorPairedRecordArray
-	size, sizeErr = sizeOfRecordArray(data, offset)
-	if sizeErr != nil {
-		return 0, 0, fmt.Errorf("SensorPairedRecordArray: %w", sizeErr)
-	}
-	offset += size
+	// Each iteration advances by at least 5 bytes (the RecordArray header size),
+	// so the loop is guaranteed to terminate when offset exceeds len(data).
+	for {
+		if offset+5 > len(data) {
+			return 0, 0, fmt.Errorf("ran out of data before finding SignatureRecordArray at offset %d", offset)
+		}
 
-	// VuCalibrationRecordArray
-	size, sizeErr = sizeOfRecordArray(data, offset)
-	if sizeErr != nil {
-		return 0, 0, fmt.Errorf("VuCalibrationRecordArray: %w", sizeErr)
-	}
-	offset += size
+		recordType := data[offset]
+		size, sizeErr := sizeOfRecordArray(data, offset)
+		if sizeErr != nil {
+			return 0, 0, fmt.Errorf("RecordArray at offset %d (type 0x%02x): %w", offset, recordType, sizeErr)
+		}
 
-	// SignatureRecordArray (last)
-	size, sizeErr = sizeOfRecordArray(data, offset)
-	if sizeErr != nil {
-		return 0, 0, fmt.Errorf("SignatureRecordArray: %w", sizeErr)
-	}
-	signatureSizeGen2 := size
-	offset += size
+		if recordType == recordTypeSignature {
+			offset += size
+			return offset, size, nil
+		}
 
-	return offset, signatureSizeGen2, nil
+		offset += size
+	}
 }
 
 // sizeOfTechnicalDataGen2V2 calculates size by parsing all Gen2 V2 RecordArrays.

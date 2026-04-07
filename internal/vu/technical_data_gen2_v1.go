@@ -38,33 +38,53 @@ func unmarshalTechnicalDataGen2V1(value []byte) (*vuv1.TechnicalDataGen2V1, erro
 	td.SetRawData(value)
 	offset := 0
 
-	// VuIdentificationRecordArray
-	ddIdent, bytesRead, err := parseVuIdentificationRecordArrayGen2(data, offset)
-	if err != nil {
-		return nil, fmt.Errorf("parse VuIdentificationRecordArray: %w", err)
-	}
-	td.SetVuIdentification(vuIdentToGen2V1(ddIdent))
-	offset += bytesRead
+	// Gen2 V1 Technical Data contains a variable number of RecordArrays.
+	// Per the regulation (TREP 25), the full set is:
+	//   VuIdentification (0x19), SensorPaired (0x20), SensorExternalGNSSCoupled (0x21),
+	//   VuCalibrationRecord (0x0c), VuCardRecord (0x0e), VuITSConsentRecord (0x17),
+	//   VuPowerSupplyInterruptionRecord (0x1f), Signature (0x08).
+	// We parse known arrays and skip unrecognized ones.
+	for offset < len(data) {
+		recordType, recordSize, noOfRecords, headerSize, err := parseRecordArrayHeader(data, offset)
+		if err != nil {
+			return nil, fmt.Errorf("RecordArray header at offset %d: %w", offset, err)
+		}
 
-	// SensorPairedRecordArray
-	ddSensors, bytesRead, err := parseSensorPairedRecordArrayGen2(data, offset)
-	if err != nil {
-		return nil, fmt.Errorf("parse SensorPairedRecordArray: %w", err)
-	}
-	pairedSensors := make([]*vuv1.TechnicalDataGen2V1_PairedSensor, len(ddSensors))
-	for i, s := range ddSensors {
-		pairedSensors[i] = sensorPairedToGen2V1(s)
-	}
-	td.SetPairedSensors(pairedSensors)
-	offset += bytesRead
+		switch recordType {
+		case 0x19: // VuIdentification
+			ddIdent, bytesRead, err := parseVuIdentificationRecordArrayGen2(data, offset)
+			if err != nil {
+				return nil, fmt.Errorf("parse VuIdentificationRecordArray: %w", err)
+			}
+			td.SetVuIdentification(vuIdentToGen2V1(ddIdent))
+			offset += bytesRead
 
-	// VuCalibrationRecordArray
-	calRecords, bytesRead, err := parseCalibrationRecordArrayGen2V1(data, offset)
-	if err != nil {
-		return nil, fmt.Errorf("parse VuCalibrationRecordArray: %w", err)
+		case 0x20: // SensorPaired
+			ddSensors, bytesRead, err := parseSensorPairedRecordArrayGen2(data, offset)
+			if err != nil {
+				return nil, fmt.Errorf("parse SensorPairedRecordArray: %w", err)
+			}
+			pairedSensors := make([]*vuv1.TechnicalDataGen2V1_PairedSensor, len(ddSensors))
+			for i, s := range ddSensors {
+				pairedSensors[i] = sensorPairedToGen2V1(s)
+			}
+			td.SetPairedSensors(pairedSensors)
+			offset += bytesRead
+
+		case 0x0c: // VuCalibrationRecord
+			calRecords, bytesRead, err := parseCalibrationRecordArrayGen2V1(data, offset)
+			if err != nil {
+				return nil, fmt.Errorf("parse VuCalibrationRecordArray: %w", err)
+			}
+			td.SetCalibrationRecords(calRecords)
+			offset += bytesRead
+
+		default:
+			// Skip RecordArrays we don't semantically parse yet
+			// (SensorExternalGNSSCoupled, VuCard, VuITSConsent, VuPowerSupplyInterruption, etc.)
+			offset += headerSize + int(recordSize)*int(noOfRecords)
+		}
 	}
-	td.SetCalibrationRecords(calRecords)
-	offset += bytesRead
 
 	td.SetSignature(signature)
 
@@ -89,12 +109,20 @@ func (opts MarshalOptions) MarshalTechnicalDataGen2V1(td *vuv1.TechnicalDataGen2
 	var result []byte
 	marshalOpts := dd.MarshalOptions{}
 
+	// Record type constants from Data Dictionary Section 2.120
+	const (
+		rtVuIdentification = 0x19
+		rtSensorPaired     = 0x20
+		rtVuCalibration    = 0x0c
+		rtSignature        = 0x08
+	)
+
 	// VuIdentificationRecordArray (1 record × 124 bytes)
 	vuIdentData, err := marshalVuIdentificationGen2(marshalOpts, td.GetVuIdentification())
 	if err != nil {
 		return nil, fmt.Errorf("marshal VuIdentificationRecordArray: %w", err)
 	}
-	result = appendRecordArrayHeader(result, 0x01, 124, 1)
+	result = appendRecordArrayHeader(result, rtVuIdentification, 124, 1)
 	result = append(result, vuIdentData...)
 
 	// SensorPairedRecordArray (N records × 28 bytes)
@@ -103,7 +131,7 @@ func (opts MarshalOptions) MarshalTechnicalDataGen2V1(td *vuv1.TechnicalDataGen2
 	if err != nil {
 		return nil, fmt.Errorf("marshal SensorPairedRecordArray: %w", err)
 	}
-	result = appendRecordArrayHeader(result, 0x02, 28, uint16(len(sensors)))
+	result = appendRecordArrayHeader(result, rtSensorPaired, 28, uint16(len(sensors)))
 	result = append(result, sensorData...)
 
 	// VuCalibrationRecordArray (N records × 168 bytes)
@@ -112,7 +140,7 @@ func (opts MarshalOptions) MarshalTechnicalDataGen2V1(td *vuv1.TechnicalDataGen2
 	if err != nil {
 		return nil, fmt.Errorf("marshal VuCalibrationRecordArray: %w", err)
 	}
-	result = appendRecordArrayHeader(result, 0x03, 168, uint16(len(calRecords)))
+	result = appendRecordArrayHeader(result, rtVuCalibration, 168, uint16(len(calRecords)))
 	result = append(result, calData...)
 
 	// Signature: stored as complete SignatureRecordArray bytes (header + sig bytes).
@@ -120,7 +148,7 @@ func (opts MarshalOptions) MarshalTechnicalDataGen2V1(td *vuv1.TechnicalDataGen2
 	if sig := td.GetSignature(); len(sig) > 0 {
 		result = append(result, sig...)
 	} else {
-		result = appendRecordArrayHeader(result, 0x04, 0, 0)
+		result = appendRecordArrayHeader(result, rtSignature, 0, 0)
 	}
 	return result, nil
 }
@@ -280,9 +308,12 @@ func parseCalibrationRecordArrayGen2V1(data []byte, offset int) ([]*vuv1.Technic
 		return nil, 0, err
 	}
 
-	const expectedRecordSize = 168
-	if recordSize != expectedRecordSize {
-		return nil, 0, fmt.Errorf("expected Gen2 CalibrationRecord size %d, got %d", expectedRecordSize, recordSize)
+	// Gen2 V1 base calibration record is 168 bytes, but VUs with the ▼M3 amendment
+	// include additional fields (sealDataVu etc.) resulting in larger records (e.g. 222 bytes).
+	// The RecordArray header declares the actual record size; we require at least 168 bytes.
+	const minCalibrationRecordSize = 168
+	if int(recordSize) < minCalibrationRecordSize {
+		return nil, 0, fmt.Errorf("Gen2 CalibrationRecord size %d is below minimum %d", recordSize, minCalibrationRecordSize)
 	}
 
 	var unmarshalOpts dd.UnmarshalOptions
@@ -329,9 +360,13 @@ type gen2CalibrationRecord struct {
 	nextCalibrationDate      *timestamppb.Timestamp
 }
 
-// parseOneCalibrationRecordGen2 parses a single 168-byte Gen2 VuCalibrationRecord.
+// parseOneCalibrationRecordGen2 parses the base 168 bytes of a Gen2 VuCalibrationRecord.
 //
-// Gen2 layout (168 bytes) — identical to Gen1 except workshopCardNumber
+// Gen2 V1 VUs may emit records larger than 168 bytes (e.g. 222 bytes) when they include
+// additional fields such as sealDataVu (per ▼M3 amendment). Only the first 168 bytes
+// (the common Gen2 base fields) are parsed here; any trailing extension bytes are skipped.
+//
+// Gen2 base layout (168 bytes) — identical to Gen1 except workshopCardNumber
 // is FullCardNumberAndGeneration (19 bytes) instead of FullCardNumber (18 bytes):
 //
 //	calibrationPurpose CalibrationPurpose                          -- 1 byte (offset 0)
@@ -352,9 +387,9 @@ type gen2CalibrationRecord struct {
 //	newTimeValue TimeReal                                          -- 4 bytes (offset 160)
 //	nextCalibrationDate TimeReal                                   -- 4 bytes (offset 164)
 func parseOneCalibrationRecordGen2(opts dd.UnmarshalOptions, data []byte) (gen2CalibrationRecord, error) {
-	const lenRecord = 168
-	if len(data) != lenRecord {
-		return gen2CalibrationRecord{}, fmt.Errorf("invalid Gen2 CalibrationRecord size: got %d, want %d", len(data), lenRecord)
+	const minRecordLen = 168
+	if len(data) < minRecordLen {
+		return gen2CalibrationRecord{}, fmt.Errorf("invalid Gen2 CalibrationRecord size: got %d, want >= %d", len(data), minRecordLen)
 	}
 
 	const (
