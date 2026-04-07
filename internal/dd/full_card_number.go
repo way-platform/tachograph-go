@@ -73,7 +73,7 @@ func (opts UnmarshalOptions) UnmarshalFullCardNumber(data []byte) (*ddv1.FullCar
 			return nil, fmt.Errorf("failed to parse driver identification: %w", err)
 		}
 		cardNumber.SetDriverIdentification(driverID)
-	case ddv1.EquipmentType_WORKSHOP_CARD, ddv1.EquipmentType_COMPANY_CARD:
+	case ddv1.EquipmentType_WORKSHOP_CARD, ddv1.EquipmentType_CONTROL_CARD, ddv1.EquipmentType_COMPANY_CARD:
 		// OwnerIdentification is 16 bytes
 		ownerID, err := opts.UnmarshalOwnerIdentification(cardNumberData)
 		if err != nil {
@@ -163,7 +163,7 @@ func (opts MarshalOptions) MarshalFullCardNumber(cardNumber *ddv1.FullCardNumber
 			}
 			copy(canvas[2:18], driverBytes)
 		}
-	case ddv1.EquipmentType_WORKSHOP_CARD, ddv1.EquipmentType_COMPANY_CARD:
+	case ddv1.EquipmentType_WORKSHOP_CARD, ddv1.EquipmentType_CONTROL_CARD, ddv1.EquipmentType_COMPANY_CARD:
 		if ownerID := cardNumber.GetOwnerIdentification(); ownerID != nil {
 			// OwnerIdentification is 16 bytes
 			ownerBytes, err := opts.MarshalOwnerIdentification(ownerID)
@@ -190,7 +190,7 @@ func (opts MarshalOptions) MarshalFullCardNumberAsString(cardNumber *ddv1.FullCa
 		if driverID := cardNumber.GetDriverIdentification(); driverID != nil {
 			return opts.MarshalIa5StringValue(driverID.GetDriverIdentificationNumber())
 		}
-	case ddv1.EquipmentType_WORKSHOP_CARD, ddv1.EquipmentType_COMPANY_CARD:
+	case ddv1.EquipmentType_WORKSHOP_CARD, ddv1.EquipmentType_CONTROL_CARD, ddv1.EquipmentType_COMPANY_CARD:
 		if ownerID := cardNumber.GetOwnerIdentification(); ownerID != nil {
 			return opts.MarshalIa5StringValue(ownerID.GetOwnerIdentification())
 		}
