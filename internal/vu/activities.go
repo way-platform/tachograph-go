@@ -4,6 +4,7 @@ import (
 	"encoding/binary"
 	"fmt"
 
+	"github.com/way-platform/tachograph-go/internal/safemath"
 	vuv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/vu/v1"
 )
 
@@ -60,7 +61,11 @@ func sizeOfActivitiesGen1(data []byte) (totalSize, signatureSize int, err error)
 	//  vehicleOdometerValueAtInsertion 3, cardSlotNumber 1, cardWithdrawalTime 4,
 	//  vehicleOdometerValueAtWithdrawal 3, previousVehicleInfo 19, manualInputFlag 1)
 	const vuCardIWRecordSize = 129
-	offset += int(noOfIWRecords) * vuCardIWRecordSize
+	iwSize, mulErr := safemath.MulInt(int(noOfIWRecords), vuCardIWRecordSize)
+	if mulErr != nil {
+		return 0, 0, fmt.Errorf("IW records overflow: count=%d recordSize=%d: %w", noOfIWRecords, vuCardIWRecordSize, mulErr)
+	}
+	offset += iwSize
 
 	// VuActivityDailyData: 2 bytes count + variable activity changes
 	if len(data[offset:]) < 2 {
@@ -71,7 +76,11 @@ func sizeOfActivitiesGen1(data []byte) (totalSize, signatureSize int, err error)
 
 	// Each ActivityChangeInfo: 2 bytes
 	const activityChangeInfoSize = 2
-	offset += int(noOfActivityChanges) * activityChangeInfoSize
+	actSize, mulErr := safemath.MulInt(int(noOfActivityChanges), activityChangeInfoSize)
+	if mulErr != nil {
+		return 0, 0, fmt.Errorf("activity changes overflow: count=%d recordSize=%d: %w", noOfActivityChanges, activityChangeInfoSize, mulErr)
+	}
+	offset += actSize
 
 	// VuPlaceDailyWorkPeriodData: 1 byte count + variable place records
 	if len(data[offset:]) < 1 {
@@ -82,7 +91,11 @@ func sizeOfActivitiesGen1(data []byte) (totalSize, signatureSize int, err error)
 
 	// Each VuPlaceDailyWorkPeriodRecordFirstGen: 28 bytes (18 FullCardNumber + 10 PlaceRecordFirstGen)
 	const vuPlaceDailyWorkPeriodRecordSize = 28
-	offset += int(noOfPlaceRecords) * vuPlaceDailyWorkPeriodRecordSize
+	placeSize, mulErr := safemath.MulInt(int(noOfPlaceRecords), vuPlaceDailyWorkPeriodRecordSize)
+	if mulErr != nil {
+		return 0, 0, fmt.Errorf("place records overflow: count=%d recordSize=%d: %w", noOfPlaceRecords, vuPlaceDailyWorkPeriodRecordSize, mulErr)
+	}
+	offset += placeSize
 
 	// VuSpecificConditionData: 2 bytes count + variable condition records
 	if len(data[offset:]) < 2 {
@@ -93,7 +106,11 @@ func sizeOfActivitiesGen1(data []byte) (totalSize, signatureSize int, err error)
 
 	// Each SpecificConditionRecord: 5 bytes (4 TimeReal + 1 SpecificConditionType)
 	const specificConditionRecordSize = 5
-	offset += int(noOfSpecificConditionRecords) * specificConditionRecordSize
+	condSize, mulErr := safemath.MulInt(int(noOfSpecificConditionRecords), specificConditionRecordSize)
+	if mulErr != nil {
+		return 0, 0, fmt.Errorf("specific condition records overflow: count=%d recordSize=%d: %w", noOfSpecificConditionRecords, specificConditionRecordSize, mulErr)
+	}
+	offset += condSize
 
 	// Signature: 128 bytes for Gen1 RSA
 	const gen1SignatureSize = 128

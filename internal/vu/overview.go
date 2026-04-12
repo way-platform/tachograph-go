@@ -3,6 +3,7 @@ package vu
 import (
 	"fmt"
 
+	"github.com/way-platform/tachograph-go/internal/safemath"
 	vuv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/vu/v1"
 )
 
@@ -67,7 +68,11 @@ func sizeOfOverviewGen1(data []byte) (totalSize, signatureSize int, err error) {
 	// Each VuCompanyLocksRecordFirstGen: 4 + 4 + 36 + 36 + 18 = 98 bytes
 	// (lockInTime, lockOutTime, companyName, companyAddress, companyCardNumber)
 	const vuCompanyLocksRecordSize = 98
-	offset += int(noOfLocks) * vuCompanyLocksRecordSize
+	locksSize, mulErr := safemath.MulInt(int(noOfLocks), vuCompanyLocksRecordSize)
+	if mulErr != nil {
+		return 0, 0, fmt.Errorf("company locks overflow: count=%d recordSize=%d: %w", noOfLocks, vuCompanyLocksRecordSize, mulErr)
+	}
+	offset += locksSize
 
 	// VuControlActivityData: 1 byte count + variable records
 	if len(data[offset:]) < 1 {
@@ -79,7 +84,11 @@ func sizeOfOverviewGen1(data []byte) (totalSize, signatureSize int, err error) {
 	// Each VuControlActivityRecordFirstGen: 1 + 4 + 18 + 4 + 4 = 31 bytes
 	// (controlType, controlTime, controlCardNumber, downloadPeriodBeginTime, downloadPeriodEndTime)
 	const vuControlActivityRecordSize = 31
-	offset += int(noOfControls) * vuControlActivityRecordSize
+	controlsSize, mulErr := safemath.MulInt(int(noOfControls), vuControlActivityRecordSize)
+	if mulErr != nil {
+		return 0, 0, fmt.Errorf("control activity overflow: count=%d recordSize=%d: %w", noOfControls, vuControlActivityRecordSize, mulErr)
+	}
+	offset += controlsSize
 
 	// Signature: 128 bytes for Gen1 RSA
 	const gen1SignatureSize = 128

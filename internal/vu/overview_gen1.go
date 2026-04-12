@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/way-platform/tachograph-go/internal/dd"
+	"github.com/way-platform/tachograph-go/internal/safemath"
 	ddv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
 	vuv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/vu/v1"
 	"google.golang.org/protobuf/proto"
@@ -212,7 +213,11 @@ func unmarshalOverviewGen1(value []byte) (*vuv1.OverviewGen1, error) {
 	offset += 1
 
 	const companyLockRecordSize = 98 // 4 + 4 + 36 + 36 + 18
-	if offset+int(noOfLocks)*companyLockRecordSize > len(data) {
+	locksDataSize, mulErr := safemath.MulInt(int(noOfLocks), companyLockRecordSize)
+	if mulErr != nil {
+		return nil, fmt.Errorf("company locks overflow: count=%d recordSize=%d: %w", noOfLocks, companyLockRecordSize, mulErr)
+	}
+	if offset+locksDataSize > len(data) {
 		return nil, fmt.Errorf("insufficient data for VuCompanyLocksData records")
 	}
 
@@ -272,7 +277,11 @@ func unmarshalOverviewGen1(value []byte) (*vuv1.OverviewGen1, error) {
 	offset += 1
 
 	const controlActivityRecordSize = 31 // 1 + 4 + 18 + 4 + 4
-	if offset+int(noOfControls)*controlActivityRecordSize > len(data) {
+	controlsDataSize, mulErr := safemath.MulInt(int(noOfControls), controlActivityRecordSize)
+	if mulErr != nil {
+		return nil, fmt.Errorf("control activity overflow: count=%d recordSize=%d: %w", noOfControls, controlActivityRecordSize, mulErr)
+	}
+	if offset+controlsDataSize > len(data) {
 		return nil, fmt.Errorf("insufficient data for VuControlActivityData records")
 	}
 

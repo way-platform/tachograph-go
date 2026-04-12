@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/way-platform/tachograph-go/internal/dd"
+	"github.com/way-platform/tachograph-go/internal/safemath"
 	ddv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
 	vuv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/vu/v1"
 	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
@@ -247,7 +248,11 @@ func parseTimeRealRecordArray(data []byte, offset int) (*timestamppb.Timestamp, 
 		return nil, 0, fmt.Errorf("unmarshal TimeReal: %w", err)
 	}
 
-	totalSize := headerSize + int(recordSize)*int(noOfRecords)
+	payloadSize, mulErr := safemath.MulInt(int(recordSize), int(noOfRecords))
+	if mulErr != nil {
+		return nil, 0, fmt.Errorf("RecordArray overflow: recordSize=%d noOfRecords=%d: %w", recordSize, noOfRecords, mulErr)
+	}
+	totalSize := headerSize + payloadSize
 	return timeReal, totalSize, nil
 }
 
@@ -273,7 +278,11 @@ func parseOdometerValueMidnightRecordArray(data []byte, offset int) (int32, int,
 		return 0, 0, fmt.Errorf("unmarshal Odometer: %w", err)
 	}
 
-	totalSize := headerSize + int(recordSize)*int(noOfRecords)
+	payloadSize, mulErr := safemath.MulInt(int(recordSize), int(noOfRecords))
+	if mulErr != nil {
+		return 0, 0, fmt.Errorf("RecordArray overflow: recordSize=%d noOfRecords=%d: %w", recordSize, noOfRecords, mulErr)
+	}
+	totalSize := headerSize + payloadSize
 	return int32(odometer), totalSize, nil
 }
 
@@ -310,7 +319,11 @@ func parseVuCardIWRecordArrayG2(data []byte, offset int) ([]*ddv1.VuCardIWRecord
 		recordStart = recordEnd
 	}
 
-	totalSize := headerSize + int(recordSize)*int(noOfRecords)
+	payloadSize, mulErr := safemath.MulInt(int(recordSize), int(noOfRecords))
+	if mulErr != nil {
+		return nil, 0, fmt.Errorf("RecordArray overflow: recordSize=%d noOfRecords=%d: %w", recordSize, noOfRecords, mulErr)
+	}
+	totalSize := headerSize + payloadSize
 	return records, totalSize, nil
 }
 
@@ -347,7 +360,11 @@ func parseVuActivityDailyRecordArray(data []byte, offset int) ([]*ddv1.ActivityC
 		recordStart = recordEnd
 	}
 
-	totalSize := headerSize + int(recordSize)*int(noOfRecords)
+	payloadSize, mulErr := safemath.MulInt(int(recordSize), int(noOfRecords))
+	if mulErr != nil {
+		return nil, 0, fmt.Errorf("RecordArray overflow: recordSize=%d noOfRecords=%d: %w", recordSize, noOfRecords, mulErr)
+	}
+	totalSize := headerSize + payloadSize
 	return records, totalSize, nil
 }
 
@@ -384,7 +401,11 @@ func parseVuPlaceDailyWorkPeriodRecordArrayG2(data []byte, offset int) ([]*ddv1.
 		recordStart = recordEnd
 	}
 
-	totalSize := headerSize + int(recordSize)*int(noOfRecords)
+	payloadSize, mulErr := safemath.MulInt(int(recordSize), int(noOfRecords))
+	if mulErr != nil {
+		return nil, 0, fmt.Errorf("RecordArray overflow: recordSize=%d noOfRecords=%d: %w", recordSize, noOfRecords, mulErr)
+	}
+	totalSize := headerSize + payloadSize
 	return records, totalSize, nil
 }
 
@@ -420,7 +441,11 @@ func parseVuGNSSADRecordArray(data []byte, offset int) ([]*ddv1.VuGNSSADRecord, 
 		recordStart = recordEnd
 	}
 
-	totalSize := headerSize + int(recordSize)*int(noOfRecords)
+	payloadSize, mulErr := safemath.MulInt(int(recordSize), int(noOfRecords))
+	if mulErr != nil {
+		return nil, 0, fmt.Errorf("RecordArray overflow: recordSize=%d noOfRecords=%d: %w", recordSize, noOfRecords, mulErr)
+	}
+	totalSize := headerSize + payloadSize
 	return records, totalSize, nil
 }
 
@@ -457,7 +482,11 @@ func parseVuSpecificConditionRecordArray(data []byte, offset int) ([]*ddv1.Speci
 		recordStart = recordEnd
 	}
 
-	totalSize := headerSize + int(recordSize)*int(noOfRecords)
+	payloadSize, mulErr := safemath.MulInt(int(recordSize), int(noOfRecords))
+	if mulErr != nil {
+		return nil, 0, fmt.Errorf("RecordArray overflow: recordSize=%d noOfRecords=%d: %w", recordSize, noOfRecords, mulErr)
+	}
+	totalSize := headerSize + payloadSize
 	return records, totalSize, nil
 }
 

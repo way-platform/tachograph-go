@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/way-platform/tachograph-go/internal/dd"
+	"github.com/way-platform/tachograph-go/internal/safemath"
 	vuv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/vu/v1"
 )
 
@@ -136,7 +137,11 @@ func parseVuDetailedSpeedBlockRecordArray(data []byte, offset int) ([]*vuv1.Deta
 		recordStart = recordEnd
 	}
 
-	totalSize := headerSize + int(recordSize)*int(noOfRecords)
+	payloadSize, mulErr := safemath.MulInt(int(recordSize), int(noOfRecords))
+	if mulErr != nil {
+		return nil, 0, fmt.Errorf("RecordArray overflow: recordSize=%d noOfRecords=%d: %w", recordSize, noOfRecords, mulErr)
+	}
+	totalSize := headerSize + payloadSize
 	return records, totalSize, nil
 }
 

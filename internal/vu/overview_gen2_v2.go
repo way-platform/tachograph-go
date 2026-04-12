@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/way-platform/tachograph-go/internal/dd"
+	"github.com/way-platform/tachograph-go/internal/safemath"
 	ddv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
 	vuv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/vu/v1"
 )
@@ -387,7 +388,11 @@ func parseDownloadActivityDataRecordArrayGen2V2(data []byte, offset int) ([]*vuv
 		recordStart = recordEnd
 	}
 
-	totalSize := headerSize + int(recordSize)*int(noOfRecords)
+	payloadSize, mulErr := safemath.MulInt(int(recordSize), int(noOfRecords))
+	if mulErr != nil {
+		return nil, 0, fmt.Errorf("RecordArray overflow: recordSize=%d noOfRecords=%d: %w", recordSize, noOfRecords, mulErr)
+	}
+	totalSize := headerSize + payloadSize
 	return records, totalSize, nil
 }
 
@@ -450,7 +455,11 @@ func parseCompanyLocksRecordArrayGen2V2(data []byte, offset int) ([]*vuv1.Overvi
 		recordStart = recordEnd
 	}
 
-	totalSize := headerSize + int(recordSize)*int(noOfRecords)
+	payloadSize, mulErr := safemath.MulInt(int(recordSize), int(noOfRecords))
+	if mulErr != nil {
+		return nil, 0, fmt.Errorf("RecordArray overflow: recordSize=%d noOfRecords=%d: %w", recordSize, noOfRecords, mulErr)
+	}
+	totalSize := headerSize + payloadSize
 	return records, totalSize, nil
 }
 
@@ -513,7 +522,11 @@ func parseControlActivityRecordArrayGen2V2(data []byte, offset int) ([]*vuv1.Ove
 		recordStart = recordEnd
 	}
 
-	totalSize := headerSize + int(recordSize)*int(noOfRecords)
+	payloadSize, mulErr := safemath.MulInt(int(recordSize), int(noOfRecords))
+	if mulErr != nil {
+		return nil, 0, fmt.Errorf("RecordArray overflow: recordSize=%d noOfRecords=%d: %w", recordSize, noOfRecords, mulErr)
+	}
+	totalSize := headerSize + payloadSize
 	return records, totalSize, nil
 }
 

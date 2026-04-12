@@ -3,6 +3,7 @@ package vu
 import (
 	"fmt"
 
+	"github.com/way-platform/tachograph-go/internal/safemath"
 	vuv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/vu/v1"
 )
 
@@ -80,7 +81,11 @@ func sizeOfTechnicalDataGen1(data []byte) (totalSize, signatureSize int, err err
 
 	// Each VuCalibrationRecordFirstGen: 167 bytes (per Data Dictionary 2.174)
 	const vuCalibrationRecordSize = 167
-	offset += int(noOfVuCalibrationRecords) * vuCalibrationRecordSize
+	calibSize, mulErr := safemath.MulInt(int(noOfVuCalibrationRecords), vuCalibrationRecordSize)
+	if mulErr != nil {
+		return 0, 0, fmt.Errorf("calibration records overflow: count=%d recordSize=%d: %w", noOfVuCalibrationRecords, vuCalibrationRecordSize, mulErr)
+	}
+	offset += calibSize
 
 	// Signature: 128 bytes for Gen1 RSA
 	const gen1SignatureSize = 128

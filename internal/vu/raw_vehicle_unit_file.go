@@ -4,6 +4,8 @@ import (
 	"encoding/binary"
 	"fmt"
 
+	"github.com/way-platform/tachograph-go/internal/safemath"
+
 	ddv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
 	vuv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/vu/v1"
 	"google.golang.org/protobuf/proto"
@@ -143,7 +145,17 @@ func sizeOfRecordArray(data []byte, offset int) (int, error) {
 	recordSize := binary.BigEndian.Uint16(data[offset+1:])
 	noOfRecords := binary.BigEndian.Uint16(data[offset+3:])
 
-	totalSize := headerSize + int(recordSize)*int(noOfRecords)
+	payloadSize, err := safemath.MulInt(int(recordSize), int(noOfRecords))
+	if err != nil {
+		return 0, fmt.Errorf("RecordArray overflow: recordSize=%d noOfRecords=%d: %w", recordSize, noOfRecords, err)
+	}
+	totalSize := headerSize + payloadSize
+
+	// Bounds check: totalSize must not exceed available data
+	if offset+totalSize > len(data) {
+		return 0, fmt.Errorf("RecordArray exceeds data: need %d bytes at offset %d, have %d", totalSize, offset, len(data)-offset)
+	}
+
 	return totalSize, nil
 }
 

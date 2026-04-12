@@ -3,6 +3,7 @@ package vu
 import (
 	"fmt"
 
+	"github.com/way-platform/tachograph-go/internal/safemath"
 	vuv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/vu/v1"
 )
 
@@ -85,7 +86,11 @@ func sizeOfEventsAndFaultsGen1(data []byte) (totalSize, signatureSize int, err e
 
 	// Each VuFaultRecord: 82 bytes (per Data Dictionary 2.201)
 	const vuFaultRecordSize = 82
-	offset += int(noOfVuFaults) * vuFaultRecordSize
+	faultsSize, mulErr := safemath.MulInt(int(noOfVuFaults), vuFaultRecordSize)
+	if mulErr != nil {
+		return 0, 0, fmt.Errorf("fault records overflow: count=%d recordSize=%d: %w", noOfVuFaults, vuFaultRecordSize, mulErr)
+	}
+	offset += faultsSize
 
 	// VuEventData: 1 byte count + variable event records
 	if len(data[offset:]) < 1 {
@@ -96,7 +101,11 @@ func sizeOfEventsAndFaultsGen1(data []byte) (totalSize, signatureSize int, err e
 
 	// Each VuEventRecord: 83 bytes (per Data Dictionary 2.198)
 	const vuEventRecordSize = 83
-	offset += int(noOfVuEvents) * vuEventRecordSize
+	eventsSize, mulErr := safemath.MulInt(int(noOfVuEvents), vuEventRecordSize)
+	if mulErr != nil {
+		return 0, 0, fmt.Errorf("event records overflow: count=%d recordSize=%d: %w", noOfVuEvents, vuEventRecordSize, mulErr)
+	}
+	offset += eventsSize
 
 	// VuOverSpeedingControlData: 9 bytes (fixed structure)
 	offset += 9
@@ -110,7 +119,11 @@ func sizeOfEventsAndFaultsGen1(data []byte) (totalSize, signatureSize int, err e
 
 	// Each VuOverSpeedingEventRecord: 31 bytes
 	const vuOverSpeedingEventRecordSize = 31
-	offset += int(noOfVuOverSpeedingEvents) * vuOverSpeedingEventRecordSize
+	overspeedSize, mulErr := safemath.MulInt(int(noOfVuOverSpeedingEvents), vuOverSpeedingEventRecordSize)
+	if mulErr != nil {
+		return 0, 0, fmt.Errorf("overspeed records overflow: count=%d recordSize=%d: %w", noOfVuOverSpeedingEvents, vuOverSpeedingEventRecordSize, mulErr)
+	}
+	offset += overspeedSize
 
 	// VuTimeAdjustmentData: 1 byte count + variable time adjustment records
 	if len(data[offset:]) < 1 {
@@ -121,7 +134,11 @@ func sizeOfEventsAndFaultsGen1(data []byte) (totalSize, signatureSize int, err e
 
 	// Each VuTimeAdjustmentRecord: 98 bytes
 	const vuTimeAdjustmentRecordSize = 98
-	offset += int(noOfVuTimeAdjRecords) * vuTimeAdjustmentRecordSize
+	timeAdjSize, mulErr := safemath.MulInt(int(noOfVuTimeAdjRecords), vuTimeAdjustmentRecordSize)
+	if mulErr != nil {
+		return 0, 0, fmt.Errorf("time adjustment records overflow: count=%d recordSize=%d: %w", noOfVuTimeAdjRecords, vuTimeAdjustmentRecordSize, mulErr)
+	}
+	offset += timeAdjSize
 
 	// Signature: 128 bytes for Gen1 RSA
 	const gen1SignatureSize = 128
