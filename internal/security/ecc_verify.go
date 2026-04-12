@@ -18,6 +18,9 @@ import (
 // This implements certificate chain verification for Generation 2 tachograph certificates
 // as specified in Appendix 11, Section 6.3 "Certificate Verification".
 //
+// Certificate EffectiveDate and ExpirationDate are checked against time.Now().
+// Use VerifyEccCertificateWithEccRootAndClock to inject a custom clock.
+//
 // The signature algorithm used is ECDSA with the hash algorithm determined by the root's
 // key size as specified in CSM_50:
 //   - 256-bit ECC → SHA-256
@@ -27,6 +30,12 @@ import (
 // The certificate signature is verified over the encoded certificate body (including the
 // certificate body tag and length) as specified in CSM_150.
 func VerifyEccCertificateWithEccRoot(cert, root *securityv1.EccCertificate) error {
+	return VerifyEccCertificateWithEccRootAndClock(cert, root, RealClock{})
+}
+
+// VerifyEccCertificateWithEccRootAndClock is like VerifyEccCertificateWithEccRoot but uses
+// the provided Clock for certificate validity checking. This enables deterministic testing.
+func VerifyEccCertificateWithEccRootAndClock(cert, root *securityv1.EccCertificate, clock Clock) error {
 	if cert == nil {
 		return fmt.Errorf("certificate cannot be nil")
 	}
@@ -118,6 +127,17 @@ func VerifyEccCertificateWithEccRoot(cert, root *securityv1.EccCertificate) erro
 		return fmt.Errorf("ECDSA certificate signature verification failed")
 	}
 
+	// Check certificate validity period.
+	// Gen2 ECC certificates have both CertificateEffectiveDate and
+	// CertificateExpirationDate.
+	if err := CheckCertificateValidity(
+		cert.GetCertificateEffectiveDate(),
+		cert.GetCertificateExpirationDate(),
+		clock,
+	); err != nil {
+		return fmt.Errorf("certificate validity check failed: %w", err)
+	}
+
 	return nil
 }
 
@@ -126,9 +146,17 @@ func VerifyEccCertificateWithEccRoot(cert, root *securityv1.EccCertificate) erro
 // This verifies the certificate signature using the CA's public key with ECDSA,
 // following the same procedure as VerifyEccCertificateWithEccRoot but using
 // the CA certificate as the signer.
+//
+// Certificate EffectiveDate and ExpirationDate are checked against time.Now().
+// Use VerifyEccCertificateWithCAClock to inject a custom clock.
 func VerifyEccCertificateWithCA(cert, ca *securityv1.EccCertificate) error {
-	// The verification process is identical whether verifying against root or CA
 	return VerifyEccCertificateWithEccRoot(cert, ca)
+}
+
+// VerifyEccCertificateWithCAClock is like VerifyEccCertificateWithCA but uses the
+// provided Clock for certificate validity checking. This enables deterministic testing.
+func VerifyEccCertificateWithCAClock(cert, ca *securityv1.EccCertificate, clock Clock) error {
+	return VerifyEccCertificateWithEccRootAndClock(cert, ca, clock)
 }
 
 // parseCurveOID parses an elliptic curve OID and returns the hash size in bits
