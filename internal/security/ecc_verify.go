@@ -43,6 +43,19 @@ func VerifyEccCertificateWithEccRoot(cert, root *securityv1.EccCertificate) erro
 		return fmt.Errorf("root certificate public key is incomplete")
 	}
 
+	// Verify that the certificate's CAR matches the root/CA's CHR.
+	// The CAR (Certificate Authority Reference) indicates which CA signed the cert;
+	// the CHR (Certificate Holder Reference) identifies the CA. A mismatch means the
+	// certificate was not issued by this CA. Only check when both values are populated
+	// (some certificates may not have CAR/CHR set if they haven't been fully parsed).
+	certCAR := cert.GetCertificateAuthorityReference()
+	rootCHR := root.GetCertificateHolderReference()
+	if certCAR != "" && rootCHR != "" && certCAR != rootCHR {
+		cert.SetSignatureValid(false)
+		return fmt.Errorf("CAR mismatch: certificate references CA %s, but verifier has CHR %s",
+			certCAR, rootCHR)
+	}
+
 	// Parse root's curve parameters to determine hash size and curve
 	hashBits, curve, err := parseCurveOID(rootPubKey.GetDomainParametersOid())
 	if err != nil {
