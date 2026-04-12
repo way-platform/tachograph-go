@@ -132,7 +132,7 @@ func TestSizeOfRecordArray_OverflowViaUnmarshalRaw(t *testing.T) {
 	// RecordArray header: recordType=0x01, recordSize=0xFFFF, noOfRecords=0xFFFF
 	data = append(data, buildRecordArrayHeader(0x01, 0xFFFF, 0xFFFF)...)
 
-	_, err := UnmarshalOptions{}.UnmarshalRawVehicleUnitFile(data)
+	_, err := UnmarshalOptions{Strict: true}.UnmarshalRawVehicleUnitFile(data)
 	if err == nil {
 		t.Fatal("expected error from overflow in VU file parsing, got nil")
 	}
