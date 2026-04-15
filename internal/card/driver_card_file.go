@@ -568,6 +568,18 @@ func (opts ParseOptions) ParseRawDriverCardFile(input *cardv1.RawCardFile) (*car
 			}
 			tachographG2DF.SetPlacesAuthentication(placesAuthentication)
 
+		case cardv1.ElementaryFileType_EF_GNSS_PLACES_AUTHENTICATION:
+			gnssPlacesAuthentication, err := unmarshalOpts.unmarshalGnssPlacesAuthentication(record.GetValue())
+			if err != nil {
+				return nil, err
+			}
+
+			// Only Gen2
+			if tachographG2DF == nil {
+				tachographG2DF = &cardv1.DriverCardFile_TachographG2{}
+			}
+			tachographG2DF.SetGnssPlacesAuthentication(gnssPlacesAuthentication)
+
 		case cardv1.ElementaryFileType_EF_BORDER_CROSSINGS:
 			borderCrossings, err := unmarshalOpts.unmarshalBorderCrossings(record.GetValue())
 			if err != nil {
