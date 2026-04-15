@@ -556,6 +556,18 @@ func (opts ParseOptions) ParseRawDriverCardFile(input *cardv1.RawCardFile) (*car
 			}
 			tachographG2DF.SetApplicationIdentificationV2(appIdV2)
 
+		case cardv1.ElementaryFileType_EF_BORDER_CROSSINGS:
+			borderCrossings, err := unmarshalOpts.unmarshalBorderCrossings(record.GetValue())
+			if err != nil {
+				return nil, err
+			}
+
+			// Only Gen2
+			if tachographG2DF == nil {
+				tachographG2DF = &cardv1.DriverCardFile_TachographG2{}
+			}
+			tachographG2DF.SetBorderCrossings(borderCrossings)
+
 		case cardv1.ElementaryFileType_EF_CARD_CERTIFICATE:
 			// Gen1: Card authentication certificate
 			// Only appears in Gen1 DF (Tachograph)
