@@ -616,6 +616,18 @@ func (opts ParseOptions) ParseRawDriverCardFile(input *cardv1.RawCardFile) (*car
 			}
 			tachographG2DF.SetLoadTypeEntries(loadTypeEntries)
 
+		case cardv1.ElementaryFileType_EF_COMPANY_ACTIVITY_DATA:
+			companyActivityData, err := unmarshalOpts.unmarshalCompanyActivityData(record.GetValue())
+			if err != nil {
+				return nil, err
+			}
+
+			// Only Gen2
+			if tachographG2DF == nil {
+				tachographG2DF = &cardv1.DriverCardFile_TachographG2{}
+			}
+			tachographG2DF.SetCompanyActivityData(companyActivityData)
+
 		case cardv1.ElementaryFileType_EF_CARD_CERTIFICATE:
 			// Gen1: Card authentication certificate
 			// Only appears in Gen1 DF (Tachograph)
