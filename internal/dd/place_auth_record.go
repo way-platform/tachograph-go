@@ -88,7 +88,9 @@ func (opts UnmarshalOptions) UnmarshalPlaceAuthRecord(data []byte) (*ddv1.PlaceA
 	if err != nil {
 		return nil, fmt.Errorf("unmarshal vehicle odometer value: %w", err)
 	}
-	record.SetVehicleOdometerKm(int32(vehicleOdometerValue))
+	if vehicleOdometerValue != nil {
+		record.SetVehicleOdometerKm(*vehicleOdometerValue)
+	}
 
 	// entryGNSSPlaceAuthRecord (12 bytes)
 	entryGNSSPlaceAuthRecord, err := opts.UnmarshalGNSSPlaceAuthRecord(data[idxEntryGNSSPlaceAuthRecord : idxEntryGNSSPlaceAuthRecord+lenGNSSPlaceAuthRecord])

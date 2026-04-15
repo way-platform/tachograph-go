@@ -66,7 +66,9 @@ func unmarshalActivitiesGen2V2(value []byte) (*vuv1.ActivitiesGen2V2, error) {
 	if err != nil {
 		return nil, fmt.Errorf("parse OdometerValueMidnightRecordArray: %w", err)
 	}
-	activities.SetOdometerMidnightKm(odometerMidnightKm)
+	if odometerMidnightKm != nil {
+		activities.SetOdometerMidnightKm(*odometerMidnightKm)
+	}
 	offset += bytesRead
 
 	// VuCardIWRecordArray (Gen2 - 132 bytes per record, same as V1)
