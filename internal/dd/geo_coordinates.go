@@ -21,17 +21,26 @@ import (
 //   - Latitude (3 bytes): Signed 24-bit integer in ±DDMM.M × 10 format
 //   - Longitude (3 bytes): Signed 24-bit integer in ±DDDMM.M × 10 format
 //
-// Unknown position marker: 0x7FFFFF (8388607 decimal)
+// Returns nil when position is unavailable. The canonical sentinel is both
+// latitude and longitude equal to 0x7FFFFF (8388607). If only one field
+// carries the sentinel the data is malformed; the position is treated as
+// unavailable in that case too.
 func (opts UnmarshalOptions) UnmarshalGeoCoordinates(data []byte) (*ddv1.GeoCoordinates, error) {
 	const (
-		lenGeoCoordinates = 6 // 3 bytes latitude + 3 bytes longitude
+		lenGeoCoordinates  = 6 // 3 bytes latitude + 3 bytes longitude
+		geoSentinel       int32 = 0x7FFFFF
 	)
 	if len(data) != lenGeoCoordinates {
 		return nil, fmt.Errorf("invalid data length for GeoCoordinates: got %d, want %d", len(data), lenGeoCoordinates)
 	}
+	lat := readInt24(data[0:3])
+	lon := readInt24(data[3:6])
+	if lat == geoSentinel || lon == geoSentinel {
+		return nil, nil
+	}
 	var output ddv1.GeoCoordinates
-	output.SetLatitude(readInt24(data[0:3]))
-	output.SetLongitude(readInt24(data[3:6]))
+	output.SetLatitude(lat)
+	output.SetLongitude(lon)
 	return &output, nil
 }
 
