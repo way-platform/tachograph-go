@@ -68,7 +68,9 @@ func unmarshalActivitiesGen2V1(value []byte) (*vuv1.ActivitiesGen2V1, error) {
 	if err != nil {
 		return nil, fmt.Errorf("parse OdometerValueMidnightRecordArray: %w", err)
 	}
-	activities.SetOdometerMidnightKm(odometerMidnightKm)
+	if odometerMidnightKm != nil {
+		activities.SetOdometerMidnightKm(*odometerMidnightKm)
+	}
 	offset += bytesRead
 
 	// VuCardIWRecordArray (Gen2 - 132 bytes per record)
@@ -252,29 +254,30 @@ func parseTimeRealRecordArray(data []byte, offset int) (*timestamppb.Timestamp, 
 }
 
 // parseOdometerValueMidnightRecordArray parses an OdometerValueMidnightRecordArray (should have 1 record of 3 bytes).
-func parseOdometerValueMidnightRecordArray(data []byte, offset int) (int32, int, error) {
+// Returns nil when the odometer sentinel 0xFFFFFF is present.
+func parseOdometerValueMidnightRecordArray(data []byte, offset int) (*int32, int, error) {
 	_, recordSize, noOfRecords, headerSize, err := parseRecordArrayHeader(data, offset)
 	if err != nil {
-		return 0, 0, err
+		return nil, 0, err
 	}
 
 	if noOfRecords != 1 {
-		return 0, 0, fmt.Errorf("expected 1 OdometerValueMidnight record, got %d", noOfRecords)
+		return nil, 0, fmt.Errorf("expected 1 OdometerValueMidnight record, got %d", noOfRecords)
 	}
 
 	if recordSize != 3 {
-		return 0, 0, fmt.Errorf("expected OdometerValueMidnight record size 3, got %d", recordSize)
+		return nil, 0, fmt.Errorf("expected OdometerValueMidnight record size 3, got %d", recordSize)
 	}
 
 	recordStart := offset + headerSize
 	var opts dd.UnmarshalOptions
 	odometer, err := opts.UnmarshalOdometer(data[recordStart : recordStart+int(recordSize)])
 	if err != nil {
-		return 0, 0, fmt.Errorf("unmarshal Odometer: %w", err)
+		return nil, 0, fmt.Errorf("unmarshal Odometer: %w", err)
 	}
 
 	totalSize := headerSize + int(recordSize)*int(noOfRecords)
-	return int32(odometer), totalSize, nil
+	return odometer, totalSize, nil
 }
 
 // parseVuCardIWRecordArrayG2 parses a VuCardIWRecordArray (Gen2 - 132 bytes per record).

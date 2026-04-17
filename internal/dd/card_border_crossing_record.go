@@ -72,7 +72,9 @@ func (opts UnmarshalOptions) UnmarshalCardBorderCrossingRecord(data []byte) (*dd
 	if err != nil {
 		return nil, fmt.Errorf("unmarshal vehicle odometer value: %w", err)
 	}
-	record.SetVehicleOdometerKm(int32(vehicleOdometerValue))
+	if vehicleOdometerValue != nil {
+		record.SetVehicleOdometerKm(*vehicleOdometerValue)
+	}
 
 	return record, nil
 }
