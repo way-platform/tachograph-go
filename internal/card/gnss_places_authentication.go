@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	cardv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1"
+	ddv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
 )
 
 // unmarshalGnssPlacesAuthentication parses the EF_GNSS_Places_Authentication file.
@@ -63,4 +64,29 @@ func (opts UnmarshalOptions) unmarshalGnssPlacesAuthentication(data []byte) (*ca
 	target.SetRecords(records)
 
 	return target, nil
+}
+
+// MarshalGnssPlacesAuthentication marshals the EF_GNSS_Places_Authentication file.
+func (opts MarshalOptions) MarshalGnssPlacesAuthentication(msg *cardv1.GnssPlacesAuthentication) ([]byte, error) {
+	if msg == nil {
+		return nil, nil
+	}
+
+	var dst []byte
+	dst = binary.BigEndian.AppendUint16(dst, uint16(msg.GetNewestRecordIndex()))
+
+	for i, record := range msg.GetRecords() {
+		// GNSSAuthStatusADRecord has the same layout as PlaceAuthStatusRecord.
+		ddRecord := &ddv1.PlaceAuthStatusRecord{}
+		ddRecord.SetEntryTime(record.GetTimestamp())
+		ddRecord.SetAuthenticationStatus(record.GetAuthenticationStatus())
+
+		b, err := opts.MarshalPlaceAuthStatusRecord(ddRecord)
+		if err != nil {
+			return nil, fmt.Errorf("failed to marshal GNSS auth status record %d: %w", i, err)
+		}
+		dst = append(dst, b...)
+	}
+
+	return dst, nil
 }

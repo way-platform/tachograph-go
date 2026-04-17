@@ -128,3 +128,65 @@ func (opts UnmarshalOptions) unmarshalCompanyActivityData(data []byte) (*cardv1.
 
 	return target, nil
 }
+
+// MarshalCompanyActivityData marshals the EF_Company_Activity_Data file.
+func (opts MarshalOptions) MarshalCompanyActivityData(msg *cardv1.CompanyActivityData) ([]byte, error) {
+	if msg == nil {
+		return nil, nil
+	}
+
+	const lenRecord = 47
+
+	records := msg.GetRecords()
+	dst := make([]byte, 2, 2+len(records)*lenRecord)
+	binary.BigEndian.PutUint16(dst[0:2], uint16(msg.GetNewestRecordIndex()))
+
+	marshalOpts := dd.MarshalOptions{}
+
+	for i, record := range records {
+		rec := make([]byte, lenRecord)
+
+		// companyActivityType (1 byte)
+		activityTypeByte, _ := dd.MarshalEnum(record.GetCompanyActivityType())
+		rec[0] = activityTypeByte
+
+		// companyActivityTime (4 bytes)
+		activityTimeBytes, err := marshalOpts.MarshalTimeReal(record.GetCompanyActivityTime())
+		if err != nil {
+			return nil, fmt.Errorf("record %d: failed to marshal company activity time: %w", i, err)
+		}
+		copy(rec[1:5], activityTimeBytes)
+
+		// cardNumberInformation (19 bytes)
+		cardNumberBytes, err := marshalOpts.MarshalFullCardNumberAndGeneration(record.GetCardNumberInformation())
+		if err != nil {
+			return nil, fmt.Errorf("record %d: failed to marshal card number information: %w", i, err)
+		}
+		copy(rec[5:24], cardNumberBytes)
+
+		// vehicleRegistrationInformation (15 bytes)
+		vehicleRegBytes, err := marshalOpts.MarshalVehicleRegistrationIdentification(record.GetVehicleRegistrationInformation())
+		if err != nil {
+			return nil, fmt.Errorf("record %d: failed to marshal vehicle registration information: %w", i, err)
+		}
+		copy(rec[24:39], vehicleRegBytes)
+
+		// downloadPeriodBegin (4 bytes)
+		downloadBeginBytes, err := marshalOpts.MarshalTimeReal(record.GetDownloadPeriodBegin())
+		if err != nil {
+			return nil, fmt.Errorf("record %d: failed to marshal download period begin: %w", i, err)
+		}
+		copy(rec[39:43], downloadBeginBytes)
+
+		// downloadPeriodEnd (4 bytes)
+		downloadEndBytes, err := marshalOpts.MarshalTimeReal(record.GetDownloadPeriodEnd())
+		if err != nil {
+			return nil, fmt.Errorf("record %d: failed to marshal download period end: %w", i, err)
+		}
+		copy(rec[43:47], downloadEndBytes)
+
+		dst = append(dst, rec...)
+	}
+
+	return dst, nil
+}

@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	cardv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1"
+	ddv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
 )
 
 // unmarshalPlacesAuthentication parses the EF_Places_Authentication file.
@@ -59,4 +60,28 @@ func (opts UnmarshalOptions) unmarshalPlacesAuthentication(data []byte) (*cardv1
 	target.SetRecords(records)
 
 	return target, nil
+}
+
+// MarshalPlacesAuthentication marshals the EF_Places_Authentication file.
+func (opts MarshalOptions) MarshalPlacesAuthentication(msg *cardv1.PlacesAuthentication) ([]byte, error) {
+	if msg == nil {
+		return nil, nil
+	}
+
+	var dst []byte
+	dst = binary.BigEndian.AppendUint16(dst, uint16(msg.GetNewestRecordIndex()))
+
+	for i, record := range msg.GetRecords() {
+		ddRecord := &ddv1.PlaceAuthStatusRecord{}
+		ddRecord.SetEntryTime(record.GetEntryTime())
+		ddRecord.SetAuthenticationStatus(record.GetAuthenticationStatus())
+
+		b, err := opts.MarshalPlaceAuthStatusRecord(ddRecord)
+		if err != nil {
+			return nil, fmt.Errorf("failed to marshal place auth status record %d: %w", i, err)
+		}
+		dst = append(dst, b...)
+	}
+
+	return dst, nil
 }

@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	cardv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1"
+	ddv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
 )
 
 // unmarshalLoadUnloadOperations parses the EF_Load_Unload_Operations file.
@@ -63,4 +64,32 @@ func (opts UnmarshalOptions) unmarshalLoadUnloadOperations(data []byte) (*cardv1
 	target.SetRecords(records)
 
 	return target, nil
+}
+
+// MarshalLoadUnloadOperations marshals the EF_Load_Unload_Operations file.
+func (opts MarshalOptions) MarshalLoadUnloadOperations(msg *cardv1.LoadUnloadOperations) ([]byte, error) {
+	if msg == nil {
+		return nil, nil
+	}
+
+	var dst []byte
+	dst = binary.BigEndian.AppendUint16(dst, uint16(msg.GetNewestRecordIndex()))
+
+	for i, record := range msg.GetRecords() {
+		ddRecord := &ddv1.CardLoadUnloadRecord{}
+		ddRecord.SetTimeStamp(record.GetTimestamp())
+		ddRecord.SetOperationType(record.GetOperationType())
+		ddRecord.SetGnssPlaceAuthRecord(record.GetGnssPlaceAuthRecord())
+		if record.HasVehicleOdometerKm() {
+			ddRecord.SetVehicleOdometerKm(record.GetVehicleOdometerKm())
+		}
+
+		b, err := opts.MarshalCardLoadUnloadRecord(ddRecord)
+		if err != nil {
+			return nil, fmt.Errorf("failed to marshal load/unload record %d: %w", i, err)
+		}
+		dst = append(dst, b...)
+	}
+
+	return dst, nil
 }

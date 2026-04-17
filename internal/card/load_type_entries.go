@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	cardv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1"
+	ddv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
 )
 
 // unmarshalLoadTypeEntries parses the EF_Load_Type_Entries file.
@@ -59,4 +60,28 @@ func (opts UnmarshalOptions) unmarshalLoadTypeEntries(data []byte) (*cardv1.Load
 	target.SetRecords(records)
 
 	return target, nil
+}
+
+// MarshalLoadTypeEntries marshals the EF_Load_Type_Entries file.
+func (opts MarshalOptions) MarshalLoadTypeEntries(msg *cardv1.LoadTypeEntries) ([]byte, error) {
+	if msg == nil {
+		return nil, nil
+	}
+
+	var dst []byte
+	dst = binary.BigEndian.AppendUint16(dst, uint16(msg.GetNewestRecordIndex()))
+
+	for i, record := range msg.GetRecords() {
+		ddRecord := &ddv1.CardLoadTypeEntryRecord{}
+		ddRecord.SetTimeStamp(record.GetTimestamp())
+		ddRecord.SetLoadTypeEntered(record.GetLoadTypeEntered())
+
+		b, err := opts.MarshalCardLoadTypeEntryRecord(ddRecord)
+		if err != nil {
+			return nil, fmt.Errorf("failed to marshal load type entry record %d: %w", i, err)
+		}
+		dst = append(dst, b...)
+	}
+
+	return dst, nil
 }

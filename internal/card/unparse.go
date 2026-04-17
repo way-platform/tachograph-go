@@ -452,6 +452,72 @@ func UnparseDriverCardFile(file *cardv1.DriverCardFile) (*cardv1.RawCardFile, er
 				return nil, err
 			}
 		}
+
+		// EF_BORDER_CROSSINGS (Gen2 only)
+		if borderCrossings := tachographG2.GetBorderCrossings(); borderCrossings != nil {
+			dataBytes, err := marshalOpts.MarshalCardBorderCrossings(borderCrossings)
+			if err != nil {
+				return nil, fmt.Errorf("failed to marshal EF_BORDER_CROSSINGS: %w", err)
+			}
+			if err := appendRecord(cardv1.ElementaryFileType_EF_BORDER_CROSSINGS, ddv1.Generation_GENERATION_2, dataBytes, nil); err != nil {
+				return nil, err
+			}
+		}
+
+		// EF_PLACES_AUTHENTICATION (Gen2 only)
+		if placesAuthentication := tachographG2.GetPlacesAuthentication(); placesAuthentication != nil {
+			dataBytes, err := marshalOpts.MarshalPlacesAuthentication(placesAuthentication)
+			if err != nil {
+				return nil, fmt.Errorf("failed to marshal EF_PLACES_AUTHENTICATION: %w", err)
+			}
+			if err := appendRecord(cardv1.ElementaryFileType_EF_PLACES_AUTHENTICATION, ddv1.Generation_GENERATION_2, dataBytes, nil); err != nil {
+				return nil, err
+			}
+		}
+
+		// EF_GNSS_PLACES_AUTHENTICATION (Gen2 only)
+		if gnssPlacesAuthentication := tachographG2.GetGnssPlacesAuthentication(); gnssPlacesAuthentication != nil {
+			dataBytes, err := marshalOpts.MarshalGnssPlacesAuthentication(gnssPlacesAuthentication)
+			if err != nil {
+				return nil, fmt.Errorf("failed to marshal EF_GNSS_PLACES_AUTHENTICATION: %w", err)
+			}
+			if err := appendRecord(cardv1.ElementaryFileType_EF_GNSS_PLACES_AUTHENTICATION, ddv1.Generation_GENERATION_2, dataBytes, nil); err != nil {
+				return nil, err
+			}
+		}
+
+		// EF_LOAD_UNLOAD_OPERATIONS (Gen2 only)
+		if loadUnloadOperations := tachographG2.GetLoadUnloadOperations(); loadUnloadOperations != nil {
+			dataBytes, err := marshalOpts.MarshalLoadUnloadOperations(loadUnloadOperations)
+			if err != nil {
+				return nil, fmt.Errorf("failed to marshal EF_LOAD_UNLOAD_OPERATIONS: %w", err)
+			}
+			if err := appendRecord(cardv1.ElementaryFileType_EF_LOAD_UNLOAD_OPERATIONS, ddv1.Generation_GENERATION_2, dataBytes, nil); err != nil {
+				return nil, err
+			}
+		}
+
+		// EF_LOAD_TYPE_ENTRIES (Gen2 only)
+		if loadTypeEntries := tachographG2.GetLoadTypeEntries(); loadTypeEntries != nil {
+			dataBytes, err := marshalOpts.MarshalLoadTypeEntries(loadTypeEntries)
+			if err != nil {
+				return nil, fmt.Errorf("failed to marshal EF_LOAD_TYPE_ENTRIES: %w", err)
+			}
+			if err := appendRecord(cardv1.ElementaryFileType_EF_LOAD_TYPE_ENTRIES, ddv1.Generation_GENERATION_2, dataBytes, nil); err != nil {
+				return nil, err
+			}
+		}
+
+		// EF_COMPANY_ACTIVITY_DATA (Gen2 only)
+		if companyActivityData := tachographG2.GetCompanyActivityData(); companyActivityData != nil {
+			dataBytes, err := marshalOpts.MarshalCompanyActivityData(companyActivityData)
+			if err != nil {
+				return nil, fmt.Errorf("failed to marshal EF_COMPANY_ACTIVITY_DATA: %w", err)
+			}
+			if err := appendRecord(cardv1.ElementaryFileType_EF_COMPANY_ACTIVITY_DATA, ddv1.Generation_GENERATION_2, dataBytes, nil); err != nil {
+				return nil, err
+			}
+		}
 	}
 
 	rawFile := &cardv1.RawCardFile{}
