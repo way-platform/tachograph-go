@@ -38,6 +38,14 @@ var file_wayplatform_connect_tachograph_dd_v1_annotations_proto_extTypes = []pro
 		Tag:           "varint,582388,opt,name=code_page",
 		Filename:      "wayplatform/connect/tachograph/dd/v1/annotations.proto",
 	},
+	{
+		ExtendedType:  (*descriptorpb.EnumValueOptions)(nil),
+		ExtensionType: (*string)(nil),
+		Field:         582389,
+		Name:          "wayplatform.connect.tachograph.dd.v1.nation_alpha_code",
+		Tag:           "bytes,582389,opt,name=nation_alpha_code",
+		Filename:      "wayplatform/connect/tachograph/dd/v1/annotations.proto",
+	},
 }
 
 // Extension fields to descriptorpb.EnumValueOptions.
@@ -46,6 +54,12 @@ var (
 	E_ProtocolEnumValue = &file_wayplatform_connect_tachograph_dd_v1_annotations_proto_extTypes[0]
 	// optional int32 code_page = 582388;
 	E_CodePage = &file_wayplatform_connect_tachograph_dd_v1_annotations_proto_extTypes[1]
+	// nation_alpha_code is the UN Vienna Convention alphabetic distinguishing sign
+	// for the nation (e.g. "D" for Germany, "BIH" for Bosnia Herzegovina).
+	// Only set on NationNumeric enum values that have a defined alpha code.
+	//
+	// optional string nation_alpha_code = 582389;
+	E_NationAlphaCode = &file_wayplatform_connect_tachograph_dd_v1_annotations_proto_extTypes[2]
 )
 
 var File_wayplatform_connect_tachograph_dd_v1_annotations_proto protoreflect.FileDescriptor
@@ -54,7 +68,8 @@ const file_wayplatform_connect_tachograph_dd_v1_annotations_proto_rawDesc = "" +
 	"\n" +
 	"6wayplatform/connect/tachograph/dd/v1/annotations.proto\x12$wayplatform.connect.tachograph.dd.v1\x1a google/protobuf/descriptor.proto:S\n" +
 	"\x13protocol_enum_value\x12!.google.protobuf.EnumValueOptions\x18\xf3\xc5# \x01(\x05R\x11protocolEnumValue:@\n" +
-	"\tcode_page\x12!.google.protobuf.EnumValueOptions\x18\xf4\xc5# \x01(\x05R\bcodePageB\xcf\x02\n" +
+	"\tcode_page\x12!.google.protobuf.EnumValueOptions\x18\xf4\xc5# \x01(\x05R\bcodePage:O\n" +
+	"\x11nation_alpha_code\x12!.google.protobuf.EnumValueOptions\x18\xf5\xc5# \x01(\tR\x0fnationAlphaCodeB\xcf\x02\n" +
 	"(com.wayplatform.connect.tachograph.dd.v1B\x10AnnotationsProtoP\x01Z\\github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1;ddv1\xa2\x02\x04WCTD\xaa\x02$Wayplatform.Connect.Tachograph.Dd.V1\xca\x02$Wayplatform\\Connect\\Tachograph\\Dd\\V1\xe2\x020Wayplatform\\Connect\\Tachograph\\Dd\\V1\\GPBMetadata\xea\x02(Wayplatform::Connect::Tachograph::Dd::V1b\beditionsp\xe8\a"
 
 var file_wayplatform_connect_tachograph_dd_v1_annotations_proto_goTypes = []any{
@@ -63,10 +78,11 @@ var file_wayplatform_connect_tachograph_dd_v1_annotations_proto_goTypes = []any{
 var file_wayplatform_connect_tachograph_dd_v1_annotations_proto_depIdxs = []int32{
 	0, // 0: wayplatform.connect.tachograph.dd.v1.protocol_enum_value:extendee -> google.protobuf.EnumValueOptions
 	0, // 1: wayplatform.connect.tachograph.dd.v1.code_page:extendee -> google.protobuf.EnumValueOptions
-	2, // [2:2] is the sub-list for method output_type
-	2, // [2:2] is the sub-list for method input_type
-	2, // [2:2] is the sub-list for extension type_name
-	0, // [0:2] is the sub-list for extension extendee
+	0, // 2: wayplatform.connect.tachograph.dd.v1.nation_alpha_code:extendee -> google.protobuf.EnumValueOptions
+	3, // [3:3] is the sub-list for method output_type
+	3, // [3:3] is the sub-list for method input_type
+	3, // [3:3] is the sub-list for extension type_name
+	0, // [0:3] is the sub-list for extension extendee
 	0, // [0:0] is the sub-list for field type_name
 }
 
@@ -82,7 +98,7 @@ func file_wayplatform_connect_tachograph_dd_v1_annotations_proto_init() {
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_wayplatform_connect_tachograph_dd_v1_annotations_proto_rawDesc), len(file_wayplatform_connect_tachograph_dd_v1_annotations_proto_rawDesc)),
 			NumEnums:      0,
 			NumMessages:   0,
-			NumExtensions: 2,
+			NumExtensions: 3,
 			NumServices:   0,
 		},
 		GoTypes:           file_wayplatform_connect_tachograph_dd_v1_annotations_proto_goTypes,

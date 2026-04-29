@@ -7,4 +7,8 @@ import "google/protobuf/descriptor.proto";
 extend google.protobuf.EnumValueOptions {
   int32 protocol_enum_value = 582387;
   int32 code_page = 582388;
+  // nation_alpha_code is the UN Vienna Convention alphabetic distinguishing sign
+  // for the nation (e.g. "D" for Germany, "BIH" for Bosnia Herzegovina).
+  // Only set on NationNumeric enum values that have a defined alpha code.
+  string nation_alpha_code = 582389;
 }
