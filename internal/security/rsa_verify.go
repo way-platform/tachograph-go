@@ -177,8 +177,8 @@ func verifyRsaCertificate(cert *securityv1.RsaCertificate, caModulus, caExponent
 		return fmt.Errorf("invalid certificate content length: got %d, want 164", len(cPrime))
 	}
 
-	// Verify hash: SHA-1(C') should equal H'
-	hash := sha1.Sum(cPrime)
+	// SHA-1 is mandated by the EU tachograph standard (EC 2016/799 Annex 1C) for Gen1 certificates.
+	hash := sha1.Sum(cPrime) //nolint:gosec // nosemgrep: go.lang.security.audit.crypto.use_of_weak_crypto.use-of-sha1
 	if !bytes.Equal(hPrime, hash[:]) {
 		cert.SetSignatureValid(false)
 		return fmt.Errorf("certificate content hash mismatch")

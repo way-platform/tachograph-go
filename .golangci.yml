@@ -1,11 +1,21 @@
 version: "2"
 
 linters:
+  enable:
+    - gosec
   settings:
     errcheck:
       exclude-functions:
         - "(*net/http.Response.Body).Close"
         - "(io.ReadCloser).Close"
+    gosec:
+      excludes:
+        # Pre-existing binary/tachograph integer conversions; values are format-bounded.
+        - G115
+        # SSRF taint analysis — cert client calls configured URLs by design.
+        - G704
+        # Slice bounds in fixed-format binary parser; fields are format-validated upstream.
+        - G602
     staticcheck:
       checks:
         - "all"
@@ -15,3 +25,31 @@ linters:
         - "-ST1016" # receiver name consistency (pre-existing style)
         - "-ST1020" # doc comment format (pre-existing style)
         - "-SA1019" # deprecated crypto/elliptic API (required for Brainpool curves)
+
+  exclusions:
+    rules:
+      # Test files: test file I/O patterns are not vulnerabilities.
+      - path: "_test\\.go"
+        linters:
+          - gosec
+        text: "G101|G301|G304|G306|G703"
+      # CLI/cmd tools: file I/O on user-supplied paths is intentional.
+      - path: "cmd/|cli/"
+        linters:
+          - gosec
+        text: "G301|G304|G306|G703"
+      # SHA-1 is required by the EU tachograph standard (EC 2016/799 Annex 1C).
+      - path: "internal/security/"
+        linters:
+          - gosec
+        text: "G401|G505"
+      # Tools: SHA-1 for cert chain verification, HTTP to configured CA URLs.
+      - path: "tools/"
+        linters:
+          - gosec
+        text: "G107|G401|G505|G301|G306"
+      # defer resp.Body.Close() in tools — error is unactionable in a defer context.
+      - path: "tools/"
+        linters:
+          - errcheck
+        text: "resp\\.Body\\.Close"
