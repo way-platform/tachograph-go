@@ -12,8 +12,8 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Go
-        uses: actions/setup-go@v5
+      - name: Install mise
+        uses: jdx/mise-action@v2
 
       - name: Build
-        run: ./tools/mage build
+        run: mise run build

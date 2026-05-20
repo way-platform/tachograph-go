@@ -56,7 +56,7 @@ func (opts UnmarshalOptions) unmarshalVehicleRecordsGen2(r *bytes.Reader) ([]*dd
 			break // Stop parsing on error, but return what we have
 		}
 
-		record, err := opts.UnmarshalOptions.UnmarshalCardVehicleRecordG2(recordBytes)
+		record, err := opts.UnmarshalCardVehicleRecordG2(recordBytes)
 		if err != nil {
 			return records, fmt.Errorf("failed to parse Gen2 vehicle record: %w", err)
 		}

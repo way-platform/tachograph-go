@@ -59,7 +59,7 @@ func (c *Client) GetRsaCertificate(ctx context.Context, chr string) (*securityv1
 	if err != nil {
 		return nil, err
 	}
-	defer httpResponse.Body.Close()
+	defer httpResponse.Body.Close() //nolint:errcheck
 	if httpResponse.StatusCode != http.StatusOK {
 		return nil, fmt.Errorf("failed to download certificate: %s", httpResponse.Status)
 	}
@@ -94,7 +94,7 @@ func (c *Client) GetEccCertificate(ctx context.Context, chr string) (*securityv1
 	if err != nil {
 		return nil, err
 	}
-	defer httpResponse.Body.Close()
+	defer httpResponse.Body.Close() //nolint:errcheck
 	if httpResponse.StatusCode != http.StatusOK {
 		return nil, fmt.Errorf("failed to download certificate: %s", httpResponse.Status)
 	}

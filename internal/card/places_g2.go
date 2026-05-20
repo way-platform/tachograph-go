@@ -53,7 +53,7 @@ func (opts UnmarshalOptions) unmarshalCircularPlaceRecordsG2(data []byte, newest
 		end := start + recordSize
 		recordData := data[start:end]
 
-		record, err := opts.UnmarshalOptions.UnmarshalPlaceRecordG2(recordData)
+		record, err := opts.UnmarshalPlaceRecordG2(recordData)
 		if err != nil {
 			// Mark record as invalid on parse error
 			record = &ddv1.PlaceRecordG2{}

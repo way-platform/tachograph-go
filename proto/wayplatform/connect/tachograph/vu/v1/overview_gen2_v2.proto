@@ -8,8 +8,8 @@ import "wayplatform/connect/tachograph/dd/v1/downloadable_period.proto";
 import "wayplatform/connect/tachograph/dd/v1/full_card_number_and_generation.proto";
 import "wayplatform/connect/tachograph/dd/v1/ia5_string_value.proto";
 import "wayplatform/connect/tachograph/dd/v1/slot_card_type.proto";
-import "wayplatform/connect/tachograph/dd/v1/vehicle_registration_identification.proto";
 import "wayplatform/connect/tachograph/dd/v1/string_value.proto";
+import "wayplatform/connect/tachograph/dd/v1/vehicle_registration_identification.proto";
 import "wayplatform/connect/tachograph/security/v1/authentication.proto";
 
 // Overview data for Generation 2, Version 2 VU downloads.

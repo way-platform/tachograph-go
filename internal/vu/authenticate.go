@@ -83,7 +83,7 @@ func (opts AuthenticateOptions) authenticateGen1Record(ctx context.Context, reco
 	overviewRecord := opts.findOverviewRecord(allRecords)
 	if overviewRecord == nil {
 		auth.SetStatus(securityv1.Authentication_CERTIFICATE_VERIFICATION_FAILED)
-		return fmt.Errorf("Overview record not found for authentication")
+		return fmt.Errorf("overview record not found for authentication")
 	}
 
 	// Step 2: Parse the Overview to extract certificates
@@ -116,7 +116,7 @@ func (opts AuthenticateOptions) authenticateGen2Record(ctx context.Context, reco
 	overviewRecord := opts.findGen2OverviewRecord(allRecords)
 	if overviewRecord == nil {
 		auth.SetStatus(securityv1.Authentication_CERTIFICATE_VERIFICATION_FAILED)
-		return fmt.Errorf("Gen2 Overview record not found for authentication")
+		return fmt.Errorf("gen2 overview record not found for authentication")
 	}
 
 	// Step 2: Parse the Overview to extract certificates

@@ -121,7 +121,7 @@ func unmarshalActivitiesGen2V1(value []byte) (*vuv1.ActivitiesGen2V1, error) {
 
 	// Verify we consumed exactly the right amount of data
 	if offset != len(data) {
-		return nil, fmt.Errorf("Activities Gen2 V1 parsing mismatch: parsed %d bytes, expected %d", offset, len(data))
+		return nil, fmt.Errorf("activities Gen2 V1 parsing mismatch: parsed %d bytes, expected %d", offset, len(data))
 	}
 
 	return activities, nil

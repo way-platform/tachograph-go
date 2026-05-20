@@ -295,7 +295,7 @@ func indexAndDownloadGen1Certificates(ctx context.Context, baseURL, outputDir st
 	if err != nil {
 		return nil, fmt.Errorf("failed to fetch Gen1 certificate list: %w", err)
 	}
-	defer resp.Body.Close()
+	defer resp.Body.Close() //nolint:errcheck
 
 	if resp.StatusCode != http.StatusOK {
 		return nil, fmt.Errorf("unexpected status code: %d", resp.StatusCode)
@@ -398,7 +398,7 @@ func indexAndDownloadGen2Certificates(ctx context.Context, baseURL, outputDir st
 	if err != nil {
 		return nil, fmt.Errorf("failed to fetch Gen2 certificate list: %w", err)
 	}
-	defer resp.Body.Close()
+	defer resp.Body.Close() //nolint:errcheck
 
 	if resp.StatusCode != http.StatusOK {
 		return nil, fmt.Errorf("unexpected status code: %d", resp.StatusCode)
@@ -523,7 +523,7 @@ func downloadERCA(ctx context.Context, client *http.Client) ([]byte, error) {
 	if err != nil {
 		return nil, fmt.Errorf("failed to download ERCA ZIP: %w", err)
 	}
-	defer resp.Body.Close()
+	defer resp.Body.Close() //nolint:errcheck
 
 	if resp.StatusCode != http.StatusOK {
 		return nil, fmt.Errorf("ERCA download failed with status %d", resp.StatusCode)
@@ -547,7 +547,7 @@ func downloadERCA(ctx context.Context, client *http.Client) ([]byte, error) {
 			if err != nil {
 				return nil, fmt.Errorf("failed to open EC_PK.bin in ZIP: %w", err)
 			}
-			defer rc.Close()
+			defer rc.Close() //nolint:errcheck
 
 			certData, err := io.ReadAll(rc)
 			if err != nil {
@@ -601,7 +601,7 @@ func downloadERCAGen2(ctx context.Context, client *http.Client) ([]byte, error) 
 			if err != nil {
 				return nil, fmt.Errorf("failed to open ERCA Gen2 root cert in ZIP: %w", err)
 			}
-			defer rc.Close()
+			defer rc.Close() //nolint:errcheck
 
 			certData, err := io.ReadAll(rc)
 			if err != nil {

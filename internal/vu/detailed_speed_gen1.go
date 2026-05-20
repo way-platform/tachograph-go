@@ -170,7 +170,7 @@ func (opts MarshalOptions) MarshalDetailedSpeedGen1(detailedSpeed *vuv1.Detailed
 
 	// Verify we used exactly the expected amount of data
 	if offset != dataSize {
-		return nil, fmt.Errorf("Detailed Speed Gen1 marshalling mismatch: wrote %d bytes, expected %d", offset, dataSize)
+		return nil, fmt.Errorf("detailed Speed Gen1 marshalling mismatch: wrote %d bytes, expected %d", offset, dataSize)
 	}
 
 	// Append signature to create complete transfer value

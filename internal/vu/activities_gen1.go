@@ -197,7 +197,7 @@ func unmarshalActivitiesGen1(value []byte) (*vuv1.ActivitiesGen1, error) {
 
 	// Verify we consumed exactly the right amount of data
 	if offset != len(data) {
-		return nil, fmt.Errorf("Activities Gen1 parsing mismatch: parsed %d bytes, expected %d", offset, len(data))
+		return nil, fmt.Errorf("activities Gen1 parsing mismatch: parsed %d bytes, expected %d", offset, len(data))
 	}
 
 	return activities, nil
@@ -328,7 +328,7 @@ func (opts MarshalOptions) MarshalActivitiesGen1(activities *vuv1.ActivitiesGen1
 
 	// Verify we used exactly the expected amount of data
 	if offset != dataSize {
-		return nil, fmt.Errorf("Activities Gen1 marshalling mismatch: wrote %d bytes, expected %d", offset, dataSize)
+		return nil, fmt.Errorf("activities Gen1 marshalling mismatch: wrote %d bytes, expected %d", offset, dataSize)
 	}
 
 	// Append signature to create complete transfer value
