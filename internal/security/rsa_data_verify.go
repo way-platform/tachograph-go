@@ -58,8 +58,8 @@ func VerifyRsaDataSignature(data []byte, signature []byte, cert *securityv1.RsaC
 		E: expInt,
 	}
 
-	// Compute SHA-1 hash of data
-	hash := sha1.Sum(data)
+	// SHA-1 is mandated by the EU tachograph standard (EC 2016/799 Annex 1C) for Gen1 devices.
+	hash := sha1.Sum(data) //nolint:gosec // nosemgrep: go.lang.security.audit.crypto.use_of_weak_crypto.use-of-sha1
 
 	// Verify the signature using PKCS#1 v1.5
 	if err := rsa.VerifyPKCS1v15(pubKey, crypto.SHA1, hash[:], signature); err != nil {

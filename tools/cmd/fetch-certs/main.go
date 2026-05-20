@@ -705,8 +705,8 @@ func recoverGen1Certificate(certData []byte, caModulus, caExponent *big.Int) ([]
 		return nil, fmt.Errorf("invalid C' length: got %d, want 164", len(cPrime))
 	}
 
-	// Verify hash: SHA-1(C') == H'
-	hash := sha1.Sum(cPrime)
+	// SHA-1 is mandated by the EU tachograph standard (EC 2016/799 Annex 1C) for Gen1 certificates.
+	hash := sha1.Sum(cPrime) //nolint:gosec // nosemgrep: go.lang.security.audit.crypto.use_of_weak_crypto.use-of-sha1
 	if !bytes.Equal(hPrime, hash[:]) {
 		return nil, fmt.Errorf("certificate content hash mismatch")
 	}
