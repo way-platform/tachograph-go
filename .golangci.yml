@@ -1,0 +1,17 @@
+version: "2"
+
+linters:
+  settings:
+    errcheck:
+      exclude-functions:
+        - "(*net/http.Response.Body).Close"
+        - "(io.ReadCloser).Close"
+    staticcheck:
+      checks:
+        - "all"
+        - "-ST1000" # package comments
+        - "-ST1003" # naming conventions (pre-existing style)
+        - "-ST1005" # capitalized error strings (pre-existing style)
+        - "-ST1016" # receiver name consistency (pre-existing style)
+        - "-ST1020" # doc comment format (pre-existing style)
+        - "-SA1019" # deprecated crypto/elliptic API (required for Brainpool curves)

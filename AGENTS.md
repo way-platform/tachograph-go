@@ -6,11 +6,11 @@ Tachograph binary files (.DDD/.V1B) into protobuf messages.
 ## Build
 
 ```bash
-go mod tidy                # dependencies
-./tools/mage test          # tests
-./tools/mage lint          # golangci-lint (zero tolerance)
-./tools/mage generate      # proto codegen + go generate
-./tools/mage build         # full CI: download → generate → lint → test → tidy → cli → diff
+mise install               # install tools
+mise run test              # tests
+mise run lint              # golangci-lint (zero tolerance)
+mise run generate          # proto codegen + go generate
+mise run build             # full CI: download → format → generate → lint → test → tidy → cli → diff
 ```
 
 ## Skills
@@ -18,7 +18,7 @@ go mod tidy                # dependencies
 - **Tachograph** — `.agents/skills/tachograph/SKILL.md`
 - **ASN.1** — `.agents/skills/asn1/SKILL.md`
 - **Protobuf** — `.agents/skills/protobuf/SKILL.md`
-- **Mage** — `.agents/skills/way-magefile/SKILL.md`
+- **mise** — `.agents/skills/mise/SKILL.md`
 
 ## Processing Pipeline
 
@@ -65,7 +65,7 @@ internal/
   hexdump/             # hexdump ↔ binary conversion (test fixtures)
 proto/                 # protobuf schemas + generated Go code
 cmd/tachograph/        # CLI (cobra + charmbracelet/fang)
-tools/                 # magefile, golangci-lint, buf, fetch-certs
+tools/                 # fetch-certs tool
 ```
 
 ## Architecture Patterns
@@ -221,6 +221,7 @@ internal/card/testdata/records/
 1. Place DDD in `testdata/vu/` or `testdata/card/driver/` (gitignored)
 2. Determine N = count of existing `NNN-anonymized/` dirs in target records dir
 3. Run extract tool — creates TWO dirs per file:
+
    ```bash
    # VU
    go run ./internal/vu/cmd/extract-testdata-records/ -start N testdata/vu/new.DDD
@@ -230,6 +231,7 @@ internal/card/testdata/records/
 
    - `N-<filename>/` — original hexdumps with PII
    - `N-anonymized/` — anonymized hexdumps — commit these
+
 4. **Delete PII dirs from disk** (not just gitignored — remove the actual files):
    ```bash
    rm -rf internal/vu/testdata/records/[0-9]*-[^a]*/

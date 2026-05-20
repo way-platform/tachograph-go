@@ -95,11 +95,12 @@ func (opts MarshalOptions) MarshalSensorPaired(sensorPaired *ddv1.SensorPaired) 
 	// Determine size based on approval number length
 	approvalNumberLen := int(sensorPaired.GetApprovalNumber().GetLength())
 	var size int
-	if approvalNumberLen == 8 {
+	switch approvalNumberLen {
+	case 8:
 		size = 20 // Gen1
-	} else if approvalNumberLen == 16 {
+	case 16:
 		size = 28 // Gen2
-	} else {
+	default:
 		return nil, fmt.Errorf(
 			"invalid approval number length: got %d, want 8 (Gen1) or 16 (Gen2)",
 			approvalNumberLen,

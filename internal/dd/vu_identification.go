@@ -150,11 +150,12 @@ func (opts MarshalOptions) MarshalVuIdentification(vuIdent *ddv1.VuIdentificatio
 	// Determine size based on approval number length
 	approvalNumberLen := int(vuIdent.GetApprovalNumber().GetLength())
 	var size int
-	if approvalNumberLen == 8 {
+	switch approvalNumberLen {
+	case 8:
 		size = 116 // Gen1: 36+36+16+8+8+4+8
-	} else if approvalNumberLen == 16 {
+	case 16:
 		size = 124 // Gen2 (without additional Gen2-specific fields): 36+36+16+8+8+4+16
-	} else {
+	default:
 		return nil, fmt.Errorf(
 			"invalid approval number length: got %d, want 8 (Gen1) or 16 (Gen2)",
 			approvalNumberLen,

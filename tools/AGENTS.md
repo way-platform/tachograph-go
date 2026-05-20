@@ -2,4 +2,8 @@
 
 ## Build & Automation
 
-Use `way-magefile` skill when using or editing the magefile. See `.agents/skills/way-magefile/SKILL.md`
+The `cmd/fetch-certs` tool downloads and indexes EU DTC certificates:
+
+```bash
+mise run cert-cache   # download certs into internal/cert/certcache
+```

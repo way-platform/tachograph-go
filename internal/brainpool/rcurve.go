@@ -60,24 +60,24 @@ func (curve *rcurve) Params() *elliptic.CurveParams {
 }
 
 func (curve *rcurve) IsOnCurve(x, y *big.Int) bool {
-	return curve.twisted.IsOnCurve(curve.toTwisted(x, y))
+	return curve.twisted.IsOnCurve(curve.toTwisted(x, y)) //nolint:staticcheck
 }
 
 func (curve *rcurve) Add(x1, y1, x2, y2 *big.Int) (x, y *big.Int) {
 	tx1, ty1 := curve.toTwisted(x1, y1)
 	tx2, ty2 := curve.toTwisted(x2, y2)
-	return curve.fromTwisted(curve.twisted.Add(tx1, ty1, tx2, ty2))
+	return curve.fromTwisted(curve.twisted.Add(tx1, ty1, tx2, ty2)) //nolint:staticcheck
 }
 
 func (curve *rcurve) Double(x1, y1 *big.Int) (x, y *big.Int) {
-	return curve.fromTwisted(curve.twisted.Double(curve.toTwisted(x1, y1)))
+	return curve.fromTwisted(curve.twisted.Double(curve.toTwisted(x1, y1))) //nolint:staticcheck
 }
 
 func (curve *rcurve) ScalarMult(x1, y1 *big.Int, scalar []byte) (x, y *big.Int) {
 	tx1, ty1 := curve.toTwisted(x1, y1)
-	return curve.fromTwisted(curve.twisted.ScalarMult(tx1, ty1, scalar))
+	return curve.fromTwisted(curve.twisted.ScalarMult(tx1, ty1, scalar)) //nolint:staticcheck
 }
 
 func (curve *rcurve) ScalarBaseMult(scalar []byte) (x, y *big.Int) {
-	return curve.fromTwisted(curve.twisted.ScalarBaseMult(scalar))
+	return curve.fromTwisted(curve.twisted.ScalarBaseMult(scalar)) //nolint:staticcheck
 }

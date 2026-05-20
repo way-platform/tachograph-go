@@ -1035,7 +1035,7 @@ var File_wayplatform_connect_tachograph_vu_v1_overview_gen2_v2_proto protoreflec
 
 const file_wayplatform_connect_tachograph_vu_v1_overview_gen2_v2_proto_rawDesc = "" +
 	"\n" +
-	";wayplatform/connect/tachograph/vu/v1/overview_gen2_v2.proto\x12$wayplatform.connect.tachograph.vu.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a7wayplatform/connect/tachograph/dd/v1/control_type.proto\x1a>wayplatform/connect/tachograph/dd/v1/downloadable_period.proto\x1aJwayplatform/connect/tachograph/dd/v1/full_card_number_and_generation.proto\x1a;wayplatform/connect/tachograph/dd/v1/ia5_string_value.proto\x1a9wayplatform/connect/tachograph/dd/v1/slot_card_type.proto\x1aNwayplatform/connect/tachograph/dd/v1/vehicle_registration_identification.proto\x1a7wayplatform/connect/tachograph/dd/v1/string_value.proto\x1a?wayplatform/connect/tachograph/security/v1/authentication.proto\"\xf3\x13\n" +
+	";wayplatform/connect/tachograph/vu/v1/overview_gen2_v2.proto\x12$wayplatform.connect.tachograph.vu.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a7wayplatform/connect/tachograph/dd/v1/control_type.proto\x1a>wayplatform/connect/tachograph/dd/v1/downloadable_period.proto\x1aJwayplatform/connect/tachograph/dd/v1/full_card_number_and_generation.proto\x1a;wayplatform/connect/tachograph/dd/v1/ia5_string_value.proto\x1a9wayplatform/connect/tachograph/dd/v1/slot_card_type.proto\x1a7wayplatform/connect/tachograph/dd/v1/string_value.proto\x1aNwayplatform/connect/tachograph/dd/v1/vehicle_registration_identification.proto\x1a?wayplatform/connect/tachograph/security/v1/authentication.proto\"\xf3\x13\n" +
 	"\x0eOverviewGen2V2\x128\n" +
 	"\x18member_state_certificate\x18\x01 \x01(\fR\x16memberStateCertificate\x12%\n" +
 	"\x0evu_certificate\x18\x02 \x01(\fR\rvuCertificate\x12x\n" +
