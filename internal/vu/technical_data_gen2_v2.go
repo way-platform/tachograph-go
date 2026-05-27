@@ -4,9 +4,6 @@ import (
 	"bytes"
 	"encoding/binary"
 	"fmt"
-	"time"
-
-	"google.golang.org/protobuf/types/known/timestamppb"
 
 	"github.com/way-platform/tachograph-go/internal/dd"
 	ddv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
@@ -1044,16 +1041,8 @@ func gen2V1CalibrationToV2(r gen2CalibrationRecord) *vuv1.TechnicalDataGen2V2_Ca
 	rec.SetUnrecognizedPurpose(r.unrecognizedPurpose)
 	rec.SetWorkshopName(r.workshopName)
 	rec.SetWorkshopAddress(r.workshopAddress)
-	// V1 has FullCardNumberAndGeneration(19); V2 proto has FullCardNumber(18).
-	// Extract just the FullCardNumber from FullCardNumberAndGeneration.
-	if fcng := r.workshopCardNumberAndGen; fcng != nil {
-		rec.SetWorkshopCardNumber(fcng.GetFullCardNumber())
-	}
-	// V1 has Datef expiry; V2 proto has Timestamp.
-	if d := r.workshopCardExpiryDate; d != nil {
-		t := time.Date(int(d.GetYear()), time.Month(d.GetMonth()), int(d.GetDay()), 0, 0, 0, 0, time.UTC)
-		rec.SetWorkshopCardExpiryDate(timestamppb.New(t))
-	}
+	rec.SetWorkshopCardNumber(r.workshopCardNumber)
+	rec.SetWorkshopCardExpiryDate(r.workshopCardExpiryDate)
 	rec.SetVin(r.vin)
 	rec.SetVehicleRegistration(r.vehicleRegistration)
 	rec.SetWVehicleCharacteristicConstant(r.wVehicleCharConst)

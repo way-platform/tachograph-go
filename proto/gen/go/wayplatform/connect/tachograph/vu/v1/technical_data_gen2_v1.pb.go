@@ -811,29 +811,29 @@ func (b0 TechnicalDataGen2V1_CoupledGnss_builder) Build() *TechnicalDataGen2V1_C
 //
 // See Data Dictionary, Section 2.174, `VuCalibrationRecord`.
 type TechnicalDataGen2V1_CalibrationRecord struct {
-	state                                      protoimpl.MessageState                 `protogen:"opaque.v1"`
-	xxx_hidden_Purpose                         v11.CalibrationPurpose                 `protobuf:"varint,1,opt,name=purpose,enum=wayplatform.connect.tachograph.dd.v1.CalibrationPurpose"`
-	xxx_hidden_UnrecognizedPurpose             int32                                  `protobuf:"varint,2,opt,name=unrecognized_purpose,json=unrecognizedPurpose"`
-	xxx_hidden_WorkshopName                    *v11.StringValue                       `protobuf:"bytes,3,opt,name=workshop_name,json=workshopName"`
-	xxx_hidden_WorkshopAddress                 *v11.StringValue                       `protobuf:"bytes,4,opt,name=workshop_address,json=workshopAddress"`
-	xxx_hidden_WorkshopCardNumberAndGeneration *v11.FullCardNumberAndGeneration       `protobuf:"bytes,5,opt,name=workshop_card_number_and_generation,json=workshopCardNumberAndGeneration"`
-	xxx_hidden_WorkshopCardExpiryDate          *v11.Date                              `protobuf:"bytes,6,opt,name=workshop_card_expiry_date,json=workshopCardExpiryDate"`
-	xxx_hidden_Vin                             *v11.Ia5StringValue                    `protobuf:"bytes,7,opt,name=vin"`
-	xxx_hidden_VehicleRegistration             *v11.VehicleRegistrationIdentification `protobuf:"bytes,8,opt,name=vehicle_registration,json=vehicleRegistration"`
-	xxx_hidden_WVehicleCharacteristicConstant  int32                                  `protobuf:"varint,9,opt,name=w_vehicle_characteristic_constant,json=wVehicleCharacteristicConstant"`
-	xxx_hidden_KConstantOfRecordingEquipment   int32                                  `protobuf:"varint,10,opt,name=k_constant_of_recording_equipment,json=kConstantOfRecordingEquipment"`
-	xxx_hidden_LTyreCircumferenceEighthsMm     int32                                  `protobuf:"varint,11,opt,name=l_tyre_circumference_eighths_mm,json=lTyreCircumferenceEighthsMm"`
-	xxx_hidden_TyreSize                        *v11.Ia5StringValue                    `protobuf:"bytes,12,opt,name=tyre_size,json=tyreSize"`
-	xxx_hidden_AuthorisedSpeedKmh              int32                                  `protobuf:"varint,13,opt,name=authorised_speed_kmh,json=authorisedSpeedKmh"`
-	xxx_hidden_OldOdometerValueKm              int32                                  `protobuf:"varint,14,opt,name=old_odometer_value_km,json=oldOdometerValueKm"`
-	xxx_hidden_NewOdometerValueKm              int32                                  `protobuf:"varint,15,opt,name=new_odometer_value_km,json=newOdometerValueKm"`
-	xxx_hidden_OldTimeValue                    *timestamppb.Timestamp                 `protobuf:"bytes,16,opt,name=old_time_value,json=oldTimeValue"`
-	xxx_hidden_NewTimeValue                    *timestamppb.Timestamp                 `protobuf:"bytes,17,opt,name=new_time_value,json=newTimeValue"`
-	xxx_hidden_NextCalibrationDate             *timestamppb.Timestamp                 `protobuf:"bytes,18,opt,name=next_calibration_date,json=nextCalibrationDate"`
-	XXX_raceDetectHookData                     protoimpl.RaceDetectHookData
-	XXX_presence                               [1]uint32
-	unknownFields                              protoimpl.UnknownFields
-	sizeCache                                  protoimpl.SizeCache
+	state                                     protoimpl.MessageState                 `protogen:"opaque.v1"`
+	xxx_hidden_Purpose                        v11.CalibrationPurpose                 `protobuf:"varint,1,opt,name=purpose,enum=wayplatform.connect.tachograph.dd.v1.CalibrationPurpose"`
+	xxx_hidden_UnrecognizedPurpose            int32                                  `protobuf:"varint,2,opt,name=unrecognized_purpose,json=unrecognizedPurpose"`
+	xxx_hidden_WorkshopName                   *v11.StringValue                       `protobuf:"bytes,3,opt,name=workshop_name,json=workshopName"`
+	xxx_hidden_WorkshopAddress                *v11.StringValue                       `protobuf:"bytes,4,opt,name=workshop_address,json=workshopAddress"`
+	xxx_hidden_WorkshopCardNumber             *v11.FullCardNumber                    `protobuf:"bytes,5,opt,name=workshop_card_number,json=workshopCardNumber"`
+	xxx_hidden_WorkshopCardExpiryDate         *timestamppb.Timestamp                 `protobuf:"bytes,6,opt,name=workshop_card_expiry_date,json=workshopCardExpiryDate"`
+	xxx_hidden_Vin                            *v11.Ia5StringValue                    `protobuf:"bytes,7,opt,name=vin"`
+	xxx_hidden_VehicleRegistration            *v11.VehicleRegistrationIdentification `protobuf:"bytes,8,opt,name=vehicle_registration,json=vehicleRegistration"`
+	xxx_hidden_WVehicleCharacteristicConstant int32                                  `protobuf:"varint,9,opt,name=w_vehicle_characteristic_constant,json=wVehicleCharacteristicConstant"`
+	xxx_hidden_KConstantOfRecordingEquipment  int32                                  `protobuf:"varint,10,opt,name=k_constant_of_recording_equipment,json=kConstantOfRecordingEquipment"`
+	xxx_hidden_LTyreCircumferenceEighthsMm    int32                                  `protobuf:"varint,11,opt,name=l_tyre_circumference_eighths_mm,json=lTyreCircumferenceEighthsMm"`
+	xxx_hidden_TyreSize                       *v11.Ia5StringValue                    `protobuf:"bytes,12,opt,name=tyre_size,json=tyreSize"`
+	xxx_hidden_AuthorisedSpeedKmh             int32                                  `protobuf:"varint,13,opt,name=authorised_speed_kmh,json=authorisedSpeedKmh"`
+	xxx_hidden_OldOdometerValueKm             int32                                  `protobuf:"varint,14,opt,name=old_odometer_value_km,json=oldOdometerValueKm"`
+	xxx_hidden_NewOdometerValueKm             int32                                  `protobuf:"varint,15,opt,name=new_odometer_value_km,json=newOdometerValueKm"`
+	xxx_hidden_OldTimeValue                   *timestamppb.Timestamp                 `protobuf:"bytes,16,opt,name=old_time_value,json=oldTimeValue"`
+	xxx_hidden_NewTimeValue                   *timestamppb.Timestamp                 `protobuf:"bytes,17,opt,name=new_time_value,json=newTimeValue"`
+	xxx_hidden_NextCalibrationDate            *timestamppb.Timestamp                 `protobuf:"bytes,18,opt,name=next_calibration_date,json=nextCalibrationDate"`
+	XXX_raceDetectHookData                    protoimpl.RaceDetectHookData
+	XXX_presence                              [1]uint32
+	unknownFields                             protoimpl.UnknownFields
+	sizeCache                                 protoimpl.SizeCache
 }
 
 func (x *TechnicalDataGen2V1_CalibrationRecord) Reset() {
@@ -891,14 +891,14 @@ func (x *TechnicalDataGen2V1_CalibrationRecord) GetWorkshopAddress() *v11.String
 	return nil
 }
 
-func (x *TechnicalDataGen2V1_CalibrationRecord) GetWorkshopCardNumberAndGeneration() *v11.FullCardNumberAndGeneration {
+func (x *TechnicalDataGen2V1_CalibrationRecord) GetWorkshopCardNumber() *v11.FullCardNumber {
 	if x != nil {
-		return x.xxx_hidden_WorkshopCardNumberAndGeneration
+		return x.xxx_hidden_WorkshopCardNumber
 	}
 	return nil
 }
 
-func (x *TechnicalDataGen2V1_CalibrationRecord) GetWorkshopCardExpiryDate() *v11.Date {
+func (x *TechnicalDataGen2V1_CalibrationRecord) GetWorkshopCardExpiryDate() *timestamppb.Timestamp {
 	if x != nil {
 		return x.xxx_hidden_WorkshopCardExpiryDate
 	}
@@ -1007,11 +1007,11 @@ func (x *TechnicalDataGen2V1_CalibrationRecord) SetWorkshopAddress(v *v11.String
 	x.xxx_hidden_WorkshopAddress = v
 }
 
-func (x *TechnicalDataGen2V1_CalibrationRecord) SetWorkshopCardNumberAndGeneration(v *v11.FullCardNumberAndGeneration) {
-	x.xxx_hidden_WorkshopCardNumberAndGeneration = v
+func (x *TechnicalDataGen2V1_CalibrationRecord) SetWorkshopCardNumber(v *v11.FullCardNumber) {
+	x.xxx_hidden_WorkshopCardNumber = v
 }
 
-func (x *TechnicalDataGen2V1_CalibrationRecord) SetWorkshopCardExpiryDate(v *v11.Date) {
+func (x *TechnicalDataGen2V1_CalibrationRecord) SetWorkshopCardExpiryDate(v *timestamppb.Timestamp) {
 	x.xxx_hidden_WorkshopCardExpiryDate = v
 }
 
@@ -1097,11 +1097,11 @@ func (x *TechnicalDataGen2V1_CalibrationRecord) HasWorkshopAddress() bool {
 	return x.xxx_hidden_WorkshopAddress != nil
 }
 
-func (x *TechnicalDataGen2V1_CalibrationRecord) HasWorkshopCardNumberAndGeneration() bool {
+func (x *TechnicalDataGen2V1_CalibrationRecord) HasWorkshopCardNumber() bool {
 	if x == nil {
 		return false
 	}
-	return x.xxx_hidden_WorkshopCardNumberAndGeneration != nil
+	return x.xxx_hidden_WorkshopCardNumber != nil
 }
 
 func (x *TechnicalDataGen2V1_CalibrationRecord) HasWorkshopCardExpiryDate() bool {
@@ -1213,8 +1213,8 @@ func (x *TechnicalDataGen2V1_CalibrationRecord) ClearWorkshopAddress() {
 	x.xxx_hidden_WorkshopAddress = nil
 }
 
-func (x *TechnicalDataGen2V1_CalibrationRecord) ClearWorkshopCardNumberAndGeneration() {
-	x.xxx_hidden_WorkshopCardNumberAndGeneration = nil
+func (x *TechnicalDataGen2V1_CalibrationRecord) ClearWorkshopCardNumber() {
+	x.xxx_hidden_WorkshopCardNumber = nil
 }
 
 func (x *TechnicalDataGen2V1_CalibrationRecord) ClearWorkshopCardExpiryDate() {
@@ -1291,14 +1291,14 @@ type TechnicalDataGen2V1_CalibrationRecord_builder struct {
 	//
 	// See Data Dictionary, Section 2.2, `Address`.
 	WorkshopAddress *v11.StringValue
-	// The card number and generation of the workshop.
+	// The card number of the workshop.
 	//
-	// See Data Dictionary, Section 2.74, `FullCardNumberAndGeneration`.
-	WorkshopCardNumberAndGeneration *v11.FullCardNumberAndGeneration
+	// See Data Dictionary, Section 2.73, `FullCardNumber`.
+	WorkshopCardNumber *v11.FullCardNumber
 	// The expiry date of the workshop card.
 	//
-	// See Data Dictionary, Section 2.57, `Datef`.
-	WorkshopCardExpiryDate *v11.Date
+	// See Data Dictionary, Section 2.162, `TimeReal`.
+	WorkshopCardExpiryDate *timestamppb.Timestamp
 	// The Vehicle Identification Number.
 	//
 	// See Data Dictionary, Section 2.164, `VehicleIdentificationNumber`.
@@ -1363,7 +1363,7 @@ func (b0 TechnicalDataGen2V1_CalibrationRecord_builder) Build() *TechnicalDataGe
 	}
 	x.xxx_hidden_WorkshopName = b.WorkshopName
 	x.xxx_hidden_WorkshopAddress = b.WorkshopAddress
-	x.xxx_hidden_WorkshopCardNumberAndGeneration = b.WorkshopCardNumberAndGeneration
+	x.xxx_hidden_WorkshopCardNumber = b.WorkshopCardNumber
 	x.xxx_hidden_WorkshopCardExpiryDate = b.WorkshopCardExpiryDate
 	x.xxx_hidden_Vin = b.Vin
 	x.xxx_hidden_VehicleRegistration = b.VehicleRegistration
@@ -1690,7 +1690,7 @@ var File_wayplatform_connect_tachograph_vu_v1_technical_data_gen2_v1_proto proto
 
 const file_wayplatform_connect_tachograph_vu_v1_technical_data_gen2_v1_proto_rawDesc = "" +
 	"\n" +
-	"Awayplatform/connect/tachograph/vu/v1/technical_data_gen2_v1.proto\x12$wayplatform.connect.tachograph.vu.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a>wayplatform/connect/tachograph/dd/v1/calibration_purpose.proto\x1aAwayplatform/connect/tachograph/dd/v1/card_structure_version.proto\x1a/wayplatform/connect/tachograph/dd/v1/date.proto\x1a@wayplatform/connect/tachograph/dd/v1/driver_identification.proto\x1aAwayplatform/connect/tachograph/dd/v1/extended_serial_number.proto\x1aJwayplatform/connect/tachograph/dd/v1/full_card_number_and_generation.proto\x1a?wayplatform/connect/tachograph/dd/v1/owner_identification.proto\x1aBwayplatform/connect/tachograph/dd/v1/software_identification.proto\x1a;wayplatform/connect/tachograph/dd/v1/ia5_string_value.proto\x1a7wayplatform/connect/tachograph/dd/v1/string_value.proto\x1aNwayplatform/connect/tachograph/dd/v1/vehicle_registration_identification.proto\x1a?wayplatform/connect/tachograph/security/v1/authentication.proto\"\x9c\"\n" +
+	"Awayplatform/connect/tachograph/vu/v1/technical_data_gen2_v1.proto\x12$wayplatform.connect.tachograph.vu.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a>wayplatform/connect/tachograph/dd/v1/calibration_purpose.proto\x1aAwayplatform/connect/tachograph/dd/v1/card_structure_version.proto\x1a@wayplatform/connect/tachograph/dd/v1/driver_identification.proto\x1aAwayplatform/connect/tachograph/dd/v1/extended_serial_number.proto\x1a;wayplatform/connect/tachograph/dd/v1/full_card_number.proto\x1aJwayplatform/connect/tachograph/dd/v1/full_card_number_and_generation.proto\x1a?wayplatform/connect/tachograph/dd/v1/owner_identification.proto\x1aBwayplatform/connect/tachograph/dd/v1/software_identification.proto\x1a;wayplatform/connect/tachograph/dd/v1/ia5_string_value.proto\x1a7wayplatform/connect/tachograph/dd/v1/string_value.proto\x1aNwayplatform/connect/tachograph/dd/v1/vehicle_registration_identification.proto\x1a?wayplatform/connect/tachograph/security/v1/authentication.proto\"\xe2!\n" +
 	"\x13TechnicalDataGen2V1\x12w\n" +
 	"\x11vu_identification\x18\x01 \x01(\v2J.wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V1.VuIdentificationR\x10vuIdentification\x12|\n" +
 	"\x13calibration_records\x18\x02 \x03(\v2K.wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V1.CalibrationRecordR\x12calibrationRecords\x12m\n" +
@@ -1717,14 +1717,15 @@ const file_wayplatform_connect_tachograph_vu_v1_technical_data_gen2_v1_proto_raw
 	"\vCoupledGnss\x12_\n" +
 	"\rserial_number\x18\x01 \x01(\v2:.wayplatform.connect.tachograph.dd.v1.ExtendedSerialNumberR\fserialNumber\x12]\n" +
 	"\x0fapproval_number\x18\x02 \x01(\v24.wayplatform.connect.tachograph.dd.v1.Ia5StringValueR\x0eapprovalNumber\x12?\n" +
-	"\rcoupling_date\x18\x03 \x01(\v2\x1a.google.protobuf.TimestampR\fcouplingDate\x1a\xa7\v\n" +
+	"\rcoupling_date\x18\x03 \x01(\v2\x1a.google.protobuf.TimestampR\fcouplingDate\x1a\xed\n" +
+	"\n" +
 	"\x11CalibrationRecord\x12R\n" +
 	"\apurpose\x18\x01 \x01(\x0e28.wayplatform.connect.tachograph.dd.v1.CalibrationPurposeR\apurpose\x121\n" +
 	"\x14unrecognized_purpose\x18\x02 \x01(\x05R\x13unrecognizedPurpose\x12V\n" +
 	"\rworkshop_name\x18\x03 \x01(\v21.wayplatform.connect.tachograph.dd.v1.StringValueR\fworkshopName\x12\\\n" +
-	"\x10workshop_address\x18\x04 \x01(\v21.wayplatform.connect.tachograph.dd.v1.StringValueR\x0fworkshopAddress\x12\x8f\x01\n" +
-	"#workshop_card_number_and_generation\x18\x05 \x01(\v2A.wayplatform.connect.tachograph.dd.v1.FullCardNumberAndGenerationR\x1fworkshopCardNumberAndGeneration\x12e\n" +
-	"\x19workshop_card_expiry_date\x18\x06 \x01(\v2*.wayplatform.connect.tachograph.dd.v1.DateR\x16workshopCardExpiryDate\x12F\n" +
+	"\x10workshop_address\x18\x04 \x01(\v21.wayplatform.connect.tachograph.dd.v1.StringValueR\x0fworkshopAddress\x12f\n" +
+	"\x14workshop_card_number\x18\x05 \x01(\v24.wayplatform.connect.tachograph.dd.v1.FullCardNumberR\x12workshopCardNumber\x12U\n" +
+	"\x19workshop_card_expiry_date\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampR\x16workshopCardExpiryDate\x12F\n" +
 	"\x03vin\x18\a \x01(\v24.wayplatform.connect.tachograph.dd.v1.Ia5StringValueR\x03vin\x12z\n" +
 	"\x14vehicle_registration\x18\b \x01(\v2G.wayplatform.connect.tachograph.dd.v1.VehicleRegistrationIdentificationR\x13vehicleRegistration\x12I\n" +
 	"!w_vehicle_characteristic_constant\x18\t \x01(\x05R\x1ewVehicleCharacteristicConstant\x12H\n" +
@@ -1766,9 +1767,9 @@ var file_wayplatform_connect_tachograph_vu_v1_technical_data_gen2_v1_proto_goTyp
 	(*v11.SoftwareIdentification)(nil),            // 11: wayplatform.connect.tachograph.dd.v1.SoftwareIdentification
 	(*timestamppb.Timestamp)(nil),                 // 12: google.protobuf.Timestamp
 	(v11.CalibrationPurpose)(0),                   // 13: wayplatform.connect.tachograph.dd.v1.CalibrationPurpose
-	(*v11.FullCardNumberAndGeneration)(nil),       // 14: wayplatform.connect.tachograph.dd.v1.FullCardNumberAndGeneration
-	(*v11.Date)(nil),                              // 15: wayplatform.connect.tachograph.dd.v1.Date
-	(*v11.VehicleRegistrationIdentification)(nil), // 16: wayplatform.connect.tachograph.dd.v1.VehicleRegistrationIdentification
+	(*v11.FullCardNumber)(nil),                    // 14: wayplatform.connect.tachograph.dd.v1.FullCardNumber
+	(*v11.VehicleRegistrationIdentification)(nil), // 15: wayplatform.connect.tachograph.dd.v1.VehicleRegistrationIdentification
+	(*v11.FullCardNumberAndGeneration)(nil),       // 16: wayplatform.connect.tachograph.dd.v1.FullCardNumberAndGeneration
 	(*v11.CardStructureVersion)(nil),              // 17: wayplatform.connect.tachograph.dd.v1.CardStructureVersion
 	(*v11.DriverIdentification)(nil),              // 18: wayplatform.connect.tachograph.dd.v1.DriverIdentification
 	(*v11.OwnerIdentification)(nil),               // 19: wayplatform.connect.tachograph.dd.v1.OwnerIdentification
@@ -1797,20 +1798,20 @@ var file_wayplatform_connect_tachograph_vu_v1_technical_data_gen2_v1_proto_depId
 	13, // 20: wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V1.CalibrationRecord.purpose:type_name -> wayplatform.connect.tachograph.dd.v1.CalibrationPurpose
 	8,  // 21: wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V1.CalibrationRecord.workshop_name:type_name -> wayplatform.connect.tachograph.dd.v1.StringValue
 	8,  // 22: wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V1.CalibrationRecord.workshop_address:type_name -> wayplatform.connect.tachograph.dd.v1.StringValue
-	14, // 23: wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V1.CalibrationRecord.workshop_card_number_and_generation:type_name -> wayplatform.connect.tachograph.dd.v1.FullCardNumberAndGeneration
-	15, // 24: wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V1.CalibrationRecord.workshop_card_expiry_date:type_name -> wayplatform.connect.tachograph.dd.v1.Date
+	14, // 23: wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V1.CalibrationRecord.workshop_card_number:type_name -> wayplatform.connect.tachograph.dd.v1.FullCardNumber
+	12, // 24: wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V1.CalibrationRecord.workshop_card_expiry_date:type_name -> google.protobuf.Timestamp
 	9,  // 25: wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V1.CalibrationRecord.vin:type_name -> wayplatform.connect.tachograph.dd.v1.Ia5StringValue
-	16, // 26: wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V1.CalibrationRecord.vehicle_registration:type_name -> wayplatform.connect.tachograph.dd.v1.VehicleRegistrationIdentification
+	15, // 26: wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V1.CalibrationRecord.vehicle_registration:type_name -> wayplatform.connect.tachograph.dd.v1.VehicleRegistrationIdentification
 	9,  // 27: wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V1.CalibrationRecord.tyre_size:type_name -> wayplatform.connect.tachograph.dd.v1.Ia5StringValue
 	12, // 28: wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V1.CalibrationRecord.old_time_value:type_name -> google.protobuf.Timestamp
 	12, // 29: wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V1.CalibrationRecord.new_time_value:type_name -> google.protobuf.Timestamp
 	12, // 30: wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V1.CalibrationRecord.next_calibration_date:type_name -> google.protobuf.Timestamp
-	14, // 31: wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V1.CardRecord.card_number_and_generation:type_name -> wayplatform.connect.tachograph.dd.v1.FullCardNumberAndGeneration
+	16, // 31: wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V1.CardRecord.card_number_and_generation:type_name -> wayplatform.connect.tachograph.dd.v1.FullCardNumberAndGeneration
 	10, // 32: wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V1.CardRecord.card_extended_serial_number:type_name -> wayplatform.connect.tachograph.dd.v1.ExtendedSerialNumber
 	17, // 33: wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V1.CardRecord.card_structure_version:type_name -> wayplatform.connect.tachograph.dd.v1.CardStructureVersion
 	18, // 34: wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V1.CardRecord.driver_identification:type_name -> wayplatform.connect.tachograph.dd.v1.DriverIdentification
 	19, // 35: wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V1.CardRecord.owner_identification:type_name -> wayplatform.connect.tachograph.dd.v1.OwnerIdentification
-	14, // 36: wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V1.ItsConsentRecord.full_card_number_and_generation:type_name -> wayplatform.connect.tachograph.dd.v1.FullCardNumberAndGeneration
+	16, // 36: wayplatform.connect.tachograph.vu.v1.TechnicalDataGen2V1.ItsConsentRecord.full_card_number_and_generation:type_name -> wayplatform.connect.tachograph.dd.v1.FullCardNumberAndGeneration
 	37, // [37:37] is the sub-list for method output_type
 	37, // [37:37] is the sub-list for method input_type
 	37, // [37:37] is the sub-list for extension type_name

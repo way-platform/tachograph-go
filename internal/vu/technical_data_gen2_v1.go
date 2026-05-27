@@ -210,7 +210,7 @@ func (opts AnonymizeOptions) anonymizeTechnicalDataGen2V1(td *vuv1.TechnicalData
 		anon.SetUnrecognizedPurpose(cal.GetUnrecognizedPurpose())
 		anon.SetWorkshopName(ddOpts.AnonymizeStringValue(cal.GetWorkshopName()))
 		anon.SetWorkshopAddress(ddOpts.AnonymizeStringValue(cal.GetWorkshopAddress()))
-		anon.SetWorkshopCardNumberAndGeneration(ddOpts.AnonymizeFullCardNumberAndGeneration(cal.GetWorkshopCardNumberAndGeneration()))
+		anon.SetWorkshopCardNumber(ddOpts.AnonymizeFullCardNumber(cal.GetWorkshopCardNumber()))
 		anon.SetWorkshopCardExpiryDate(cal.GetWorkshopCardExpiryDate())
 		anon.SetVin(ddOpts.AnonymizeIa5StringValue(cal.GetVin()))
 		anon.SetVehicleRegistration(ddOpts.AnonymizeVehicleRegistrationIdentification(cal.GetVehicleRegistration()))
@@ -344,8 +344,8 @@ type gen2CalibrationRecord struct {
 	unrecognizedPurpose      int32
 	workshopName             *ddv1.StringValue
 	workshopAddress          *ddv1.StringValue
-	workshopCardNumberAndGen *ddv1.FullCardNumberAndGeneration
-	workshopCardExpiryDate   *ddv1.Date
+	workshopCardNumber       *ddv1.FullCardNumber
+	workshopCardExpiryDate   *timestamppb.Timestamp
 	vin                      *ddv1.Ia5StringValue
 	vehicleRegistration      *ddv1.VehicleRegistrationIdentification
 	wVehicleCharConst        int32
@@ -398,26 +398,26 @@ func parseOneCalibrationRecordGen2(opts dd.UnmarshalOptions, data []byte) (gen2C
 		lenWorkshopName       = 36
 		idxWorkshopAddress    = 37
 		lenWorkshopAddress    = 36
-		idxWorkshopCardAndGen = 73
-		lenWorkshopCardAndGen = 19
-		idxWorkshopCardExpiry = 92
+		idxWorkshopCard       = 73
+		lenWorkshopCard       = 18
+		idxWorkshopCardExpiry = 91
 		lenWorkshopCardExpiry = 4
-		idxVIN                = 96
+		idxVIN                = 95
 		lenVIN                = 17
-		idxVehicleReg         = 113
+		idxVehicleReg         = 112
 		lenVehicleReg         = 15
-		idxWVehicleChar       = 128
-		idxKConstant          = 130
-		idxLTyreCirc          = 132
-		idxTyreSize           = 134
+		idxWVehicleChar       = 127
+		idxKConstant          = 129
+		idxLTyreCirc          = 131
+		idxTyreSize           = 133
 		lenTyreSize           = 15
-		idxAuthorisedSpeed    = 149
-		idxOldOdometer        = 150
-		idxNewOdometer        = 153
-		idxOldTimeValue       = 156
+		idxAuthorisedSpeed    = 148
+		idxOldOdometer        = 149
+		idxNewOdometer        = 152
+		idxOldTimeValue       = 155
 		lenTimeValue          = 4
-		idxNewTimeValue       = 160
-		idxNextCalDate        = 164
+		idxNewTimeValue       = 159
+		idxNextCalDate        = 163
 	)
 
 	var r gen2CalibrationRecord
@@ -447,14 +447,14 @@ func parseOneCalibrationRecordGen2(opts dd.UnmarshalOptions, data []byte) (gen2C
 		return gen2CalibrationRecord{}, fmt.Errorf("workshop address: %w", err)
 	}
 
-	// workshopCardNumberAndGeneration (19 bytes)
-	r.workshopCardNumberAndGen, err = opts.UnmarshalFullCardNumberAndGeneration(data[idxWorkshopCardAndGen : idxWorkshopCardAndGen+lenWorkshopCardAndGen])
+	// workshopCardNumber (18 bytes, FullCardNumber)
+	r.workshopCardNumber, err = opts.UnmarshalFullCardNumber(data[idxWorkshopCard : idxWorkshopCard+lenWorkshopCard])
 	if err != nil {
-		return gen2CalibrationRecord{}, fmt.Errorf("workshop card number and generation: %w", err)
+		return gen2CalibrationRecord{}, fmt.Errorf("workshop card number: %w", err)
 	}
 
-	// workshopCardExpiryDate (4 bytes, Datef)
-	r.workshopCardExpiryDate, err = opts.UnmarshalDate(data[idxWorkshopCardExpiry : idxWorkshopCardExpiry+lenWorkshopCardExpiry])
+	// workshopCardExpiryDate (4 bytes, TimeReal)
+	r.workshopCardExpiryDate, err = opts.UnmarshalTimeReal(data[idxWorkshopCardExpiry : idxWorkshopCardExpiry+lenWorkshopCardExpiry])
 	if err != nil {
 		return gen2CalibrationRecord{}, fmt.Errorf("workshop card expiry date: %w", err)
 	}
@@ -529,20 +529,20 @@ func marshalOneCalibrationRecordGen2(opts dd.MarshalOptions, r gen2CalibrationRe
 		idxCalibrationPurpose = 0
 		idxWorkshopName       = 1
 		idxWorkshopAddress    = 37
-		idxWorkshopCardAndGen = 73
-		idxWorkshopCardExpiry = 92
-		idxVIN                = 96
-		idxVehicleReg         = 113
-		idxWVehicleChar       = 128
-		idxKConstant          = 130
-		idxLTyreCirc          = 132
-		idxTyreSize           = 134
-		idxAuthorisedSpeed    = 149
-		idxOldOdometer        = 150
-		idxNewOdometer        = 153
-		idxOldTimeValue       = 156
-		idxNewTimeValue       = 160
-		idxNextCalDate        = 164
+		idxWorkshopCard       = 73
+		idxWorkshopCardExpiry = 91
+		idxVIN                = 95
+		idxVehicleReg         = 112
+		idxWVehicleChar       = 127
+		idxKConstant          = 129
+		idxLTyreCirc          = 131
+		idxTyreSize           = 133
+		idxAuthorisedSpeed    = 148
+		idxOldOdometer        = 149
+		idxNewOdometer        = 152
+		idxOldTimeValue       = 155
+		idxNewTimeValue       = 159
+		idxNextCalDate        = 163
 	)
 
 	// calibrationPurpose (1 byte)
@@ -572,18 +572,18 @@ func marshalOneCalibrationRecordGen2(opts dd.MarshalOptions, r gen2CalibrationRe
 	}
 	copy(canvas[idxWorkshopAddress:idxWorkshopAddress+36], workshopAddressBytes)
 
-	// workshopCardNumberAndGeneration (19 bytes)
-	workshopCardBytes, err := opts.MarshalFullCardNumberAndGeneration(r.workshopCardNumberAndGen)
+	// workshopCardNumber (18 bytes, FullCardNumber)
+	workshopCardBytes, err := opts.MarshalFullCardNumber(r.workshopCardNumber)
 	if err != nil {
-		return nil, fmt.Errorf("workshop card number and generation: %w", err)
+		return nil, fmt.Errorf("workshop card number: %w", err)
 	}
-	if len(workshopCardBytes) != 19 {
-		return nil, fmt.Errorf("workshop card number and generation: expected 19 bytes, got %d", len(workshopCardBytes))
+	if len(workshopCardBytes) != 18 {
+		return nil, fmt.Errorf("workshop card number: expected 18 bytes, got %d", len(workshopCardBytes))
 	}
-	copy(canvas[idxWorkshopCardAndGen:idxWorkshopCardAndGen+19], workshopCardBytes)
+	copy(canvas[idxWorkshopCard:idxWorkshopCard+18], workshopCardBytes)
 
-	// workshopCardExpiryDate (4 bytes)
-	expiryDateBytes, err := opts.MarshalDate(r.workshopCardExpiryDate)
+	// workshopCardExpiryDate (4 bytes, TimeReal)
+	expiryDateBytes, err := opts.MarshalTimeReal(r.workshopCardExpiryDate)
 	if err != nil {
 		return nil, fmt.Errorf("workshop card expiry date: %w", err)
 	}
@@ -675,7 +675,7 @@ func gen2CalibrationToV1(r gen2CalibrationRecord) *vuv1.TechnicalDataGen2V1_Cali
 	rec.SetUnrecognizedPurpose(r.unrecognizedPurpose)
 	rec.SetWorkshopName(r.workshopName)
 	rec.SetWorkshopAddress(r.workshopAddress)
-	rec.SetWorkshopCardNumberAndGeneration(r.workshopCardNumberAndGen)
+	rec.SetWorkshopCardNumber(r.workshopCardNumber)
 	rec.SetWorkshopCardExpiryDate(r.workshopCardExpiryDate)
 	rec.SetVin(r.vin)
 	rec.SetVehicleRegistration(r.vehicleRegistration)
@@ -702,7 +702,7 @@ func gen2CalibrationFromV1(rec *vuv1.TechnicalDataGen2V1_CalibrationRecord) gen2
 		unrecognizedPurpose:      rec.GetUnrecognizedPurpose(),
 		workshopName:             rec.GetWorkshopName(),
 		workshopAddress:          rec.GetWorkshopAddress(),
-		workshopCardNumberAndGen: rec.GetWorkshopCardNumberAndGeneration(),
+		workshopCardNumber:       rec.GetWorkshopCardNumber(),
 		workshopCardExpiryDate:   rec.GetWorkshopCardExpiryDate(),
 		vin:                      rec.GetVin(),
 		vehicleRegistration:      rec.GetVehicleRegistration(),

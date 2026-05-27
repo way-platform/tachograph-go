@@ -69,32 +69,32 @@
           }
         }
       },
-      "workshopCardExpiryDate": "3270-06-26T00:00:00Z",
+      "workshopCardExpiryDate": "1970-02-08T05:25:57Z",
       "vin": {
         "length": 17,
-        "value": "*****************"
+        "value": "W****************"
       },
       "vehicleRegistration": {
-        "nation": "SPAIN",
+        "nation": "SAN_MARINO",
         "number": {
-          "encoding": "ISO_8859_1",
+          "encoding": "ISO_8859_15",
           "length": 13,
-          "value": "*************"
+          "value": "************"
         }
       },
-      "wVehicleCharacteristicConstant": 48185,
-      "kConstantOfRecordingEquipment": 48224,
-      "lTyreCircumferenceEighthsMm": 41011,
+      "wVehicleCharacteristicConstant": 10940,
+      "kConstantOfRecordingEquipment": 14780,
+      "lTyreCircumferenceEighthsMm": 24736,
       "tyreSize": {
         "length": 15,
-        "value": "***************"
+        "value": "3**************"
       },
-      "authorisedSpeedKmh": 4,
-      "oldOdometerValueKm": 7238000,
-      "newOdometerValueKm": 16777000,
-      "oldTimeValue": "2020-01-01T00:00:00Z",
-      "newTimeValue": "2020-01-01T00:00:00Z",
-      "nextCalibrationDate": "2020-01-01T00:00:00Z"
+      "authorisedSpeedKmh": 42,
+      "oldOdometerValueKm": 290417,
+      "newOdometerValueKm": 7405567,
+      "oldTimeValue": "1991-06-18T13:34:25Z",
+      "newTimeValue": "1970-03-13T08:03:45Z",
+      "nextCalibrationDate": "1970-03-13T08:03:45Z"
     },
     {
       "purpose": "CALIBRATION_PURPOSE_RESERVED",
@@ -131,32 +131,32 @@
           }
         }
       },
-      "workshopCardExpiryDate": "3270-06-26T00:00:00Z",
+      "workshopCardExpiryDate": "1970-02-08T05:25:57Z",
       "vin": {
         "length": 17,
-        "value": "*****************"
+        "value": "W****************"
       },
       "vehicleRegistration": {
-        "nation": "SPAIN",
+        "nation": "SAN_MARINO",
         "number": {
-          "encoding": "ISO_8859_1",
+          "encoding": "ISO_8859_15",
           "length": 13,
-          "value": "*************"
+          "value": "************"
         }
       },
-      "wVehicleCharacteristicConstant": 48185,
-      "kConstantOfRecordingEquipment": 48224,
-      "lTyreCircumferenceEighthsMm": 41011,
+      "wVehicleCharacteristicConstant": 10940,
+      "kConstantOfRecordingEquipment": 14780,
+      "lTyreCircumferenceEighthsMm": 24736,
       "tyreSize": {
         "length": 15,
-        "value": "***************"
+        "value": "3**************"
       },
-      "authorisedSpeedKmh": 4,
-      "oldOdometerValueKm": 7238000,
-      "newOdometerValueKm": 16777000,
-      "oldTimeValue": "2020-01-01T00:00:00Z",
-      "newTimeValue": "2020-01-01T00:00:00Z",
-      "nextCalibrationDate": "2020-01-01T00:00:00Z"
+      "authorisedSpeedKmh": 42,
+      "oldOdometerValueKm": 290417,
+      "newOdometerValueKm": 7405567,
+      "oldTimeValue": "1991-06-18T13:34:25Z",
+      "newTimeValue": "1970-03-13T08:03:45Z",
+      "nextCalibrationDate": "1970-03-13T08:03:45Z"
     },
     {
       "purpose": "ACTIVATION",
@@ -193,32 +193,32 @@
           }
         }
       },
-      "workshopCardExpiryDate": "3270-06-26T00:00:00Z",
+      "workshopCardExpiryDate": "1970-02-08T05:25:57Z",
       "vin": {
         "length": 17,
-        "value": "*****************"
+        "value": "W****************"
       },
       "vehicleRegistration": {
-        "nation": "SPAIN",
+        "nation": "SAN_MARINO",
         "number": {
-          "encoding": "ISO_8859_1",
+          "encoding": "ISO_8859_15",
           "length": 13,
-          "value": "*************"
+          "value": "************"
         }
       },
-      "wVehicleCharacteristicConstant": 48185,
-      "kConstantOfRecordingEquipment": 48224,
-      "lTyreCircumferenceEighthsMm": 41011,
+      "wVehicleCharacteristicConstant": 10940,
+      "kConstantOfRecordingEquipment": 14780,
+      "lTyreCircumferenceEighthsMm": 24736,
       "tyreSize": {
         "length": 15,
-        "value": "***************"
+        "value": "3**************"
       },
-      "authorisedSpeedKmh": 4,
-      "oldOdometerValueKm": 7238000,
-      "newOdometerValueKm": 16777000,
-      "oldTimeValue": "2020-01-01T00:00:00Z",
-      "newTimeValue": "2020-01-01T00:00:00Z",
-      "nextCalibrationDate": "2020-01-01T00:00:00Z"
+      "authorisedSpeedKmh": 42,
+      "oldOdometerValueKm": 290417,
+      "newOdometerValueKm": 7405567,
+      "oldTimeValue": "1991-06-18T13:34:25Z",
+      "newTimeValue": "1970-03-13T08:03:45Z",
+      "nextCalibrationDate": "1970-03-13T08:03:45Z"
     },
     {
       "purpose": "CALIBRATION_PURPOSE_UNSPECIFIED",
@@ -255,32 +255,32 @@
           }
         }
       },
-      "workshopCardExpiryDate": "3270-06-26T00:00:00Z",
+      "workshopCardExpiryDate": "1970-02-08T05:25:57Z",
       "vin": {
         "length": 17,
-        "value": "*****************"
+        "value": "W****************"
       },
       "vehicleRegistration": {
-        "nation": "SPAIN",
+        "nation": "SAN_MARINO",
         "number": {
-          "encoding": "ISO_8859_1",
+          "encoding": "ISO_8859_15",
           "length": 13,
-          "value": "*************"
+          "value": "************"
         }
       },
-      "wVehicleCharacteristicConstant": 48185,
-      "kConstantOfRecordingEquipment": 48224,
-      "lTyreCircumferenceEighthsMm": 41011,
+      "wVehicleCharacteristicConstant": 10940,
+      "kConstantOfRecordingEquipment": 14780,
+      "lTyreCircumferenceEighthsMm": 24736,
       "tyreSize": {
         "length": 15,
-        "value": "***************"
+        "value": "3**************"
       },
-      "authorisedSpeedKmh": 4,
-      "oldOdometerValueKm": 7238000,
-      "newOdometerValueKm": 16777000,
-      "oldTimeValue": "2020-01-01T00:00:00Z",
-      "newTimeValue": "2020-01-01T00:00:00Z",
-      "nextCalibrationDate": "2020-01-01T00:00:00Z"
+      "authorisedSpeedKmh": 42,
+      "oldOdometerValueKm": 290417,
+      "newOdometerValueKm": 7405567,
+      "oldTimeValue": "1991-06-18T13:34:25Z",
+      "newTimeValue": "1970-03-13T08:03:45Z",
+      "nextCalibrationDate": "1970-03-13T08:03:45Z"
     }
   ],
   "pairedSensors": [
