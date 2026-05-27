@@ -307,7 +307,7 @@
       "endTime": "2020-01-01T00:00:00Z",
       "cardNumberDriverSlotBegin": {
         "cardType": "DRIVER_CARD",
-        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "cardIssuingMemberState": "NATION_NUMERIC_DEFAULT",
         "driverIdentification": {
           "driverIdentificationNumber": {
             "length": 14,
@@ -332,7 +332,7 @@
       },
       "cardNumberDriverSlotEnd": {
         "cardType": "DRIVER_CARD",
-        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "cardIssuingMemberState": "NATION_NUMERIC_DEFAULT",
         "driverIdentification": {
           "driverIdentificationNumber": {
             "length": 14,
@@ -365,7 +365,7 @@
       "endTime": "2020-01-01T00:00:00Z",
       "cardNumberDriverSlotBegin": {
         "cardType": "DRIVER_CARD",
-        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "cardIssuingMemberState": "NATION_NUMERIC_DEFAULT",
         "driverIdentification": {
           "driverIdentificationNumber": {
             "length": 14,
@@ -390,7 +390,7 @@
       },
       "cardNumberDriverSlotEnd": {
         "cardType": "DRIVER_CARD",
-        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "cardIssuingMemberState": "NATION_NUMERIC_DEFAULT",
         "driverIdentification": {
           "driverIdentificationNumber": {
             "length": 14,
@@ -423,7 +423,7 @@
       "endTime": "2020-01-01T00:00:00Z",
       "cardNumberDriverSlotBegin": {
         "cardType": "DRIVER_CARD",
-        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "cardIssuingMemberState": "NATION_NUMERIC_DEFAULT",
         "driverIdentification": {
           "driverIdentificationNumber": {
             "length": 14,
@@ -448,7 +448,7 @@
       },
       "cardNumberDriverSlotEnd": {
         "cardType": "DRIVER_CARD",
-        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "cardIssuingMemberState": "NATION_NUMERIC_DEFAULT",
         "driverIdentification": {
           "driverIdentificationNumber": {
             "length": 14,
@@ -481,7 +481,7 @@
       "endTime": "2020-01-01T00:00:00Z",
       "cardNumberDriverSlotBegin": {
         "cardType": "DRIVER_CARD",
-        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "cardIssuingMemberState": "NATION_NUMERIC_DEFAULT",
         "driverIdentification": {
           "driverIdentificationNumber": {
             "length": 14,
@@ -506,7 +506,7 @@
       },
       "cardNumberDriverSlotEnd": {
         "cardType": "DRIVER_CARD",
-        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "cardIssuingMemberState": "NATION_NUMERIC_DEFAULT",
         "driverIdentification": {
           "driverIdentificationNumber": {
             "length": 14,
@@ -539,7 +539,7 @@
       "endTime": "2020-01-01T00:00:00Z",
       "cardNumberDriverSlotBegin": {
         "cardType": "DRIVER_CARD",
-        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "cardIssuingMemberState": "NATION_NUMERIC_DEFAULT",
         "driverIdentification": {
           "driverIdentificationNumber": {
             "length": 14,
@@ -564,7 +564,7 @@
       },
       "cardNumberDriverSlotEnd": {
         "cardType": "DRIVER_CARD",
-        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "cardIssuingMemberState": "NATION_NUMERIC_DEFAULT",
         "driverIdentification": {
           "driverIdentificationNumber": {
             "length": 14,
@@ -597,7 +597,7 @@
       "endTime": "2020-01-01T00:00:00Z",
       "cardNumberDriverSlotBegin": {
         "cardType": "DRIVER_CARD",
-        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "cardIssuingMemberState": "NATION_NUMERIC_DEFAULT",
         "driverIdentification": {
           "driverIdentificationNumber": {
             "length": 14,
@@ -622,7 +622,7 @@
       },
       "cardNumberDriverSlotEnd": {
         "cardType": "DRIVER_CARD",
-        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "cardIssuingMemberState": "NATION_NUMERIC_DEFAULT",
         "driverIdentification": {
           "driverIdentificationNumber": {
             "length": 14,
@@ -655,7 +655,7 @@
       "endTime": "2020-01-01T00:00:00Z",
       "cardNumberDriverSlotBegin": {
         "cardType": "DRIVER_CARD",
-        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "cardIssuingMemberState": "NATION_NUMERIC_DEFAULT",
         "driverIdentification": {
           "driverIdentificationNumber": {
             "length": 14,
@@ -680,7 +680,7 @@
       },
       "cardNumberDriverSlotEnd": {
         "cardType": "DRIVER_CARD",
-        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "cardIssuingMemberState": "NATION_NUMERIC_DEFAULT",
         "driverIdentification": {
           "driverIdentificationNumber": {
             "length": 14,
@@ -713,7 +713,7 @@
       "endTime": "2020-01-01T00:00:00Z",
       "cardNumberDriverSlotBegin": {
         "cardType": "DRIVER_CARD",
-        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "cardIssuingMemberState": "NATION_NUMERIC_DEFAULT",
         "driverIdentification": {
           "driverIdentificationNumber": {
             "length": 14,
@@ -738,7 +738,7 @@
       },
       "cardNumberDriverSlotEnd": {
         "cardType": "DRIVER_CARD",
-        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "cardIssuingMemberState": "NATION_NUMERIC_DEFAULT",
         "driverIdentification": {
           "driverIdentificationNumber": {
             "length": 14,
@@ -771,7 +771,7 @@
       "endTime": "2020-01-01T00:00:00Z",
       "cardNumberDriverSlotBegin": {
         "cardType": "DRIVER_CARD",
-        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "cardIssuingMemberState": "NATION_NUMERIC_DEFAULT",
         "driverIdentification": {
           "driverIdentificationNumber": {
             "length": 14,
@@ -796,7 +796,7 @@
       },
       "cardNumberDriverSlotEnd": {
         "cardType": "DRIVER_CARD",
-        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "cardIssuingMemberState": "NATION_NUMERIC_DEFAULT",
         "driverIdentification": {
           "driverIdentificationNumber": {
             "length": 14,
@@ -829,7 +829,7 @@
       "endTime": "2020-01-01T00:00:00Z",
       "cardNumberDriverSlotBegin": {
         "cardType": "DRIVER_CARD",
-        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "cardIssuingMemberState": "NATION_NUMERIC_DEFAULT",
         "driverIdentification": {
           "driverIdentificationNumber": {
             "length": 14,
@@ -854,7 +854,7 @@
       },
       "cardNumberDriverSlotEnd": {
         "cardType": "DRIVER_CARD",
-        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "cardIssuingMemberState": "NATION_NUMERIC_DEFAULT",
         "driverIdentification": {
           "driverIdentificationNumber": {
             "length": 14,
@@ -887,7 +887,7 @@
       "endTime": "2020-01-01T00:00:00Z",
       "cardNumberDriverSlotBegin": {
         "cardType": "DRIVER_CARD",
-        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "cardIssuingMemberState": "NATION_NUMERIC_DEFAULT",
         "driverIdentification": {
           "driverIdentificationNumber": {
             "length": 14,
@@ -912,7 +912,7 @@
       },
       "cardNumberDriverSlotEnd": {
         "cardType": "DRIVER_CARD",
-        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "cardIssuingMemberState": "NATION_NUMERIC_DEFAULT",
         "driverIdentification": {
           "driverIdentificationNumber": {
             "length": 14,
@@ -945,7 +945,7 @@
       "endTime": "2020-01-01T00:00:00Z",
       "cardNumberDriverSlotBegin": {
         "cardType": "DRIVER_CARD",
-        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "cardIssuingMemberState": "NATION_NUMERIC_DEFAULT",
         "driverIdentification": {
           "driverIdentificationNumber": {
             "length": 14,
@@ -970,7 +970,7 @@
       },
       "cardNumberDriverSlotEnd": {
         "cardType": "DRIVER_CARD",
-        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "cardIssuingMemberState": "NATION_NUMERIC_DEFAULT",
         "driverIdentification": {
           "driverIdentificationNumber": {
             "length": 14,
@@ -1003,7 +1003,7 @@
       "endTime": "2020-01-01T00:00:00Z",
       "cardNumberDriverSlotBegin": {
         "cardType": "DRIVER_CARD",
-        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "cardIssuingMemberState": "NATION_NUMERIC_DEFAULT",
         "driverIdentification": {
           "driverIdentificationNumber": {
             "length": 14,
@@ -1028,7 +1028,7 @@
       },
       "cardNumberDriverSlotEnd": {
         "cardType": "DRIVER_CARD",
-        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "cardIssuingMemberState": "NATION_NUMERIC_DEFAULT",
         "driverIdentification": {
           "driverIdentificationNumber": {
             "length": 14,
@@ -1081,7 +1081,7 @@
       "endTime": "2020-01-01T00:00:00Z",
       "cardNumberDriverSlotBegin": {
         "cardType": "DRIVER_CARD",
-        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "cardIssuingMemberState": "NATION_NUMERIC_DEFAULT",
         "driverIdentification": {
           "driverIdentificationNumber": {
             "length": 14,
@@ -1106,7 +1106,7 @@
       },
       "cardNumberDriverSlotEnd": {
         "cardType": "DRIVER_CARD",
-        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "cardIssuingMemberState": "NATION_NUMERIC_DEFAULT",
         "driverIdentification": {
           "driverIdentificationNumber": {
             "length": 14,
@@ -1179,7 +1179,7 @@
       "endTime": "2020-01-01T00:00:00Z",
       "cardNumberDriverSlotBegin": {
         "cardType": "DRIVER_CARD",
-        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "cardIssuingMemberState": "NATION_NUMERIC_DEFAULT",
         "driverIdentification": {
           "driverIdentificationNumber": {
             "length": 14,
@@ -1204,7 +1204,7 @@
       },
       "cardNumberDriverSlotEnd": {
         "cardType": "DRIVER_CARD",
-        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "cardIssuingMemberState": "NATION_NUMERIC_DEFAULT",
         "driverIdentification": {
           "driverIdentificationNumber": {
             "length": 14,
@@ -1237,7 +1237,7 @@
       "endTime": "2020-01-01T00:00:00Z",
       "cardNumberDriverSlotBegin": {
         "cardType": "DRIVER_CARD",
-        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "cardIssuingMemberState": "NATION_NUMERIC_DEFAULT",
         "driverIdentification": {
           "driverIdentificationNumber": {
             "length": 14,
@@ -1262,7 +1262,7 @@
       },
       "cardNumberDriverSlotEnd": {
         "cardType": "DRIVER_CARD",
-        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "cardIssuingMemberState": "NATION_NUMERIC_DEFAULT",
         "driverIdentification": {
           "driverIdentificationNumber": {
             "length": 14,
@@ -1295,7 +1295,7 @@
       "endTime": "2020-01-01T00:00:00Z",
       "cardNumberDriverSlotBegin": {
         "cardType": "DRIVER_CARD",
-        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "cardIssuingMemberState": "NATION_NUMERIC_DEFAULT",
         "driverIdentification": {
           "driverIdentificationNumber": {
             "length": 14,
@@ -1320,7 +1320,7 @@
       },
       "cardNumberDriverSlotEnd": {
         "cardType": "DRIVER_CARD",
-        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "cardIssuingMemberState": "NATION_NUMERIC_DEFAULT",
         "driverIdentification": {
           "driverIdentificationNumber": {
             "length": 14,
@@ -1353,7 +1353,7 @@
       "endTime": "2020-01-01T00:00:00Z",
       "cardNumberDriverSlotBegin": {
         "cardType": "DRIVER_CARD",
-        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "cardIssuingMemberState": "NATION_NUMERIC_DEFAULT",
         "driverIdentification": {
           "driverIdentificationNumber": {
             "length": 14,
@@ -1378,7 +1378,7 @@
       },
       "cardNumberDriverSlotEnd": {
         "cardType": "DRIVER_CARD",
-        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "cardIssuingMemberState": "NATION_NUMERIC_DEFAULT",
         "driverIdentification": {
           "driverIdentificationNumber": {
             "length": 14,
@@ -1411,7 +1411,7 @@
       "endTime": "2020-01-01T00:00:00Z",
       "cardNumberDriverSlotBegin": {
         "cardType": "DRIVER_CARD",
-        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "cardIssuingMemberState": "NATION_NUMERIC_DEFAULT",
         "driverIdentification": {
           "driverIdentificationNumber": {
             "length": 14,
@@ -1436,7 +1436,7 @@
       },
       "cardNumberDriverSlotEnd": {
         "cardType": "DRIVER_CARD",
-        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "cardIssuingMemberState": "NATION_NUMERIC_DEFAULT",
         "driverIdentification": {
           "driverIdentificationNumber": {
             "length": 14,
@@ -1505,7 +1505,7 @@
       },
       "workshopCardNumber": {
         "cardType": "WORKSHOP_CARD",
-        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "cardIssuingMemberState": "NATION_NUMERIC_DEFAULT",
         "ownerIdentification": {
           "ownerIdentification": {
             "length": 13,

@@ -27,7 +27,7 @@
       "downloadingTime": "2025-09-10T15:56:17Z",
       "fullCardNumber": {
         "cardType": "COMPANY_CARD",
-        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "cardIssuingMemberState": "NATION_NUMERIC_DEFAULT",
         "ownerIdentification": {
           "ownerIdentification": {
             "length": 13,
@@ -77,7 +77,7 @@
       },
       "companyCardNumber": {
         "cardType": "COMPANY_CARD",
-        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "cardIssuingMemberState": "NATION_NUMERIC_DEFAULT",
         "ownerIdentification": {
           "ownerIdentification": {
             "length": 13,

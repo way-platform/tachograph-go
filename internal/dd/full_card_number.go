@@ -59,9 +59,14 @@ func (opts UnmarshalOptions) UnmarshalFullCardNumber(data []byte) (*ddv1.FullCar
 	}
 	cardNumber.SetCardType(cardType)
 
-	// Parse issuing member state (1 byte)
-	issuingState := data[1]
-	cardNumber.SetCardIssuingMemberState(ddv1.NationNumeric(issuingState))
+	// Parse issuing member state (1 byte). The byte is a protocol value that
+	// must be mapped through the protocol_enum_value annotation, not cast
+	// directly to the proto enum (e.g. Norway protocol 37 == MONACO enum 37).
+	if issuingState, err := UnmarshalEnum[ddv1.NationNumeric](data[1]); err == nil {
+		cardNumber.SetCardIssuingMemberState(issuingState)
+	} else {
+		cardNumber.SetCardIssuingMemberState(ddv1.NationNumeric_NATION_NUMERIC_UNRECOGNIZED)
+	}
 
 	// Parse card number based on card type (16 bytes)
 	cardNumberData := data[2:18]
@@ -73,7 +78,7 @@ func (opts UnmarshalOptions) UnmarshalFullCardNumber(data []byte) (*ddv1.FullCar
 			return nil, fmt.Errorf("failed to parse driver identification: %w", err)
 		}
 		cardNumber.SetDriverIdentification(driverID)
-	case ddv1.EquipmentType_WORKSHOP_CARD, ddv1.EquipmentType_COMPANY_CARD:
+	case ddv1.EquipmentType_WORKSHOP_CARD, ddv1.EquipmentType_CONTROL_CARD, ddv1.EquipmentType_COMPANY_CARD:
 		// OwnerIdentification is 16 bytes
 		ownerID, err := opts.UnmarshalOwnerIdentification(cardNumberData)
 		if err != nil {
@@ -149,8 +154,18 @@ func (opts MarshalOptions) MarshalFullCardNumber(cardNumber *ddv1.FullCardNumber
 	}
 	canvas[0] = cardTypeByte
 
-	// Paint issuing member state (1 byte)
-	canvas[1] = byte(cardNumber.GetCardIssuingMemberState())
+	// Paint issuing member state (1 byte) - map the enum back to its protocol
+	// value. UNSPECIFIED (set by the anonymizer) and UNRECOGNIZED have no
+	// protocol value, so leave the byte as painted from raw_data (or zero).
+	issuingState := cardNumber.GetCardIssuingMemberState()
+	if issuingState != ddv1.NationNumeric_NATION_NUMERIC_UNSPECIFIED &&
+		issuingState != ddv1.NationNumeric_NATION_NUMERIC_UNRECOGNIZED {
+		issuingStateByte, err := MarshalEnum(issuingState)
+		if err != nil {
+			return nil, fmt.Errorf("failed to marshal card issuing member state: %w", err)
+		}
+		canvas[1] = issuingStateByte
+	}
 
 	// Paint card number based on card type (bytes 2-17, 16 bytes total)
 	switch cardNumber.GetCardType() {
@@ -163,7 +178,7 @@ func (opts MarshalOptions) MarshalFullCardNumber(cardNumber *ddv1.FullCardNumber
 			}
 			copy(canvas[2:18], driverBytes)
 		}
-	case ddv1.EquipmentType_WORKSHOP_CARD, ddv1.EquipmentType_COMPANY_CARD:
+	case ddv1.EquipmentType_WORKSHOP_CARD, ddv1.EquipmentType_CONTROL_CARD, ddv1.EquipmentType_COMPANY_CARD:
 		if ownerID := cardNumber.GetOwnerIdentification(); ownerID != nil {
 			// OwnerIdentification is 16 bytes
 			ownerBytes, err := opts.MarshalOwnerIdentification(ownerID)
@@ -190,7 +205,7 @@ func (opts MarshalOptions) MarshalFullCardNumberAsString(cardNumber *ddv1.FullCa
 		if driverID := cardNumber.GetDriverIdentification(); driverID != nil {
 			return opts.MarshalIa5StringValue(driverID.GetDriverIdentificationNumber())
 		}
-	case ddv1.EquipmentType_WORKSHOP_CARD, ddv1.EquipmentType_COMPANY_CARD:
+	case ddv1.EquipmentType_WORKSHOP_CARD, ddv1.EquipmentType_CONTROL_CARD, ddv1.EquipmentType_COMPANY_CARD:
 		if ownerID := cardNumber.GetOwnerIdentification(); ownerID != nil {
 			return opts.MarshalIa5StringValue(ownerID.GetOwnerIdentification())
 		}

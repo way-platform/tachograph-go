@@ -316,8 +316,9 @@ func parseVehicleRegistrationNumberRecordArray(data []byte, offset int) (*ddv1.V
 	var unmarshalOpts dd.UnmarshalOptions
 	var vri *ddv1.VehicleRegistrationIdentification
 	switch recordSize {
-	case 15:
-		// VehicleRegistrationIdentification: 1 nation + 1 codepage + 13 string
+	case 14, 15:
+		// 15: VehicleRegistrationIdentification (nation + codepage + 13-byte string)
+		// 14: VehicleRegistrationNumber with codepage (some VUs omit the nation byte)
 		vri, err = unmarshalOpts.UnmarshalVehicleRegistrationIdentification(data[recordStart:recordEnd])
 	case 13:
 		// VehicleRegistrationNumber: 13-byte IA5String (spec-compliant, unlikely in practice)
@@ -331,7 +332,7 @@ func parseVehicleRegistrationNumberRecordArray(data []byte, offset int) (*ddv1.V
 		number.SetValue(ia5.GetValue())
 		vri.SetNumber(number)
 	default:
-		return nil, 0, fmt.Errorf("unexpected VRN record size: %d (expected 13 or 15)", recordSize)
+		return nil, 0, fmt.Errorf("unexpected VRN record size: %d (expected 13, 14, or 15)", recordSize)
 	}
 	if err != nil {
 		return nil, 0, fmt.Errorf("unmarshal VRN: %w", err)

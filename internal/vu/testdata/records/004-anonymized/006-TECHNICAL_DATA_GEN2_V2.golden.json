@@ -49,7 +49,7 @@
       },
       "workshopCardNumber": {
         "cardType": "WORKSHOP_CARD",
-        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "cardIssuingMemberState": "NATION_NUMERIC_DEFAULT",
         "ownerIdentification": {
           "ownerIdentification": {
             "length": 13,
@@ -75,7 +75,7 @@
         "value": "*****************"
       },
       "vehicleRegistration": {
-        "nation": "CZECH_REPUBLIC",
+        "nation": "SPAIN",
         "number": {
           "encoding": "ISO_8859_1",
           "length": 13,
@@ -111,7 +111,7 @@
       },
       "workshopCardNumber": {
         "cardType": "WORKSHOP_CARD",
-        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "cardIssuingMemberState": "NATION_NUMERIC_DEFAULT",
         "ownerIdentification": {
           "ownerIdentification": {
             "length": 13,
@@ -137,7 +137,7 @@
         "value": "*****************"
       },
       "vehicleRegistration": {
-        "nation": "CZECH_REPUBLIC",
+        "nation": "SPAIN",
         "number": {
           "encoding": "ISO_8859_1",
           "length": 13,
@@ -173,7 +173,7 @@
       },
       "workshopCardNumber": {
         "cardType": "WORKSHOP_CARD",
-        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "cardIssuingMemberState": "NATION_NUMERIC_DEFAULT",
         "ownerIdentification": {
           "ownerIdentification": {
             "length": 13,
@@ -199,7 +199,7 @@
         "value": "*****************"
       },
       "vehicleRegistration": {
-        "nation": "CZECH_REPUBLIC",
+        "nation": "SPAIN",
         "number": {
           "encoding": "ISO_8859_1",
           "length": 13,
@@ -235,7 +235,7 @@
       },
       "workshopCardNumber": {
         "cardType": "WORKSHOP_CARD",
-        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "cardIssuingMemberState": "NATION_NUMERIC_DEFAULT",
         "ownerIdentification": {
           "ownerIdentification": {
             "length": 13,
@@ -261,7 +261,7 @@
         "value": "*****************"
       },
       "vehicleRegistration": {
-        "nation": "CZECH_REPUBLIC",
+        "nation": "SPAIN",
         "number": {
           "encoding": "ISO_8859_1",
           "length": 13,
@@ -303,7 +303,7 @@
       "fullCardNumberAndGeneration": {
         "fullCardNumber": {
           "cardType": "WORKSHOP_CARD",
-          "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+          "cardIssuingMemberState": "NATION_NUMERIC_DEFAULT",
           "ownerIdentification": {
             "ownerIdentification": {
               "length": 13,
@@ -331,7 +331,7 @@
       "fullCardNumberAndGeneration": {
         "fullCardNumber": {
           "cardType": "DRIVER_CARD",
-          "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+          "cardIssuingMemberState": "NATION_NUMERIC_DEFAULT",
           "driverIdentification": {
             "driverIdentificationNumber": {
               "length": 14,
@@ -355,7 +355,7 @@
       "fullCardNumberAndGeneration": {
         "fullCardNumber": {
           "cardType": "DRIVER_CARD",
-          "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+          "cardIssuingMemberState": "NATION_NUMERIC_DEFAULT",
           "driverIdentification": {
             "driverIdentificationNumber": {
               "length": 14,
@@ -379,7 +379,7 @@
       "fullCardNumberAndGeneration": {
         "fullCardNumber": {
           "cardType": "COMPANY_CARD",
-          "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+          "cardIssuingMemberState": "NATION_NUMERIC_DEFAULT",
           "ownerIdentification": {
             "ownerIdentification": {
               "length": 13,
@@ -407,7 +407,7 @@
       "fullCardNumberAndGeneration": {
         "fullCardNumber": {
           "cardType": "DRIVER_CARD",
-          "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+          "cardIssuingMemberState": "NATION_NUMERIC_DEFAULT",
           "driverIdentification": {
             "driverIdentificationNumber": {
               "length": 14,
@@ -431,7 +431,7 @@
       "fullCardNumberAndGeneration": {
         "fullCardNumber": {
           "cardType": "DRIVER_CARD",
-          "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+          "cardIssuingMemberState": "NATION_NUMERIC_DEFAULT",
           "driverIdentification": {
             "driverIdentificationNumber": {
               "length": 14,
@@ -455,7 +455,7 @@
       "fullCardNumberAndGeneration": {
         "fullCardNumber": {
           "cardType": "DRIVER_CARD",
-          "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+          "cardIssuingMemberState": "NATION_NUMERIC_DEFAULT",
           "driverIdentification": {
             "driverIdentificationNumber": {
               "length": 14,
@@ -479,7 +479,7 @@
       "fullCardNumberAndGeneration": {
         "fullCardNumber": {
           "cardType": "DRIVER_CARD",
-          "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+          "cardIssuingMemberState": "NATION_NUMERIC_DEFAULT",
           "driverIdentification": {
             "driverIdentificationNumber": {
               "length": 14,
@@ -503,7 +503,7 @@
       "fullCardNumberAndGeneration": {
         "fullCardNumber": {
           "cardType": "DRIVER_CARD",
-          "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+          "cardIssuingMemberState": "NATION_NUMERIC_DEFAULT",
           "driverIdentification": {
             "driverIdentificationNumber": {
               "length": 14,
@@ -527,7 +527,7 @@
       "fullCardNumberAndGeneration": {
         "fullCardNumber": {
           "cardType": "DRIVER_CARD",
-          "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+          "cardIssuingMemberState": "NATION_NUMERIC_DEFAULT",
           "driverIdentification": {
             "driverIdentificationNumber": {
               "length": 14,
@@ -551,7 +551,7 @@
       "fullCardNumberAndGeneration": {
         "fullCardNumber": {
           "cardType": "COMPANY_CARD",
-          "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+          "cardIssuingMemberState": "NATION_NUMERIC_DEFAULT",
           "ownerIdentification": {
             "ownerIdentification": {
               "length": 13,
@@ -579,7 +579,7 @@
       "fullCardNumberAndGeneration": {
         "fullCardNumber": {
           "cardType": "COMPANY_CARD",
-          "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+          "cardIssuingMemberState": "NATION_NUMERIC_DEFAULT",
           "ownerIdentification": {
             "ownerIdentification": {
               "length": 13,

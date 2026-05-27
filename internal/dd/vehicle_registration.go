@@ -20,29 +20,48 @@ import (
 // Binary Layout (15 bytes):
 //   - Nation code (1 byte): NationNumeric
 //   - Registration number (14 bytes): codePage (1 byte) + vehicleRegNumber (13 bytes)
+//
+// Some Gen2 V1 vehicle units emit 14-byte records (VehicleRegistrationNumber only,
+// without the nation byte). When 14 bytes are provided, the nation defaults to
+// NATION_NUMERIC_UNSPECIFIED. Note: the marshal function always produces the canonical
+// 15-byte format, so 14-byte inputs are normalized to 15 bytes on round-trip.
 func (opts UnmarshalOptions) UnmarshalVehicleRegistration(data []byte) (*ddv1.VehicleRegistrationIdentification, error) {
-	const lenVehicleRegistration = 15
-
-	if len(data) != lenVehicleRegistration {
-		return nil, fmt.Errorf("invalid data length for VehicleRegistrationIdentification: got %d, want %d", len(data), lenVehicleRegistration)
-	}
+	const (
+		lenWithNation    = 15 // VehicleRegistrationIdentification: nation (1) + VRN (14)
+		lenWithoutNation = 14 // VehicleRegistrationNumber only: codePage (1) + regNumber (13)
+	)
 
 	vehicleReg := &ddv1.VehicleRegistrationIdentification{}
 
-	// Read nation code (1 byte) and convert using protocol annotations
-	if nation, err := UnmarshalEnum[ddv1.NationNumeric](data[0]); err == nil {
-		vehicleReg.SetNation(nation)
-	} else {
-		// Value not recognized - set UNRECOGNIZED (no unrecognized field for this type)
-		vehicleReg.SetNation(ddv1.NationNumeric_NATION_NUMERIC_UNRECOGNIZED)
-	}
+	switch len(data) {
+	case lenWithNation:
+		// Standard: 1 byte nation + 14 bytes VehicleRegistrationNumber
+		if nation, err := UnmarshalEnum[ddv1.NationNumeric](data[0]); err == nil {
+			vehicleReg.SetNation(nation)
+		} else {
+			vehicleReg.SetNation(ddv1.NationNumeric_NATION_NUMERIC_UNRECOGNIZED)
+		}
 
-	// Read registration number (14 bytes: 1 byte code page + 13 bytes string)
-	regNumber, err := opts.UnmarshalStringValue(data[1:lenVehicleRegistration])
-	if err != nil {
-		return nil, fmt.Errorf("failed to parse registration number: %w", err)
+		regNumber, err := opts.UnmarshalStringValue(data[1:lenWithNation])
+		if err != nil {
+			return nil, fmt.Errorf("failed to parse registration number: %w", err)
+		}
+		vehicleReg.SetNumber(regNumber)
+
+	case lenWithoutNation:
+		// Some Gen2 V1 VUs omit the nation byte, emitting only VehicleRegistrationNumber (14 bytes)
+		vehicleReg.SetNation(ddv1.NationNumeric_NATION_NUMERIC_UNSPECIFIED)
+
+		regNumber, err := opts.UnmarshalStringValue(data[0:lenWithoutNation])
+		if err != nil {
+			return nil, fmt.Errorf("failed to parse registration number: %w", err)
+		}
+		vehicleReg.SetNumber(regNumber)
+
+	default:
+		return nil, fmt.Errorf("invalid data length for VehicleRegistrationIdentification: got %d, want %d or %d",
+			len(data), lenWithNation, lenWithoutNation)
 	}
-	vehicleReg.SetNumber(regNumber)
 
 	return vehicleReg, nil
 }
