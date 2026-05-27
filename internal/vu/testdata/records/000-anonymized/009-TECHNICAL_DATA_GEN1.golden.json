@@ -75,7 +75,7 @@
       },
       "workshopCardNumber": {
         "cardType": "WORKSHOP_CARD",
-        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "cardIssuingMemberState": "NATION_NUMERIC_DEFAULT",
         "ownerIdentification": {
           "ownerIdentification": {
             "length": 13,
@@ -112,7 +112,7 @@
         "rawData": "KioqKioqKioqKioqKioqKio="
       },
       "vehicleRegistration": {
-        "nation": "NATION_NUMERIC_UNSPECIFIED",
+        "nation": "NATION_NUMERIC_DEFAULT",
         "number": {
           "encoding": "ISO_8859_1",
           "length": 13,
@@ -152,7 +152,7 @@
       },
       "workshopCardNumber": {
         "cardType": "WORKSHOP_CARD",
-        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "cardIssuingMemberState": "NATION_NUMERIC_DEFAULT",
         "ownerIdentification": {
           "ownerIdentification": {
             "length": 13,
@@ -189,7 +189,7 @@
         "rawData": "KioqKioqKioqKioqKioqKio="
       },
       "vehicleRegistration": {
-        "nation": "NATION_NUMERIC_UNSPECIFIED",
+        "nation": "NATION_NUMERIC_DEFAULT",
         "number": {
           "encoding": "ISO_8859_1",
           "length": 13,
@@ -229,7 +229,7 @@
       },
       "workshopCardNumber": {
         "cardType": "WORKSHOP_CARD",
-        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "cardIssuingMemberState": "NATION_NUMERIC_DEFAULT",
         "ownerIdentification": {
           "ownerIdentification": {
             "length": 13,
@@ -266,7 +266,7 @@
         "rawData": "KioqKioqKioqKioqKioqKio="
       },
       "vehicleRegistration": {
-        "nation": "NATION_NUMERIC_UNSPECIFIED",
+        "nation": "NATION_NUMERIC_DEFAULT",
         "number": {
           "encoding": "ISO_8859_1",
           "length": 13,
@@ -306,7 +306,7 @@
       },
       "workshopCardNumber": {
         "cardType": "WORKSHOP_CARD",
-        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "cardIssuingMemberState": "NATION_NUMERIC_DEFAULT",
         "ownerIdentification": {
           "ownerIdentification": {
             "length": 13,
@@ -343,7 +343,7 @@
         "rawData": "KioqKioqKioqKioqKioqKio="
       },
       "vehicleRegistration": {
-        "nation": "NATION_NUMERIC_UNSPECIFIED",
+        "nation": "NATION_NUMERIC_DEFAULT",
         "number": {
           "encoding": "ISO_8859_1",
           "length": 13,
@@ -383,7 +383,7 @@
       },
       "workshopCardNumber": {
         "cardType": "WORKSHOP_CARD",
-        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "cardIssuingMemberState": "NATION_NUMERIC_DEFAULT",
         "ownerIdentification": {
           "ownerIdentification": {
             "length": 13,
@@ -420,7 +420,7 @@
         "rawData": "KioqKioqKioqKioqKioqKio="
       },
       "vehicleRegistration": {
-        "nation": "NATION_NUMERIC_UNSPECIFIED",
+        "nation": "NATION_NUMERIC_DEFAULT",
         "number": {
           "encoding": "ISO_8859_1",
           "length": 13,
@@ -460,7 +460,7 @@
       },
       "workshopCardNumber": {
         "cardType": "WORKSHOP_CARD",
-        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "cardIssuingMemberState": "NATION_NUMERIC_DEFAULT",
         "ownerIdentification": {
           "ownerIdentification": {
             "length": 13,
@@ -497,7 +497,7 @@
         "rawData": "KioqKioqKioqKioqKioqKio="
       },
       "vehicleRegistration": {
-        "nation": "NATION_NUMERIC_UNSPECIFIED",
+        "nation": "NATION_NUMERIC_DEFAULT",
         "number": {
           "encoding": "ISO_8859_1",
           "length": 13,
@@ -537,7 +537,7 @@
       },
       "workshopCardNumber": {
         "cardType": "WORKSHOP_CARD",
-        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "cardIssuingMemberState": "NATION_NUMERIC_DEFAULT",
         "ownerIdentification": {
           "ownerIdentification": {
             "length": 13,
@@ -574,7 +574,7 @@
         "rawData": "KioqKioqKioqKioqKioqKio="
       },
       "vehicleRegistration": {
-        "nation": "NATION_NUMERIC_UNSPECIFIED",
+        "nation": "NATION_NUMERIC_DEFAULT",
         "number": {
           "encoding": "ISO_8859_1",
           "length": 13,
@@ -614,7 +614,7 @@
       },
       "workshopCardNumber": {
         "cardType": "WORKSHOP_CARD",
-        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "cardIssuingMemberState": "NATION_NUMERIC_DEFAULT",
         "ownerIdentification": {
           "ownerIdentification": {
             "length": 13,
@@ -651,7 +651,7 @@
         "rawData": "KioqKioqKioqKioqKioqKio="
       },
       "vehicleRegistration": {
-        "nation": "NATION_NUMERIC_UNSPECIFIED",
+        "nation": "NATION_NUMERIC_DEFAULT",
         "number": {
           "encoding": "ISO_8859_1",
           "length": 13,

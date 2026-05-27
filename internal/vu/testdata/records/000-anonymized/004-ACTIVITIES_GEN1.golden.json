@@ -19,7 +19,7 @@
       },
       "fullCardNumber": {
         "cardType": "DRIVER_CARD",
-        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "cardIssuingMemberState": "NATION_NUMERIC_DEFAULT",
         "driverIdentification": {
           "driverIdentificationNumber": {
             "length": 14,
@@ -1049,7 +1049,7 @@
     {
       "fullCardNumber": {
         "cardType": "DRIVER_CARD",
-        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "cardIssuingMemberState": "NATION_NUMERIC_DEFAULT",
         "driverIdentification": {
           "driverIdentificationNumber": {
             "length": 14,
@@ -1082,7 +1082,7 @@
     {
       "fullCardNumber": {
         "cardType": "DRIVER_CARD",
-        "cardIssuingMemberState": "NATION_NUMERIC_UNSPECIFIED",
+        "cardIssuingMemberState": "NATION_NUMERIC_DEFAULT",
         "driverIdentification": {
           "driverIdentificationNumber": {
             "length": 14,

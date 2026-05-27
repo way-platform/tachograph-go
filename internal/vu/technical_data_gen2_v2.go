@@ -614,8 +614,13 @@ func parseOneCalibrationRecordGen2V2(opts dd.UnmarshalOptions, data []byte) (*vu
 	// byDefaultLoadType (1 byte)
 	rec.SetLoadType(int32(data[idxLoadType]))
 
-	// calibrationCountry (1 byte)
-	rec.SetCalibrationCountry(ddv1.NationNumeric(int32(data[idxCalCountry])))
+	// calibrationCountry (1 byte). Map through the protocol_enum_value
+	// annotation, not a direct enum cast (Norway protocol 37 != MONACO enum 37).
+	if calCountry, err := dd.UnmarshalEnum[ddv1.NationNumeric](data[idxCalCountry]); err == nil {
+		rec.SetCalibrationCountry(calCountry)
+	} else {
+		rec.SetCalibrationCountry(ddv1.NationNumeric_NATION_NUMERIC_UNRECOGNIZED)
+	}
 
 	// calibrationCountryTimestamp (4 bytes)
 	calCountryTs, err := opts.UnmarshalTimeReal(data[idxCalCountryTs : idxCalCountryTs+4])
@@ -937,8 +942,18 @@ func marshalOneCalibrationRecordGen2V2(opts dd.MarshalOptions, rec *vuv1.Technic
 	// byDefaultLoadType (1 byte at offset 246)
 	buf[246] = byte(rec.GetLoadType())
 
-	// calibrationCountry (1 byte at offset 247)
-	buf[247] = byte(rec.GetCalibrationCountry())
+	// calibrationCountry (1 byte at offset 247) - map the enum back to its
+	// protocol value. UNSPECIFIED/UNRECOGNIZED have no protocol value, so leave
+	// the byte zeroed rather than writing the proto enum number.
+	calCountry := rec.GetCalibrationCountry()
+	if calCountry != ddv1.NationNumeric_NATION_NUMERIC_UNSPECIFIED &&
+		calCountry != ddv1.NationNumeric_NATION_NUMERIC_UNRECOGNIZED {
+		calCountryByte, err := dd.MarshalEnum(calCountry)
+		if err != nil {
+			return nil, fmt.Errorf("calibration country: %w", err)
+		}
+		buf[247] = calCountryByte
+	}
 
 	// calibrationCountryTimestamp (4 bytes at offset 248)
 	calCountryTsBytes, err := opts.MarshalTimeReal(rec.GetCalibrationCountryTimestamp())

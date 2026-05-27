@@ -35,10 +35,15 @@ func (opts UnmarshalOptions) UnmarshalVehicleRegistrationIdentification(data []b
 
 	switch len(data) {
 	case lenWithNation:
-		// Standard: 1 byte nation + 14 bytes VehicleRegistrationNumber
-		nationValue := int32(data[0])
-		nation := ddv1.NationNumeric(nationValue)
-		vrn.SetNation(nation)
+		// Standard: 1 byte nation + 14 bytes VehicleRegistrationNumber.
+		// The nation byte is a protocol value that must be mapped through the
+		// protocol_enum_value annotation, not cast directly to the proto enum
+		// (their numbering differs, e.g. Norway protocol 37 == MONACO enum 37).
+		if nation, err := UnmarshalEnum[ddv1.NationNumeric](data[0]); err == nil {
+			vrn.SetNation(nation)
+		} else {
+			vrn.SetNation(ddv1.NationNumeric_NATION_NUMERIC_UNRECOGNIZED)
+		}
 
 		number, err := opts.UnmarshalStringValue(data[1:lenWithNation])
 		if err != nil {
@@ -79,8 +84,17 @@ func (opts MarshalOptions) MarshalVehicleRegistrationIdentification(vrn *ddv1.Ve
 
 	offset := 0
 
-	// Marshal nation (1 byte)
-	canvas[offset] = byte(vrn.GetNation())
+	// Marshal nation (1 byte) - map the enum back to its protocol value.
+	nation := vrn.GetNation()
+	if nation == ddv1.NationNumeric_NATION_NUMERIC_UNRECOGNIZED {
+		// UNRECOGNIZED values should not occur during marshalling
+		return nil, fmt.Errorf("cannot marshal UNRECOGNIZED nation (no unrecognized field)")
+	}
+	nationByte, err := MarshalEnum(nation)
+	if err != nil {
+		return nil, fmt.Errorf("failed to marshal nation: %w", err)
+	}
+	canvas[offset] = nationByte
 	offset += 1
 
 	// Marshal registration number (14 bytes)
