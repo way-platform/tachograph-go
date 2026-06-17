@@ -25,7 +25,7 @@ message HolderName {
   //         codePage INTEGER,
   //         name OCTET STRING
   //     }
-  StringValue holder_surname = 1;
+  StringValue holder_surname = 1 [debug_redact = true];
 
   // The first name(s) and initials of the holder.
   //
@@ -37,5 +37,5 @@ message HolderName {
   //         codePage INTEGER,
   //         name OCTET STRING
   //     }
-  StringValue holder_first_names = 2;
+  StringValue holder_first_names = 2 [debug_redact = true];
 }

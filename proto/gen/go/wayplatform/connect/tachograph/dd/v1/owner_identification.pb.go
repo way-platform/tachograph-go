@@ -212,9 +212,9 @@ var File_wayplatform_connect_tachograph_dd_v1_owner_identification_proto protore
 
 const file_wayplatform_connect_tachograph_dd_v1_owner_identification_proto_rawDesc = "" +
 	"\n" +
-	"?wayplatform/connect/tachograph/dd/v1/owner_identification.proto\x12$wayplatform.connect.tachograph.dd.v1\x1a;wayplatform/connect/tachograph/dd/v1/ia5_string_value.proto\"\x9f\x03\n" +
-	"\x13OwnerIdentification\x12g\n" +
-	"\x14owner_identification\x18\x01 \x01(\v24.wayplatform.connect.tachograph.dd.v1.Ia5StringValueR\x13ownerIdentification\x12a\n" +
+	"?wayplatform/connect/tachograph/dd/v1/owner_identification.proto\x12$wayplatform.connect.tachograph.dd.v1\x1a;wayplatform/connect/tachograph/dd/v1/ia5_string_value.proto\"\xa4\x03\n" +
+	"\x13OwnerIdentification\x12l\n" +
+	"\x14owner_identification\x18\x01 \x01(\v24.wayplatform.connect.tachograph.dd.v1.Ia5StringValueB\x03\x80\x01\x01R\x13ownerIdentification\x12a\n" +
 	"\x11consecutive_index\x18\x02 \x01(\v24.wayplatform.connect.tachograph.dd.v1.Ia5StringValueR\x10consecutiveIndex\x12a\n" +
 	"\x11replacement_index\x18\x03 \x01(\v24.wayplatform.connect.tachograph.dd.v1.Ia5StringValueR\x10replacementIndex\x12Y\n" +
 	"\rrenewal_index\x18\x04 \x01(\v24.wayplatform.connect.tachograph.dd.v1.Ia5StringValueR\frenewalIndexB\xd7\x02\n" +

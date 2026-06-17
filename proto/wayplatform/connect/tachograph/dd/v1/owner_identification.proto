@@ -29,7 +29,7 @@ message OwnerIdentification {
   // ASN.1 Definition:
   //
   //     ownerIdentification IA5String(SIZE(13))
-  Ia5StringValue owner_identification = 1;
+  Ia5StringValue owner_identification = 1 [debug_redact = true];
 
   // A single-digit index for the card.
   //

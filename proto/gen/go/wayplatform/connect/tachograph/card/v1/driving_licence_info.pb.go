@@ -268,11 +268,11 @@ var File_wayplatform_connect_tachograph_card_v1_driving_licence_info_proto proto
 
 const file_wayplatform_connect_tachograph_card_v1_driving_licence_info_proto_rawDesc = "" +
 	"\n" +
-	"Awayplatform/connect/tachograph/card/v1/driving_licence_info.proto\x12&wayplatform.connect.tachograph.card.v1\x1a;wayplatform/connect/tachograph/dd/v1/ia5_string_value.proto\x1a9wayplatform/connect/tachograph/dd/v1/nation_numeric.proto\x1a7wayplatform/connect/tachograph/dd/v1/string_value.proto\x1a?wayplatform/connect/tachograph/security/v1/authentication.proto\"\xfa\x03\n" +
+	"Awayplatform/connect/tachograph/card/v1/driving_licence_info.proto\x12&wayplatform.connect.tachograph.card.v1\x1a;wayplatform/connect/tachograph/dd/v1/ia5_string_value.proto\x1a9wayplatform/connect/tachograph/dd/v1/nation_numeric.proto\x1a7wayplatform/connect/tachograph/dd/v1/string_value.proto\x1a?wayplatform/connect/tachograph/security/v1/authentication.proto\"\xff\x03\n" +
 	"\x12DrivingLicenceInfo\x12|\n" +
 	"!driving_licence_issuing_authority\x18\x01 \x01(\v21.wayplatform.connect.tachograph.dd.v1.StringValueR\x1edrivingLicenceIssuingAuthority\x12x\n" +
-	"\x1edriving_licence_issuing_nation\x18\x02 \x01(\x0e23.wayplatform.connect.tachograph.dd.v1.NationNumericR\x1bdrivingLicenceIssuingNation\x12j\n" +
-	"\x16driving_licence_number\x18\x03 \x01(\v24.wayplatform.connect.tachograph.dd.v1.Ia5StringValueR\x14drivingLicenceNumber\x12\x1c\n" +
+	"\x1edriving_licence_issuing_nation\x18\x02 \x01(\x0e23.wayplatform.connect.tachograph.dd.v1.NationNumericR\x1bdrivingLicenceIssuingNation\x12o\n" +
+	"\x16driving_licence_number\x18\x03 \x01(\v24.wayplatform.connect.tachograph.dd.v1.Ia5StringValueB\x03\x80\x01\x01R\x14drivingLicenceNumber\x12\x1c\n" +
 	"\tsignature\x18\x04 \x01(\fR\tsignature\x12b\n" +
 	"\x0eauthentication\x18c \x01(\v2:.wayplatform.connect.tachograph.security.v1.AuthenticationR\x0eauthenticationB\xe4\x02\n" +
 	"*com.wayplatform.connect.tachograph.card.v1B\x17DrivingLicenceInfoProtoP\x01Z`github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/card/v1;cardv1\xa2\x02\x04WCTC\xaa\x02&Wayplatform.Connect.Tachograph.Card.V1\xca\x02&Wayplatform\\Connect\\Tachograph\\Card\\V1\xe2\x022Wayplatform\\Connect\\Tachograph\\Card\\V1\\GPBMetadata\xea\x02*Wayplatform::Connect::Tachograph::Card::V1b\beditionsp\xe8\a"

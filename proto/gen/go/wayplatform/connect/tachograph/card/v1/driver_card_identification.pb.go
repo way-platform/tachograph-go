@@ -505,16 +505,16 @@ var File_wayplatform_connect_tachograph_card_v1_driver_card_identification_proto
 
 const file_wayplatform_connect_tachograph_card_v1_driver_card_identification_proto_rawDesc = "" +
 	"\n" +
-	"Gwayplatform/connect/tachograph/card/v1/driver_card_identification.proto\x12&wayplatform.connect.tachograph.card.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a/wayplatform/connect/tachograph/dd/v1/date.proto\x1a@wayplatform/connect/tachograph/dd/v1/driver_identification.proto\x1a;wayplatform/connect/tachograph/dd/v1/ia5_string_value.proto\x1a9wayplatform/connect/tachograph/dd/v1/nation_numeric.proto\x1a7wayplatform/connect/tachograph/dd/v1/string_value.proto\x1a?wayplatform/connect/tachograph/security/v1/authentication.proto\"\xee\b\n" +
+	"Gwayplatform/connect/tachograph/card/v1/driver_card_identification.proto\x12&wayplatform.connect.tachograph.card.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a/wayplatform/connect/tachograph/dd/v1/date.proto\x1a@wayplatform/connect/tachograph/dd/v1/driver_identification.proto\x1a;wayplatform/connect/tachograph/dd/v1/ia5_string_value.proto\x1a9wayplatform/connect/tachograph/dd/v1/nation_numeric.proto\x1a7wayplatform/connect/tachograph/dd/v1/string_value.proto\x1a?wayplatform/connect/tachograph/security/v1/authentication.proto\"\xfd\b\n" +
 	"\x18DriverCardIdentification\x12n\n" +
-	"\x19card_issuing_member_state\x18\x01 \x01(\x0e23.wayplatform.connect.tachograph.dd.v1.NationNumericR\x16cardIssuingMemberState\x12o\n" +
-	"\x15driver_identification\x18\x02 \x01(\v2:.wayplatform.connect.tachograph.dd.v1.DriverIdentificationR\x14driverIdentification\x12p\n" +
+	"\x19card_issuing_member_state\x18\x01 \x01(\x0e23.wayplatform.connect.tachograph.dd.v1.NationNumericR\x16cardIssuingMemberState\x12t\n" +
+	"\x15driver_identification\x18\x02 \x01(\v2:.wayplatform.connect.tachograph.dd.v1.DriverIdentificationB\x03\x80\x01\x01R\x14driverIdentification\x12p\n" +
 	"\x1bcard_issuing_authority_name\x18\x03 \x01(\v21.wayplatform.connect.tachograph.dd.v1.StringValueR\x18cardIssuingAuthorityName\x12B\n" +
 	"\x0fcard_issue_date\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampR\rcardIssueDate\x12J\n" +
 	"\x13card_validity_begin\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampR\x11cardValidityBegin\x12D\n" +
-	"\x10card_expiry_date\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampR\x0ecardExpiryDate\x12a\n" +
-	"\x13card_holder_surname\x18\a \x01(\v21.wayplatform.connect.tachograph.dd.v1.StringValueR\x11cardHolderSurname\x12h\n" +
-	"\x17card_holder_first_names\x18\b \x01(\v21.wayplatform.connect.tachograph.dd.v1.StringValueR\x14cardHolderFirstNames\x12_\n" +
+	"\x10card_expiry_date\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampR\x0ecardExpiryDate\x12f\n" +
+	"\x13card_holder_surname\x18\a \x01(\v21.wayplatform.connect.tachograph.dd.v1.StringValueB\x03\x80\x01\x01R\x11cardHolderSurname\x12m\n" +
+	"\x17card_holder_first_names\x18\b \x01(\v21.wayplatform.connect.tachograph.dd.v1.StringValueB\x03\x80\x01\x01R\x14cardHolderFirstNames\x12_\n" +
 	"\x16card_holder_birth_date\x18\t \x01(\v2*.wayplatform.connect.tachograph.dd.v1.DateR\x13cardHolderBirthDate\x12y\n" +
 	"\x1ecard_holder_preferred_language\x18\n" +
 	" \x01(\v24.wayplatform.connect.tachograph.dd.v1.Ia5StringValueR\x1bcardHolderPreferredLanguage\x12\x1c\n" +

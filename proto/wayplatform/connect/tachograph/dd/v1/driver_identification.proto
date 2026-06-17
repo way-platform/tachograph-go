@@ -20,17 +20,17 @@ message DriverIdentification {
   // The core driver identification number string.
   //
   // Corresponds to `driverIdentificationNumber`.
-  Ia5StringValue driver_identification_number = 1;
+  Ia5StringValue driver_identification_number = 1 [debug_redact = true];
 
   // The card replacement index.
   //
   // Corresponds to `cardReplacementIndex`.
   // See Data Dictionary, Section 2.31.
-  Ia5StringValue card_replacement_index = 2;
+  Ia5StringValue card_replacement_index = 2 [debug_redact = true];
 
   // The card renewal index.
   //
   // Corresponds to `cardRenewalIndex`.
   // See Data Dictionary, Section 2.30.
-  Ia5StringValue card_renewal_index = 3;
+  Ia5StringValue card_renewal_index = 3 [debug_redact = true];
 }
