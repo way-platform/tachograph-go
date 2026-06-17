@@ -165,11 +165,11 @@ var File_wayplatform_connect_tachograph_dd_v1_driver_identification_proto protor
 
 const file_wayplatform_connect_tachograph_dd_v1_driver_identification_proto_rawDesc = "" +
 	"\n" +
-	"@wayplatform/connect/tachograph/dd/v1/driver_identification.proto\x12$wayplatform.connect.tachograph.dd.v1\x1a;wayplatform/connect/tachograph/dd/v1/ia5_string_value.proto\"\xde\x02\n" +
-	"\x14DriverIdentification\x12v\n" +
-	"\x1cdriver_identification_number\x18\x01 \x01(\v24.wayplatform.connect.tachograph.dd.v1.Ia5StringValueR\x1adriverIdentificationNumber\x12j\n" +
-	"\x16card_replacement_index\x18\x02 \x01(\v24.wayplatform.connect.tachograph.dd.v1.Ia5StringValueR\x14cardReplacementIndex\x12b\n" +
-	"\x12card_renewal_index\x18\x03 \x01(\v24.wayplatform.connect.tachograph.dd.v1.Ia5StringValueR\x10cardRenewalIndexB\xd8\x02\n" +
+	"@wayplatform/connect/tachograph/dd/v1/driver_identification.proto\x12$wayplatform.connect.tachograph.dd.v1\x1a;wayplatform/connect/tachograph/dd/v1/ia5_string_value.proto\"\xed\x02\n" +
+	"\x14DriverIdentification\x12{\n" +
+	"\x1cdriver_identification_number\x18\x01 \x01(\v24.wayplatform.connect.tachograph.dd.v1.Ia5StringValueB\x03\x80\x01\x01R\x1adriverIdentificationNumber\x12o\n" +
+	"\x16card_replacement_index\x18\x02 \x01(\v24.wayplatform.connect.tachograph.dd.v1.Ia5StringValueB\x03\x80\x01\x01R\x14cardReplacementIndex\x12g\n" +
+	"\x12card_renewal_index\x18\x03 \x01(\v24.wayplatform.connect.tachograph.dd.v1.Ia5StringValueB\x03\x80\x01\x01R\x10cardRenewalIndexB\xd8\x02\n" +
 	"(com.wayplatform.connect.tachograph.dd.v1B\x19DriverIdentificationProtoP\x01Z\\github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1;ddv1\xa2\x02\x04WCTD\xaa\x02$Wayplatform.Connect.Tachograph.Dd.V1\xca\x02$Wayplatform\\Connect\\Tachograph\\Dd\\V1\xe2\x020Wayplatform\\Connect\\Tachograph\\Dd\\V1\\GPBMetadata\xea\x02(Wayplatform::Connect::Tachograph::Dd::V1b\beditionsp\xe8\a"
 
 var file_wayplatform_connect_tachograph_dd_v1_driver_identification_proto_msgTypes = make([]protoimpl.MessageInfo, 1)

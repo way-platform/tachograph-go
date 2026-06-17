@@ -147,11 +147,11 @@ var File_wayplatform_connect_tachograph_dd_v1_holder_name_proto protoreflect.Fil
 
 const file_wayplatform_connect_tachograph_dd_v1_holder_name_proto_rawDesc = "" +
 	"\n" +
-	"6wayplatform/connect/tachograph/dd/v1/holder_name.proto\x12$wayplatform.connect.tachograph.dd.v1\x1a7wayplatform/connect/tachograph/dd/v1/string_value.proto\"\xc7\x01\n" +
+	"6wayplatform/connect/tachograph/dd/v1/holder_name.proto\x12$wayplatform.connect.tachograph.dd.v1\x1a7wayplatform/connect/tachograph/dd/v1/string_value.proto\"\xd1\x01\n" +
 	"\n" +
-	"HolderName\x12X\n" +
-	"\x0eholder_surname\x18\x01 \x01(\v21.wayplatform.connect.tachograph.dd.v1.StringValueR\rholderSurname\x12_\n" +
-	"\x12holder_first_names\x18\x02 \x01(\v21.wayplatform.connect.tachograph.dd.v1.StringValueR\x10holderFirstNamesB\xce\x02\n" +
+	"HolderName\x12]\n" +
+	"\x0eholder_surname\x18\x01 \x01(\v21.wayplatform.connect.tachograph.dd.v1.StringValueB\x03\x80\x01\x01R\rholderSurname\x12d\n" +
+	"\x12holder_first_names\x18\x02 \x01(\v21.wayplatform.connect.tachograph.dd.v1.StringValueB\x03\x80\x01\x01R\x10holderFirstNamesB\xce\x02\n" +
 	"(com.wayplatform.connect.tachograph.dd.v1B\x0fHolderNameProtoP\x01Z\\github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1;ddv1\xa2\x02\x04WCTD\xaa\x02$Wayplatform.Connect.Tachograph.Dd.V1\xca\x02$Wayplatform\\Connect\\Tachograph\\Dd\\V1\xe2\x020Wayplatform\\Connect\\Tachograph\\Dd\\V1\\GPBMetadata\xea\x02(Wayplatform::Connect::Tachograph::Dd::V1b\beditionsp\xe8\a"
 
 var file_wayplatform_connect_tachograph_dd_v1_holder_name_proto_msgTypes = make([]protoimpl.MessageInfo, 1)

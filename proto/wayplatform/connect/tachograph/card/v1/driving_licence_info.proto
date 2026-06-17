@@ -50,7 +50,7 @@ message DrivingLicenceInfo {
   // ASN.1 Specification:
   //
   //     IA5String(SIZE(16))
-  wayplatform.connect.tachograph.dd.v1.Ia5StringValue driving_licence_number = 3;
+  wayplatform.connect.tachograph.dd.v1.Ia5StringValue driving_licence_number = 3 [debug_redact = true];
 
   // Signature data from the following file block, if tagged as a signature for
   // this EF according to the card file format specification (Appendix 2).

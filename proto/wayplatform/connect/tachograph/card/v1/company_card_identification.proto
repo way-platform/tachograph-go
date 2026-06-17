@@ -71,7 +71,7 @@ message CompanyCardIdentification {
   //     cardRenewalIndex CardRenewalIndex
   // }
   // Binary size: 16 bytes (13 + 1 + 1 + 1 bytes)
-  wayplatform.connect.tachograph.dd.v1.OwnerIdentification owner_identification = 2;
+  wayplatform.connect.tachograph.dd.v1.OwnerIdentification owner_identification = 2 [debug_redact = true];
 
   // The name of the authority that issued the card.
   //
@@ -113,7 +113,7 @@ message CompanyCardIdentification {
   // See Data Dictionary, Section 2.49, `companyAddress`.
   // ASN.1 Specification: Address ::= SEQUENCE { codePage INTEGER(0..255), address OCTET STRING (SIZE(35)) }
   // Binary size: 36 bytes (1 byte code page + 35 bytes string data)
-  wayplatform.connect.tachograph.dd.v1.StringValue company_address = 8;
+  wayplatform.connect.tachograph.dd.v1.StringValue company_address = 8 [debug_redact = true];
 
   // The preferred language of the card holder.
   //
