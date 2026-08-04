@@ -4,6 +4,7 @@ import (
 	"encoding/binary"
 	"fmt"
 
+	"github.com/way-platform/tachograph-go/internal/safemath"
 	vuv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/vu/v1"
 )
 
@@ -45,7 +46,11 @@ func sizeOfDetailedSpeedGen1(data []byte) (totalSize, signatureSize int, err err
 	// Each VuDetailedSpeedBlock: 64 bytes (4 TimeReal + 60 Speed bytes)
 	// Per Data Dictionary 2.190
 	const vuDetailedSpeedBlockSize = 64
-	offset += int(noOfSpeedBlocks) * vuDetailedSpeedBlockSize
+	speedBlocksSize, mulErr := safemath.MulInt(int(noOfSpeedBlocks), vuDetailedSpeedBlockSize)
+	if mulErr != nil {
+		return 0, 0, fmt.Errorf("speed blocks overflow: noOfSpeedBlocks=%d blockSize=%d: %w", noOfSpeedBlocks, vuDetailedSpeedBlockSize, mulErr)
+	}
+	offset += speedBlocksSize
 
 	// Signature: 128 bytes for Gen1 RSA
 	const gen1SignatureSize = 128

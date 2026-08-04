@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	"github.com/way-platform/tachograph-go/internal/dd"
+	"github.com/way-platform/tachograph-go/internal/safemath"
 	ddv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
 	vuv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/vu/v1"
 	"google.golang.org/protobuf/reflect/protoreflect"
@@ -270,7 +271,11 @@ func parseSensorPairedRecordArrayGen2(data []byte, offset int) ([]*ddv1.SensorPa
 		recStart = recEnd
 	}
 
-	return sensors, headerSize + int(recordSize)*int(noOfRecords), nil
+	payloadSize, mulErr := safemath.MulInt(int(recordSize), int(noOfRecords))
+	if mulErr != nil {
+		return nil, 0, fmt.Errorf("RecordArray overflow: recordSize=%d noOfRecords=%d: %w", recordSize, noOfRecords, mulErr)
+	}
+	return sensors, headerSize + payloadSize, nil
 }
 
 // parseCalibrationRecordArrayGen2V1 parses a VuCalibrationRecordArray for Gen2 V1.
@@ -302,7 +307,11 @@ func parseCalibrationRecordArrayGen2V1(data []byte, offset int) ([]*vuv1.Technic
 		recStart = recEnd
 	}
 
-	return records, headerSize + int(recordSize)*int(noOfRecords), nil
+	payloadSize, mulErr := safemath.MulInt(int(recordSize), int(noOfRecords))
+	if mulErr != nil {
+		return nil, 0, fmt.Errorf("RecordArray overflow: recordSize=%d noOfRecords=%d: %w", recordSize, noOfRecords, mulErr)
+	}
+	return records, headerSize + payloadSize, nil
 }
 
 // ===== Gen2 calibration record (shared by V1 and V2) =====

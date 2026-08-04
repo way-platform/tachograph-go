@@ -9,6 +9,7 @@ import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 
 	"github.com/way-platform/tachograph-go/internal/dd"
+	"github.com/way-platform/tachograph-go/internal/safemath"
 	ddv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/dd/v1"
 	vuv1 "github.com/way-platform/tachograph-go/proto/gen/go/wayplatform/connect/tachograph/vu/v1"
 )
@@ -343,7 +344,11 @@ func parseSensorExternalGNSSCoupledRecordArrayGen2(data []byte, offset int) ([]*
 		recStart = recEnd
 	}
 
-	return records, headerSize + int(recordSize)*int(noOfRecords), nil
+	payloadSize, mulErr := safemath.MulInt(int(recordSize), int(noOfRecords))
+	if mulErr != nil {
+		return nil, 0, fmt.Errorf("RecordArray overflow: recordSize=%d noOfRecords=%d: %w", recordSize, noOfRecords, mulErr)
+	}
+	return records, headerSize + payloadSize, nil
 }
 
 // parseCalibrationRecordArrayGen2V2 parses a VuCalibrationRecordArray for Gen2 V2.
@@ -392,7 +397,11 @@ func parseCalibrationRecordArrayGen2V2(data []byte, offset int) ([]*vuv1.Technic
 		recStart = recEnd
 	}
 
-	return records, headerSize + int(recordSize)*int(noOfRecords), nil
+	payloadSize, mulErr := safemath.MulInt(int(recordSize), int(noOfRecords))
+	if mulErr != nil {
+		return nil, 0, fmt.Errorf("RecordArray overflow: recordSize=%d noOfRecords=%d: %w", recordSize, noOfRecords, mulErr)
+	}
+	return records, headerSize + payloadSize, nil
 }
 
 // parseOneCalibrationRecordGen2V2 parses a single Gen2 V2 VuCalibrationRecord.
@@ -670,7 +679,11 @@ func parseItsConsentRecordArrayGen2V2(data []byte, offset int) ([]*vuv1.Technica
 		recStart = recEnd
 	}
 
-	return records, headerSize + int(recordSize)*int(noOfRecords), nil
+	payloadSize, mulErr := safemath.MulInt(int(recordSize), int(noOfRecords))
+	if mulErr != nil {
+		return nil, 0, fmt.Errorf("RecordArray overflow: recordSize=%d noOfRecords=%d: %w", recordSize, noOfRecords, mulErr)
+	}
+	return records, headerSize + payloadSize, nil
 }
 
 // parsePowerSupplyInterruptionRecordArrayGen2V2 parses a VuPowerSupplyInterruptionRecordArray.
@@ -720,7 +733,11 @@ func parsePowerSupplyInterruptionRecordArrayGen2V2(data []byte, offset int) ([]*
 		recStart = recEnd
 	}
 
-	return records, headerSize + int(recordSize)*int(noOfRecords), nil
+	payloadSize, mulErr := safemath.MulInt(int(recordSize), int(noOfRecords))
+	if mulErr != nil {
+		return nil, 0, fmt.Errorf("RecordArray overflow: recordSize=%d noOfRecords=%d: %w", recordSize, noOfRecords, mulErr)
+	}
+	return records, headerSize + payloadSize, nil
 }
 
 // ===== V2-specific marshal helpers =====
