@@ -39,6 +39,12 @@ func (opts UnmarshalOptions) UnmarshalActivityChangeInfo(input []byte) (*ddv1.Ac
 	activity := int32((value >> 11) & 0x3) // bits 12-11
 	timeMinutes := int32(value & 0x7FF)    // bits 10-0
 
+	// Validate time range per DD 2.1: minutes since 00h00, max 23:59 = 1439.
+	const maxMinutesPerDay = 1439
+	if timeMinutes > maxMinutesPerDay {
+		return nil, fmt.Errorf("ActivityChangeInfo: time %d exceeds maximum %d minutes", timeMinutes, maxMinutesPerDay)
+	}
+
 	// Convert bit values
 	if slotEnum, err := UnmarshalEnum[ddv1.CardSlotNumber](byte(slot)); err == nil {
 		output.SetSlot(slotEnum)

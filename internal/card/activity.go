@@ -174,7 +174,9 @@ func (opts UnmarshalOptions) parseSingleActivityDailyRecord(data []byte) (*cardv
 	record.SetActivityDayDistance(int32(dayDistance))
 	offset += 2
 
-	// Parse activity change info - loop through remainder in 2-byte chunks
+	// Parse activity change info - loop through remainder in 2-byte chunks.
+	// DD 2.1 specifies SET SIZE (1..1440) OF ActivityChangeInfo.
+	const maxChangesPerDay = 1440
 	var activityChanges []*ddv1.ActivityChangeInfo
 
 	for offset+2 <= len(data) {
@@ -183,6 +185,11 @@ func (opts UnmarshalOptions) parseSingleActivityDailyRecord(data []byte) (*cardv
 		if changeData == 0 || changeData == 0xFFFF {
 			offset += 2
 			continue
+		}
+
+		// Validate count before parsing the next entry
+		if len(activityChanges) >= maxChangesPerDay {
+			return nil, fmt.Errorf("activity day record exceeds maximum %d changes", maxChangesPerDay)
 		}
 
 		// Parse ActivityChangeInfo using centralized helper
