@@ -16,8 +16,17 @@ import (
 // The CA certificate must have its public key components (modulus and exponent) populated,
 // typically from a previous verification against a higher-level CA or root certificate.
 //
+// Certificate EndOfValidity is checked against time.Now(). Use VerifyRsaCertificateWithCAAndClock
+// to inject a custom clock (e.g. for testing).
+//
 // See Appendix 11, Section 3.3 for the complete specification.
 func VerifyRsaCertificateWithCA(cert *securityv1.RsaCertificate, caCert *securityv1.RsaCertificate) error {
+	return VerifyRsaCertificateWithCAAndClock(cert, caCert, RealClock{})
+}
+
+// VerifyRsaCertificateWithCAAndClock is like VerifyRsaCertificateWithCA but uses the
+// provided Clock for certificate validity checking. This enables deterministic testing.
+func VerifyRsaCertificateWithCAAndClock(cert *securityv1.RsaCertificate, caCert *securityv1.RsaCertificate, clock Clock) error {
 	if caCert == nil {
 		return fmt.Errorf("CA certificate cannot be nil")
 	}
@@ -26,7 +35,7 @@ func VerifyRsaCertificateWithCA(cert *securityv1.RsaCertificate, caCert *securit
 	caExponent := caCert.GetRsaExponent()
 	caCHR := caCert.GetCertificateHolderReference()
 
-	return verifyRsaCertificate(cert, caModulus, caExponent, caCHR)
+	return verifyRsaCertificate(cert, caModulus, caExponent, caCHR, clock)
 }
 
 // VerifyRsaCertificateWithRoot performs signature recovery and verification on an RSA certificate
@@ -35,9 +44,18 @@ func VerifyRsaCertificateWithCA(cert *securityv1.RsaCertificate, caCert *securit
 // The root certificate is trusted a priori and contains the public key components directly.
 // This is typically used to verify Member State CA certificates against the European Root CA.
 //
+// Certificate EndOfValidity is checked against time.Now(). Use VerifyRsaCertificateWithRootAndClock
+// to inject a custom clock (e.g. for testing).
+//
 // See Appendix 11, Section 2.1 for the root certificate format and Section 3.3 for
 // RSA certificate verification.
 func VerifyRsaCertificateWithRoot(cert *securityv1.RsaCertificate, root *securityv1.RootCertificate) error {
+	return VerifyRsaCertificateWithRootAndClock(cert, root, RealClock{})
+}
+
+// VerifyRsaCertificateWithRootAndClock is like VerifyRsaCertificateWithRoot but uses the
+// provided Clock for certificate validity checking. This enables deterministic testing.
+func VerifyRsaCertificateWithRootAndClock(cert *securityv1.RsaCertificate, root *securityv1.RootCertificate, clock Clock) error {
 	if root == nil {
 		return fmt.Errorf("root certificate cannot be nil")
 	}
@@ -46,7 +64,7 @@ func VerifyRsaCertificateWithRoot(cert *securityv1.RsaCertificate, root *securit
 	rootExponent := root.GetRsaExponent()
 	rootKeyID := root.GetKeyId()
 
-	return verifyRsaCertificate(cert, rootModulus, rootExponent, rootKeyID)
+	return verifyRsaCertificate(cert, rootModulus, rootExponent, rootKeyID, clock)
 }
 
 // verifyRsaCertificate is the internal implementation that performs signature recovery
@@ -87,7 +105,7 @@ func VerifyRsaCertificateWithRoot(cert *securityv1.RsaCertificate, root *securit
 // If verification fails, signature_valid is set to false and other fields remain unchanged.
 //
 // See Appendix 11, Section 3.3 for the complete specification.
-func verifyRsaCertificate(cert *securityv1.RsaCertificate, caModulus, caExponent []byte, caCHR string) error {
+func verifyRsaCertificate(cert *securityv1.RsaCertificate, caModulus, caExponent []byte, caCHR string, clock Clock) error {
 	if cert == nil {
 		return fmt.Errorf("certificate cannot be nil")
 	}
@@ -214,6 +232,14 @@ func verifyRsaCertificate(cert *securityv1.RsaCertificate, caModulus, caExponent
 	// If parsing fails (e.g., 0xFFFFFFFF indicating no expiry), we continue anyway
 	eovBytes := cPrime[idxEOV : idxEOV+lenEOV]
 	eov, _ := unmarshalTimeReal(eovBytes)
+
+	// Check certificate validity period.
+	// Gen1 RSA certificates have only EndOfValidity (no EffectiveDate), so
+	// effectiveDate is passed as nil — only the expiration check applies.
+	if err := CheckCertificateValidity(nil, eov, clock); err != nil {
+		cert.SetSignatureValid(false)
+		return fmt.Errorf("certificate validity check failed: %w", err)
+	}
 
 	// Extract RSA public key
 	certModulus := cPrime[idxModulus : idxModulus+lenModulus]
