@@ -142,7 +142,9 @@ func (opts UnmarshalOptions) unmarshalGNSSAccumulatedDrivingRecord(data []byte) 
 	if err != nil {
 		return nil, fmt.Errorf("failed to unmarshal vehicle odometer: %w", err)
 	}
-	record.SetVehicleOdometerKm(int32(odometer))
+	if odometer != nil {
+		record.SetVehicleOdometerKm(*odometer)
+	}
 
 	return &record, nil
 }

@@ -6,44 +6,56 @@ import (
 	"github.com/google/go-cmp/cmp"
 )
 
+func ptr32(v int32) *int32 { return &v }
+
 func TestUnmarshalOdometer(t *testing.T) {
 	tests := []struct {
 		name       string
 		input      []byte
-		want       uint32
+		want       *int32
 		wantErr    bool
 		errMessage string
 	}{
+		// Sentinel: 0xFFFFFF → nil (odometer not available)
 		{
-			name:  "maximum value 999999",
-			input: []byte{0x0F, 0x42, 0x3F},
-			want:  999999,
+			name:  "sentinel 0xFFFFFF returns nil",
+			input: []byte{0xFF, 0xFF, 0xFF},
+			want:  nil,
 		},
+		// Zero is a valid odometer value, not a sentinel
 		{
-			name:  "zero value",
+			name:  "zero value is valid",
 			input: []byte{0x00, 0x00, 0x00},
-			want:  0,
+			want:  ptr32(0),
+		},
+		// Value just below the sentinel is valid
+		{
+			name:  "0xFFFFFE is valid (16777214)",
+			input: []byte{0xFF, 0xFF, 0xFE},
+			want:  ptr32(16777214),
+		},
+		// Normal values
+		{
+			name:  "maximum spec value 999999",
+			input: []byte{0x0F, 0x42, 0x3F},
+			want:  ptr32(999999),
 		},
 		{
 			name:  "middle value 123456",
 			input: []byte{0x01, 0xE2, 0x40},
-			want:  123456,
+			want:  ptr32(123456),
+		},
+		{
+			name:  "value 375000 (0x05B8D8)",
+			input: []byte{0x05, 0xB8, 0xD8},
+			want:  ptr32(375000),
 		},
 		{
 			name:  "value 1",
 			input: []byte{0x00, 0x00, 0x01},
-			want:  1,
+			want:  ptr32(1),
 		},
-		{
-			name:  "value 255",
-			input: []byte{0x00, 0x00, 0xFF},
-			want:  255,
-		},
-		{
-			name:  "value 65535",
-			input: []byte{0x00, 0xFF, 0xFF},
-			want:  65535,
-		},
+		// Error cases
 		{
 			name:       "buffer larger than needed - exact length required",
 			input:      []byte{0x01, 0xE2, 0x40, 0xFF, 0xFF},
@@ -53,12 +65,6 @@ func TestUnmarshalOdometer(t *testing.T) {
 		{
 			name:       "insufficient data - 2 bytes",
 			input:      []byte{0x01, 0x02},
-			wantErr:    true,
-			errMessage: "invalid data length for OdometerShort",
-		},
-		{
-			name:       "insufficient data - 1 byte",
-			input:      []byte{0x01},
 			wantErr:    true,
 			errMessage: "invalid data length for OdometerShort",
 		},
@@ -83,8 +89,8 @@ func TestUnmarshalOdometer(t *testing.T) {
 			if err != nil {
 				t.Fatalf("UnmarshalOdometer() unexpected error: %v", err)
 			}
-			if got != tt.want {
-				t.Errorf("UnmarshalOdometer() = %v, want %v", got, tt.want)
+			if diff := cmp.Diff(tt.want, got); diff != "" {
+				t.Errorf("UnmarshalOdometer() mismatch (-want +got):\n%s", diff)
 			}
 		})
 	}
@@ -93,7 +99,7 @@ func TestUnmarshalOdometer(t *testing.T) {
 func TestAppendOdometer(t *testing.T) {
 	tests := []struct {
 		name  string
-		input uint32
+		input int32
 		want  []byte
 	}{
 		{
@@ -131,7 +137,7 @@ func TestAppendOdometer(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			opts := MarshalOptions{}
-			got, err := opts.MarshalOdometer(int32(tt.input))
+			got, err := opts.MarshalOdometer(tt.input)
 			if err != nil {
 				t.Fatalf("MarshalOdometer() unexpected error: %v", err)
 			}
@@ -167,21 +173,21 @@ func TestOdometerRoundTrip(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			// Unmarshal
 			unmarshalOpts := UnmarshalOptions{}
-			opts := MarshalOptions{}
+			marshalOpts := MarshalOptions{}
 			odometer, err := unmarshalOpts.UnmarshalOdometer(tt.input)
 			if err != nil {
 				t.Fatalf("UnmarshalOdometer() unexpected error: %v", err)
 			}
+			if odometer == nil {
+				t.Fatal("UnmarshalOdometer() returned nil for non-sentinel value")
+			}
 
-			// Marshal
-			got, err := opts.MarshalOdometer(int32(odometer))
+			got, err := marshalOpts.MarshalOdometer(*odometer)
 			if err != nil {
 				t.Fatalf("MarshalOdometer() unexpected error: %v", err)
 			}
 
-			// Verify round-trip
 			if diff := cmp.Diff(tt.input, got); diff != "" {
 				t.Errorf("Round-trip mismatch (-want +got):\n%s", diff)
 			}

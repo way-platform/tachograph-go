@@ -556,6 +556,78 @@ func (opts ParseOptions) ParseRawDriverCardFile(input *cardv1.RawCardFile) (*car
 			}
 			tachographG2DF.SetApplicationIdentificationV2(appIdV2)
 
+		case cardv1.ElementaryFileType_EF_PLACES_AUTHENTICATION:
+			placesAuthentication, err := unmarshalOpts.unmarshalPlacesAuthentication(record.GetValue())
+			if err != nil {
+				return nil, err
+			}
+
+			// Only Gen2
+			if tachographG2DF == nil {
+				tachographG2DF = &cardv1.DriverCardFile_TachographG2{}
+			}
+			tachographG2DF.SetPlacesAuthentication(placesAuthentication)
+
+		case cardv1.ElementaryFileType_EF_GNSS_PLACES_AUTHENTICATION:
+			gnssPlacesAuthentication, err := unmarshalOpts.unmarshalGnssPlacesAuthentication(record.GetValue())
+			if err != nil {
+				return nil, err
+			}
+
+			// Only Gen2
+			if tachographG2DF == nil {
+				tachographG2DF = &cardv1.DriverCardFile_TachographG2{}
+			}
+			tachographG2DF.SetGnssPlacesAuthentication(gnssPlacesAuthentication)
+
+		case cardv1.ElementaryFileType_EF_BORDER_CROSSINGS:
+			borderCrossings, err := unmarshalOpts.unmarshalBorderCrossings(record.GetValue())
+			if err != nil {
+				return nil, err
+			}
+
+			// Only Gen2
+			if tachographG2DF == nil {
+				tachographG2DF = &cardv1.DriverCardFile_TachographG2{}
+			}
+			tachographG2DF.SetBorderCrossings(borderCrossings)
+
+		case cardv1.ElementaryFileType_EF_LOAD_UNLOAD_OPERATIONS:
+			loadUnloadOps, err := unmarshalOpts.unmarshalLoadUnloadOperations(record.GetValue())
+			if err != nil {
+				return nil, err
+			}
+
+			// Only Gen2
+			if tachographG2DF == nil {
+				tachographG2DF = &cardv1.DriverCardFile_TachographG2{}
+			}
+			tachographG2DF.SetLoadUnloadOperations(loadUnloadOps)
+
+		case cardv1.ElementaryFileType_EF_LOAD_TYPE_ENTRIES:
+			loadTypeEntries, err := unmarshalOpts.unmarshalLoadTypeEntries(record.GetValue())
+			if err != nil {
+				return nil, err
+			}
+
+			// Only Gen2
+			if tachographG2DF == nil {
+				tachographG2DF = &cardv1.DriverCardFile_TachographG2{}
+			}
+			tachographG2DF.SetLoadTypeEntries(loadTypeEntries)
+
+		case cardv1.ElementaryFileType_EF_COMPANY_ACTIVITY_DATA:
+			companyActivityData, err := unmarshalOpts.unmarshalCompanyActivityData(record.GetValue())
+			if err != nil {
+				return nil, err
+			}
+
+			// Only Gen2
+			if tachographG2DF == nil {
+				tachographG2DF = &cardv1.DriverCardFile_TachographG2{}
+			}
+			tachographG2DF.SetCompanyActivityData(companyActivityData)
+
 		case cardv1.ElementaryFileType_EF_CARD_CERTIFICATE:
 			// Gen1: Card authentication certificate
 			// Only appears in Gen1 DF (Tachograph)

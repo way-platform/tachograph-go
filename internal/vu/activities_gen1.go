@@ -91,7 +91,9 @@ func unmarshalActivitiesGen1(value []byte) (*vuv1.ActivitiesGen1, error) {
 	if err != nil {
 		return nil, fmt.Errorf("unmarshal OdometerValueMidnight: %w", err)
 	}
-	activities.SetOdometerMidnightKm(int32(odometer))
+	if odometer != nil {
+		activities.SetOdometerMidnightKm(*odometer)
+	}
 	offset += 3
 
 	// VuCardIWData: 2 bytes (noOfIWRecords) + (noOfIWRecords * 129 bytes)

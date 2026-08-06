@@ -102,7 +102,9 @@ func (opts UnmarshalOptions) UnmarshalVuCardIWRecordG2(data []byte) (*ddv1.VuCar
 	if err != nil {
 		return nil, fmt.Errorf("unmarshal odometer at insertion: %w", err)
 	}
-	record.SetOdometerAtInsertionKm(int32(odometerAtInsertion))
+	if odometerAtInsertion != nil {
+		record.SetOdometerAtInsertionKm(*odometerAtInsertion)
+	}
 
 	// cardSlotNumber (1 byte)
 	cardSlotNumber, err := UnmarshalEnum[ddv1.CardSlotNumber](data[idxCardSlotNumber])
@@ -123,7 +125,9 @@ func (opts UnmarshalOptions) UnmarshalVuCardIWRecordG2(data []byte) (*ddv1.VuCar
 	if err != nil {
 		return nil, fmt.Errorf("unmarshal odometer at withdrawal: %w", err)
 	}
-	record.SetOdometerAtWithdrawalKm(int32(odometerAtWithdrawal))
+	if odometerAtWithdrawal != nil {
+		record.SetOdometerAtWithdrawalKm(*odometerAtWithdrawal)
+	}
 
 	// previousVehicleInfo (20 bytes)
 	previousVehicleInfo, err := opts.UnmarshalPreviousVehicleInfoG2(data[idxPreviousVehicleInfo : idxPreviousVehicleInfo+lenPreviousVehicleInfoG2])

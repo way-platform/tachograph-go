@@ -34,16 +34,24 @@ func (opts MarshalOptions) MarshalOdometer(odometer int32) ([]byte, error) {
 //
 // Binary Layout (3 bytes):
 //   - Odometer Value (3 bytes): Big-endian unsigned integer
-func (opts UnmarshalOptions) UnmarshalOdometer(data []byte) (uint32, error) {
-	const lenOdometerShort = 3
+//
+// Returns nil when the sentinel value 0xFFFFFF is present, indicating the odometer
+// is not available. Callers must not set the proto field when nil is returned.
+func (opts UnmarshalOptions) UnmarshalOdometer(data []byte) (*int32, error) {
+	const (
+		lenOdometerShort  = 3
+		odometerSentinel  = 0xFFFFFF
+	)
 
 	if len(data) != lenOdometerShort {
-		return 0, fmt.Errorf("invalid data length for OdometerShort: got %d, want %d", len(data), lenOdometerShort)
+		return nil, fmt.Errorf("invalid data length for OdometerShort: got %d, want %d", len(data), lenOdometerShort)
 	}
 
-	// Convert 3-byte big-endian to uint32
-	value := uint32(data[0])<<16 | uint32(data[1])<<8 | uint32(data[2])
-	return value, nil
+	value := int32(data[0])<<16 | int32(data[1])<<8 | int32(data[2])
+	if value == odometerSentinel {
+		return nil, nil
+	}
+	return &value, nil
 }
 
 // AnonymizeOdometerValue anonymizes odometer values based on options.
