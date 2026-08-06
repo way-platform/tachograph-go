@@ -282,7 +282,15 @@ func parseCalibrationRecordArrayGen2V1(data []byte, offset int) ([]*vuv1.Technic
 
 	const expectedRecordSize = 168
 	if recordSize != expectedRecordSize {
-		return nil, 0, fmt.Errorf("expected Gen2 CalibrationRecord size %d, got %d", expectedRecordSize, recordSize)
+		// Some Gen2 V1 VU files produced by certain firmware versions have
+		// non-standard calibration record sizes (e.g. 28 bytes), likely a
+		// GNSS-coupled layout or a national implementation deviation. Skip
+		// the records rather than failing the entire parse and advance the
+		// cursor by the declared record count × record size so the array
+		// framing stays honoured. This is a workaround: a proper fix would
+		// decode the alternate layout and emit best-effort records.
+		totalConsumed := headerSize + int(recordSize)*int(noOfRecords)
+		return nil, totalConsumed, nil
 	}
 
 	var unmarshalOpts dd.UnmarshalOptions

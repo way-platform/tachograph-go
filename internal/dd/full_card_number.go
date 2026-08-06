@@ -81,7 +81,12 @@ func (opts UnmarshalOptions) UnmarshalFullCardNumber(data []byte) (*ddv1.FullCar
 		}
 		cardNumber.SetOwnerIdentification(ownerID)
 	default:
-		return nil, fmt.Errorf("unsupported card type: %d", cardType)
+		// Card type is recognized by the enum (and already set on cardNumber
+		// above) but no structured parser exists for this variant — e.g.
+		// CONTROL_CARD (type 5) or MANUFACTURING_CARD. Return the partial
+		// FullCardNumber with raw_data preserved instead of failing the
+		// whole file parse; downstream callers can decide how to handle it.
+		return cardNumber, nil
 	}
 
 	return cardNumber, nil
