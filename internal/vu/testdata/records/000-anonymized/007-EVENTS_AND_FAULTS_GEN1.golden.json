@@ -1,8 +1,8 @@
 {
   "events": [
     {
-      "eventType": "GENERAL_CARD_CONFLICT",
-      "recordPurpose": "EVENT_FAULT_RECORD_PURPOSE_UNRECOGNIZED",
+      "eventType": "GENERAL_DRIVING_WITHOUT_APPROPRIATE_CARD",
+      "recordPurpose": "LONGEST_IN_LAST_10_DAYS",
       "beginTime": "2020-01-01T00:00:00Z",
       "endTime": "2020-01-01T00:00:00Z",
       "cardNumberDriverSlotBegin": {
@@ -21,8 +21,8 @@
       "rawData": "BAFeC+EAXgvhAP///////////////////////////////////////////////////////////////////////////////////////////////wI="
     },
     {
-      "eventType": "GENERAL_CARD_CONFLICT",
-      "recordPurpose": "EVENT_FAULT_RECORD_PURPOSE_UNRECOGNIZED",
+      "eventType": "GENERAL_DRIVING_WITHOUT_APPROPRIATE_CARD",
+      "recordPurpose": "LONGEST_IN_LAST_10_DAYS",
       "beginTime": "2020-01-01T00:00:00Z",
       "endTime": "2020-01-01T00:00:00Z",
       "cardNumberDriverSlotBegin": {
@@ -41,8 +41,8 @@
       "rawData": "BAFeC+EAXgvhAP///////////////////////////////////////////////////////////////////////////////////////////////wM="
     },
     {
-      "eventType": "GENERAL_CARD_CONFLICT",
-      "recordPurpose": "EVENT_FAULT_RECORD_PURPOSE_UNRECOGNIZED",
+      "eventType": "GENERAL_DRIVING_WITHOUT_APPROPRIATE_CARD",
+      "recordPurpose": "LONGEST_IN_LAST_10_DAYS",
       "beginTime": "2020-01-01T00:00:00Z",
       "endTime": "2020-01-01T00:00:00Z",
       "cardNumberDriverSlotBegin": {
@@ -61,8 +61,8 @@
       "rawData": "BAFeC+EAXgvhAP///////////////////////////////////////////////////////////////////////////////////////////////0s="
     },
     {
-      "eventType": "GENERAL_CARD_CONFLICT",
-      "recordPurpose": "EVENT_FAULT_RECORD_PURPOSE_UNRECOGNIZED",
+      "eventType": "GENERAL_DRIVING_WITHOUT_APPROPRIATE_CARD",
+      "recordPurpose": "LONGEST_IN_LAST_10_DAYS",
       "beginTime": "2020-01-01T00:00:00Z",
       "endTime": "2020-01-01T00:00:00Z",
       "cardNumberDriverSlotBegin": {
@@ -81,8 +81,8 @@
       "rawData": "BAFeC+EAXgvhAP///////////////////////////////////////////////////////////////////////////////////////////////wU="
     },
     {
-      "eventType": "GENERAL_CARD_CONFLICT",
-      "recordPurpose": "EVENT_FAULT_RECORD_PURPOSE_UNRECOGNIZED",
+      "eventType": "GENERAL_DRIVING_WITHOUT_APPROPRIATE_CARD",
+      "recordPurpose": "LONGEST_IN_LAST_10_DAYS",
       "beginTime": "2020-01-01T00:00:00Z",
       "endTime": "2020-01-01T00:00:00Z",
       "cardNumberDriverSlotBegin": {
@@ -101,8 +101,8 @@
       "rawData": "BAFeC+EAXgvhAP///////////////////////////////////////////////////////////////////////////////////////////////wI="
     },
     {
-      "eventType": "GENERAL_CARD_CONFLICT",
-      "recordPurpose": "EVENT_FAULT_RECORD_PURPOSE_UNRECOGNIZED",
+      "eventType": "GENERAL_DRIVING_WITHOUT_APPROPRIATE_CARD",
+      "recordPurpose": "LONGEST_IN_LAST_10_DAYS",
       "beginTime": "2020-01-01T00:00:00Z",
       "endTime": "2020-01-01T00:00:00Z",
       "cardNumberDriverSlotBegin": {
@@ -121,8 +121,8 @@
       "rawData": "BAFeC+EAXgvhAP///////////////////////////////////////////////////////////////////////////////////////////////wE="
     },
     {
-      "eventType": "GENERAL_CARD_CONFLICT",
-      "recordPurpose": "EVENT_FAULT_RECORD_PURPOSE_UNRECOGNIZED",
+      "eventType": "GENERAL_DRIVING_WITHOUT_APPROPRIATE_CARD",
+      "recordPurpose": "LONGEST_IN_LAST_10_DAYS",
       "beginTime": "2020-01-01T00:00:00Z",
       "endTime": "2020-01-01T00:00:00Z",
       "cardNumberDriverSlotBegin": {
@@ -141,8 +141,8 @@
       "rawData": "BAFeC+EAXgvhAP///////////////////////////////////////////////////////////////////////////////////////////////wM="
     },
     {
-      "eventType": "GENERAL_CARD_CONFLICT",
-      "recordPurpose": "EVENT_FAULT_RECORD_PURPOSE_UNRECOGNIZED",
+      "eventType": "GENERAL_DRIVING_WITHOUT_APPROPRIATE_CARD",
+      "recordPurpose": "LONGEST_IN_LAST_10_DAYS",
       "beginTime": "2020-01-01T00:00:00Z",
       "endTime": "2020-01-01T00:00:00Z",
       "cardNumberDriverSlotBegin": {
@@ -161,8 +161,8 @@
       "rawData": "BAFeC+EAXgvhAP///////////////////////////////////////////////////////////////////////////////////////////////xE="
     },
     {
-      "eventType": "GENERAL_CARD_CONFLICT",
-      "recordPurpose": "EVENT_FAULT_RECORD_PURPOSE_UNRECOGNIZED",
+      "eventType": "GENERAL_DRIVING_WITHOUT_APPROPRIATE_CARD",
+      "recordPurpose": "LONGEST_IN_LAST_10_DAYS",
       "beginTime": "2020-01-01T00:00:00Z",
       "endTime": "2020-01-01T00:00:00Z",
       "cardNumberDriverSlotBegin": {
@@ -181,8 +181,8 @@
       "rawData": "BAFeC+EAXgvhAP///////////////////////////////////////////////////////////////////////////////////////////////xA="
     },
     {
-      "eventType": "GENERAL_CARD_CONFLICT",
-      "recordPurpose": "EVENT_FAULT_RECORD_PURPOSE_UNRECOGNIZED",
+      "eventType": "GENERAL_DRIVING_WITHOUT_APPROPRIATE_CARD",
+      "recordPurpose": "LONGEST_IN_LAST_10_DAYS",
       "beginTime": "2020-01-01T00:00:00Z",
       "endTime": "2020-01-01T00:00:00Z",
       "cardNumberDriverSlotBegin": {
@@ -201,8 +201,8 @@
       "rawData": "BAFeC+EAXgvhAP///////////////////////////////////////////////////////////////////////////////////////////////wM="
     },
     {
-      "eventType": "GENERAL_CARD_CONFLICT",
-      "recordPurpose": "TEN_MOST_RECENT",
+      "eventType": "GENERAL_DRIVING_WITHOUT_APPROPRIATE_CARD",
+      "recordPurpose": "FIVE_LONGEST_IN_LAST_365_DAYS",
       "beginTime": "2020-01-01T00:00:00Z",
       "endTime": "2020-01-01T00:00:00Z",
       "cardNumberDriverSlotBegin": {
@@ -221,8 +221,8 @@
       "rawData": "BAJeC+EAXgvhAP///////////////////////////////////////////////////////////////////////////////////////////////wA="
     },
     {
-      "eventType": "GENERAL_CARD_CONFLICT",
-      "recordPurpose": "TEN_MOST_RECENT",
+      "eventType": "GENERAL_DRIVING_WITHOUT_APPROPRIATE_CARD",
+      "recordPurpose": "FIVE_LONGEST_IN_LAST_365_DAYS",
       "beginTime": "2020-01-01T00:00:00Z",
       "endTime": "2020-01-01T00:00:00Z",
       "cardNumberDriverSlotBegin": {
@@ -241,8 +241,8 @@
       "rawData": "BAJeC+EAXgvhAP///////////////////////////////////////////////////////////////////////////////////////////////wA="
     },
     {
-      "eventType": "GENERAL_CARD_CONFLICT",
-      "recordPurpose": "TEN_MOST_RECENT",
+      "eventType": "GENERAL_DRIVING_WITHOUT_APPROPRIATE_CARD",
+      "recordPurpose": "FIVE_LONGEST_IN_LAST_365_DAYS",
       "beginTime": "2020-01-01T00:00:00Z",
       "endTime": "2020-01-01T00:00:00Z",
       "cardNumberDriverSlotBegin": {
@@ -261,8 +261,8 @@
       "rawData": "BAJeC+EAXgvhAP///////////////////////////////////////////////////////////////////////////////////////////////wA="
     },
     {
-      "eventType": "GENERAL_CARD_CONFLICT",
-      "recordPurpose": "TEN_MOST_RECENT",
+      "eventType": "GENERAL_DRIVING_WITHOUT_APPROPRIATE_CARD",
+      "recordPurpose": "FIVE_LONGEST_IN_LAST_365_DAYS",
       "beginTime": "2020-01-01T00:00:00Z",
       "endTime": "2020-01-01T00:00:00Z",
       "cardNumberDriverSlotBegin": {
@@ -281,8 +281,8 @@
       "rawData": "BAJeC+EAXgvhAP///////////////////////////////////////////////////////////////////////////////////////////////wA="
     },
     {
-      "eventType": "GENERAL_CARD_CONFLICT",
-      "recordPurpose": "TEN_MOST_RECENT",
+      "eventType": "GENERAL_DRIVING_WITHOUT_APPROPRIATE_CARD",
+      "recordPurpose": "FIVE_LONGEST_IN_LAST_365_DAYS",
       "beginTime": "2020-01-01T00:00:00Z",
       "endTime": "2020-01-01T00:00:00Z",
       "cardNumberDriverSlotBegin": {
@@ -301,8 +301,8 @@
       "rawData": "BAJeC+EAXgvhAP///////////////////////////////////////////////////////////////////////////////////////////////wA="
     },
     {
-      "eventType": "GENERAL_TIME_OVERLAP",
-      "recordPurpose": "LONGEST_IN_LAST_10_DAYS",
+      "eventType": "GENERAL_CARD_INSERTION_WHILE_DRIVING",
+      "recordPurpose": "LAST_IN_LAST_10_DAYS",
       "beginTime": "2020-01-01T00:00:00Z",
       "endTime": "2020-01-01T00:00:00Z",
       "cardNumberDriverSlotBegin": {
@@ -359,8 +359,8 @@
       "rawData": "BQNeC+EAXgvhAAEAKioqKioqKioqKioqKioqKv///////////////////////wEAKioqKioqKioqKioqKioqKv///////////////////////wE="
     },
     {
-      "eventType": "GENERAL_TIME_OVERLAP",
-      "recordPurpose": "LONGEST_IN_LAST_10_DAYS",
+      "eventType": "GENERAL_CARD_INSERTION_WHILE_DRIVING",
+      "recordPurpose": "LAST_IN_LAST_10_DAYS",
       "beginTime": "2020-01-01T00:00:00Z",
       "endTime": "2020-01-01T00:00:00Z",
       "cardNumberDriverSlotBegin": {
@@ -417,8 +417,8 @@
       "rawData": "BQNeC+EAXgvhAAEAKioqKioqKioqKioqKioqKv///////////////////////wEAKioqKioqKioqKioqKioqKv///////////////////////wE="
     },
     {
-      "eventType": "GENERAL_TIME_OVERLAP",
-      "recordPurpose": "LONGEST_IN_LAST_10_DAYS",
+      "eventType": "GENERAL_CARD_INSERTION_WHILE_DRIVING",
+      "recordPurpose": "LAST_IN_LAST_10_DAYS",
       "beginTime": "2020-01-01T00:00:00Z",
       "endTime": "2020-01-01T00:00:00Z",
       "cardNumberDriverSlotBegin": {
@@ -475,8 +475,8 @@
       "rawData": "BQNeC+EAXgvhAAEAKioqKioqKioqKioqKioqKv///////////////////////wEAKioqKioqKioqKioqKioqKv///////////////////////wE="
     },
     {
-      "eventType": "GENERAL_TIME_OVERLAP",
-      "recordPurpose": "LONGEST_IN_LAST_10_DAYS",
+      "eventType": "GENERAL_CARD_INSERTION_WHILE_DRIVING",
+      "recordPurpose": "LAST_IN_LAST_10_DAYS",
       "beginTime": "2020-01-01T00:00:00Z",
       "endTime": "2020-01-01T00:00:00Z",
       "cardNumberDriverSlotBegin": {
@@ -533,8 +533,8 @@
       "rawData": "BQNeC+EAXgvhAAEAKioqKioqKioqKioqKioqKv///////////////////////wEAKioqKioqKioqKioqKioqKv///////////////////////wE="
     },
     {
-      "eventType": "GENERAL_TIME_OVERLAP",
-      "recordPurpose": "LONGEST_IN_LAST_10_DAYS",
+      "eventType": "GENERAL_CARD_INSERTION_WHILE_DRIVING",
+      "recordPurpose": "LAST_IN_LAST_10_DAYS",
       "beginTime": "2020-01-01T00:00:00Z",
       "endTime": "2020-01-01T00:00:00Z",
       "cardNumberDriverSlotBegin": {
@@ -591,8 +591,8 @@
       "rawData": "BQNeC+EAXgvhAAEAKioqKioqKioqKioqKioqKv///////////////////////wEAKioqKioqKioqKioqKioqKv///////////////////////wE="
     },
     {
-      "eventType": "GENERAL_TIME_OVERLAP",
-      "recordPurpose": "LONGEST_IN_LAST_10_DAYS",
+      "eventType": "GENERAL_CARD_INSERTION_WHILE_DRIVING",
+      "recordPurpose": "LAST_IN_LAST_10_DAYS",
       "beginTime": "2020-01-01T00:00:00Z",
       "endTime": "2020-01-01T00:00:00Z",
       "cardNumberDriverSlotBegin": {
@@ -649,8 +649,8 @@
       "rawData": "BQNeC+EAXgvhAAEAKioqKioqKioqKioqKioqKv///////////////////////wEAKioqKioqKioqKioqKioqKv///////////////////////wE="
     },
     {
-      "eventType": "GENERAL_TIME_OVERLAP",
-      "recordPurpose": "LONGEST_IN_LAST_10_DAYS",
+      "eventType": "GENERAL_CARD_INSERTION_WHILE_DRIVING",
+      "recordPurpose": "LAST_IN_LAST_10_DAYS",
       "beginTime": "2020-01-01T00:00:00Z",
       "endTime": "2020-01-01T00:00:00Z",
       "cardNumberDriverSlotBegin": {
@@ -707,8 +707,8 @@
       "rawData": "BQNeC+EAXgvhAAEAKioqKioqKioqKioqKioqKv///////////////////////wEAKioqKioqKioqKioqKioqKv///////////////////////wE="
     },
     {
-      "eventType": "GENERAL_TIME_OVERLAP",
-      "recordPurpose": "LONGEST_IN_LAST_10_DAYS",
+      "eventType": "GENERAL_CARD_INSERTION_WHILE_DRIVING",
+      "recordPurpose": "LAST_IN_LAST_10_DAYS",
       "beginTime": "2020-01-01T00:00:00Z",
       "endTime": "2020-01-01T00:00:00Z",
       "cardNumberDriverSlotBegin": {
@@ -765,8 +765,8 @@
       "rawData": "BQNeC+EAXgvhAAEAKioqKioqKioqKioqKioqKv///////////////////////wEAKioqKioqKioqKioqKioqKv///////////////////////wE="
     },
     {
-      "eventType": "GENERAL_TIME_OVERLAP",
-      "recordPurpose": "LONGEST_IN_LAST_10_DAYS",
+      "eventType": "GENERAL_CARD_INSERTION_WHILE_DRIVING",
+      "recordPurpose": "LAST_IN_LAST_10_DAYS",
       "beginTime": "2020-01-01T00:00:00Z",
       "endTime": "2020-01-01T00:00:00Z",
       "cardNumberDriverSlotBegin": {
@@ -823,8 +823,8 @@
       "rawData": "BQNeC+EAXgvhAAEAKioqKioqKioqKioqKioqKv///////////////////////wEAKioqKioqKioqKioqKioqKv///////////////////////wE="
     },
     {
-      "eventType": "GENERAL_TIME_OVERLAP",
-      "recordPurpose": "LONGEST_IN_LAST_10_DAYS",
+      "eventType": "GENERAL_CARD_INSERTION_WHILE_DRIVING",
+      "recordPurpose": "LAST_IN_LAST_10_DAYS",
       "beginTime": "2020-01-01T00:00:00Z",
       "endTime": "2020-01-01T00:00:00Z",
       "cardNumberDriverSlotBegin": {
@@ -881,8 +881,8 @@
       "rawData": "BQNeC+EAXgvhAAEAKioqKioqKioqKioqKioqKv///////////////////////wEAKioqKioqKioqKioqKioqKv///////////////////////wE="
     },
     {
-      "eventType": "GENERAL_LAST_CARD_SESSION_NOT_CORRECTLY_CLOSED",
-      "recordPurpose": "EVENT_FAULT_RECORD_PURPOSE_UNRECOGNIZED",
+      "eventType": "GENERAL_POWER_SUPPLY_INTERRUPTION",
+      "recordPurpose": "LONGEST_IN_LAST_10_DAYS",
       "beginTime": "2020-01-01T00:00:00Z",
       "endTime": "2020-01-01T00:00:00Z",
       "cardNumberDriverSlotBegin": {
@@ -939,8 +939,8 @@
       "rawData": "CAFeC+EAXgvhAAEAKioqKioqKioqKioqKioqKv///////////////////////wEAKioqKioqKioqKioqKioqKv///////////////////////wQ="
     },
     {
-      "eventType": "GENERAL_LAST_CARD_SESSION_NOT_CORRECTLY_CLOSED",
-      "recordPurpose": "EVENT_FAULT_RECORD_PURPOSE_UNRECOGNIZED",
+      "eventType": "GENERAL_POWER_SUPPLY_INTERRUPTION",
+      "recordPurpose": "LONGEST_IN_LAST_10_DAYS",
       "beginTime": "2020-01-01T00:00:00Z",
       "endTime": "2020-01-01T00:00:00Z",
       "cardNumberDriverSlotBegin": {
@@ -997,8 +997,8 @@
       "rawData": "CAFeC+EAXgvhAAEAKioqKioqKioqKioqKioqKv///////////////////////wEAKioqKioqKioqKioqKioqKv///////////////////////wE="
     },
     {
-      "eventType": "GENERAL_LAST_CARD_SESSION_NOT_CORRECTLY_CLOSED",
-      "recordPurpose": "EVENT_FAULT_RECORD_PURPOSE_UNRECOGNIZED",
+      "eventType": "GENERAL_POWER_SUPPLY_INTERRUPTION",
+      "recordPurpose": "LONGEST_IN_LAST_10_DAYS",
       "beginTime": "2020-01-01T00:00:00Z",
       "endTime": "2020-01-01T00:00:00Z",
       "cardNumberDriverSlotBegin": {
@@ -1055,8 +1055,8 @@
       "rawData": "CAFeC+EAXgvhAAEAKioqKioqKioqKioqKioqKv///////////////////////wEAKioqKioqKioqKioqKioqKv///////////////////////wE="
     },
     {
-      "eventType": "GENERAL_LAST_CARD_SESSION_NOT_CORRECTLY_CLOSED",
-      "recordPurpose": "EVENT_FAULT_RECORD_PURPOSE_UNRECOGNIZED",
+      "eventType": "GENERAL_POWER_SUPPLY_INTERRUPTION",
+      "recordPurpose": "LONGEST_IN_LAST_10_DAYS",
       "beginTime": "2020-01-01T00:00:00Z",
       "endTime": "2020-01-01T00:00:00Z",
       "cardNumberDriverSlotBegin": {
@@ -1075,8 +1075,8 @@
       "rawData": "CAFeC+EAXgvhAP///////////////////////////////////////////////////////////////////////////////////////////////wE="
     },
     {
-      "eventType": "GENERAL_LAST_CARD_SESSION_NOT_CORRECTLY_CLOSED",
-      "recordPurpose": "EVENT_FAULT_RECORD_PURPOSE_UNRECOGNIZED",
+      "eventType": "GENERAL_POWER_SUPPLY_INTERRUPTION",
+      "recordPurpose": "LONGEST_IN_LAST_10_DAYS",
       "beginTime": "2020-01-01T00:00:00Z",
       "endTime": "2020-01-01T00:00:00Z",
       "cardNumberDriverSlotBegin": {
@@ -1133,8 +1133,8 @@
       "rawData": "CAFeC+EAXgvhAAEAKioqKioqKioqKioqKioqKv///////////////////////wEAKioqKioqKioqKioqKioqKv///////////////////////wI="
     },
     {
-      "eventType": "GENERAL_LAST_CARD_SESSION_NOT_CORRECTLY_CLOSED",
-      "recordPurpose": "EVENT_FAULT_RECORD_PURPOSE_UNRECOGNIZED",
+      "eventType": "GENERAL_POWER_SUPPLY_INTERRUPTION",
+      "recordPurpose": "LONGEST_IN_LAST_10_DAYS",
       "beginTime": "2020-01-01T00:00:00Z",
       "endTime": "2020-01-01T00:00:00Z",
       "cardNumberDriverSlotBegin": {
@@ -1153,8 +1153,8 @@
       "rawData": "CAFeC+EAXgvhAP///////////////////////////////////////////////////////////////////////////////////////////////wI="
     },
     {
-      "eventType": "GENERAL_LAST_CARD_SESSION_NOT_CORRECTLY_CLOSED",
-      "recordPurpose": "EVENT_FAULT_RECORD_PURPOSE_UNRECOGNIZED",
+      "eventType": "GENERAL_POWER_SUPPLY_INTERRUPTION",
+      "recordPurpose": "LONGEST_IN_LAST_10_DAYS",
       "beginTime": "2020-01-01T00:00:00Z",
       "endTime": "2020-01-01T00:00:00Z",
       "cardNumberDriverSlotBegin": {
@@ -1173,8 +1173,8 @@
       "rawData": "CAFeC+EAXgvhAP///////////////////////////////////////////////////////////////////////////////////////////////wE="
     },
     {
-      "eventType": "GENERAL_LAST_CARD_SESSION_NOT_CORRECTLY_CLOSED",
-      "recordPurpose": "EVENT_FAULT_RECORD_PURPOSE_UNRECOGNIZED",
+      "eventType": "GENERAL_POWER_SUPPLY_INTERRUPTION",
+      "recordPurpose": "LONGEST_IN_LAST_10_DAYS",
       "beginTime": "2020-01-01T00:00:00Z",
       "endTime": "2020-01-01T00:00:00Z",
       "cardNumberDriverSlotBegin": {
@@ -1231,8 +1231,8 @@
       "rawData": "CAFeC+EAXgvhAAEAKioqKioqKioqKioqKioqKv///////////////////////wEAKioqKioqKioqKioqKioqKv///////////////////////wI="
     },
     {
-      "eventType": "GENERAL_LAST_CARD_SESSION_NOT_CORRECTLY_CLOSED",
-      "recordPurpose": "EVENT_FAULT_RECORD_PURPOSE_UNRECOGNIZED",
+      "eventType": "GENERAL_POWER_SUPPLY_INTERRUPTION",
+      "recordPurpose": "LONGEST_IN_LAST_10_DAYS",
       "beginTime": "2020-01-01T00:00:00Z",
       "endTime": "2020-01-01T00:00:00Z",
       "cardNumberDriverSlotBegin": {
@@ -1289,8 +1289,8 @@
       "rawData": "CAFeC+EAXgvhAAEAKioqKioqKioqKioqKioqKv///////////////////////wEAKioqKioqKioqKioqKioqKv///////////////////////wE="
     },
     {
-      "eventType": "GENERAL_LAST_CARD_SESSION_NOT_CORRECTLY_CLOSED",
-      "recordPurpose": "EVENT_FAULT_RECORD_PURPOSE_UNRECOGNIZED",
+      "eventType": "GENERAL_POWER_SUPPLY_INTERRUPTION",
+      "recordPurpose": "LONGEST_IN_LAST_10_DAYS",
       "beginTime": "2020-01-01T00:00:00Z",
       "endTime": "2020-01-01T00:00:00Z",
       "cardNumberDriverSlotBegin": {
@@ -1347,8 +1347,8 @@
       "rawData": "CAFeC+EAXgvhAAEAKioqKioqKioqKioqKioqKv///////////////////////wEAKioqKioqKioqKioqKioqKv///////////////////////wE="
     },
     {
-      "eventType": "GENERAL_LAST_CARD_SESSION_NOT_CORRECTLY_CLOSED",
-      "recordPurpose": "TEN_MOST_RECENT",
+      "eventType": "GENERAL_POWER_SUPPLY_INTERRUPTION",
+      "recordPurpose": "FIVE_LONGEST_IN_LAST_365_DAYS",
       "beginTime": "2020-01-01T00:00:00Z",
       "endTime": "2020-01-01T00:00:00Z",
       "cardNumberDriverSlotBegin": {
@@ -1405,8 +1405,8 @@
       "rawData": "CAJeC+EAXgvhAAEAKioqKioqKioqKioqKioqKv///////////////////////wEAKioqKioqKioqKioqKioqKv///////////////////////wA="
     },
     {
-      "eventType": "GENERAL_LAST_CARD_SESSION_NOT_CORRECTLY_CLOSED",
-      "recordPurpose": "TEN_MOST_RECENT",
+      "eventType": "GENERAL_POWER_SUPPLY_INTERRUPTION",
+      "recordPurpose": "FIVE_LONGEST_IN_LAST_365_DAYS",
       "beginTime": "2020-01-01T00:00:00Z",
       "endTime": "2020-01-01T00:00:00Z",
       "cardNumberDriverSlotBegin": {
@@ -1463,8 +1463,8 @@
       "rawData": "CAJeC+EAXgvhAAEAKioqKioqKioqKioqKioqKv///////////////////////wEAKioqKioqKioqKioqKioqKv///////////////////////wA="
     },
     {
-      "eventType": "GENERAL_OVER_SPEEDING",
-      "recordPurpose": "EVENT_FAULT_RECORD_PURPOSE_UNRECOGNIZED",
+      "eventType": "GENERAL_MOTION_DATA_ERROR",
+      "recordPurpose": "LONGEST_IN_LAST_10_DAYS",
       "beginTime": "2020-01-01T00:00:00Z",
       "endTime": "2020-01-01T00:00:00Z",
       "cardNumberDriverSlotBegin": {
